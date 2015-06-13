@@ -1,0 +1,35 @@
+health-bar {
+  min-height: 5px;
+  min-width: 5px;
+  .clearfix;
+  display: inline-block;
+  .progress {
+    border-radius: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    /* Damage states */
+    &.fine {
+      //      background-color: rgba(33, 79, 120,0.1);
+      .progress-bar {
+        background-color: rgb(46, 109, 166);
+      }
+    }
+    &.hurt {
+      //      background-color: rgba(230,200,40,0.1);
+      .progress-bar {
+        background-color: rgba(230, 200, 40, 1);
+      }
+    }
+    &.critical {
+      //      background-color: rgba(183, 0, 5,0.1);
+      .progress-bar {
+        background-color: rgb(183, 0, 5);
+      }
+    }
+    &.dead {
+      background-color: rgba(255, 255, 255, 0.1);
+      .progress-bar {
+        background-color: rgb(255, 255, 255);
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+<div class="store-view ebp" ng-if="store">
+  <div class="header">
+    <div class="title">
+      <div class="name">
+        <h1>{{storeCtrl.getActionVerb()}} {{store.name}}</h1> <span>Gold: {{gameModel.gold}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="inventory">
+    <ul ng-if="storeCtrl.isBuying()">
+      <li class="item" ng-repeat="item in store.inventory" ng-click="storeCtrl.selectItem(item)">
+            <span class="icon" icon-render icon="item.icon">
+            </span>
+        <span class="item-name">{{item.name}}</span>
+        <span class="item-price">{{item.cost}}</span>
+      </li>
+    </ul>
+    <ul ng-if="storeCtrl.isSelling()">
+      <li class="item" ng-repeat="item in storeCtrl.gameModel.inventory" ng-click="storeCtrl.selectItem(item)">
+            <span class="icon" icon-render icon="item.attributes.icon">
+            </span>
+        <span class="item-name">{{item.attributes.name}}</span>
+        <span class="item-price">{{item.attributes.cost}}</span>
+      </li>
+    </ul>
+
+    <ul ng-if="storeCtrl.selected">
+      <li class="item selected">
+            <span class="icon" icon-render icon="storeCtrl.selected.icon">
+            </span>
+        <span class="item-name">{{storeCtrl.selected.name}}</span>
+        <span class="item-price">{{storeCtrl.selected.cost}}</span>
+      </li>
+      <div class="prompt btn-group">
+        <button class="btn btn-flat" ng-click="storeCtrl.selected=null">Back</button>
+        <button class="btn btn-flat" ng-click="storeCtrl.actionItem(storeCtrl.selected)">
+          {{storeCtrl.selling?"Sell":"Buy"}}
+        </button>
+      </div>
+    </ul>
+  </div>
+
+  <div class="prompt btn-group" ng-if="!storeCtrl.selected">
+    <button class="btn btn-flat" ng-click="storeCtrl.destroy()">Done</button>
+    <button class="btn btn-flat" ng-click="storeCtrl.toggleAction()">{{storeCtrl.selling?"Buy":"Sell"}}</button>
+  </div>
+
+</div>

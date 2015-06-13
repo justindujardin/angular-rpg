@@ -1,0 +1,47 @@
+// Dialog
+// --------------------------------------------------------------------------
+.dialog-view {
+  text-align: center;
+  pointer-events: none !important;
+  .container {
+    width: 100%;
+  }
+  .dialog {
+    pointer-events: auto !important;
+    width: auto;
+    max-width: 800px;
+    margin-top: 15px;
+    padding: 10px 10px;
+    position: relative;
+    .btn-close {
+      position: absolute;
+      font-size: 1.5em;
+      padding: 5px 20px;
+      padding-top: 10px;
+      right: 0.5em;
+      top: 0;
+      &:hover {
+        top: 0;
+        padding-top: 12px;
+      }
+      &:active {
+        top: 0;
+        padding-top: 16px;
+      }
+    }
+
+  }
+  .character {
+    padding: 0;
+    p {
+      margin: 0;
+    }
+  }
+  .text {
+    text-align: center;
+    vertical-align: middle;
+    line-height: normal;
+    color: #fff;
+    .stroke-text(1px, #000);
+  }
+}

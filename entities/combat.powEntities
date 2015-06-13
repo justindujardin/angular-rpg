@@ -1,0 +1,74 @@
+[
+  {
+    "name": "GameCombatMap",
+    "type": "rpg.GameTileMap",
+    "inputs": {
+      "resource": "pow2.TiledTMXResource"
+    },
+    "params": ["resource"],
+    "components": [
+      {
+        "type": "rpg.components.combat.CombatCameraComponent"
+      }
+    ]
+  },
+  {
+    "name": "CombatPlayer",
+    "type": "rpg.objects.GameEntityObject",
+    "inputs": {
+      "model": "rpg.models.HeroModel",
+      "combat": "rpg.states.GameCombatState"
+    },
+    "components": [
+      {
+        "name": "render",
+        "type": "pow2.game.components.PlayerCombatRenderComponent"
+      },
+      {
+        "name": "animation",
+        "type": "pow2.game.components.AnimatedComponent"
+      },
+      {
+        "name": "attack",
+        "type": "rpg.components.combat.actions.CombatAttackComponent",
+        "params": ["combat"]
+      },
+      {
+        "name": "magic",
+        "type": "rpg.components.combat.actions.CombatMagicComponent",
+        "params": ["combat"]
+      },
+      {
+        "name": "run",
+        "type": "rpg.components.combat.actions.CombatRunComponent",
+        "params": ["combat"]
+      },
+      {
+        "name": "guard",
+        "type": "rpg.components.combat.actions.CombatGuardComponent",
+        "params": ["combat"]
+      }
+    ]
+  },
+  {
+    "name": "CombatEnemy",
+    "type": "rpg.objects.GameEntityObject",
+    "inputs": {
+      "model": "rpg.models.EntityModel",
+      "combat": "rpg.states.GameCombatState",
+      "sprite": "Object"
+    },
+    "components": [
+      {
+        "name": "sprite",
+        "type": "pow2.tile.components.SpriteComponent",
+        "params": ["sprite"]
+      },
+      {
+        "name": "attack",
+        "type": "rpg.components.combat.actions.CombatAttackComponent",
+        "params": ["combat"]
+      }
+    ]
+  }
+]

@@ -1,0 +1,97 @@
+
+.slide-anim {
+}
+
+.slide-anim.ng-hide {
+}
+
+.slide-anim.ng-hide-add {
+  .pt-page-moveToLeft;
+  .pt-page-ontop;
+  display: block !important;
+}
+
+.slide-anim.ng-hide-remove {
+  .pt-page-moveToRight;
+  display: block !important;
+}
+
+@inventoryIconSize: 64px;
+@inventoryLabelPaddingTop: 30px;
+
+inventory-view {
+  text-align: center;
+  .ebp {
+    width: 100%;
+    min-height: 10em;
+    overflow: auto;
+    overflow-x: hidden;
+  }
+  .btn {
+    margin: 5px 5px;
+    font-size: 2em;
+    &.next {
+      float: right;
+    }
+    &.previous {
+      float: left;
+    }
+
+  }
+  ul {
+    list-style-type: none;
+    text-align: center;
+    margin: 0;
+    padding: 10px;
+    > li {
+      position: relative;
+      padding-top: @inventoryLabelPaddingTop;
+      height: @inventoryIconSize + @inventoryLabelPaddingTop;
+      width: @inventoryIconSize;
+      .desc {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        font-size: 0.9em;
+        line-height: @inventoryLabelPaddingTop / 2;
+      }
+      .icon {
+        left: 0;
+        right: 0;
+        margin: auto;
+        img {
+          display: inline-block;
+          height: @inventoryIconSize;
+          width: @inventoryIconSize;
+        }
+      }
+      .compare {
+        color: #0f0;
+      }
+
+    }
+  }
+  .unequipped {
+    > li {
+      display: inline-block;
+    }
+
+  }
+
+  ul, ul > li {
+    display: inline-block;
+    list-style-type: none;
+  }
+  .equipped {
+  }
+  .character-equipment-map {
+    padding: 10px;
+    margin: 0;
+    position: relative;
+    > li {
+      display: inline-block;
+      font-size: 16px;
+    }
+  }
+}

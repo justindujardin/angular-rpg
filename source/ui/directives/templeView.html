@@ -1,0 +1,28 @@
+<div class="temple-view ebp">
+  <div class="header">
+    <span icon-render icon="temple.icon"></span>
+
+    <h1>{{temple.name}}</h1>
+  </div>
+
+  <div class="prompt">
+    <h2>It will cost you {{temple.cost}} of your {{gameModel.gold}} monies to heal here.</h2>
+
+    <p>Would you like to heal your party members?</p>
+    <button class="btn btn-flat" ng-click="heal()">Yes</button>
+    <button class="btn btn-flat" ng-click="cancel()">No</button>
+  </div>
+
+  <div class="party">
+    <div class="member" ng-repeat="hero in party">
+      <div class="image" icon-render icon="hero.attributes.icon" frame="7"></div>
+      <h1 class="name">{{hero.attributes.name}}</h1>
+
+      <div class="stats">
+        <div>Level {{hero.attributes.level}}</div>
+        <div>HP {{hero.attributes.hp}} / {{hero.attributes.maxHP}}</div>
+      </div>
+      <health-bar model="hero"></health-bar>
+    </div>
+  </div>
+</div>

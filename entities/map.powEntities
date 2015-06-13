@@ -1,0 +1,55 @@
+[
+  {
+    "name": "GameMapObject",
+    "type": "rpg.GameTileMap",
+    "inputs": {
+      "resource": "pow2.TiledTMXResource"
+    },
+    "params": ["resource"],
+    "components": [
+      {
+        "name": "encounters",
+        "type": "rpg.components.combat.CombatEncounterComponent"
+      },
+      {
+        "name": "input",
+        "type": "rpg.components.GameFeatureInputComponent"
+      }
+    ]
+  },
+  {
+    "name": "GameMapPlayer",
+    "type": "rpg.objects.GameEntityObject",
+    "inputs": {
+      "model": "rpg.models.HeroModel",
+      "map": "rpg.GameTileMap"
+    },
+    "components": [
+      {
+        "name": "render",
+        "type": "pow2.game.components.PlayerRenderComponent"
+      },
+      {
+        "name": "collision",
+        "type": "pow2.scene.components.CollisionComponent"
+      },
+      {
+        "name": "paths",
+        "type": "pow2.game.components.GameMapPathComponent",
+        "params": ["map"]
+      },
+      {
+        "name": "player",
+        "type": "rpg.components.PlayerComponent"
+      },
+      {
+        "name": "camera",
+        "type": "pow2.game.components.PlayerCameraComponent"
+      },
+      {
+        "name": "touch",
+        "type": "rpg.components.PlayerTouchComponent"
+      }
+    ]
+  }
+]

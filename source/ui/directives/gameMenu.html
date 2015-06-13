@@ -1,0 +1,41 @@
+<div class="game-menu" ng-hide="combat">
+  <a href="#" class="trigger glyphicon glyphicon-collapse-down" ng-click="toggle()" ng-hide="open"></a>
+
+  <div class="navigation" ng-show="open">
+    <ul class="options">
+      <!-- Close -->
+      <li><a href="#" ng-click="toggle()"><span class="glyphicon glyphicon glyphicon-collapse-up"></span></a></li>
+      <!-- Characters -->
+      <li ng-class="{active:page=='party'}">
+        <a href="#" ng-click="showParty()"><span class="pow2-black-flag"></span></a>
+      </li>
+      <!-- Inventory/Equipment -->
+      <li ng-class="{active:page=='inventory'}">
+        <a href="#" ng-click="showInventory()"><span class="pow2-battle-gear"></span></a>
+      </li>
+      <!-- Save/Reset -->
+      <li ng-class="{active:page=='save'}">
+        <a href="#" ng-click="showSave()"><span class="glyphicon glyphicon-floppy-disk"></span></a>
+      </li>
+
+    </ul>
+  </div>
+  <div class="views" ng-if="open" ng-show="open" ng-class="{open:open}">
+    <div class="party" ng-if="page == 'party'">
+      <div class="">
+        <h1>Party Gold: {{gameModel.gold}}</h1>
+      </div>
+      <hero-card hero="member" ng-repeat="member in party"></hero-card>
+    </div>
+    <div class="inventory" ng-if="page == 'inventory'">
+      <inventory-view></inventory-view>
+    </div>
+    <div class="save" ng-if="page == 'save'">
+      <button class="btn btn-flat" ng-click="saveGame()"><i class="glyphicon glyphicon-floppy-disk"></i> Save Game
+      </button>
+      <button class="btn btn-flat" ng-click="resetGame()"><i class="glyphicon glyphicon-floppy-remove"></i> Reset Game
+      </button>
+    </div>
+  </div>
+
+</div>

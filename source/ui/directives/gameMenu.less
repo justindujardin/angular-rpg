@@ -1,0 +1,111 @@
+
+.game-menu {
+  position: fixed;
+  bottom: 5px;
+  left: 5px;
+  z-index: 10;
+  font-family: 'GraphicPixel', sans-serif;
+  .options, .trigger {
+    font-size: 42px;
+    font-weight: 300;
+  }
+  .trigger {
+    position: fixed;
+    left: 5px;
+    bottom: 0;
+    line-height: 60px;
+    height: 60px;
+    &.ng-click-active {
+      color: @gameBlue;
+    }
+  }
+  a {
+    color: #fff;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .party {
+    .ebp {
+      margin-bottom: 10px;
+    }
+  }
+
+  .navigation {
+    position: fixed;
+    left: 0px;
+    top: 0;
+    bottom: 0;
+    max-width: 50px;
+    width: 50px;
+    background-color: @menuOverlayBackground;
+    ul.options {
+      list-style-type: none;
+      padding: 5px;
+      li {
+        a.ng-click-active {
+          color: @gameBlue;
+        }
+        &.active {
+          a {
+            color: @gameGold;
+          }
+        }
+
+      }
+    }
+  }
+
+  .views {
+    display: none;
+    overflow: auto;
+    overflow-x: hidden;
+    &.open {
+      display: block;
+    }
+
+    > * {
+      color: #fff;
+      background-color: rgba(0, 0, 0, 0.8);
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: fixed;
+      top: 0;
+      left: 50px;
+      bottom: 0;
+      right: 0;
+    }
+
+    .save {
+      text-align: center;
+      button {
+        padding: 10px 10px;
+        margin-top: 20px;
+        font-size: 1.5em;
+        width: 90%;
+        max-width: 300px;
+      }
+    }
+  }
+}
+
+.menu-overlay {
+  padding: 5px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 5px;
+  z-index: 150;
+  > span {
+    .opacity(0.8);
+    color: #ffffff;
+    text-align: center;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+    font-size: 48px;
+    cursor: pointer;
+    &:hover {
+      .opacity(1);
+    }
+  }
+}

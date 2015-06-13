@@ -1,0 +1,48 @@
+<div class="container">
+  <button class="btn btn-flat previous" ng-click="previousCharacter()"><span
+      class="glyphicon glyphicon-chevron-left"></span></button>
+  <button class="btn btn-flat next" ng-click="nextCharacter()"><span class="glyphicon glyphicon-chevron-right"></span>
+  </button>
+  <h2>{{character.attributes.name}} <i class="image" icon-render icon="character.attributes.icon" frame="7"></i></h2>
+
+  <div class="hero-stat">Damage : {{character.getDamage()}}</div>
+  <div class="hero-stat">Defense : {{character.getDefense()}}</div>
+
+  <ul class="equipped">
+    <li class="weapon">
+      <span class="desc">Weapon</span>
+      <i class="icon" icon-render icon="character.weapon.attributes.icon" ng-click="unequipItem(character.weapon)"></i>
+    </li>
+    <li class="jewelry">
+      <span class="desc">Accessory</span>
+      <i class="icon" icon-render icon="character.accessory.attributes.icon"
+         ng-click="unequipItem(character.accessory)"></i>
+    </li>
+    <li class="head">
+      <span class="desc">Head</span>
+      <i class="icon" icon-render icon="character.head.attributes.icon" ng-click="unequipItem(character.head)"></i>
+    </li>
+    <li class="body">
+      <span class="desc">Body</span>
+      <i class="icon" icon-render icon="character.body.attributes.icon" ng-click="unequipItem(character.body)"></i>
+    </li>
+    <li class="arms">
+      <span class="desc">Arms</span>
+      <i class="icon" icon-render icon="character.arms.attributes.icon" ng-click="unequipItem(character.arms)"></i>
+    </li>
+    <li class="feet">
+      <span class="desc">Feet</span>
+      <i class="icon" icon-render icon="character.feet.attributes.icon" ng-click="unequipItem(character.feet)"></i>
+    </li>
+  </ul>
+</div>
+
+<div class="container">
+  <h1>Inventory</h1>
+  <ul class="unequipped" ng-init="setPartyMember=false">
+    <li class="item" ng-repeat="item in inventory track by $index" ng-click="equipItem(item)">
+      <span class="desc">{{item.attributes.name}}</span>
+      <i class="icon" icon-render icon="item.attributes.icon"></i>
+    </li>
+  </ul>
+</div>

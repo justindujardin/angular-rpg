@@ -1,0 +1,93 @@
+// Combat View
+// --------------------------------------------------------------------------
+.combat-view {
+  font-family: @pixelFont;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  font-size: 1.5em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+
+  background-color: @menuOverlayBackground;
+
+  .action-menu, .targets-menu, .spells-menu {
+    position: absolute;
+    bottom: 100%;
+    margin: 20px;
+    padding: 5px 25px;
+    list-style-type: none;
+    li {
+      text-transform: capitalize;
+      cursor: pointer;
+      padding: 10px;
+    }
+  }
+
+  .progress {
+    margin-bottom: 0;
+  }
+  .status {
+    padding: 0 15px;
+    border-radius: 0;
+    text-align: right;
+    color: #fff;
+    > * {
+      display: inline-block;
+    }
+
+    &.focused {
+      color: @gameGold;
+    }
+    &.choosing {
+      background-color: @gameBlue;
+    }
+    .name {
+      float: left;
+      text-align: left;
+      width: 25%;
+      .stroke-text(1px, #000);
+    }
+
+    .hp {
+      .stroke-text(1px, #000);
+    }
+    health-bar {
+      .clearfix;
+      min-width: 25%;
+    }
+  }
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: @screen-sm-min) {
+  .combat-view {
+    .status {
+      font-size: 2.2em;
+    }
+  }
+}
+
+.point-to-player {
+  .glyphicon;
+  &.left {
+    .glyphicon-chevron-left;
+  }
+  &.right {
+    .glyphicon-chevron-right;
+  }
+  &.attack {
+    .glyphicon-screenshot;
+    color: red;
+  }
+  font-size: 2em;
+  -webkit-transition: all 0.1s;
+  -moz-transition: all 0.1s;
+  transition: all 0.1s;
+  color: #fff;
+  text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}

@@ -1,0 +1,71 @@
+.store-view {
+  text-align: center;
+  margin: auto;
+  display: block;
+  max-width: 420px;
+  padding: 1em;
+
+  // Stores
+  // --------------------------------------------------------------------------
+  .title {
+    margin-bottom: 20px;
+  }
+
+  .name {
+    h1 {
+      margin: 10px;
+      font-size: 24px;
+    }
+  }
+  .inventory {
+    text-align: center;
+    padding: 0;
+    .item-price {
+      color: @gameGold;
+      padding-left: 10px;
+    }
+  }
+
+  .btn-group {
+    margin-top: 1em;
+    text-align: center;
+  }
+  ul {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    list-style-type: none;
+    max-width: 100%;
+    li.item {
+      cursor: pointer;
+      border: 1px solid transparent;
+      padding: 5px;
+      font-size: 16px;
+      margin-left: 0;
+      margin-right: 0;
+
+      &.selected {
+        padding: 1em;
+      }
+      .item-name {
+        display: inline-block;
+        min-width: 150px;
+        max-width: 160px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .icon {
+        line-height: 28px;
+        img {
+          width: 32px;
+        }
+      }
+      &:hover {
+        * {
+          color: #0FF !important;
+        }
+      }
+    }
+  }
+}

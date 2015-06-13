@@ -1,0 +1,18 @@
+<div class="row dialog-view">
+  <div class="col-xs-12">
+    <div class="dialog ebp" ng-show="dialog">
+      <button class="btn-close btn btn-flap" ng-click="dialog=null"><i class="glyphicon glyphicon-remove"></i></button>
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-2 character">
+            <div icon-render icon="dialog.icon"></div>
+          </div>
+          <div class="col-xs-10">
+            <p>{{dialog.title}}</p>
+            <span class="text">{{dialog.text}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

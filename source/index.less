@@ -1,0 +1,299 @@
+@import "../../source/ui/index";
+// Core variables and mixins
+@import "variables";
+@import "mixins";
+// Reset
+@import "normalize";
+@import "print";
+// Core CSS
+@import "scaffolding";
+@import "type";
+@import "code";
+@import "progress-bars";
+@import "glyphicons";
+// Utility classes
+@import "utilities";
+// Other
+@import "style/buttons";
+@import "style/eightBitPanel";
+
+@zCanvas: 10;
+@zCanvasGui: 20;
+@zCanvasAlert: 50;
+
+// Import template styles
+//  TODO: This might get _really_ old.
+//  If so, just concat all the less files then compile the concat.
+@import "directives/inventoryView";
+@import "directives/dialogView";
+@import "directives/storeView";
+@import "directives/templeView";
+@import "directives/heroCard";
+@import "directives/combatView";
+@import "directives/gameMenu";
+@import "directives/bits/healthBar";
+@import "directives/pages/mainMenu";
+
+@gameBlue: #004c62;
+@menuOverlayBackground: rgba(0, 0, 0, 0.8);
+
+html,
+body {
+  background-color: #222222;
+  margin: 0;
+  overflow: hidden;
+  height: 100%;
+
+  /* GET THIS DIALOG OUT OF MY FACE! */
+  .btn-close {
+    font-size: 2.2em;
+    position: fixed;
+    padding-top: 20px;
+    right: 0.5em;
+    top: -6px;
+    text-shadow: -1px -1px rgba(0, 0, 0, 0.2);
+    &:hover {
+      top: -4px;
+    }
+    &:active {
+      top: 0;
+    }
+  }
+
+}
+
+.hero-container {
+  margin-right: auto;
+  margin-left: auto;
+
+  > * {
+    font-family: @pixelFont;
+    text-align: center;
+    color: #fff;
+  }
+
+  > h1 {
+    margin-top: 10px;
+    margin-bottom: 25px;
+    font-size: 8em;
+    .extrude-stroke-text(4px, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.1));
+
+  }
+  p {
+    font-size: 1.2em;
+    .inset-stroke-text(1px, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.1));
+    color: @contrastFontColor;
+  }
+}
+
+canvas {
+  image-rendering: -moz-crisp-edges; /* Firefox */
+  image-rendering: -o-crisp-edges; /* Opera */
+  image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard naming) */
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
+  z-index: auto;
+}
+
+.ebp {
+  font-family: 'GraphicPixel', sans-serif;
+  font-size: 20px;
+}
+
+/* Stroke Text Effect */
+@contrastFontColorA: rgba(244, 255, 0, 0.5);
+@contrastFontColor: #eeaa13;
+@contrastHighlight: #E8C627;
+@contrastShadow: #E85627;
+
+.drop-overlay {
+  padding: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100%;
+  position: absolute;
+  background-color: transparent;
+  z-index: @zCanvasAlert;
+  text-align: center;
+  font-family: @pixelFont;
+  pointer-events: auto;
+
+  .message {
+    top: 45%;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.80);
+    border: none;
+    box-shadow: none;
+    margin: auto;
+    position: absolute;
+    padding: 10px;
+    font-size: 2em;
+    color: #fff;
+    .stroke-text(1px, #000);
+  }
+}
+
+.container {
+  z-index: 100;
+
+}
+
+.game-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: none;
+  margin: 0;
+  padding: 0;
+  .damage-value {
+    z-index: @zCanvasAlert;
+  }
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-right: none;
+    border-left: none;
+  }
+}
+
+.ui-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  pointer-events: none;
+  .ebp {
+    pointer-events: auto;
+  }
+  > * {
+    display: block;
+    height: 100%;
+    overflow-y: auto;
+  }
+  .dialog {
+    max-width: 800px;
+    min-width: 300px;
+    margin-top: 15px;
+    padding: 10px 10px;
+    position: relative;
+    .btn-close {
+      position: absolute;
+      font-size: 1em;
+      padding: 5px 15px;
+      padding-top: 10px;
+      right: 0;
+      top: 0;
+      &:hover {
+        top: 0;
+        padding-top: 12px;
+      }
+      &:active {
+        top: 0;
+        padding-top: 16px;
+      }
+    }
+
+  }
+
+}
+
+// This restricted mobile phone resolutions to landscape.  Removed because pow should work
+// at phone res in portrait as well, but keep around in case that changes
+
+//@landscape-max:(@screen-phone - 1);
+//@media(max-width:@landscape-max) and (orientation:portrait) {
+//  body > * {
+//    display: none !important;
+//  }
+//  .landscape-notice {
+//    z-index:9999;
+//    display: block !important;
+//    background-color: #004c62;
+//    .stroke-text(1px,#000);
+//    h2 {
+//      .extrude-stroke-text(2px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
+//      font-size: 10em;
+//    }
+//    span {
+//      .extrude-stroke-text(1px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
+//      color:#fff;
+//      font-size: 2em;
+//    }
+//  }
+//}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: @screen-sm-min) {
+  .hero-container {
+    h1 {
+      font-size: 12em;
+    }
+    p {
+      font-size: 1.8em;
+    }
+  }
+
+  .menu-overlay {
+    > span {
+      font-size: 24px;
+    }
+  }
+
+  .game-container {
+    .damage-value {
+      font-size: 5em;
+    }
+    .message {
+      .text {
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: @screen-md-min) {
+  .drop-overlay {
+    .message {
+      padding: 25px;
+      font-size: 3em;
+    }
+  }
+
+  .game-container {
+    .message {
+      .text {
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: @screen-lg-min) {
+  .hero-container {
+    h1 {
+      font-size: 16em;
+    }
+    p {
+      font-size: 1.8em;
+    }
+  }
+
+  .game-container {
+    .message {
+      .text {
+        font-size: 24px;
+      }
+    }
+  }
+}
