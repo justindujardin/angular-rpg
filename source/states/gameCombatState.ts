@@ -15,21 +15,12 @@
  */
 
 /// <reference path="../index.ts"/>
-/// <reference path="./combat/combatBeginTurnState.ts"/>
-/// <reference path="./combat/combatChooseActionState.ts"/>
-/// <reference path="./combat/combatDefeatState.ts"/>
-/// <reference path="./combat/combatEndTurnState.ts"/>
-/// <reference path="./combat/combatEscapeState.ts"/>
-/// <reference path="./combat/combatStartState.ts"/>
-/// <reference path="./combat/combatVictoryState.ts"/>
 
-module rpg.states {
 
-  /**
-   * CombatState is set when the player transitions in to a combat
-   * encounter.  This can be any type of triggered encounter, from
-   * the map or a feature interaction, or anything else.
-   */
-  export class CombatState extends pow2.State {
-  }
+/**
+ * CombatState is set when the player transitions in to a combat
+ * encounter.  This can be any type of triggered encounter, from
+ * the map or a feature interaction, or anything else.
+ */
+export class CombatState extends pow2.State {
 }

@@ -14,43 +14,41 @@
  limitations under the License.
  */
 
-/// <reference path="../gameCombatStateMachine.ts" />
-/// <reference path="../gameCombatState.ts" />
-/// <reference path="./combatBeginTurnState.ts" />
-/// <reference path="./combatVictoryState.ts" />
-/// <reference path="./combatDefeatState.ts" />
-/// <reference path="./combatStartState.ts" />
+import {CombatState} from '../gameCombatState';
+import {CombatStateMachine} from '../gameCombatStateMachine';
 
-module rpg.states.combat {
+import {CombatBeginTurnState} from './combatBeginTurnState';
+import {CombatStartState} from './combatStartState';
+import {CombatDefeatState} from './combatDefeatState';
+import {CombatVictoryState} from './combatVictoryState';
 
-  export class CombatEndTurnState extends CombatState {
-    static NAME:string = "Combat End Turn";
-    name:string = CombatEndTurnState.NAME;
+export class CombatEndTurnState extends CombatState {
+  static NAME:string = "Combat End Turn";
+  name:string = CombatEndTurnState.NAME;
 
-    enter(machine:CombatStateMachine) {
-      super.enter(machine);
-      machine.current = null;
-      // Find the next turn.
-      while (machine.turnList.length > 0 && !machine.current) {
-        machine.current = machine.turnList.shift();
-        // Strip out defeated players.
-        if (machine.current && machine.current.isDefeated()) {
-          machine.current = null;
-        }
+  enter(machine:CombatStateMachine) {
+    super.enter(machine);
+    machine.current = null;
+    // Find the next turn.
+    while (machine.turnList.length > 0 && !machine.current) {
+      machine.current = machine.turnList.shift();
+      // Strip out defeated players.
+      if (machine.current && machine.current.isDefeated()) {
+        machine.current = null;
       }
-
-      var targetState:string = machine.current ? CombatBeginTurnState.NAME : CombatStartState.NAME;
-      if (machine.partyDefeated()) {
-        targetState = CombatDefeatState.NAME;
-      }
-      else if (machine.enemiesDefeated()) {
-        targetState = CombatVictoryState.NAME;
-      }
-      if (!targetState) {
-        throw new Error("Invalid transition from end turn");
-      }
-      machine.setCurrentState(targetState);
     }
-  }
 
+    var targetState:string = machine.current ? CombatBeginTurnState.NAME : CombatStartState.NAME;
+    if (machine.partyDefeated()) {
+      targetState = CombatDefeatState.NAME;
+    }
+    else if (machine.enemiesDefeated()) {
+      targetState = CombatVictoryState.NAME;
+    }
+    if (!targetState) {
+      throw new Error("Invalid transition from end turn");
+    }
+    machine.setCurrentState(targetState);
+  }
 }
+

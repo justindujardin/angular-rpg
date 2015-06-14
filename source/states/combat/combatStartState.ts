@@ -14,23 +14,23 @@
  limitations under the License.
  */
 
-/// <reference path="../gameCombatStateMachine.ts" />
+import {CombatState} from '../gameCombatState';
+import {CombatStateMachine} from '../gameCombatStateMachine';
+import {GameEntityObject} from '../../objects/gameEntityObject';
+import {CombatChooseActionState} from './combatChooseActionState';
 
-module rpg.states.combat {
+// Combat Begin
+//--------------------------------------------------------------------------
+export class CombatStartState extends CombatState {
+  static NAME:string = "Combat Started";
+  name:string = CombatStartState.NAME;
 
-  // Combat Begin
-  //--------------------------------------------------------------------------
-  export class CombatStartState extends CombatState {
-    static NAME:string = "Combat Started";
-    name:string = CombatStartState.NAME;
-
-    enter(machine:CombatStateMachine) {
-      super.enter(machine);
-      machine.turnList = <GameEntityObject[]>_.shuffle(_.union(machine.getLiveParty(), machine.getLiveEnemies()));
-      machine.current = machine.turnList.shift();
-      machine.currentDone = true;
-      machine.setCurrentState(CombatChooseActionState.NAME);
-    }
+  enter(machine:CombatStateMachine) {
+    super.enter(machine);
+    machine.turnList = <GameEntityObject[]>_.shuffle(_.union(machine.getLiveParty(), machine.getLiveEnemies()));
+    machine.current = machine.turnList.shift();
+    machine.currentDone = true;
+    machine.setCurrentState(CombatChooseActionState.NAME);
   }
-
 }
+

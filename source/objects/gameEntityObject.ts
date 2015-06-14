@@ -14,12 +14,13 @@
  limitations under the License.
  */
 
-/// <reference path="../models/entityModel.ts" />
+/// <reference path="../index.ts" />
 
 import {GameWorld} from '../gameWorld';
+import {EntityModel} from '../models/entityModel';
 
 export class GameEntityObject extends pow2.tile.TileObject {
-  model:rpg.models.EntityModel;
+  model:EntityModel;
   type:string; // TODO: enum?
   groups:any;
   world:GameWorld = pow2.getWorld<GameWorld>('pow2');
@@ -28,7 +29,7 @@ export class GameEntityObject extends pow2.tile.TileObject {
     super(_.omit(options || {}, ["x", "y", "type"]));
     this.type = options.type || "player";
     this.groups = typeof options.groups === 'string' ? JSON.parse(options.groups) : options.groups;
-    this.model = options.model || new rpg.models.EntityModel(options);
+    this.model = options.model || new EntityModel(options);
   }
 
   isDefeated():boolean {

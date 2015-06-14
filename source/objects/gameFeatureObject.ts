@@ -15,25 +15,25 @@
  */
 
 /// <reference path="../index.ts" />
+import {GameTileMap} from '../gameTileMap';
+import {GameWorld} from '../gameWorld';
 
-module rpg.objects {
-  export class GameFeatureObject extends pow2.tile.TileObject {
-    tileMap:GameTileMap;
-    world:GameWorld;
-    feature:any; // TODO: Feature Interface
-    type:string; // TODO: enum?
-    passable:boolean;
-    groups:any[];
-    category:any;
-    frame:number;
+export class GameFeatureObject extends pow2.tile.TileObject {
+  tileMap:GameTileMap;
+  world:GameWorld;
+  feature:any; // TODO: Feature Interface
+  type:string; // TODO: enum?
+  passable:boolean;
+  groups:any[];
+  category:any;
+  frame:number;
 
-    constructor(options:any) {
-      super(_.omit(options || {}, ["x", "y"]));
-      this.feature = options;
-      this.point.x = options.x;
-      this.point.y = options.y;
-      this.frame = typeof options.frame !== 'undefined' ? options.frame : 0;
-      this.groups = typeof options.groups === 'string' ? options.groups.split('|') : options.groups;
-    }
+  constructor(options:any) {
+    super(_.omit(options || {}, ["x", "y"]));
+    this.feature = options;
+    this.point.x = options.x;
+    this.point.y = options.y;
+    this.frame = typeof options.frame !== 'undefined' ? options.frame : 0;
+    this.groups = typeof options.groups === 'string' ? options.groups.split('|') : options.groups;
   }
 }

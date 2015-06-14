@@ -18,6 +18,7 @@
 /// <reference path="./objects/gameFeatureObject.ts" />
 /// <reference path="./index.ts"/>
 import {GameWorld} from './gameWorld';
+import {GameFeatureObject} from './objects/gameFeatureObject';
 
 /**
  * A tile map that supports game feature objects and components.
@@ -90,7 +91,7 @@ export class GameTileMap extends pow2.tile.TileMap {
       x: Math.round(tiledObject.x / this.map.tilewidth),
       y: Math.round(tiledObject.y / this.map.tileheight)
     });
-    var object = new rpg.objects.GameFeatureObject(options);
+    var object = new GameFeatureObject(options);
     this.world.mark(object);
 
     var componentType:any = pow2.EntityContainerResource.getClassType(tiledObject.type);

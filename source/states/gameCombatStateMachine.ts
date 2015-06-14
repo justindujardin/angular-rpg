@@ -14,245 +14,264 @@
  limitations under the License.
  */
 
-/// <reference path="../objects/gameEntityObject.ts" />
-/// <reference path="./gameCombatState.ts" />
-/// <reference path="./gameStateMachine.ts" />
-
-module rpg.states {
-
-  /**
-   * Completion callback for a player action.
-   */
-  export interface IPlayerActionCallback {
-    (action:IPlayerAction, error?:any):void;
-  }
-  /**
-   * A Player action during combat
-   */
-  export interface IPlayerAction {
-    name:string;
-    from:GameEntityObject;
-    to:GameEntityObject;
-    act(then?:IPlayerActionCallback):boolean;
-  }
+import {GameEntityObject} from '../objects/gameEntityObject';
+import {CombatState} from './gameCombatState';
+import {GameStateMachine} from './gameStateMachine';
+import {GameTileMap} from '../gameTileMap';
+import {GameWorld} from '../gameWorld';
 
 
-  // Combat State Machine
-  //--------------------------------------------------------------------------
-  export class CombatStateMachine extends pow2.StateMachine {
-    parent:GameStateMachine;
-    defaultState:string = rpg.states.combat.CombatStartState.NAME;
-    states:pow2.IState[] = [
-      new rpg.states.combat.CombatStartState(),
-      new rpg.states.combat.CombatVictoryState(),
-      new rpg.states.combat.CombatDefeatState(),
-      new rpg.states.combat.CombatBeginTurnState(),
-      new rpg.states.combat.CombatChooseActionState(),
-      new rpg.states.combat.CombatEndTurnState(),
-      new rpg.states.combat.CombatEscapeState()
-    ];
+import {GameStateModel} from '../models/gameStateModel';
+import {HeroModel} from '../models/heroModel';
+import {CreatureModel} from '../models/creatureModel';
 
-    party:GameEntityObject[] = [];
-    enemies:GameEntityObject[] = [];
-    turnList:GameEntityObject[] = [];
-    playerChoices:{
-      [id:string]:IPlayerAction
-    } = {};
-    focus:GameEntityObject;
-    current:GameEntityObject;
-    currentDone:boolean = false;
-
-    isFriendlyTurn():boolean {
-      return this.current && !!_.find(this.party, (h:GameEntityObject) => {
-            return h._uid === this.current._uid;
-          });
-    }
-
-    getLiveParty():GameEntityObject[] {
-      return _.reject(this.party, (obj:GameEntityObject) => {
-        return obj.isDefeated();
-      });
-    }
-
-    getLiveEnemies():GameEntityObject[] {
-      return _.reject(this.enemies, (obj:GameEntityObject) => {
-        return obj.isDefeated();
-      });
-    }
-
-    getRandomPartyMember():GameEntityObject {
-      var players = <GameEntityObject[]>_.shuffle(this.party);
-      while (players.length > 0) {
-        var p = players.shift();
-        if (!p.isDefeated()) {
-          return p;
-        }
-      }
-      return null;
-    }
-
-    getRandomEnemy():GameEntityObject {
-      var players = <GameEntityObject[]>_.shuffle(this.enemies);
-      while (players.length > 0) {
-        var p = players.shift();
-        if (!p.isDefeated()) {
-          return p;
-        }
-      }
-      return null;
-    }
-
-    partyDefeated():boolean {
-      var deadList = _.reject(this.party, (obj:GameEntityObject) => {
-        return obj.model.attributes.hp <= 0;
-      });
-      return deadList.length === 0;
-    }
-
-    enemiesDefeated():boolean {
-      return _.reject(this.enemies, (obj:GameEntityObject) => {
-            return obj.model.attributes.hp <= 0;
-          }).length === 0;
-    }
-
-    constructor(parent:GameStateMachine) {
-      super();
-      this.parent = parent;
-    }
-  }
-
-  // Combat Lifetime State Machine
-  //--------------------------------------------------------------------------
-
-  /**
-   * Construct a combat scene with appropriate GameEntityObjects for the players
-   * and enemies.
-   */
-  export class GameCombatState extends pow2.State {
-    static NAME:string = "combat";
-    name:string = GameCombatState.NAME;
-    machine:CombatStateMachine = null;
-    parent:GameStateMachine = null;
-    tileMap:GameTileMap;
-    finished:boolean = false; // Trigger state to exit when true.
-
-    factory:pow2.EntityContainerResource;
-    spreadsheet:pow2.GameDataResource;
-
-    constructor() {
-      super();
-      rpg.GameWorld.get().loader.load(pow2.GAME_ROOT + 'games/rpg/entities/combat.powEntities', (factory:pow2.EntityContainerResource)=> {
-        this.factory = factory;
-      });
-      rpg.models.GameStateModel.getDataSource((spreadsheet:pow2.GameDataResource) => {
-        this.spreadsheet = spreadsheet;
-      });
-    }
-
-    enter(machine:GameStateMachine) {
-      super.enter(machine);
-      this.parent = machine;
-      this.machine = new CombatStateMachine(machine);
-      var combatScene = machine.world.combatScene = new pow2.scene.Scene();
-      machine.world.mark(combatScene);
-      if (!this.factory || !this.spreadsheet) {
-        throw new Error("Invalid combat entity container or game data spreadsheet");
-      }
+import {CombatBeginTurnState} from './combat/combatBeginTurnState';
+import {CombatChooseActionState} from './combat/combatChooseActionState';
+import {CombatDefeatState} from './combat/combatDefeatState';
+import {CombatEndTurnState} from './combat/combatEndTurnState';
+import {CombatEscapeState} from './combat/combatEscapeState';
+import {CombatStartState} from './combat/combatStartState';
+import {CombatVictoryState} from './combat/combatVictoryState';
 
 
-      // Build party
-      _.each(machine.model.party, (hero:rpg.models.HeroModel, index:number) => {
-        var heroEntity:GameEntityObject = this.factory.createObject('CombatPlayer', {
-          model: hero,
-          combat: this
+
+/**
+ * Completion callback for a player action.
+ */
+export interface IPlayerActionCallback {
+  (action:IPlayerAction, error?:any):void;
+}
+/**
+ * A Player action during combat
+ */
+export interface IPlayerAction {
+  name:string;
+  from:GameEntityObject;
+  to:GameEntityObject;
+  act(then?:IPlayerActionCallback):boolean;
+}
+export interface CombatAttackSummary {
+  damage:number;
+  attacker:GameEntityObject;
+  defender:GameEntityObject;
+}
+
+
+// Combat State Machine
+//--------------------------------------------------------------------------
+export class CombatStateMachine extends pow2.StateMachine {
+  parent:GameStateMachine;
+  defaultState:string = CombatStartState.NAME;
+  states:pow2.IState[] = [
+    new CombatStartState(),
+    new CombatVictoryState(),
+    new CombatDefeatState(),
+    new CombatBeginTurnState(),
+    new CombatChooseActionState(),
+    new CombatEndTurnState(),
+    new CombatEscapeState()
+  ];
+
+  party:GameEntityObject[] = [];
+  enemies:GameEntityObject[] = [];
+  turnList:GameEntityObject[] = [];
+  playerChoices:{
+    [id:string]:IPlayerAction
+  } = {};
+  focus:GameEntityObject;
+  current:GameEntityObject;
+  currentDone:boolean = false;
+
+  isFriendlyTurn():boolean {
+    return this.current && !!_.find(this.party, (h:GameEntityObject) => {
+          return h._uid === this.current._uid;
         });
-        if (!heroEntity) {
+  }
+
+  getLiveParty():GameEntityObject[] {
+    return _.reject(this.party, (obj:GameEntityObject) => {
+      return obj.isDefeated();
+    });
+  }
+
+  getLiveEnemies():GameEntityObject[] {
+    return _.reject(this.enemies, (obj:GameEntityObject) => {
+      return obj.isDefeated();
+    });
+  }
+
+  getRandomPartyMember():GameEntityObject {
+    var players = <GameEntityObject[]>_.shuffle(this.party);
+    while (players.length > 0) {
+      var p = players.shift();
+      if (!p.isDefeated()) {
+        return p;
+      }
+    }
+    return null;
+  }
+
+  getRandomEnemy():GameEntityObject {
+    var players = <GameEntityObject[]>_.shuffle(this.enemies);
+    while (players.length > 0) {
+      var p = players.shift();
+      if (!p.isDefeated()) {
+        return p;
+      }
+    }
+    return null;
+  }
+
+  partyDefeated():boolean {
+    var deadList = _.reject(this.party, (obj:GameEntityObject) => {
+      return obj.model.attributes.hp <= 0;
+    });
+    return deadList.length === 0;
+  }
+
+  enemiesDefeated():boolean {
+    return _.reject(this.enemies, (obj:GameEntityObject) => {
+          return obj.model.attributes.hp <= 0;
+        }).length === 0;
+  }
+
+  constructor(parent:GameStateMachine) {
+    super();
+    this.parent = parent;
+  }
+}
+
+// Combat Lifetime State Machine
+//--------------------------------------------------------------------------
+
+/**
+ * Construct a combat scene with appropriate GameEntityObjects for the players
+ * and enemies.
+ */
+export class GameCombatState extends pow2.State {
+  static NAME:string = "combat";
+  name:string = GameCombatState.NAME;
+  machine:CombatStateMachine = null;
+  parent:GameStateMachine = null;
+  tileMap:GameTileMap;
+  finished:boolean = false; // Trigger state to exit when true.
+
+  factory:pow2.EntityContainerResource;
+  spreadsheet:pow2.GameDataResource;
+
+  constructor() {
+    super();
+    GameWorld.get().loader.load(pow2.GAME_ROOT + 'games/rpg/entities/combat.powEntities', (factory:pow2.EntityContainerResource)=> {
+      this.factory = factory;
+    });
+    GameStateModel.getDataSource((spreadsheet:pow2.GameDataResource) => {
+      this.spreadsheet = spreadsheet;
+    });
+  }
+
+  enter(machine:GameStateMachine) {
+    super.enter(machine);
+    this.parent = machine;
+    this.machine = new CombatStateMachine(machine);
+    var combatScene = machine.world.combatScene = new pow2.scene.Scene();
+    machine.world.mark(combatScene);
+    if (!this.factory || !this.spreadsheet) {
+      throw new Error("Invalid combat entity container or game data spreadsheet");
+    }
+
+
+    // Build party
+    _.each(machine.model.party, (hero:HeroModel, index:number) => {
+      var heroEntity:GameEntityObject = this.factory.createObject('CombatPlayer', {
+        model: hero,
+        combat: this
+      });
+      if (!heroEntity) {
+        throw new Error("Entity failed to validate with given inputs");
+      }
+      if (!heroEntity.isDefeated()) {
+        heroEntity.icon = hero.get('icon');
+        this.machine.party.push(heroEntity);
+        combatScene.addObject(heroEntity);
+      }
+    });
+
+
+    var mapUrl:string = pow2.getMapUrl('combat');
+    machine.world.loader.load(mapUrl, (map:pow2.TiledTMXResource)=> {
+
+      this.tileMap = this.factory.createObject('GameCombatMap', {
+        resource: map
+      });
+
+      // Hide all layers that don't correspond to the current combat zone
+      var zone:rpg.IZoneMatch = machine.encounterInfo;
+      var visibleZone:string = zone.target || zone.map;
+      _.each(this.tileMap.getLayers(), (l)=> {
+        l.visible = (l.name === visibleZone);
+      });
+      this.tileMap.dirtyLayers = true;
+      combatScene.addObject(this.tileMap);
+
+      // Position Party/Enemies
+
+      // Get enemies data from spreadsheet
+      var enemyList:any[] = this.spreadsheet.getSheetData("enemies");
+      var enemiesLength:number = machine.encounter.enemies.length;
+      for (var i:number = 0; i < enemiesLength; i++) {
+        var tpl = _.where(enemyList, {id: machine.encounter.enemies[i]});
+        if (tpl.length === 0) {
+          continue;
+        }
+        var nmeModel = new CreatureModel(tpl[0]);
+
+        var nme:GameEntityObject = this.factory.createObject('CombatEnemy', {
+          model: nmeModel,
+          combat: this,
+          sprite: {
+            name: "enemy",
+            icon: nmeModel.get('icon')
+          }
+        });
+        if (!nme) {
           throw new Error("Entity failed to validate with given inputs");
         }
-        if (!heroEntity.isDefeated()) {
-          heroEntity.icon = hero.get('icon');
-          this.machine.party.push(heroEntity);
-          combatScene.addObject(heroEntity);
-        }
-      });
-
-
-      var mapUrl:string = pow2.getMapUrl('combat');
-      machine.world.loader.load(mapUrl, (map:pow2.TiledTMXResource)=> {
-
-        this.tileMap = this.factory.createObject('GameCombatMap', {
-          resource: map
-        });
-
-        // Hide all layers that don't correspond to the current combat zone
-        var zone:IZoneMatch = machine.encounterInfo;
-        var visibleZone:string = zone.target || zone.map;
-        _.each(this.tileMap.getLayers(), (l)=> {
-          l.visible = (l.name === visibleZone);
-        });
-        this.tileMap.dirtyLayers = true;
-        combatScene.addObject(this.tileMap);
-
-        // Position Party/Enemies
-
-        // Get enemies data from spreadsheet
-        var enemyList:any[] = this.spreadsheet.getSheetData("enemies");
-        var enemiesLength:number = machine.encounter.enemies.length;
-        for (var i:number = 0; i < enemiesLength; i++) {
-          var tpl = _.where(enemyList, {id: machine.encounter.enemies[i]});
-          if (tpl.length === 0) {
-            continue;
-          }
-          var nmeModel = new rpg.models.CreatureModel(tpl[0]);
-
-          var nme:GameEntityObject = this.factory.createObject('CombatEnemy', {
-            model: nmeModel,
-            combat: this,
-            sprite: {
-              name: "enemy",
-              icon: nmeModel.get('icon')
-            }
-          });
-          if (!nme) {
-            throw new Error("Entity failed to validate with given inputs");
-          }
-          combatScene.addObject(nme);
-          this.machine.enemies.push(nme);
-        }
-        if (this.machine.enemies.length) {
-          _.each(this.machine.party, (heroEntity:GameEntityObject, index:number) => {
-            var battleSpawn = this.tileMap.getFeature('p' + (index + 1));
-            heroEntity.setPoint(new pow2.Point(battleSpawn.x / 16, battleSpawn.y / 16));
-          });
-
-          _.each(this.machine.enemies, (enemyEntity:GameEntityObject, index:number) => {
-            var battleSpawn = this.tileMap.getFeature('e' + (index + 1));
-            if (battleSpawn) {
-              enemyEntity.setPoint(new pow2.Point(battleSpawn.x / 16, battleSpawn.y / 16));
-            }
-          });
-          machine.trigger('combat:begin', this);
-          this.machine.update(this);
-        }
-        else {
-          // TODO: This is an error, I think.  Player entered combat with no valid enemies.
-          machine.trigger('combat:end', this);
-        }
-
-      });
-    }
-
-    exit(machine:GameStateMachine) {
-      machine.trigger('combat:end', this);
-      var world:GameWorld = this.parent.world;
-      if (world && world.combatScene) {
-        world.combatScene.destroy();
-        world.combatScene = null;
+        combatScene.addObject(nme);
+        this.machine.enemies.push(nme);
       }
-      this.tileMap.destroy();
-      this.finished = false;
-      this.machine = null;
-      this.parent = null;
+      if (this.machine.enemies.length) {
+        _.each(this.machine.party, (heroEntity:GameEntityObject, index:number) => {
+          var battleSpawn = this.tileMap.getFeature('p' + (index + 1));
+          heroEntity.setPoint(new pow2.Point(battleSpawn.x / 16, battleSpawn.y / 16));
+        });
+
+        _.each(this.machine.enemies, (enemyEntity:GameEntityObject, index:number) => {
+          var battleSpawn = this.tileMap.getFeature('e' + (index + 1));
+          if (battleSpawn) {
+            enemyEntity.setPoint(new pow2.Point(battleSpawn.x / 16, battleSpawn.y / 16));
+          }
+        });
+        machine.trigger('combat:begin', this);
+        this.machine.update(this);
+      }
+      else {
+        // TODO: This is an error, I think.  Player entered combat with no valid enemies.
+        machine.trigger('combat:end', this);
+      }
+
+    });
+  }
+
+  exit(machine:GameStateMachine) {
+    machine.trigger('combat:end', this);
+    var world:GameWorld = this.parent.world;
+    if (world && world.combatScene) {
+      world.combatScene.destroy();
+      world.combatScene = null;
     }
+    this.tileMap.destroy();
+    this.finished = false;
+    this.machine = null;
+    this.parent = null;
   }
 }

@@ -14,23 +14,21 @@
  limitations under the License.
  */
 
-/// <reference path="../gameCombatStateMachine.ts" />
-/// <reference path="../gameMapState.ts" />
+import {CombatState} from '../gameCombatState';
+import {CombatStateMachine} from '../gameCombatStateMachine';
+import {GameMapState} from '../gameMapState';
 
-module rpg.states.combat {
+export class CombatEscapeState extends CombatState {
+  static NAME:string = "Combat Escaped";
+  name:string = CombatEscapeState.NAME;
 
-  export class CombatEscapeState extends CombatState {
-    static NAME:string = "Combat Escaped";
-    name:string = CombatEscapeState.NAME;
-
-    enter(machine:CombatStateMachine) {
-      super.enter(machine);
-      machine.notify("combat:escape", {
-        player: machine.current
-      }, ()=> {
-        machine.parent.world.reportEncounterResult(false);
-        machine.parent.setCurrentState(GameMapState.NAME);
-      });
-    }
+  enter(machine:CombatStateMachine) {
+    super.enter(machine);
+    machine.notify("combat:escape", {
+      player: machine.current
+    }, ()=> {
+      machine.parent.world.reportEncounterResult(false);
+      machine.parent.setCurrentState(GameMapState.NAME);
+    });
   }
 }

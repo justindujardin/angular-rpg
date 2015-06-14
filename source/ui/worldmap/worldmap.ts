@@ -8,6 +8,7 @@ import {GameTileMap} from '../../gameTileMap';
 import {GameStateModel} from '../../models/gameStateModel';
 import {HeroModel,HeroTypes} from '../../models/heroModel';
 import {GameEntityObject} from '../../objects/gameEntityObject';
+import {GameStateMachine} from '../../states/gameStateMachine';
 
 @Component({
   selector: 'rpg-map-canvas'
@@ -32,7 +33,7 @@ export class RpgMapCanvas {
   world:GameWorld;
   tileMap:GameTileMap;
   sprite:GameEntityObject;
-  machine:rpg.states.GameStateMachine;
+  machine:GameStateMachine;
   currentScene:pow2.scene.Scene;
   entities:pow2.EntityContainerResource;
   private _renderCanvas:HTMLCanvasElement;

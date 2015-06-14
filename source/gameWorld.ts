@@ -15,20 +15,20 @@
  */
 
 /// <reference path="./index.ts"/>
-/// <reference path="./states/gameStateMachine.ts"/>
-/// <reference path="./models/gameStateModel.ts"/>
-/// <reference path="./combat.ts"/>
-/// <reference path="./gameTileMap.ts"/>
+
+import {GameStateMachine} from './states/gameStateMachine';
+import {GameCombatState} from './states/gameCombatStateMachine';
+import {GameStateModel} from './models/gameStateModel';
 
 var _sharedGameWorld:GameWorld = null;
 
 export class GameWorld extends pow2.scene.SceneWorld {
-  state:rpg.states.GameStateMachine;
+  state:GameStateMachine;
   // TODO: Fix game loading and multiple scenes/maps state.
   // Put the game model here, and use the pow2.getWorld() api
   // for access to the game model.   Reset state methods should
   // exist there, and angular UI should listen in.
-  model:rpg.models.GameStateModel;
+  model:GameStateModel;
 
   // TODO: More than two scenes?  Scene managers?  ugh.  If we need them.
   combatScene:pow2.scene.Scene = null;
@@ -47,7 +47,7 @@ export class GameWorld extends pow2.scene.SceneWorld {
       this.setService('scene', new pow2.scene.Scene());
     }
     this.loader.registerType('powEntities', pow2.EntityContainerResource);
-    rpg.models.GameStateModel.getDataSource((gsr:pow2.GameDataResource)=> {
+    GameStateModel.getDataSource((gsr:pow2.GameDataResource)=> {
       this.spreadsheet = gsr;
     });
   }
@@ -70,7 +70,7 @@ export class GameWorld extends pow2.scene.SceneWorld {
   }
 
   randomEncounter(zone:rpg.IZoneMatch, then?:rpg.IGameEncounterCallback) {
-    rpg.models.GameStateModel.getDataSource((gsr:pow2.GameDataResource)=> {
+    GameStateModel.getDataSource((gsr:pow2.GameDataResource)=> {
       var encountersData = gsr.getSheetData("encounters");
       var encounters:rpg.IGameEncounter[] = _.filter(encountersData, (enc:any)=> {
         return _.indexOf(enc.zones, zone.map) !== -1 || _.indexOf(enc.zones, zone.target) !== -1;
@@ -87,7 +87,7 @@ export class GameWorld extends pow2.scene.SceneWorld {
   }
 
   fixedEncounter(zone:rpg.IZoneMatch, encounterId:string, then?:rpg.IGameEncounterCallback) {
-    rpg.models.GameStateModel.getDataSource((gsr:pow2.GameDataResource)=> {
+    GameStateModel.getDataSource((gsr:pow2.GameDataResource)=> {
       var encounters = <rpg.IGameEncounter[]>_.where(gsr.getSheetData("encounters"), {
         id: encounterId
       });
@@ -102,7 +102,7 @@ export class GameWorld extends pow2.scene.SceneWorld {
     this.scene.trigger('combat:encounter', this);
     this.state.encounter = encounter;
     this.state.encounterInfo = zoneInfo;
-    this.state.setCurrentState(rpg.states.GameCombatState.NAME);
+    this.state.setCurrentState(GameCombatState.NAME);
     this._encounterCallback = then;
   }
 }

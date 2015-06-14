@@ -14,59 +14,61 @@
  limitations under the License.
  */
 
-/// <reference path="../gameCombatStateMachine.ts" />
+
+import {CombatState} from '../gameCombatState';
+import {CombatStateMachine} from '../gameCombatStateMachine';
+import {GameEntityObject} from '../../objects/gameEntityObject';
+import {HeroModel} from '../../models/heroModel';
+import {GameMapState} from '../gameMapState';
 
 
-module rpg.states.combat {
+export interface CombatVictorySummary {
+  party:GameEntityObject[];
+  enemies:GameEntityObject[];
+  levels:HeroModel[];
+  gold:number;
+  exp:number;
+  state:CombatVictoryState;
+}
 
-  export interface CombatVictorySummary {
-    party:GameEntityObject[];
-    enemies:GameEntityObject[];
-    levels:rpg.models.HeroModel[];
-    gold:number;
-    exp:number;
-    state:CombatVictoryState;
-  }
+export class CombatVictoryState extends CombatState {
+  static NAME:string = "Combat Victory";
+  name:string = CombatVictoryState.NAME;
 
-  export class CombatVictoryState extends CombatState {
-    static NAME:string = "Combat Victory";
-    name:string = CombatVictoryState.NAME;
+  enter(machine:CombatStateMachine) {
+    super.enter(machine);
+    var gold:number = 0;
+    var exp:number = 0;
+    _.each(machine.enemies, (nme:GameEntityObject) => {
+      gold += nme.model.get('gold') || 0;
+      exp += nme.model.get('exp') || 0;
+    });
+    machine.parent.model.addGold(gold);
 
-    enter(machine:CombatStateMachine) {
-      super.enter(machine);
-      var gold:number = 0;
-      var exp:number = 0;
-      _.each(machine.enemies, (nme:GameEntityObject) => {
-        gold += nme.model.get('gold') || 0;
-        exp += nme.model.get('exp') || 0;
-      });
-      machine.parent.model.addGold(gold);
+    var players:GameEntityObject[] = _.reject(machine.party, (p:GameEntityObject) => {
+      return p.isDefeated();
+    });
+    var expPerParty:number = Math.round(exp / players.length);
+    var leveledHeros:HeroModel[] = [];
+    _.each(players, (p:GameEntityObject) => {
+      var heroModel = <HeroModel>p.model;
+      var leveled:boolean = heroModel.awardExperience(expPerParty);
+      if (leveled) {
+        leveledHeros.push(heroModel);
+      }
+    });
 
-      var players:GameEntityObject[] = _.reject(machine.party, (p:GameEntityObject) => {
-        return p.isDefeated();
-      });
-      var expPerParty:number = Math.round(exp / players.length);
-      var leveledHeros:rpg.models.HeroModel[] = [];
-      _.each(players, (p:GameEntityObject) => {
-        var heroModel = <rpg.models.HeroModel>p.model;
-        var leveled:boolean = heroModel.awardExperience(expPerParty);
-        if (leveled) {
-          leveledHeros.push(heroModel);
-        }
-      });
-
-      var summary:CombatVictorySummary = {
-        state: this,
-        party: machine.party,
-        enemies: machine.enemies,
-        levels: leveledHeros,
-        gold: gold,
-        exp: exp
-      };
-      machine.notify("combat:victory", summary, ()=> {
-        machine.parent.world.reportEncounterResult(true);
-        machine.parent.setCurrentState(GameMapState.NAME);
-      });
-    }
+    var summary:CombatVictorySummary = {
+      state: this,
+      party: machine.party,
+      enemies: machine.enemies,
+      levels: leveledHeros,
+      gold: gold,
+      exp: exp
+    };
+    machine.notify("combat:victory", summary, ()=> {
+      machine.parent.world.reportEncounterResult(true);
+      machine.parent.setCurrentState(GameMapState.NAME);
+    });
   }
 }

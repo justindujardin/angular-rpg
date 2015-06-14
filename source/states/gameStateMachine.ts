@@ -14,41 +14,41 @@
  limitations under the License.
  */
 
-/// <reference path="./gameCombatStateMachine.ts"/>
+import {GameWorld} from '../gameWorld';
+import {GameStateModel} from '../models/gameStateModel';
+import {GameMapState} from './gameMapState';
+import {GameCombatState} from './gameCombatStateMachine';
 
-module rpg.states {
+export class GameDefaultState extends pow2.State {
+  static NAME:string = "default";
+  name:string = GameDefaultState.NAME;
+}
 
-  export class GameDefaultState extends pow2.State {
-    static NAME:string = "default";
-    name:string = GameDefaultState.NAME;
+export class GameStateMachine extends pow2.StateMachine {
+  world:GameWorld;
+  model:GameStateModel = null;
+  defaultState:string = GameDefaultState.NAME;
+  player:pow2.tile.TileObject = null;
+  encounterInfo:rpg.IZoneMatch = null;
+  encounter:rpg.IGameEncounter = null;
+  states:pow2.IState[] = [
+    new GameDefaultState(),
+    new GameMapState(),
+    new GameCombatState()
+  ];
+
+  onAddToWorld(world) {
+    super.onAddToWorld(world);
+    GameStateModel.getDataSource();
+    this.model = world.model || new GameStateModel();
   }
 
-  export class GameStateMachine extends pow2.StateMachine {
-    world:rpg.GameWorld;
-    model:rpg.models.GameStateModel = null;
-    defaultState:string = GameDefaultState.NAME;
-    player:pow2.tile.TileObject = null;
-    encounterInfo:IZoneMatch = null;
-    encounter:IGameEncounter = null;
-    states:pow2.IState[] = [
-      new GameDefaultState(),
-      new GameMapState(),
-      new GameCombatState()
-    ];
-
-    onAddToWorld(world) {
-      super.onAddToWorld(world);
-      rpg.models.GameStateModel.getDataSource();
-      this.model = world.model || new rpg.models.GameStateModel();
+  setCurrentState(newState:any):boolean {
+    if (this.world && this.world.scene) {
+      var scene:pow2.scene.Scene = this.world.scene;
+      this.player = <pow2.tile.TileObject>scene.objectByComponent(pow2.scene.components.PlayerComponent);
     }
-
-    setCurrentState(newState:any):boolean {
-      if (this.world && this.world.scene) {
-        var scene:pow2.scene.Scene = this.world.scene;
-        this.player = <pow2.tile.TileObject>scene.objectByComponent(pow2.scene.components.PlayerComponent);
-      }
-      return super.setCurrentState(newState);
-    }
-
+    return super.setCurrentState(newState);
   }
+
 }

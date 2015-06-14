@@ -14,60 +14,59 @@
  limitations under the License.
  */
 
-/// <reference path="../../objects/gameEntityObject.ts" />
+import {GameEntityObject} from '../../objects/gameEntityObject';
+import {EntityModel} from '../../models/entityModel';
+import {GameCombatState,IPlayerAction,IPlayerActionCallback} from '../../states/gameCombatStateMachine';
 
-module rpg.components.combat {
+export class CombatActionComponent extends pow2.scene.SceneComponent implements IPlayerAction {
+  name:string = "default";
+  from:GameEntityObject = null;
+  to:GameEntityObject = null;
+  spell:any = null;//TODO: spell type
 
-  export class CombatActionComponent extends pow2.scene.SceneComponent implements rpg.states.IPlayerAction {
-    name:string = "default";
-    from:GameEntityObject = null;
-    to:GameEntityObject = null;
-    spell:any = null;//TODO: spell type
+  constructor(public combat:GameCombatState) {
+    super();
+  }
 
-    constructor(public combat:rpg.states.GameCombatState) {
-      super();
-    }
+  getActionName():string {
+    return this.name;
+  }
 
-    getActionName():string {
-      return this.name;
-    }
+  isCurrentTurn():boolean {
+    return this.combat.machine.current === this.from;
+  }
 
-    isCurrentTurn():boolean {
-      return this.combat.machine.current === this.from;
-    }
+  canTarget():boolean {
+    return true;
+  }
 
-    canTarget():boolean {
-      return true;
-    }
+  canTargetMultiple():boolean {
+    return this.canTarget();
+  }
 
-    canTargetMultiple():boolean {
-      return this.canTarget();
-    }
+  /**
+   * Method used to determine if this action is usable by a given
+   * [GameEntityObject].  This may be subclassed in an action to
+   * select the types of entities that may use the action.
+   * @param entity The object that would use the action.
+   * @returns {boolean} True if the entity may use this action.
+   */
+  canBeUsedBy(entity:GameEntityObject) {
+    return entity.model && entity.model instanceof EntityModel;
+  }
 
-    /**
-     * Method used to determine if this action is usable by a given
-     * [GameEntityObject].  This may be subclassed in an action to
-     * select the types of entities that may use the action.
-     * @param entity The object that would use the action.
-     * @returns {boolean} True if the entity may use this action.
-     */
-    canBeUsedBy(entity:GameEntityObject) {
-      return entity.model && entity.model instanceof rpg.models.EntityModel;
-    }
+  /**
+   * Base class invokes the then callback and returns true.
+   * @returns {boolean} Whether the act was successful or not.
+   */
+  act(then?:IPlayerActionCallback):boolean {
+    then && then(this, null);
+    return true;
+  }
 
-    /**
-     * Base class invokes the then callback and returns true.
-     * @returns {boolean} Whether the act was successful or not.
-     */
-    act(then?:rpg.states.IPlayerActionCallback):boolean {
-      then && then(this, null);
-      return true;
-    }
-
-    /**
-     * The action has been selected for the current turn.
-     */
-    select() {
-    }
+  /**
+   * The action has been selected for the current turn.
+   */
+  select() {
   }
 }

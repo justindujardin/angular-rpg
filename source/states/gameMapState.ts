@@ -14,30 +14,27 @@
  limitations under the License.
  */
 
-/// <reference path="gameStateMachine.ts" />
-/// <reference path="./gameCombatState.ts" />
+import {GameStateMachine} from './gameStateMachine';
+import {GameTileMap} from '../gameTileMap';
 
-module rpg.states {
+export class GameMapState extends pow2.State {
+  static NAME:string = "map";
+  name:string = GameMapState.NAME;
+  mapPoint:pow2.Point = null;
+  map:GameTileMap = null;
 
-  export class GameMapState extends pow2.State {
-    static NAME:string = "map";
-    name:string = GameMapState.NAME;
-    mapPoint:pow2.Point = null;
-    map:rpg.GameTileMap = null;
-
-    enter(machine:GameStateMachine) {
-      super.enter(machine);
-      if (machine.player && this.mapPoint) {
-        machine.player.setPoint(this.mapPoint);
-        this.mapPoint = null;
-      }
-      console.log("MAPPPPPPP");
+  enter(machine:GameStateMachine) {
+    super.enter(machine);
+    if (machine.player && this.mapPoint) {
+      machine.player.setPoint(this.mapPoint);
+      this.mapPoint = null;
     }
+    console.log("MAPPPPPPP");
+  }
 
-    exit(machine:GameStateMachine) {
-      if (machine.player) {
-        this.mapPoint = machine.player.point.clone();
-      }
+  exit(machine:GameStateMachine) {
+    if (machine.player) {
+      this.mapPoint = machine.player.point.clone();
     }
   }
 }

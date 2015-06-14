@@ -17,6 +17,7 @@
 /// <reference path="../typings/angular2/angular2.d.ts"/>
 /// <reference path="../bower_components/pow2/lib/pow2.d.ts" />
 /// <reference path="../bower_components/pow2/types/backbone/backbone.d.ts" />
+/// <reference path="./combat.ts" />
 
 module rpg {
 
