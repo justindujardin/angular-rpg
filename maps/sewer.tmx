@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="23" height="41" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="combat" value="true"/>
+  <property name="combatZone" value="zone-sewer"/>
+ </properties>
+ <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <layer name="Terrain" width="23" height="41">
+  <data encoding="csv">
+9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,35,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,35,9,33,33,9,
+9,9,9,9,33,33,33,33,9,9,9,9,9,9,9,35,35,35,35,9,33,9,9,
+9,9,9,9,33,33,33,33,9,9,9,9,9,9,9,35,9,9,9,9,33,9,9,
+9,9,9,9,33,33,33,33,9,9,9,9,9,9,9,35,9,9,33,33,33,9,9,
+9,9,9,9,33,33,33,33,9,9,9,9,9,33,35,35,35,33,33,33,33,33,9,
+9,9,9,9,9,6,9,9,9,9,9,9,9,33,35,35,35,33,33,9,9,33,9,
+9,9,9,9,9,33,9,9,9,9,9,9,9,33,35,35,35,33,9,9,9,33,9,
+9,9,9,9,9,33,9,9,9,9,9,9,9,33,33,35,35,33,9,9,9,33,9,
+9,9,9,9,9,33,9,9,33,33,33,33,33,33,33,35,33,33,9,9,9,33,9,
+9,9,9,9,9,33,33,33,33,33,33,9,9,33,33,35,9,9,9,9,9,33,9,
+9,9,9,9,9,9,9,9,33,33,33,9,9,9,9,35,9,9,9,9,9,33,9,
+9,9,9,9,9,9,9,9,33,33,33,9,9,9,35,35,9,9,9,33,33,33,9,
+9,9,9,9,9,9,9,9,33,33,33,9,9,35,35,35,9,9,9,33,9,9,9,
+9,9,9,9,9,9,9,9,33,33,33,9,9,35,9,9,9,9,9,33,33,9,9,
+9,9,9,33,33,33,6,33,33,33,33,33,33,35,9,9,9,9,9,33,33,9,9,
+9,9,9,33,33,33,9,9,9,9,9,9,33,35,9,9,9,33,33,33,33,9,9,
+9,9,9,33,33,33,9,9,9,9,9,9,33,35,9,9,9,33,9,9,33,9,9,
+9,9,9,6,9,9,9,9,9,9,9,9,33,35,9,9,9,33,9,9,33,9,9,
+9,9,9,33,9,9,9,9,9,9,9,9,33,35,9,9,9,33,9,9,33,9,9,
+9,9,9,33,9,9,9,33,33,9,9,9,33,3,33,33,33,33,9,9,33,9,9,
+9,9,9,33,9,9,9,33,9,9,9,9,9,35,9,9,9,9,9,9,33,9,9,
+9,9,9,33,9,9,9,33,9,9,9,9,9,35,9,9,9,9,9,9,33,9,9,
+9,9,9,33,9,9,9,33,9,9,9,9,9,35,9,9,9,9,9,9,33,9,9,
+9,9,9,33,9,9,9,33,33,33,33,33,33,35,9,9,9,9,9,9,33,9,9,
+9,9,9,33,33,33,33,33,33,33,33,33,33,35,9,9,9,9,9,9,33,9,9,
+9,9,9,9,9,9,9,33,33,33,33,33,33,35,9,9,9,9,9,9,33,9,9,
+9,9,9,9,9,9,9,33,33,33,33,33,33,35,9,9,9,9,9,9,33,9,9,
+9,9,9,9,9,9,9,9,9,9,6,9,9,35,9,9,9,9,9,9,33,9,9,
+9,9,35,35,35,35,35,35,9,9,33,9,9,35,9,9,9,9,9,9,33,9,9,
+9,9,9,35,35,35,35,35,35,9,33,9,9,35,9,9,9,9,9,9,6,9,9,
+9,35,35,35,35,35,35,35,35,9,33,9,9,35,9,9,30,33,33,33,33,9,9,
+9,9,35,9,9,35,35,35,35,35,12,35,35,35,9,9,33,33,33,33,33,9,9,
+9,35,35,9,33,33,35,35,35,33,33,33,35,35,9,9,33,33,33,33,33,9,9,
+9,9,35,9,33,33,3,3,3,33,33,33,9,35,35,9,33,33,33,33,33,9,9,
+9,35,35,9,33,33,35,35,35,33,33,9,9,35,35,9,30,33,33,33,30,9,9,
+9,9,35,9,9,35,35,35,35,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+9,35,35,35,35,35,35,35,35,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,35,35,35,35,35,35,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+9,9,35,35,35,35,35,35,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9
+</data>
+ </layer>
+ <objectgroup draworder="topdown" name="Features" width="23" height="41">
+  <object name="ruins" type="rpg.components.features.PortalFeatureComponent" x="336" y="16" width="16" height="16">
+   <properties>
+    <property name="icon" value="doorway.png"/>
+    <property name="target" value="ruins"/>
+    <property name="targetX" value="14"/>
+    <property name="targetY" value="9"/>
+    <property name="text" value="Escape the sewers and return to the ruins above?"/>
+    <property name="transitionType" value="town"/>
+   </properties>
+  </object>
+  <object name="kobold-sewers" type="rpg.components.features.CombatFeatureComponent" x="320" y="496" width="16" height="16">
+   <properties>
+    <property name="icon" value="koboldSwordsman.png"/>
+    <property name="id" value="sewer-kobolds"/>
+    <property name="text" value="You are confronted by a pack of Kobolds!"/>
+   </properties>
+  </object>
+  <object name="impTalisman.png" type="rpg.components.features.TreasureFeatureComponent" x="96" y="32" width="16" height="16">
+   <properties>
+    <property name="icon" value="chest.png"/>
+    <property name="id" value="sewers-treasure-2"/>
+    <property name="item" value="apprentice-hat"/>
+   </properties>
+  </object>
+  <object name="kobold-sewers-elite" type="rpg.components.features.CombatFeatureComponent" x="64" y="544" width="16" height="16">
+   <properties>
+    <property name="gold" value="12"/>
+    <property name="icon" value="koboldShaman.png"/>
+    <property name="id" value="sewer-kobolds-elite"/>
+    <property name="items" value=""/>
+    <property name="sets" value="ruinsDone"/>
+    <property name="text" value="At long last, you find the source of the evil in Kinstown. Surrounded by roiling sewage water, you see a make-shift Kobold throne room! A shamanistic Kobold points at you and howls!"/>
+   </properties>
+  </object>
+  <object name="shield treasure" type="rpg.components.features.TreasureFeatureComponent" x="288" y="528" width="16" height="16">
+   <properties>
+    <property name="icon" value="chest.png"/>
+    <property name="id" value="sewers-treasure1"/>
+    <property name="item" value="leather-shield"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

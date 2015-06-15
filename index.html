@@ -15,11 +15,15 @@
 <script src="./bower_components/underscore/underscore-min.js"></script>
 <script src="./bower_components/backbone/backbone-min.js"></script>
 <script src="./bower_components/tabletop/src/tabletop.js"></script>
+<script src="./bower_components/jquery/jquery.min.js"></script>
 <script src="./bower_components/pow-core/lib/pow-core.min.js"></script>
 <script src="./bower_components/pow2/lib/pow2.min.js"></script>
 <script>
-  System.import('app');
-  System.import('source/ui/worldmap/worldmap');
+  Promise.all([
+    System.import('source/ui/services/rpggame'),
+    System.import('source/ui/worldmap/worldmap'),
+    System.import('app')
+  ]);
 </script>
 </body>
 </html>

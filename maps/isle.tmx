@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="25" height="19" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <layer name="Terrain" width="25" height="19">
+  <data encoding="csv">
+18,18,40,40,40,18,18,40,40,40,40,40,40,40,40,18,18,18,18,18,18,18,18,18,18,
+18,40,40,40,40,18,18,40,40,40,40,40,40,40,40,40,40,40,40,40,18,18,18,18,18,
+18,40,40,40,40,40,18,40,40,40,40,40,40,40,40,40,40,40,40,18,18,18,18,18,18,
+40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,18,18,18,18,18,18,18,18,
+40,40,40,40,40,40,40,40,39,61,61,61,40,40,40,61,40,39,61,18,18,18,18,18,18,
+40,40,40,40,40,40,40,39,61,61,40,40,40,39,39,39,39,39,61,61,18,18,18,18,18,
+40,40,40,40,39,39,40,39,39,39,39,39,40,39,39,39,61,39,39,61,61,18,18,18,18,
+18,40,40,40,40,39,40,39,39,39,40,40,40,39,39,39,39,39,39,39,18,18,18,18,18,
+18,40,40,40,40,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,61,18,18,18,18,
+18,40,40,40,39,39,39,39,39,39,39,39,39,39,39,39,39,12,18,39,39,18,18,18,18,
+18,18,18,40,39,39,39,61,39,39,39,61,39,39,39,39,18,12,18,18,39,18,18,18,18,
+18,18,18,18,39,39,39,39,39,39,39,61,61,39,39,39,18,18,18,18,18,18,18,18,18,
+18,27,18,18,61,39,39,39,39,39,61,61,61,61,61,18,18,18,18,18,18,18,18,18,18,
+18,18,18,18,18,61,39,39,18,18,39,61,61,61,61,18,18,18,18,18,18,18,18,18,18,
+18,18,18,18,39,39,39,18,18,18,18,61,61,61,18,18,18,18,18,18,18,18,18,18,18,
+18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,
+18,18,27,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,
+18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,
+18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18
+</data>
+ </layer>
+ <objectgroup name="Features" width="25" height="19">
+  <object name="wilderness" type="rpg.components.features.PortalFeatureComponent" x="272" y="160" width="16" height="16">
+   <properties>
+    <property name="icon" value="bridgeVertical.png"/>
+    <property name="target" value="wilderness"/>
+    <property name="targetX" value="83"/>
+    <property name="targetY" value="46"/>
+    <property name="text" value="Will you weigh anchor and set sail again upon the Wandering Sea?"/>
+    <property name="transitionType" value="outdoor"/>
+   </properties>
+  </object>
+  <object name="Pirate" type="rpg.components.features.DialogFeatureComponent" x="224" y="160" width="16" height="16">
+   <properties>
+    <property name="action" value="TALK"/>
+    <property name="icon" value="pirate.png"/>
+    <property name="text" value="'Tis a foul wind a blownin' since that volcano blew its top. Me mates 'n I can barely sail, and there be nary finer sailors in the Kingdoms Three than me mates 'n me."/>
+    <property name="title" value="Pirate"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object name="Pirate" type="rpg.components.features.DialogFeatureComponent" x="112" y="208" width="16" height="16">
+   <properties>
+    <property name="action" value="TALK"/>
+    <property name="icon" value="pirate2.png"/>
+    <property name="text" value="Aye, we be stockin' none but the finest goods here on the Wanderin' Isle. Yet the trade be diminishin' in recent years."/>
+    <property name="title" value="Pirate"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object name="Buccaneer's Bazaar" type="rpg.components.features.StoreFeatureComponent" x="128" y="112" width="16" height="16">
+   <properties>
+    <property name="buyRate" value="130"/>
+    <property name="groups" value="[&quot;default&quot;,&quot;water&quot;]"/>
+    <property name="icon" value="shop.png"/>
+    <property name="level" value="5"/>
+    <property name="name" value="Buccaneer's Bazaar"/>
+    <property name="sellRate" value="25"/>
+   </properties>
+  </object>
+  <object name="ship.png" type="sign" x="272" y="176" width="16" height="16">
+   <properties>
+    <property name="icon" value="ship.png"/>
+    <property name="type" value="sign"/>
+    <property name="y" value="11"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

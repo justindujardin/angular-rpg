@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="28" height="31" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="combat" value="true"/>
+  <property name="combatZone" value="zone-goblin-fortress"/>
+ </properties>
+ <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <layer name="Terrain" width="28" height="31">
+  <data encoding="csv">
+9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,57,57,57,57,57,
+9,9,9,9,9,9,9,9,9,9,9,9,33,33,33,33,33,9,9,9,9,9,9,57,57,57,57,57,
+9,9,9,9,9,9,9,9,9,9,9,33,33,33,9,9,24,9,9,9,9,9,9,57,57,57,57,57,
+9,9,33,33,33,9,9,9,9,9,9,9,33,33,9,9,33,33,33,9,9,9,9,57,57,57,57,57,
+9,9,33,33,33,9,9,9,9,9,9,9,9,9,9,9,33,33,33,9,9,9,9,57,57,57,57,57,
+9,9,33,33,33,9,9,9,9,33,33,33,9,9,9,9,33,33,33,9,9,9,9,57,57,57,57,57,
+9,9,9,24,9,9,9,9,9,33,9,33,9,9,9,9,9,33,9,9,9,9,9,57,57,57,57,57,
+9,9,9,33,9,9,9,9,9,33,9,33,9,9,9,9,9,24,9,9,9,9,9,57,57,57,57,57,
+9,9,9,33,33,9,9,9,9,33,9,33,9,46,46,46,46,46,46,46,46,46,9,57,57,57,57,57,
+9,9,9,9,33,9,9,9,9,33,9,33,9,46,46,46,46,46,46,46,46,46,9,57,57,57,57,57,
+9,9,9,9,33,9,9,9,9,33,9,33,9,46,46,46,46,46,46,46,46,46,9,57,57,57,57,57,
+9,9,9,9,33,9,9,9,9,33,9,33,9,46,46,46,46,46,46,46,46,46,9,57,57,57,57,57,
+9,9,9,9,33,9,9,9,9,33,9,33,9,46,46,46,46,37,46,46,46,9,9,57,57,57,57,57,
+9,9,9,9,33,9,9,9,9,33,9,33,9,46,46,46,46,46,46,9,9,9,9,57,57,57,46,46,
+9,9,9,9,33,9,9,9,9,33,9,33,9,46,46,37,33,33,33,9,33,33,9,57,37,46,46,46,
+9,9,9,9,33,9,9,9,9,33,9,33,33,33,33,33,33,17,33,24,33,33,24,46,46,46,46,46,
+9,9,9,9,33,9,9,9,9,33,9,9,9,46,46,37,33,33,33,9,33,33,9,57,37,46,46,46,
+9,9,9,33,33,9,9,9,9,33,9,9,9,46,46,46,46,46,46,9,9,9,9,57,57,57,46,46,
+9,9,33,33,9,9,9,33,33,33,9,9,9,46,46,46,46,37,46,46,46,9,9,57,57,57,57,57,
+9,9,33,9,9,9,9,33,9,9,9,9,9,46,46,46,46,46,46,46,46,46,9,57,57,57,57,57,
+9,9,33,9,9,9,9,33,9,9,9,9,9,46,46,46,46,46,46,46,46,46,9,57,57,57,57,57,
+9,9,33,9,9,9,9,24,9,9,9,9,9,46,46,46,46,46,46,46,46,46,9,57,57,57,57,57,
+9,9,33,9,9,33,33,33,33,9,9,9,9,46,46,46,46,46,46,46,46,46,9,57,57,57,57,57,
+9,9,33,9,9,33,33,33,33,9,9,9,9,9,9,9,9,33,9,9,9,9,9,57,57,57,57,57,
+9,9,33,9,9,33,33,33,33,9,9,9,9,9,9,9,9,33,9,9,9,9,9,57,57,57,57,57,
+9,9,33,33,24,33,33,33,33,9,9,9,9,9,9,9,9,33,9,9,9,9,9,57,57,57,57,57,
+9,9,9,9,9,9,9,9,9,9,9,9,33,33,33,33,33,33,9,9,9,9,9,57,57,57,57,57,
+9,9,9,9,9,9,9,9,33,33,33,9,33,9,9,9,9,9,9,9,9,9,9,57,57,57,57,57,
+9,9,9,9,9,9,9,9,33,33,33,9,33,9,9,9,9,9,9,9,9,9,9,57,57,57,57,57,
+9,9,9,9,9,9,9,9,33,33,33,24,33,9,9,9,9,9,9,9,9,9,9,57,57,57,57,57,
+9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,57,57,57,57,57
+</data>
+ </layer>
+ <objectgroup draworder="topdown" name="Features" width="28" height="31">
+  <object name="wilderness" type="rpg.components.features.PortalFeatureComponent" x="352" y="240" width="16" height="16">
+   <properties>
+    <property name="icon" value="dungeonGate.png"/>
+    <property name="target" value="wilderness"/>
+    <property name="targetX" value="23"/>
+    <property name="targetY" value="12"/>
+    <property name="text" value="Will you slip out of the Goblin Fortress and return to the Nothian Forest?"/>
+    <property name="transitionType" value="outdoor"/>
+   </properties>
+  </object>
+  <object type="block" x="368" y="240" width="16" height="16" visible="0">
+   <properties>
+    <property name="type" value="block"/>
+   </properties>
+  </object>
+  <object name="goblin7.png" type="rpg.components.features.CombatFeatureComponent" x="208" y="240" width="16" height="16">
+   <properties>
+    <property name="creatures" value=""/>
+    <property name="gold" value="5"/>
+    <property name="icon" value="goblin7.png"/>
+    <property name="id" value="goblinGuard"/>
+    <property name="items" value=""/>
+    <property name="text" value="A pack of Goblins block your passage!"/>
+   </properties>
+  </object>
+  <object name="goblinScout.png" type="rpg.components.features.CombatFeatureComponent" x="384" y="176" width="16" height="16">
+   <properties>
+    <property name="ambushed" value="true"/>
+    <property name="creatures" value=""/>
+    <property name="gold" value="6"/>
+    <property name="icon" value="goblinScout.png"/>
+    <property name="id" value="goblinScouts"/>
+    <property name="items" value=""/>
+    <property name="text" value="You are suddenly confronted by nasty and quick-moving Goblins!"/>
+   </properties>
+  </object>
+  <object name="goblinWizard.png" type="rpg.components.features.CombatFeatureComponent" x="48" y="80" width="16" height="16">
+   <properties>
+    <property name="creatures" value=""/>
+    <property name="gold" value="9"/>
+    <property name="icon" value="goblinWizard.png"/>
+    <property name="id" value="pitsShamans"/>
+    <property name="items" value=""/>
+    <property name="text" value="A Goblin spiritual leader of some variety shouts curses as you approach!"/>
+   </properties>
+  </object>
+  <object name="Gate" type="barrier" x="304" y="240" width="16" height="16">
+   <properties>
+    <property name="icon" value="dungeonGate.png"/>
+    <property name="text" value="There is no way to slip past the heavy gate!"/>
+    <property name="title" value="Gate"/>
+    <property name="type" value="barrier"/>
+    <property name="until" value="goblinStart"/>
+   </properties>
+  </object>
+  <object name="Unlocked" type="alert" x="304" y="240" width="16" height="16">
+   <properties>
+    <property name="after" value="goblinStart"/>
+    <property name="altIcon" value="goldKey.png"/>
+    <property name="icon" value="dungeonGate.png"/>
+    <property name="sets" value="alertGoblinKey"/>
+    <property name="text" value="You use the golden key provided by the Elves to unlock the heavy gate."/>
+    <property name="title" value="Unlocked"/>
+    <property name="type" value="alert"/>
+    <property name="until" value="alertGoblinKey"/>
+    <property name="y" value="15"/>
+   </properties>
+  </object>
+  <object name="fortress2" type="rpg.components.features.PortalFeatureComponent" x="48" y="48" width="16" height="16">
+   <properties>
+    <property name="icon" value="doorway.png"/>
+    <property name="target" value="fortress2"/>
+    <property name="targetX" value="23"/>
+    <property name="targetY" value="12"/>
+    <property name="text" value="Unspeakable sounds and smells fill the air as you peer down a long staircase. Dare you descend?"/>
+    <property name="transitionType" value="down"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup draworder="topdown" name="Zones" width="28" height="31" visible="0">
+  <object name="world-plains" type="danger-zone" x="208" y="128" width="144" height="240"/>
+  <object name="zone-dungeon" type="danger-zone" x="0" y="0" width="352" height="128"/>
+  <object name="zone-dungeon" type="danger-zone" x="0" y="128" width="208" height="368"/>
+  <object name="zone-dungeon" type="danger-zone" x="208" y="368" width="144" height="128"/>
+ </objectgroup>
+</map>

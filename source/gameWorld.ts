@@ -69,6 +69,10 @@ export class GameWorld extends pow2.scene.SceneWorld {
     }
   }
 
+  getMapUrl(name:string):string {
+    return 'maps/' + name + '.tmx';
+  }
+
   randomEncounter(zone:rpg.IZoneMatch, then?:rpg.IGameEncounterCallback) {
     GameStateModel.getDataSource((gsr:pow2.GameDataResource)=> {
       var encountersData = gsr.getSheetData("encounters");

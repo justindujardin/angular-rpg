@@ -1,37 +1,23 @@
-///<reference path="typings/angular2/angular2.d.ts"/>
 
 import {Component, View, bootstrap, NgFor} from 'angular2/angular2';
+import {RpgGame} from 'source/ui/services/rpggame';
+
+
+pow2.EntityContainerResource.getClassType = (name:string) => {
+  // TODO: This needs to be async...
+  // replace the `.` with `/` and build a URL.
+  // System.import (or load or whatever) and when the promise resolves, resolve with the
+  // dynamically loaded type.
+  console.error('get type' + name);
+};
 
 @Component({
-  selector: 'rpg-map-canvas'
-})
-@View({
-  template: `
-  <canvas [width]="styleWidth" [height]="styleHeight">
-    Your browser doesn't support this.
-  </canvas>
-  `,
-  host: {
-    '[style.height]': 'styleHeight',
-    '[style.width]': 'styleWidth',
-    '[style.color]': 'styleBackground'
-  }
-})
-class RPGMapCanvas {
-  styleHeight:number = 256;
-  styleWidth:number = 256;
-  styleBackground:string = 'rgba(0,0,0,1)';
-}
-bootstrap(RPGMapCanvas);
-
-@Component({
-  selector: 'rpg-app'
+  selector: 'rpg-app',
+  appInjector: [RpgGame]
 })
 @View({
   template: `
     <style>@import url(./app.css);</style>
-    <h1>{{name}}</h1>
-    <content></content>
     <!--<ul>-->
       <!--<li *ng-for="#cool of things">-->
         <!--{{cool}}-->
@@ -41,8 +27,11 @@ bootstrap(RPGMapCanvas);
   directives: [NgFor]
 })
 class RPGAppComponent {
-  name:string = 'pow2 - rpg!';
   things:string[] = ['one', 'two', 'three'];
+
+  constructor(game:RpgGame) {
+    game.loadGame(null,()=>console.info("Game initialized"));
+  }
 }
 
 bootstrap(RPGAppComponent);

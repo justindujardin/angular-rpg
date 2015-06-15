@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1" orientation="orthogonal" width="19" height="29" tilewidth="16" tileheight="16">
+  <properties>
+    <property name="combat" value="true"></property>
+    <property name="combatZone" value="world-plains"></property>
+  </properties>
+  <tileset firstgid="1" source="tiles/environment.tsx"></tileset>
+  <layer name="Terrain" width="19" height="29" opacity="1">
+    <data encoding="csv">18,18,18,18,18,18,18,18,18,18,18,18,46,46,46,46,46,46,46,18,18,18,18,18,18,18,18,18,18,46,46,46,46,46,46,46,46,46,18,18,18,18,18,18,18,18,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,18,18,18,18,18,18,46,46,46,46,46,46,46,46,46,18,18,18,18,18,18,18,18,46,18,18,18,18,18,18,46,46,46,46,18,18,18,18,18,18,18,18,46,46,46,18,18,18,18,46,46,46,46,18,18,18,18,18,18,18,18,46,46,46,46,18,18,46,46,46,46,46,18,18,18,18,18,18,18,18,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,18,18,18,18,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,18,18,18,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,18,18,18,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,18,18,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,18,18,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,18,46,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,18,46,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,18,46,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,18,46,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,18,46,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,18,18,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,18,18,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,18,18,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,18,18,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,18,18,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,18,18,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,18,18,18,18,46,46,46,46,18,18,18,46,46,46,46,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18</data>
+  </layer>
+  <layer name="Details" width="19" height="29" opacity="1">
+    <data encoding="csv">0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,9,9,9,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,66,0,0,0,37,9,0,0,0,0,0,0,0,0,0,0,0,37,0,0,0,37,69,37,9,0,0,0,0,0,0,0,0,0,0,0,37,0,0,0,0,66,37,9,0,0,0,0,0,0,0,0,0,0,0,37,0,0,33,33,33,33,9,0,0,0,0,0,0,0,0,0,0,37,0,0,0,33,9,44,9,9,0,0,0,0,0,0,0,0,0,66,37,0,0,0,33,9,0,0,9,0,0,0,0,0,0,0,0,0,0,37,0,0,66,33,0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,33,9,0,0,9,0,0,0,0,0,0,0,0,0,0,37,0,0,0,33,9,44,9,9,0,0,0,0,0,0,0,0,0,37,0,0,0,0,33,0,0,0,9,0,0,0,0,0,0,0,0,0,0,66,0,0,0,33,66,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,9,9,9,0,66,33,0,0,0,9,0,0,0,0,0,0,0,0,0,44,0,0,0,0,33,44,9,9,9,0,0,0,0,0,0,0,3,3,0,0,0,33,33,33,9,0,9,0,0,0,0,0,0,0,0,0,0,33,33,33,33,33,33,24,0,6,0,0,0,0,0,0,0,0,3,3,0,0,0,33,33,33,9,0,9,0,0,0,0,0,0,0,0,0,0,9,9,44,9,44,0,9,9,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</data>
+  </layer>
+  <objectgroup name="Features" width="19" height="29" opacity="1">
+    <object name="wilderness" type="rpg.components.features.PortalFeatureComponent" x="224" y="336" width="16" height="16">
+      <properties>
+        <property name="icon" value="doorInWall.png"></property>
+        <property name="target" value="wilderness"></property>
+        <property name="targetX" value="17"></property>
+        <property name="targetY" value="43"></property>
+        <property name="text" value="Exit the ruins and return to the Wildernesse?"></property>
+        <property name="transitionType" value="outdoor"></property>
+        <property name="type" value="transition"></property>
+      </properties>
+    </object>
+    <object type="block" x="240" y="336" width="16" height="16" visible="false">
+      <properties>
+        <property name="type" value="block"></property>
+      </properties>
+    </object>
+    <object name="Locked" type="barrier" x="192" y="336" width="16" height="16">
+      <properties>
+        <property name="icon" value="dungeonGate.png"></property>
+        <property name="text" value="There is a heavy locked gate here, and you cannot force it open!"></property>
+        <property name="title" value="Locked"></property>
+        <property name="type" value="barrier"></property>
+        <property name="until" value="ruinsStart"></property>
+      </properties>
+    </object>
+    <object name="Unlocked" type="alert" x="192" y="336" width="16" height="16">
+      <properties>
+        <property name="after" value="ruinsStart"></property>
+        <property name="altIcon" value="silverKey.png"></property>
+        <property name="icon" value="dungeonGate.png"></property>
+        <property name="sets" value="alertRuinsKey"></property>
+        <property name="text" value="You use the key to unlock the gate and enter the ruins of Kinstown Harbor."></property>
+        <property name="title" value="Unlocked"></property>
+        <property name="type" value="alert"></property>
+        <property name="until" value="alertRuinsKey"></property>
+      </properties>
+    </object>
+    <object name="sewer" type="rpg.components.features.PortalFeatureComponent" x="224" y="144" width="16" height="16">
+      <properties>
+        <property name="icon" value="doorway.png"></property>
+        <property name="target" value="sewer"></property>
+        <property name="targetX" value="21"></property>
+        <property name="targetY" value="1"></property>
+        <property name="text" value="You see a doorway here leading down into the sewers below the town. Dare you explore them?"></property>
+        <property name="transitionType" value="dungeon"></property>
+        <property name="type" value="transition"></property>
+      </properties>
+    </object>
+  </objectgroup>
+</map>

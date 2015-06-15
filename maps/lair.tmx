@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1" orientation="orthogonal" width="29" height="51" tilewidth="16" tileheight="16">
+  <properties>
+    <property name="combat" value="true"></property>
+  </properties>
+  <tileset firstgid="1" source="tiles/environment.tsx"></tileset>
+  <layer name="Terrain" width="29" height="51" opacity="1">
+    <data encoding="csv">32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,23,32,32,32,55,55,23,23,32,32,32,32,32,23,23,23,23,23,23,23,23,23,32,32,32,32,55,32,23,23,23,32,32,55,23,23,23,23,23,23,23,23,23,23,23,32,23,23,23,32,23,32,32,32,32,55,55,23,23,23,55,55,55,23,23,23,32,32,32,32,32,23,32,23,23,23,32,23,23,23,32,32,32,32,55,55,23,23,23,55,55,55,32,32,32,32,32,32,32,32,23,23,23,32,23,23,23,32,23,32,32,32,32,55,55,55,5,55,55,32,32,32,32,32,32,23,23,23,23,23,32,23,23,23,32,23,23,23,23,23,32,32,55,32,32,23,23,23,32,32,32,32,32,32,32,32,32,32,23,23,23,32,23,23,23,32,23,32,23,32,32,55,32,32,32,32,23,32,23,23,23,32,32,32,32,32,32,23,32,23,23,23,32,23,23,23,32,23,32,32,32,32,32,23,23,23,32,23,55,23,23,23,23,23,23,23,23,23,23,32,23,23,23,32,23,32,23,32,32,32,32,23,23,32,32,32,23,23,23,32,32,32,32,32,32,23,23,23,23,23,23,23,23,23,32,23,32,32,32,32,23,32,32,32,32,23,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,23,32,32,32,32,23,32,32,23,23,23,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,23,23,23,23,32,32,32,23,23,23,23,32,32,32,32,32,23,23,23,32,32,23,23,23,32,32,32,32,32,23,55,55,23,32,32,32,32,32,32,32,32,23,23,23,23,23,23,23,32,32,23,55,23,32,32,32,32,32,23,55,55,23,32,32,32,32,32,32,32,32,32,32,32,32,23,23,23,32,32,23,23,23,32,32,32,32,32,23,23,23,23,32,32,23,23,23,32,32,32,32,32,32,32,32,23,32,32,32,32,23,32,32,23,23,23,32,32,32,23,32,32,32,23,55,23,32,32,32,32,32,32,32,32,23,32,32,32,32,23,32,32,23,23,23,32,32,32,23,32,32,32,23,23,23,32,32,32,32,32,32,32,32,23,23,23,23,23,23,32,32,23,23,23,23,23,23,23,32,32,32,23,32,32,32,32,32,23,23,23,32,32,32,32,23,32,32,32,32,32,32,32,32,32,23,32,32,32,32,32,23,32,32,32,32,32,23,23,23,32,32,32,32,23,32,32,32,32,32,32,32,32,32,23,32,32,32,32,32,23,23,23,23,23,23,23,23,23,32,32,32,23,23,23,32,32,32,32,32,32,32,23,23,23,32,32,32,32,32,32,23,23,23,32,32,32,32,32,32,32,23,23,23,32,32,32,32,32,32,32,23,23,23,32,32,32,32,32,32,23,23,23,32,32,32,32,32,32,32,23,23,23,32,32,32,32,32,32,32,23,23,23,32,32,32,32,32,32,32,23,32,32,32,32,32,32,32,32,32,23,32,32,32,32,32,32,32,32,32,23,32,32,32,32,32,32,32,32,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,32,32,32,32,32,32,32,32,23,32,32,32,32,32,32,32,32,32,23,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,23,32,32,32,32,32,32,32,32,32,23,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,23,32,32,32,55,32,32,32,32,23,23,23,23,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,23,23,55,55,55,55,55,55,55,55,23,23,23,23,32,32,32,32,32,32,32,32,32,32,32,55,55,55,32,32,23,55,55,55,55,9,9,55,55,55,55,55,55,55,32,32,32,32,32,32,32,32,32,32,9,9,55,55,55,5,55,55,55,55,55,9,55,55,55,55,23,55,55,55,55,55,55,32,32,32,32,32,32,9,9,9,9,23,23,23,55,55,55,9,9,23,23,55,55,55,55,55,55,55,55,55,55,32,32,32,55,55,9,9,9,9,9,23,9,9,55,55,9,23,23,55,55,55,55,23,55,55,55,55,55,55,55,55,55,55,9,9,9,9,9,9,23,9,55,55,55,9,23,23,23,55,23,23,23,9,9,9,23,23,55,55,55,55,55,9,9,9,9,9,23,23,23,55,55,55,9,9,23,23,23,23,23,9,9,9,9,9,23,23,23,55,55,55,9,9,9,9,9,23,23,23,9,55,9,9,9,9,9,23,9,9,9,9,9,9,9,9,9,23,9,9,9,9,9,9,9,9,9,14,9,9,55,9,9,9,9,9,23,9,9,9,9,9,9,9,9,9,23,9,9,9,9,9,23,23,23,23,23,9,9,55,9,9,9,9,9,23,9,9,9,9,9,9,9,9,9,23,23,23,9,9,9,23,9,9,9,9,9,9,55,55,9,9,9,23,23,23,9,9,23,23,23,23,23,9,9,9,23,9,9,9,23,9,9,9,9,9,9,9,55,55,9,23,23,55,23,23,9,23,9,9,9,23,9,9,9,23,9,9,9,23,9,23,23,23,23,9,23,23,31,23,23,23,23,23,23,23,23,9,9,9,23,9,9,9,23,9,9,9,23,9,23,9,9,23,9,23,9,55,9,23,23,55,23,23,9,9,9,9,23,23,23,23,9,23,9,9,9,23,9,23,9,23,23,9,23,9,55,9,9,23,23,23,9,9,9,9,9,23,55,55,23,9,23,9,9,9,23,23,23,9,23,9,9,23,9,55,9,9,9,14,9,9,9,9,9,9,23,23,23,23,23,23,9,9,9,9,9,23,9,23,9,9,23,9,55,55,9,9,23,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,23,23,23,23,9,55,55,9,9,23,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,55,55,55,9,14,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,55,55,55,55,5,55,55,9,9,55,9,9,9,9,9,9,9,9,9,39,39,39,39,39,39,39,39,39,55,55,55,55,55,39,55,55,55,55,55,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,55,55,55,55,39,39,39,39,39,55,55,55,55,39,39,39,39,39,39,39,39,39,39,39,39,55,55,55,55,55,55,55,39,39,39,39,39,39,39,39,55,55,55,39,39,39,39,39,39,39</data>
+  </layer>
+  <objectgroup name="Features" width="29" height="51" opacity="1">
+    <object name="wilderness" type="rpg.components.features.PortalFeatureComponent" x="224" y="736" width="16" height="16">
+      <properties>
+        <property name="icon" value="darkDoor.png"></property>
+        <property name="target" value="wilderness"></property>
+        <property name="targetX" value="51"></property>
+        <property name="targetY" value="5"></property>
+        <property name="text" value="Will you escape from Vezu's foul lair?"></property>
+        <property name="transitionType" value="outdoor"></property>
+        <property name="type" value="transition"></property>
+      </properties>
+    </object>
+    <object type="block" x="224" y="752" width="16" height="16" visible="false">
+      <properties>
+        <property name="type" value="block"></property>
+      </properties>
+    </object>
+    <object name="spectre.png" type="rpg.components.features.CombatFeatureComponent" x="224" y="672" width="16" height="16">
+      <properties>
+        <property name="ambushed" value="true"></property>
+        <property name="creatures"></property>
+        <property name="gold" value="28"></property>
+        <property name="icon" value="spectre.png"></property>
+        <property name="id" value="vezuGuards"></property>
+        <property name="items"></property>
+        <property name="text" value="The lair is guarded by foul undead denizens. They attack!"></property>
+        <property name="type" value="encounter"></property>
+      </properties>
+    </object>
+    <object name="cyclops.png" type="rpg.components.features.CombatFeatureComponent" x="80" y="544" width="16" height="16">
+      <properties>
+        <property name="ambushed" value="true"></property>
+        <property name="creatures"></property>
+        <property name="gold" value="15"></property>
+        <property name="icon" value="cyclops.png"></property>
+        <property name="id" value="vezuCyclops"></property>
+        <property name="items"></property>
+        <property name="text" value="Enormous one-eyed humanoids lunge at you!"></property>
+        <property name="type" value="encounter"></property>
+      </properties>
+    </object>
+    <object name="wraith2.png" type="rpg.components.features.CombatFeatureComponent" x="128" y="304" width="16" height="16">
+      <properties>
+        <property name="creatures"></property>
+        <property name="gold" value="37"></property>
+        <property name="icon" value="wraith2.png"></property>
+        <property name="id" value="vezuWraith"></property>
+        <property name="items"></property>
+        <property name="text" value="A powerful undead form stands before you. &quot;Those who do not bow before Vezu shall be destroyed!&quot; it shrieks!"></property>
+        <property name="type" value="encounter"></property>
+      </properties>
+    </object>
+    <object name="rockGolem.png" type="rpg.components.features.CombatFeatureComponent" x="384" y="80" width="16" height="16">
+      <properties>
+        <property name="creatures"></property>
+        <property name="gold" value="15"></property>
+        <property name="icon" value="rockGolem.png"></property>
+        <property name="id" value="vezuGolems"></property>
+        <property name="items"></property>
+        <property name="text" value="Mounds of clay and rock form into rudimentary bodies and start to shamble toward you, with murderous intent!"></property>
+        <property name="type" value="encounter"></property>
+      </properties>
+    </object>
+    <object name="vezu.png" type="rpg.components.features.CombatFeatureComponent" x="48" y="48" width="16" height="16">
+      <properties>
+        <property name="creatures"></property>
+        <property name="gold" value="0"></property>
+        <property name="icon" value="vezu.png"></property>
+        <property name="id" value="vezu"></property>
+        <property name="items"></property>
+        <property name="sets" value="gameOver"></property>
+        <property name="text" value="You face Vezu, the mighty and ancient Red Dragon! &quot;So these are the heroes that defeated my minions at Vygurn Tower? I am disappointed, I expected better!&quot; He snorts, then attacks!"></property>
+        <property name="type" value="encounter"></property>
+      </properties>
+    </object>
+    <object name="chest.png" type="rpg.components.features.CombatFeatureComponent" x="48" y="16" width="16" height="16">
+      <properties>
+        <property name="creatures"></property>
+        <property name="gold" value="275"></property>
+        <property name="icon" value="chest.png"></property>
+        <property name="id" value="vezuTreasure"></property>
+        <property name="items"></property>
+        <property name="text" value="Congratulations, you have saved the Three Kingdoms from the evil Vezu! In celebration of your victory, you raid Vezu's loot!"></property>
+        <property name="type" value="encounter"></property>
+      </properties>
+    </object>
+  </objectgroup>
+</map>

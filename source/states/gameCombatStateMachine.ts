@@ -161,7 +161,7 @@ export class GameCombatState extends pow2.State {
 
   constructor() {
     super();
-    GameWorld.get().loader.load(pow2.GAME_ROOT + 'games/rpg/entities/combat.powEntities', (factory:pow2.EntityContainerResource)=> {
+    GameWorld.get().loader.load(pow2.GAME_ROOT + 'entities/combat.powEntities', (factory:pow2.EntityContainerResource)=> {
       this.factory = factory;
     });
     GameStateModel.getDataSource((spreadsheet:pow2.GameDataResource) => {
@@ -197,7 +197,7 @@ export class GameCombatState extends pow2.State {
     });
 
 
-    var mapUrl:string = pow2.getMapUrl('combat');
+    var mapUrl:string = machine.world.getMapUrl('combat');
     machine.world.loader.load(mapUrl, (map:pow2.TiledTMXResource)=> {
 
       this.tileMap = this.factory.createObject('GameCombatMap', {

@@ -1,7 +1,7 @@
 .DS_Store
 .idea
-source/**/*.js
-source/**/*.js.map
-source/**/*.d.ts
+**/*.js
+**/*.js.map
+**/*.d.ts
 bower_components
 node_modules

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="23" height="23" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <layer name="Terrain" width="23" height="23">
+  <data encoding="csv">
+9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+9,33,33,33,9,9,9,9,9,9,33,33,33,9,9,9,9,9,9,33,33,33,9,
+9,33,33,33,9,9,9,9,9,9,33,33,33,9,9,9,9,9,9,33,33,33,9,
+9,33,33,33,9,9,9,9,9,30,33,33,33,30,9,9,9,9,9,33,33,33,9,
+9,9,6,9,9,33,33,33,33,33,33,33,33,33,33,33,33,33,9,9,6,9,9,
+9,9,33,9,9,33,33,33,33,33,30,33,30,33,33,33,33,33,9,9,33,9,9,
+9,9,33,9,9,33,33,33,33,33,33,33,33,33,33,33,33,33,9,9,33,9,9,
+9,9,33,9,9,33,33,33,33,33,33,33,33,33,33,33,33,33,9,9,33,9,9,
+9,9,33,33,33,33,33,33,33,17,33,33,33,17,33,33,33,33,33,33,33,9,9,
+9,9,33,9,9,33,33,33,33,33,33,33,33,33,33,33,33,33,9,9,33,9,9,
+9,9,33,9,9,33,33,33,33,17,33,33,33,17,33,33,33,33,9,9,33,9,9,
+9,9,33,9,9,33,33,33,33,33,33,33,33,33,33,33,33,33,9,9,33,9,9,
+9,9,33,9,9,33,33,33,33,33,33,33,33,33,33,33,33,33,9,9,33,9,9,
+9,9,33,9,9,9,9,9,9,9,9,24,9,9,9,9,9,9,9,9,33,9,9,
+9,9,33,9,33,33,33,33,33,6,33,33,33,6,33,33,33,33,33,9,33,9,9,
+9,9,33,9,33,33,33,33,9,9,9,33,9,9,9,33,33,33,33,9,33,9,9,
+9,9,6,9,9,9,9,9,9,9,9,33,9,9,9,9,9,9,9,9,6,9,9,
+9,33,33,33,9,49,49,49,9,70,9,24,9,70,9,49,49,49,9,33,33,33,9,
+9,33,33,33,9,49,49,49,9,70,49,49,49,70,9,49,49,49,9,33,33,33,9,
+9,33,33,33,9,49,49,49,49,49,70,49,70,49,49,49,49,49,9,33,33,33,9,
+9,9,9,9,9,49,49,49,49,49,49,49,49,49,49,49,49,49,9,9,9,9,9,
+49,49,49,49,49,49,49,49,49,70,49,49,49,70,49,49,49,49,49,49,49,49,49,
+49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49
+</data>
+ </layer>
+ <objectgroup draworder="topdown" name="Features" width="23" height="23">
+  <object name="wilderness" type="rpg.components.features.PortalFeatureComponent" x="176" y="272" width="16" height="16">
+   <properties>
+    <property name="icon" value="dungeonGate.png"/>
+    <property name="target" value="wilderness"/>
+    <property name="targetX" value="76"/>
+    <property name="targetY" value="7"/>
+    <property name="text" value="Will you exit Rogaard Keep and return to the Warvish Tundralands?"/>
+    <property name="transitionType" value="outdoor"/>
+   </properties>
+  </object>
+  <object type="block" x="176" y="288" width="16" height="16" visible="0">
+   <properties>
+    <property name="type" value="block"/>
+   </properties>
+  </object>
+  <object name="Guard" type="barrier" x="208" y="272" width="16" height="16">
+   <properties>
+    <property name="icon" value="dwarfGuard.png"/>
+    <property name="text" value="During times of war, the Keep is off duty to all but those with Royal Decree!"/>
+    <property name="title" value="Guard"/>
+    <property name="type" value="barrier"/>
+    <property name="until" value="keepStart"/>
+   </properties>
+  </object>
+  <object name="Guard" type="alert" x="144" y="272" width="16" height="16">
+   <properties>
+    <property name="after" value="keepStart"/>
+    <property name="altIcon" value="sigil.png"/>
+    <property name="icon" value="dwarfGuard.png"/>
+    <property name="sets" value="keepDone"/>
+    <property name="text" value="I see you carry the sigil of the Southern King. Enter and speak your business with the Grand Chieftain of the Warvish Tribes!"/>
+    <property name="title" value="Guard"/>
+    <property name="type" value="alert"/>
+    <property name="until" value="keepDone"/>
+   </properties>
+  </object>
+  <object name="Guard" type="rpg.components.features.DialogFeatureComponent" x="208" y="272" width="16" height="16">
+   <properties>
+    <property name="after" value="alertKeepSigil"/>
+    <property name="icon" value="dwarfGuard.png"/>
+    <property name="text" value="Fare thee well, travellers."/>
+    <property name="title" value="Guard"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object name="Chieftain" type="dispatch" x="176" y="16" width="16" height="16">
+   <properties>
+    <property name="action" value="TALK"/>
+    <property name="altIcon" value="prism.png"/>
+    <property name="icon" value="dwarfKing.png"/>
+    <property name="sets" value="towerStart"/>
+    <property name="text" value="So our worst fears have been realized... for Vezu to be stopped, the barricade must be broken. Wielding this prism at the top of the Vygurn Tower could break Vezu's barricade, but the Magi worship Vezu, and welcome his return. Will you defeat the Magi and break the barricade?"/>
+    <property name="title" value="Chieftain"/>
+    <property name="type" value="dispatch"/>
+    <property name="until" value="towerStart"/>
+   </properties>
+  </object>
+  <object name="Chieftain" type="rpg.components.features.DialogFeatureComponent" x="176" y="16" width="16" height="16">
+   <properties>
+    <property name="action" value="TALK"/>
+    <property name="after" value="towerStart"/>
+    <property name="icon" value="dwarfKing.png"/>
+    <property name="text" value="Travel East across the Tundralands to reach the Vygurn, the infamous Tower of the Magi. The fate of the Three Kingdoms depends on it!"/>
+    <property name="title" value="Chieftain"/>
+    <property name="type" value="sign"/>
+    <property name="until" value="towerDone"/>
+   </properties>
+  </object>
+  <object name="Chieftain" type="dispatch" x="176" y="16" width="16" height="16">
+   <properties>
+    <property name="action" value="TALK"/>
+    <property name="after" value="towerDone"/>
+    <property name="icon" value="dwarfKing.png"/>
+    <property name="sets" value="vezuStart"/>
+    <property name="text" value="With the Magi defeated and the barricade broken, there is a chance that Vezu could be defeated. Will you face your destiny at Mount Vezu and fight the dragon?"/>
+    <property name="title" value="Chieftain"/>
+    <property name="type" value="dispatch"/>
+    <property name="until" value="vezuStart"/>
+   </properties>
+  </object>
+  <object name="Chieftain" type="rpg.components.features.DialogFeatureComponent" x="176" y="16" width="16" height="16">
+   <properties>
+    <property name="action" value="TALK"/>
+    <property name="after" value="vezuStart"/>
+    <property name="icon" value="dwarfKing.png"/>
+    <property name="text" value="Travel North by ship to Mount Vezu, the fates of the Warvish peoples are in your hands!"/>
+    <property name="title" value="Chieftain"/>
+    <property name="type" value="sign"/>
+    <property name="until" value="gameOver"/>
+   </properties>
+  </object>
+  <object name="Chieftain" type="rpg.components.features.DialogFeatureComponent" x="176" y="16" width="16" height="16">
+   <properties>
+    <property name="action" value="TALK"/>
+    <property name="after" value="gameOver"/>
+    <property name="icon" value="dwarfKing.png"/>
+    <property name="text" value="The peoples of the Three Kingdoms shall sing songs of your victory until the end of time!"/>
+    <property name="title" value="Chieftain"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object name="Dwarf Elder" type="rpg.components.features.DialogFeatureComponent" x="160" y="176" width="16" height="16">
+   <properties>
+    <property name="action" value="TALK"/>
+    <property name="icon" value="dwarf2.png"/>
+    <property name="text" value="Vezu must be defeated, yet he has barricaded himself until his strength reaches its peak. We must find a way to break that barricade before he sallies forth on his on accord..."/>
+    <property name="title" value="Dwarf Elder"/>
+    <property name="type" value="sign"/>
+    <property name="until" value="towerStart"/>
+   </properties>
+  </object>
+  <object name="Dwarf Elder" type="rpg.components.features.DialogFeatureComponent" x="160" y="176" width="16" height="16">
+   <properties>
+    <property name="action" value="TALK"/>
+    <property name="after" value="towerStart"/>
+    <property name="icon" value="dwarf2.png"/>
+    <property name="text" value="May fortune favor you, brave adventurers!"/>
+    <property name="title" value="Dwarf Elder"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object name="chest.png" type="rpg.components.features.CombatFeatureComponent" x="176" y="32" width="16" height="16">
+   <properties>
+    <property name="after" value="towerDone"/>
+    <property name="creatures" value=""/>
+    <property name="gold" value="110"/>
+    <property name="icon" value="chest.png"/>
+    <property name="id" value="towerReward"/>
+    <property name="items" value=""/>
+    <property name="text" value="The Warvish citizenry have gathered together their wealth to support you in your great quest to defeat Vezu!"/>
+   </properties>
+  </object>
+  <object name="Dwarven Armors" type="rpg.components.features.StoreFeatureComponent" x="112" y="96" width="16" height="16">
+   <properties>
+    <property name="buyRate" value="125"/>
+    <property name="category" value="armor"/>
+    <property name="groups" value="default"/>
+    <property name="icon" value="shop.png"/>
+    <property name="level" value="3"/>
+    <property name="name" value="Dwarven Armors"/>
+    <property name="sellRate" value="28"/>
+   </properties>
+  </object>
+  <object name="Dwarven Arms" type="rpg.components.features.StoreFeatureComponent" x="240" y="96" width="16" height="16">
+   <properties>
+    <property name="buyRate" value="125"/>
+    <property name="category" value="weapons"/>
+    <property name="groups" value="default"/>
+    <property name="icon" value="shop.png"/>
+    <property name="level" value="3"/>
+    <property name="name" value="Dwarven Arms"/>
+    <property name="sellRate" value="28"/>
+   </properties>
+  </object>
+  <object name="Warvian Antiquities" type="rpg.components.features.StoreFeatureComponent" x="112" y="160" width="16" height="16">
+   <properties>
+    <property name="buyRate" value="125"/>
+    <property name="category" value="misc"/>
+    <property name="groups" value="default"/>
+    <property name="icon" value="shop.png"/>
+    <property name="level" value="3"/>
+    <property name="name" value="Warvian Antiquities"/>
+    <property name="sellRate" value="25"/>
+   </properties>
+  </object>
+  <object name="Potions and Elixirs" type="rpg.components.features.StoreFeatureComponent" x="240" y="160" width="16" height="16">
+   <properties>
+    <property name="buyRate" value="115"/>
+    <property name="category" value="misc"/>
+    <property name="groups" value="rare"/>
+    <property name="icon" value="shop.png"/>
+    <property name="level" value="3"/>
+    <property name="name" value="Potions and Elixirs"/>
+    <property name="sellRate" value="22"/>
+    <property name="y" value="10"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
