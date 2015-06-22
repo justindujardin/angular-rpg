@@ -11,7 +11,7 @@ import {ItemModel} from '../../models/itemModel';
 import {GameEntityObject} from '../../objects/gameEntityObject';
 import {GameStateMachine} from '../../states/gameStateMachine';
 
-export class RpgGame {
+export class RPGGame {
   styleHeight:number = 256;
   styleWidth:number = 256;
   styleBackground:string = 'rgba(0,0,0,1)';
@@ -93,13 +93,16 @@ export class RpgGame {
     }
 
     this.world.loader.load(this.world.getMapUrl(mapName), (map:pow2.TiledTMXResource)=> {
-      this.tileMap = this.entities.createObject('GameMapObject', {
-        resource: map
-      });
-      var model:HeroModel = player || this.world.model.party[0];
-      this.createPlayer(model, at);
+      this.tileMap = new GameTileMap(map);
       this.world.scene.addObject(this.tileMap);
       this.tileMap.loaded();
+
+
+      //    this.entities.createObject('GameMapObject', {
+      //  resource: map
+      //});
+      var model:HeroModel = player || this.world.model.party[0];
+      //this.createPlayer(model, at);
       then && then();
     });
   }

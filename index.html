@@ -5,8 +5,6 @@
 </head>
 <body>
 
-<rpg-map-canvas></rpg-map-canvas>
-
 <rpg-app></rpg-app>
 
 <script src="https://github.jspm.io/jmcriffey/bower-traceur-runtime@0.0.87/traceur-runtime.js"></script>
@@ -16,14 +14,17 @@
 <script src="./bower_components/backbone/backbone-min.js"></script>
 <script src="./bower_components/tabletop/src/tabletop.js"></script>
 <script src="./bower_components/jquery/jquery.min.js"></script>
-<script src="./bower_components/pow-core/lib/pow-core.min.js"></script>
-<script src="./bower_components/pow2/lib/pow2.min.js"></script>
+<script src="./bower_components/pow-core/lib/pow-core.js"></script>
+<script src="./bower_components/pow2/lib/pow2.js"></script>
+<script src="./bower_components/pow2/lib/pow2.sprites.js"></script>
 <script>
   Promise.all([
-    System.import('source/ui/services/rpggame'),
-    System.import('source/ui/worldmap/worldmap'),
-    System.import('app')
-  ]);
+    System.import('angular2/angular2'),
+    System.import('app'),
+    System.import('source/ui/worldmap/worldmap')
+  ]).then(function (modules) {
+    modules[0].bootstrap(modules[1].RPGAppComponent);
+  }, console.log.bind(console));
 </script>
 </body>
 </html>

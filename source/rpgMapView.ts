@@ -14,29 +14,34 @@
  limitations under the License.
  */
 
-/// <reference path="./gameTileMap.ts"/>
+import {GameTileMap} from './gameTileMap';
+import {GameFeatureObject} from './objects/gameFeatureObject';
 
-module rpg {
-  export class RPGMapView extends pow2.game.GameMapView {
-    tileMap:rpg.GameTileMap = null;
+export class RPGMapView extends pow2.game.GameMapView {
+  tileMap:GameTileMap = null;
 
-    private _features:rpg.objects.GameFeatureObject[] = null;
+  private _features:GameFeatureObject[] = null;
 
-    protected clearCache() {
-      this._features = null;
-      super.clearCache();
+  protected clearCache() {
+    this._features = null;
+    super.clearCache();
+  }
+
+  setTileMap(tileMap:TileMap) {
+    this.tileMap = tileMap;
+    this.clearCache();
+  }
+
+
+  /*
+   * Render the tile map, and any features it has.
+   */
+  renderFrame(elapsed:number) {
+    if (!this._features) {
+      this._features = <GameFeatureObject[]>this.scene.objectsByType(GameFeatureObject);
+      this._renderables = this._renderables.concat(this._features);
     }
-
-    /*
-     * Render the tile map, and any features it has.
-     */
-    renderFrame(elapsed:number) {
-      if (!this._features) {
-        this._features = <rpg.objects.GameFeatureObject[]>this.scene.objectsByType(rpg.objects.GameFeatureObject);
-        this._renderables = this._renderables.concat(this._features);
-      }
-      super.renderFrame(elapsed);
-      return this;
-    }
+    super.renderFrame(elapsed);
+    return this;
   }
 }

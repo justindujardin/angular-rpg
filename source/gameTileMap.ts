@@ -92,7 +92,7 @@ export class GameTileMap extends pow2.tile.TileMap {
     var object = new GameFeatureObject(options);
     this.world.mark(object);
 
-    var componentType:any = pow2.EntityContainerResource.getClassType(tiledObject.type);
+    var componentType:any = tiledObject.type === 'alert' ? null : pow2.EntityContainerResource.getClassType(tiledObject.type);
     if (tiledObject.type && componentType) {
       var component = <pow2.ISceneComponent>(new componentType());
       if (!object.addComponent(component)) {
