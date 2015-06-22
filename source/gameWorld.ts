@@ -102,6 +102,8 @@ export class GameWorld extends pow2.scene.SceneWorld {
     });
   }
 
+
+
   private _encounter(zoneInfo:rpg.IZoneMatch, encounter:rpg.IGameEncounter, then?:rpg.IGameEncounterCallback) {
     this.scene.trigger('combat:encounter', this);
     this.state.encounter = encounter;

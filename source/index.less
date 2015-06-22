@@ -1,18 +1,39 @@
-@import "../../source/ui/index";
-// Core variables and mixins
-@import "variables";
-@import "mixins";
-// Reset
-@import "normalize";
-@import "print";
-// Core CSS
-@import "scaffolding";
-@import "type";
-@import "code";
-@import "progress-bars";
-@import "glyphicons";
-// Utility classes
-@import "utilities";
+@pixelFont: 'GraphicPixel', 'AdvoCut', sans-serif;
+@pixelFontAlt: 'AdvoCut', 'GraphicPixel', sans-serif;
+
+@font-face {
+  font-family: 'GraphicPixel';
+  src: url('/fonts/graphicpixel-webfont.eot');
+  src: url('/fonts/graphicpixel-webfont.eot?#iefix') format('embedded-opentype'),
+  url('/fonts/graphicpixel-webfont.woff') format('woff'),
+  url('/fonts/graphicpixel-webfont.ttf') format('truetype'),
+  url('/fonts/graphicpixel-webfont.svg#GraphicPixelRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'AdvoCut';
+  src: url('/fonts/advocut-webfont.eot');
+  src: url('/fonts/advocut-webfont.eot?#iefix') format('embedded-opentype'),
+  url('/fonts/advocut-webfont.woff') format('woff'),
+  url('/fonts/advocut-webfont.ttf') format('truetype'),
+  url('/fonts/advocut-webfont.svg#AndinaRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.ng-cloak {
+  display: none !important;
+}
+
+@import "style/variables";
+@import "style/mixins";
+@import "style/animation";
+@import "style/pageTransitions";
+@import "style/loading";
+@import "style/mediaqueries";
+
 // Other
 @import "style/buttons";
 @import "style/eightBitPanel";
@@ -24,15 +45,15 @@
 // Import template styles
 //  TODO: This might get _really_ old.
 //  If so, just concat all the less files then compile the concat.
-@import "directives/inventoryView";
-@import "directives/dialogView";
-@import "directives/storeView";
-@import "directives/templeView";
-@import "directives/heroCard";
-@import "directives/combatView";
-@import "directives/gameMenu";
-@import "directives/bits/healthBar";
-@import "directives/pages/mainMenu";
+@import "ui/directives/inventoryView";
+@import "ui/directives/dialogView";
+@import "ui/directives/storeView";
+@import "ui/directives/templeView";
+@import "ui/directives/heroCard";
+@import "ui/directives/combatView";
+@import "ui/directives/gameMenu";
+@import "ui/directives/bits/healthBar";
+@import "ui/directives/pages/mainMenu";
 
 @gameBlue: #004c62;
 @menuOverlayBackground: rgba(0, 0, 0, 0.8);
@@ -43,6 +64,8 @@ body {
   margin: 0;
   overflow: hidden;
   height: 100%;
+  font-family: @pixelFont;
+  color:rgba(255,255,255,0.9);
 
   /* GET THIS DIALOG OUT OF MY FACE! */
   .btn-close {

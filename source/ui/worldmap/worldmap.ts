@@ -15,7 +15,10 @@ import {RPGGame} from '../services/rpggame';
 
 @Component({
   selector: 'rpg-map-canvas',
-  properties: ['mapName']
+  properties: ['mapName'],
+  host: {
+    '(window:resize)': 'onResize($event)'
+  }
 })
 @View({
   template: `
@@ -49,12 +52,7 @@ export class WorldMap {
       this.tileMap = new GameTileMap(map);
       this.game.world.scene.addObject(this.tileMap);
       this.tileMap.loaded();
-      if(this.tileMap.bounds.extent.x > 50 || this.tileMap.bounds.extent.y > 50){
-        this._view.camera.point.set(this.tileMap.bounds.getCenter());
-      }
-      else {
-        this._view.camera.point.zero();
-      }
+      this.onResize();
       this._view.setTileMap(this.tileMap);
     });
   }
@@ -64,6 +62,9 @@ export class WorldMap {
   private _stateKey:string = "_test2Pow2State";
 
   private _view:RPGMapView = null;
+  private _canvas:HTMLCanvasElement = null;
+  private _context:any = null;
+  private _bounds:pow2.Point = new pow2.Point();
 
   constructor(public elRef:ElementRef, public game:RPGGame) {
     this._renderCanvas = <HTMLCanvasElement>document.createElement('canvas');
@@ -71,11 +72,40 @@ export class WorldMap {
     this._renderCanvas.style.position = 'absolute';
     this._renderCanvas.style.left = this._renderCanvas.style.top = '-9000px';
 
-    this._view = new RPGMapView(elRef.domElement.querySelector('canvas'), game.loader);
-    this._view.camera.point.set(5, 35);
-    this._view.camera.extent.set(50, 50);
+    this._canvas = elRef.domElement.querySelector('canvas');
+    this._context = <CanvasRenderingContext2D>this._canvas.getContext("2d");
+    this._context.webkitImageSmoothingEnabled = false;
+    this._context.mozImageSmoothingEnabled = false;
+    this._context.imageSmoothingEnabled = false;
+
+    this._view = new RPGMapView(this._canvas, game.loader);
+    this._view.camera.point.set(-0.5,-0.5);
+    this.onResize();
     game.world.scene.addView(this._view);
   }
+
+  onResize() {
+    this.styleWidth = this._context.canvas.width = window.innerWidth;
+    this.styleHeight = this._context.canvas.height = window.innerHeight;
+    this._bounds.set(this.styleWidth,this.styleHeight);
+    this._bounds = this._view.screenToWorld(this._bounds);
+
+
+    // TileMap
+    // Camera (window bounds)
+    if(this.tileMap){
+      var tileOffset = this.tileMap.bounds.getCenter();
+      var offset = this._bounds.clone().divide(2).multiply(-1).add(tileOffset);
+      this._view.camera.point.set(offset.floor());
+    }
+
+
+    this._view.camera.extent.set(this._bounds);
+    this._context.webkitImageSmoothingEnabled = false;
+    this._context.mozImageSmoothingEnabled = false;
+    this._context.imageSmoothingEnabled = false;
+  }
+
 
   /**
    * Returns a canvas rendering context that may be drawn to.  A corresponding

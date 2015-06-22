@@ -1,4 +1,1717 @@
-  h1 {
-    color:blue;
-    margin-top: 200px;
+@font-face {
+  font-family: 'GraphicPixel';
+  src: url('/fonts/graphicpixel-webfont.eot');
+  src: url('/fonts/graphicpixel-webfont.eot?#iefix') format('embedded-opentype'), url('/fonts/graphicpixel-webfont.woff') format('woff'), url('/fonts/graphicpixel-webfont.ttf') format('truetype'), url('/fonts/graphicpixel-webfont.svg#GraphicPixelRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'AdvoCut';
+  src: url('/fonts/advocut-webfont.eot');
+  src: url('/fonts/advocut-webfont.eot?#iefix') format('embedded-opentype'), url('/fonts/advocut-webfont.woff') format('woff'), url('/fonts/advocut-webfont.ttf') format('truetype'), url('/fonts/advocut-webfont.svg#AndinaRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+.ng-cloak {
+  display: none !important;
+}
+@-webkit-keyframes moveFromRight {
+  from {
+    -webkit-transform: translateX(100%);
   }
+}
+@-moz-keyframes moveFromRight {
+  from {
+    -moz-transform: translateX(100%);
+  }
+}
+@keyframes moveFromRight {
+  from {
+    transform: translateX(100%);
+  }
+}
+@-webkit-keyframes moveToRight {
+  to {
+    -webkit-transform: translateX(100%);
+  }
+}
+@-moz-keyframes moveToRight {
+  to {
+    -moz-transform: translateX(100%);
+  }
+}
+@keyframes moveToRight {
+  to {
+    transform: translateX(100%);
+  }
+}
+@-webkit-keyframes moveFromTop {
+  from {
+    opacity: 0.3;
+    -webkit-transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+  }
+}
+@-moz-keyframes moveFromTop {
+  from {
+    opacity: 0.3;
+    -moz-transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes moveFromTop {
+  from {
+    opacity: 0.3;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+@-webkit-keyframes moveToTop {
+  to {
+    opacity: 0.3;
+    -webkit-transform: translateY(100%);
+  }
+}
+@-moz-keyframes moveToTop {
+  to {
+    opacity: 0.3;
+    -moz-transform: translateY(100%);
+  }
+}
+@keyframes moveToTop {
+  to {
+    opacity: 0.3;
+    transform: translateY(100%);
+  }
+}
+@-webkit-keyframes fadeOut {
+  to {
+    opacity: 0.0;
+  }
+}
+@-moz-keyframes fadeOut {
+  to {
+    opacity: 0.0;
+  }
+}
+@keyframes fadeOut {
+  to {
+    opacity: 0.0;
+  }
+}
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0.0;
+  }
+  to {
+    opacity: 1.0;
+  }
+}
+@-moz-keyframes fadeIn {
+  from {
+    opacity: 0.0;
+  }
+  to {
+    opacity: 1.0;
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0.0;
+  }
+  to {
+    opacity: 1.0;
+  }
+}
+.moveFromRight {
+  -webkit-animation: moveFromRight .6s ease both;
+  -moz-animation: moveFromRight .6s ease both;
+  animation: moveFromRight .6s ease both;
+}
+.moveToRight {
+  -webkit-animation: moveToRight .6s ease both;
+  -moz-animation: moveToRight .6s ease both;
+  animation: moveToRight .6s ease both;
+}
+.slide-from-right.ng-hide-add {
+  -webkit-animation: moveToRight .6s ease both;
+  -moz-animation: moveToRight .6s ease both;
+  animation: moveToRight .6s ease both;
+  display: block !important;
+}
+.slide-from-right.ng-hide-remove {
+  -webkit-animation: moveFromRight .6s ease both;
+  -moz-animation: moveFromRight .6s ease both;
+  animation: moveFromRight .6s ease both;
+  display: block !important;
+}
+.fadeOut {
+  -webkit-animation: fadeOut 0.3s ease both;
+  -moz-animation: fadeOut 0.3s ease both;
+  animation: fadeOut 0.3s ease both;
+}
+.fadeIn {
+  -webkit-animation: fadeIn 0.3s ease both;
+  -moz-animation: fadeIn 0.3s ease both;
+  animation: fadeIn 0.3s ease both;
+}
+.menu-fade.ng-hide-add {
+  -webkit-animation: fadeOut 0.3s ease both;
+  -moz-animation: fadeOut 0.3s ease both;
+  animation: fadeOut 0.3s ease both;
+  display: block !important;
+}
+.menu-fade.ng-hide-remove {
+  -webkit-animation: fadeIn 0.3s ease both;
+  -moz-animation: fadeIn 0.3s ease both;
+  animation: fadeIn 0.3s ease both;
+  display: block !important;
+}
+.fade.ng-enter {
+  opacity: 0;
+  display: block !important;
+}
+.fade.ng-enter,
+.fade.ng-enter.ng-enter-active {
+  -webkit-animation: fadeIn 0.3s ease both;
+  -moz-animation: fadeIn 0.3s ease both;
+  animation: fadeIn 0.3s ease both;
+  display: block !important;
+}
+.fade.ng-leave {
+  opacity: 1;
+  display: block !important;
+}
+.fade.ng-leave,
+.fade.ng-leave-active {
+  -webkit-animation: fadeOut 0.3s ease both;
+  -moz-animation: fadeOut 0.3s ease both;
+  animation: fadeOut 0.3s ease both;
+  display: block !important;
+}
+.fade.ng-hide-add,
+.fade.ng-hide-remove {
+  display: block !important;
+}
+.fade.ng-hide-add-active,
+.fade.ng-hide-remove-active {
+  display: block !important;
+}
+.fade.ng-hide-add {
+  opacity: 1;
+  -webkit-animation: fadeOut 0.3s ease both;
+  -moz-animation: fadeOut 0.3s ease both;
+  animation: fadeOut 0.3s ease both;
+}
+.fade.ng-hide-remove {
+  opacity: 0;
+  -webkit-animation: fadeIn 0.3s ease both;
+  -moz-animation: fadeIn 0.3s ease both;
+  animation: fadeIn 0.3s ease both;
+}
+.scale-down.ng-hide-add {
+  -webkit-animation: scaleDownUp .5s ease both;
+  -moz-animation: scaleDownUp .5s ease both;
+  animation: scaleDownUp .5s ease both;
+  z-index: 99;
+  -webkit-animation-delay: .5s;
+  -moz-animation-delay: .5s;
+  animation-delay: .5s;
+  display: block !important;
+}
+.scale-down.ng-hide-remove {
+  -webkit-animation-delay: 1s;
+  -moz-animation-delay: 1s;
+  animation-delay: 1s;
+  -webkit-animation: scaleUp .7s ease both;
+  -moz-animation: scaleUp .7s ease both;
+  animation: scaleUp .7s ease both;
+  display: block !important;
+}
+/*
+  Page Transitions from Tympanus article:
+
+  http://tympanus.net/codrops/2013/05/07/a-collection-of-page-transitions/
+*/
+.pt-page {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+.no-js body {
+  overflow: auto;
+}
+.pt-page-ontop {
+  z-index: 99;
+}
+.pt-page {
+  visibility: visible;
+  z-index: 1;
+}
+/* scale and fade */
+.pt-page-scaleDown {
+  -webkit-animation: scaleDown .7s ease both;
+  -moz-animation: scaleDown .7s ease both;
+  animation: scaleDown .7s ease both;
+}
+.pt-page-scaleUp {
+  -webkit-animation: scaleUp .7s ease both;
+  -moz-animation: scaleUp .7s ease both;
+  animation: scaleUp .7s ease both;
+}
+.pt-page-scaleUpDown {
+  -webkit-animation: scaleUpDown .5s ease both;
+  -moz-animation: scaleUpDown .5s ease both;
+  animation: scaleUpDown .5s ease both;
+}
+.pt-page-scaleDownUp {
+  -webkit-animation: scaleDownUp .5s ease both;
+  -moz-animation: scaleDownUp .5s ease both;
+  animation: scaleDownUp .5s ease both;
+}
+.pt-page-scaleDownCenter {
+  -webkit-animation: scaleDownCenter 0.4s ease-in both;
+  -moz-animation: scaleDownCenter 0.4s ease-in both;
+  animation: scaleDownCenter 0.4s ease-in both;
+}
+.pt-page-scaleUpCenter {
+  -webkit-animation: scaleUpCenter 0.4s ease-out both;
+  -moz-animation: scaleUpCenter 0.4s ease-out both;
+  animation: scaleUpCenter 0.4s ease-out both;
+}
+/********************************* keyframes **************************************/
+/* scale and fade */
+@-webkit-keyframes scaleDown {
+  to {
+    opacity: 0;
+    -webkit-transform: scale(0.8);
+  }
+}
+@-moz-keyframes scaleDown {
+  to {
+    opacity: 0;
+    -moz-transform: scale(0.8);
+  }
+}
+@keyframes scaleDown {
+  to {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+@-webkit-keyframes scaleUp {
+  from {
+    opacity: 0;
+    -webkit-transform: scale(0.8);
+  }
+}
+@-moz-keyframes scaleUp {
+  from {
+    opacity: 0;
+    -moz-transform: scale(0.8);
+  }
+}
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+@-webkit-keyframes scaleUpDown {
+  from {
+    opacity: 0;
+    -webkit-transform: scale(1.2);
+  }
+}
+@-moz-keyframes scaleUpDown {
+  from {
+    opacity: 0;
+    -moz-transform: scale(1.2);
+  }
+}
+@keyframes scaleUpDown {
+  from {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+}
+@-webkit-keyframes scaleDownUp {
+  to {
+    opacity: 0;
+    -webkit-transform: scale(1.2);
+  }
+}
+@-moz-keyframes scaleDownUp {
+  to {
+    opacity: 0;
+    -moz-transform: scale(1.2);
+  }
+}
+@keyframes scaleDownUp {
+  to {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+}
+@-webkit-keyframes scaleDownCenter {
+  to {
+    opacity: 0;
+    -webkit-transform: scale(0.7);
+  }
+}
+@-moz-keyframes scaleDownCenter {
+  to {
+    opacity: 0;
+    -moz-transform: scale(0.7);
+  }
+}
+@keyframes scaleDownCenter {
+  to {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+}
+@-webkit-keyframes scaleUpCenter {
+  from {
+    opacity: 0;
+    -webkit-transform: scale(0.7);
+  }
+}
+@-moz-keyframes scaleUpCenter {
+  from {
+    opacity: 0;
+    -moz-transform: scale(0.7);
+  }
+}
+@keyframes scaleUpCenter {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+}
+/* animation delay classes */
+.pt-page-delay100 {
+  -webkit-animation-delay: .1s;
+  -moz-animation-delay: .1s;
+  animation-delay: .1s;
+}
+.pt-page-delay180 {
+  -webkit-animation-delay: .180s;
+  -moz-animation-delay: .180s;
+  animation-delay: .180s;
+}
+.pt-page-delay200 {
+  -webkit-animation-delay: .2s;
+  -moz-animation-delay: .2s;
+  animation-delay: .2s;
+}
+.pt-page-delay300 {
+  -webkit-animation-delay: .3s;
+  -moz-animation-delay: .3s;
+  animation-delay: .3s;
+}
+.pt-page-delay400 {
+  -webkit-animation-delay: .4s;
+  -moz-animation-delay: .4s;
+  animation-delay: .4s;
+}
+.pt-page-delay500 {
+  -webkit-animation-delay: .5s;
+  -moz-animation-delay: .5s;
+  animation-delay: .5s;
+}
+.pt-page-delay700 {
+  -webkit-animation-delay: .7s;
+  -moz-animation-delay: .7s;
+  animation-delay: .7s;
+}
+.pt-page-delay1000 {
+  -webkit-animation-delay: 1s;
+  -moz-animation-delay: 1s;
+  animation-delay: 1s;
+}
+.pt-page-moveToLeft {
+  -webkit-animation: moveToLeft .6s ease both;
+  -moz-animation: moveToLeft .6s ease both;
+  animation: moveToLeft .6s ease both;
+}
+.pt-page-moveFromLeft {
+  -webkit-animation: moveFromLeft .6s ease both;
+  -moz-animation: moveFromLeft .6s ease both;
+  animation: moveFromLeft .6s ease both;
+}
+.pt-page-moveToRight {
+  -webkit-animation: moveToRight .6s ease both;
+  -moz-animation: moveToRight .6s ease both;
+  animation: moveToRight .6s ease both;
+}
+.pt-page-moveFromRight {
+  -webkit-animation: moveFromRight .6s ease both;
+  -moz-animation: moveFromRight .6s ease both;
+  animation: moveFromRight .6s ease both;
+}
+.pt-page-moveToTop {
+  -webkit-animation: moveToTop .6s ease both;
+  -moz-animation: moveToTop .6s ease both;
+  animation: moveToTop .6s ease both;
+}
+.pt-page-moveFromTop {
+  -webkit-animation: moveFromTop .6s ease both;
+  -moz-animation: moveFromTop .6s ease both;
+  animation: moveFromTop .6s ease both;
+}
+.pt-page-moveToBottom {
+  -webkit-animation: moveToBottom .6s ease both;
+  -moz-animation: moveToBottom .6s ease both;
+  animation: moveToBottom .6s ease both;
+}
+.pt-page-moveFromBottom {
+  -webkit-animation: moveFromBottom .6s ease both;
+  -moz-animation: moveFromBottom .6s ease both;
+  animation: moveFromBottom .6s ease both;
+}
+/* fade */
+.pt-page-fade {
+  -webkit-animation: fade .7s ease both;
+  -moz-animation: fade .7s ease both;
+  animation: fade .7s ease both;
+}
+/* move from / to and fade */
+.pt-page-moveToLeftFade {
+  -webkit-animation: moveToLeftFade .7s ease both;
+  -moz-animation: moveToLeftFade .7s ease both;
+  animation: moveToLeftFade .7s ease both;
+}
+.pt-page-moveFromLeftFade {
+  -webkit-animation: moveFromLeftFade .7s ease both;
+  -moz-animation: moveFromLeftFade .7s ease both;
+  animation: moveFromLeftFade .7s ease both;
+}
+.pt-page-moveToRightFade {
+  -webkit-animation: moveToRightFade .7s ease both;
+  -moz-animation: moveToRightFade .7s ease both;
+  animation: moveToRightFade .7s ease both;
+}
+.pt-page-moveFromRightFade {
+  -webkit-animation: moveFromRightFade .7s ease both;
+  -moz-animation: moveFromRightFade .7s ease both;
+  animation: moveFromRightFade .7s ease both;
+}
+.pt-page-moveToTopFade {
+  -webkit-animation: moveToTopFade .7s ease both;
+  -moz-animation: moveToTopFade .7s ease both;
+  animation: moveToTopFade .7s ease both;
+}
+.pt-page-moveFromTopFade {
+  -webkit-animation: moveFromTopFade .7s ease both;
+  -moz-animation: moveFromTopFade .7s ease both;
+  animation: moveFromTopFade .7s ease both;
+}
+.pt-page-moveToBottomFade {
+  -webkit-animation: moveToBottomFade .7s ease both;
+  -moz-animation: moveToBottomFade .7s ease both;
+  animation: moveToBottomFade .7s ease both;
+}
+.pt-page-moveFromBottomFade {
+  -webkit-animation: moveFromBottomFade .7s ease both;
+  -moz-animation: moveFromBottomFade .7s ease both;
+  animation: moveFromBottomFade .7s ease both;
+}
+/* move to with different easing */
+.pt-page-moveToLeftEasing {
+  -webkit-animation: moveToLeft 0.7s ease-in-out both;
+  -moz-animation: moveToLeft 0.7s ease-in-out both;
+  animation: moveToLeft 0.7s ease-in-out both;
+}
+.pt-page-moveToRightEasing {
+  -webkit-animation: moveToRight 0.7s ease-in-out both;
+  -moz-animation: moveToRight 0.7s ease-in-out both;
+  animation: moveToRight 0.7s ease-in-out both;
+}
+.pt-page-moveToTopEasing {
+  -webkit-animation: moveToTop 0.7s ease-in-out both;
+  -moz-animation: moveToTop 0.7s ease-in-out both;
+  animation: moveToTop 0.7s ease-in-out both;
+}
+.pt-page-moveToBottomEasing {
+  -webkit-animation: moveToBottom 0.7s ease-in-out both;
+  -moz-animation: moveToBottom 0.7s ease-in-out both;
+  animation: moveToBottom 0.7s ease-in-out both;
+}
+/********************************* keyframes **************************************/
+/* move from / to  */
+@-webkit-keyframes moveToLeft {
+  to {
+    -webkit-transform: translateX(-100%);
+  }
+}
+@-moz-keyframes moveToLeft {
+  to {
+    -moz-transform: translateX(-100%);
+  }
+}
+@keyframes moveToLeft {
+  to {
+    transform: translateX(-100%);
+  }
+}
+@-webkit-keyframes moveFromLeft {
+  from {
+    -webkit-transform: translateX(-100%);
+  }
+}
+@-moz-keyframes moveFromLeft {
+  from {
+    -moz-transform: translateX(-100%);
+  }
+}
+@keyframes moveFromLeft {
+  from {
+    transform: translateX(-100%);
+  }
+}
+@-webkit-keyframes moveToRight {
+  to {
+    -webkit-transform: translateX(100%);
+  }
+}
+@-moz-keyframes moveToRight {
+  to {
+    -moz-transform: translateX(100%);
+  }
+}
+@keyframes moveToRight {
+  to {
+    transform: translateX(100%);
+  }
+}
+@-webkit-keyframes moveFromRight {
+  from {
+    -webkit-transform: translateX(100%);
+  }
+}
+@-moz-keyframes moveFromRight {
+  from {
+    -moz-transform: translateX(100%);
+  }
+}
+@keyframes moveFromRight {
+  from {
+    transform: translateX(100%);
+  }
+}
+@-webkit-keyframes moveToTop {
+  to {
+    -webkit-transform: translateY(-100%);
+  }
+}
+@-moz-keyframes moveToTop {
+  to {
+    -moz-transform: translateY(-100%);
+  }
+}
+@keyframes moveToTop {
+  to {
+    transform: translateY(-100%);
+  }
+}
+@-webkit-keyframes moveFromTop {
+  from {
+    -webkit-transform: translateY(-100%);
+  }
+}
+@-moz-keyframes moveFromTop {
+  from {
+    -moz-transform: translateY(-100%);
+  }
+}
+@keyframes moveFromTop {
+  from {
+    transform: translateY(-100%);
+  }
+}
+@-webkit-keyframes moveToBottom {
+  to {
+    -webkit-transform: translateY(100%);
+  }
+}
+@-moz-keyframes moveToBottom {
+  to {
+    -moz-transform: translateY(100%);
+  }
+}
+@keyframes moveToBottom {
+  to {
+    transform: translateY(100%);
+  }
+}
+@-webkit-keyframes moveFromBottom {
+  from {
+    -webkit-transform: translateY(100%);
+  }
+}
+@-moz-keyframes moveFromBottom {
+  from {
+    -moz-transform: translateY(100%);
+  }
+}
+@keyframes moveFromBottom {
+  from {
+    transform: translateY(100%);
+  }
+}
+/* fade */
+@-webkit-keyframes fade {
+  to {
+    opacity: 0.3;
+  }
+}
+@-moz-keyframes fade {
+  to {
+    opacity: 0.3;
+  }
+}
+@keyframes fade {
+  to {
+    opacity: 0.3;
+  }
+}
+/* move from / to and fade */
+@-webkit-keyframes moveToLeftFade {
+  to {
+    opacity: 0.3;
+    -webkit-transform: translateX(-100%);
+  }
+}
+@-moz-keyframes moveToLeftFade {
+  to {
+    opacity: 0.3;
+    -moz-transform: translateX(-100%);
+  }
+}
+@keyframes moveToLeftFade {
+  to {
+    opacity: 0.3;
+    transform: translateX(-100%);
+  }
+}
+@-webkit-keyframes moveFromLeftFade {
+  from {
+    opacity: 0.3;
+    -webkit-transform: translateX(-100%);
+  }
+}
+@-moz-keyframes moveFromLeftFade {
+  from {
+    opacity: 0.3;
+    -moz-transform: translateX(-100%);
+  }
+}
+@keyframes moveFromLeftFade {
+  from {
+    opacity: 0.3;
+    transform: translateX(-100%);
+  }
+}
+@-webkit-keyframes moveToRightFade {
+  to {
+    opacity: 0.3;
+    -webkit-transform: translateX(100%);
+  }
+}
+@-moz-keyframes moveToRightFade {
+  to {
+    opacity: 0.3;
+    -moz-transform: translateX(100%);
+  }
+}
+@keyframes moveToRightFade {
+  to {
+    opacity: 0.3;
+    transform: translateX(100%);
+  }
+}
+@-webkit-keyframes moveFromRightFade {
+  from {
+    opacity: 0.3;
+    -webkit-transform: translateX(100%);
+  }
+}
+@-moz-keyframes moveFromRightFade {
+  from {
+    opacity: 0.3;
+    -moz-transform: translateX(100%);
+  }
+}
+@keyframes moveFromRightFade {
+  from {
+    opacity: 0.3;
+    transform: translateX(100%);
+  }
+}
+@-webkit-keyframes moveToTopFade {
+  to {
+    opacity: 0.3;
+    -webkit-transform: translateY(-100%);
+  }
+}
+@-moz-keyframes moveToTopFade {
+  to {
+    opacity: 0.3;
+    -moz-transform: translateY(-100%);
+  }
+}
+@keyframes moveToTopFade {
+  to {
+    opacity: 0.3;
+    transform: translateY(-100%);
+  }
+}
+@-webkit-keyframes moveFromTopFade {
+  from {
+    opacity: 0.3;
+    -webkit-transform: translateY(-100%);
+  }
+}
+@-moz-keyframes moveFromTopFade {
+  from {
+    opacity: 0.3;
+    -moz-transform: translateY(-100%);
+  }
+}
+@keyframes moveFromTopFade {
+  from {
+    opacity: 0.3;
+    transform: translateY(-100%);
+  }
+}
+@-webkit-keyframes moveToBottomFade {
+  to {
+    opacity: 0.3;
+    -webkit-transform: translateY(100%);
+  }
+}
+@-moz-keyframes moveToBottomFade {
+  to {
+    opacity: 0.3;
+    -moz-transform: translateY(100%);
+  }
+}
+@keyframes moveToBottomFade {
+  to {
+    opacity: 0.3;
+    transform: translateY(100%);
+  }
+}
+@-webkit-keyframes moveFromBottomFade {
+  from {
+    opacity: 0.3;
+    -webkit-transform: translateY(100%);
+  }
+}
+@-moz-keyframes moveFromBottomFade {
+  from {
+    opacity: 0.3;
+    -moz-transform: translateY(100%);
+  }
+}
+@keyframes moveFromBottomFade {
+  from {
+    opacity: 0.3;
+    transform: translateY(100%);
+  }
+}
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+.loading {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+.loading .loading-wrapper {
+  display: table;
+  width: 100%;
+  height: 100%;
+  /* For at least Firefox */
+
+  min-height: 100%;
+}
+.loading .loading-wrapper-inner {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+/*!
+ * Bootstrap v3.1.1 (http://getbootstrap.com)
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
+/* General button style (reset) */
+.btn {
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  cursor: pointer;
+  padding: 10px 30px;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  outline: none;
+  position: relative;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+}
+.btn:after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+}
+.btn:before {
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+}
+.btn-flat {
+  border: 3px solid #fff;
+  color: #fff;
+  /* Button 1a */
+
+}
+.btn-flat:hover,
+.btn-flat:active,
+.btn-flat.ng-click-active {
+  color: #0e83cd;
+  background: #fff;
+}
+/* Button 2 */
+.btn-flap {
+  background: #cb4e4e;
+  color: #fff;
+  box-shadow: 0 6px #ab3c3c;
+  -webkit-transition: none;
+  -moz-transition: none;
+  transition: none;
+  border-radius: 0 0 5px 5px;
+}
+.btn-flap:hover {
+  box-shadow: 0 4px #ab3c3c;
+  top: 2px;
+}
+.btn-flap:active,
+.btn-flap.ng-click-active {
+  box-shadow: 0 0 #ab3c3c;
+  top: 6px;
+}
+.drop-panel {
+  background: #333;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid #222;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  padding: 0px;
+}
+.ebp {
+  background-color: #004c62;
+  color: #ffffff;
+  border: 6px solid #ffffff;
+  border-radius: 9px;
+  display: inline-block;
+  position: relative;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.7);
+}
+.slide-anim.ng-hide-add {
+  -webkit-animation: moveToLeft .6s ease both;
+  -moz-animation: moveToLeft .6s ease both;
+  animation: moveToLeft .6s ease both;
+  z-index: 99;
+  display: block !important;
+}
+.slide-anim.ng-hide-remove {
+  -webkit-animation: moveToRight .6s ease both;
+  -moz-animation: moveToRight .6s ease both;
+  animation: moveToRight .6s ease both;
+  display: block !important;
+}
+inventory-view {
+  text-align: center;
+}
+inventory-view .ebp {
+  width: 100%;
+  min-height: 10em;
+  overflow: auto;
+  overflow-x: hidden;
+}
+inventory-view .btn {
+  margin: 5px 5px;
+  font-size: 2em;
+}
+inventory-view .btn.next {
+  float: right;
+}
+inventory-view .btn.previous {
+  float: left;
+}
+inventory-view ul {
+  list-style-type: none;
+  text-align: center;
+  margin: 0;
+  padding: 10px;
+}
+inventory-view ul > li {
+  position: relative;
+  padding-top: 30px;
+  height: 94px;
+  width: 64px;
+}
+inventory-view ul > li .desc {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  font-size: 0.9em;
+  line-height: 15px;
+}
+inventory-view ul > li .icon {
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+inventory-view ul > li .icon img {
+  display: inline-block;
+  height: 64px;
+  width: 64px;
+}
+inventory-view ul > li .compare {
+  color: #0f0;
+}
+inventory-view .unequipped > li {
+  display: inline-block;
+}
+inventory-view ul,
+inventory-view ul > li {
+  display: inline-block;
+  list-style-type: none;
+}
+inventory-view .character-equipment-map {
+  padding: 10px;
+  margin: 0;
+  position: relative;
+}
+inventory-view .character-equipment-map > li {
+  display: inline-block;
+  font-size: 16px;
+}
+.dialog-view {
+  text-align: center;
+  pointer-events: none !important;
+}
+.dialog-view .container {
+  width: 100%;
+}
+.dialog-view .dialog {
+  pointer-events: auto !important;
+  width: auto;
+  max-width: 800px;
+  margin-top: 15px;
+  padding: 10px 10px;
+  position: relative;
+}
+.dialog-view .dialog .btn-close {
+  position: absolute;
+  font-size: 1.5em;
+  padding: 5px 20px;
+  padding-top: 10px;
+  right: 0.5em;
+  top: 0;
+}
+.dialog-view .dialog .btn-close:hover {
+  top: 0;
+  padding-top: 12px;
+}
+.dialog-view .dialog .btn-close:active {
+  top: 0;
+  padding-top: 16px;
+}
+.dialog-view .character {
+  padding: 0;
+}
+.dialog-view .character p {
+  margin: 0;
+}
+.dialog-view .text {
+  text-align: center;
+  vertical-align: middle;
+  line-height: normal;
+  color: #fff;
+  text-shadow: 1px 1px 0 #000000, -1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000;
+}
+.store-view {
+  text-align: center;
+  margin: auto;
+  display: block;
+  max-width: 420px;
+  padding: 1em;
+}
+.store-view .title {
+  margin-bottom: 20px;
+}
+.store-view .name h1 {
+  margin: 10px;
+  font-size: 24px;
+}
+.store-view .inventory {
+  text-align: center;
+  padding: 0;
+}
+.store-view .inventory .item-price {
+  color: #e8c627;
+  padding-left: 10px;
+}
+.store-view .btn-group {
+  margin-top: 1em;
+  text-align: center;
+}
+.store-view ul {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  list-style-type: none;
+  max-width: 100%;
+}
+.store-view ul li.item {
+  cursor: pointer;
+  border: 1px solid transparent;
+  padding: 5px;
+  font-size: 16px;
+  margin-left: 0;
+  margin-right: 0;
+}
+.store-view ul li.item.selected {
+  padding: 1em;
+}
+.store-view ul li.item .item-name {
+  display: inline-block;
+  min-width: 150px;
+  max-width: 160px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.store-view ul li.item .icon {
+  line-height: 28px;
+}
+.store-view ul li.item .icon img {
+  width: 32px;
+}
+.store-view ul li.item:hover * {
+  color: #0FF !important;
+}
+.temple-view {
+  text-align: center;
+  margin: auto;
+  display: block;
+  max-width: 800px;
+}
+.temple-view h1,
+.temple-view h2 {
+  margin: 5px 0;
+  display: inline-block;
+}
+.temple-view .hero-view {
+  padding: 0.5em;
+  margin: 0.5em;
+}
+.temple-view .party {
+  text-align: left;
+}
+.temple-view .party .member {
+  margin: 0 5px;
+}
+.temple-view .party .member .image,
+.temple-view .party .member .name,
+.temple-view .party .member .stats {
+  display: inline-block;
+}
+.temple-view .party .member .stats {
+  float: right;
+  height: 64px;
+}
+.temple-view .party .member health-bar {
+  width: 100%;
+  height: 20px;
+}
+.temple-view .prompt {
+  padding: 10px;
+}
+.temple-view .prompt > button {
+  width: 45%;
+  margin: 10px 0;
+}
+.temple-view .prompt > button:first-of-type {
+  left: 0;
+}
+.temple-view .prompt > button:last-of-type {
+  right: 0;
+}
+.temple-view .header {
+  margin: 0;
+}
+.temple-view .header h1 {
+  height: 64px;
+}
+.hero-card {
+  display: inline-block;
+  min-width: 260px;
+  padding: 0 15px;
+}
+.hero-card > * {
+  font-size: 16px;
+}
+.hero-card.dead {
+  color: #aaa;
+}
+.hero-card hr {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+.hero-card h1,
+.hero-card .image {
+  margin-top: 5px;
+  text-align: center;
+}
+.hero-card health-bar {
+  width: 100%;
+}
+.hero-card .progress {
+  border-radius: 0;
+  margin-bottom: 5px;
+  height: 10px;
+}
+.hero-card .hero-stat {
+  text-align: right;
+}
+.hero-card .hero-stat strong {
+  float: left;
+}
+.combat-view {
+  font-family: 'GraphicPixel', 'AdvoCut', sans-serif;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 1.5em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.combat-view .action-menu,
+.combat-view .targets-menu,
+.combat-view .spells-menu {
+  position: absolute;
+  bottom: 100%;
+  margin: 20px;
+  padding: 5px 25px;
+  list-style-type: none;
+}
+.combat-view .action-menu li,
+.combat-view .targets-menu li,
+.combat-view .spells-menu li {
+  text-transform: capitalize;
+  cursor: pointer;
+  padding: 10px;
+}
+.combat-view .progress {
+  margin-bottom: 0;
+}
+.combat-view .status {
+  padding: 0 15px;
+  border-radius: 0;
+  text-align: right;
+  color: #fff;
+}
+.combat-view .status > * {
+  display: inline-block;
+}
+.combat-view .status.focused {
+  color: #e8c627;
+}
+.combat-view .status.choosing {
+  background-color: #004c62;
+}
+.combat-view .status .name {
+  float: left;
+  text-align: left;
+  width: 25%;
+  text-shadow: 1px 1px 0 #000000, -1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000;
+}
+.combat-view .status .hp {
+  text-shadow: 1px 1px 0 #000000, -1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000;
+}
+.combat-view .status health-bar {
+  min-width: 25%;
+}
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .combat-view .status {
+    font-size: 2.2em;
+  }
+}
+.point-to-player {
+  font-size: 2em;
+  -webkit-transition: all 0.1s;
+  -moz-transition: all 0.1s;
+  transition: all 0.1s;
+  color: #fff;
+  text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+.point-to-player.left {
+  content: '<';
+}
+.point-to-player.right {
+  content: '>';
+}
+.point-to-player.attack {
+  content: 'X';
+  color: red;
+}
+.game-menu {
+  position: fixed;
+  bottom: 5px;
+  left: 5px;
+  z-index: 10;
+  font-family: 'GraphicPixel', sans-serif;
+}
+.game-menu .options,
+.game-menu .trigger {
+  font-size: 42px;
+  font-weight: 300;
+}
+.game-menu .trigger {
+  position: fixed;
+  left: 5px;
+  bottom: 0;
+  line-height: 60px;
+  height: 60px;
+}
+.game-menu .trigger.ng-click-active {
+  color: #004c62;
+}
+.game-menu a {
+  color: #fff;
+}
+.game-menu a:hover {
+  text-decoration: none;
+}
+.game-menu .party .ebp {
+  margin-bottom: 10px;
+}
+.game-menu .navigation {
+  position: fixed;
+  left: 0px;
+  top: 0;
+  bottom: 0;
+  max-width: 50px;
+  width: 50px;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.game-menu .navigation ul.options {
+  list-style-type: none;
+  padding: 5px;
+}
+.game-menu .navigation ul.options li a.ng-click-active {
+  color: #004c62;
+}
+.game-menu .navigation ul.options li.active a {
+  color: #e8c627;
+}
+.game-menu .views {
+  display: none;
+  overflow: auto;
+  overflow-x: hidden;
+}
+.game-menu .views.open {
+  display: block;
+}
+.game-menu .views > * {
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.8);
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  left: 50px;
+  bottom: 0;
+  right: 0;
+}
+.game-menu .views .save {
+  text-align: center;
+}
+.game-menu .views .save button {
+  padding: 10px 10px;
+  margin-top: 20px;
+  font-size: 1.5em;
+  width: 90%;
+  max-width: 300px;
+}
+.menu-overlay {
+  padding: 5px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 5px;
+  z-index: 150;
+}
+.menu-overlay > span {
+  opacity: 0.8;
+  color: #ffffff;
+  text-align: center;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+  font-size: 48px;
+  cursor: pointer;
+}
+.menu-overlay > span:hover {
+  opacity: 1;
+}
+health-bar {
+  min-height: 5px;
+  min-width: 5px;
+  display: inline-block;
+}
+health-bar .progress {
+  border-radius: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  /* Damage states */
+
+}
+health-bar .progress.fine .progress-bar {
+  background-color: #2e6da6;
+}
+health-bar .progress.hurt .progress-bar {
+  background-color: #e6c828;
+}
+health-bar .progress.critical .progress-bar {
+  background-color: #b70005;
+}
+health-bar .progress.dead {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+health-bar .progress.dead .progress-bar {
+  background-color: #ffffff;
+}
+main-menu > * {
+  font-family: 'GraphicPixel', 'AdvoCut', sans-serif;
+  text-align: center;
+  color: #fff;
+}
+main-menu > h1 {
+  margin: 0;
+  font-size: 5em;
+  text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1), -4px -4px 0 rgba(255, 255, 255, 0.2), 4px -4px 0 rgba(0, 0, 0, 0.1), -4px 4px 0 rgba(255, 255, 255, 0.2);
+}
+main-menu p {
+  font-size: 1em;
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.2), 1px 1px 0 rgba(0, 0, 0, 0.1), -1px 1px 0 rgba(255, 255, 255, 0.2), 1px -1px 0 rgba(0, 0, 0, 0.1);
+  color: #eeaa13;
+}
+main-menu button.previous,
+main-menu button.next {
+  font-size: 2em;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  color: #fff;
+}
+main-menu button.previous {
+  left: 0;
+}
+main-menu button.previous.ng-click-active {
+  background-image: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.0001) 0, rgba(0, 0, 0, 0.5) 100%);
+  background-image: -o-linear-gradient(right, rgba(0, 0, 0, 0.0001) 0, rgba(0, 0, 0, 0.5) 100%);
+  background-image: -webkit-gradient(linear, right top, left top, from(rgba(0, 0, 0, 0.0001)), to(rgba(0, 0, 0, 0.5)));
+  background-image: linear-gradient(to left, rgba(0, 0, 0, 0.0001) 0, rgba(0, 0, 0, 0.5) 100%);
+}
+main-menu button.next {
+  right: 0;
+}
+main-menu button.next.ng-click-active {
+  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.0001) 0, rgba(0, 0, 0, 0.5) 100%);
+  background-image: -o-linear-gradient(left, rgba(0, 0, 0, 0.0001) 0, rgba(0, 0, 0, 0.5) 100%);
+  background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 0.0001)), to(rgba(0, 0, 0, 0.5)));
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.0001) 0, rgba(0, 0, 0, 0.5) 100%);
+}
+main-menu button.ng-click-active {
+  color: #eeaa13;
+  text-shadow: inset -1px -1px rgba(0, 0, 0, 0.4);
+  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.0001) 0, rgba(0, 0, 0, 0.5) 100%);
+  background-image: -o-linear-gradient(left, rgba(0, 0, 0, 0.0001) 0, rgba(0, 0, 0, 0.5) 100%);
+  background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 0.0001)), to(rgba(0, 0, 0, 0.5)));
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.0001) 0, rgba(0, 0, 0, 0.5) 100%);
+}
+main-menu ul {
+  margin: 0;
+  padding: 0 2em;
+  list-style-type: none;
+  position: relative;
+  text-align: center;
+  pointer-events: none;
+}
+main-menu ul li {
+  list-style-type: none;
+  position: absolute;
+  left: -9000px;
+}
+main-menu ul li.active {
+  left: 0;
+  right: 0;
+}
+html,
+body {
+  background-color: #222222;
+  margin: 0;
+  overflow: hidden;
+  height: 100%;
+  font-family: 'GraphicPixel', 'AdvoCut', sans-serif;
+  color: rgba(255, 255, 255, 0.9);
+  /* GET THIS DIALOG OUT OF MY FACE! */
+
+}
+html .btn-close,
+body .btn-close {
+  font-size: 2.2em;
+  position: fixed;
+  padding-top: 20px;
+  right: 0.5em;
+  top: -6px;
+  text-shadow: -1px -1px rgba(0, 0, 0, 0.2);
+}
+html .btn-close:hover,
+body .btn-close:hover {
+  top: -4px;
+}
+html .btn-close:active,
+body .btn-close:active {
+  top: 0;
+}
+.hero-container {
+  margin-right: auto;
+  margin-left: auto;
+}
+.hero-container > * {
+  font-family: 'GraphicPixel', 'AdvoCut', sans-serif;
+  text-align: center;
+  color: #fff;
+}
+.hero-container > h1 {
+  margin-top: 10px;
+  margin-bottom: 25px;
+  font-size: 8em;
+  text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1), -4px -4px 0 rgba(255, 255, 255, 0.2), 4px -4px 0 rgba(0, 0, 0, 0.1), -4px 4px 0 rgba(255, 255, 255, 0.2);
+}
+.hero-container p {
+  font-size: 1.2em;
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.2), 1px 1px 0 rgba(0, 0, 0, 0.1), -1px 1px 0 rgba(255, 255, 255, 0.2), 1px -1px 0 rgba(0, 0, 0, 0.1);
+  color: #eeaa13;
+}
+canvas {
+  image-rendering: -moz-crisp-edges;
+  /* Firefox */
+
+  image-rendering: -o-crisp-edges;
+  /* Opera */
+
+  image-rendering: -webkit-optimize-contrast;
+  /* Webkit (non-standard naming) */
+
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
+  /* IE (non-standard property) */
+
+  z-index: auto;
+}
+.ebp {
+  font-family: 'GraphicPixel', sans-serif;
+  font-size: 20px;
+}
+/* Stroke Text Effect */
+.drop-overlay {
+  padding: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100%;
+  position: absolute;
+  background-color: transparent;
+  z-index: 50;
+  text-align: center;
+  font-family: 'GraphicPixel', 'AdvoCut', sans-serif;
+  pointer-events: auto;
+}
+.drop-overlay .message {
+  top: 45%;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  border: none;
+  box-shadow: none;
+  margin: auto;
+  position: absolute;
+  padding: 10px;
+  font-size: 2em;
+  color: #fff;
+  text-shadow: 1px 1px 0 #000000, -1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000;
+}
+.container {
+  z-index: 100;
+}
+.game-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+.game-container .damage-value {
+  z-index: 50;
+}
+.game-container canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-right: none;
+  border-left: none;
+}
+.ui-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  pointer-events: none;
+}
+.ui-container .ebp {
+  pointer-events: auto;
+}
+.ui-container > * {
+  display: block;
+  height: 100%;
+  overflow-y: auto;
+}
+.ui-container .dialog {
+  max-width: 800px;
+  min-width: 300px;
+  margin-top: 15px;
+  padding: 10px 10px;
+  position: relative;
+}
+.ui-container .dialog .btn-close {
+  position: absolute;
+  font-size: 1em;
+  padding: 5px 15px;
+  padding-top: 10px;
+  right: 0;
+  top: 0;
+}
+.ui-container .dialog .btn-close:hover {
+  top: 0;
+  padding-top: 12px;
+}
+.ui-container .dialog .btn-close:active {
+  top: 0;
+  padding-top: 16px;
+}
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .hero-container h1 {
+    font-size: 12em;
+  }
+  .hero-container p {
+    font-size: 1.8em;
+  }
+  .menu-overlay > span {
+    font-size: 24px;
+  }
+  .game-container .damage-value {
+    font-size: 5em;
+  }
+  .game-container .message .text {
+    font-size: 18px;
+  }
+}
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .drop-overlay .message {
+    padding: 25px;
+    font-size: 3em;
+  }
+  .game-container .message .text {
+    font-size: 20px;
+  }
+}
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .hero-container h1 {
+    font-size: 16em;
+  }
+  .hero-container p {
+    font-size: 1.8em;
+  }
+  .game-container .message .text {
+    font-size: 24px;
+  }
+}
+.select-map {
+  z-index: 20;
+  margin: 1rem;
+  padding: 0.5rem;
+  float: right;
+}
+rpg-map-canvas canvas {
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}

@@ -22,18 +22,25 @@ export class RPGMapView extends pow2.game.GameMapView {
 
   private _features:GameFeatureObject[] = null;
 
+  public viewTranslate:pow2.Point = new pow2.Point();
+
   protected clearCache() {
     this._features = null;
     super.clearCache();
   }
 
-  setTileMap(tileMap:TileMap) {
-    this.tileMap = tileMap;
-    this.clearCache();
+  //
+  //setTileMap(tileMap:GameTileMap) {
+  //  this.tileMap = tileMap;
+  //  this.clearCache();
+  //}
+
+  setRenderState() {
+    super.setRenderState();
+    //this.context.translate(this.viewTranslate.x,this.viewTranslate.y);
   }
 
-
-  /*
+  /**
    * Render the tile map, and any features it has.
    */
   renderFrame(elapsed:number) {

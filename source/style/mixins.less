@@ -1,0 +1,17 @@
+.extrude-stroke-text(@width:2px,@lightColor,@shadowColor) {
+  text-shadow: @width  @width 0 @shadowColor,
+    -@width -@width 0 @lightColor,
+    @width -@width 0 @shadowColor,
+  -@width  @width 0 @lightColor;
+}
+
+.inset-stroke-text(@width:2px,@lightColor,@shadowColor) {
+  text-shadow: -@width -@width 0 @lightColor,
+  @width  @width 0 @shadowColor,
+  -@width  @width 0 @lightColor,
+    @width -@width 0 @shadowColor;
+}
+
+.stroke-text(@width:2px,@color) {
+  .extrude-stroke-text(@width, @color, @color);
+}

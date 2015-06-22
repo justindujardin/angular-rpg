@@ -1,0 +1,267 @@
+.animation(@config) {
+  -webkit-animation: @config;
+  -moz-animation: @config;
+  animation: @config;
+}
+
+@-webkit-keyframes moveFromRight {
+  from {
+    -webkit-transform: translateX(100%);
+  }
+}
+
+@-moz-keyframes moveFromRight {
+  from {
+    -moz-transform: translateX(100%);
+  }
+}
+
+@keyframes moveFromRight {
+  from {
+    transform: translateX(100%);
+  }
+}
+
+@-webkit-keyframes moveToRight {
+  to {
+    -webkit-transform: translateX(100%);
+  }
+}
+
+@-moz-keyframes moveToRight {
+  to {
+    -moz-transform: translateX(100%);
+  }
+}
+
+@keyframes moveToRight {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@-webkit-keyframes moveFromTop {
+  from {
+    opacity: 0.3;
+    -webkit-transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes moveFromTop {
+  from {
+    opacity: 0.3;
+    -moz-transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes moveFromTop {
+  from {
+    opacity: 0.3;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+
+@-webkit-keyframes moveToTop {
+  to {
+    opacity: 0.3;
+    -webkit-transform: translateY(100%);
+  }
+}
+
+@-moz-keyframes moveToTop {
+  to {
+    opacity: 0.3;
+    -moz-transform: translateY(100%);
+  }
+}
+
+@keyframes moveToTop {
+  to {
+    opacity: 0.3;
+    transform: translateY(100%);
+  }
+}
+
+@-webkit-keyframes fadeOut {
+  to {
+    opacity: 0.0;
+  }
+}
+
+@-moz-keyframes fadeOut {
+  to {
+    opacity: 0.0;
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0.0;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0.0;
+  }
+  to {
+    opacity: 1.0;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  from {
+    opacity: 0.0;
+  }
+  to {
+    opacity: 1.0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0.0;
+  }
+  to {
+    opacity: 1.0;
+  }
+}
+
+@fadeTime: 0.3s;
+.moveFromRight {
+  -webkit-animation: moveFromRight .6s ease both;
+  -moz-animation: moveFromRight .6s ease both;
+  animation: moveFromRight .6s ease both;
+}
+
+.moveToRight {
+  -webkit-animation: moveToRight .6s ease both;
+  -moz-animation: moveToRight .6s ease both;
+  animation: moveToRight .6s ease both;
+}
+
+.slide-from-right {
+}
+
+.slide-from-right.ng-hide {
+}
+
+.slide-from-right.ng-hide-add {
+  .moveToRight;
+  display: block !important;
+}
+
+.slide-from-right.ng-hide-remove {
+  .moveFromRight;
+  display: block !important;
+}
+
+.fadeOut {
+  .animation(fadeOut @fadeTime ease both);
+}
+
+.fadeIn {
+  .animation(fadeIn @fadeTime ease both);
+}
+
+.menu-fade {
+}
+
+.menu-fade.ng-hide {
+}
+
+.menu-fade.ng-hide-add {
+  .fadeOut;
+  display: block !important;
+}
+
+.menu-fade.ng-hide-remove {
+  .fadeIn;
+  display: block !important;
+}
+
+// Fade in/out
+.fade.ng-enter {
+  opacity: 0;
+  display: block !important;
+}
+
+.fade.ng-enter,
+.fade.ng-enter.ng-enter-active {
+  .animation(fadeIn @fadeTime ease both);
+  display: block !important;
+}
+
+.fade.ng-leave {
+  opacity: 1;
+  display: block !important;
+}
+
+.fade.ng-leave,
+.fade.ng-leave-active {
+  .animation(fadeOut @fadeTime ease both);
+  display: block !important;
+}
+
+.fade.ng-hide-add,
+.fade.ng-hide-remove {
+  display: block !important;
+}
+
+.fade.ng-hide-add-active,
+.fade.ng-hide-remove-active {
+  display: block !important;
+}
+
+.fade.ng-hide-add {
+  opacity: 1;
+  .fadeOut;
+}
+
+.fade.ng-hide-remove {
+  opacity: 0;
+  .fadeIn;
+}
+
+//
+//.fade.ng-hide {
+//  display: block !important;
+//  opacity: 0;
+//}
+//.fade.ng-hide-remove {
+//  .animation(fadeOut @fadeTime ease both);
+//  display: block !important;
+//}
+//.fade.ng-hide-add {
+//  .animation(fadeIn @fadeTime ease both);
+//  display: block !important;
+//}
+
+.scale-down {
+}
+
+.scale-down.ng-hide {
+}
+
+.scale-down.ng-hide-add {
+  .pt-page-scaleDownUp;
+  .pt-page-ontop;
+  .pt-page-delay500;
+  display: block !important;
+}
+
+.scale-down.ng-hide-remove {
+  .pt-page-delay1000;
+  .pt-page-scaleUp;
+  display: block !important;
+}

@@ -2,6 +2,12 @@
 <html>
 <head>
   <title>Pow2 RPG</title>
+
+  <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  <meta http-equiv="Content-Style-Type" content="text/css"/>
+  <meta http-equiv="Content-Script-Type" content="text/javascript"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/app.css" media="all"/>
 </head>
 <body>
 
@@ -9,7 +15,7 @@
 
 <script src="https://github.jspm.io/jmcriffey/bower-traceur-runtime@0.0.87/traceur-runtime.js"></script>
 <script src="https://jspm.io/system@0.16.js"></script>
-<script src="https://code.angularjs.org/2.0.0-alpha.26/angular2.dev.js"></script>
+<script src="https://code.angularjs.org/2.0.0-alpha.27/angular2.dev.js"></script>
 <script src="./bower_components/underscore/underscore-min.js"></script>
 <script src="./bower_components/backbone/backbone-min.js"></script>
 <script src="./bower_components/tabletop/src/tabletop.js"></script>
@@ -24,7 +30,7 @@
     System.import('source/ui/worldmap/worldmap')
   ]).then(function (modules) {
     modules[0].bootstrap(modules[1].RPGAppComponent);
-  }, console.log.bind(console));
+  }, console.error.bind(console));
 </script>
 </body>
 </html>
