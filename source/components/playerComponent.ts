@@ -27,6 +27,13 @@ export class PlayerComponent extends pow2.scene.components.PlayerComponent {
   host:GameEntityObject;
   map:pow2.tile.TileMap = null;
 
+  static COLLIDE_TYPES:string[] = [
+    'source.components.features.TempleFeatureComponent',
+    'source.components.features.StoreFeatureComponent',
+    'source.components.features.DialogFeatureComponent',
+    'sign'
+  ];
+
   /**
    * Collide with the rpg tile map features and obstacles.
    */
