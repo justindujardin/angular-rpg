@@ -21,6 +21,7 @@
 <script src="./bower_components/tabletop/src/tabletop.js"></script>
 <script src="./bower_components/jquery/jquery.min.js"></script>
 <script src="./bower_components/pow-core/lib/pow-core.js"></script>
+<script src="./bower_components/astar/astar.js"></script>
 <script src="./bower_components/pow2/lib/pow2.js"></script>
 <script src="./bower_components/pow2/lib/pow2.sprites.js"></script>
 <script>
@@ -29,7 +30,7 @@
     System.import('app'),
     System.import('source/ui/worldmap/worldmap')
   ]).then(function (modules) {
-    modules[0].bootstrap(modules[1].RPGAppComponent);
+    modules[1].load();
   }, console.error.bind(console));
 </script>
 </body>

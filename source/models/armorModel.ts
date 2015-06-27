@@ -14,6 +14,7 @@
  limitations under the License.
  */
 
+import * as rpg from '../index';
 import {ItemModel} from './itemModel';
 
 export class ArmorModel extends ItemModel {

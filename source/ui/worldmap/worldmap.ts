@@ -49,9 +49,12 @@ export class WorldMap {
       this.tileMap = null;
     }
     this.game.loader.load(this.game.world.getMapUrl(value), (map:pow2.TiledTMXResource)=> {
-      this.tileMap = new GameTileMap(map);
+      this.tileMap = this.game.world.entities.createObject('GameMapObject', {
+        resource: map
+      });
       this.game.world.scene.addObject(this.tileMap);
       this.tileMap.loaded();
+      this.game.createPlayer(this._hero,this.tileMap);
       this.onResize();
       this._view.setTileMap(this.tileMap);
     });
@@ -66,7 +69,11 @@ export class WorldMap {
   private _context:any = null;
   private _bounds:pow2.Point = new pow2.Point();
 
+  // HACKS
+  private _hero:HeroModel = HeroModel.create('warrior','MorTon');
+
   constructor(public elRef:ElementRef, public game:RPGGame) {
+
     this._renderCanvas = <HTMLCanvasElement>document.createElement('canvas');
     this._renderCanvas.width = this._renderCanvas.height = 64;
     this._renderCanvas.style.position = 'absolute';
@@ -79,7 +86,7 @@ export class WorldMap {
     this._context.imageSmoothingEnabled = false;
 
     this._view = new RPGMapView(this._canvas, game.loader);
-    this._view.camera.point.set(-0.5,-0.5);
+    this._view.camera.point.set(-0.5, -0.5);
     this.onResize();
     game.world.scene.addView(this._view);
   }
@@ -87,13 +94,13 @@ export class WorldMap {
   onResize() {
     this.styleWidth = this._context.canvas.width = window.innerWidth;
     this.styleHeight = this._context.canvas.height = window.innerHeight;
-    this._bounds.set(this.styleWidth,this.styleHeight);
+    this._bounds.set(this.styleWidth, this.styleHeight);
     this._bounds = this._view.screenToWorld(this._bounds);
 
 
     // TileMap
     // Camera (window bounds)
-    if(this.tileMap){
+    if (this.tileMap) {
       var tileOffset = this.tileMap.bounds.getCenter();
       var offset = this._bounds.clone().divide(2).multiply(-1).add(tileOffset);
       this._view.camera.point.set(offset.floor());

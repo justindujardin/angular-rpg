@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../index.ts"/>
+import * as rpg from '../index';
 
 export class ItemModel extends Backbone.Model {
   static DEFAULTS:rpg.IGameItem = {

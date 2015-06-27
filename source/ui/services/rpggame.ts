@@ -17,11 +17,9 @@ export class RPGGame {
   styleBackground:string = 'rgba(0,0,0,1)';
   loader:pow2.ResourceLoader;
   world:GameWorld;
-  tileMap:GameTileMap;
   sprite:GameEntityObject;
   machine:GameStateMachine;
   currentScene:pow2.scene.Scene;
-  entities:pow2.EntityContainerResource;
   private _renderCanvas:HTMLCanvasElement;
   private _canvasAcquired:boolean = false;
   private _stateKey:string = "_angular2PowRPGState";
@@ -37,16 +35,11 @@ export class RPGGame {
       autoStart: true,
       debugRender: false
     });
-    this.world = new GameWorld({
-      scene: this.currentScene,
-      model: new GameStateModel(),
-      state: new GameStateMachine()
-    });
+    this.world = pow2.getWorld<GameWorld>('rpg');
+    this.world.setService('scene', this.currentScene);
     this.machine = this.world.state;
-    pow2.registerWorld('pow2', this.world);
     // Tell the world time manager to start ticking.
     this.world.time.start();
-    this.entities = <pow2.EntityContainerResource>this.world.loader.load(pow2.GAME_ROOT + 'entities/map.powEntities');
   }
 
   getSaveData():any {
@@ -62,80 +55,79 @@ export class RPGGame {
   }
 
 
-  createPlayer(from:HeroModel, at?:pow2.Point) {
+  createPlayer(from:HeroModel, tileMap:GameTileMap, at?:pow2.Point) {
     if (!from) {
       throw new Error("Cannot create player without valid model");
     }
-    if (!this.entities.isReady()) {
+    if (!this.world.entities.isReady()) {
       throw new Error("Cannot create player before entities container is loaded");
     }
     if (this.sprite) {
       this.sprite.destroy();
       this.sprite = null;
     }
-    this.sprite = this.entities.createObject('GameMapPlayer', {
+    this.sprite = this.world.entities.createObject('GameMapPlayer', {
       model: from,
-      map: this.tileMap
+      map: tileMap
     });
     this.sprite.name = from.attributes.name;
     this.sprite.icon = from.attributes.icon;
     this.world.scene.addObject(this.sprite);
-    if (typeof at === 'undefined' && this.tileMap instanceof pow2.tile.TileMap) {
-      at = this.tileMap.bounds.getCenter();
+    if (typeof at === 'undefined' && tileMap instanceof pow2.tile.TileMap) {
+      at = tileMap.bounds.getCenter();
     }
     this.sprite.setPoint(at || new pow2.Point());
   }
 
-  loadMap(mapName:string, then?:()=>any, player?:HeroModel, at?:pow2.Point) {
-    if (this.tileMap) {
-      this.tileMap.destroy();
-      this.tileMap = null;
-    }
+  //loadMap(mapName:string, then?:()=>any, player?:HeroModel, at?:pow2.Point) {
+  //  if (this.tileMap) {
+  //    this.tileMap.destroy();
+  //    this.tileMap = null;
+  //  }
+  //
+  //  this.world.loader.load(this.world.getMapUrl(mapName), (map:pow2.TiledTMXResource)=> {
+  //    this.tileMap = this.world.entities.createObject('GameMapObject', {
+  //      resource: map
+  //    });
+  //
+  //    var model:HeroModel = player || this.world.model.party[0];
+  //    this.createPlayer(model, at);
+  //
+  //    this.world.scene.addObject(this.tileMap);
+  //    this.tileMap.loaded();
+  //
+  //
+  //    then && then();
+  //  });
+  //}
 
-    this.world.loader.load(this.world.getMapUrl(mapName), (map:pow2.TiledTMXResource)=> {
-      this.tileMap = new GameTileMap(map);
-      this.world.scene.addObject(this.tileMap);
-      this.tileMap.loaded();
+  //newGame(then?:()=>any) {
+  //  this.loadMap("town", then, this.world.model.party[0]);
+  //}
 
+  //loadGame(data:any, then?:()=>any) {
+  //  if (data) {
+  //    //this.world.model.clear();
+  //    this.world.model.initData(()=> {
+  //      this.world.model.parse(data);
+  //      var at = this.world.model.getKeyData('playerPosition');
+  //      at = at ? new pow2.Point(at.x, at.y) : undefined;
+  //      this.loadMap(this.world.model.getKeyData('playerMap') || "town", then, this.world.model.party[0], at);
+  //    });
+  //  }
+  //  else {
+  //    if (this.world.model.party.length === 0) {
+  //      this.world.model.addHero(HeroModel.create(HeroTypes.Warrior, "Warrior"));
+  //      this.world.model.addHero(HeroModel.create(HeroTypes.Ranger, "Ranger"));
+  //      this.world.model.addHero(HeroModel.create(HeroTypes.LifeMage, "Mage"));
+  //    }
+  //    this.newGame(then);
+  //  }
+  //}
 
-      //    this.entities.createObject('GameMapObject', {
-      //  resource: map
-      //});
-      var model:HeroModel = player || this.world.model.party[0];
-      //this.createPlayer(model, at);
-      then && then();
-    });
-  }
-
-  newGame(then?:()=>any) {
-    this.loadMap("town", then, this.world.model.party[0]);
-  }
-
-  loadGame(data:any, then?:()=>any) {
-    if (data) {
-      //this.world.model.clear();
-      this.world.model.initData(()=> {
-        this.world.model.parse(data);
-        var at = this.world.model.getKeyData('playerPosition');
-        at = at ? new pow2.Point(at.x, at.y) : undefined;
-        this.loadMap(this.world.model.getKeyData('playerMap') || "town", then, this.world.model.party[0], at);
-      });
-    }
-    else {
-      if (this.world.model.party.length === 0) {
-        this.world.model.addHero(HeroModel.create(HeroTypes.Warrior, "Warrior"));
-        this.world.model.addHero(HeroModel.create(HeroTypes.Ranger, "Ranger"));
-        this.world.model.addHero(HeroModel.create(HeroTypes.LifeMage, "Mage"));
-      }
-      this.newGame(then);
-    }
-  }
-
-   party:HeroModel[] = [];
+  party:HeroModel[] = [];
   inventory:ItemModel[] = [];
   player:HeroModel = null;
-
-
 
 
   /**

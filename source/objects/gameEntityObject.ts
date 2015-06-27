@@ -23,7 +23,7 @@ export class GameEntityObject extends pow2.tile.TileObject {
   model:EntityModel;
   type:string; // TODO: enum?
   groups:any;
-  world:GameWorld = pow2.getWorld<GameWorld>('pow2');
+  world:GameWorld = pow2.getWorld<GameWorld>('rpg');
 
   constructor(options:any) {
     super(_.omit(options || {}, ["x", "y", "type"]));

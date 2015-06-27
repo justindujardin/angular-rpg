@@ -1,7 +1,16 @@
 [
   {
     "name": "GameMapObject",
-    "type": "rpg.GameTileMap",
+    "type": "source.GameTileMap",
+    "depends": [
+      "source.components.features.PortalFeatureComponent",
+      "source.components.features.CombatFeatureComponent",
+      "source.components.features.DialogFeatureComponent",
+      "source.components.features.ShipFeatureComponent",
+      "source.components.features.StoreFeatureComponent",
+      "source.components.features.TempleFeatureComponent",
+      "source.components.features.TreasureFeatureComponent"
+    ],
     "inputs": {
       "resource": "pow2.TiledTMXResource"
     },
@@ -9,20 +18,20 @@
     "components": [
       {
         "name": "encounters",
-        "type": "rpg.components.combat.CombatEncounterComponent"
+        "type": "source.components.combat.CombatEncounterComponent"
       },
       {
         "name": "input",
-        "type": "rpg.components.GameFeatureInputComponent"
+        "type": "source.components.GameFeatureInputComponent"
       }
     ]
   },
   {
     "name": "GameMapPlayer",
-    "type": "rpg.objects.GameEntityObject",
+    "type": "source.objects.GameEntityObject",
     "inputs": {
-      "model": "rpg.models.HeroModel",
-      "map": "rpg.GameTileMap"
+      "model": "source.models.HeroModel",
+      "map": "source.GameTileMap"
     },
     "components": [
       {
@@ -40,7 +49,7 @@
       },
       {
         "name": "player",
-        "type": "rpg.components.PlayerComponent"
+        "type": "source.components.PlayerComponent"
       },
       {
         "name": "camera",
@@ -48,7 +57,7 @@
       },
       {
         "name": "touch",
-        "type": "rpg.components.PlayerTouchComponent"
+        "type": "source.components.PlayerTouchComponent"
       }
     ]
   }

@@ -14,13 +14,22 @@
  limitations under the License.
  */
 
-/// <reference path="./index.ts"/>
-
+import * as rpg from './index';
 import {GameStateMachine} from './states/gameStateMachine';
 import {GameCombatState} from './states/gameCombatStateMachine';
 import {GameStateModel} from './models/gameStateModel';
 
 var _sharedGameWorld:GameWorld = null;
+
+declare var System:any;
+
+
+// Patch getClassType to resolve ES6 modules as well as types on the window object.
+var oldGetClassType:any = pow2.EntityContainerResource.getClassType;
+pow2.EntityContainerResource.getClassType = (name:string) => {
+  return GameWorld._typeDatabase[name];
+};
+
 
 export class GameWorld extends pow2.scene.SceneWorld {
   state:GameStateMachine;
@@ -34,6 +43,10 @@ export class GameWorld extends pow2.scene.SceneWorld {
   combatScene:pow2.scene.Scene = null;
 
   scene:pow2.scene.Scene;
+
+  entities:pow2.EntityContainerResource;
+
+  events:pow2.Events = new pow2.Events();
 
   /**
    * Access to the game's Google Doc spreadsheet configuration.  For more
@@ -50,6 +63,15 @@ export class GameWorld extends pow2.scene.SceneWorld {
     GameStateModel.getDataSource((gsr:pow2.GameDataResource)=> {
       this.spreadsheet = gsr;
     });
+    this.entities = <pow2.EntityContainerResource>this.loader.load(pow2.GAME_ROOT + 'entities/map.powEntities')
+        .once(pow2.Resource.READY, () => {
+          this._importEntityTypes()
+              .then(()=> {
+                this.events.trigger('ready');
+              }).catch((e)=> {
+                this.events.trigger('error',e);
+              });
+        });
   }
 
   static get():GameWorld {
@@ -59,6 +81,97 @@ export class GameWorld extends pow2.scene.SceneWorld {
     return _sharedGameWorld;
   }
 
+  private _nsTypeToImport(item:string):string {
+    // Make the last component of the type camelCase to match file naming convention.
+    var ns = item.split('.');
+    var finalType = ns[ns.length - 1];
+    ns[ns.length - 1] = finalType[0].toLowerCase() + finalType.substr(1);
+    return ns.join('/');
+  }
+
+  private _importToNsType(item:string):string {
+    // Make the last component of the type CapitalCase to match file naming convention.
+    var ns = item.split('/');
+    var finalType = ns[ns.length - 1];
+    ns[ns.length - 1] = finalType[0].toUpperCase() + finalType.substr(1);
+    return ns.join('.');
+  }
+
+  /**
+   * Type database for looking up imported es6 modules as entity types
+   * @private
+   */
+  static _typeDatabase:{
+    [fullType:string]:Function
+  } = {};
+
+  /**
+   * Resolve all the modules that need to be imported prior to creating
+   * entities.  This is because the entity container does not have an
+   * async API, so we need to resolve them ahead of time.
+   * @private
+   */
+  private _importEntityTypes():Promise<void> {
+    return new Promise<void>((resolve, reject)=> {
+      // Find the types needed by the entities in the container
+      var entities = this._getEntityContainerTypes(this.entities);
+      // Exclude types that are already available on the window
+      entities = _.filter(entities, (e:string) => {
+        var t:any = oldGetClassType(e);
+        if (t) {
+          // Register window style types in the database as they're found.
+          GameWorld._typeDatabase[e] = t;
+        }
+        return !t;
+      });
+
+      var types:string[] = _.map(entities, this._nsTypeToImport);
+      var next = () => {
+        if (types.length === 0) {
+          resolve();
+          return;
+        }
+        var instanceType = types.shift();
+        //console.log("Importing entity type: " + instanceType);
+        System.import(instanceType).then((module:any) => {
+          //console.log("OKAY: " + instanceType);
+          var nsType = this._importToNsType(instanceType);
+          var typeName = nsType.substr(nsType.lastIndexOf('.') + 1);
+          if (!module[typeName]) {
+            reject("INVALID MODULE TYPE: " + instanceType);
+          }
+          GameWorld._typeDatabase[nsType] = module[typeName];
+
+          next();
+        }).catch((e) => {
+          console.error(e);
+        });
+      };
+      next();
+    });
+  }
+
+  /**
+   * Enumerate the module types needed for a given entity container resource.
+   */
+  private _getEntityContainerTypes(resource:pow2.EntityContainerResource):string[] {
+    var types:string[] = [];
+    _.each(resource.data, (templateData:any) => {
+      types.push(templateData.type);
+      if (templateData.depends) {
+        _.each(templateData.depends, (d:string) => types.push(d));
+      }
+      if (templateData.inputs) {
+        _.each(templateData.inputs, (type:string)=> {
+          types.push(type);
+        });
+      }
+      _.each(templateData.components, (comp:any)=> {
+        types.push(comp.type);
+      });
+    });
+    return types;
+  }
 
   private _encounterCallback:rpg.IGameEncounterCallback = null;
 
@@ -101,7 +214,6 @@ export class GameWorld extends pow2.scene.SceneWorld {
       this._encounter(zone, encounters[0], then);
     });
   }
-
 
 
   private _encounter(zoneInfo:rpg.IZoneMatch, encounter:rpg.IGameEncounter, then?:rpg.IGameEncounterCallback) {

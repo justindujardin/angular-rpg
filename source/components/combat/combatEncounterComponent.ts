@@ -31,7 +31,7 @@ export class CombatEncounterComponent extends pow2.scene.SceneComponent {
   combatZone:string = 'default';
   isDangerous:boolean = false;
   enabled:boolean = false;
-  world:GameWorld = pow2.getWorld<GameWorld>('pow2');
+  world:GameWorld = pow2.getWorld<GameWorld>('rpg');
 
   connectComponent():boolean {
     if (!super.connectComponent() || !(this.host instanceof GameTileMap)) {

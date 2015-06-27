@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
-/// <reference path="./index.ts"/>
 import {GameWorld} from './gameWorld';
 import {GameFeatureObject} from './objects/gameFeatureObject';
+import * as rpg from './index';
 
 /**
  * A tile map that supports game feature objects and components.

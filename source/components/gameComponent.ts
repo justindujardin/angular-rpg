@@ -16,13 +16,11 @@
 
 import {GameTileMap} from '../gameTileMap';
 
-module rpg.components {
-  export class GameComponent extends pow2.tile.TileComponent {
-    host:pow2.tile.TileObject = null;
 
-    syncComponent():boolean {
-      return super.syncComponent() && this.host.tileMap instanceof GameTileMap;
-    }
+export class GameComponent extends pow2.tile.TileComponent {
+  host:pow2.tile.TileObject = null;
+
+  syncComponent():boolean {
+    return super.syncComponent() && this.host.tileMap instanceof GameTileMap;
   }
-
 }

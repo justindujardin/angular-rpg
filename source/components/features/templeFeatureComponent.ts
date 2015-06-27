@@ -14,33 +14,31 @@
  limitations under the License.
  */
 
-/// <reference path="../gameFeatureComponent.ts" />
+import {GameFeatureComponent} from '../gameFeatureComponent';
 
-module rpg.components.features {
-  export class TempleFeatureComponent extends GameFeatureComponent {
-    cost:string;
-    icon:string;
+export class TempleFeatureComponent extends GameFeatureComponent {
+  cost:string;
+  icon:string;
 
-    syncComponent():boolean {
-      if (!super.syncComponent() || !this.host.feature) {
-        return false;
-      }
-      this.name = "Temple";
-      this.cost = this.host.feature.cost;
-      this.icon = this.host.feature.icon;
-      return true;
+  syncComponent():boolean {
+    if (!super.syncComponent() || !this.host.feature) {
+      return false;
     }
+    this.name = "Temple";
+    this.cost = this.host.feature.cost;
+    this.icon = this.host.feature.icon;
+    return true;
+  }
 
-    enter(object:pow2.tile.TileObject):boolean {
-      object.scene.trigger('temple:entered', this);
-      return true;
-    }
+  enter(object:pow2.tile.TileObject):boolean {
+    object.scene.trigger('temple:entered', this);
+    return true;
+  }
 
-    exit(object:pow2.tile.TileObject):boolean {
-      object.scene.trigger('temple:exited', this);
-      return true;
-    }
-
+  exit(object:pow2.tile.TileObject):boolean {
+    object.scene.trigger('temple:exited', this);
+    return true;
   }
 
 }
+

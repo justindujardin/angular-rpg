@@ -29,7 +29,7 @@
 </data>
  </layer>
  <objectgroup draworder="topdown" name="Features" width="23" height="19">
-  <object name="wilderness" type="rpg.components.features.PortalFeatureComponent" x="64" y="144" width="16" height="16">
+  <object name="wilderness" type="source.components.features.PortalFeatureComponent" x="64" y="144" width="16" height="16">
    <properties>
     <property name="icon" value="iceFloor.png"/>
     <property name="target" value="wilderness"/>
@@ -44,7 +44,7 @@
     <property name="type" value="block"/>
    </properties>
   </object>
-  <object name="drowElf.png" type="rpg.components.features.CombatFeatureComponent" x="128" y="256" width="16" height="16">
+  <object name="drowElf.png" type="source.components.features.CombatFeatureComponent" x="128" y="256" width="16" height="16">
    <properties>
     <property name="creatures" value=""/>
     <property name="gold" value="25"/>
@@ -54,7 +54,7 @@
     <property name="text" value="Drow Elves and Snow Ogres approach you. &quot;You will regret setting foot in this tower!&quot;"/>
    </properties>
   </object>
-  <object name="tower2" type="rpg.components.features.PortalFeatureComponent" x="112" y="256" width="16" height="16">
+  <object name="tower2" type="source.components.features.PortalFeatureComponent" x="112" y="256" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
     <property name="target" value="tower2"/>

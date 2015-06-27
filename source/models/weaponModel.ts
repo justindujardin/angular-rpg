@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="./itemModel.ts" />
+import * as rpg from '../index';
 import {ItemModel} from './itemModel';
 
 

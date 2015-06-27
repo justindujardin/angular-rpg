@@ -14,47 +14,46 @@
  limitations under the License.
  */
 
-/// <reference path="../gameFeatureComponent.ts" />
-module rpg.components.features {
-  export class StoreFeatureComponent extends GameFeatureComponent {
-    name:string;
-    inventory:any[];
+import {GameFeatureComponent} from '../gameFeatureComponent';
 
-    syncComponent():boolean {
-      if (!super.syncComponent()) {
-        return false;
-      }
-      this.name = this.host.feature.name;
-      var weapons:boolean = _.indexOf(this.host.groups, "weapon") !== -1;
-      if (weapons) {
-        this.inventory = _.filter(pow2.data.weapons, (item:any) => {
-          return item.level === this.host.feature.level;
-        });
-      }
-      else if (_.indexOf(this.host.groups, "armor") !== -1) {
-        this.inventory = _.filter(pow2.data.armor, (item:any) => {
-          return item.level === this.host.feature.level;
-        });
+export class StoreFeatureComponent extends GameFeatureComponent {
+  name:string;
+  inventory:any[];
 
-      }
-      return true;
+  syncComponent():boolean {
+    if (!super.syncComponent()) {
+      return false;
     }
-
-    disconnectComponent():boolean {
-      this.inventory = null;
-      return super.disconnectComponent();
+    this.name = this.host.feature.name;
+    var weapons:boolean = _.indexOf(this.host.groups, "weapon") !== -1;
+    if (weapons) {
+      this.inventory = _.filter(pow2.data.weapons, (item:any) => {
+        return item.level === this.host.feature.level;
+      });
     }
+    else if (_.indexOf(this.host.groups, "armor") !== -1) {
+      this.inventory = _.filter(pow2.data.armor, (item:any) => {
+        return item.level === this.host.feature.level;
+      });
 
-    enter(object:pow2.tile.TileObject):boolean {
-      object.scene.trigger('store:entered', this);
-      return true;
     }
+    return true;
+  }
 
-    exit(object:pow2.tile.TileObject):boolean {
-      object.scene.trigger('store:exited', this);
-      return true;
-    }
+  disconnectComponent():boolean {
+    this.inventory = null;
+    return super.disconnectComponent();
+  }
 
+  enter(object:pow2.tile.TileObject):boolean {
+    object.scene.trigger('store:entered', this);
+    return true;
+  }
+
+  exit(object:pow2.tile.TileObject):boolean {
+    object.scene.trigger('store:exited', this);
+    return true;
   }
 
 }
+

@@ -1,23 +1,23 @@
 [
   {
     "name": "GameCombatMap",
-    "type": "rpg.GameTileMap",
+    "type": "source.GameTileMap",
     "inputs": {
       "resource": "pow2.TiledTMXResource"
     },
     "params": ["resource"],
     "components": [
       {
-        "type": "rpg.components.combat.CombatCameraComponent"
+        "type": "source.components.combat.CombatCameraComponent"
       }
     ]
   },
   {
     "name": "CombatPlayer",
-    "type": "rpg.objects.GameEntityObject",
+    "type": "source.objects.GameEntityObject",
     "inputs": {
-      "model": "rpg.models.HeroModel",
-      "combat": "rpg.states.GameCombatState"
+      "model": "source.models.HeroModel",
+      "combat": "source.states.GameCombatState"
     },
     "components": [
       {
@@ -30,32 +30,32 @@
       },
       {
         "name": "attack",
-        "type": "rpg.components.combat.actions.CombatAttackComponent",
+        "type": "source.components.combat.actions.CombatAttackComponent",
         "params": ["combat"]
       },
       {
         "name": "magic",
-        "type": "rpg.components.combat.actions.CombatMagicComponent",
+        "type": "source.components.combat.actions.CombatMagicComponent",
         "params": ["combat"]
       },
       {
         "name": "run",
-        "type": "rpg.components.combat.actions.CombatRunComponent",
+        "type": "source.components.combat.actions.CombatRunComponent",
         "params": ["combat"]
       },
       {
         "name": "guard",
-        "type": "rpg.components.combat.actions.CombatGuardComponent",
+        "type": "source.components.combat.actions.CombatGuardComponent",
         "params": ["combat"]
       }
     ]
   },
   {
     "name": "CombatEnemy",
-    "type": "rpg.objects.GameEntityObject",
+    "type": "source.objects.GameEntityObject",
     "inputs": {
-      "model": "rpg.models.EntityModel",
-      "combat": "rpg.states.GameCombatState",
+      "model": "source.models.EntityModel",
+      "combat": "source.states.GameCombatState",
       "sprite": "Object"
     },
     "components": [
@@ -66,7 +66,7 @@
       },
       {
         "name": "attack",
-        "type": "rpg.components.combat.actions.CombatAttackComponent",
+        "type": "source.components.combat.actions.CombatAttackComponent",
         "params": ["combat"]
       }
     ]
