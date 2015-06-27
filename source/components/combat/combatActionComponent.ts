@@ -16,7 +16,7 @@
 
 import {GameEntityObject} from '../../objects/gameEntityObject';
 import {EntityModel} from '../../models/entityModel';
-import {GameCombatState,IPlayerAction,IPlayerActionCallback} from '../../states/gameCombatStateMachine';
+import {PlayerCombatState,IPlayerAction,IPlayerActionCallback} from '../../states/playerCombatState';
 
 export class CombatActionComponent extends pow2.scene.SceneComponent implements IPlayerAction {
   name:string = "default";
@@ -24,7 +24,7 @@ export class CombatActionComponent extends pow2.scene.SceneComponent implements 
   to:GameEntityObject = null;
   spell:any = null;//TODO: spell type
 
-  constructor(public combat:GameCombatState) {
+  constructor(public combat:PlayerCombatState) {
     super();
   }
 

@@ -14,8 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../index.ts"/>
-
+/// <reference path="../../index.ts"/>
 
 /**
  * CombatState is set when the player transitions in to a combat

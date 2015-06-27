@@ -16,7 +16,7 @@
 
 import * as rpg from './index';
 import {GameStateMachine} from './states/gameStateMachine';
-import {GameCombatState} from './states/gameCombatStateMachine';
+import {PlayerCombatState} from './states/playerCombatState';
 import {GameStateModel} from './models/gameStateModel';
 
 var _sharedGameWorld:GameWorld = null;
@@ -44,6 +44,11 @@ export class GameWorld extends pow2.scene.SceneWorld {
 
   scene:pow2.scene.Scene;
 
+  /**
+   * RPG game entities factory.
+   *
+   * Use to instantiate .powEntities file composite objects.
+   */
   entities:pow2.EntityContainerResource;
 
   events:pow2.Events = new pow2.Events();
@@ -63,14 +68,15 @@ export class GameWorld extends pow2.scene.SceneWorld {
     GameStateModel.getDataSource((gsr:pow2.GameDataResource)=> {
       this.spreadsheet = gsr;
     });
-    this.entities = <pow2.EntityContainerResource>this.loader.load(pow2.GAME_ROOT + 'entities/map.powEntities')
+    this.entities = <pow2.EntityContainerResource>this.loader
+        .load(pow2.GAME_ROOT + 'entities/rpg.powEntities')
         .once(pow2.Resource.READY, () => {
-          this._importEntityTypes()
-              .then(()=> {
-                this.events.trigger('ready');
-              }).catch((e)=> {
-                this.events.trigger('error',e);
-              });
+          this._importEntityTypes().then(()=> {
+            this.events.trigger('ready');
+          }).catch((e)=> {
+            console.error(e);
+            this.events.trigger('error', e);
+          });
         });
   }
 
@@ -163,7 +169,9 @@ export class GameWorld extends pow2.scene.SceneWorld {
       }
       if (templateData.inputs) {
         _.each(templateData.inputs, (type:string)=> {
-          types.push(type);
+          if (type.toLowerCase() !== 'object') {
+            types.push(type);
+          }
         });
       }
       _.each(templateData.components, (comp:any)=> {
@@ -220,7 +228,7 @@ export class GameWorld extends pow2.scene.SceneWorld {
     this.scene.trigger('combat:encounter', this);
     this.state.encounter = encounter;
     this.state.encounterInfo = zoneInfo;
-    this.state.setCurrentState(GameCombatState.NAME);
+    this.state.setCurrentState(PlayerCombatState.NAME);
     this._encounterCallback = then;
   }
 }

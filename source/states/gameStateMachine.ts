@@ -17,25 +17,25 @@
 import * as rpg from '../index';
 import {GameWorld} from '../gameWorld';
 import {GameStateModel} from '../models/gameStateModel';
-import {GameMapState} from './gameMapState';
-import {GameCombatState} from './gameCombatStateMachine';
+import {PlayerMapState} from './playerMapState';
+import {PlayerCombatState} from './playerCombatState';
 
-export class GameDefaultState extends pow2.State {
+export class PlayerDefaultState extends pow2.State {
   static NAME:string = "default";
-  name:string = GameDefaultState.NAME;
+  name:string = PlayerDefaultState.NAME;
 }
 
 export class GameStateMachine extends pow2.StateMachine {
   world:GameWorld;
   model:GameStateModel = null;
-  defaultState:string = GameDefaultState.NAME;
+  defaultState:string = PlayerDefaultState.NAME;
   player:pow2.tile.TileObject = null;
   encounterInfo:rpg.IZoneMatch = null;
   encounter:rpg.IGameEncounter = null;
   states:pow2.IState[] = [
-    new GameDefaultState(),
-    new GameMapState(),
-    new GameCombatState()
+    new PlayerDefaultState(),
+    new PlayerMapState(),
+    new PlayerCombatState()
   ];
 
   onAddToWorld(world) {

@@ -15,10 +15,10 @@
  */
 
 
-import {CombatState} from '../gameCombatState';
-import {CombatStateMachine,IPlayerActionCallback,IPlayerAction} from '../gameCombatStateMachine';
+import {CombatState} from './combatState';
+import {CombatStateMachine} from './combatStateMachine';
+import {IPlayerActionCallback,IPlayerAction} from '../playerCombatState';
 import {GameEntityObject} from '../../objects/gameEntityObject';
-import {GameMapState} from '../gameMapState';
 import {CombatAttackComponent} from '../../components/combat/actions/combatAttackComponent';
 
 // Combat Begin

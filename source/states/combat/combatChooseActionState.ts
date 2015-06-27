@@ -15,8 +15,8 @@
  */
 
 
-import {CombatState} from '../gameCombatState';
-import {CombatStateMachine} from '../gameCombatStateMachine';
+import {CombatState} from './combatState';
+import {CombatStateMachine} from './combatStateMachine';
 import {GameEntityObject} from '../../objects/gameEntityObject';
 import {CombatBeginTurnState} from './combatBeginTurnState';
 import {CombatActionComponent} from '../../components/combat/combatActionComponent';

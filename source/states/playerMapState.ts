@@ -17,9 +17,9 @@
 import {GameStateMachine} from './gameStateMachine';
 import {GameTileMap} from '../gameTileMap';
 
-export class GameMapState extends pow2.State {
+export class PlayerMapState extends pow2.State {
   static NAME:string = "map";
-  name:string = GameMapState.NAME;
+  name:string = PlayerMapState.NAME;
   mapPoint:pow2.Point = null;
   map:GameTileMap = null;
 

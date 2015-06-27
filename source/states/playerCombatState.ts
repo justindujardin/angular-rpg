@@ -17,23 +17,16 @@
 import * as rpg from '../index';
 
 import {GameEntityObject} from '../objects/gameEntityObject';
-import {CombatState} from './gameCombatState';
+
+import {GameStateModel} from '../models/gameStateModel';
+
 import {GameStateMachine} from './gameStateMachine';
+import {CombatStateMachine} from './combat/combatStateMachine';
 import {GameTileMap} from '../gameTileMap';
 import {GameWorld} from '../gameWorld';
 
-
-import {GameStateModel} from '../models/gameStateModel';
 import {HeroModel} from '../models/heroModel';
 import {CreatureModel} from '../models/creatureModel';
-
-import {CombatBeginTurnState} from './combat/combatBeginTurnState';
-import {CombatChooseActionState} from './combat/combatChooseActionState';
-import {CombatDefeatState} from './combat/combatDefeatState';
-import {CombatEndTurnState} from './combat/combatEndTurnState';
-import {CombatEscapeState} from './combat/combatEscapeState';
-import {CombatStartState} from './combat/combatStartState';
-import {CombatVictoryState} from './combat/combatVictoryState';
 
 
 
@@ -59,89 +52,7 @@ export interface CombatAttackSummary {
 }
 
 
-// Combat State Machine
-//--------------------------------------------------------------------------
-export class CombatStateMachine extends pow2.StateMachine {
-  parent:GameStateMachine;
-  defaultState:string = CombatStartState.NAME;
-  states:pow2.IState[] = [
-    new CombatStartState(),
-    new CombatVictoryState(),
-    new CombatDefeatState(),
-    new CombatBeginTurnState(),
-    new CombatChooseActionState(),
-    new CombatEndTurnState(),
-    new CombatEscapeState()
-  ];
 
-  party:GameEntityObject[] = [];
-  enemies:GameEntityObject[] = [];
-  turnList:GameEntityObject[] = [];
-  playerChoices:{
-    [id:string]:IPlayerAction
-  } = {};
-  focus:GameEntityObject;
-  current:GameEntityObject;
-  currentDone:boolean = false;
-
-  isFriendlyTurn():boolean {
-    return this.current && !!_.find(this.party, (h:GameEntityObject) => {
-          return h._uid === this.current._uid;
-        });
-  }
-
-  getLiveParty():GameEntityObject[] {
-    return _.reject(this.party, (obj:GameEntityObject) => {
-      return obj.isDefeated();
-    });
-  }
-
-  getLiveEnemies():GameEntityObject[] {
-    return _.reject(this.enemies, (obj:GameEntityObject) => {
-      return obj.isDefeated();
-    });
-  }
-
-  getRandomPartyMember():GameEntityObject {
-    var players = <GameEntityObject[]>_.shuffle(this.party);
-    while (players.length > 0) {
-      var p = players.shift();
-      if (!p.isDefeated()) {
-        return p;
-      }
-    }
-    return null;
-  }
-
-  getRandomEnemy():GameEntityObject {
-    var players = <GameEntityObject[]>_.shuffle(this.enemies);
-    while (players.length > 0) {
-      var p = players.shift();
-      if (!p.isDefeated()) {
-        return p;
-      }
-    }
-    return null;
-  }
-
-  partyDefeated():boolean {
-    var deadList = _.reject(this.party, (obj:GameEntityObject) => {
-      return obj.model.attributes.hp <= 0;
-    });
-    return deadList.length === 0;
-  }
-
-  enemiesDefeated():boolean {
-    return _.reject(this.enemies, (obj:GameEntityObject) => {
-          return obj.model.attributes.hp <= 0;
-        }).length === 0;
-  }
-
-  constructor(parent:GameStateMachine) {
-    super();
-    this.parent = parent;
-  }
-}
 
 // Combat Lifetime State Machine
 //--------------------------------------------------------------------------
@@ -150,9 +61,9 @@ export class CombatStateMachine extends pow2.StateMachine {
  * Construct a combat scene with appropriate GameEntityObjects for the players
  * and enemies.
  */
-export class GameCombatState extends pow2.State {
+export class PlayerCombatState extends pow2.State {
   static NAME:string = "combat";
-  name:string = GameCombatState.NAME;
+  name:string = PlayerCombatState.NAME;
   machine:CombatStateMachine = null;
   parent:GameStateMachine = null;
   tileMap:GameTileMap;
@@ -163,9 +74,7 @@ export class GameCombatState extends pow2.State {
 
   constructor() {
     super();
-    GameWorld.get().loader.load(pow2.GAME_ROOT + 'entities/combat.powEntities', (factory:pow2.EntityContainerResource)=> {
-      this.factory = factory;
-    });
+    this.factory = GameWorld.get().entities;
     GameStateModel.getDataSource((spreadsheet:pow2.GameDataResource) => {
       this.spreadsheet = spreadsheet;
     });

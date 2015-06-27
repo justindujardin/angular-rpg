@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
-import {CombatState} from '../gameCombatState';
-import {CombatStateMachine} from '../gameCombatStateMachine';
-import {GameMapState} from '../gameMapState';
+import {CombatState} from './combatState';
+import {CombatStateMachine} from './combatStateMachine';
+import {PlayerMapState} from '../playerMapState';
 
 export class CombatEscapeState extends CombatState {
   static NAME:string = "Combat Escaped";
@@ -28,7 +28,7 @@ export class CombatEscapeState extends CombatState {
       player: machine.current
     }, ()=> {
       machine.parent.world.reportEncounterResult(false);
-      machine.parent.setCurrentState(GameMapState.NAME);
+      machine.parent.setCurrentState(PlayerMapState.NAME);
     });
   }
 }

@@ -14,8 +14,8 @@
  limitations under the License.
  */
 
-import {CombatState} from '../gameCombatState';
-import {CombatStateMachine} from '../gameCombatStateMachine';
+import {CombatState} from './combatState';
+import {CombatStateMachine} from './combatStateMachine';
 
 import {CombatBeginTurnState} from './combatBeginTurnState';
 import {CombatStartState} from './combatStartState';

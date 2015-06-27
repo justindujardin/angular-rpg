@@ -15,11 +15,11 @@
  */
 
 
-import {CombatState} from '../gameCombatState';
-import {CombatStateMachine} from '../gameCombatStateMachine';
+import {CombatState} from './combatState';
+import {CombatStateMachine} from './combatStateMachine';
 import {GameEntityObject} from '../../objects/gameEntityObject';
 import {HeroModel} from '../../models/heroModel';
-import {GameMapState} from '../gameMapState';
+import {PlayerMapState} from '../playerMapState';
 
 
 export interface CombatVictorySummary {
@@ -68,7 +68,7 @@ export class CombatVictoryState extends CombatState {
     };
     machine.notify("combat:victory", summary, ()=> {
       machine.parent.world.reportEncounterResult(true);
-      machine.parent.setCurrentState(GameMapState.NAME);
+      machine.parent.setCurrentState(PlayerMapState.NAME);
     });
   }
 }

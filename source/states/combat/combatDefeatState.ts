@@ -14,10 +14,10 @@
  limitations under the License.
  */
 
-import {CombatState} from '../gameCombatState';
-import {CombatStateMachine} from '../gameCombatStateMachine';
+import {CombatState} from './combatState';
+import {CombatStateMachine} from './combatStateMachine';
 import {GameEntityObject} from '../../objects/gameEntityObject';
-import {GameMapState} from '../gameMapState';
+import {PlayerMapState} from '../playerMapState';
 
 
 export interface CombatDefeatSummary {
@@ -37,7 +37,7 @@ export class CombatDefeatState extends CombatState {
     };
     machine.notify("combat:defeat", data, ()=> {
       machine.parent.world.reportEncounterResult(false);
-      machine.parent.setCurrentState(GameMapState.NAME);
+      machine.parent.setCurrentState(PlayerMapState.NAME);
     });
   }
 }
