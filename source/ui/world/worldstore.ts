@@ -13,37 +13,166 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {Component, View} from 'angular2/angular2';
+
+import * as rpg from '../../index';
+
+import {Component, View, NgFor, NgIf} from 'angular2/angular2';
 import {GameFeatureObject} from '../../objects/gameFeatureObject';
 import {RPGGame} from '../services/rpggame';
+import {RPGSprite} from '../rpgsprite';
+
+import {StoreFeatureComponent} from '../../components/features/storeFeatureComponent';
+
+import {GameStateModel} from '../../models/gameStateModel';
+import {ItemModel} from '../../models/itemModel';
+import {WeaponModel} from '../../models/weaponModel';
+import {ArmorModel} from '../../models/armorModel';
 
 @Component({
   selector: 'world-store',
-  properties: ['text','title','active']
+  properties: ['selected', 'inventory', 'name', 'buyer']
 })
 @View({
-  templateUrl: 'source/ui/world/worldstore.html'
+  templateUrl: 'source/ui/world/worldstore.html',
+  directives: [NgFor, NgIf, RPGSprite]
 })
-export class WorldDialog {
-
-  static DEFAULT_TEXT:string = 'Nothing to see here';
-  static DEFAULT_TITLE:string = 'Untitled';
-
-  text:string = WorldDialog.DEFAULT_TEXT;
-  title:string = WorldDialog.DEFAULT_TITLE;
+export class WorldStore {
   active:boolean = false;
+  name:string = 'Invalid Store';
+  buyer:GameStateModel;
+  inventory:rpg.IGameItem[] = [];
+  powAlert:any = (message:string, timeout:number) => {
+    console.log(message);
+  };
 
   constructor(public game:RPGGame) {
-    // Dialog bubbles
-    game.world.scene.on('dialog:entered', (feature) => {
+    this.buyer = game.world.model;
+    game.world.time.addObject(this);
+    this.gameModel = game.world.model;
+    game.world.scene.on('store:entered', (feature:StoreFeatureComponent) => {
       this.active = true;
-      this.text = feature.text;
-      this.title = feature.title;
+      this.initStoreFromFeature(feature);
     });
-    game.world.scene.on('dialog:exited', () => {
+    game.world.scene.on('store:exited', () => {
       this.active = false;
-      this.text = WorldDialog.DEFAULT_TEXT;
-      this.title = WorldDialog.DEFAULT_TITLE;
     });
   }
+
+  /**
+   * The game state model to modify.
+   */
+  gameModel:GameStateModel = null;
+
+  /**
+   * The selected item to purchase/sell.
+   */
+  selected:ItemModel = null;
+
+  /**
+   * Determine if the UI is in a selling state.
+   */
+  selling:boolean = false;
+
+
+  initStoreFromFeature(feature:StoreFeatureComponent) {
+    // Get enemies data from spreadsheet
+    GameStateModel.getDataSource((data:pow2.GameDataResource) => {
+
+      var hasCategory:boolean = typeof feature.host.category !== 'undefined';
+      var theChoices:any[] = [];
+      if (!hasCategory || feature.host.category === 'weapons') {
+        theChoices = theChoices.concat(_.map(data.getSheetData('weapons'), (w)=> {
+          return _.extend({instanceModel: new WeaponModel(w)}, w);
+        }));
+      }
+      if (!hasCategory || feature.host.category === 'armor') {
+        theChoices = theChoices.concat(_.map(data.getSheetData('armor'), (a)=> {
+          return _.extend({instanceModel: new ArmorModel(a)}, a);
+        }));
+      }
+      var items = [];
+      _.each(feature.host.groups, (group:string)=> {
+        items = items.concat(_.filter(theChoices, (c:any)=> {
+          return _.indexOf(c.groups, group) !== -1;
+        }));
+      });
+
+      this.name = feature.name;
+      this.inventory = <rpg.IGameItem[]>_.where(items, {level: feature.host.feature.level});
+    });
+  }
+
+  destroy() {
+    this.selling = false;
+    this.selected = null;
+  }
+
+  actionItem(item) {
+    if (!item) {
+      return;
+    }
+
+    var model:GameStateModel = this.game.world.model;
+    var value:number = parseInt(item.cost);
+    if (this.selling) {
+      var itemIndex:number = -1;
+      for (var i = 0; i < model.inventory.length; i++) {
+        if (model.inventory[i].id === item.id) {
+          itemIndex = i;
+          break;
+        }
+      }
+      if (itemIndex !== -1) {
+        model.gold += value;
+        this.powAlert.show("Sold " + item.name + " for " + item.cost + " gold.", null, 1500);
+        model.inventory.splice(itemIndex, 1);
+      }
+    }
+    else {
+      if (value > model.gold) {
+        this.powAlert.show("You don't have enough money");
+        return;
+      }
+      else {
+        model.gold -= value;
+        this.powAlert.show("Purchased " + item.name + ".", null, 1500);
+        model.inventory.push(item.instanceModel.clone());
+      }
+    }
+
+    this.selected = null;
+    this.selling = false;
+
+  }
+
+  getActionVerb():string {
+    return this.selling ? "Sell" : "Buy";
+  }
+
+  isBuying():boolean {
+    return !this.selected && !this.selling;
+  }
+
+  isSelling():boolean {
+    return !this.selected && this.selling;
+  }
+
+  toggleAction() {
+    if (!this.selling) {
+      if (this.gameModel.inventory.length === 0) {
+        this.powAlert.show("You don't have any unequipped inventory to sell.", null, 1500);
+        this.selling = false;
+        return;
+      }
+    }
+    this.selling = !this.selling;
+  }
+
+  selectItem(item:any) {
+    if (item instanceof ItemModel) {
+      item = item.toJSON();
+    }
+    this.selected = item;
+  }
+
 }

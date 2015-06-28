@@ -8,6 +8,7 @@ import {GameStateMachine} from 'source/states/gameStateMachine';
 import {RPGSprite} from 'source/ui/rpgsprite';
 import {WorldMap} from 'source/ui/world/worldmap';
 import {WorldDialog} from 'source/ui/world/worlddialog';
+import {WorldStore} from 'source/ui/world/worldstore';
 
 @Component({
   selector: 'rpg-app',
@@ -16,7 +17,7 @@ import {WorldDialog} from 'source/ui/world/worlddialog';
 })
 @View({
   templateUrl: 'app.html',
-  directives: [NgFor,WorldMap,WorldDialog,RPGSprite]
+  directives: [NgFor,WorldMap,WorldDialog,WorldStore,RPGSprite]
 })
 export class RPGAppComponent {
   maps:string[] = [
