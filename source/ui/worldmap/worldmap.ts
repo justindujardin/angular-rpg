@@ -79,7 +79,7 @@ export class WorldMap {
     this._renderCanvas.style.position = 'absolute';
     this._renderCanvas.style.left = this._renderCanvas.style.top = '-9000px';
 
-    this._canvas = elRef.domElement.querySelector('canvas');
+    this._canvas = elRef.nativeElement.querySelector('canvas');
     this._context = <CanvasRenderingContext2D>this._canvas.getContext("2d");
     this._context.webkitImageSmoothingEnabled = false;
     this._context.mozImageSmoothingEnabled = false;
