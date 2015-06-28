@@ -1,7 +1,10 @@
-<div class="select-map ebp">Select Map:
-  <select #themap (change)="mapName=themap.value">
-    <option *ng-for="#map of maps" [value]="map" [selected]="map==mapName">{{map}}</option>
-  </select>
+<div class="container">
+  <div class="select-map ebp">Select Map:
+    <select #themap (change)="mapName=themap.value">
+      <option *ng-for="#map of maps" [value]="map" [selected]="map==mapName">{{map}}</option>
+    </select>
+  </div>
+  <world-dialog class="row"></world-dialog>
+  <world-map [map-name]="mapName"></world-map>
+  <content></content>
 </div>
-<rpg-map-canvas [map-name]="mapName"></rpg-map-canvas>
-<content></content>

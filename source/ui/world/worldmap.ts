@@ -1,6 +1,4 @@
-///<reference path="../../../typings/angular2/angular2.d.ts"/>
-///<reference path="../../../bower_components/pow-core/lib/pow-core.d.ts"/>
-///<reference path="../../../bower_components/pow2/lib/pow2.d.ts"/>
+
 import {Component, View, bootstrap,ElementRef} from 'angular2/angular2';
 
 import {GameWorld} from '../../gameWorld';
@@ -14,7 +12,7 @@ import {GameStateMachine} from '../../states/gameStateMachine';
 import {RPGGame} from '../services/rpggame';
 
 @Component({
-  selector: 'rpg-map-canvas',
+  selector: 'world-map',
   properties: ['mapName'],
   host: {
     '(window:resize)': 'onResize($event)'

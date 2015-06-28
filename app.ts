@@ -1,11 +1,13 @@
 import {Component, View, bootstrap, NgFor} from 'angular2/angular2';
 import {RPGGame} from 'source/ui/services/rpggame';
-import {WorldMap} from 'source/ui/worldmap/worldmap';
 import {GameWorld} from 'source/gameWorld';
 
 import {GameStateModel} from 'source/models/gameStateModel';
 import {GameStateMachine} from 'source/states/gameStateMachine';
 
+import {RPGSprite} from 'source/ui/rpgsprite';
+import {WorldMap} from 'source/ui/world/worldmap';
+import {WorldDialog} from 'source/ui/world/worlddialog';
 
 @Component({
   selector: 'rpg-app',
@@ -14,7 +16,7 @@ import {GameStateMachine} from 'source/states/gameStateMachine';
 })
 @View({
   templateUrl: 'app.html',
-  directives: [NgFor,WorldMap]
+  directives: [NgFor,WorldMap,WorldDialog,RPGSprite]
 })
 export class RPGAppComponent {
   maps:string[] = [

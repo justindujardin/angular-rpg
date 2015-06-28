@@ -27,6 +27,7 @@
   display: none !important;
 }
 
+@import "../bower_components/bootstrap/less/bootstrap";
 @import "style/variables";
 @import "style/mixins";
 @import "style/animation";
@@ -46,7 +47,8 @@
 //  TODO: This might get _really_ old.
 //  If so, just concat all the less files then compile the concat.
 @import "ui/directives/inventoryView";
-@import "ui/directives/dialogView";
+@import "ui/world/worldmap";
+@import "ui/world/worlddialog";
 @import "ui/directives/storeView";
 @import "ui/directives/templeView";
 @import "ui/directives/heroCard";
@@ -158,76 +160,48 @@ canvas {
   }
 }
 
-.container {
-  z-index: 100;
-
-}
-
-.game-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border: none;
-  margin: 0;
-  padding: 0;
-  .damage-value {
-    z-index: @zCanvasAlert;
-  }
-  canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-right: none;
-    border-left: none;
-  }
-}
-
-.ui-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow-y: auto;
-  pointer-events: none;
-  .ebp {
-    pointer-events: auto;
-  }
-  > * {
-    display: block;
-    height: 100%;
-    overflow-y: auto;
-  }
-  .dialog {
-    max-width: 800px;
-    min-width: 300px;
-    margin-top: 15px;
-    padding: 10px 10px;
-    position: relative;
-    .btn-close {
-      position: absolute;
-      font-size: 1em;
-      padding: 5px 15px;
-      padding-top: 10px;
-      right: 0;
-      top: 0;
-      &:hover {
-        top: 0;
-        padding-top: 12px;
-      }
-      &:active {
-        top: 0;
-        padding-top: 16px;
-      }
-    }
-
-  }
-
-}
+//.ui-container {
+//  position: absolute;
+//  top: 0;
+//  left: 0;
+//  right: 0;
+//  bottom: 0;
+//  overflow-y: auto;
+//  pointer-events: none;
+//  .ebp {
+//    pointer-events: auto;
+//  }
+//  > * {
+//    display: block;
+//    height: 100%;
+//    overflow-y: auto;
+//  }
+//  .dialog {
+//    max-width: 800px;
+//    min-width: 300px;
+//    margin-top: 15px;
+//    padding: 10px 10px;
+//    position: relative;
+//    .btn-close {
+//      position: absolute;
+//      font-size: 1em;
+//      padding: 5px 15px;
+//      padding-top: 10px;
+//      right: 0;
+//      top: 0;
+//      &:hover {
+//        top: 0;
+//        padding-top: 12px;
+//      }
+//      &:active {
+//        top: 0;
+//        padding-top: 16px;
+//      }
+//    }
+//
+//  }
+//
+//}
 
 // This restricted mobile phone resolutions to landscape.  Removed because pow should work
 // at phone res in portrait as well, but keep around in case that changes

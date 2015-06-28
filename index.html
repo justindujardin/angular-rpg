@@ -27,8 +27,7 @@
 <script>
   Promise.all([
     System.import('angular2/angular2'),
-    System.import('app'),
-    System.import('source/ui/worldmap/worldmap')
+    System.import('app')
   ]).then(function (modules) {
     modules[1].load();
   }, console.error.bind(console));
