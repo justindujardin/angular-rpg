@@ -71,7 +71,7 @@ export class RPGGame {
     this.sprite.icon = from.attributes.icon;
     this.world.scene.addObject(this.sprite);
     if (typeof at === 'undefined' && tileMap instanceof pow2.tile.TileMap) {
-      at = tileMap.bounds.getCenter();
+      at = tileMap.bounds.getCenter().subtract(6,2);
     }
     this.sprite.setPoint(at || new pow2.Point());
   }
