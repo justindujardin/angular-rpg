@@ -4,6 +4,7 @@
       <option *ng-for="#map of maps" [value]="map" [selected]="map==mapName">{{map}}</option>
     </select>
   </div>
+  <rpg-notification></rpg-notification>
   <world-dialog class="row"></world-dialog>
   <world-store class="row"></world-store>
   <world-map [map-name]="mapName"></world-map>

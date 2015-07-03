@@ -1,3 +1,19 @@
+/*
+ Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
 import {Component, View, bootstrap,ElementRef} from 'angular2/angular2';
 
 import {GameWorld} from '../../gameWorld';
@@ -14,7 +30,7 @@ import {RPGGame} from '../services/rpggame';
   selector: 'world-map',
   properties: ['mapName'],
   host: {
-    '(window:resize)': 'onResize($event)'
+    '(window:resize)': '_onResize($event)'
   }
 })
 @View({
@@ -29,8 +45,18 @@ import {RPGGame} from '../services/rpggame';
 })
 export class WorldMap {
   styleBackground:string = 'rgba(0,0,0,1)';
-
   tileMap:GameTileMap = null;
+
+
+  constructor(public elRef:ElementRef, public game:RPGGame) {
+    this._canvas = elRef.nativeElement.querySelector('canvas');
+    this._context = <CanvasRenderingContext2D>this._canvas.getContext("2d");
+
+    this._view = new RPGMapView(this._canvas, game.loader);
+    this._view.camera.point.set(-0.5, -0.5);
+    game.world.scene.addView(this._view);
+    _.defer(() => this._onResize());
+  }
 
   get mapName():string {
     return this.tileMap ? this.tileMap.name : '';
@@ -48,14 +74,10 @@ export class WorldMap {
       this.game.world.scene.addObject(this.tileMap);
       this.tileMap.loaded();
       this.game.createPlayer(this._hero, this.tileMap);
-      this.onResize();
+      this._onResize();
       this._view.setTileMap(this.tileMap);
     });
   }
-
-  private _renderCanvas:HTMLCanvasElement;
-  private _canvasAcquired:boolean = false;
-  private _stateKey:string = "_test2Pow2State";
 
   private _view:RPGMapView = null;
   private _canvas:HTMLCanvasElement = null;
@@ -65,23 +87,7 @@ export class WorldMap {
   // HACKS
   private _hero:HeroModel = HeroModel.create('warrior', 'MorTon');
 
-  constructor(public elRef:ElementRef, public game:RPGGame) {
-
-    this._renderCanvas = <HTMLCanvasElement>document.createElement('canvas');
-    this._renderCanvas.width = this._renderCanvas.height = 64;
-    this._renderCanvas.style.position = 'absolute';
-    this._renderCanvas.style.left = this._renderCanvas.style.top = '-9000px';
-
-    this._canvas = elRef.nativeElement.querySelector('canvas');
-    this._context = <CanvasRenderingContext2D>this._canvas.getContext("2d");
-
-    this._view = new RPGMapView(this._canvas, game.loader);
-    this._view.camera.point.set(-0.5, -0.5);
-    game.world.scene.addView(this._view);
-    _.defer(() => this.onResize());
-  }
-
-  onResize() {
+  private _onResize() {
     this._canvas.width = window.innerWidth;
     this._canvas.height = window.innerHeight;
     this._bounds.set(this._canvas.width, this._canvas.height);
@@ -101,34 +107,6 @@ export class WorldMap {
     this._context.webkitImageSmoothingEnabled = false;
     this._context.mozImageSmoothingEnabled = false;
     this._context.imageSmoothingEnabled = false;
-  }
-
-
-  /**
-   * Returns a canvas rendering context that may be drawn to.  A corresponding
-   * call to releaseRenderContext will return the drawn content of the context.
-   */
-  getRenderContext(width:number, height:number):CanvasRenderingContext2D {
-    if (this._canvasAcquired) {
-      throw new Error("Only one rendering canvas is available at a time.  Check for calls to this function without corresponding releaseCanvas() calls.");
-    }
-    this._canvasAcquired = true;
-    this._renderCanvas.width = width;
-    this._renderCanvas.height = height;
-    var context:any = this._renderCanvas.getContext('2d');
-    context.webkitImageSmoothingEnabled = false;
-    context.mozImageSmoothingEnabled = false;
-    return context;
-  }
-
-
-  /**
-   * Call this after getRenderContext to finish rendering and have the source
-   * of the canvas content returned as a data url string.
-   */
-  releaseRenderContext():string {
-    this._canvasAcquired = false;
-    return this._renderCanvas.toDataURL();
   }
 
 }

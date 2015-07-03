@@ -1,0 +1,32 @@
+rpg-notification {
+  padding: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100%;
+  position: absolute;
+  background-color: transparent;
+  z-index: @zCanvasAlert;
+  text-align: center;
+  font-family: @pixelFont;
+  pointer-events: none;
+  display: none;
+  &.active {
+    display: inherit;
+    pointer-events: auto;
+  }
+  .message {
+    top: 45%;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.80);
+    border: none;
+    box-shadow: none;
+    margin: auto;
+    position: absolute;
+    padding: 10px;
+    font-size: 2em;
+    color: #fff;
+    .stroke-text(1px, #000);
+  }
+}

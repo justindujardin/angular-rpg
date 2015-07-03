@@ -19,6 +19,7 @@ import * as rpg from '../../index';
 import {Component, View, NgFor, NgIf} from 'angular2/angular2';
 import {GameFeatureObject} from '../../objects/gameFeatureObject';
 import {RPGGame} from '../services/rpggame';
+import {Notify} from '../services/notify';
 import {RPGSprite} from '../rpgsprite';
 
 import {StoreFeatureComponent} from '../../components/features/storeFeatureComponent';
@@ -41,11 +42,8 @@ export class WorldStore {
   name:string = 'Invalid Store';
   buyer:GameStateModel;
   inventory:rpg.IGameItem[] = [];
-  powAlert:any = (message:string, timeout:number) => {
-    console.log(message);
-  };
 
-  constructor(public game:RPGGame) {
+  constructor(public game:RPGGame, public notify:Notify) {
     this.buyer = game.world.model;
     game.world.time.addObject(this);
     this.gameModel = game.world.model;
@@ -103,6 +101,7 @@ export class WorldStore {
   }
 
   destroy() {
+    this.active = false;
     this.selling = false;
     this.selected = null;
   }
@@ -124,18 +123,18 @@ export class WorldStore {
       }
       if (itemIndex !== -1) {
         model.gold += value;
-        this.powAlert.show("Sold " + item.name + " for " + item.cost + " gold.", null, 1500);
+        this.notify.show("Sold " + item.name + " for " + item.cost + " gold.", null, 1500);
         model.inventory.splice(itemIndex, 1);
       }
     }
     else {
       if (value > model.gold) {
-        this.powAlert.show("You don't have enough money");
+        this.notify.show("You don't have enough money");
         return;
       }
       else {
         model.gold -= value;
-        this.powAlert.show("Purchased " + item.name + ".", null, 1500);
+        this.notify.show("Purchased " + item.name + ".", null, 1500);
         model.inventory.push(item.instanceModel.clone());
       }
     }
@@ -160,7 +159,7 @@ export class WorldStore {
   toggleAction() {
     if (!this.selling) {
       if (this.gameModel.inventory.length === 0) {
-        this.powAlert.show("You don't have any unequipped inventory to sell.", null, 1500);
+        this.notify.show("You don't have any unequipped inventory to sell.", null, 1500);
         this.selling = false;
         return;
       }
