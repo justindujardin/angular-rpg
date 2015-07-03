@@ -1,13 +1,15 @@
-<div class="container">
-  <div class="select-map ebp">Select Map:
-    <select #themap (change)="mapName=themap.value">
-      <option *ng-for="#map of maps" [value]="map" [selected]="map==mapName">{{map}}</option>
-    </select>
-  </div>
+<div class="select-map ebp">Select Map:
+  <select #themap (change)="mapName=themap.value">
+    <option *ng-for="#map of maps" [value]="map" [selected]="map==mapName">{{map}}</option>
+  </select>
+</div>
+
+<div class="container dialogs-container">
   <rpg-notification></rpg-notification>
-  <world-dialog class="row"></world-dialog>
-  <world-temple class="row"></world-temple>
-  <world-store class="row"></world-store>
-  <world-map [map-name]="mapName"></world-map>
+  <world-dialog></world-dialog>
+  <party-inventory></party-inventory>
+  <world-temple></world-temple>
+  <world-store></world-store>
   <content></content>
 </div>
+<world-map [map-name]="mapName"></world-map>
