@@ -4,15 +4,15 @@ import {GameWorld} from 'source/gameWorld';
 import {GameStateModel} from 'source/models/gameStateModel';
 import {GameStateMachine} from 'source/states/gameStateMachine';
 
-import {RPGGame} from 'source/ui/services/rpggame';
-import {Notify} from 'source/ui/services/notify';
-import {Animate} from 'source/ui/services/animate';
+import {RPGGame,Notify,Animate} from 'source/ui/services/all';
 
 import {RPGSprite} from 'source/ui/rpgsprite';
 import {RPGNotification} from 'source/ui/rpgnotification';
-import {WorldMap} from 'source/ui/world/worldmap';
-import {WorldDialog} from 'source/ui/world/worlddialog';
-import {WorldStore} from 'source/ui/world/worldstore';
+
+import {PartyInventory} from 'source/ui/party/partyinventory';
+import {PlayerCard} from 'source/ui/party/playercard';
+
+import {WorldMap,WorldDialog,WorldStore,WorldTemple} from 'source/ui/world/all';
 
 @Component({
   selector: 'rpg-app',
@@ -21,7 +21,12 @@ import {WorldStore} from 'source/ui/world/worldstore';
 })
 @View({
   templateUrl: 'app.html',
-  directives: [NgFor, WorldMap, WorldDialog, WorldStore, RPGSprite, RPGNotification]
+  directives: [
+    NgFor,
+    WorldMap, WorldDialog, WorldStore, WorldTemple,
+    PlayerCard,
+    PartyInventory,
+    RPGSprite, RPGNotification]
 })
 export class RPGAppComponent {
   maps:string[] = [

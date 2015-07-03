@@ -18,16 +18,12 @@ import * as rpg from '../../index';
 
 import {Component, View, NgFor, NgIf} from 'angular2/angular2';
 import {GameFeatureObject} from '../../objects/gameFeatureObject';
-import {RPGGame} from '../services/rpggame';
-import {Notify} from '../services/notify';
 import {RPGSprite} from '../rpgsprite';
 
+import {RPGGame,Notify} from '../services/all';
 import {StoreFeatureComponent} from '../../components/features/storeFeatureComponent';
 
-import {GameStateModel} from '../../models/gameStateModel';
-import {ItemModel} from '../../models/itemModel';
-import {WeaponModel} from '../../models/weaponModel';
-import {ArmorModel} from '../../models/armorModel';
+import {GameStateModel,ItemModel,WeaponModel,ArmorModel} from '../../models/all';
 
 @Component({
   selector: 'world-store',

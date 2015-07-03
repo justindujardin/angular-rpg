@@ -14,18 +14,10 @@
  limitations under the License.
  */
 
-import {Component, View, ElementRef} from 'angular2/angular2';
-import {Notify} from './services/all';
-
-@Component({
-  selector: 'rpg-notification',
-  properties: ['notify'],
-})
-@View({
-  template: `<span class="message" [inner-text]="notify.message"></span>`,
-})
-export class RPGNotification {
-  constructor(public notify:Notify, public element:ElementRef) {
-    notify.container = element.nativeElement;
-  }
-}
+export * from './armorModel';
+export * from './creatureModel';
+export * from './entityModel';
+export * from './gameStateModel';
+export * from './heroModel';
+export * from './itemModel';
+export * from './weaponModel';

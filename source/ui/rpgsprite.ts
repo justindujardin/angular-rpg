@@ -15,12 +15,12 @@
  */
 import {Component, View} from 'angular2/angular2';
 import {GameFeatureObject} from '../objects/gameFeatureObject';
-import {RPGGame} from './services/rpggame';
+import {RPGGame} from './services/all';
 import {GameWorld} from '../gameWorld';
 
 @Component({
   selector: 'rpg-sprite',
-  properties:['name']
+  properties: ['name','frame']
 })
 @View({
   template: `<img [src]="dataUrl">`
@@ -32,8 +32,16 @@ export class RPGSprite {
   dataUrl:string = '';
   width:string = '64';
   height:string = '64';
-  frame:number = 0;
   renderer:pow2.SpriteRender = new pow2.SpriteRender();
+
+  private _frame:number = 0;
+  set frame(value:number) {
+    if(this._frame !== value) {
+      this._frame = value;
+      this._get();
+    }
+  }
+  get frame():number { return this._frame; }
 
   private _name:string = RPGSprite.INVALID_IMAGE;
   set name(value:string) {
@@ -41,7 +49,20 @@ export class RPGSprite {
       this._name = RPGSprite.INVALID_IMAGE;
       return;
     }
-    this.renderer.getSingleSprite(value, this.frame, (sprite) => {
+    this._name = value;
+    this._get();
+  }
+
+  get name():string {
+    return this._name;
+  }
+
+  constructor(public game:RPGGame) {
+    pow2.getWorld<GameWorld>('rpg').mark(this.renderer);
+  }
+
+  private _get() {
+    this.renderer.getSingleSprite(this._name, this._frame, (sprite) => {
       // Get the context for drawing
       var width:number = parseInt(this.width);
       var height:number = parseInt(this.height);
@@ -51,12 +72,6 @@ export class RPGSprite {
       renderContext.drawImage(sprite, 0, 0, width, height);
       this.dataUrl = this.game.releaseRenderContext();
     });
-  }
-  get name():string {
-    return this._name;
-  }
 
-  constructor(public game:RPGGame) {
-    pow2.getWorld<GameWorld>('rpg').mark(this.renderer);
   }
 }

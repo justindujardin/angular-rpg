@@ -19,12 +19,12 @@ import {Component, View, bootstrap,ElementRef} from 'angular2/angular2';
 import {GameWorld} from '../../gameWorld';
 import {GameTileMap} from '../../gameTileMap';
 import {RPGMapView} from '../../rpgMapView';
-import {GameStateModel} from '../../models/gameStateModel';
-import {HeroModel,HeroTypes} from '../../models/heroModel';
 import {GameEntityObject} from '../../objects/gameEntityObject';
 import {GameStateMachine} from '../../states/gameStateMachine';
 
-import {RPGGame} from '../services/rpggame';
+import {GameStateModel,HeroModel,HeroTypes} from '../../models/all';
+
+import {RPGGame} from '../services/all';
 
 @Component({
   selector: 'world-map',
@@ -73,7 +73,7 @@ export class WorldMap {
       });
       this.game.world.scene.addObject(this.tileMap);
       this.tileMap.loaded();
-      this.game.createPlayer(this._hero, this.tileMap);
+      this.game.createPlayer(this.game.hero, this.tileMap);
       this._onResize();
       this._view.setTileMap(this.tileMap);
     });
@@ -83,9 +83,6 @@ export class WorldMap {
   private _canvas:HTMLCanvasElement = null;
   private _context:any = null;
   private _bounds:pow2.Point = new pow2.Point();
-
-  // HACKS
-  private _hero:HeroModel = HeroModel.create('warrior', 'MorTon');
 
   private _onResize() {
     this._canvas.width = window.innerWidth;

@@ -22,7 +22,8 @@ import {EntityModel} from './entityModel';
 
 var _gameData:pow2.GameDataResource = null;
 
-export class GameStateModel extends pow2.Events {
+export class GameStateModel extends pow2.Events implements pow2.IWorldObject {
+  world:pow2.IWorld;
   party:HeroModel[]; // The player's party
   inventory:ItemModel[]; // The inventory of items owned by the player.
   loader:pow2.ResourceLoader;

@@ -62,6 +62,11 @@ export class Notify implements pow2.IWorldObject, pow2.IProcessObject {
   public animationClass:string = 'active';
   public message:string = null;
 
+  /**
+   * Default timeout in Milliseconds
+   */
+  defaultTimeout:number = 2500;
+
   set container(value:HTMLElement) {
     if (this._container) {
       this._container.removeEventListener('click', this._dismissBinding);
@@ -101,7 +106,7 @@ export class Notify implements pow2.IWorldObject, pow2.IProcessObject {
   show(message:string, done?:() => void, duration?:number):INotifyItem {
     var obj:INotifyItem = {
       message: message,
-      duration: typeof duration === 'undefined' ? 1000 : duration,
+      duration: typeof duration === 'undefined' ? this.defaultTimeout : duration,
       done: done
     };
     return this.queue(obj);

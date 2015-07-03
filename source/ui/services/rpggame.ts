@@ -37,6 +37,9 @@ export class RPGGame {
   private _canvasAcquired:boolean = false;
   private _stateKey:string = "_angular2PowRPGState";
 
+  // TODO: HACKS.  Real party is needed.
+  public hero:HeroModel = HeroModel.create('warrior','MorTon');
+
   constructor() {
     this._renderCanvas = <HTMLCanvasElement>document.createElement('canvas');
     this._renderCanvas.width = this._renderCanvas.height = 64;
@@ -50,6 +53,7 @@ export class RPGGame {
     });
     this.world = pow2.getWorld<GameWorld>('rpg');
     this.world.setService('scene', this.currentScene);
+    this.world.model.party.push(this.hero);
     this.machine = this.world.state;
     // Tell the world time manager to start ticking.
     this.world.time.start();
@@ -87,7 +91,7 @@ export class RPGGame {
     this.sprite.icon = from.attributes.icon;
     this.world.scene.addObject(this.sprite);
     if (typeof at === 'undefined' && tileMap instanceof pow2.tile.TileMap) {
-      at = tileMap.bounds.getCenter().subtract(6, 2);
+      at = tileMap.bounds.getCenter().add(2, 4);
     }
     this.sprite.setPoint(at || new pow2.Point());
   }

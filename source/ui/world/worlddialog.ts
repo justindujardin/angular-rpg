@@ -16,7 +16,7 @@
 
 import {Component, View} from 'angular2/angular2';
 import {GameFeatureObject} from '../../objects/gameFeatureObject';
-import {RPGGame} from '../services/rpggame';
+import {RPGGame} from '../services/all';
 import {RPGSprite} from '../rpgsprite';
 
 @Component({

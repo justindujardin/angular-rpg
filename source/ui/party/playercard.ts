@@ -14,18 +14,18 @@
  limitations under the License.
  */
 
-import {Component, View, ElementRef} from 'angular2/angular2';
-import {Notify} from './services/all';
+import {Component, View, CSSClass} from 'angular2/angular2';
+import {RPGSprite} from '../rpgsprite';
+import {HeroModel} from '../../models/models';
 
 @Component({
-  selector: 'rpg-notification',
-  properties: ['notify'],
+  selector: 'player-card',
+  properties: ['model']
 })
 @View({
-  template: `<span class="message" [inner-text]="notify.message"></span>`,
+  templateUrl: 'source/ui/party/playercard.html',
+  directives: [RPGSprite,CSSClass]
 })
-export class RPGNotification {
-  constructor(public notify:Notify, public element:ElementRef) {
-    notify.container = element.nativeElement;
-  }
+export class PlayerCard {
+  model:HeroModel;
 }
