@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import {Component,View} from 'angular2/angular2';
+import {Component,View, NgIf, NgFor} from 'angular2/angular2';
 
 import {ItemModel} from '../../models/itemModel';
 import {WeaponModel} from '../../models/weaponModel';
@@ -22,19 +22,22 @@ import {ArmorModel} from '../../models/armorModel';
 import {HeroModel} from '../../models/heroModel';
 import {GameStateModel} from '../../models/gameStateModel';
 import {RPGGame} from '../services/rpggame';
+import {RPGSprite} from '../rpgsprite';
 import {Notify} from '../services/notify';
 
 @Component({
   selector: 'party-inventory',
-  properties: ['model','character','currentIndex','game']
+  properties: ['model','character','currentIndex','game','active']
 })
 @View({
-  templateUrl: 'source/ui/party/partyinventory.html'
+  templateUrl: 'source/ui/party/partyinventory.html',
+  directives:[NgIf,NgFor,RPGSprite]
 })
 export class PartyInventory {
   currentIndex:number = 0;
   character:HeroModel;
   model:GameStateModel;
+  active:boolean = false;
   constructor(public game:RPGGame, public notify:Notify) {
     this.model = game.world.model;
     this.character = this.model.party[this.currentIndex];
