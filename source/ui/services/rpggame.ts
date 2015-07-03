@@ -38,7 +38,7 @@ export class RPGGame {
   private _stateKey:string = "_angular2PowRPGState";
 
   // TODO: HACKS.  Real party is needed.
-  public hero:HeroModel = HeroModel.create('warrior','MorTon');
+  public hero:HeroModel = HeroModel.create('warrior', 'MorTon');
 
   constructor() {
     this._renderCanvas = <HTMLCanvasElement>document.createElement('canvas');
@@ -90,8 +90,13 @@ export class RPGGame {
     this.sprite.name = from.attributes.name;
     this.sprite.icon = from.attributes.icon;
     this.world.scene.addObject(this.sprite);
+
+    // If no point is specified, use the position of the first Portal on the current map
     if (typeof at === 'undefined' && tileMap instanceof pow2.tile.TileMap) {
-      at = tileMap.bounds.getCenter().add(2, 4);
+      var portal:any = _.where(tileMap.features.objects, {type: 'source.components.features.PortalFeatureComponent'})[0];
+      if (portal) {
+        at = new pow2.Point(portal.x / portal.width, portal.y / portal.height);
+      }
     }
     this.sprite.setPoint(at || new pow2.Point());
   }
