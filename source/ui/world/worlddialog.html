@@ -1,4 +1,4 @@
-<div class="dialog ebp col-xs-12" [style.display]="active?'inherit':'none'">
+<div class="dialog ebp col-xs-12" *ng-if="active">
   <rpg-sprite class="col-xs-2 character" [name]="icon"></rpg-sprite>
   <div class="col-xs-10">
     <p [inner-text]="title"></p>

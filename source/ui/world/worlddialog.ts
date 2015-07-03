@@ -14,18 +14,18 @@
  limitations under the License.
  */
 
-import {Component, View} from 'angular2/angular2';
+import {Component, View, NgIf} from 'angular2/angular2';
 import {GameFeatureObject} from '../../objects/gameFeatureObject';
 import {RPGGame} from '../services/all';
 import {RPGSprite} from '../rpgsprite';
 
 @Component({
   selector: 'world-dialog',
-  properties: ['text','title','icon','active']
+  properties: ['text', 'title', 'icon', 'active']
 })
 @View({
   templateUrl: 'source/ui/world/worlddialog.html',
-  directives: [RPGSprite]
+  directives: [RPGSprite, NgIf]
 })
 export class WorldDialog {
 
