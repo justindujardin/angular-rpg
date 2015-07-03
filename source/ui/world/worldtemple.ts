@@ -22,7 +22,7 @@ import {RPGSprite} from '../rpgsprite';
 
 @Component({
   selector: 'world-temple',
-  properties: ['model', 'party', 'active', 'cost', 'name']
+  properties: ['model', 'party', 'active', 'cost', 'icon', 'name']
 })
 @View({
   templateUrl: 'source/ui/world/worldtemple.html',
@@ -34,6 +34,7 @@ export class WorldTemple {
 
   active:boolean = false;
   name:string = WorldTemple.NAME;
+  icon:string = null;
   cost:number = 200;
   model:GameStateModel;
   party:HeroModel[];
@@ -43,6 +44,7 @@ export class WorldTemple {
     this.party = this.model.party;
     game.world.scene.on('temple:entered', (feature) => {
       this.name = feature.name;
+      this.icon = feature.icon;
       this.cost = parseInt(feature.cost);
       this.active = true;
     });
