@@ -1,4 +1,3 @@
-
 import {Component, View, bootstrap,ElementRef} from 'angular2/angular2';
 
 import {GameWorld} from '../../gameWorld';
@@ -25,14 +24,10 @@ import {RPGGame} from '../services/rpggame';
   </canvas>
   `,
   host: {
-    '[style.height]': 'styleHeight',
-    '[style.width]': 'styleWidth',
     '[style.color]': 'styleBackground'
   }
 })
 export class WorldMap {
-  styleHeight:number = 320;
-  styleWidth:number = 640;
   styleBackground:string = 'rgba(0,0,0,1)';
 
   tileMap:GameTileMap = null;
@@ -52,7 +47,7 @@ export class WorldMap {
       });
       this.game.world.scene.addObject(this.tileMap);
       this.tileMap.loaded();
-      this.game.createPlayer(this._hero,this.tileMap);
+      this.game.createPlayer(this._hero, this.tileMap);
       this.onResize();
       this._view.setTileMap(this.tileMap);
     });
@@ -68,7 +63,7 @@ export class WorldMap {
   private _bounds:pow2.Point = new pow2.Point();
 
   // HACKS
-  private _hero:HeroModel = HeroModel.create('warrior','MorTon');
+  private _hero:HeroModel = HeroModel.create('warrior', 'MorTon');
 
   constructor(public elRef:ElementRef, public game:RPGGame) {
 
@@ -79,20 +74,17 @@ export class WorldMap {
 
     this._canvas = elRef.nativeElement.querySelector('canvas');
     this._context = <CanvasRenderingContext2D>this._canvas.getContext("2d");
-    this._context.webkitImageSmoothingEnabled = false;
-    this._context.mozImageSmoothingEnabled = false;
-    this._context.imageSmoothingEnabled = false;
 
     this._view = new RPGMapView(this._canvas, game.loader);
     this._view.camera.point.set(-0.5, -0.5);
-    this.onResize();
     game.world.scene.addView(this._view);
+    _.defer(() => this.onResize());
   }
 
   onResize() {
-    this.styleWidth = this._context.canvas.width = window.innerWidth;
-    this.styleHeight = this._context.canvas.height = window.innerHeight;
-    this._bounds.set(this.styleWidth, this.styleHeight);
+    this._canvas.width = window.innerWidth;
+    this._canvas.height = window.innerHeight;
+    this._bounds.set(this._canvas.width, this._canvas.height);
     this._bounds = this._view.screenToWorld(this._bounds);
 
 
@@ -104,8 +96,8 @@ export class WorldMap {
       this._view.camera.point.set(offset.floor());
     }
 
-
     this._view.camera.extent.set(this._bounds);
+
     this._context.webkitImageSmoothingEnabled = false;
     this._context.mozImageSmoothingEnabled = false;
     this._context.imageSmoothingEnabled = false;
