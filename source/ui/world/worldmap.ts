@@ -79,6 +79,13 @@ export class WorldMap {
     });
   }
 
+  private _player:HeroModel = null;
+  set player(value:HeroModel){
+    this._player = value;
+    this.game.createPlayer(this._player,this.tileMap);
+  }
+  get player():HeroModel { return this._player; }
+
   private _view:RPGMapView = null;
   private _canvas:HTMLCanvasElement = null;
   private _context:any = null;

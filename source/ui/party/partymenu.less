@@ -1,9 +1,9 @@
 
-.game-menu {
+party-menu {
   position: fixed;
   bottom: 5px;
   left: 5px;
-  z-index: 10;
+  z-index: @zCanvasGui;
   font-family: 'GraphicPixel', sans-serif;
   .options, .trigger {
     font-size: 42px;
@@ -58,13 +58,8 @@
   }
 
   .views {
-    display: none;
     overflow: auto;
     overflow-x: hidden;
-    &.open {
-      display: block;
-    }
-
     > * {
       color: #fff;
       background-color: rgba(0, 0, 0, 0.8);

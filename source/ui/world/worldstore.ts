@@ -18,7 +18,7 @@ import * as rpg from '../../index';
 
 import {Component, View, NgFor, NgIf} from 'angular2/angular2';
 import {GameFeatureObject} from '../../objects/gameFeatureObject';
-import {RPGSprite} from '../rpgsprite';
+import {RPGSprite} from '../rpg/all';
 
 import {RPGGame,Notify} from '../services/all';
 import {StoreFeatureComponent} from '../../components/features/storeFeatureComponent';

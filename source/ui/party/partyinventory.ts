@@ -22,7 +22,7 @@ import {ArmorModel} from '../../models/armorModel';
 import {HeroModel} from '../../models/heroModel';
 import {GameStateModel} from '../../models/gameStateModel';
 import {RPGGame} from '../services/rpggame';
-import {RPGSprite} from '../rpgsprite';
+import {RPGSprite} from '../rpg/rpgsprite';
 import {Notify} from '../services/notify';
 
 @Component({

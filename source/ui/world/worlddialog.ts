@@ -17,7 +17,7 @@
 import {Component, View, NgIf} from 'angular2/angular2';
 import {GameFeatureObject} from '../../objects/gameFeatureObject';
 import {RPGGame} from '../services/all';
-import {RPGSprite} from '../rpgsprite';
+import {RPGSprite} from '../rpg/all';
 
 @Component({
   selector: 'world-dialog',

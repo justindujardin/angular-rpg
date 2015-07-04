@@ -15,8 +15,9 @@
  */
 
 import {Component, View, CSSClass} from 'angular2/angular2';
-import {RPGSprite} from '../rpgsprite';
-import {HeroModel} from '../../models/models';
+import {RPGSprite,RPGHealthBar} from '../rpg/all';
+import {RPGGame} from '../services/all';
+import {HeroModel} from '../../models/all';
 
 @Component({
   selector: 'player-card',
@@ -24,8 +25,25 @@ import {HeroModel} from '../../models/models';
 })
 @View({
   templateUrl: 'source/ui/party/playercard.html',
-  directives: [RPGSprite,CSSClass]
+  directives: [RPGSprite, RPGHealthBar, CSSClass]
 })
 export class PlayerCard {
   model:HeroModel;
+
+  constructor(public game:RPGGame) {
+  }
+
+  getPlayerCSSClassMap():any {
+    return {
+      dead: this.model && this.model.attributes.hp <= 0
+    }
+  }
+
+  getCSSProgressWidth():string {
+    var width = 0;
+    if (this.model) {
+      width = (this.model.attributes.exp - this.model.attributes.prevLevelExp) / (this.model.attributes.nextLevelExp - this.model.attributes.prevLevelExp) * 100;
+    }
+    return width + '%';
+  }
 }

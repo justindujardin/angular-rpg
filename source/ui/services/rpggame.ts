@@ -127,25 +127,28 @@ export class RPGGame {
   //  this.loadMap("town", then, this.world.model.party[0]);
   //}
 
-  //loadGame(data:any, then?:()=>any) {
-  //  if (data) {
-  //    //this.world.model.clear();
-  //    this.world.model.initData(()=> {
-  //      this.world.model.parse(data);
-  //      var at = this.world.model.getKeyData('playerPosition');
-  //      at = at ? new pow2.Point(at.x, at.y) : undefined;
-  //      this.loadMap(this.world.model.getKeyData('playerMap') || "town", then, this.world.model.party[0], at);
-  //    });
-  //  }
-  //  else {
-  //    if (this.world.model.party.length === 0) {
-  //      this.world.model.addHero(HeroModel.create(HeroTypes.Warrior, "Warrior"));
-  //      this.world.model.addHero(HeroModel.create(HeroTypes.Ranger, "Ranger"));
-  //      this.world.model.addHero(HeroModel.create(HeroTypes.LifeMage, "Mage"));
-  //    }
-  //    this.newGame(then);
-  //  }
-  //}
+  initGame(data:any):Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      if (data) {
+        //this.world.model.clear();
+        this.world.model.initData(()=> {
+          this.world.model.parse(data);
+          var at = this.world.model.getKeyData('playerPosition');
+          at = at ? new pow2.Point(at.x, at.y) : undefined;
+          //this.loadMap(this.world.model.getKeyData('playerMap') || "town", then, this.world.model.party[0], at);
+        });
+      }
+      else {
+        if (this.world.model.party.length === 0) {
+          this.world.model.addHero(HeroModel.create(HeroTypes.Warrior, "Warrior"));
+          this.world.model.addHero(HeroModel.create(HeroTypes.Ranger, "Ranger"));
+          this.world.model.addHero(HeroModel.create(HeroTypes.LifeMage, "Mage"));
+        }
+        //this.newGame(then);
+      }
+
+    });
+  }
 
   party:HeroModel[] = [];
   inventory:ItemModel[] = [];

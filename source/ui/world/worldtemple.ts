@@ -18,7 +18,7 @@ import {Component,View,NgFor,NgIf} from 'angular2/angular2';
 import '../../index';
 import {HeroModel,GameStateModel} from '../../models/all';
 import {RPGGame,Notify} from '../services/all';
-import {RPGSprite} from '../rpgsprite';
+import {RPGSprite,RPGHealthBar} from '../rpg/all';
 
 @Component({
   selector: 'world-temple',
@@ -26,7 +26,7 @@ import {RPGSprite} from '../rpgsprite';
 })
 @View({
   templateUrl: 'source/ui/world/worldtemple.html',
-  directives: [NgFor, NgIf, RPGSprite]
+  directives: [NgFor, NgIf, RPGSprite, RPGHealthBar]
 })
 export class WorldTemple {
 

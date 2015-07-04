@@ -2,8 +2,10 @@
 // --------------------------------------------------------------------------
 world-dialog {
   text-align: center;
-  pointer-events: none;
   .dialog {
+    .body-text{
+      pointer-events: none;
+    }
     z-index: @zCanvasGui;
     width: auto;
     max-width: 800px;
@@ -11,7 +13,6 @@ world-dialog {
     padding: 10px 10px;
     position: relative;
     .btn-close {
-      pointer-events: all;
       position: absolute;
       font-size: 1.5em;
       padding: 5px 20px;

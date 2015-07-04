@@ -6,18 +6,14 @@ import {GameStateMachine} from 'source/states/gameStateMachine';
 
 import {RPGGame,Notify,Animate} from 'source/ui/services/all';
 
-import {RPGSprite} from 'source/ui/rpgsprite';
-import {RPGNotification} from 'source/ui/rpgnotification';
-
-import {PartyInventory} from 'source/ui/party/partyinventory';
-import {PlayerCard} from 'source/ui/party/playercard';
-
+import {RPGSprite,RPGHealthBar,RPGNotification} from 'source/ui/rpg/all';
+import {PartyInventory,PlayerCard,PartyMenu} from 'source/ui/party/all';
 import {WorldMap,WorldDialog,WorldStore,WorldTemple} from 'source/ui/world/all';
 
 @Component({
   selector: 'rpg-app',
-  appInjector: [RPGGame,Notify,Animate],
-  properties: ['loaded']
+  appInjector: [RPGGame, Notify, Animate],
+  properties: ['loaded', 'game']
 })
 @View({
   templateUrl: 'app.html',
@@ -25,8 +21,8 @@ import {WorldMap,WorldDialog,WorldStore,WorldTemple} from 'source/ui/world/all';
     NgFor,
     WorldMap, WorldDialog, WorldStore, WorldTemple,
     PlayerCard,
-    PartyInventory,
-    RPGSprite, RPGNotification]
+    PartyInventory, PartyMenu,
+    RPGSprite, RPGNotification, RPGHealthBar]
 })
 export class RPGAppComponent {
   maps:string[] = [
@@ -38,6 +34,9 @@ export class RPGAppComponent {
   ];
   mapName:string = 'town';
   loaded:boolean = true;
+
+  constructor(public game:RPGGame) {
+  }
 }
 
 export function load():Promise<void> {

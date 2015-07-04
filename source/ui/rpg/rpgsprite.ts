@@ -14,9 +14,9 @@
  limitations under the License.
  */
 import {Component, View} from 'angular2/angular2';
-import {GameFeatureObject} from '../objects/gameFeatureObject';
-import {RPGGame} from './services/all';
-import {GameWorld} from '../gameWorld';
+import {GameFeatureObject} from '../../objects/gameFeatureObject';
+import {RPGGame} from '../services/all';
+import {GameWorld} from '../../gameWorld';
 
 @Component({
   selector: 'rpg-sprite',

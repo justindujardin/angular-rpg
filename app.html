@@ -3,11 +3,11 @@
     <option *ng-for="#map of maps" [value]="map" [selected]="map==mapName">{{map}}</option>
   </select>
 </div>
+<rpg-notification></rpg-notification>
 
 <div class="container dialogs-container">
-  <rpg-notification></rpg-notification>
+  <party-menu></party-menu>
   <world-dialog></world-dialog>
-  <party-inventory></party-inventory>
   <world-temple></world-temple>
   <world-store></world-store>
   <content></content>
