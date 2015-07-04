@@ -33,15 +33,9 @@ export class PortalFeatureComponent extends GameFeatureComponent {
     if (!this.target || !this.host.tileMap) {
       return false;
     }
-    // TODO: What about all this map loading crap?  Have to load TMX resource
-    // in each spot and then call createObject on it with the entity container.
-    // Kind of a PITA if you ask me, and we keep duplicating the "/maps/{name}.tmx"
-    // stuff all over the place.  Maybe a wrapper function that does that?
-    this.host.world.loader.load(this.host.world.getMapUrl(this.map), (map:pow2.TiledTMXResource)=> {
-      this.host.tileMap.setMap(map);
-      console.log("Transition to " + this.map);
-      object.setPoint(this.target);
-      this.host.tileMap.syncComponents();
+    object.scene.trigger('portal:entered', {
+      map: this.map,
+      target:this.target,
     });
     return true;
   }

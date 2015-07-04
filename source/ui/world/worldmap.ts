@@ -56,6 +56,14 @@ export class WorldMap {
     this._view.camera.point.set(-0.5, -0.5);
     game.world.scene.addView(this._view);
     _.defer(() => this._onResize());
+
+    // When a portal is entered, update the map view to reflect the change.
+    game.world.scene.on('portal:entered', (data:any) => {
+      this._loadMap(data.map).then(()=>{
+        this.game.partyMapName = data.map;
+        this.game.partyPosition = data.target;
+      }).catch(console.error.bind(console));
+    });
   }
 
   get mapName():string {
@@ -63,19 +71,34 @@ export class WorldMap {
   }
 
   set mapName(value:string) {
-    if (this.tileMap) {
-      this.tileMap.destroy();
-      this.tileMap = null;
-    }
-    this.game.loader.load(this.game.world.getMapUrl(value), (map:pow2.TiledTMXResource)=> {
-      this.tileMap = this.game.world.entities.createObject('GameMapObject', {
-        resource: map
+    this._loadMap(value);
+  }
+
+  /**
+   * Load a map by name as a [[Promise]].
+   * @param value The map name, e.g. "keep" or "isle"
+   * @private
+   */
+  private _loadMap(value:string):Promise<GameTileMap> {
+    return new Promise<GameTileMap>((resolve, reject)=> {
+      this.game.loader.load(this.game.world.getMapUrl(value), (map:pow2.TiledTMXResource)=> {
+        if(!map || !map.isReady()){
+          return reject('invalid resource: ' + this.game.world.getMapUrl(value));
+        }
+        if (this.tileMap) {
+          this.tileMap.destroy();
+          this.tileMap = null;
+        }
+        this.tileMap = this.game.world.entities.createObject('GameMapObject', {
+          resource: map
+        });
+        this.game.world.scene.addObject(this.tileMap);
+        this.tileMap.loaded();
+        this.game.createPlayer(this.game.hero, this.tileMap);
+        this._onResize();
+        this._view.setTileMap(this.tileMap);
+        resolve(this.tileMap);
       });
-      this.game.world.scene.addObject(this.tileMap);
-      this.tileMap.loaded();
-      this.game.createPlayer(this.game.hero, this.tileMap);
-      this._onResize();
-      this._view.setTileMap(this.tileMap);
     });
   }
 
