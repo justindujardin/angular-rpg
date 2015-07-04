@@ -28,7 +28,7 @@ import {RPGGame} from '../services/all';
 
 @Component({
   selector: 'world-map',
-  properties: ['mapName'],
+  properties: ['mapName', 'playerPosition'],
   host: {
     '(window:resize)': '_onResize($event)'
   }
@@ -80,11 +80,27 @@ export class WorldMap {
   }
 
   private _player:HeroModel = null;
-  set player(value:HeroModel){
+  set player(value:HeroModel) {
     this._player = value;
-    this.game.createPlayer(this._player,this.tileMap);
+    this.game.createPlayer(this._player, this.tileMap);
   }
-  get player():HeroModel { return this._player; }
+
+  get player():HeroModel {
+    return this._player;
+  }
+
+  private _position = new pow2.Point();
+
+  set playerPosition(value:pow2.Point) {
+    this._position.set(value);
+    if (this.game.sprite) {
+      this.game.sprite.setPoint(value);
+    }
+  }
+
+  get playerPosition() {
+    return this._position;
+  }
 
   private _view:RPGMapView = null;
   private _canvas:HTMLCanvasElement = null;

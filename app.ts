@@ -32,10 +32,17 @@ export class RPGAppComponent {
     'tower1', 'tower2', 'tower3', 'town',
     'village', 'wilderness'
   ];
-  mapName:string = 'town';
   loaded:boolean = true;
 
+  setMap(value:string) {
+    this.game.partyPosition.zero();
+    this.game.partyMapName = value;
+  }
+
   constructor(public game:RPGGame) {
+    game.initGame().then(()=> {
+      console.log("Game fully initialized.");
+    }).catch(console.error.bind(console));
   }
 }
 

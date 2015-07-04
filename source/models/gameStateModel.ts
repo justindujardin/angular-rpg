@@ -116,14 +116,7 @@ export class GameStateModel extends pow2.Events implements pow2.IWorldObject {
       return;
     }
     if (typeof data.keyData !== 'undefined') {
-      try {
-        this.keyData = JSON.parse(data.keyData);
-      }
-      catch (e) {
-        console.error("Failed to parse keyData");
-        this.keyData = data.keyData;
-      }
-
+      this.keyData = data.keyData;
     }
 
     var theChoices:any[] = [];
@@ -146,15 +139,17 @@ export class GameStateModel extends pow2.Events implements pow2.IWorldObject {
   }
 
   toJSON() {
-    var result:any = _.omit(this, 'party', 'inventory', 'keyData', 'world');
+    var result:any = {
+      gold: this.gold
+    };
     result.party = _.map(this.party, (p) => {
-      return p.toJSON();
+      return p.toJSON ? p.toJSON() : p;
     });
     result.inventory = _.map(this.inventory, (p) => {
-      return <any>_.pick(p.attributes, 'id');
+      return <any>p.attributes ? _.pick(p.attributes, 'id') : p.id;
     });
     try {
-      result.keyData = JSON.stringify(this.keyData);
+      result.keyData = this.keyData;
     }
     catch (e) {
       console.error("Failed to stringify keyData");

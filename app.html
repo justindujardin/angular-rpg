@@ -1,6 +1,6 @@
 <div class="select-map ebp">Select Map:
-  <select #themap (change)="mapName=themap.value">
-    <option *ng-for="#map of maps" [value]="map" [selected]="map==mapName">{{map}}</option>
+  <select #themap (change)="setMap(themap.value)">
+    <option *ng-for="#map of maps" [value]="map" [selected]="map==game.partyMapName">{{map}}</option>
   </select>
 </div>
 <rpg-notification></rpg-notification>
@@ -12,4 +12,4 @@
   <world-store></world-store>
   <content></content>
 </div>
-<world-map [map-name]="mapName"></world-map>
+<world-map [player-position]="game.partyPosition" [map-name]="game.partyMapName"></world-map>

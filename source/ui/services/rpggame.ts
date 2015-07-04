@@ -16,6 +16,7 @@
 
 ///<reference path="../../../bower_components/pow-core/lib/pow-core.d.ts"/>
 ///<reference path="../../../bower_components/pow2/lib/pow2.d.ts"/>
+import {Inject} from 'angular2/angular2';
 
 import {GameWorld} from '../../gameWorld';
 import {GameTileMap} from '../../gameTileMap';
@@ -36,6 +37,11 @@ export class RPGGame {
   private _renderCanvas:HTMLCanvasElement;
   private _canvasAcquired:boolean = false;
   private _stateKey:string = "_angular2PowRPGState";
+
+
+  // Party Position Data
+  partyPosition:pow2.Point = new pow2.Point(0,0);
+  partyMapName:string = 'town';
 
   // TODO: HACKS.  Real party is needed.
   public hero:HeroModel = HeroModel.create('warrior', 'MorTon');
@@ -65,10 +71,18 @@ export class RPGGame {
 
   resetGame() {
     localStorage.removeItem(this._stateKey);
+    //this.notify.show('Game data deleted.  Next time you refresh you will begin a new game.');
   }
 
-  saveGame(data:any) {
+  saveGame() {
+    var party = <pow2.scene.components.PlayerComponent>this.currentScene.componentByType(pow2.scene.components.PlayerComponent);
+    if (party) {
+      this.world.model.setKeyData('playerPosition', party.host.point);
+    }
+    this.world.model.setKeyData('playerMap', this.partyMapName);
+    var data = JSON.stringify(this.world.model.toJSON());
     localStorage.setItem(this._stateKey, data);
+    //this.notify.show('Game state saved!  Nice.');
   }
 
 
@@ -92,13 +106,13 @@ export class RPGGame {
     this.world.scene.addObject(this.sprite);
 
     // If no point is specified, use the position of the first Portal on the current map
-    if (typeof at === 'undefined' && tileMap instanceof pow2.tile.TileMap) {
+    if (typeof at === 'undefined' && tileMap instanceof pow2.tile.TileMap && this.partyPosition.isZero()) {
       var portal:any = _.where(tileMap.features.objects, {type: 'source.components.features.PortalFeatureComponent'})[0];
       if (portal) {
         at = new pow2.Point(portal.x / portal.width, portal.y / portal.height);
       }
     }
-    this.sprite.setPoint(at || new pow2.Point());
+    this.sprite.setPoint(at || this.partyPosition);
   }
 
   //loadMap(mapName:string, then?:()=>any, player?:HeroModel, at?:pow2.Point) {
@@ -127,26 +141,25 @@ export class RPGGame {
   //  this.loadMap("town", then, this.world.model.party[0]);
   //}
 
-  initGame(data:any):Promise<void> {
+  initGame(data:any = this.getSaveData()):Promise<void> {
     return new Promise<void>((resolve, reject) => {
       if (data) {
-        //this.world.model.clear();
-        this.world.model.initData(()=> {
+        return this.world.model.initData(()=> {
           this.world.model.parse(data);
           var at = this.world.model.getKeyData('playerPosition');
-          at = at ? new pow2.Point(at.x, at.y) : undefined;
-          //this.loadMap(this.world.model.getKeyData('playerMap') || "town", then, this.world.model.party[0], at);
+          this.partyPosition = at ? new pow2.Point(at.x, at.y) : undefined;
+          this.partyMapName = this.world.model.getKeyData('playerMap') || "town";
+          resolve();
         });
       }
-      else {
-        if (this.world.model.party.length === 0) {
-          this.world.model.addHero(HeroModel.create(HeroTypes.Warrior, "Warrior"));
-          this.world.model.addHero(HeroModel.create(HeroTypes.Ranger, "Ranger"));
-          this.world.model.addHero(HeroModel.create(HeroTypes.LifeMage, "Mage"));
-        }
-        //this.newGame(then);
+      if (this.world.model.party.length === 0) {
+        this.world.model.addHero(HeroModel.create(HeroTypes.Warrior, "Warrior"));
+        this.world.model.addHero(HeroModel.create(HeroTypes.Ranger, "Ranger"));
+        this.world.model.addHero(HeroModel.create(HeroTypes.LifeMage, "Mage"));
+        this.partyPosition = new pow2.Point(10, 5);
+        this.partyMapName = "town";
       }
-
+      resolve();
     });
   }
 
