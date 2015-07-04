@@ -38,6 +38,7 @@ party-inventory {
     }
 
   }
+
   ul {
     list-style-type: none;
     text-align: center;
@@ -48,6 +49,9 @@ party-inventory {
       padding-top: @inventoryLabelPaddingTop;
       height: @inventoryIconSize + @inventoryLabelPaddingTop;
       width: @inventoryIconSize;
+      > * {
+        pointer-events: none;
+      }
       .desc {
         position: absolute;
         top: 0;

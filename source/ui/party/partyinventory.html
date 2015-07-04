@@ -11,35 +11,29 @@
   <div class="hero-stat">Defense : {{character.getDefense()}}</div>
 
   <ul class="equipped">
-    <li class="weapon">
+    <li class="weapon" (click)="unequipItem(character.weapon)">
       <span class="desc">Weapon</span>
-      <rpg-sprite class="icon" *ng-if="character.weapon" [name]="character.weapon.attributes.icon"
-                  (click)="unequipItem(character.weapon)"></rpg-sprite>
+      <rpg-sprite class="icon" *ng-if="character.weapon" [name]="character.weapon.attributes.icon"></rpg-sprite>
     </li>
-    <li class="jewelry">
+    <li class="jewelry item" (click)="unequipItem(character.accessory)">
       <span class="desc">Accessory</span>
-      <rpg-sprite class="icon" *ng-if="character.accessory" [name]="character.accessory.attributes.icon"
-                  (click)="unequipItem(character.accessory)"></rpg-sprite>
+      <rpg-sprite class="icon" *ng-if="character.accessory" [name]="character.accessory.attributes.icon"></rpg-sprite>
     </li>
-    <li class="head">
+    <li class="head item" (click)="unequipItem(character.head)">
       <span class="desc">Head</span>
-      <rpg-sprite class="icon" *ng-if="character.head" [name]="character.head.attributes.icon"
-                  (click)="unequipItem(character.head)"></rpg-sprite>
+      <rpg-sprite class="icon" *ng-if="character.head" [name]="character.head.attributes.icon"></rpg-sprite>
     </li>
-    <li class="body">
+    <li class="body item" (click)="unequipItem(character.body)">
       <span class="desc">Body</span>
-      <rpg-sprite class="icon" *ng-if="character.body" [name]="character.body.attributes.icon"
-                  (click)="unequipItem(character.body)"></rpg-sprite>
+      <rpg-sprite class="icon" *ng-if="character.body" [name]="character.body.attributes.icon"></rpg-sprite>
     </li>
-    <li class="arms">
+    <li class="arms item" (click)="unequipItem(character.arms)">
       <span class="desc">Arms</span>
-      <rpg-sprite class="icon" *ng-if="character.arms" [name]="character.arms.attributes.icon"
-                  (click)="unequipItem(character.arms)"></rpg-sprite>
+      <rpg-sprite class="icon" *ng-if="character.arms" [name]="character.arms.attributes.icon"></rpg-sprite>
     </li>
-    <li class="feet">
+    <li class="feet item" (click)="unequipItem(character.feet)">
       <span class="desc">Feet</span>
-      <rpg-sprite class="icon" *ng-if="character.feet" [name]="character.feet.attributes.icon"
-                  (click)="unequipItem(character.feet)"></rpg-sprite>
+      <rpg-sprite class="icon" *ng-if="character.feet" [name]="character.feet.attributes.icon"></rpg-sprite>
     </li>
   </ul>
 </div>
