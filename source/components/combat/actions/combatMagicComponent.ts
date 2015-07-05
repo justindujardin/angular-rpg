@@ -17,7 +17,7 @@ import {CombatActionComponent} from '../combatActionComponent';
 import {GameEntityObject} from '../../../objects/gameEntityObject';
 import {CreatureModel} from '../../../models/creatureModel';
 import {HeroTypes} from '../../../models/heroModel';
-import {IPlayerAction,IPlayerActionCallback,CombatAttackSummary} from '../../../states/gameCombatStateMachine';
+import {IPlayerAction,IPlayerActionCallback,CombatAttackSummary} from '../../../states/playerCombatState';
 import {CombatEndTurnState} from '../../../states/combat/combatEndTurnState';
 import {DamageComponent} from '../../damageComponent';
 
@@ -73,7 +73,7 @@ export class CombatMagicComponent extends CombatActionComponent {
       target.model.damage(healAmount);
 
 
-      var hitSound:string = "/data/sounds/heal";
+      var hitSound:string = "/sounds/heal";
       var components = {
         animation: new pow2.tile.components.AnimatedSpriteComponent({
           spriteName: "heal",
@@ -115,7 +115,7 @@ export class CombatMagicComponent extends CombatActionComponent {
       var damage:number = defender.model.damage(this.spell.value);
       var didKill:boolean = defender.model.get('hp') <= 0;
       var hit:boolean = damage > 0;
-      var hitSound:string = "/data/sounds/" + (didKill ? "killed" : (hit ? "spell" : "miss"));
+      var hitSound:string = "/sounds/" + (didKill ? "killed" : (hit ? "spell" : "miss"));
       var components = {
         animation: new pow2.tile.components.AnimatedSpriteComponent({
           spriteName: "attack",

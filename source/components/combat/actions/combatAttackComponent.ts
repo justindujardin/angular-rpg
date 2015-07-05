@@ -57,7 +57,7 @@ export class CombatAttackComponent extends CombatActionComponent {
       var didKill:boolean = defender.model.get('hp') <= 0;
       var hit:boolean = damage > 0;
       var defending:boolean = (defender.model instanceof HeroModel) && (<HeroModel>defender.model).defenseBuff > 0;
-      var hitSound:string = "/data/sounds/" + (didKill ? "killed" : (hit ? (defending ? "miss" : "hit") : "miss"));
+      var hitSound:string = "/sounds/" + (didKill ? "killed" : (hit ? (defending ? "miss" : "hit") : "miss"));
       var components = {
         animation: new pow2.tile.components.AnimatedSpriteComponent({
           spriteName: "attack",

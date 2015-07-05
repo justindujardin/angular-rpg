@@ -39,9 +39,6 @@ export class GameWorld extends pow2.scene.SceneWorld {
   // exist there, and angular UI should listen in.
   model:GameStateModel;
 
-  // TODO: More than two scenes?  Scene managers?  ugh.  If we need them.
-  combatScene:pow2.scene.Scene = null;
-
   scene:pow2.scene.Scene;
 
   /**

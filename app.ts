@@ -1,11 +1,13 @@
-import {Component, View, bootstrap, NgFor, ElementRef} from 'angular2/angular2';
+import {Component, View, bootstrap, NgFor, NgIf, ElementRef} from 'angular2/angular2';
 
 import {GameWorld} from 'source/gameWorld';
 import {GameStateModel} from 'source/models/gameStateModel';
 import {GameStateMachine} from 'source/states/gameStateMachine';
+import {PlayerCombatState} from 'source/states/playerCombatState';
 
 import {RPGGame,Notify,Animate} from 'source/ui/services/all';
 
+import {CombatMap} from 'source/ui/combat/all';
 import {RPGSprite,RPGHealthBar,RPGNotification} from 'source/ui/rpg/all';
 import {PartyInventory,PlayerCard,PartyMenu} from 'source/ui/party/all';
 import {WorldMap,WorldDialog,WorldStore,WorldTemple} from 'source/ui/world/all';
@@ -13,13 +15,14 @@ import {WorldMap,WorldDialog,WorldStore,WorldTemple} from 'source/ui/world/all';
 @Component({
   selector: 'rpg-app',
   appInjector: [RPGGame, Notify, Animate],
-  properties: ['loaded', 'game']
+  properties: ['loaded', 'game', 'combat']
 })
 @View({
   templateUrl: 'app.html',
   directives: [
-    NgFor,
+    NgFor, NgIf,
     WorldMap, WorldDialog, WorldStore, WorldTemple,
+    CombatMap,
     PlayerCard,
     PartyInventory, PartyMenu,
     RPGSprite, RPGNotification, RPGHealthBar]
@@ -39,8 +42,12 @@ export class RPGAppComponent {
     this.game.partyMapName = value;
   }
 
+  combat:PlayerCombatState = null;
+
   constructor(public game:RPGGame) {
     game.initGame().then(()=> {
+      game.machine.on('combat:begin', (state:PlayerCombatState) => this.combat = state);
+      game.machine.on('combat:end', () => this.combat = null);
       console.log("Game fully initialized.");
     }).catch(console.error.bind(console));
   }

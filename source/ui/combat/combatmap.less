@@ -1,5 +1,11 @@
 // Combat View
 // --------------------------------------------------------------------------
+combat-map {
+  canvas {
+    .game-canvas;
+  }
+
+}
 .combat-view {
   font-family: @pixelFont;
   position: fixed;
@@ -13,6 +19,7 @@
   width: 100%;
 
   background-color: @menuOverlayBackground;
+  z-index: @zCanvasGui;
 
   .action-menu, .targets-menu, .spells-menu {
     position: absolute;
@@ -71,18 +78,20 @@
 }
 
 .point-to-player {
-  //.glyphicon;
+  z-index:@zCanvasGui;
+  position: absolute;
+  .glyphicon;
   &.left {
     content:'<';
-    //.glyphicon-chevron-left;
+    .glyphicon-chevron-left;
   }
   &.right {
     content:'>';
-    //.glyphicon-chevron-right;
+    .glyphicon-chevron-right;
   }
   &.attack {
     content:'X';
-    //.glyphicon-screenshot;
+    .glyphicon-screenshot;
     color: red;
   }
   font-size: 2em;

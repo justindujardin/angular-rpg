@@ -16,17 +16,10 @@
 
 import {CombatActionComponent} from '../combatActionComponent';
 import {GameEntityObject} from '../../../objects/gameEntityObject';
-import {IPlayerActionCallback} from '../../../states/gameCombatStateMachine';
-import {CombatEscapeState} from '../../../states/combat/combatEscapeState';
-import {CombatEndTurnState} from '../../../states/combat/combatEndTurnState';
+import {IPlayerActionCallback} from '../../../states/playerCombatState';
+import {CombatEscapeState,CombatRunSummary,CombatEndTurnState} from '../../../states/combat/all';
 
-/**
- * Describe the result of a combat run action.
- */
-export interface CombatRunSummary {
-  success:boolean;
-  player:GameEntityObject;
-}
+
 
 export class CombatRunComponent extends CombatActionComponent {
   name:string = "run";

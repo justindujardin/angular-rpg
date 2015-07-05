@@ -17,6 +17,15 @@
 import {CombatState} from './combatState';
 import {CombatStateMachine} from './combatStateMachine';
 import {PlayerMapState} from '../playerMapState';
+import {GameEntityObject} from '../../objects/gameEntityObject';
+
+/**
+ * Describe the result of a combat run action.
+ */
+export interface CombatRunSummary {
+  success:boolean;
+  player:GameEntityObject;
+}
 
 export class CombatEscapeState extends CombatState {
   static NAME:string = "Combat Escaped";

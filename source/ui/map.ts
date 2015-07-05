@@ -23,8 +23,9 @@ import {GameTileMap} from '../gameTileMap';
 /**
  * Base implementation of a view for a GameTileMap.
  */
-export class Map {
-  tileMap:GameTileMap = null;
+export class Map extends pow2.tile.TileMapView {
+  tileMap:GameTileMap;
+
   get mapName():string {
     return this.tileMap ? this.tileMap.name : '';
   }
@@ -32,12 +33,14 @@ export class Map {
     this._loadMap(value);
   }
 
-  constructor(public elRef:ElementRef, public game:RPGGame){
-    this._canvas = elRef.nativeElement.querySelector('canvas');
-    this._context = <CanvasRenderingContext2D>this._canvas.getContext("2d");
-  }
+  /**
+   * The map view bounds in world space.
+   */
+  protected _bounds:pow2.Point = new pow2.Point();
 
-  protected _view:pow2.tile.TileMapView = null;
+  constructor(elRef:ElementRef, public game:RPGGame) {
+    super(elRef.nativeElement.querySelector('canvas'), game.loader);
+  }
 
   /**
    * Load a map by name as a [[Promise]].
@@ -60,7 +63,7 @@ export class Map {
         this._onMapLoaded(this.tileMap);
         this.game.world.scene.addObject(this.tileMap);
         this.tileMap.loaded();
-        this._view.setTileMap(this.tileMap);
+        this.setTileMap(this.tileMap);
         resolve(this.tileMap);
       });
     });
@@ -72,25 +75,20 @@ export class Map {
    * This callback is useful for doing map-specific things when the map changes.
    * @private
    */
-  protected _onMapLoaded(map:GameTileMap){
+  protected _onMapLoaded(map:GameTileMap) {
 
   }
 
-  protected _canvas:HTMLCanvasElement = null;
-  protected _context:any = null;
-  /**
-   * The map view bounds in world space.
-   */
-  protected _bounds:pow2.Point = new pow2.Point();
 
   protected _onResize() {
-    this._canvas.width = window.innerWidth;
-    this._canvas.height = window.innerHeight;
-    this._bounds.set(this._canvas.width, this._canvas.height);
-    this._bounds = this._view.screenToWorld(this._bounds);
-    this._context.webkitImageSmoothingEnabled = false;
-    this._context.mozImageSmoothingEnabled = false;
-    this._context.imageSmoothingEnabled = false;
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
+    this._bounds.set(this.canvas.width, this.canvas.height);
+    this._bounds = this.screenToWorld(this._bounds);
+    var ctx:any = this.context;
+    ctx.webkitImageSmoothingEnabled = false;
+    ctx.mozImageSmoothingEnabled = false;
+    ctx.imageSmoothingEnabled = false;
   }
 
 

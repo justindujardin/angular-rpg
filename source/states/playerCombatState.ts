@@ -69,6 +69,11 @@ export class PlayerCombatState extends pow2.State {
   tileMap:GameTileMap;
   finished:boolean = false; // Trigger state to exit when true.
 
+  /**
+   * The scene that combat happens in
+   */
+  scene:pow2.scene.Scene = null;
+
   factory:pow2.EntityContainerResource;
   spreadsheet:pow2.GameDataResource;
 
@@ -84,8 +89,8 @@ export class PlayerCombatState extends pow2.State {
     super.enter(machine);
     this.parent = machine;
     this.machine = new CombatStateMachine(machine);
-    var combatScene = machine.world.combatScene = new pow2.scene.Scene();
-    machine.world.mark(combatScene);
+    this.scene = new pow2.scene.Scene();
+    machine.world.mark(this.scene);
     if (!this.factory || !this.spreadsheet) {
       throw new Error("Invalid combat entity container or game data spreadsheet");
     }
@@ -103,7 +108,7 @@ export class PlayerCombatState extends pow2.State {
       if (!heroEntity.isDefeated()) {
         heroEntity.icon = hero.get('icon');
         this.machine.party.push(heroEntity);
-        combatScene.addObject(heroEntity);
+        this.scene.addObject(heroEntity);
       }
     });
 
@@ -122,7 +127,7 @@ export class PlayerCombatState extends pow2.State {
         l.visible = (l.name === visibleZone);
       });
       this.tileMap.dirtyLayers = true;
-      combatScene.addObject(this.tileMap);
+      this.scene.addObject(this.tileMap);
 
       // Position Party/Enemies
 
@@ -147,7 +152,7 @@ export class PlayerCombatState extends pow2.State {
         if (!nme) {
           throw new Error("Entity failed to validate with given inputs");
         }
-        combatScene.addObject(nme);
+        this.scene.addObject(nme);
         this.machine.enemies.push(nme);
       }
       if (this.machine.enemies.length) {
@@ -175,12 +180,14 @@ export class PlayerCombatState extends pow2.State {
 
   exit(machine:GameStateMachine) {
     machine.trigger('combat:end', this);
-    var world:GameWorld = this.parent.world;
-    if (world && world.combatScene) {
-      world.combatScene.destroy();
-      world.combatScene = null;
+    if (this.scene) {
+      this.scene.destroy();
+      this.scene = null;
     }
-    this.tileMap.destroy();
+    if(this.tileMap){
+      this.tileMap.destroy();
+      this.tileMap = null;
+    }
     this.finished = false;
     this.machine = null;
     this.parent = null;

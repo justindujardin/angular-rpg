@@ -28,7 +28,8 @@ export class Animate {
 
   enter(el:HTMLElement, cssClass:string):Promise<void> {
     return new Promise<void>((resolve)=> {
-      var callTimeout = setTimeout(() => done(), this.getTransitionDuration(el, true));
+      var duration = this.getTransitionDuration(el, true);
+      var callTimeout = setTimeout(() => done(), duration);
       var done = () => {
         clearTimeout(callTimeout);
         el.removeEventListener(this.eventName, done);
@@ -41,7 +42,8 @@ export class Animate {
 
   leave(el:HTMLElement, cssClass:string):Promise<void> {
     return new Promise<void>((resolve)=> {
-      var callTimeout = setTimeout(() => done(), this.getTransitionDuration(el, true));
+      var duration = this.getTransitionDuration(el, true);
+      var callTimeout = setTimeout(() => done(), duration);
       var done = () => {
         clearTimeout(callTimeout);
         el.removeEventListener(this.eventName, done);
@@ -62,14 +64,15 @@ export class Animate {
    */
   getTransitionDuration(element:HTMLElement, includeDelay:boolean = false) {
     var prefixes = ['moz', 'webkit', 'ms', 'o', 'khtml'];
+    var style = window.getComputedStyle(element);
     for (let i = 0; i < prefixes.length; i++) {
-      let duration = element.style['-' + prefixes[i] + '-transition-duration'];
+      let duration = style['-' + prefixes[i] + '-transition-duration'];
       if (!duration) {
         continue;
       }
       duration = ( duration.indexOf('ms') > -1 ) ? parseFloat(duration) : parseFloat(duration) * 1000;
       if (includeDelay) {
-        var delay = element.style['-' + prefixes[i] + '-transition-delay'];
+        var delay = style['-' + prefixes[i] + '-transition-delay'];
         if (typeof delay !== 'undefined') {
           duration += ( delay.indexOf('ms') > -1 ) ? parseFloat(delay) : parseFloat(delay) * 1000;
         }

@@ -14,19 +14,12 @@
  limitations under the License.
  */
 
-import {GameStateMachine} from './gameStateMachine';
-import {GameTileMap} from '../gameTileMap';
-
-export class PlayerMapState extends pow2.State {
-  static NAME:string = "map";
-  name:string = PlayerMapState.NAME;
-  map:GameTileMap = null;
-
-  enter(machine:GameStateMachine) {
-    super.enter(machine);
-    console.log("MAPPPPPPP");
-  }
-
-  exit(machine:GameStateMachine) {
-  }
-}
+export * from './combatBeginTurnState';
+export * from './combatChooseActionState';
+export * from './combatDefeatState';
+export * from './combatEndTurnState';
+export * from './combatEscapeState';
+export * from './combatStartState';
+export * from './combatState';
+export * from './combatStateMachine';
+export * from './combatVictoryState';
