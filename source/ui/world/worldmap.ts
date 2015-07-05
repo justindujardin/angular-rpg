@@ -25,6 +25,7 @@ import {GameStateMachine} from '../../states/gameStateMachine';
 import {GameStateModel,HeroModel,HeroTypes} from '../../models/all';
 
 import {RPGGame} from '../services/all';
+import {Map} from '../map';
 
 @Component({
   selector: 'world-map',
@@ -43,15 +44,13 @@ import {RPGGame} from '../services/all';
     '[style.color]': 'styleBackground'
   }
 })
-export class WorldMap {
+export class WorldMap extends Map {
   styleBackground:string = 'rgba(0,0,0,1)';
   tileMap:GameTileMap = null;
 
 
   constructor(public elRef:ElementRef, public game:RPGGame) {
-    this._canvas = elRef.nativeElement.querySelector('canvas');
-    this._context = <CanvasRenderingContext2D>this._canvas.getContext("2d");
-
+    super(elRef,game);
     this._view = new RPGMapView(this._canvas, game.loader);
     this._view.camera.point.set(-0.5, -0.5);
     game.world.scene.addView(this._view);
@@ -66,42 +65,11 @@ export class WorldMap {
     });
   }
 
-  get mapName():string {
-    return this.tileMap ? this.tileMap.name : '';
-  }
-
-  set mapName(value:string) {
-    this._loadMap(value);
-  }
-
-  /**
-   * Load a map by name as a [[Promise]].
-   * @param value The map name, e.g. "keep" or "isle"
-   * @private
-   */
-  private _loadMap(value:string):Promise<GameTileMap> {
-    return new Promise<GameTileMap>((resolve, reject)=> {
-      this.game.loader.load(this.game.world.getMapUrl(value), (map:pow2.TiledTMXResource)=> {
-        if (!map || !map.isReady()) {
-          return reject('invalid resource: ' + this.game.world.getMapUrl(value));
-        }
-        if (this.tileMap) {
-          this.tileMap.destroy();
-          this.tileMap = null;
-        }
-        this.tileMap = this.game.world.entities.createObject('GameMapObject', {
-          resource: map
-        });
-        if (this._player) {
-          this.game.createPlayer(this._player, this.tileMap);
-        }
-        this.game.world.scene.addObject(this.tileMap);
-        this.tileMap.loaded();
-        this._onResize();
-        this._view.setTileMap(this.tileMap);
-        resolve(this.tileMap);
-      });
-    });
+  protected _onMapLoaded(map:GameTileMap) {
+    if (this._player) {
+      this.game.createPlayer(this._player, this.tileMap);
+    }
+    this._onResize();
   }
 
   private _player:HeroModel = null;
@@ -128,18 +96,8 @@ export class WorldMap {
     return this._position;
   }
 
-  private _view:RPGMapView = null;
-  private _canvas:HTMLCanvasElement = null;
-  private _context:any = null;
-  private _bounds:pow2.Point = new pow2.Point();
-
-  private _onResize() {
-    this._canvas.width = window.innerWidth;
-    this._canvas.height = window.innerHeight;
-    this._bounds.set(this._canvas.width, this._canvas.height);
-    this._bounds = this._view.screenToWorld(this._bounds);
-
-
+  protected _onResize() {
+    super._onResize();
     // TileMap
     // Camera (window bounds)
     if (this.tileMap) {
@@ -147,12 +105,7 @@ export class WorldMap {
       var offset = this._bounds.clone().divide(2).multiply(-1).add(tileOffset);
       this._view.camera.point.set(offset.floor());
     }
-
     this._view.camera.extent.set(this._bounds);
-
-    this._context.webkitImageSmoothingEnabled = false;
-    this._context.mozImageSmoothingEnabled = false;
-    this._context.imageSmoothingEnabled = false;
   }
 
 }
