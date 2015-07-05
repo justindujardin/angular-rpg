@@ -43,9 +43,6 @@ export class RPGGame {
   partyPosition:pow2.Point = new pow2.Point(0,0);
   partyMapName:string = 'town';
 
-  // TODO: HACKS.  Real party is needed.
-  public hero:HeroModel = HeroModel.create('warrior', 'MorTon');
-
   constructor() {
     this._renderCanvas = <HTMLCanvasElement>document.createElement('canvas');
     this._renderCanvas.width = this._renderCanvas.height = 64;
@@ -59,7 +56,6 @@ export class RPGGame {
     });
     this.world = pow2.getWorld<GameWorld>('rpg');
     this.world.setService('scene', this.currentScene);
-    this.world.model.party.push(this.hero);
     this.machine = this.world.state;
     // Tell the world time manager to start ticking.
     this.world.time.start();
@@ -101,6 +97,9 @@ export class RPGGame {
       model: from,
       map: tileMap
     });
+    if(!this.sprite){
+      throw new Error("Failed to create map player");
+    }
     this.sprite.name = from.attributes.name;
     this.sprite.icon = from.attributes.icon;
     this.world.scene.addObject(this.sprite);
@@ -114,32 +113,6 @@ export class RPGGame {
     }
     this.sprite.setPoint(at || this.partyPosition);
   }
-
-  //loadMap(mapName:string, then?:()=>any, player?:HeroModel, at?:pow2.Point) {
-  //  if (this.tileMap) {
-  //    this.tileMap.destroy();
-  //    this.tileMap = null;
-  //  }
-  //
-  //  this.world.loader.load(this.world.getMapUrl(mapName), (map:pow2.TiledTMXResource)=> {
-  //    this.tileMap = this.world.entities.createObject('GameMapObject', {
-  //      resource: map
-  //    });
-  //
-  //    var model:HeroModel = player || this.world.model.party[0];
-  //    this.createPlayer(model, at);
-  //
-  //    this.world.scene.addObject(this.tileMap);
-  //    this.tileMap.loaded();
-  //
-  //
-  //    then && then();
-  //  });
-  //}
-
-  //newGame(then?:()=>any) {
-  //  this.loadMap("town", then, this.world.model.party[0]);
-  //}
 
   initGame(data:any = this.getSaveData()):Promise<void> {
     return new Promise<void>((resolve, reject) => {

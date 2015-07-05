@@ -28,7 +28,7 @@ import {RPGGame} from '../services/all';
 
 @Component({
   selector: 'world-map',
-  properties: ['mapName', 'playerPosition'],
+  properties: ['mapName', 'player', 'playerPosition'],
   host: {
     '(window:resize)': '_onResize($event)'
   }
@@ -59,7 +59,7 @@ export class WorldMap {
 
     // When a portal is entered, update the map view to reflect the change.
     game.world.scene.on('portal:entered', (data:any) => {
-      this._loadMap(data.map).then(()=>{
+      this._loadMap(data.map).then(()=> {
         this.game.partyMapName = data.map;
         this.game.partyPosition = data.target;
       }).catch(console.error.bind(console));
@@ -82,7 +82,7 @@ export class WorldMap {
   private _loadMap(value:string):Promise<GameTileMap> {
     return new Promise<GameTileMap>((resolve, reject)=> {
       this.game.loader.load(this.game.world.getMapUrl(value), (map:pow2.TiledTMXResource)=> {
-        if(!map || !map.isReady()){
+        if (!map || !map.isReady()) {
           return reject('invalid resource: ' + this.game.world.getMapUrl(value));
         }
         if (this.tileMap) {
@@ -92,9 +92,11 @@ export class WorldMap {
         this.tileMap = this.game.world.entities.createObject('GameMapObject', {
           resource: map
         });
+        if (this._player) {
+          this.game.createPlayer(this._player, this.tileMap);
+        }
         this.game.world.scene.addObject(this.tileMap);
         this.tileMap.loaded();
-        this.game.createPlayer(this.game.hero, this.tileMap);
         this._onResize();
         this._view.setTileMap(this.tileMap);
         resolve(this.tileMap);
@@ -105,7 +107,9 @@ export class WorldMap {
   private _player:HeroModel = null;
   set player(value:HeroModel) {
     this._player = value;
-    this.game.createPlayer(this._player, this.tileMap);
+    if (this.tileMap) {
+      this.game.createPlayer(this._player, this.tileMap);
+    }
   }
 
   get player():HeroModel {
@@ -113,15 +117,14 @@ export class WorldMap {
   }
 
   private _position = new pow2.Point();
-
-  set playerPosition(value:pow2.Point) {
+  set position(value:pow2.Point) {
     this._position.set(value);
     if (this.game.sprite) {
       this.game.sprite.setPoint(value);
     }
   }
 
-  get playerPosition() {
+  get position() {
     return this._position;
   }
 
