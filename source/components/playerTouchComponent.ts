@@ -45,7 +45,7 @@ export class PlayerTouchComponent extends pow2.scene.components.TickedComponent 
     if (!this.player || !this.collider) {
       return;
     }
-    var results = [];
+    var results:GameFeatureObject[] = [];
     var newTouch:boolean = this.collider.collide(this.host.point.x + this.player.heading.x, this.host.point.y + this.player.heading.y, GameFeatureObject, results);
     var touched = <GameFeatureObject>_.find(results, (r:GameFeatureObject) => {
       return !!r.findComponent(GameFeatureComponent);

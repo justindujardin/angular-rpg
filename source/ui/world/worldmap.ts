@@ -212,7 +212,7 @@ export class WorldMap extends Map {
   /**
    * Render the tile map and any features it has.
    */
-  renderFrame(elapsed) {
+  renderFrame(elapsed:number) {
     super.renderFrame(elapsed);
     if (!this._features) {
       this._features = <GameFeatureObject[]>this.scene.objectsByType(GameFeatureObject);

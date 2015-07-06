@@ -64,7 +64,7 @@ export class Animate {
    */
   getTransitionDuration(element:HTMLElement, includeDelay:boolean = false) {
     var prefixes = ['moz', 'webkit', 'ms', 'o', 'khtml'];
-    var style = window.getComputedStyle(element);
+    var style:any = window.getComputedStyle(element);
     for (let i = 0; i < prefixes.length; i++) {
       let duration = style['-' + prefixes[i] + '-transition-duration'];
       if (!duration) {
@@ -83,10 +83,10 @@ export class Animate {
   }
 
   /* From Modernizr */
-  whichTransitionEvent() {
-    var t;
-    var el = document.createElement('fakeelement');
-    var transitions = {
+  whichTransitionEvent():string {
+    var t:string;
+    var el:any = document.createElement('fakeelement');
+    var transitions:{[prefix:string]:string} = {
       'transition': 'transitionend',
       'OTransition': 'oTransitionEnd',
       'MozTransition': 'transitionend',

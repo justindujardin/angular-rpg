@@ -16,6 +16,7 @@
 
 import {Component,View,NgFor,NgIf,onDestroy} from 'angular2/angular2';
 import '../../index';
+import {TempleFeatureComponent} from '../../components/features/templeFeatureComponent';
 import {HeroModel,GameStateModel} from '../../models/all';
 import {RPGGame,Notify} from '../services/all';
 import {RPGSprite,RPGHealthBar} from '../rpg/all';
@@ -43,7 +44,7 @@ export class WorldTemple {
   constructor(public game:RPGGame, public notify:Notify) {
     this.model = game.world.model;
     this.party = this.model.party;
-    game.world.scene.on('temple:entered', (feature) => {
+    game.world.scene.on('temple:entered', (feature:TempleFeatureComponent) => {
       this.name = feature.name;
       this.icon = feature.icon;
       this.cost = parseInt(feature.cost);

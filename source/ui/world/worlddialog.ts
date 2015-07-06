@@ -16,6 +16,7 @@
 
 import {Component, View, NgIf, onDestroy} from 'angular2/angular2';
 import {GameFeatureObject} from '../../objects/gameFeatureObject';
+import {DialogFeatureComponent} from '../../components/features/dialogFeatureComponent';
 import {RPGGame} from '../services/all';
 import {RPGSprite} from '../rpg/all';
 
@@ -40,7 +41,7 @@ export class WorldDialog {
 
   constructor(public game:RPGGame) {
     // Dialog bubbles
-    game.world.scene.on('dialog:entered', (feature) => {
+    game.world.scene.on('dialog:entered', (feature:DialogFeatureComponent) => {
       this.active = true;
       this.icon = feature.icon;
       this.text = feature.text;

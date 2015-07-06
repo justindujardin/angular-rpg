@@ -90,7 +90,7 @@ export class WorldStore {
           return _.extend({instanceModel: new ArmorModel(a)}, a);
         }));
       }
-      var items = [];
+      var items:rpg.IGameItem[] = [];
       _.each(feature.host.groups, (group:string)=> {
         items = items.concat(_.filter(theChoices, (c:any)=> {
           return _.indexOf(c.groups, group) !== -1;
@@ -108,7 +108,7 @@ export class WorldStore {
     this.selected = null;
   }
 
-  actionItem(item) {
+  actionItem(item:any) {
     if (!item) {
       return;
     }

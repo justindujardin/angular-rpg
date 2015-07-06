@@ -129,7 +129,7 @@ export class ChooseActionType extends pow2.State {
     }
     machine.controller.choosing = p;
 
-    var clickSelect = (mouse, hits) => {
+    var clickSelect = (mouse:any, hits:any) => {
       machine.scene.off('click', clickSelect);
       machine.target = hits[0];
       selectAction(machine.controller.getActions()[0]);
@@ -213,7 +213,7 @@ export class ChooseActionTarget extends pow2.State {
     machine.controller.selectTarget = selectTarget;
 
     var pointerOffset:pow2.Point = new pow2.Point(0.5, -0.25);
-    var clickTarget = (mouse, hits) => {
+    var clickTarget = (mouse:any, hits:GameEntityObject[]) => {
       selectTarget(hits[0]);
     };
     machine.controller.setPointerTarget(p, "left", pointerOffset);

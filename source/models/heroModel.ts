@@ -116,10 +116,11 @@ export class HeroModel extends EntityModel {
   // that has been replaced by it.
   equipArmor(item:ArmorModel):ArmorModel {
     var slot:string = item.get('type');
+    var obj:any = this;
     var oldArmor:ArmorModel;
     if (_.indexOf(HeroModel.ARMOR_TYPES, slot) !== -1) {
-      oldArmor = this[slot];
-      this[slot] = item;
+      oldArmor = obj[slot];
+      obj[slot] = item;
     }
     return oldArmor;
   }
@@ -127,17 +128,19 @@ export class HeroModel extends EntityModel {
   // Remove a piece of armor.  Returns false if the armor is not equipped.
   unequipArmor(item:ArmorModel):boolean {
     var slot:string = item.get('type');
-    var oldArmor:ArmorModel = this[slot];
+    var obj:any = this;
+    var oldArmor:ArmorModel = obj[slot];
     if (!oldArmor || !slot) {
       return false;
     }
-    this[slot] = null;
+    obj[slot] = null;
     return true;
   }
 
   getEvasion():number {
-    var evasionPenalty:number = _.reduce(HeroModel.ARMOR_TYPES, (val:number, type) => {
-      var item:ArmorModel = this[type];
+    var obj:any = this;
+    var evasionPenalty:number = _.reduce(HeroModel.ARMOR_TYPES, (val:number, type:string) => {
+      var item:ArmorModel = obj[type];
       if (!item) {
         return val;
       }
@@ -168,8 +171,9 @@ export class HeroModel extends EntityModel {
 
 
   getDefense(base:boolean = false):number {
-    var baseDefense:number = _.reduce(HeroModel.ARMOR_TYPES, (val:number, type) => {
-      var item:ArmorModel = this[type];
+    var obj:any = this;
+    var baseDefense:number = _.reduce(HeroModel.ARMOR_TYPES, (val:number, type:string) => {
+      var item:ArmorModel = obj[type];
       if (!item) {
         return val;
       }
@@ -226,11 +230,12 @@ export class HeroModel extends EntityModel {
     }
 
     GameStateModel.getDataSource((spreadsheet:pow2.GameDataResource)=> {
+      var obj:any = this;
       _.each(HeroModel.ARMOR_TYPES, (type:string) => {
         if (data[type]) {
           var piece = _.where(spreadsheet.getSheetData('armor'), {name: data[type]})[0];
           if (piece) {
-            this[type] = new ArmorModel(piece);
+            obj[type] = new ArmorModel(piece);
           }
         }
       });
@@ -244,13 +249,14 @@ export class HeroModel extends EntityModel {
   }
 
   toJSON() {
+    var obj:any = this;
     var result = super.toJSON();
     if (this.weapon) {
       result.weapon = this.weapon.get('name');
     }
     _.each(HeroModel.ARMOR_TYPES, (type:string) => {
-      if (this[type]) {
-        result[type] = this[type].get('name');
+      if (obj[type]) {
+        result[type] = obj[type].get('name');
       }
     });
     return result;

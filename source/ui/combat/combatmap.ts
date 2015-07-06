@@ -227,7 +227,7 @@ export class CombatMap extends Map implements pow2.IProcessObject {
   }
 
 
-  getMemberClass(member, focused):any {
+  getMemberClass(member:GameEntityObject, focused?:GameEntityObject):any {
     var c = this.choosing;
     return {
       choosing: c && c.model && c.model.get('name') === member.model.get('name'),
@@ -289,7 +289,7 @@ export class CombatMap extends Map implements pow2.IProcessObject {
    */
   mouseClick(e:any) {
     //console.log("clicked at " + this.mouse.world);
-    var hits = [];
+    var hits:GameEntityObject[] = [];
     pow2.Input.mouseOnView(e.originalEvent, this, this.mouse);
     if (this.combat.scene.db.queryPoint(this.mouse.world, GameEntityObject, hits)) {
       this.combat.scene.trigger('click', this.mouse, hits);

@@ -146,9 +146,7 @@ export class GameWorld extends pow2.scene.SceneWorld {
           GameWorld._typeDatabase[nsType] = module[typeName];
 
           next();
-        }).catch((e) => {
-          console.error(e);
-        });
+        }).catch(console.error.bind(console));
       };
       next();
     });

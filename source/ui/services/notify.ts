@@ -49,7 +49,7 @@ export interface INotifyItem {
    * A callback for after this alert has been issued and dismissed.
    * @param message
    */
-  done?(message:INotifyItem);
+  done?(message:INotifyItem):void;
 }
 
 /**
@@ -85,7 +85,7 @@ export class Notify implements pow2.IWorldObject, pow2.IProcessObject {
 
   private _current:INotifyItem = null;
   private _queue:INotifyItem[] = [];
-  private _dismissBinding:(e) => any = null;
+  private _dismissBinding:(e:any) => any = null;
 
   constructor(public game:RPGGame, public animate:Animate) {
     this.game.world.mark(this);

@@ -62,7 +62,7 @@ export class RPGSprite {
   }
 
   private _get() {
-    this.renderer.getSingleSprite(this._name, this._frame, (sprite) => {
+    this.renderer.getSingleSprite(this._name, this._frame, (sprite:HTMLImageElement) => {
       // Get the context for drawing
       var width:number = parseInt(this.width);
       var height:number = parseInt(this.height);

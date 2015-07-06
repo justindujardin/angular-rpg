@@ -38,7 +38,7 @@ export class GameStateMachine extends pow2.StateMachine {
     new PlayerCombatState()
   ];
 
-  onAddToWorld(world) {
+  onAddToWorld(world:GameWorld) {
     super.onAddToWorld(world);
     GameStateModel.getDataSource();
     this.model = world.model || new GameStateModel();
