@@ -39,21 +39,13 @@ export class RPGHealthBar {
     if (!this.model || !this.model.attributes) {
       return {};
     }
-    var map:any = {};
     var pct:number = Math.round(this.model.attributes.hp / this.model.attributes.maxHP * 100);
-    if (pct === 0) {
-      map.dead = true;
-    }
-    if (pct < 33) {
-      map.critical = true;
-    }
-    else if (pct < 66) {
-      map.hurt = true;
-    }
-    else {
-      map.fine = true;
-    }
-    return map;
+    return {
+      dead: pct === 0,
+      critical: pct < 33,
+      hurt: pct < 66,
+      fine: pct > 66
+    };
   }
 
   getProgressBarWidth():string {

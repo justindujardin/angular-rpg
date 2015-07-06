@@ -26,14 +26,11 @@ import {GameEntityObject} from '../../objects/gameEntityObject';
 import {GameStateMachine} from '../../states/gameStateMachine';
 
 export class RPGGame {
-  styleHeight:number = 256;
-  styleWidth:number = 256;
   styleBackground:string = 'rgba(0,0,0,1)';
   loader:pow2.ResourceLoader;
   world:GameWorld;
   sprite:GameEntityObject;
   machine:GameStateMachine;
-  currentScene:pow2.scene.Scene;
   private _renderCanvas:HTMLCanvasElement;
   private _canvasAcquired:boolean = false;
   private _stateKey:string = "_angular2PowRPGState";
@@ -50,12 +47,7 @@ export class RPGGame {
     this._renderCanvas.style.left = this._renderCanvas.style.top = '-9000px';
 
     this.loader = new pow2.ResourceLoader();
-    this.currentScene = new pow2.scene.Scene({
-      autoStart: true,
-      debugRender: false
-    });
     this.world = pow2.getWorld<GameWorld>('rpg');
-    this.world.setService('scene', this.currentScene);
     this.machine = this.world.state;
     // Tell the world time manager to start ticking.
     this.world.time.start();
@@ -67,18 +59,16 @@ export class RPGGame {
 
   resetGame() {
     localStorage.removeItem(this._stateKey);
-    //this.notify.show('Game data deleted.  Next time you refresh you will begin a new game.');
   }
 
   saveGame() {
-    var party = <pow2.scene.components.PlayerComponent>this.currentScene.componentByType(pow2.scene.components.PlayerComponent);
+    var party = <pow2.scene.components.PlayerComponent>this.world.scene.componentByType(pow2.scene.components.PlayerComponent);
     if (party) {
       this.world.model.setKeyData('playerPosition', party.host.point);
     }
     this.world.model.setKeyData('playerMap', this.partyMapName);
     var data = JSON.stringify(this.world.model.toJSON());
     localStorage.setItem(this._stateKey, data);
-    //this.notify.show('Game state saved!  Nice.');
   }
 
 

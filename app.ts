@@ -7,7 +7,7 @@ import {PlayerCombatState} from 'source/states/playerCombatState';
 
 import {RPGGame,Notify,Animate} from 'source/ui/services/all';
 
-import {CombatMap} from 'source/ui/combat/all';
+import {CombatMap,CombatDamage} from 'source/ui/combat/all';
 import {RPGSprite,RPGHealthBar,RPGNotification} from 'source/ui/rpg/all';
 import {PartyInventory,PlayerCard,PartyMenu} from 'source/ui/party/all';
 import {WorldMap,WorldDialog,WorldStore,WorldTemple} from 'source/ui/world/all';
@@ -22,7 +22,7 @@ import {WorldMap,WorldDialog,WorldStore,WorldTemple} from 'source/ui/world/all';
   directives: [
     NgFor, NgIf,
     WorldMap, WorldDialog, WorldStore, WorldTemple,
-    CombatMap,
+    CombatMap, CombatDamage,
     PlayerCard,
     PartyInventory, PartyMenu,
     RPGSprite, RPGNotification, RPGHealthBar]

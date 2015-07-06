@@ -1,7 +1,11 @@
-<canvas [width]="styleWidth" [height]="styleHeight">
+<canvas>
   Your browser doesn't support this.
 </canvas>
 <span class="point-to-player"></span>
+<combat-damage *ng-for="#d of damages"
+               [value]="d.value"
+               [position]="d.position"
+               [classes]="d.classes"></combat-damage>
 <div class="combat-view">
   <ul *ng-if="choosing" class="ebp action-menu">
     <li *ng-for="#action of getActions()" (click)="selectAction(action)">{{action.getActionName()}}</li>
@@ -13,9 +17,9 @@
     <li *ng-for="#target of getTargets()" (click)="selectTarget(target)">{{target.model.attributes.name}}
     </li>
   </ul>
-  <div class="status" *ng-for="#member of combatants" ng-class="getMemberClass(member,combat.focus)">
+  <div class="status" *ng-for="#member of combat?.machine?.party" [class]="getMemberClass(member,combat?.focus)">
     <span class="name">{{member.model.attributes.name}}</span>
     <span class="hp">HP {{member.model.attributes.hp}} / {{member.model.attributes.maxHP}}</span>
-    <health-bar model="member.model"></health-bar>
+    <rpg-health-bar [model]="member.model"></rpg-health-bar>
   </div>
 </div>

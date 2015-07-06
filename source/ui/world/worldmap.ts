@@ -36,7 +36,7 @@ import {Map} from '../map';
 })
 @View({
   template: `
-  <canvas [width]="styleWidth" [height]="styleHeight">
+  <canvas>
     Your browser doesn't support this.
   </canvas>
   `,
@@ -77,6 +77,8 @@ export class WorldMap extends Map {
       this._loadMap(data.map).then(()=> {
         this.game.partyMapName = data.map;
         this.game.partyPosition = data.target;
+        this.world.model.setKeyData('playerMap', data.map);
+        this.world.model.setKeyData('playerPosition', data.target);
       }).catch(console.error.bind(console));
     });
   }

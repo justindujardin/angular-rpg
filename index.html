@@ -25,11 +25,8 @@
 <script src="./bower_components/pow2/lib/pow2.js"></script>
 <script src="./bower_components/pow2/lib/pow2.sprites.js"></script>
 <script>
-  Promise.all([
-    System.import('angular2/angular2'),
-    System.import('app')
-  ]).then(function (modules) {
-    modules[1].load();
+  System.import('app').then(function (app) {
+    app.load();
   }, console.error.bind(console));
 </script>
 </body>

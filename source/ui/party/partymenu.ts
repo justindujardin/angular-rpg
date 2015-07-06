@@ -17,7 +17,7 @@
 import {Component,View,NgIf,NgFor,CSSClass} from 'angular2/angular2';
 import * as rpg from '../../index';
 import {RPGSprite} from '../rpg/rpgsprite';
-import {RPGGame} from '../services/all';
+import {RPGGame, Notify} from '../services/all';
 import {PlayerCard} from './playercard';
 import {PartyInventory} from './partyinventory';
 
@@ -56,7 +56,17 @@ export class PartyMenu {
     this.page = 'inventory';
   }
 
-  constructor(public game:RPGGame) {
+  menuResetGame(){
+    this.game.resetGame();
+    this.notify.show('Game data deleted.  Next time you refresh you will begin a new game.');
+  }
+
+  menuSaveGame() {
+    this.game.saveGame();
+    this.notify.show('Game state saved!  Nice.');
+  }
+
+  constructor(public game:RPGGame, public notify:Notify) {
 
   }
 

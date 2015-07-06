@@ -181,6 +181,7 @@ export class PlayerCombatState extends pow2.State {
   exit(machine:GameStateMachine) {
     machine.trigger('combat:end', this);
     if (this.scene) {
+      machine.world.erase(this.scene);
       this.scene.destroy();
       this.scene = null;
     }

@@ -16,7 +16,7 @@
 
 import * as rpg from '../../index';
 
-import {Component, View, NgFor, NgIf} from 'angular2/angular2';
+import {Component, View, NgFor, NgIf, onDestroy} from 'angular2/angular2';
 import {GameFeatureObject} from '../../objects/gameFeatureObject';
 import {RPGSprite} from '../rpg/all';
 
@@ -27,7 +27,8 @@ import {GameStateModel,ItemModel,WeaponModel,ArmorModel} from '../../models/all'
 
 @Component({
   selector: 'world-store',
-  properties: ['selected', 'inventory', 'name', 'buyer']
+  properties: ['selected', 'inventory', 'name', 'buyer'],
+  lifecycle: [onDestroy]
 })
 @View({
   templateUrl: 'source/ui/world/worldstore.html',
@@ -41,15 +42,19 @@ export class WorldStore {
 
   constructor(public game:RPGGame, public notify:Notify) {
     this.buyer = game.world.model;
-    game.world.time.addObject(this);
     this.gameModel = game.world.model;
     game.world.scene.on('store:entered', (feature:StoreFeatureComponent) => {
       this.active = true;
       this.initStoreFromFeature(feature);
-    });
+    }, this);
     game.world.scene.on('store:exited', () => {
       this.active = false;
-    });
+    }, this);
+  }
+
+  onDestroy() {
+    this.game.world.scene.on('store:entered', null, this);
+    this.game.world.scene.on('store:exited', null, this);
   }
 
   /**

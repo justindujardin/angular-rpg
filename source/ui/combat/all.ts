@@ -15,4 +15,5 @@
  */
 
 export * from './chooseactionstates';
+export * from './combatdamage';
 export * from './combatmap';

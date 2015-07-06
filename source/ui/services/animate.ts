@@ -28,6 +28,7 @@ export class Animate {
 
   enter(el:HTMLElement, cssClass:string):Promise<void> {
     return new Promise<void>((resolve)=> {
+      el.classList.add(cssClass);
       var duration = this.getTransitionDuration(el, true);
       var callTimeout = setTimeout(() => done(), duration);
       var done = () => {
@@ -36,7 +37,6 @@ export class Animate {
         resolve();
       };
       el.addEventListener(this.eventName, done);
-      el.classList.add(cssClass);
     });
   }
 

@@ -1,11 +1,19 @@
 // Combat View
 // --------------------------------------------------------------------------
 combat-map {
+  * {
+    .no-select;
+  }
   canvas {
     .game-canvas;
   }
 
+  rpg-health-bar {
+    width: 200px;
+  }
+
 }
+
 .combat-view {
   font-family: @pixelFont;
   position: fixed;
@@ -24,13 +32,16 @@ combat-map {
   .action-menu, .targets-menu, .spells-menu {
     position: absolute;
     bottom: 100%;
-    margin: 20px;
-    padding: 5px 25px;
+    width: 100%;
+    margin: 0;
+    text-align: center;
     list-style-type: none;
+    padding:0;
     li {
       text-transform: capitalize;
+      display: inline-block;
       cursor: pointer;
-      padding: 10px;
+      padding: 10px 15px;
     }
   }
 
@@ -70,27 +81,39 @@ combat-map {
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: @screen-sm-min) {
-  .combat-view {
-    .status {
-      font-size: 2.2em;
+
+  combat-map {
+    .combat-view {
+      .status {
+        font-size: 2.2em;
+      }
+      .action-menu, .targets-menu, .spells-menu {
+        margin: 20px;
+        width: auto;
+        padding: 5px 25px;
+        li {
+          text-align: left;
+          display: block;
+        }
+      }
     }
   }
 }
 
 .point-to-player {
-  z-index:@zCanvasGui;
+  z-index: @zCanvasGui;
   position: absolute;
   .glyphicon;
   &.left {
-    content:'<';
+    content: '<';
     .glyphicon-chevron-left;
   }
   &.right {
-    content:'>';
+    content: '>';
     .glyphicon-chevron-right;
   }
   &.attack {
-    content:'X';
+    content: 'X';
     .glyphicon-screenshot;
     color: red;
   }
