@@ -14,6 +14,8 @@
  limitations under the License.
  */
 
+import * as rpg from '../../index';
+
 import {PlayerComponent} from '../playerComponent';
 import {GameFeatureComponent} from '../gameFeatureComponent';
 import {GameEntityObject} from '../../objects/gameEntityObject';

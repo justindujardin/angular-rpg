@@ -15,7 +15,7 @@
  */
 
 import {Component, View, ElementRef} from 'angular2/angular2';
-import {Notify} from 'source/ui/services/all';
+import {Notify} from '../services/all';
 
 @Component({
   selector: 'rpg-notification',
