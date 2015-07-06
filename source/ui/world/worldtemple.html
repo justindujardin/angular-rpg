@@ -17,6 +17,7 @@
     <div class="member" *ng-for="#hero of party">
       <rpg-sprite class="image" frame="7" [name]="hero.attributes.icon"></rpg-sprite>
       <h1 class="name">{{hero.attributes.name}}</h1>
+
       <div class="stats">
         <div>Level {{hero.attributes.level}}</div>
         <div>HP {{hero.attributes.hp}} / {{hero.attributes.maxHP}}</div>

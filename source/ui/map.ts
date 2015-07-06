@@ -29,6 +29,7 @@ export class Map extends pow2.tile.TileMapView {
   get mapName():string {
     return this.tileMap ? this.tileMap.name : '';
   }
+
   set mapName(value:string) {
     this._loadMap(value);
   }

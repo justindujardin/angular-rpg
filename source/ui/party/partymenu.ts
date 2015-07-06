@@ -24,7 +24,7 @@ import {PartyInventory} from './partyinventory';
 
 @Component({
   selector: 'party-menu',
-  properties: ['game','page','open']
+  properties: ['game', 'page', 'open']
 })
 @View({
   templateUrl: 'source/ui/party/partymenu.html',
@@ -56,7 +56,7 @@ export class PartyMenu {
     this.page = 'inventory';
   }
 
-  menuResetGame(){
+  menuResetGame() {
     this.game.resetGame();
     this.notify.show('Game data deleted.  Next time you refresh you will begin a new game.');
   }

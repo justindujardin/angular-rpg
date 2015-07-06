@@ -30,7 +30,7 @@ import {EntityModel} from '../../models/all'
     </div>
   </div>
 `,
-  directives: [NgIf,CSSClass]
+  directives: [NgIf, CSSClass]
 })
 export class RPGHealthBar {
   model:EntityModel;

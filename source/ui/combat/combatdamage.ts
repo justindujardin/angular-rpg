@@ -42,10 +42,10 @@ export class CombatDamage {
   constructor(public elRef:ElementRef, public animate:Animate) {
     var anim:string = 'active';
     var element = elRef.nativeElement.querySelector('.damage-value');
-    _.defer(()=>{
+    _.defer(()=> {
       animate.enter(element, anim).then(()=> {
         element.classList.remove('active');
-        animate.enter(element, 'remove').then(()=>{
+        animate.enter(element, 'remove').then(()=> {
           element.classList.remove('remove');
         });
       });

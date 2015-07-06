@@ -19,8 +19,8 @@
 
   <ul *ng-if="isSelling()">
     <li class="item" *ng-for="#item of buyer.inventory" (click)="selectItem(item)">
-            <rpg-sprite class="icon" [name]="item.attributes.icon">
-            </rpg-sprite>
+      <rpg-sprite class="icon" [name]="item.attributes.icon">
+      </rpg-sprite>
       <span class="item-name">{{item.attributes.name}}</span>
       <span class="item-price">{{item.attributes.cost}}</span>
     </li>

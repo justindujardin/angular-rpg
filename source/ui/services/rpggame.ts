@@ -37,7 +37,7 @@ export class RPGGame {
 
 
   // Party Position Data
-  partyPosition:pow2.Point = new pow2.Point(0,0);
+  partyPosition:pow2.Point = new pow2.Point(0, 0);
   partyMapName:string = 'town';
 
   constructor() {
@@ -87,7 +87,7 @@ export class RPGGame {
       model: from,
       map: tileMap
     });
-    if(!this.sprite){
+    if (!this.sprite) {
       throw new Error("Failed to create map player");
     }
     this.sprite.name = from.attributes.name;

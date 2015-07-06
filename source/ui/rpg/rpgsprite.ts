@@ -20,7 +20,7 @@ import {GameWorld} from '../../gameWorld';
 
 @Component({
   selector: 'rpg-sprite',
-  properties: ['name','frame']
+  properties: ['name', 'frame']
 })
 @View({
   template: `<img [src]="dataUrl">`
@@ -36,12 +36,15 @@ export class RPGSprite {
 
   private _frame:number = 0;
   set frame(value:number) {
-    if(this._frame !== value) {
+    if (this._frame !== value) {
       this._frame = value;
       this._get();
     }
   }
-  get frame():number { return this._frame; }
+
+  get frame():number {
+    return this._frame;
+  }
 
   private _name:string = RPGSprite.INVALID_IMAGE;
   set name(value:string) {

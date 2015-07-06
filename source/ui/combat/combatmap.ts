@@ -120,14 +120,14 @@ export class CombatMap extends Map implements pow2.IProcessObject {
 
   onAddToScene(scene:pow2.scene.Scene) {
     super.onAddToScene(scene);
-    if(scene.world && scene.world.input){
+    if (scene.world && scene.world.input) {
       this.mouse = scene.world.input.mouseHook(this, "combat");
     }
     this.$el.on('click touchstart', this.mouseClick);
   }
 
   onRemoveFromScene(scene:pow2.scene.Scene) {
-    if(scene.world && scene.world.input){
+    if (scene.world && scene.world.input) {
       scene.world.input.mouseUnhook("combat");
     }
     this.$el.off('click touchstart', this.mouseClick);

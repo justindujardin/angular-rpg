@@ -27,17 +27,18 @@ import {Notify} from '../services/notify';
 
 @Component({
   selector: 'party-inventory',
-  properties: ['model','character','currentIndex','game','active']
+  properties: ['model', 'character', 'currentIndex', 'game', 'active']
 })
 @View({
   templateUrl: 'source/ui/party/partyinventory.html',
-  directives:[NgIf,NgFor,RPGSprite]
+  directives: [NgIf, NgFor, RPGSprite]
 })
 export class PartyInventory {
   currentIndex:number = 0;
   character:HeroModel;
   model:GameStateModel;
   active:boolean = false;
+
   constructor(public game:RPGGame, public notify:Notify) {
     this.model = game.world.model;
     this.character = this.model.party[this.currentIndex];
