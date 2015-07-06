@@ -46,8 +46,14 @@ export class RPGAppComponent {
 
   constructor(public game:RPGGame) {
     game.initGame().then(()=> {
-      game.machine.on('combat:begin', (state:PlayerCombatState) => this.combat = state);
-      game.machine.on('combat:end', () => this.combat = null);
+      game.machine.on('combat:begin', (state:PlayerCombatState) => {
+        this.game.world.scene.paused = true;
+        this.combat = state;
+      });
+      game.machine.on('combat:end', () => {
+        this.game.world.scene.paused = false;
+        this.combat = null;
+      });
       console.log("Game fully initialized.");
     }).catch(console.error.bind(console));
   }
