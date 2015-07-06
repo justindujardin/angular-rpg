@@ -22,9 +22,9 @@ import {GameEntityObject} from '../../objects/gameEntityObject';
 import {GameFeatureObject} from '../../objects/gameFeatureObject';
 import {GameStateMachine} from '../../states/gameStateMachine';
 
-import {GameStateModel,HeroModel,HeroTypes} from '../../models/all';
+import {GameStateModel,HeroModel,HeroTypes, WeaponModel, ArmorModel,ItemModel} from '../../models/all';
 
-import {RPGGame} from '../services/all';
+import {RPGGame,Notify} from '../services/all';
 import {Map} from '../map';
 
 @Component({
@@ -65,7 +65,7 @@ export class WorldMap extends Map {
    */
   targetStrokeWidth:number = 1.5;
 
-  constructor(public elRef:ElementRef, public game:RPGGame) {
+  constructor(public elRef:ElementRef, public game:RPGGame, public notify:Notify) {
     super(elRef, game);
     this.mouseClick = _.bind(this.mouseClick, this);
     this.camera.point.set(-0.5, -0.5);
@@ -75,12 +75,43 @@ export class WorldMap extends Map {
     // When a portal is entered, update the map view to reflect the change.
     game.world.scene.on('portal:entered', (data:any) => {
       this._loadMap(data.map).then(()=> {
-        this.game.partyMapName = data.map;
-        this.game.partyPosition = data.target;
-        this.world.model.setKeyData('playerMap', data.map);
-        this.world.model.setKeyData('playerPosition', data.target);
+        game.partyMapName = data.map;
+        game.partyPosition = data.target;
+        game.world.model.setKeyData('playerMap', data.map);
+        game.world.model.setKeyData('playerPosition', data.target);
       }).catch(console.error.bind(console));
     });
+
+    game.world.scene.on('treasure:entered', (feature:any) => {
+      if (typeof feature.gold !== 'undefined') {
+        game.world.model.addGold(feature.gold);
+        this.notify.show("You found " + feature.gold + " gold!", null, 0);
+      }
+      if (typeof feature.item === 'string') {
+        // Get items data from spreadsheet
+        GameStateModel.getDataSource((data:pow2.GameDataResource) => {
+          var item:ItemModel = null;
+          var desc:any = _.where(data.getSheetData('weapons'), {id: feature.item})[0];
+          if (desc) {
+            item = new WeaponModel(desc);
+          }
+          else {
+            desc = _.where(data.getSheetData('armor'), {id: feature.item})[0];
+            if (desc) {
+              item = new ArmorModel(desc);
+            }
+          }
+          if (!item) {
+            return;
+          }
+          game.world.model.inventory.push(item);
+          this.notify.show("You found " + item.get('name') + "!", null, 0);
+
+        });
+
+      }
+    });
+
   }
 
   protected _onMapLoaded(map:GameTileMap) {
