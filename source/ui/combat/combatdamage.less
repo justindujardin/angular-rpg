@@ -1,0 +1,35 @@
+.stroke-text(@width:2px,@color) {
+  text-shadow: @width  @width 0 @color,
+    -@width -@width 0 @color,
+    @width -@width 0 @color,
+  -@width  @width 0 @color;
+}
+
+.damage-value {
+  position: absolute;
+  opacity: 0;
+  z-index: @zCanvasGui;
+  font-family: 'GraphicPixel', sans-serif;
+  font-size: 3em;
+  color: #F00;
+  transition: opacity 1s ease-out, transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+  transform: translateY(0);
+  .stroke-text(2px, rgba(255, 255, 255, 0.9));
+  &.miss {
+    color: #ccc;
+    .stroke-text(1px, #222);
+  }
+  &.heal {
+    color: #0E0;
+    .stroke-text(1px, #222);
+  }
+  &.active {
+    opacity: 1;
+    transform: translateY(-25%);
+  }
+  &.remove {
+    transition: opacity 0.3s ease-out, transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    opacity: 0;
+    transform: translateY(-15%);
+  }
+}
