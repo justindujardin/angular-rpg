@@ -42,6 +42,9 @@ combat-map {
       display: inline-block;
       cursor: pointer;
       padding: 10px 15px;
+      &:hover {
+        color: @gameGold;
+      }
     }
   }
 
@@ -95,6 +98,19 @@ combat-map {
           text-align: left;
           display: block;
         }
+      }
+    }
+  }
+}
+
+@media (max-width: @screen-sm-min) {
+
+  combat-map {
+    .combat-view {
+      .action-menu, .targets-menu, .spells-menu {
+        border-radius: 0;
+        border-left:none;
+        border-right:none;
       }
     }
   }

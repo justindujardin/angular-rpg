@@ -99,8 +99,7 @@ export class CombatMap extends Map implements pow2.IProcessObject {
     this.pointer = {
       element: this.elRef.nativeElement.querySelector('.point-to-player'),
       object: null,
-      offset: new pow2.Point(),
-      view: this
+      offset: new pow2.Point()
     };
   }
 
@@ -291,7 +290,7 @@ export class CombatMap extends Map implements pow2.IProcessObject {
   mouseClick(e:any) {
     //console.log("clicked at " + this.mouse.world);
     var hits = [];
-    pow2.Input.mouseOnView(e.originalEvent, this.mouse.view, this.mouse);
+    pow2.Input.mouseOnView(e.originalEvent, this, this.mouse);
     if (this.combat.scene.db.queryPoint(this.mouse.world, GameEntityObject, hits)) {
       this.combat.scene.trigger('click', this.mouse, hits);
       e.stopImmediatePropagation();
