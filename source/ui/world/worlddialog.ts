@@ -14,14 +14,15 @@
  limitations under the License.
  */
 
-import {Component, View, NgIf} from 'angular2/angular2';
+import {Component, View, NgIf, onDestroy} from 'angular2/angular2';
 import {GameFeatureObject} from '../../objects/gameFeatureObject';
 import {RPGGame} from '../services/all';
 import {RPGSprite} from '../rpg/all';
 
 @Component({
   selector: 'world-dialog',
-  properties: ['text', 'title', 'icon', 'active']
+  properties: ['text', 'title', 'icon', 'active'],
+  lifecycle: [onDestroy]
 })
 @View({
   templateUrl: 'source/ui/world/worlddialog.html',
@@ -44,12 +45,17 @@ export class WorldDialog {
       this.icon = feature.icon;
       this.text = feature.text;
       this.title = feature.title;
-    });
+    }, this);
     game.world.scene.on('dialog:exited', () => {
       this.active = false;
       this.text = WorldDialog.DEFAULT_TEXT;
       this.title = WorldDialog.DEFAULT_TITLE;
       this.icon = '';
-    });
+    }, this);
+  }
+
+  onDestroy() {
+    this.game.world.scene.off('dialog:entered', null, this);
+    this.game.world.scene.off('dialog:exited', null, this);
   }
 }

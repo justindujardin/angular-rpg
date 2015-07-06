@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import {Component,View,NgFor,NgIf} from 'angular2/angular2';
+import {Component,View,NgFor,NgIf,onDestroy} from 'angular2/angular2';
 import '../../index';
 import {HeroModel,GameStateModel} from '../../models/all';
 import {RPGGame,Notify} from '../services/all';
@@ -22,7 +22,8 @@ import {RPGSprite,RPGHealthBar} from '../rpg/all';
 
 @Component({
   selector: 'world-temple',
-  properties: ['model', 'party', 'active', 'cost', 'icon', 'name']
+  properties: ['model', 'party', 'active', 'cost', 'icon', 'name'],
+  lifecycle: [onDestroy]
 })
 @View({
   templateUrl: 'source/ui/world/worldtemple.html',
@@ -47,11 +48,17 @@ export class WorldTemple {
       this.icon = feature.icon;
       this.cost = parseInt(feature.cost);
       this.active = true;
-    });
+    }, this);
     game.world.scene.on('temple:exited', () => {
       this.close();
-    });
+    }, this);
 
+  }
+
+  onDestroy() {
+    this.game.world.scene.off('temple:entered', null, this);
+    this.game.world.scene.off('temple:exited', null, this);
+    this.active = false;
   }
 
   rest() {

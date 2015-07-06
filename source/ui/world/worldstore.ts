@@ -53,8 +53,9 @@ export class WorldStore {
   }
 
   onDestroy() {
-    this.game.world.scene.on('store:entered', null, this);
-    this.game.world.scene.on('store:exited', null, this);
+    this.game.world.scene.off('store:entered', null, this);
+    this.game.world.scene.off('store:exited', null, this);
+    this.close();
   }
 
   /**
@@ -101,7 +102,7 @@ export class WorldStore {
     });
   }
 
-  destroy() {
+  close() {
     this.active = false;
     this.selling = false;
     this.selected = null;
