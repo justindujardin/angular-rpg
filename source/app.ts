@@ -1,16 +1,16 @@
 import {Component, View, bootstrap, NgFor, NgIf, ElementRef} from 'angular2/angular2';
 
-import {GameWorld} from 'source/gameWorld';
-import {GameStateModel} from 'source/models/gameStateModel';
-import {GameStateMachine} from 'source/states/gameStateMachine';
-import {PlayerCombatState} from 'source/states/playerCombatState';
+import {GameWorld} from './gameWorld';
+import {GameStateModel} from './models/gameStateModel';
+import {GameStateMachine} from './states/gameStateMachine';
+import {PlayerCombatState} from './states/playerCombatState';
 
-import {RPGGame,Notify,Animate} from 'source/ui/services/all';
+import {RPGGame,Notify,Animate} from './ui/services/all';
 
-import {CombatMap,CombatDamage} from 'source/ui/combat/all';
-import {RPGSprite,RPGHealthBar,RPGNotification} from 'source/ui/rpg/all';
-import {PartyInventory,PlayerCard,PartyMenu} from 'source/ui/party/all';
-import {WorldMap,WorldDialog,WorldStore,WorldTemple} from 'source/ui/world/all';
+import {CombatMap,CombatDamage} from './ui/combat/all';
+import {RPGSprite,RPGHealthBar,RPGNotification} from './ui/rpg/all';
+import {PartyInventory,PlayerCard,PartyMenu} from './ui/party/all';
+import {WorldMap,WorldDialog,WorldStore,WorldTemple} from './ui/world/all';
 
 @Component({
   selector: 'rpg-app',
@@ -18,7 +18,7 @@ import {WorldMap,WorldDialog,WorldStore,WorldTemple} from 'source/ui/world/all';
   properties: ['loaded', 'game', 'combat']
 })
 @View({
-  templateUrl: 'app.html',
+  templateUrl: 'source/app.html',
   directives: [
     NgFor, NgIf,
     WorldMap, WorldDialog, WorldStore, WorldTemple,
@@ -69,9 +69,7 @@ export function load():Promise<void> {
       bootstrap(RPGAppComponent);
       resolve();
     });
-    world.events.once('error', (e)=> {
-      reject(e);
-    });
+    world.events.once('error', reject);
     pow2.registerWorld('rpg', world);
   });
 }
