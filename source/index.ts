@@ -96,3 +96,10 @@ export interface IZoneMatch {
 //      }
 //    };
 //  });
+
+pow2.SpriteRender.prototype.getSpriteSheet = function (name, done) {
+  if (this.world) {
+    return this.world.loader.load("images/" + name + ".png", done);
+  }
+  return null;
+};

@@ -73,7 +73,7 @@ export class CombatMagicComponent extends CombatActionComponent {
       target.model.damage(healAmount);
 
 
-      var hitSound:string = "/sounds/heal";
+      var hitSound:string = "sounds/heal";
       var components = {
         animation: new pow2.tile.components.AnimatedSpriteComponent({
           spriteName: "heal",
@@ -115,7 +115,7 @@ export class CombatMagicComponent extends CombatActionComponent {
       var damage:number = defender.model.damage(this.spell.value);
       var didKill:boolean = defender.model.get('hp') <= 0;
       var hit:boolean = damage > 0;
-      var hitSound:string = "/sounds/" + (didKill ? "killed" : (hit ? "spell" : "miss"));
+      var hitSound:string = "sounds/" + (didKill ? "killed" : (hit ? "spell" : "miss"));
       var components = {
         animation: new pow2.tile.components.AnimatedSpriteComponent({
           spriteName: "attack",

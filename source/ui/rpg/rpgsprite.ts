@@ -27,7 +27,7 @@ import {GameWorld} from '../../gameWorld';
 })
 export class RPGSprite {
 
-  static INVALID_IMAGE:string = '/images/a/blank.gif';
+  static INVALID_IMAGE:string = 'images/a/blank.gif';
 
   dataUrl:string = '';
   width:string = '64';
