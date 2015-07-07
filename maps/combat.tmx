@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="30" height="20" tilewidth="16" tileheight="16">
  <properties>
-  <property name="music" value="/music/CombatTheme"/>
+  <property name="music" value="music/CombatTheme"/>
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <layer name="Terrain" width="30" height="20" visible="0">
