@@ -4,6 +4,7 @@
 **/*.js.map
 **/*.d.ts
 **/*.css
+**/*.css.map
 bower_components
 node_modules
 out/
