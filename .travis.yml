@@ -2,11 +2,11 @@ language: node_js
 node_js:
   - "0.10"
 before_script:
-  - npm install -g bower typescript less
+  - npm install -g bower typescript scss
   - bower install
   - cd source
   - tsc
-  - lessc app.less app.css
+  - scss app.scss app.css
   - cd ..
 
 script: npm run-script deploy
