@@ -1,15 +1,30 @@
-Pow2 :heart: Ng2
+Pow2 :heart: Ng2 [![Build Status](https://travis-ci.org/justindujardin/angular2-rpg.svg?branch=master)](https://travis-ci.org/justindujardin/angular2-rpg)
 ---
+
 
 A functional port of Pow2 RPG game from Angular 1.x to Angular2 Developer Preview.
 
-Play it:
+### Play it
 - http://justindujardin.github.io/angular2-rpg
 
-Build it: (:rotating_light: requires black magic at the moment :rotating_light:)
- - NPM, Typescript 1.5+, and Bower
- - `bower install` in root
- - `npm install -g typescript` - for `tsc` typescript compiler
+### Build it
+
+Requires Node+NPM, LESS, Typescript 1.5+, and Bower
+ - `npm install -g typescript` - for `tsc` Typescript compiler
+ - `npm install -g bower` - for `bower` Client side javascript package manager
  - `npm install -g less` - for `lessc` Less->CSS compiler
- - `cd source && tsc && lessc app.less app.css && cd ..`
- - open in browser in any manner that doesn't involve a `file:///`
+
+Build from command line:
+```
+bower install
+cd source
+tsc 
+lessc app.less app.css
+cd ..
+```
+
+Open index.html in any manner that doesn't involve a `file:///`
+
+
+
+ 
