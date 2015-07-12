@@ -4,7 +4,8 @@
   "description": "Angular2 RPG Game",
   "main": "source/app.ts",
   "scripts": {
-    "test": "echo \"No Tests\""
+    "test": "echo \"No Tests\"",
+    "deploy": "./deploy-github.sh"
   },
   "repository": {
     "type": "git",
