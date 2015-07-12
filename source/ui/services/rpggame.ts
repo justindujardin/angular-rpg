@@ -14,7 +14,6 @@
  limitations under the License.
  */
 
-///<reference path="../../../bower_components/pow-core/lib/pow-core.d.ts"/>
 ///<reference path="../../../bower_components/pow2/lib/pow2.d.ts"/>
 import {Inject} from 'angular2/angular2';
 

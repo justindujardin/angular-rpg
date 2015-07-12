@@ -15,6 +15,6 @@
     "tests"
   ],
   "dependencies": {
-    "pow2": "~0.1.4"
+    "pow2": "~0.1.6"
   }
 }
