@@ -2,6 +2,7 @@
 rm -rf out || exit 0;
 mkdir out;
 ( echo "Building gh-pages repo"
+ cp -a bower_components out
  cp -a entities out
  cp -a fonts out
  cp -a images out
@@ -11,6 +12,8 @@ mkdir out;
  cp -a source out
  cp -a typings out
  cp -a index.html out/
+ cp -a README.md out/
+ cp -a LICENSE out/
  cd out
  git init
  git config user.name "pow-bot"
