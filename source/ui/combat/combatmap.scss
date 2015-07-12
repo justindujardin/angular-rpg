@@ -2,10 +2,10 @@
 // --------------------------------------------------------------------------
 combat-map {
   * {
-    .no-select;
+    @extend .no-select;
   }
   canvas {
-    .game-canvas;
+    @extend .game-canvas;
   }
 
   rpg-health-bar {
@@ -15,7 +15,7 @@ combat-map {
 }
 
 .combat-view {
-  font-family: @pixelFont;
+  font-family: $pixelFont;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -26,8 +26,8 @@ combat-map {
   margin-right: auto;
   width: 100%;
 
-  background-color: @menuOverlayBackground;
-  z-index: @zCanvasGui;
+  background-color: $menuOverlayBackground;
+  z-index: $zCanvasGui;
 
   .action-menu, .targets-menu, .spells-menu {
     position: absolute;
@@ -43,7 +43,7 @@ combat-map {
       cursor: pointer;
       padding: 10px 15px;
       &:hover {
-        color: @gameGold;
+        color: $gameGold;
       }
     }
   }
@@ -61,20 +61,20 @@ combat-map {
     }
 
     &.focused {
-      color: @gameGold;
+      color: $gameGold;
     }
     &.choosing {
-      background-color: @gameBlue;
+      background-color: $gameBlue;
     }
     .name {
       float: left;
       text-align: left;
       width: 25%;
-      .stroke-text(1px, #000);
+      @include stroke-text(1px, #000);
     }
 
     .hp {
-      .stroke-text(1px, #000);
+      @include stroke-text(1px, #000);
     }
     health-bar {
       min-width: 25%;
@@ -83,7 +83,7 @@ combat-map {
 }
 
 /* Small devices (tablets, 768px and up) */
-@media (min-width: @screen-sm-min) {
+@media (min-width: $screen-sm-min) {
 
   combat-map {
     .combat-view {
@@ -103,7 +103,7 @@ combat-map {
   }
 }
 
-@media (max-width: @screen-sm-min) {
+@media (max-width: $screen-sm-min) {
 
   combat-map {
     .combat-view {
@@ -117,20 +117,20 @@ combat-map {
 }
 
 .point-to-player {
-  z-index: @zCanvasGui;
+  z-index: $zCanvasGui;
   position: absolute;
-  .glyphicon;
+  @extend .glyphicon;
   &.left {
     content: '<';
-    .glyphicon-chevron-left;
+    @extend .glyphicon-chevron-left;
   }
   &.right {
     content: '>';
-    .glyphicon-chevron-right;
+    @extend .glyphicon-chevron-right;
   }
   &.attack {
     content: 'X';
-    .glyphicon-screenshot;
+    @extend .glyphicon-screenshot;
     color: red;
   }
   font-size: 2em;

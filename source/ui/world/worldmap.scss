@@ -1,5 +1,5 @@
 world-map {
   canvas {
-    .game-canvas;
+    @extend .game-canvas;
   }
 }

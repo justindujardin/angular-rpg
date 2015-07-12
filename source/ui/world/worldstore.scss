@@ -1,5 +1,5 @@
 .store-view {
-  z-index: @zCanvasGui;
+  z-index: $zCanvasGui;
   text-align: center;
   margin: auto;
   display: block;
@@ -22,7 +22,7 @@
     text-align: center;
     padding: 0;
     .item-price {
-      color: @gameGold;
+      color: $gameGold;
       padding-left: 10px;
     }
   }

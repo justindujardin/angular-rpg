@@ -6,7 +6,7 @@ world-dialog {
     .body-text {
       pointer-events: none;
     }
-    z-index: @zCanvasGui;
+    z-index: $zCanvasGui;
     width: auto;
     max-width: 800px;
     margin-top: 15px;
@@ -46,6 +46,6 @@ world-dialog {
     vertical-align: middle;
     line-height: normal;
     color: #fff;
-    .stroke-text(1px, #000);
+    @include stroke-text(1px, #000);
   }
 }

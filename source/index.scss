@@ -1,5 +1,5 @@
-@pixelFont: 'GraphicPixel', 'AdvoCut', sans-serif;
-@pixelFontAlt: 'AdvoCut', 'GraphicPixel', sans-serif;
+$pixelFont: 'GraphicPixel', 'AdvoCut', sans-serif;
+$pixelFontAlt: 'AdvoCut', 'GraphicPixel', sans-serif;
 
 @font-face {
   font-family: 'GraphicPixel';
@@ -27,10 +27,10 @@
   display: none !important;
 }
 
-@import "../bower_components/bootstrap/less/bootstrap";
-@import "../fonts/pow2";
 @import "style/variables";
 @import "style/mixins";
+@import "../fonts/pow2";
+@import "../fonts/glyphicons";
 @import "style/animation";
 @import "style/pageTransitions";
 @import "style/loading";
@@ -39,10 +39,6 @@
 // Other
 @import "style/buttons";
 @import "style/eightBitPanel";
-
-@zCanvas: 10;
-@zCanvasGui: 20;
-@zCanvasAlert: 50;
 
 // Import template styles
 //  TODO: This might get _really_ old.
@@ -64,16 +60,13 @@
 @import "ui/combat/combatmap";
 @import "ui/combat/combatdamage";
 
-@gameBlue: #004c62;
-@menuOverlayBackground: rgba(0, 0, 0, 0.8);
-
 html,
 body {
   background-color: #222222;
   margin: 0;
   overflow: hidden;
   height: 100%;
-  font-family: @pixelFont;
+  font-family: $pixelFont;
   color:rgba(255,255,255,0.9);
 
   /* GET THIS DIALOG OUT OF MY FACE! */
@@ -95,7 +88,7 @@ body {
 }
 
 .game-canvas {
-  z-index: @zCanvas;
+  z-index: $zCanvas;
   position: fixed;
   top: 0;
   left: 0;
@@ -113,7 +106,7 @@ body {
   margin-left: auto;
 
   > * {
-    font-family: @pixelFont;
+    font-family: $pixelFont;
     text-align: center;
     color: #fff;
   }
@@ -122,13 +115,13 @@ body {
     margin-top: 10px;
     margin-bottom: 25px;
     font-size: 8em;
-    .extrude-stroke-text(4px, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.1));
+    @include extrude-stroke-text(4px, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.1));
 
   }
   p {
     font-size: 1.2em;
-    .inset-stroke-text(1px, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.1));
-    color: @contrastFontColor;
+    @include inset-stroke-text(1px, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.1));
+    color: $contrastFontColor;
   }
 }
 
@@ -138,39 +131,8 @@ body {
   font-size: 20px;
 }
 
-/* Stroke Text Effect */
-@contrastFontColorA: rgba(244, 255, 0, 0.5);
-@contrastFontColor: #eeaa13;
-@contrastHighlight: #E8C627;
-@contrastShadow: #E85627;
-
-// This restricted mobile phone resolutions to landscape.  Removed because pow should work
-// at phone res in portrait as well, but keep around in case that changes
-
-//@landscape-max:(@screen-phone - 1);
-//@media(max-width:@landscape-max) and (orientation:portrait) {
-//  body > * {
-//    display: none !important;
-//  }
-//  .landscape-notice {
-//    z-index:9999;
-//    display: block !important;
-//    background-color: #004c62;
-//    .stroke-text(1px,#000);
-//    h2 {
-//      .extrude-stroke-text(2px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
-//      font-size: 10em;
-//    }
-//    span {
-//      .extrude-stroke-text(1px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
-//      color:#fff;
-//      font-size: 2em;
-//    }
-//  }
-//}
-
 /* Small devices (tablets, 768px and up) */
-@media (min-width: @screen-sm-min) {
+@media (min-width: $screen-sm-min) {
   .hero-container {
     h1 {
       font-size: 12em;
@@ -199,7 +161,7 @@ body {
 }
 
 /* Medium devices (desktops, 992px and up) */
-@media (min-width: @screen-md-min) {
+@media (min-width: $screen-md-min) {
   .drop-overlay {
     .message {
       padding: 25px;
@@ -217,7 +179,7 @@ body {
 }
 
 /* Large devices (large desktops, 1200px and up) */
-@media (min-width: @screen-lg-min) {
+@media (min-width: $screen-lg-min) {
   .hero-container {
     h1 {
       font-size: 16em;

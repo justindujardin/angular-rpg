@@ -1,6 +1,7 @@
 @import "./index";
+
 .select-map {
-  z-index: @zCanvasGui;
+  z-index: $zCanvasGui;
   margin:1rem;
   padding:0.5rem;
   float:right;

@@ -3,7 +3,7 @@ party-menu {
   position: fixed;
   bottom: 5px;
   left: 5px;
-  z-index: @zCanvasGui;
+  z-index: $zCanvasGui;
   font-family: 'GraphicPixel', sans-serif;
   .options, .trigger {
     font-size: 42px;
@@ -15,9 +15,9 @@ party-menu {
     bottom: 0;
     line-height: 60px;
     height: 60px;
-    &.ng-click-active {
-      color: @gameBlue;
-    }
+    //&.ng-click-active {
+    //  color: $gameBlue;
+    //}
   }
   a {
     color: #fff;
@@ -39,17 +39,17 @@ party-menu {
     bottom: 0;
     max-width: 50px;
     width: 50px;
-    background-color: @menuOverlayBackground;
+    background-color: $menuOverlayBackground;
     ul.options {
       list-style-type: none;
       padding: 5px;
       li {
         a.ng-click-active {
-          color: @gameBlue;
+          color: $gameBlue;
         }
         &.active {
           a {
-            color: @gameGold;
+            color: $gameGold;
           }
         }
 

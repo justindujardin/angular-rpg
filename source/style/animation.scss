@@ -1,7 +1,7 @@
-.animation(@config) {
-  -webkit-animation: @config;
-  -moz-animation: @config;
-  animation: @config;
+@mixin animation($config) {
+  -webkit-animation: $config;
+  -moz-animation: $config;
+  animation: $config;
 }
 
 @-webkit-keyframes moveFromRight {
@@ -137,7 +137,7 @@
   }
 }
 
-@fadeTime: 0.3s;
+$fadeTime: 0.3s;
 .moveFromRight {
   -webkit-animation: moveFromRight .6s ease both;
   -moz-animation: moveFromRight .6s ease both;
@@ -157,21 +157,21 @@
 }
 
 .slide-from-right.ng-hide-add {
-  .moveToRight;
+  @extend .moveToRight;
   display: block !important;
 }
 
 .slide-from-right.ng-hide-remove {
-  .moveFromRight;
+  @extend .moveFromRight;
   display: block !important;
 }
 
 .fadeOut {
-  .animation(fadeOut @fadeTime ease both);
+  @include animation(fadeOut $fadeTime ease both);
 }
 
 .fadeIn {
-  .animation(fadeIn @fadeTime ease both);
+  @include animation(fadeIn $fadeTime ease both);
 }
 
 .menu-fade {
@@ -181,12 +181,12 @@
 }
 
 .menu-fade.ng-hide-add {
-  .fadeOut;
+  @extend .fadeOut;
   display: block !important;
 }
 
 .menu-fade.ng-hide-remove {
-  .fadeIn;
+  @extend .fadeIn;
   display: block !important;
 }
 
@@ -198,7 +198,7 @@
 
 .fade.ng-enter,
 .fade.ng-enter.ng-enter-active {
-  .animation(fadeIn @fadeTime ease both);
+  @include animation(fadeIn $fadeTime ease both);
   display: block !important;
 }
 
@@ -209,7 +209,7 @@
 
 .fade.ng-leave,
 .fade.ng-leave-active {
-  .animation(fadeOut @fadeTime ease both);
+  @include animation(fadeOut $fadeTime ease both);
   display: block !important;
 }
 
@@ -225,27 +225,14 @@
 
 .fade.ng-hide-add {
   opacity: 1;
-  .fadeOut;
+  @extend .fadeOut;
 }
 
 .fade.ng-hide-remove {
   opacity: 0;
-  .fadeIn;
+  @extend .fadeIn;
 }
 
-//
-//.fade.ng-hide {
-//  display: block !important;
-//  opacity: 0;
-//}
-//.fade.ng-hide-remove {
-//  .animation(fadeOut @fadeTime ease both);
-//  display: block !important;
-//}
-//.fade.ng-hide-add {
-//  .animation(fadeIn @fadeTime ease both);
-//  display: block !important;
-//}
 
 .scale-down {
 }
@@ -254,14 +241,14 @@
 }
 
 .scale-down.ng-hide-add {
-  .pt-page-scaleDownUp;
-  .pt-page-ontop;
-  .pt-page-delay500;
+  @extend .pt-page-scaleDownUp;
+  @extend .pt-page-ontop;
+  @extend .pt-page-delay500;
   display: block !important;
 }
 
 .scale-down.ng-hide-remove {
-  .pt-page-delay1000;
-  .pt-page-scaleUp;
+  @extend .pt-page-delay1000;
+  @extend .pt-page-scaleUp;
   display: block !important;
 }
