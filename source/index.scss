@@ -34,7 +34,13 @@ $pixelFontAlt: 'AdvoCut', 'GraphicPixel', sans-serif;
 @import "style/animation";
 @import "style/pageTransitions";
 @import "style/loading";
-@import "style/mediaqueries";
+
+// ngMaterial Core
+@import "ui/material/core/style/variables";
+@import "ui/material/core/style/mixins";
+@import "ui/material/core/style/structure";
+@import "ui/material/core/style/typography";
+@import "ui/material/core/style/layout";
 
 // Other
 @import "style/buttons";
@@ -63,28 +69,9 @@ $pixelFontAlt: 'AdvoCut', 'GraphicPixel', sans-serif;
 html,
 body {
   background-color: #222222;
-  margin: 0;
   overflow: hidden;
   height: 100%;
-  font-family: $pixelFont;
   color:rgba(255,255,255,0.9);
-
-  /* GET THIS DIALOG OUT OF MY FACE! */
-  .btn-close {
-    font-size: 2.2em;
-    position: fixed;
-    padding-top: 20px;
-    right: 0.5em;
-    top: -6px;
-    text-shadow: -1px -1px rgba(0, 0, 0, 0.2);
-    &:hover {
-      top: -4px;
-    }
-    &:active {
-      top: 0;
-    }
-  }
-
 }
 
 .game-canvas {
@@ -132,7 +119,7 @@ body {
 }
 
 /* Small devices (tablets, 768px and up) */
-@media (min-width: $screen-sm-min) {
+@media (min-width: $layout-breakpoint-sm) {
   .hero-container {
     h1 {
       font-size: 12em;
@@ -161,7 +148,7 @@ body {
 }
 
 /* Medium devices (desktops, 992px and up) */
-@media (min-width: $screen-md-min) {
+@media (min-width: $layout-breakpoint-sm) {
   .drop-overlay {
     .message {
       padding: 25px;
@@ -179,7 +166,7 @@ body {
 }
 
 /* Large devices (large desktops, 1200px and up) */
-@media (min-width: $screen-lg-min) {
+@media (min-width: $layout-breakpoint-lg) {
   .hero-container {
     h1 {
       font-size: 16em;

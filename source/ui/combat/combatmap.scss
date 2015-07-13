@@ -83,7 +83,7 @@ combat-map {
 }
 
 /* Small devices (tablets, 768px and up) */
-@media (min-width: $screen-sm-min) {
+@media (min-width: $layout-breakpoint-sm) {
 
   combat-map {
     .combat-view {
@@ -103,7 +103,7 @@ combat-map {
   }
 }
 
-@media (max-width: $screen-sm-min) {
+@media (max-width: $layout-breakpoint-sm) {
 
   combat-map {
     .combat-view {

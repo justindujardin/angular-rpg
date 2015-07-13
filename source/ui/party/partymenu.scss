@@ -41,6 +41,7 @@ party-menu {
     width: 50px;
     background-color: $menuOverlayBackground;
     ul.options {
+      margin:0;
       list-style-type: none;
       padding: 5px;
       li {
