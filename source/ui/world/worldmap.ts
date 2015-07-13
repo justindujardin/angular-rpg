@@ -121,6 +121,7 @@ export class WorldMap extends Map {
     }
     this.clearCache();
     this._onResize();
+    this.tileMap.syncComponents();
   }
 
   private _player:HeroModel = null;

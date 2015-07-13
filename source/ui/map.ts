@@ -61,9 +61,9 @@ export class Map extends pow2.tile.TileMapView {
         this.tileMap = this.game.world.entities.createObject('GameMapObject', {
           resource: map
         });
-        this._onMapLoaded(this.tileMap);
         this.setTileMap(this.tileMap);
         this.game.world.scene.addObject(this.tileMap);
+        this._onMapLoaded(this.tileMap);
         resolve(this.tileMap);
       });
     });
