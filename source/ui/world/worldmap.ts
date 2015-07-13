@@ -115,9 +115,11 @@ export class WorldMap extends Map {
   }
 
   protected _onMapLoaded(map:GameTileMap) {
+    map.buildFeatures();
     if (this._player) {
       this.game.createPlayer(this._player, this.tileMap);
     }
+    this.clearCache();
     this._onResize();
   }
 

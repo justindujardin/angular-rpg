@@ -24,15 +24,18 @@ import * as rpg from './index';
 export class GameTileMap extends pow2.tile.TileMap {
   world:GameWorld;
 
+  music:pow2.scene.components.SoundComponent = null;
   loaded() {
     super.loaded();
     // If there are map properties, take them into account.
     if (this.map.properties && this.map.properties.music) {
-      this.addComponent(new pow2.scene.components.SoundComponent({
+      this._destroyMusic();
+      this.music = new pow2.scene.components.SoundComponent({
         url: this.map.properties.music,
         volume: 0.1,
         loop: true
-      }));
+      });
+      this.addComponent(this.music);
     }
     this.buildFeatures();
   }
@@ -42,8 +45,15 @@ export class GameTileMap extends pow2.tile.TileMap {
     return super.destroy();
   }
 
+  private _destroyMusic() {
+    if (this.music) {
+      this.removeComponent(this.music);
+      this.music = null;
+    }
+  }
+
   unloaded() {
-    this.removeComponentByType(pow2.scene.components.SoundComponent);
+    this._destroyMusic();
     this.removeFeaturesFromScene();
     super.unloaded();
   }

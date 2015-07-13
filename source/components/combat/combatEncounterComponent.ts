@@ -60,10 +60,8 @@ export class CombatEncounterComponent extends pow2.scene.SceneComponent {
     super.syncComponent();
     // Determine if the map wants this component to be enabled.
     this.enabled = this.host.map && this.host.map.properties && this.host.map.properties.combat;
-    if (this.player) {
-      this.player.off(null, null, this);
-      this.player = null;
-    }
+    this.stopListening();
+    this.player = null;
     if (this.host.scene) {
       this.player = <GameEntityObject>this.host.scene.objectByComponent(pow2.scene.components.PlayerComponent);
     }
