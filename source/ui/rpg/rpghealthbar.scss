@@ -1,10 +1,24 @@
+$progress-bar-height: 5px !default;
+$progress-bar-height-lg: 15px !default;
+
 rpg-health-bar {
-  min-height: 5px;
-  min-width: 50px;
-  display: inline;
+  &.large {
+    .progress {
+      height: $progress-bar-height-lg;
+      .progress-bar {
+        height: $progress-bar-height-lg;
+      }
+    }
+  }
   .progress {
+    height: $progress-bar-height;
     border-radius: 0;
+    position: relative;
     background-color: rgba(255, 255, 255, 0.9);
+    .progress-bar {
+      height: $progress-bar-height;
+    }
+
     /* Damage states */
     &.fine {
       //      background-color: rgba(33, 79, 120,0.1);

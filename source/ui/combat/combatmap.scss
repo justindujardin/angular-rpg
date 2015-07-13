@@ -39,7 +39,7 @@ combat-map {
     padding: 0;
     li {
       text-transform: capitalize;
-      display: inline-block;
+      display: flex;
       cursor: pointer;
       padding: 10px 15px;
       &:hover {
@@ -57,7 +57,7 @@ combat-map {
     text-align: right;
     color: #fff;
     > * {
-      display: inline-block;
+      display: flex;
     }
 
     &.focused {
@@ -96,7 +96,7 @@ combat-map {
         padding: 5px 25px;
         li {
           text-align: left;
-          display: block;
+          display: inherit;
         }
       }
     }

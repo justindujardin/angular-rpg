@@ -20,7 +20,11 @@ import {GameWorld} from '../../gameWorld';
 
 @Component({
   selector: 'rpg-sprite',
-  properties: ['name', 'frame']
+  properties: ['name', 'frame', 'width', 'height'],
+  host: {
+    '[style.width]': 'width',
+    '[style.height]': 'height'
+  }
 })
 @View({
   template: `<img [src]="dataUrl">`

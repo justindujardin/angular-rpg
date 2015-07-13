@@ -70,7 +70,6 @@ html,
 body {
   background-color: #222222;
   overflow: hidden;
-  height: 100%;
   color:rgba(255,255,255,0.9);
 }
 
@@ -115,33 +114,33 @@ body {
 
 .ebp {
   font-family: 'GraphicPixel', sans-serif;
-  font-size: 20px;
+  font-size: rem(2);
 }
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: $layout-breakpoint-sm) {
   .hero-container {
     h1 {
-      font-size: 12em;
+      font-size: rem(12);
     }
     p {
-      font-size: 1.8em;
+      font-size: rem(1.8);
     }
   }
 
   .menu-overlay {
     > span {
-      font-size: 24px;
+      font-size: rem(2);
     }
   }
 
   .game-container {
     .damage-value {
-      font-size: 5em;
+      font-size: rem(5);
     }
     .message {
       .text {
-        font-size: 18px;
+        font-size: rem(2);
       }
     }
   }

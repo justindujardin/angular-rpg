@@ -4,7 +4,6 @@
   color: $color;
   border: $border-width solid $color;
   border-radius: $border-width * 1.5;
-  display: inline-block;
   position: relative;
   text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.7);
 }

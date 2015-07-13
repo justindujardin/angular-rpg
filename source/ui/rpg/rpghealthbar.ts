@@ -25,9 +25,7 @@ import {EntityModel} from '../../models/all'
 @View({
   template: `
   <div class="progress" [class]="getCSSClassMap()">
-    <div class="progress-bar" [style.width]="getProgressBarWidth()">
-      <span class="sr-only"></span>
-    </div>
+    <div class="progress-bar" [style.width]="getProgressBarWidth()"></div>
   </div>
 `,
   directives: [NgIf, CSSClass]

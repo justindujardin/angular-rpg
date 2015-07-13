@@ -1,6 +1,6 @@
-<div class="dialog ebp" *ng-if="active">
+<div layout="row" layout-padding class="dialog ebp" *ng-if="active">
   <rpg-sprite class="character" [name]="icon"></rpg-sprite>
-  <div class="body-text">
+  <div flex class="body-text">
     <p [inner-text]="title"></p>
     <span class="text" [inner-text]="text"></span>
   </div>

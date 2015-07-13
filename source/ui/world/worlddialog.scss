@@ -1,39 +1,33 @@
 // Dialog
 // --------------------------------------------------------------------------
 world-dialog {
+  z-index: $zCanvasGui;
+  max-width: 800px;
+  position: relative;
   text-align: center;
-  .dialog {
-    .body-text {
+  .body-text {
+    pointer-events: none;
+  }
+  .btn-close {
+    position: absolute;
+    font-size: 1.5em;
+    padding: 5px 20px;
+    padding-top: 10px;
+    right: 0.5em;
+    top: 0;
+    > i {
       pointer-events: none;
     }
-    z-index: $zCanvasGui;
-    width: auto;
-    max-width: 800px;
-    margin-top: 15px;
-    padding: 10px 10px;
-    position: relative;
-    .btn-close {
-      position: absolute;
-      font-size: 1.5em;
-      padding: 5px 20px;
-      padding-top: 10px;
-      right: 0.5em;
+    &:hover {
       top: 0;
-      > i {
-        pointer-events: none;
-      }
-      &:hover {
-        top: 0;
-        padding-top: 12px;
-        outline: none;
-      }
-      &:active {
-        top: 0;
-        padding-top: 16px;
-        outline: none;
-      }
+      padding-top: 12px;
+      outline: none;
     }
-
+    &:active {
+      top: 0;
+      padding-top: 16px;
+      outline: none;
+    }
   }
   .character {
     padding: 0;
