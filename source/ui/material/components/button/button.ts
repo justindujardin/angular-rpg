@@ -1,5 +1,6 @@
 import {isPresent} from '../../include';
-import {Component,View, NgIf, NgFor,onChange} from 'angular2/angular2';
+import {Component,View, NgIf, NgFor,onChange, ElementRef} from 'angular2/angular2';
+import {MaterialRipple} from '../ripple/ripple';
 
 
 @Component({
@@ -22,6 +23,11 @@ export class MdButton {
    * Whether the component is disabled.
    */
   disabled:boolean;
+
+  private _ripple:MaterialRipple;
+  constructor(element:ElementRef){
+    this._ripple = new MaterialRipple(element.nativeElement);
+  }
 
   onClick(event:MouseEvent) {
     // A disabled anchor shouldn't navigate anywhere.

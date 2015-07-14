@@ -1,14 +1,24 @@
-[Angular Material](https://github.com/angular/material) 0.10.0
+Material Design
 ---
 
-The files in this path are a selective picking of some of the awesome angular material components and styles for angular 1.x.
+The files in this path are a selective picking of pre-existing material design component work, all mashed up and made tasty for the game's use-case.
 
-They are made available under the [MIT license](https://github.com/angular/material/blob/master/LICENSE).
+### [Angular Material 0.10.0](https://github.com/angular/material)
 
+ - scss and source file reference for angular2 component implementations and services
+ - layout and typography styles (layout="row",layout-align="center center",...)
 
-[Angular2](https://github.com/angular/angular) 2.0.0-alpha.30
----
+License: [MIT](https://github.com/angular/material/blob/master/LICENSE)
 
-Also included in here is a mash up of some of the pre-existing work on angular2 material components from the angular2 repo.  
+### [Angular 2.0.0-alpha.30](https://github.com/angular/angular)
 
-They are made available under the [Apache2 License](https://github.com/angular/angular/blob/master/LICENSE)
+ - scss utilities for defining default material theme and theme function
+
+License: [Apache2](https://github.com/angular/angular/blob/master/LICENSE)
+
+### [Material Design Lite](https://github.com/google/material-design-lite)
+
+ - ripple effect scss and source
+
+License: [Apache2](https://github.com/google/material-design-lite/blob/master/LICENSE)
+
