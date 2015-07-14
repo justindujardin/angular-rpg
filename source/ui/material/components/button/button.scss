@@ -1,0 +1,361 @@
+@import '../../core/style/variables';
+@import '../../core/style/structure';
+@import '../../core/style/default-theme';
+
+$button-line-height: rem(3.60) !default;
+$button-padding: 0 rem(0.600) !default;
+$button-margin: rem(0.600) rem(0.800) !default;
+$button-min-width: rem(8.800) !default;
+
+// Fab buttons
+$button-fab-width: rem(5.600) !default;
+$button-fab-height: rem(5.600) !default;
+$button-fab-line-height: rem(5.600) !default;
+$button-fab-padding: rem(1.60) !default;
+$button-fab-mini-width: rem(4.00) !default;
+$button-fab-mini-height: rem(4.00) !default;
+$button-fab-mini-line-height: rem(4.00) !default;
+
+$button-fab-toast-offset: $button-fab-height * 0.75 !default;
+
+$icon-button-height: rem(4.800) !default;
+$icon-button-width: rem(4.800) !default;
+$icon-button-margin: rem(0.600) !default;
+
+/**
+ * Position a FAB button.
+ */
+@mixin fab-position($spot, $top: auto, $right: auto, $bottom: auto, $left: auto) {
+  &.md-fab-#{$spot} {
+    top: $top;
+    right: $right;
+    bottom: $bottom;
+    left: $left;
+    position: absolute;
+  }
+}
+
+.md-button {
+  box-sizing: border-box;
+  color: currentColor;
+
+  user-select: none;
+  position: relative; //for child absolute-positioned <canvas>
+
+  outline: none;
+  border: 0;
+  display: inline-table;
+  padding: $button-padding;
+  margin: $button-margin;
+  line-height: $button-line-height;
+  min-height: $button-line-height;
+  background: transparent;
+  white-space: nowrap;
+  // override for FAB, icon buttons, etc.
+  min-width: $button-min-width;
+
+  text-align: center;
+
+  // Always uppercase buttons
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: $body-font-size-base;
+  font-style: inherit;
+  font-variant: inherit;
+  font-family: inherit;
+  text-decoration: none;
+
+  cursor: pointer;
+  overflow: hidden;   // for ink containment
+
+  transition: box-shadow $swift-ease-out-duration $swift-ease-out-timing-function,
+              background-color $swift-ease-out-duration $swift-ease-out-timing-function;
+
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+  &:focus {
+    outline: none;
+  }
+
+  &:hover, &:focus {
+    text-decoration: none;
+  }
+
+  &.ng-hide, &.ng-leave {
+    transition: none;
+  }
+
+  &.md-cornered {
+    border-radius: 0;
+  }
+
+  &.md-icon {
+    padding: 0;
+    background: none;
+  }
+
+  &.md-raised {
+    &:not([disabled]) {
+      @extend .md-shadow-bottom-z-1;
+    }
+  }
+
+  &.md-icon-button {
+    margin: 0 $icon-button-margin;
+    height: $icon-button-height;
+    min-width: 0;
+    line-height: $icon-button-height;
+    padding-left: 0;
+    padding-right: 0;
+    width: $icon-button-width;
+    border-radius: 50%;
+    .md-ripple-container {
+      border-radius: 50%;
+      background-clip: padding-box;
+      overflow: hidden;
+      // The following hack causes Safari/Chrome to respect overflow hidden for ripples
+      -webkit-mask-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC');
+    }
+  }
+
+  &.md-fab {
+
+    @include fab-position(bottom-right, auto, ($button-fab-width - $button-fab-padding)/2, ($button-fab-height - $button-fab-padding)/2, auto);
+    @include fab-position(bottom-left, auto, auto, ($button-fab-height - $button-fab-padding)/2, ($button-fab-width - $button-fab-padding)/2);
+    @include fab-position(top-right, ($button-fab-height - $button-fab-padding)/2, ($button-fab-width - $button-fab-padding)/2, auto, auto);
+    @include fab-position(top-left, ($button-fab-height - $button-fab-padding)/2, auto, auto, ($button-fab-width - $button-fab-padding)/2);
+
+    z-index: $z-index-fab;
+
+    line-height: $button-fab-line-height;
+    min-width: 0;
+    width: $button-fab-width;
+    height: $button-fab-height;
+    vertical-align: middle;
+
+    @extend .md-shadow-bottom-z-1;
+    border-radius: 50%;
+    background-clip: padding-box;
+    overflow: hidden;
+
+    transition: 0.2s linear;
+    transition-property: background-color, box-shadow;
+    .md-ripple-container {
+      border-radius: 50%;
+      background-clip: padding-box;
+      overflow: hidden;
+      // The following hack causes Safari/Chrome to respect overflow hidden for ripples
+      -webkit-mask-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC');
+    }
+
+    md-icon {
+      margin-top: 0;
+    }
+
+    &.md-mini {
+      line-height: $button-fab-mini-line-height;
+      width: $button-fab-mini-width;
+      height: $button-fab-mini-height;
+    }
+
+  }
+
+  &:not([disabled]) {
+    &.md-raised,
+    &.md-fab {
+      &.md-focused {
+        @extend .md-shadow-bottom-z-1;
+      }
+      &:active {
+        @extend .md-shadow-bottom-z-2;
+      }
+    }
+  }
+}
+
+.md-toast-open-top {
+  .md-button.md-fab-top-left,
+  .md-button.md-fab-top-right {
+    transform: translate3d(0, $button-fab-toast-offset, 0);
+    &:not([disabled]) {
+      &.md-focused,
+      &:hover {
+        transform: translate3d(0, $button-fab-toast-offset - 1, 0);
+      }
+    }
+  }
+}
+.md-toast-open-bottom {
+  .md-button.md-fab-bottom-left,
+  .md-button.md-fab-bottom-right {
+    transform: translate3d(0, -$button-fab-toast-offset, 0);
+    &:not([disabled]) {
+      &.md-focused,
+      &:hover {
+        transform: translate3d(0, -$button-fab-toast-offset - 1, 0);
+      }
+    }
+  }
+}
+
+.md-button-group {
+  display: flex;
+  flex: 1;
+  width: 100%;
+}
+.md-button-group > .md-button {
+  flex: 1;
+
+  display: block;
+
+  overflow: hidden;
+
+  width: 0;
+
+  border-width: 1px 0px 1px 1px;
+  border-radius: 0;
+
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:first-child {
+    border-radius: 2px 0px 0px 2px;
+  }
+  &:last-child {
+    border-right-width: 1px;
+    border-radius: 0px 2px 2px 0px;
+  }
+}
+@media screen and (-ms-high-contrast: active) {
+  .md-button.md-raised,
+  .md-button.md-fab {
+    border: 1px solid #fff;
+  }
+}
+
+
+// ------------------------ Button theme ----------------------------------------------------------
+
+$button-border-radius: 3px !default;
+$button-fab-border-radius: 50% !default;
+
+// The ELEMENT '[md-button]' is the host.
+// The CLASS '[md-button]' is the shadow root.
+
+md-toolbar [md-button].md-fab {
+  background-color: white;
+}
+
+
+// Because of Shadow DOM emulation, the modifier classes are applied to the [md-button]
+// element (host), but the style needs to be changed for the shadow content (.[md-button]).
+.md-button {
+  border-radius: $button-border-radius;
+
+  // When the user explictly applies the primary color.
+  &.md-primary {
+    color: md-color($md-primary);
+  }
+
+  &.md-primary.md-fab,
+  &.md-primary.md-raised {
+    color: md-color($md-primary, default-contrast);
+    background-color: md-color($md-primary);
+  }
+
+  // When the user explictly applies the accent color.
+  &.md-accent {
+    color: md-color($md-accent);
+  }
+
+  &.md-accent.md-fab,
+  &.md-accent.md-raised {
+    color: md-color($md-accent, default-contrast);
+    background-color: md-color($md-accent);
+  }
+
+  // When the user explictly applies the warn color.
+  &.md-warn {
+    color: md-color($md-warn);
+  }
+
+  &.md-warn.md-fab,
+  &.md-warn.md-raised {
+    color: md-color($md-warn, default-contrast);
+    background-color: md-color($md-warn);
+  }
+
+  // When the button is a fab without an explicit color applied.
+  &.md-fab {
+    border-radius: $button-fab-border-radius;
+    background-color: md-color($md-accent);
+    color: md-color($md-accent, default-contrast);
+  }
+
+  // When the button is raised without an explicit color applied.
+  &.md-raised {
+    color: md-color($md-background, default-contrast);
+    background-color: md-color($md-background, 50);
+  }
+}
+
+// Hover and focus styles (only applied when the button is not disabled).
+// The modifiers for :focus and :hover actually apply to the element in the
+// shadow DOM (the .[md-button]).
+[md-button]:not([disabled])  {
+  // Default hover/focus background.
+  &:focus,
+  &:hover {
+    background-color: md-color($md-background, 500, 0.2);
+  }
+
+  &.md-primary.md-fab,
+  &.md-primary.md-raised {
+    &:hover,
+    &:focus {
+      background-color: md-color($md-primary, 600);
+    }
+  }
+
+  &.md-accent.md-fab,
+  &.md-accent.md-raised {
+    &:hover,
+    &:focus {
+      background-color: md-color($md-accent, 700);
+    }
+  }
+
+  &.md-warn.md-fab,
+  &.md-warn.md-raised {
+    &:hover,
+    &:focus {
+      background-color: md-color($md-warn, 700);
+    }
+  }
+
+  &.md-fab {
+    &:hover,
+    &:focus {
+      background-color: md-color($md-accent, A700);
+    }
+  }
+
+  &.md-raised {
+    &:hover,
+    &:focus {
+      background-color: md-color($md-background, 200);
+    }
+  }
+}
+
+[md-button][disabled],
+[md-button][disabled].md-fab,
+[md-button][disabled].md-raised, {
+  color: md-color($md-foreground, disabled);
+  background-color: transparent;
+  cursor: not-allowed;
+}
