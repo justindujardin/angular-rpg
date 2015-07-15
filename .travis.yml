@@ -2,12 +2,11 @@ language: node_js
 node_js:
   - "0.10"
 before_script:
-  - gem install sass
-  - npm install -g bower typescript
+  - npm install -g bower typescript node-sass
   - bower install
   - cd source
   - tsc
-  - scss app.scss app.css
+  - node-sass app.scss app.css
   - cd ..
 
 script: npm run-script deploy

@@ -12,14 +12,14 @@ A functional port of Pow2 RPG game from Angular 1.x to Angular2 Developer Previe
 Requires Node+NPM, LESS, Typescript 1.5+, and Bower
  - `npm install -g typescript` - for `tsc` Typescript compiler
  - `npm install -g bower` - for `bower` Client side javascript package manager
- - `npm install -g less` - for `lessc` Less->CSS compiler
+ - `npm install -g node-sass` - for `node-sass` SCSS->CSS compiler
 
 Build from command line:
 ```
 bower install
 cd source
 tsc 
-lessc app.less app.css
+node-sass app.less app.css
 cd ..
 ```
 
