@@ -21,6 +21,7 @@ party-menu {
   }
   a {
     color: #fff;
+    text-decoration: none;
     &:hover {
       text-decoration: none;
     }
@@ -30,6 +31,10 @@ party-menu {
     .ebp {
       margin-bottom: 10px;
     }
+  }
+
+  player-card {
+    @extend .flex-inline;
   }
 
   .navigation {
@@ -46,11 +51,11 @@ party-menu {
       padding: 5px;
       li {
         a.ng-click-active {
-          color: $gameBlue;
+          color: md-color($md-accent);
         }
         &.active {
           a {
-            color: $gameGold;
+            color: md-color($md-primary,A700);
           }
         }
 

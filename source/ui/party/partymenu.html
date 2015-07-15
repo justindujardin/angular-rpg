@@ -24,7 +24,12 @@
 <div class="views" *ng-if="open">
   <div class="party" *ng-if="page == 'party'">
     <h1>Party Gold: {{game.world.model.gold}}</h1>
-    <player-card [model]="member" *ng-for="#member of game.world.model.party"></player-card>
+    <player-card
+      [model]="member"
+      layout-wrap
+      flex="30"
+      flex-sm="100"
+      *ng-for="#member of game.world.model.party"></player-card>
   </div>
   <div class="inventory" *ng-if="page == 'inventory'">
     <party-inventory></party-inventory>

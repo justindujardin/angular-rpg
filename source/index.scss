@@ -41,6 +41,10 @@ $pixelFontAlt: 'AdvoCut', 'GraphicPixel', sans-serif;
 @import "ui/material/core/style/structure";
 @import "ui/material/core/style/typography";
 @import "ui/material/core/style/layout";
+@import "ui/material/core/style/default-theme";
+
+// ngMaterial Components
+@import "ui/material/components/all";
 
 // Other
 @import "style/buttons";

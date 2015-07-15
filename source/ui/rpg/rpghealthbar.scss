@@ -1,46 +1,26 @@
-$progress-bar-height: 5px !default;
-$progress-bar-height-lg: 15px !default;
-
 rpg-health-bar {
-  &.large {
-    .progress {
-      height: $progress-bar-height-lg;
-      .progress-bar {
-        height: $progress-bar-height-lg;
-      }
-    }
-  }
-  .progress {
-    height: $progress-bar-height;
-    border-radius: 0;
-    position: relative;
-    background-color: rgba(255, 255, 255, 0.9);
-    .progress-bar {
-      height: $progress-bar-height;
-    }
-
+  display: inline-flex;
+  height:inherit;
+  md-progress-linear {
+    height:inherit;
     /* Damage states */
     &.fine {
-      //      background-color: rgba(33, 79, 120,0.1);
-      .progress-bar {
+      .md-bar {
         background-color: rgb(46, 109, 166);
       }
     }
     &.hurt {
-      //      background-color: rgba(230,200,40,0.1);
-      .progress-bar {
-        background-color: rgba(230, 200, 40, 1);
+      .md-bar {
+        background-color: md-color($md-accent);
       }
     }
     &.critical {
-      //      background-color: rgba(183, 0, 5,0.1);
-      .progress-bar {
+      .md-bar {
         background-color: rgb(183, 0, 5);
       }
     }
     &.dead {
-      background-color: rgba(255, 255, 255, 0.1);
-      .progress-bar {
+      .md-bar {
         background-color: rgb(255, 255, 255);
       }
     }

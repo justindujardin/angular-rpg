@@ -7,19 +7,21 @@
                [position]="d.position"
                [classes]="d.classes"></combat-damage>
 <div class="combat-view">
-  <ul *ng-if="choosing" class="ebp action-menu">
-    <li *ng-for="#action of getActions()" (click)="selectAction(action)">{{action.getActionName()}}</li>
+  <ul *ng-if="choosing" class="ebp action-menu" layout="row" layout-align="space-around center">
+    <li *ng-for="#action of getActions()" (click)="selectAction(action)" [inner-text]="action.getActionName()"></li>
   </ul>
-  <ul *ng-if="choosingSpell" class="ebp spells-menu">
-    <li *ng-for="#spell of getSpells()" (click)="selectSpell(spell)">{{spell.name}}</li>
+  <ul *ng-if="choosingSpell" class="ebp spells-menu" layout="row" layout-align="space-around center">
+    <li *ng-for="#spell of getSpells()" (click)="selectSpell(spell)" [inner-text]="spell.name"></li>
   </ul>
-  <ul *ng-if="targeting" class="ebp targets-menu">
-    <li *ng-for="#target of getTargets()" (click)="selectTarget(target)">{{target.model.attributes.name}}
+  <ul *ng-if="targeting" class="ebp targets-menu" layout="row" layout-align="space-around center">
+    <li *ng-for="#target of getTargets()" (click)="selectTarget(target)" [inner-text]="target.model.attributes.name">
     </li>
   </ul>
-  <div class="status" *ng-for="#member of combat?.machine?.party" [class]="getMemberClass(member,combat?.focus)">
-    <span class="name">{{member.model.attributes.name}}</span>
-    <span class="hp">HP {{member.model.attributes.hp}} / {{member.model.attributes.maxHP}}</span>
-    <rpg-health-bar [model]="member.model"></rpg-health-bar>
+  <div class="status" *ng-for="#member of combat?.machine?.party" [class]="getMemberClass(member,combat?.focus)" layout="column">
+    <div class="text" layout="row">
+      <span class="name">{{member.model.attributes.name}}</span>
+      <span flex class="hp">HP {{member.model.attributes.hp}} / {{member.model.attributes.maxHP}}</span>
+    </div>
+    <rpg-health-bar [model]="member.model" layout-align="center center"></rpg-health-bar>
   </div>
 </div>

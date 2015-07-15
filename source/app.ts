@@ -12,9 +12,11 @@ import {RPGSprite,RPGHealthBar,RPGNotification} from './ui/rpg/all';
 import {PartyInventory,PlayerCard,PartyMenu} from './ui/party/all';
 import {WorldMap,WorldDialog,WorldStore,WorldTemple} from './ui/world/all';
 
+import * as md from './ui/material/components/all';
+
 @Component({
   selector: 'rpg-app',
-  appInjector: [RPGGame, Notify, Animate],
+  hostInjector: [RPGGame, Notify, Animate],
   properties: ['loaded', 'game', 'combat']
 })
 @View({
@@ -25,6 +27,7 @@ import {WorldMap,WorldDialog,WorldStore,WorldTemple} from './ui/world/all';
     CombatMap, CombatDamage,
     PlayerCard,
     PartyInventory, PartyMenu,
+    md.MdProgressLinear, md.MdButton,
     RPGSprite, RPGNotification, RPGHealthBar]
 })
 export class RPGAppComponent {

@@ -1,16 +1,13 @@
-<section class="hero-card" [class]="getPlayerCSSClassMap()">
-  <h3 class="name">{{model.attributes.name}}</h3>
+<section class="hero-card" [class]="getPlayerCSSClassMap()" layout="column">
+  <h3 class="name" [inner-text]="model.attributes.name"></h3>
 
   <rpg-sprite class="image" [name]="model.attributes.icon" frame="7" width="64" height="72"></rpg-sprite>
   <div>Level {{model.attributes.level}}</div>
   <div>HP {{model.attributes.hp}} / {{model.attributes.maxHP}}</div>
   <rpg-health-bar [model]="model"></rpg-health-bar>
   <div>EXP {{model.attributes.exp}} / {{model.attributes.nextLevelExp}}</div>
-  <div class="progress">
-    <div class="progress-bar"
-         [style.width]="getCSSProgressWidth()">
-    </div>
-  </div>
+
+  <md-progress-linear [value]="getCSSProgressWidth()"></md-progress-linear>
   <div class="hero-stat">Strength : {{model.attributes.strength}}</div>
   <div class="hero-stat">Agility : {{model.attributes.agility}}</div>
   <div class="hero-stat">Vitality : {{model.attributes.vitality}}</div>

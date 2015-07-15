@@ -14,6 +14,7 @@
  limitations under the License.
  */
 import '../../index';
+import * as md from '../material/components/all';
 import {Component,View,NgIf,CSSClass} from 'angular2/angular2';
 
 import {EntityModel} from '../../models/all'
@@ -23,12 +24,8 @@ import {EntityModel} from '../../models/all'
   properties: ['model']
 })
 @View({
-  template: `
-  <div class="progress" [class]="getCSSClassMap()">
-    <div class="progress-bar" [style.width]="getProgressBarWidth()"></div>
-  </div>
-`,
-  directives: [NgIf, CSSClass]
+  template: `<md-progress-linear [class]="getCSSClassMap()" [value]="getProgressBarWidth()"></md-progress-linear>`,
+  directives: [NgIf, CSSClass, md.MdProgressLinear]
 })
 export class RPGHealthBar {
   model:EntityModel;
@@ -46,12 +43,12 @@ export class RPGHealthBar {
     };
   }
 
-  getProgressBarWidth():string {
-    if (!this.model || !this.model.attributes) {
-      return '0';
+  getProgressBarWidth():number {
+    var width = 0;
+    if (this.model && this.model.attributes) {
+      width = Math.ceil(this.model.attributes.hp / this.model.attributes.maxHP * 100);
     }
-    var pct:number = Math.ceil(this.model.attributes.hp / this.model.attributes.maxHP * 100);
-    return pct + '%';
+    return width;
   }
 
 

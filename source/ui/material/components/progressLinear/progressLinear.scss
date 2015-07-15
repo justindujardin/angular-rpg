@@ -9,7 +9,6 @@ md-progress-linear:not([md-mode="indeterminate"]) {
     overflow: hidden;
     position: relative;
     height: $progress-linear-bar-height;
-    top: $progress-linear-bar-height;
     transform: translate(0, 5px) scale(1, 0);
     transition: all .3s linear;
   }
@@ -70,7 +69,6 @@ md-progress-linear[md-mode="indeterminate"] {
     overflow: hidden;
     position: relative;
     height: $progress-linear-bar-height;
-    top: $progress-linear-bar-height;
     transition: all .3s linear;
     .md-bar {
       height: $progress-linear-bar-height;

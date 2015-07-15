@@ -9,7 +9,8 @@ combat-map {
   }
 
   rpg-health-bar {
-    width: 200px;
+    width: 100%;
+    @extend .flex-inline;
   }
 
 }
@@ -21,7 +22,7 @@ combat-map {
   left: 0;
   right: 0;
 
-  font-size: 1.5em;
+  font-size: rem(2);
   margin-left: auto;
   margin-right: auto;
   width: 100%;
@@ -39,7 +40,7 @@ combat-map {
     padding: 0;
     li {
       text-transform: capitalize;
-      display: flex;
+      @extend .flex-inline;
       cursor: pointer;
       padding: 10px 15px;
       &:hover {
@@ -52,14 +53,12 @@ combat-map {
     margin-bottom: 0;
   }
   .status {
-    padding: 0 15px;
     border-radius: 0;
     text-align: right;
     color: #fff;
-    > * {
-      display: flex;
+    .text {
+      padding: 0 15px;
     }
-
     &.focused {
       color: $gameGold;
     }
@@ -74,6 +73,7 @@ combat-map {
     }
 
     .hp {
+      text-align: right;
       @include stroke-text(1px, #000);
     }
     health-bar {
@@ -82,8 +82,7 @@ combat-map {
   }
 }
 
-/* Small devices (tablets, 768px and up) */
-@media (min-width: $layout-breakpoint-sm) {
+@media (min-width: $layout-breakpoint-md) {
 
   combat-map {
     .combat-view {
@@ -96,14 +95,14 @@ combat-map {
         padding: 5px 25px;
         li {
           text-align: left;
-          display: inherit;
+          display: flex;
         }
       }
     }
   }
 }
 
-@media (max-width: $layout-breakpoint-sm) {
+@media (max-width: $layout-breakpoint-md - 1) {
 
   combat-map {
     .combat-view {
