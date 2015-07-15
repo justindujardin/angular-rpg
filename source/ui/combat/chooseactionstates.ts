@@ -58,11 +58,11 @@ export class ChooseActionStateMachine extends pow2.StateMachine {
   spell:any = null;
   world:GameWorld = GameWorld.get();
 
-  constructor(public controller:CombatMap,
+  constructor(public map:CombatMap,
               public data:IChooseActionEvent,
               submit:(action:CombatActionComponent)=>any) {
     super();
-    this.scene = controller.combat.scene;
+    this.scene = map.combat.scene;
     this.states = [
       new ChooseActionTarget(),
       new ChooseActionType(),
@@ -81,7 +81,7 @@ export class ChooseActionType extends pow2.State {
   name:string = ChooseActionType.NAME;
 
   enter(machine:ChooseActionStateMachine) {
-    if (!machine.controller || !machine.controller.pointer) {
+    if (!machine.map || !machine.map.pointer) {
       throw new Error("Requires UIAttachment");
     }
     if (!machine.current) {
@@ -100,8 +100,6 @@ export class ChooseActionType extends pow2.State {
     // Enable menu selection of action type.
     var selectAction = (action:IPlayerAction) => {
       machine.action = <CombatActionComponent>action;
-
-      machine.controller.selectAction = null;
       machine.scene.off('click', clickSelect);
 
       if (machine.action instanceof CombatMagicComponent) {
@@ -120,29 +118,35 @@ export class ChooseActionType extends pow2.State {
         machine.setCurrentState(ChooseActionSubmit.NAME);
       }
     };
-    machine.controller.selectAction = selectAction;
 
-    var el:JQuery = $(machine.controller.pointer.element);
+    var items = _.filter(p.findComponents(CombatActionComponent), (c:CombatActionComponent)=> c.canBeUsedBy(p));
+    machine.map.items = _.map(items, (a:CombatActionComponent) => {
+      return <any>{
+        select: selectAction.bind(this, a),
+        label: a.getActionName()
+      };
+    });
+
+    // TODO: Eradicate JQuery
+    var el:JQuery = $(machine.map.pointer.element);
     if (!p) {
       el.hide();
       return;
     }
-    machine.controller.choosing = p;
-
     var clickSelect = (mouse:any, hits:any) => {
       machine.scene.off('click', clickSelect);
       machine.target = hits[0];
-      selectAction(machine.controller.getActions()[0]);
+      machine.map.items[0].select();
     };
     machine.player.moveForward(() => {
-      machine.controller.setPointerTarget(p, "right", pointerOffset);
+      machine.map.setPointerTarget(p, "right", pointerOffset);
       el.show();
       machine.scene.on('click', clickSelect);
     });
   }
 
   exit(machine:ChooseActionStateMachine) {
-    machine.controller.choosing = null;
+    machine.map.items = [];
   }
 }
 /**
@@ -156,10 +160,8 @@ export class ChooseMagicSpell extends pow2.State {
     if (!machine.current) {
       throw new Error("Requires Current Player");
     }
-    // Enable menu selection of action type.
-    machine.controller.selectSpell = (spell:any) => {//TODO: spell type
+    var selectSpell = (spell:any) => {//TODO: spell type
       machine.spell = spell;
-      machine.controller.selectSpell = null;
       machine.target = spell.benefit ? machine.current : null;
       switch (spell.type) {
         case "target":
@@ -170,11 +172,17 @@ export class ChooseMagicSpell extends pow2.State {
           machine.setCurrentState(ChooseActionSubmit.NAME);
       }
     };
-    machine.controller.choosingSpell = machine.player;
+    var spells:any = machine.current.getSpells();
+    machine.map.items = _.map(spells, (a:any) => {
+      return <any>{
+        select: selectSpell.bind(this, a),
+        label: a.name
+      };
+    });
   }
 
   exit(machine:ChooseActionStateMachine) {
-    machine.controller.choosingSpell = null;
+    machine.map.items = [];
   }
 }
 
@@ -186,14 +194,14 @@ export class ChooseActionTarget extends pow2.State {
   name:string = ChooseActionTarget.NAME;
 
   enter(machine:ChooseActionStateMachine) {
-    if (!machine.controller || !machine.controller.pointer) {
+    if (!machine.map || !machine.map.pointer) {
       throw new Error("Requires UIAttachment");
     }
     var enemies = <GameEntityObject[]>machine.data.enemies;
 
     var p:GameEntityObject = machine.target || enemies[0];
-    var el:JQuery = $(machine.controller.pointer.element);
-    machine.controller.addPointerClass(machine.action.getActionName());
+    var el:JQuery = $(machine.map.pointer.element);
+    machine.map.addPointerClass(machine.action.getActionName());
     if (!p) {
       el.hide();
       return;
@@ -201,28 +209,33 @@ export class ChooseActionTarget extends pow2.State {
     var selectTarget = (target:GameEntityObject) => {
       if (machine.target && machine.target._uid === target._uid) {
         machine.target = target;
-        machine.controller.selectTarget = null;
         machine.scene.off('click', clickTarget);
         machine.setCurrentState(ChooseActionSubmit.NAME);
-        machine.controller.targeting = false;
         return;
       }
       machine.target = target;
-      machine.controller.setPointerTarget(target, "left", pointerOffset);
+      machine.map.setPointerTarget(target, "left", pointerOffset);
     };
-    machine.controller.selectTarget = selectTarget;
+
+    var beneficial:boolean = machine && machine.spell && machine.spell.benefit;
+    var targets:GameEntityObject[] = beneficial ? machine.data.players : machine.data.enemies;
+    machine.map.items = _.map(targets, (a:GameEntityObject) => {
+      return <any>{
+        select: selectTarget.bind(this, a),
+        label: a.model.attributes.name
+      };
+    });
 
     var pointerOffset:pow2.Point = new pow2.Point(0.5, -0.25);
     var clickTarget = (mouse:any, hits:GameEntityObject[]) => {
       selectTarget(hits[0]);
     };
-    machine.controller.setPointerTarget(p, "left", pointerOffset);
+    machine.map.setPointerTarget(p, "left", pointerOffset);
     machine.scene.on('click', clickTarget);
-    machine.controller.targeting = true;
   }
 
   exit(machine:ChooseActionStateMachine) {
-    machine.controller.targeting = false;
+    machine.map.items = [];
   }
 }
 
@@ -246,14 +259,14 @@ export class ChooseActionSubmit extends pow2.State {
       throw new Error("Invalid target");
     }
     machine.player.moveBackward(()=> {
-      if (machine.controller.pointer) {
-        $(machine.controller.pointer.element).hide();
+      if (machine.map.pointer) {
+        $(machine.map.pointer.element).hide();
       }
       machine.action.from = machine.current;
       machine.action.to = machine.target;
       machine.action.spell = machine.spell;
       machine.action.select();
-      machine.controller.removePointerClass(machine.action.getActionName());
+      machine.map.removePointerClass(machine.action.getActionName());
       this.submit(machine.action);
     });
   }

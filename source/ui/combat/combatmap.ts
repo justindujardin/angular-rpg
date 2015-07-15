@@ -33,9 +33,17 @@ import {Map} from '../map';
 
 import {CombatDamage} from './combatdamage';
 
+/**
+ * Describe a selectable menu item for a user input in combat.
+ */
+export interface ICombatMenuItem<T> {
+  select():any;
+  label:string;
+}
+
 @Component({
   selector: 'combat-map',
-  properties: ['targeting', 'choosingSpell', 'choosing', 'combat', 'map', 'damages'],
+  properties: ['combat', 'map', 'damages'],
   host: {
     '(window:resize)': '_onResize($event)'
   }
@@ -45,27 +53,49 @@ import {CombatDamage} from './combatdamage';
   directives: [NgIf, NgFor, CSSClass, CombatDamage, RPGHealthBar],
   lifecycle: [onDestroy]
 })
+/**
+ * Render and provide input for a combat encounter.
+ */
 export class CombatMap extends Map implements pow2.IProcessObject {
+  /**
+   * A pointing UI element that can be attached to `SceneObject`s to attract attention
+   * @type {null}
+   */
   pointer:UIAttachment = null;
-  combatData:IChooseActionEvent = null;
-  stateMachine:ChooseActionStateMachine = null;
-  choosing:GameEntityObject = null;
-  choosingSpell:pow2.game.components.PlayerCombatRenderComponent = null;
-  targeting:boolean = false;
+
+  /**
+   * Available menu items for selection.
+   */
+  items:ICombatMenuItem<any>[] = [];
+
+  /**
+   * The combat state.
+   */
   combat:PlayerCombatState = null;
 
-  // Damages displaying on screen.
+  /**
+   * Damages displaying on screen.
+   * @type {Array}
+   */
   damages:any[] = [];
 
-  // ???
-  selectAction:any = null;
-  selectSpell:any = null;
-  selectTarget:any = null;
-
+  /**
+   * For rendering `TileObject`s
+   * @type {pow2.tile.render.TileObjectRenderer}
+   */
   objectRenderer:pow2.tile.render.TileObjectRenderer = new pow2.tile.render.TileObjectRenderer;
+
+
+  /**
+   * Mouse hook for capturing input with world and screen coordinates.
+   */
   mouse:pow2.NamedMouseElement = null;
 
   private _map:GameTileMap = null;
+  /**
+   * The `GameTileMap` to render.
+   * @param value
+   */
   set map(value:GameTileMap) {
     this._map = value;
     if (this._map) {
@@ -88,12 +118,11 @@ export class CombatMap extends Map implements pow2.IProcessObject {
     this.camera.point.zero();
     this.camera.extent.set(25, 25);
     this.mouseClick = _.bind(this.mouseClick, this);
-    this._bindRenderDamage();
+    this._bindRenderCombat();
 
     this.combat.scene.addView(this);
     this.game.world.time.addObject(this);
 
-    var state = <PlayerCombatState>this.game.machine.getCurrentState();
     this.combat.machine.on('combat:chooseMoves', this.chooseTurns, this);
 
     this.pointer = {
@@ -183,7 +212,6 @@ export class CombatMap extends Map implements pow2.IProcessObject {
   // API
   //
   chooseTurns(data:IChooseActionEvent) {
-    this.combatData = data;
     if (!this.combat.scene) {
       throw new Error("Invalid Combat Scene");
     }
@@ -192,14 +220,11 @@ export class CombatMap extends Map implements pow2.IProcessObject {
       next();
     };
     var inputState = new ChooseActionStateMachine(this, data, chooseSubmit);
-    this.stateMachine = inputState;
     inputState.data = data;
     var choices:GameEntityObject[] = data.players.slice();
     var next = () => {
       var p:GameEntityObject = choices.shift();
       if (!p) {
-        this.combatData = null;
-        this.stateMachine = null;
         return;
       }
       inputState.current = p;
@@ -228,41 +253,16 @@ export class CombatMap extends Map implements pow2.IProcessObject {
 
 
   getMemberClass(member:GameEntityObject, focused?:GameEntityObject):any {
-    var c = this.choosing;
     return {
-      choosing: c && c.model && c.model.get('name') === member.model.get('name'),
       focused: focused && focused.model && member.model.get('name') === focused.model.get('name')
     };
   }
 
-  getActions():CombatActionComponent[] {
-    if (!this.choosing) {
-      throw new Error("cannot get actions for non-existent game entity");
-    }
-    var results = _.filter(this.choosing.findComponents(CombatActionComponent), (c:CombatActionComponent)=> {
-      return c.canBeUsedBy(this.choosing);
-    });
-    return results;
-  }
-
-  getSpells():any {
-    if (!this.choosingSpell || !this.choosingSpell.host) {
-      return [];
-    }
-    var host = <GameEntityObject>this.choosingSpell.host;
-    var spells:any = host.getSpells();
-    return spells;
-  }
-
-  getTargets():GameEntityObject[] {
-    var result:GameEntityObject[] = [];
-    var beneficial:boolean = this.stateMachine && this.stateMachine.spell && this.stateMachine.spell.benefit;
-    if (this.combatData) {
-      result = (beneficial ? this.combatData.players : this.combatData.enemies);
-    }
-    return result;
-  }
-
+  /**
+   * Apply damage visual effect to a SceneObject with a given value
+   * @param to The SceneObject to visually damage
+   * @param value The damage value (negative is considered healing, 0 is miss)
+   */
   applyDamage(to:pow2.scene.SceneObject, value:number) {
     var targetPos:pow2.Point = to.point.clone();
     targetPos.y -= (this.camera.point.y + 1.25);
@@ -280,9 +280,6 @@ export class CombatMap extends Map implements pow2.IProcessObject {
     });
   }
 
-  //
-  // GameCombatView
-  //
 
   /**
    * Mouse input
@@ -299,7 +296,11 @@ export class CombatMap extends Map implements pow2.IProcessObject {
   }
 
 
-  private _bindRenderDamage() {
+  /**
+   * Bind to combat events and reflect them in the UI.
+   * @private
+   */
+  private _bindRenderCombat() {
     this.combat.machine.on('combat:attack', (data:CombatAttackSummary)=> {
       var _done = this.combat.machine.notifyWait();
       var msg:string = '';
