@@ -31,7 +31,7 @@
 </data>
  </layer>
  <objectgroup draworder="topdown" name="Features" width="27" height="22">
-  <object name="wilderness" type="sou.components.features.PortalFeatureComponent" x="192" y="64" width="16" height="16">
+  <object name="wilderness" type="source.components.features.PortalFeatureComponent" x="192" y="64" width="16" height="16">
    <properties>
     <property name="icon" value="doorInWall.png"/>
     <property name="target" value="wilderness"/>

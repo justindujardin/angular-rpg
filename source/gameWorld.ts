@@ -208,13 +208,14 @@ export class GameWorld extends pow2.scene.SceneWorld {
 
   fixedEncounter(zone:rpg.IZoneMatch, encounterId:string, then?:rpg.IGameEncounterCallback) {
     GameStateModel.getDataSource((gsr:pow2.GameDataResource)=> {
-      var encounters = <rpg.IGameEncounter[]>_.where(gsr.getSheetData("encounters"), {
+      var encounter = <rpg.IGameEncounter>_.where(gsr.getSheetData("encounters"), {
         id: encounterId
-      });
-      if (encounters.length === 0) {
-        throw new Error("No encounter found with id: " + encounterId);
+      })[0];
+      if (!encounter) {
+        this.scene.trigger('error',"No encounter found with id: " + encounterId);
+        return then(true);
       }
-      this._encounter(zone, encounters[0], then);
+      this._encounter(zone, encounter, then);
     });
   }
 

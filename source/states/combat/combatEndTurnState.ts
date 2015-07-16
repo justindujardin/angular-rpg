@@ -21,6 +21,7 @@ import {CombatBeginTurnState} from './combatBeginTurnState';
 import {CombatStartState} from './combatStartState';
 import {CombatDefeatState} from './combatDefeatState';
 import {CombatVictoryState} from './combatVictoryState';
+import {CombatChooseActionState} from './combatChooseActionState';
 
 export class CombatEndTurnState extends CombatState {
   static NAME:string = "Combat End Turn";
@@ -38,7 +39,7 @@ export class CombatEndTurnState extends CombatState {
       }
     }
 
-    var targetState:string = machine.current ? CombatBeginTurnState.NAME : CombatStartState.NAME;
+    var targetState:string = machine.current ? CombatBeginTurnState.NAME : CombatChooseActionState.NAME;
     if (machine.partyDefeated()) {
       targetState = CombatDefeatState.NAME;
     }

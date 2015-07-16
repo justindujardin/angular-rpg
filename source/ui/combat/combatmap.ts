@@ -31,6 +31,8 @@ import {RPGGame,Animate, Notify} from '../services/all';
 import {RPGHealthBar} from '../rpg/all';
 import {Map} from '../map';
 
+import * as rpg from '../../index';
+
 import {CombatDamage} from './combatdamage';
 
 /**
@@ -301,7 +303,13 @@ export class CombatMap extends Map implements pow2.IProcessObject {
    * @private
    */
   private _bindRenderCombat() {
-    this.combat.machine.on('combat:attack', (data:CombatAttackSummary)=> {
+    this.combat.machine.on('combat:start', (encounter:rpg.IGameEncounter) => {
+      if(encounter && encounter.message){
+        var _done = this.combat.machine.notifyWait();
+        this.notify.show(encounter.message, _done, 0);
+      }
+    });
+    this.combat.machine.on('combat:attack', (data:CombatAttackSummary) => {
       var _done = this.combat.machine.notifyWait();
       var msg:string = '';
       var a = data.attacker.model.get('name');

@@ -27,10 +27,11 @@ export class CombatStartState extends CombatState {
 
   enter(machine:CombatStateMachine) {
     super.enter(machine);
-    machine.turnList = <GameEntityObject[]>_.shuffle(_.union(machine.getLiveParty(), machine.getLiveEnemies()));
-    machine.current = machine.turnList.shift();
-    machine.currentDone = true;
-    machine.setCurrentState(CombatChooseActionState.NAME);
+    _.defer(() => {
+      machine.notify("combat:start", machine.parent.encounter, ()=> {
+        machine.setCurrentState(CombatChooseActionState.NAME);
+      });
+    });
   }
 }
 

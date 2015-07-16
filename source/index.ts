@@ -36,6 +36,7 @@ export interface IGameEncounter {
   id:string; // unique id in spreadsheet
   zones:string[]; // array of zones this encounter can happen in
   enemies:string[]; // array of enemies in this encounter
+  message:string; // message to display when combat begins
 }
 
 export interface IGameEncounterCallback {

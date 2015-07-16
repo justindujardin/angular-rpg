@@ -58,12 +58,8 @@
   </object>
   <object name="goblin7.png" type="source.components.features.CombatFeatureComponent" x="208" y="240" width="16" height="16">
    <properties>
-    <property name="creatures" value=""/>
-    <property name="gold" value="5"/>
     <property name="icon" value="goblin7.png"/>
-    <property name="id" value="goblinGuard"/>
-    <property name="items" value=""/>
-    <property name="text" value="A pack of Goblins block your passage!"/>
+    <property name="id" value="fortress-guard"/>
    </properties>
   </object>
   <object name="goblinScout.png" type="source.components.features.CombatFeatureComponent" x="384" y="176" width="16" height="16">
@@ -79,12 +75,8 @@
   </object>
   <object name="goblinWizard.png" type="source.components.features.CombatFeatureComponent" x="48" y="80" width="16" height="16">
    <properties>
-    <property name="creatures" value=""/>
-    <property name="gold" value="9"/>
     <property name="icon" value="goblinWizard.png"/>
-    <property name="id" value="pitsShamans"/>
-    <property name="items" value=""/>
-    <property name="text" value="A Goblin spiritual leader of some variety shouts curses as you approach!"/>
+    <property name="id" value="fortress-wizard"/>
    </properties>
   </object>
   <object name="Gate" type="barrier" x="304" y="240" width="16" height="16">
@@ -117,6 +109,20 @@
     <property name="targetY" value="12"/>
     <property name="text" value="Unspeakable sounds and smells fill the air as you peer down a long staircase. Dare you descend?"/>
     <property name="transitionType" value="down"/>
+   </properties>
+  </object>
+  <object name="chest.png" type="source.components.features.TreasureFeatureComponent" x="192" y="16" width="16" height="16">
+   <properties>
+    <property name="icon" value="chest.png"/>
+    <property name="id" value="fortress-floor1-chest"/>
+    <property name="item" value="short-sword"/>
+   </properties>
+  </object>
+  <object name="chest.png" type="source.components.features.TreasureFeatureComponent" x="144" y="448" width="16" height="16">
+   <properties>
+    <property name="gold" value="50"/>
+    <property name="icon" value="chest.png"/>
+    <property name="id" value="forstress-floor1-money"/>
    </properties>
   </object>
  </objectgroup>

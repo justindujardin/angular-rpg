@@ -476,11 +476,8 @@
   </object>
   <object name="world-plains-snake" type="source.components.features.CombatFeatureComponent" x="304" y="736" width="16" height="16">
    <properties>
-    <property name="gold" value="4"/>
     <property name="icon" value="snake.png"/>
     <property name="id" value="world-plains-snakes"/>
-    <property name="items" value=""/>
-    <property name="text" value="You are set upon by vicious snakes!"/>
    </properties>
   </object>
   <object name="town-secret" type="source.components.features.PortalFeatureComponent" x="272" y="848" width="16" height="16">
