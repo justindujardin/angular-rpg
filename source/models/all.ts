@@ -14,10 +14,11 @@
  limitations under the License.
  */
 
+// TODO: GameStateModel is only _sometimes_ properly exported here.  Just explicitly include it.
+//export * from './gameStateModel';
 export * from './armorModel';
 export * from './creatureModel';
 export * from './entityModel';
-export * from './gameStateModel';
 export * from './heroModel';
 export * from './itemModel';
 export * from './usableModel';

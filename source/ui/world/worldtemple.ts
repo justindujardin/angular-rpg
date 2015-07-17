@@ -17,7 +17,8 @@
 import {Component,View,NgFor,NgIf,onDestroy} from 'angular2/angular2';
 import '../../index';
 import {TempleFeatureComponent} from '../../components/features/templeFeatureComponent';
-import {HeroModel,GameStateModel} from '../../models/all';
+import {HeroModel} from '../../models/all';
+import {GameStateModel} from '../../models/gameStateModel';
 import {RPGGame,Notify} from '../services/all';
 import {RPGSprite,RPGHealthBar} from '../rpg/all';
 

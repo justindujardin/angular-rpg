@@ -22,7 +22,8 @@ import {GameEntityObject} from '../../objects/gameEntityObject';
 import {GameFeatureObject} from '../../objects/gameFeatureObject';
 import {GameStateMachine} from '../../states/gameStateMachine';
 
-import {GameStateModel,HeroModel,HeroTypes, WeaponModel, ArmorModel,ItemModel} from '../../models/all';
+import {GameStateModel} from '../../models/gameStateModel';
+import {HeroModel,HeroTypes, WeaponModel, ArmorModel,ItemModel} from '../../models/all';
 
 import {RPGGame,Notify} from '../services/all';
 import {Map} from '../map';

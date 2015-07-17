@@ -23,7 +23,8 @@ import {RPGSprite} from '../rpg/all';
 import {RPGGame,Notify} from '../services/all';
 import {StoreFeatureComponent} from '../../components/features/storeFeatureComponent';
 
-import {GameStateModel,ItemModel,WeaponModel,ArmorModel} from '../../models/all';
+import {GameStateModel} from '../../models/gameStateModel';
+import {ItemModel,WeaponModel,ArmorModel} from '../../models/all';
 
 @Component({
   selector: 'world-store',
