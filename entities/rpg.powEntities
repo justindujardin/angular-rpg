@@ -111,6 +111,11 @@
         "params": ["combat"]
       },
       {
+        "name": "item",
+        "type": "source.components.combat.actions.CombatItemComponent",
+        "params": ["combat"]
+      },
+      {
         "name": "run",
         "type": "source.components.combat.actions.CombatRunComponent",
         "params": ["combat"]

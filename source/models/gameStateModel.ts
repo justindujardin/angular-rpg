@@ -14,11 +14,7 @@
  limitations under the License.
  */
 
-import {HeroModel} from './heroModel';
-import {WeaponModel} from './weaponModel';
-import {ArmorModel} from './armorModel';
-import {ItemModel} from './itemModel';
-import {EntityModel} from './entityModel';
+import {HeroModel,WeaponModel,ArmorModel,ItemModel,EntityModel,UsableModel} from './all';
 
 var _gameData:pow2.GameDataResource = null;
 
@@ -125,6 +121,9 @@ export class GameStateModel extends pow2.Events implements pow2.IWorldObject {
     }));
     theChoices = theChoices.concat(_.map(_gameData.getSheetData('armor'), (a)=> {
       return _.extend({instanceModel: new ArmorModel(a)}, a);
+    }));
+    theChoices = theChoices.concat(_.map(_gameData.getSheetData('items'), (a)=> {
+      return _.extend({instanceModel: new UsableModel(a)}, a);
     }));
 
 

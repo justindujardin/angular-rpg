@@ -19,7 +19,7 @@ import {CombatState} from './combatState';
 import {CombatStateMachine} from './combatStateMachine';
 import {GameEntityObject} from '../../objects/gameEntityObject';
 import {CombatBeginTurnState} from './combatBeginTurnState';
-import {CombatActionComponent} from '../../components/combat/combatActionComponent';
+import {CombatActionComponent} from '../../components/combat/actions/all';
 
 export interface IChooseActionEvent {
   players:GameEntityObject[];

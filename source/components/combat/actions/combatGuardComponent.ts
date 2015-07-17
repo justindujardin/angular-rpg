@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import {CombatActionComponent} from '../combatActionComponent';
+import {CombatActionComponent} from './combatActionComponent';
 
 
 import {GameEntityObject} from '../../../objects/gameEntityObject';

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="27" height="22" tilewidth="16" tileheight="16">
  <properties>
-  <property name="music" value="music/TownTheme"/>
+  <property name="music" value="music/T2ownTheme"/>
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <layer name="Terrain" width="27" height="22">
@@ -15,7 +15,7 @@
 46,46,46,9,46,69,46,69,46,69,46,33,33,33,46,46,46,46,46,69,69,69,69,18,18,18,18,
 46,46,46,9,66,46,46,46,46,46,46,46,33,46,46,46,46,46,46,46,69,69,18,18,18,18,18,
 46,46,46,9,46,69,33,46,46,46,46,33,33,33,46,46,46,69,46,46,69,69,18,18,18,18,18,
-46,46,46,9,46,46,33,33,33,33,33,33,17,33,33,33,33,33,69,46,46,69,18,18,18,18,18,
+46,46,46,9,46,46,33,33,33,33,33,33,17,33,33,33,33,46,69,46,46,69,18,18,18,18,18,
 46,46,46,9,69,46,33,46,46,46,46,33,33,33,46,46,46,69,46,46,46,18,18,18,18,18,18,
 46,46,46,9,46,69,46,46,46,46,46,46,46,46,69,69,18,46,46,46,46,18,18,18,18,18,18,
 46,46,46,9,46,46,46,69,46,69,46,46,69,69,69,18,18,18,46,46,46,46,18,18,18,18,18,
@@ -23,11 +23,11 @@
 46,46,46,9,46,46,46,46,46,69,46,46,69,46,18,18,12,18,46,46,69,18,18,18,18,18,18,
 46,46,46,9,46,46,46,46,46,46,46,46,46,46,46,18,12,18,18,18,18,18,18,18,18,18,18,
 46,46,46,9,69,18,18,69,46,46,46,46,46,46,69,46,69,69,46,46,46,18,18,18,18,18,18,
-46,18,18,9,18,18,18,18,18,46,46,18,18,46,46,46,46,46,69,18,18,18,18,18,18,18,18,
-18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,69,69,69,18,18,
-18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,69,46,69,18,18,
-18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,46,46,46,18,18,18,
-18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,46,46,18,18,18,18
+46,18,18,46,18,18,18,18,18,46,46,18,18,46,46,46,46,46,69,18,18,18,18,18,18,18,18,
+18,18,18,18,46,46,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,69,69,69,18,18,
+18,18,18,18,18,18,46,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,69,46,69,18,18,
+18,18,18,18,18,18,18,46,18,18,18,18,18,18,18,18,18,18,18,18,18,46,46,46,18,18,18,
+18,18,18,18,18,18,18,18,46,46,18,18,18,18,18,18,18,18,18,18,18,46,46,18,18,18,18
 </data>
  </layer>
  <objectgroup draworder="topdown" name="Features" width="27" height="22">
@@ -91,13 +91,11 @@
   </object>
   <object name="Armors" type="source.components.features.StoreFeatureComponent" x="96" y="176" width="16" height="16">
    <properties>
-    <property name="buyRate" value="100"/>
     <property name="category" value="armor"/>
     <property name="groups" value="default"/>
     <property name="icon" value="shop.png"/>
     <property name="level" value="1"/>
     <property name="name" value="Armors"/>
-    <property name="sellRate" value="35"/>
    </properties>
   </object>
   <object name="chest.png" type="source.components.features.TreasureFeatureComponent" x="368" y="304" width="16" height="16">
@@ -112,6 +110,15 @@
     <property name="target" value="wilderness"/>
     <property name="targetX" value="17"/>
     <property name="targetY" value="53"/>
+   </properties>
+  </object>
+  <object name="Items" type="source.components.features.StoreFeatureComponent" x="272" y="144" width="16" height="16">
+   <properties>
+    <property name="category" value="items"/>
+    <property name="groups" value="default"/>
+    <property name="icon" value="shop.png"/>
+    <property name="level" value="1"/>
+    <property name="name" value="Items"/>
    </properties>
   </object>
  </objectgroup>

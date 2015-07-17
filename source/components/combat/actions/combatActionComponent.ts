@@ -14,15 +14,17 @@
  limitations under the License.
  */
 
-import {GameEntityObject} from '../../objects/gameEntityObject';
-import {EntityModel} from '../../models/entityModel';
-import {PlayerCombatState,IPlayerAction,IPlayerActionCallback} from '../../states/playerCombatState';
+import * as rpg from '../../../index';
+import {GameEntityObject} from '../../../objects/gameEntityObject';
+import {EntityModel,UsableModel} from '../../../models/all';
+import {PlayerCombatState,IPlayerAction,IPlayerActionCallback} from '../../../states/playerCombatState';
 
 export class CombatActionComponent extends pow2.scene.SceneComponent implements IPlayerAction {
   name:string = "default";
   from:GameEntityObject = null;
   to:GameEntityObject = null;
-  spell:any = null;//TODO: spell type
+  spell:rpg.IGameSpell = null;
+  item:UsableModel = null;
 
   constructor(public combat:PlayerCombatState) {
     super();

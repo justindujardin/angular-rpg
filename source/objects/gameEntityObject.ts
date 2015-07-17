@@ -16,6 +16,7 @@
 
 /// <reference path="../index.ts" />
 
+import * as rpg from '../index';
 import {GameWorld} from '../gameWorld';
 import {EntityModel} from '../models/entityModel';
 
@@ -36,11 +37,11 @@ export class GameEntityObject extends pow2.tile.TileObject {
     return this.model.isDefeated();
   }
 
-  getSpells():any[] {
+  getSpells():rpg.IGameSpell[] {
     var spells:any = this.world.spreadsheet.getSheetData('magic');
     var userLevel:number = this.model.get('level');
     var userClass:string = this.model.get('type');
-    return _.filter(spells, (spell:any)=> {//TODO: spell type
+    return _.filter(spells, (spell:rpg.IGameSpell) => {
       return spell.level <= userLevel && _.indexOf(spell.usedby, userClass) !== -1;
     });
   }

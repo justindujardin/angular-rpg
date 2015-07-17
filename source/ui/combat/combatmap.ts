@@ -20,7 +20,7 @@ import {GameTileMap} from '../../gameTileMap';
 import {CombatCameraComponent} from '../../components/combat/combatCameraComponent';
 import {HeroModel} from '../../models/all';
 import {GameEntityObject} from '../../objects/gameEntityObject';
-import {CombatActionComponent} from '../../components/combat/combatActionComponent';
+import {CombatActionComponent} from '../../components/combat/actions/all';
 import {CombatStateMachine} from '../../states/combat/combatStateMachine';
 import {ChooseActionStateMachine,ChooseActionType} from './chooseactionstates';
 import {PlayerCombatState,CombatAttackSummary} from '../../states/playerCombatState';

@@ -90,10 +90,16 @@ export class WorldStore {
           return _.extend({instanceModel: new ArmorModel(a)}, a);
         }));
       }
+      if (!hasCategory || feature.host.category === 'items') {
+        theChoices = theChoices.concat(_.map(data.getSheetData('items'), (a)=> {
+          return _.extend({instanceModel: new ItemModel(a)}, a);
+        }));
+      }
       var items:rpg.IGameItem[] = [];
       _.each(feature.host.groups, (group:string)=> {
         items = items.concat(_.filter(theChoices, (c:any)=> {
-          return _.indexOf(c.groups, group) !== -1;
+          // Include items with no "groups" value or items with matching groups.
+          return !c.groups || _.indexOf(c.groups, group) !== -1;
         }));
       });
 

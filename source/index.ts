@@ -22,15 +22,9 @@
 import {bootstrap} from 'angular2/angular2';
 
 
-//
-// Combat
-//
-
-export var COMBAT_ENCOUNTERS = {
-  FIXED: "fixed",
-  RANDOM: "random"
-};
-
+/**
+ * A Combat encounter descriptor.  Used to describe the configuration of combat.
+ */
 export interface IGameEncounter {
   type:string; // @see pow2.ENCOUNTERS
   id:string; // unique id in spreadsheet
@@ -39,6 +33,9 @@ export interface IGameEncounter {
   message:string; // message to display when combat begins
 }
 
+/**
+ * Callback when
+ */
 export interface IGameEncounterCallback {
   (victory:boolean):void;
 }
@@ -47,10 +44,23 @@ export interface IGameEncounterCallback {
 // Models
 //
 export interface IGameItem {
+  id?:string; // the `hyphen-case-named` item id
   name:string; // The item name
   cost:number; // The cost of this item
   icon:string; // Sprite icon name, e.g. LongSword.png
   usedby?:any[]; // `HeroType`s that can use this item.
+}
+
+export interface IGameUsable extends IGameItem {
+  effects:string[]; // Array of effects to apply to user of item
+}
+
+export interface IGameSpell extends IGameItem {
+  type:string; // apply on 'target' or 'group'
+  elements:string; // what kind of magic
+  benefit:boolean; // hurt/heal
+  value:number; // the impact
+  level:number; // minimum level to use the spell
 }
 
 export interface IGameWeapon extends IGameItem {

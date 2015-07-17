@@ -19,7 +19,7 @@ import {HeroModel,HeroTypes} from '../../../models/heroModel';
 import {CreatureModel} from '../../../models/creatureModel';
 import {IPlayerAction,IPlayerActionCallback,CombatAttackSummary} from '../../../states/playerCombatState';
 import {CombatEndTurnState} from '../../../states/combat/combatEndTurnState';
-import {CombatActionComponent} from '../combatActionComponent';
+import {CombatActionComponent} from './combatActionComponent';
 import {DamageComponent} from '../../damageComponent';
 
 /**

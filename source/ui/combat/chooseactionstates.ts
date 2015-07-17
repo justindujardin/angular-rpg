@@ -14,13 +14,14 @@
  limitations under the License.
  */
 
+import * as rpg from '../../index';
 import {GameEntityObject} from '../../objects/all';
 import {GameWorld} from '../../gameWorld';
 import {CombatMap} from './combatmap';
 import {IPlayerAction} from '../../states/playerCombatState';
 import {IChooseActionEvent} from '../../states/combat/combatChooseActionState';
-import {CombatActionComponent} from '../../components/combat/combatActionComponent';
-import {CombatMagicComponent} from '../../components/combat/actions/combatMagicComponent';
+import {CombatMagicComponent,CombatActionComponent,CombatItemComponent} from '../../components/combat/actions/all';
+import {UsableModel} from '../../models/all';
 
 /**
  * Attach an HTML element to the position of a game object.
@@ -55,7 +56,8 @@ export class ChooseActionStateMachine extends pow2.StateMachine {
   scene:pow2.scene.Scene;
   player:pow2.game.components.PlayerCombatRenderComponent = null;
   action:CombatActionComponent = null;
-  spell:any = null;
+  spell:rpg.IGameSpell = null;
+  item:UsableModel = null;
   world:GameWorld = GameWorld.get();
 
   constructor(public map:CombatMap,
@@ -66,6 +68,7 @@ export class ChooseActionStateMachine extends pow2.StateMachine {
     this.states = [
       new ChooseActionTarget(),
       new ChooseActionType(),
+      new ChooseUsableItem(),
       new ChooseMagicSpell(),
       new ChooseActionSubmit(submit)
     ];
@@ -94,8 +97,7 @@ export class ChooseActionType extends pow2.State {
       throw new Error("Requires player render component for combat animations.");
     }
     var pointerOffset:pow2.Point = new pow2.Point(-1, -0.25);
-    machine.action = null;
-    machine.target = null;
+    machine.action = machine.target = machine.spell = machine.item = null;
 
     // Enable menu selection of action type.
     var selectAction = (action:IPlayerAction) => {
@@ -110,6 +112,9 @@ export class ChooseActionType extends pow2.State {
         else {
           machine.setCurrentState(ChooseMagicSpell.NAME);
         }
+      }
+      else if (machine.action instanceof CombatItemComponent) {
+        machine.setCurrentState(ChooseUsableItem.NAME);
       }
       else if (machine.action.canTarget()) {
         machine.setCurrentState(ChooseActionTarget.NAME);
@@ -160,7 +165,7 @@ export class ChooseMagicSpell extends pow2.State {
     if (!machine.current) {
       throw new Error("Requires Current Player");
     }
-    var selectSpell = (spell:any) => {//TODO: spell type
+    var selectSpell = (spell:rpg.IGameSpell) => {
       machine.spell = spell;
       machine.target = spell.benefit ? machine.current : null;
       switch (spell.type) {
@@ -177,6 +182,35 @@ export class ChooseMagicSpell extends pow2.State {
       return <any>{
         select: selectSpell.bind(this, a),
         label: a.name
+      };
+    });
+  }
+
+  exit(machine:ChooseActionStateMachine) {
+    machine.map.items = [];
+  }
+}
+/**
+ * Choose an item to use in combat.
+ */
+export class ChooseUsableItem extends pow2.State {
+  static NAME:string = "choose-item";
+  name:string = ChooseUsableItem.NAME;
+
+  enter(machine:ChooseActionStateMachine) {
+    if (!machine.current) {
+      throw new Error("Requires Current Player");
+    }
+    var selectItem = (item:UsableModel) => {
+      machine.item = <UsableModel>item.clone();
+      machine.target = machine.current;
+      machine.setCurrentState(ChooseActionTarget.NAME);
+    };
+    var items:any = machine.current.world.model.inventory;
+    machine.map.items = _.map(items, (a:UsableModel) => {
+      return <any>{
+        select: selectItem.bind(this, a),
+        label: a.get('name')
       };
     });
   }
@@ -217,7 +251,7 @@ export class ChooseActionTarget extends pow2.State {
       machine.map.setPointerTarget(target, "left", pointerOffset);
     };
 
-    var beneficial:boolean = machine && machine.spell && machine.spell.benefit;
+    var beneficial:boolean = !!(machine && ((machine.spell && machine.spell.benefit) || machine.item));
     var targets:GameEntityObject[] = beneficial ? machine.data.players : machine.data.enemies;
     machine.map.items = _.map(targets, (a:GameEntityObject) => {
       return <any>{
@@ -265,6 +299,7 @@ export class ChooseActionSubmit extends pow2.State {
       machine.action.from = machine.current;
       machine.action.to = machine.target;
       machine.action.spell = machine.spell;
+      machine.action.item = machine.item;
       machine.action.select();
       machine.map.removePointerClass(machine.action.getActionName());
       this.submit(machine.action);

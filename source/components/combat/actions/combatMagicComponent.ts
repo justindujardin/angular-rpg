@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {CombatActionComponent} from '../combatActionComponent';
+import {CombatActionComponent} from './combatActionComponent';
 import {GameEntityObject} from '../../../objects/gameEntityObject';
 import {CreatureModel} from '../../../models/creatureModel';
 import {HeroTypes} from '../../../models/heroModel';

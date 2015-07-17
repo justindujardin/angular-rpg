@@ -14,11 +14,9 @@
  limitations under the License.
  */
 
-export * from './armorModel';
-export * from './creatureModel';
-export * from './entityModel';
-export * from './gameStateModel';
-export * from './heroModel';
-export * from './itemModel';
-export * from './usableModel';
-export * from './weaponModel';
+export * from './combatActionComponent';
+export * from './combatAttackComponent';
+export * from './combatGuardComponent';
+export * from './combatItemComponent';
+export * from './combatMagicComponent';
+export * from './combatRunComponent';

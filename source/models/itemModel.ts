@@ -22,7 +22,8 @@ export class ItemModel extends Backbone.Model {
     icon: "",
     cost: 0,
     hero: null,
-    usedby: null
+    usedby: null,
+    effects: ""
   };
 
   defaults():any {
