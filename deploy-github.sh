@@ -11,6 +11,7 @@ mkdir out;
  cp -a sounds out
  cp -a source out
  cp -a typings out
+ cp -a vendor out
  cp -a index.html out/
  cp -a README.md out/
  cp -a LICENSE out/
