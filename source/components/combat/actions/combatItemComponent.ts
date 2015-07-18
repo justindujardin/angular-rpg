@@ -18,6 +18,7 @@ import {GameEntityObject} from '../../../objects/gameEntityObject';
 import {IPlayerAction,IPlayerActionCallback,CombatAttackSummary} from '../../../states/playerCombatState';
 import {CombatEndTurnState} from '../../../states/combat/combatEndTurnState';
 import {DamageComponent} from '../../damageComponent';
+import {UsableModel} from '../../../models/all';
 
 
 /**
@@ -25,6 +26,16 @@ import {DamageComponent} from '../../damageComponent';
  */
 export class CombatItemComponent extends CombatActionComponent {
   name:string = "item";
+
+
+  canBeUsedBy(entity:GameEntityObject):boolean {
+    return super.canBeUsedBy(entity)
+        // Have a world, model, and inventory
+      && entity.world && entity.world.model && entity.world.model.inventory
+        // Have Usable items in the inventory
+      && _.filter(entity.world.model.inventory, (i:any) => i instanceof UsableModel).length > 0;
+  }
+
 
   act(then?:IPlayerActionCallback):boolean {
     if (!this.isCurrentTurn()) {
