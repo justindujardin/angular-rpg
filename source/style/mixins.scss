@@ -16,6 +16,22 @@
   @include extrude-stroke-text($width, $color, $color);
 }
 
+@mixin pow-dialog() {
+  .ebp {
+    height:90%;
+  }
+  h1 {
+    margin:0;
+  }
+  @media (min-width: $layout-breakpoint-sm) {
+    .ebp {
+      height:80%;
+    }
+    h1 {
+      margin:auto;
+    }
+  }
+}
 .no-select {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
