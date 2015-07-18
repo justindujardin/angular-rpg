@@ -62,7 +62,6 @@ $pixelFontAlt: 'AdvoCut', 'GraphicPixel', sans-serif;
 @import "ui/rpg/rpgsprite";
 @import "ui/rpg/rpghealthbar";
 
-
 @import "ui/party/playercard";
 @import "ui/party/partymenu";
 @import "ui/party/partyinventory";
@@ -74,7 +73,7 @@ html,
 body {
   background-color: #222222;
   overflow: hidden;
-  color:rgba(255,255,255,0.9);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .game-canvas {
@@ -92,9 +91,6 @@ body {
 }
 
 .hero-container {
-  margin-right: auto;
-  margin-left: auto;
-
   > * {
     font-family: $pixelFont;
     text-align: center;
@@ -105,16 +101,34 @@ body {
     margin-top: 10px;
     margin-bottom: 25px;
     font-size: 8em;
-    @include extrude-stroke-text(4px, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.1));
-
+    a {
+      text-decoration: none;
+      color:inherit;
+      @include extrude-stroke-text(4px, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.1));
+    }
   }
   p {
+    padding:15px;
     font-size: 1.2em;
     @include inset-stroke-text(1px, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.1));
     color: $contrastFontColor;
   }
-}
 
+  &.sad {
+    > h1 {
+      color:md-color($md-warn,100);
+      -webkit-transform: rotate(90deg) scale(1.5);
+      transform: rotate(90deg) scale(1.5);
+      -webkit-transition: -webkit-transform 0.3s $swift-ease-in-out-timing-function;
+      transition: transform 0.3s $swift-ease-in-out-timing-function;
+      @include inset-stroke-text(1px, md-color($md-warn,500), md-color($md-warn,A100));
+    }
+    > p {
+      color:md-color($md-warn,400);
+    }
+  }
+
+}
 
 .ebp {
   font-family: 'GraphicPixel', sans-serif;

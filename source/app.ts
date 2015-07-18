@@ -69,8 +69,13 @@ export function load():Promise<void> {
       state: new GameStateMachine()
     });
     world.events.once('ready', ()=> {
-      bootstrap(RPGAppComponent);
-      resolve();
+      try{
+        bootstrap(RPGAppComponent);
+        resolve();
+      }
+      catch(e){
+        reject(e);
+      }
     });
     world.events.once('error', reject);
     pow2.registerWorld('rpg', world);

@@ -12,13 +12,14 @@
 <body>
 
 <rpg-app>
-  <div class="loading fade hero-container pt-page-scaleUp"
-       layout="column"
-       layout-fill
-       layout-align="center center">
-    <h1>RPG!</h1>
+  <div class="loading fade pt-page-scaleUp">
+    <div class="loading-wrapper">
+      <div class="loading-wrapper-inner hero-container">
+        <h1><a href="https://github.com/justindujardin/angular2-rpg">RPG!</a></h1>
 
-    <p>Waking up...</p>
+        <p>Waking up...</p>
+      </div>
+    </div>
   </div>
 </rpg-app>
 
@@ -40,7 +41,13 @@
 <script src="./bower_components/pow2/lib/pow2.sprites.js"></script>
 <script>
   System.import('source/app').then(function (app) {
-    app.load();
+    app.load().catch(function(){
+      var heading = document.querySelector('.loading .loading-wrapper-inner h1 a');
+      var text = document.querySelector('.loading .loading-wrapper-inner p');
+      text.innerText = "RPG is built on the Angular2 developer preview, and is currently sad on your system.";
+      heading.innerText = ':(';
+      document.querySelector('.loading .hero-container').className += ' sad';
+    });
   }, console.error.bind(console));
 </script>
 </body>
