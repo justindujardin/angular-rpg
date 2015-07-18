@@ -24,7 +24,7 @@ import {RPGGame,Notify} from '../services/all';
 import {StoreFeatureComponent} from '../../components/features/storeFeatureComponent';
 
 import {GameStateModel} from '../../models/gameStateModel';
-import {ItemModel,WeaponModel,ArmorModel} from '../../models/all';
+import {ItemModel,WeaponModel,ArmorModel, UsableModel} from '../../models/all';
 
 @Component({
   selector: 'world-store',
@@ -93,7 +93,7 @@ export class WorldStore {
       }
       if (!hasCategory || feature.host.category === 'items') {
         theChoices = theChoices.concat(_.map(data.getSheetData('items'), (a)=> {
-          return _.extend({instanceModel: new ItemModel(a)}, a);
+          return _.extend({instanceModel: new UsableModel(a)}, a);
         }));
       }
       var items:rpg.IGameItem[] = [];
