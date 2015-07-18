@@ -58,7 +58,7 @@
       },
       {
         "name": "camera",
-        "type": "pow2.game.components.PlayerCameraComponent"
+        "type": "source.components.PlayerCameraComponent"
       },
       {
         "name": "touch",

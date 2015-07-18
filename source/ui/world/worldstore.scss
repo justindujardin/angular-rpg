@@ -1,9 +1,28 @@
+@mixin pow-dialog() {
+  .ebp {
+    height:90%;
+  }
+  h1 {
+    margin:0;
+  }
+  @media (min-width: $layout-breakpoint-sm) {
+    .ebp {
+      height:80%;
+    }
+    h1 {
+      margin:auto;
+    }
+  }
+}
+
 world-store {
+  @include pow-dialog();
   z-index: $zCanvasGui;
   text-align: center;
   min-width: 320px;
 
   .inventory {
+    overflow-y:auto;
     text-align: center;
     .item-price {
       color: $gameGold;
@@ -20,7 +39,7 @@ world-store {
     list-style-type: none;
     max-width: 100%;
     li.item {
-      margin:rem(1);
+      margin: rem(1);
       cursor: pointer;
       border: 1px solid transparent;
       * {

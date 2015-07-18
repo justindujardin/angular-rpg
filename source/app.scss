@@ -2,8 +2,14 @@
 
 .select-map {
   z-index: $zCanvasGui;
+  position: absolute;
+  top:10px;
+  right:10px;
   margin:1rem;
   padding:0.5rem;
-  float:right;
+}
+
+rpg-app {
+  display: block;
 }
 

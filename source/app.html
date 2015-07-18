@@ -1,12 +1,17 @@
 <rpg-notification></rpg-notification>
 
-<div class="select-map ebp" *ng-if="!combat">Select Map:
+<div class="select-map ebp" hide-sm *ng-if="!combat">Select Map:
   <select #themap (change)="setMap(themap.value)">
     <option *ng-for="#map of maps" [value]="map" [selected]="map==game.partyMapName">{{map}}</option>
   </select>
 </div>
 
-<div layout-fill layout="column" layout-align="start center" class="dialogs-container" *ng-if="!combat">
+<div class="dialogs-container"
+     layout="column"
+     layout-fill
+     layout-padding
+     layout-align="start center"
+     *ng-if="!combat">
   <party-menu></party-menu>
   <world-dialog></world-dialog>
   <world-temple></world-temple>
