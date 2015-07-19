@@ -127,7 +127,7 @@ combat-map {
     content: '>';
     @extend .glyphicon-chevron-right;
   }
-  &.attack {
+  &.attack,&.magic {
     content: 'X';
     @extend .glyphicon-screenshot;
     color: red;

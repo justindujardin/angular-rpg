@@ -166,8 +166,11 @@ export class ChooseMagicSpell extends pow2.State {
       throw new Error("Requires Current Player");
     }
     var selectSpell = (spell:rpg.IGameSpell) => {
+      machine.scene.off('click', clickSelect);
       machine.spell = spell;
-      machine.target = spell.benefit ? machine.current : null;
+      if(spell.benefit){
+        machine.target =  machine.current;
+      }
       switch (spell.type) {
         case "target":
           machine.setCurrentState(ChooseActionTarget.NAME);
@@ -184,6 +187,13 @@ export class ChooseMagicSpell extends pow2.State {
         label: a.name
       };
     });
+
+    var clickSelect = (mouse:any, hits:any) => {
+      machine.scene.off('click', clickSelect);
+      machine.target = hits[0];
+      machine.map.items[0].select();
+    };
+    machine.scene.on('click', clickSelect);
   }
 
   exit(machine:ChooseActionStateMachine) {
