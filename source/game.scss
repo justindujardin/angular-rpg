@@ -1,39 +1,12 @@
-$pixelFont: 'GraphicPixel', 'AdvoCut', sans-serif;
-$pixelFontAlt: 'AdvoCut', 'GraphicPixel', sans-serif;
 
-@font-face {
-  font-family: 'GraphicPixel';
-  src: url('../fonts/graphicpixel-webfont.eot');
-  src: url('../fonts/graphicpixel-webfont.eot?#iefix') format('embedded-opentype'),
-  url('../fonts/graphicpixel-webfont.woff') format('woff'),
-  url('../fonts/graphicpixel-webfont.ttf') format('truetype'),
-  url('../fonts/graphicpixel-webfont.svg#GraphicPixelRegular') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'AdvoCut';
-  src: url('../fonts/advocut-webfont.eot');
-  src: url('../fonts/advocut-webfont.eot?#iefix') format('embedded-opentype'),
-  url('../fonts/advocut-webfont.woff') format('woff'),
-  url('../fonts/advocut-webfont.ttf') format('truetype'),
-  url('../fonts/advocut-webfont.svg#AndinaRegular') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-.ng-cloak {
-  display: none !important;
-}
-
-@import "style/variables";
-@import "style/mixins";
-@import "../fonts/pow2";
-@import "../fonts/glyphicons";
-@import "style/animation";
-@import "style/pageTransitions";
-@import "style/loading";
+@import "ui/style/variables";
+@import "ui/style/fonts";
+@import "ui/style/mixins";
+@import "ui/style/animation";
+@import "ui/style/pageTransitions";
+@import "ui/style/loading";
+@import "ui/style/buttons";
+@import "ui/style/eightBitPanel";
 
 // ngMaterial Core
 @import "ui/material/core/style/variables";
@@ -46,9 +19,6 @@ $pixelFontAlt: 'AdvoCut', 'GraphicPixel', sans-serif;
 // ngMaterial Components
 @import "ui/material/components/all";
 
-// Other
-@import "style/buttons";
-@import "style/eightBitPanel";
 
 // Import template styles
 //  TODO: This might get _really_ old.
