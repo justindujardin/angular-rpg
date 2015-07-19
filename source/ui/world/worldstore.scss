@@ -6,6 +6,7 @@ world-store {
   min-width: 320px;
 
   .inventory {
+    min-height:200px;
     overflow-y:auto;
     text-align: center;
     .item-price {

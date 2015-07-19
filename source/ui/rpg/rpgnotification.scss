@@ -32,8 +32,8 @@ rpg-notification {
     box-shadow: none;
     margin: auto;
     position: absolute;
-    padding: 10px;
-    font-size: 2em;
+    padding: 25px 10px;
+    font-size: 2.5em;
     color: #fff;
     @include stroke-text(1px, #000);
   }
