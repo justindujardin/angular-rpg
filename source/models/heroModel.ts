@@ -17,6 +17,7 @@
 import {ItemModel} from './itemModel';
 import {CreatureModel} from './creatureModel';
 import {GameStateModel} from './gameStateModel';
+import {GameWorld} from '../gameWorld';
 import {ArmorModel} from './armorModel';
 import {WeaponModel} from './weaponModel';
 import {EntityModel,EntityModelOptions} from './entityModel';
@@ -230,7 +231,7 @@ export class HeroModel extends EntityModel {
     this.trigger('levelUp', this);
   }
 
-  parse(data:any, options?:any):any {
+  fromString(data:any,world:GameWorld):boolean {
     try {
       if (typeof data === 'string') {
         data = JSON.parse(data);
@@ -238,40 +239,34 @@ export class HeroModel extends EntityModel {
     }
     catch (e) {
       console.log("Failed to load save game.");
-      return {};
+      return false;
     }
     if (!data) {
-      return {};
+      return false;
     }
 
-    GameStateModel.getDataSource((spreadsheet:pow2.GameDataResource)=> {
-      var obj:any = this;
-      _.each(HeroModel.ARMOR_TYPES, (type:string) => {
-        if (data[type]) {
-          var piece = _.where(spreadsheet.getSheetData('armor'), {name: data[type]})[0];
-          if (piece) {
-            obj[type] = new ArmorModel(piece);
-          }
-        }
-      });
-      if (data.weapon) {
-        var weapon = _.where(spreadsheet.getSheetData('weapons'), {name: data.weapon})[0];
-        this.weapon = new WeaponModel(weapon);
+    var obj:any = this;
+    _.each(HeroModel.ARMOR_TYPES, (type:string) => {
+      if (data[type]) {
+        obj[type] = world.itemModelFromId(data[type]);
       }
-
     });
-    return _.omit(data, _.flatten(['weapon', HeroModel.ARMOR_TYPES]));
+    if (data.weapon) {
+      this.weapon = world.itemModelFromId<WeaponModel>(data.weapon);
+    }
+    this.set(_.omit(data, _.flatten(['weapon', HeroModel.ARMOR_TYPES])));
+    return true;
   }
 
   toJSON() {
     var obj:any = this;
     var result = super.toJSON();
     if (this.weapon) {
-      result.weapon = this.weapon.get('name');
+      result.weapon = this.weapon.get('id');
     }
     _.each(HeroModel.ARMOR_TYPES, (type:string) => {
       if (obj[type]) {
-        result[type] = obj[type].get('name');
+        result[type] = obj[type].get('id');
       }
     });
     return result;

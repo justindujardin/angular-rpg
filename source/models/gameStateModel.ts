@@ -14,12 +14,14 @@
  limitations under the License.
  */
 
+import * as rpg from '../game';
 import {HeroModel,WeaponModel,ArmorModel,ItemModel,EntityModel,UsableModel} from './all';
+import {GameWorld} from '../gameWorld';
 
 var _gameData:pow2.GameDataResource = null;
 
 export class GameStateModel extends pow2.Events implements pow2.IWorldObject {
-  world:pow2.IWorld;
+  world:GameWorld;
   party:HeroModel[]; // The player's party
   inventory:ItemModel[]; // The inventory of items owned by the player.
   loader:pow2.ResourceLoader;
@@ -127,12 +129,13 @@ export class GameStateModel extends pow2.Events implements pow2.IWorldObject {
     }));
 
 
-    this.inventory = _.map(data.inventory, (item:any) => {
-      var choice:any = _.where(theChoices, {id: item.id})[0];
-      return <ItemModel>choice.instanceModel;
+    this.inventory = _.map(data.inventory, (item:rpg.IGameItem) => {
+      return this.world.itemModelFromId(item.id);
     });
-    this.party = _.map(data.party, (partyMember) => {
-      return new HeroModel(partyMember, {parse: true});
+    this.party = _.map(data.party, (partyMember:string) => {
+      var model = new HeroModel();
+      model.fromString(partyMember, this.world);
+      return model;
     });
     _.extend(this, _.omit(data, 'party', 'inventory', 'keyData'));
   }
