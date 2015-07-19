@@ -68,7 +68,7 @@
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="man.png"/>
-    <property name="text" value="I'm just the crazy guy that hangs out in the corner of town."/>
+    <property name="text" value="I hear the Kobolds have an armory in the sewers beneath the ruins north of here.  It's well-guarded, and for good reason. I bet they have some nice weapons in there."/>
     <property name="title" value="Citizen"/>
     <property name="type" value="sign"/>
    </properties>

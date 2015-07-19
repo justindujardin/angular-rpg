@@ -18,6 +18,7 @@ import * as rpg from './index';
 import {GameStateMachine} from './states/gameStateMachine';
 import {PlayerCombatState} from './states/playerCombatState';
 import {GameStateModel} from './models/gameStateModel';
+import {ItemModel,WeaponModel,ArmorModel,UsableModel,HeroModel} from './models/all';
 
 var _sharedGameWorld:GameWorld = null;
 
@@ -66,15 +67,15 @@ export class GameWorld extends pow2.scene.SceneWorld {
       this.spreadsheet = gsr;
     });
     this.entities = <pow2.EntityContainerResource>this.loader
-        .load(pow2.GAME_ROOT + 'entities/rpg.powEntities')
-        .once(pow2.Resource.READY, () => {
-          this._importEntityTypes().then(()=> {
-            this.events.trigger('ready');
-          }).catch((e)=> {
-            console.error(e);
-            this.events.trigger('error', e);
-          });
+      .load(pow2.GAME_ROOT + 'entities/rpg.powEntities')
+      .once(pow2.Resource.READY, () => {
+        this._importEntityTypes().then(()=> {
+          this.events.trigger('ready');
+        }).catch((e)=> {
+          console.error(e);
+          this.events.trigger('error', e);
         });
+      });
   }
 
   static get():GameWorld {
@@ -191,8 +192,8 @@ export class GameWorld extends pow2.scene.SceneWorld {
 
   randomEncounter(zone:rpg.IZoneMatch, then?:rpg.IGameEncounterCallback) {
     GameStateModel.getDataSource((gsr:pow2.GameDataResource)=> {
-      var encountersData = gsr.getSheetData("encounters");
-      var encounters:rpg.IGameEncounter[] = _.filter(encountersData, (enc:any)=> {
+      var encountersData = gsr.getSheetData("randomencounters");
+      var encounters:rpg.IGameRandomEncounter[] = _.filter(encountersData, (enc:any)=> {
         return _.indexOf(enc.zones, zone.map) !== -1 || _.indexOf(enc.zones, zone.target) !== -1;
       });
       if (encounters.length === 0) {
@@ -206,17 +207,50 @@ export class GameWorld extends pow2.scene.SceneWorld {
     });
   }
 
+
   fixedEncounter(zone:rpg.IZoneMatch, encounterId:string, then?:rpg.IGameEncounterCallback) {
     GameStateModel.getDataSource((gsr:pow2.GameDataResource)=> {
-      var encounter = <rpg.IGameEncounter>_.where(gsr.getSheetData("encounters"), {
+      var encounter = <rpg.IGameFixedEncounter>_.where(gsr.getSheetData("fixedencounters"), {
         id: encounterId
       })[0];
       if (!encounter) {
-        this.scene.trigger('error',"No encounter found with id: " + encounterId);
+        this.scene.trigger('error', "No encounter found with id: " + encounterId);
         return then(true);
       }
       this._encounter(zone, encounter, then);
     });
+  }
+
+  /**
+   * Create an ItemModel by a given hyphen-case id of an item described in the game data source.
+   * @param modelId string The item id, e.g. `leather-shield` or `potion`
+   * @returns {ItemModel|null} The model for the given item, or null.
+   */
+  itemModelFromId<T extends Backbone.Model>(modelId:string):T {
+    if (!this.spreadsheet) {
+      return null;
+    }
+    var data = this.spreadsheet;
+    var sheets:string[] = ['weapons', 'armor', 'items'];
+    var item:T = null;
+    while (!item && sheets.length > 0) {
+      var sheetName = sheets.shift();
+      var itemData:rpg.IGameItem = _.find(data.getSheetData(sheetName), (w:rpg.IGameItem) => w.id === modelId);
+      if (itemData) {
+        switch (sheetName) {
+          case 'weapons':
+            item = <any>new WeaponModel(itemData);
+            break;
+          case 'armor':
+            item = <any>new ArmorModel(itemData);
+            break;
+          case 'items':
+            item = <any>new UsableModel(itemData);
+            break;
+        }
+      }
+    }
+    return item;
   }
 
 

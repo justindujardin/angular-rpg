@@ -474,7 +474,7 @@
     <property name="passable" value="true"/>
    </properties>
   </object>
-  <object name="world-plains-snake" type="source.components.features.CombatFeatureComponent" x="304" y="736" width="16" height="16">
+  <object name="world-plains-snake" type="source.components.features.CombatFeatureComponent" x="320" y="704" width="16" height="16">
    <properties>
     <property name="icon" value="snake.png"/>
     <property name="id" value="world-plains-snakes"/>

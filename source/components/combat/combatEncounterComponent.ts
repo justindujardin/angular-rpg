@@ -101,11 +101,12 @@ export class CombatEncounterComponent extends pow2.scene.SceneComponent {
   }
 
   triggerCombat(at:pow2.Point) {
-    var zones:rpg.IZoneMatch = this.host.getCombatZones(at);
-    this.combatZone = zones.map || zones.target;
+    var zone:rpg.IZoneMatch = this.host.getCombatZones(at);
+    zone.fixed = false;
+    this.combatZone = zone.map || zone.target;
     console.log("Combat in zone : " + this.combatZone);
     this.stopListening();
-    this.host.world.randomEncounter(zones, ()=> {
+    this.host.world.randomEncounter(zone, ()=> {
       this.resetBattleCounter();
       this.listenMoves();
     });

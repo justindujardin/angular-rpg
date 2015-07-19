@@ -26,11 +26,29 @@ import {bootstrap} from 'angular2/angular2';
  * A Combat encounter descriptor.  Used to describe the configuration of combat.
  */
 export interface IGameEncounter {
-  type:string; // @see pow2.ENCOUNTERS
   id:string; // unique id in spreadsheet
-  zones:string[]; // array of zones this encounter can happen in
   enemies:string[]; // array of enemies in this encounter
   message:string; // message to display when combat begins
+}
+/**
+ * A Fixed combat encounter.
+ *
+ * Fixed encounters are ones that happen when you interact with some fixed part
+ * of the game map.
+ */
+export interface IGameFixedEncounter extends IGameEncounter {
+  gold?:number;
+  experience?:number;
+  items?:string[];
+}
+/**
+ * A Random combat encounter.
+ *
+ * Random encounters happen during movement about a map that has a `CombatEncounterComponent`
+ * added to it.
+ */
+export interface IGameRandomEncounter extends IGameEncounter {
+  zones:string[]; // array of zones this encounter can happen in
 }
 
 /**
@@ -90,20 +108,9 @@ export interface IZoneMatch {
    * The point that target refers to.
    */
   targetPoint:pow2.Point;
-}
 
-// HeroView directive
-// ----------------------------------------------------------------------------
-//  app.directive('heroCard', function () {
-//    return {
-//      restrict: 'E',
-//      scope: true,
-//      templateUrl: 'games/rpg/directives/heroCard.html',
-//      link: function ($scope:any, element, attrs) {
-//        $scope.hero = attrs.hero;
-//        $scope.$watch(attrs.hero, function (hero) {
-//          $scope.hero = hero;
-//        });
-//      }
-//    };
-//  });
+  /**
+   * Fixed or random?
+   */
+  fixed:boolean;
+}

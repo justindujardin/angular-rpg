@@ -121,7 +121,8 @@ export class GameTileMap extends pow2.tile.TileMap {
     var result:rpg.IZoneMatch = {
       map: null,
       target: null,
-      targetPoint: at
+      targetPoint: at,
+      fixed:false
     };
     if (this.map && this.map.properties && this.map.properties) {
       if (typeof this.map.properties.combatZone !== 'undefined') {

@@ -15,10 +15,11 @@
  */
 
 
+import * as rpg from '../../index';
 import {CombatState} from './combatState';
 import {CombatStateMachine} from './combatStateMachine';
 import {GameEntityObject} from '../../objects/gameEntityObject';
-import {HeroModel} from '../../models/heroModel';
+import {HeroModel,ItemModel} from '../../models/all';
 import {PlayerMapState} from '../playerMapState';
 
 
@@ -26,6 +27,7 @@ export interface CombatVictorySummary {
   party:GameEntityObject[];
   enemies:GameEntityObject[];
   levels:HeroModel[];
+  items?:ItemModel[];
   gold:number;
   exp:number;
   state:CombatVictoryState;
@@ -37,17 +39,56 @@ export class CombatVictoryState extends CombatState {
 
   enter(machine:CombatStateMachine) {
     super.enter(machine);
-    var gold:number = 0;
-    var exp:number = 0;
-    _.each(machine.enemies, (nme:GameEntityObject) => {
-      gold += nme.model.get('gold') || 0;
-      exp += nme.model.get('exp') || 0;
-    });
-    machine.parent.model.addGold(gold);
 
     var players:GameEntityObject[] = _.reject(machine.party, (p:GameEntityObject) => {
       return p.isDefeated();
     });
+    if (players.length === 0) {
+      throw new Error("Invalid state, cannot be in victory with no living party members");
+    }
+
+    var gold:number = 0;
+    var exp:number = 0;
+    var items:string[] = [];
+    _.each(machine.enemies, (nme:GameEntityObject) => {
+      gold += nme.model.get('gold') || 0;
+      exp += nme.model.get('exp') || 0;
+    });
+
+
+    // Apply Fixed encounter bonus awards
+    //
+    if (machine.parent.encounterInfo.fixed) {
+      var encounter = <rpg.IGameFixedEncounter>machine.parent.encounter;
+      if (encounter.gold > 0) {
+        gold += encounter.gold;
+      }
+      if (encounter.experience > 0) {
+        exp += encounter.experience;
+      }
+      if (encounter.items && encounter.items.length > 0) {
+        items = items.concat(encounter.items);
+      }
+    }
+
+    // Award gold
+    //
+    machine.parent.model.addGold(gold);
+
+    // Award items
+    //
+    var itemModels:ItemModel[] = [];
+    items.forEach((i:string) => {
+      var model = machine.parent.world.itemModelFromId(i);
+      if (model) {
+        itemModels.push(model);
+        machine.parent.model.inventory.push(model);
+      }
+    });
+
+
+    // Award experience
+    //
     var expPerParty:number = Math.round(exp / players.length);
     var leveledHeros:HeroModel[] = [];
     _.each(players, (p:GameEntityObject) => {
@@ -63,6 +104,7 @@ export class CombatVictoryState extends CombatState {
       party: machine.party,
       enemies: machine.enemies,
       levels: leveledHeros,
+      items: itemModels,
       gold: gold,
       exp: exp
     };

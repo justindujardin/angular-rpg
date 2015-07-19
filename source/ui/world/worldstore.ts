@@ -82,19 +82,13 @@ export class WorldStore {
       var hasCategory:boolean = typeof feature.host.category !== 'undefined';
       var theChoices:any[] = [];
       if (!hasCategory || feature.host.category === 'weapons') {
-        theChoices = theChoices.concat(_.map(data.getSheetData('weapons'), (w)=> {
-          return _.extend({instanceModel: new WeaponModel(w)}, w);
-        }));
+        theChoices = theChoices.concat(data.getSheetData('weapons'));
       }
       if (!hasCategory || feature.host.category === 'armor') {
-        theChoices = theChoices.concat(_.map(data.getSheetData('armor'), (a)=> {
-          return _.extend({instanceModel: new ArmorModel(a)}, a);
-        }));
+        theChoices = theChoices.concat(data.getSheetData('armor'));
       }
       if (!hasCategory || feature.host.category === 'items') {
-        theChoices = theChoices.concat(_.map(data.getSheetData('items'), (a)=> {
-          return _.extend({instanceModel: new UsableModel(a)}, a);
-        }));
+        theChoices = theChoices.concat(data.getSheetData('items'));
       }
       var items:rpg.IGameItem[] = [];
       _.each(feature.host.groups, (group:string)=> {
@@ -105,7 +99,9 @@ export class WorldStore {
       });
 
       this.name = feature.name;
-      this.inventory = <rpg.IGameItem[]>_.where(items, {level: feature.host.feature.level});
+      this.inventory = <rpg.IGameItem[]>_.map(_.where(items, {
+        level: feature.host.feature.level
+      }),(i:any) => _.extend({},i));
     });
   }
 
@@ -144,7 +140,11 @@ export class WorldStore {
       else {
         model.gold -= value;
         this.notify.show("Purchased " + item.name + ".", null, 1500);
-        model.inventory.push(item.instanceModel.clone());
+        var instanceModel = this.game.world.itemModelFromId(item.id);
+        if(!instanceModel){
+          throw new Error("Tried (and failed) to create item from invalid id: '" + item.id + "'.  Make sure ID is present in game data source");
+        }
+        model.inventory.push(instanceModel);
       }
     }
 

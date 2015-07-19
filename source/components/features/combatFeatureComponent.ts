@@ -52,6 +52,7 @@ export class CombatFeatureComponent extends GameFeatureComponent {
 
     // Find the combat zone and launch a fixed encounter.
     var zone:rpg.IZoneMatch = this.host.tileMap.getCombatZones(this.party.host.point);
+    zone.fixed = true;
     this.host.world.fixedEncounter(zone, this.host.id, (victory:boolean)=> {
       if (victory) {
         this.setDataHidden(true);

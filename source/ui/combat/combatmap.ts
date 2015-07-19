@@ -18,7 +18,7 @@
 import {Component, View, NgIf, NgFor, CSSClass, ElementRef, onDestroy} from 'angular2/angular2';
 import {GameTileMap} from '../../gameTileMap';
 import {CombatCameraComponent} from '../../components/combat/combatCameraComponent';
-import {HeroModel} from '../../models/all';
+import {HeroModel,ItemModel} from '../../models/all';
 import {GameEntityObject} from '../../objects/gameEntityObject';
 import {CombatActionComponent} from '../../components/combat/actions/all';
 import {CombatStateMachine} from '../../states/combat/combatStateMachine';
@@ -304,9 +304,17 @@ export class CombatMap extends Map implements pow2.IProcessObject {
    */
   private _bindRenderCombat() {
     this.combat.machine.on('combat:start', (encounter:rpg.IGameEncounter) => {
-      if(encounter && encounter.message){
+      if (encounter && encounter.message) {
         var _done = this.combat.machine.notifyWait();
-        this.notify.show(encounter.message, _done, 0);
+        // If the message contains pipe's, treat what is between each pipe as a separate
+        // message to be displayed.
+        var msgs = [encounter.message];
+        if(encounter.message.indexOf('|') !== -1){
+          msgs = encounter.message.split('|')
+        }
+        var last = msgs.pop();
+        msgs.forEach((m) => this.notify.show(m, null, 0));
+        this.notify.show(last,_done,0);
       }
     });
     this.combat.machine.on('combat:attack', (data:CombatAttackSummary) => {
@@ -316,6 +324,9 @@ export class CombatMap extends Map implements pow2.IProcessObject {
       var b = data.defender.model.get('name');
       if (data.damage > 0) {
         msg = a + " attacked " + b + " for " + data.damage + " damage!";
+      }
+      else if(data.damage < 0) {
+        msg = a + " healed " + b + " for " + data.damage + " hit points";
       }
       else {
         msg = a + " attacked " + b + ", and MISSED!";
@@ -337,6 +348,11 @@ export class CombatMap extends Map implements pow2.IProcessObject {
     this.combat.machine.on('combat:victory', (data:CombatVictorySummary) => {
       var _done = this.combat.machine.notifyWait();
       this.notify.show("Found " + data.gold + " gold!", null, 0);
+      if (data.items) {
+        _.each(data.items, (item:ItemModel) => {
+          this.notify.show("Found " + item.get('name'), null, 0);
+        });
+      }
       this.notify.show("Gained " + data.exp + " experience!", null, 0);
       _.each(data.levels, (hero:HeroModel) => {
         this.notify.show(hero.get('name') + " reached level " + hero.get('level') + "!", null, 0);
