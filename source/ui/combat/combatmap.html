@@ -13,13 +13,18 @@
       layout-sm="row"
       layout-align-gt-sm="start start"
       layout-align-sm="space-around center">
-    <li *ng-for="#item of items" (click)="item.select()" [inner-text]="item.label"></li>
+    <li *ng-for="#item of items"
+        (click)="item.select()"
+        [inner-text]="item.label"></li>
   </ul>
-  <div class="status" *ng-for="#member of combat?.machine?.party" [class]="getMemberClass(member,combat?.focus)" layout="column">
+  <div class="status"
+       *ng-for="#member of combat?.machine?.party"
+       [class]="getMemberClass(member,combat?.focus)"
+       layout="column">
     <div class="text" layout="row">
       <span class="name">{{member.model.attributes.name}}</span>
       <span flex class="hp">HP {{member.model.attributes.hp}} / {{member.model.attributes.maxHP}}</span>
     </div>
-    <rpg-health-bar [model]="member.model" layout-align="center center"></rpg-health-bar>
+    <rpg-health-bar [model]="member.model"></rpg-health-bar>
   </div>
 </div>

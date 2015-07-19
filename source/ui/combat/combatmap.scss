@@ -27,7 +27,7 @@ combat-map {
   margin-right: auto;
   width: 100%;
 
-  background-color: $menuOverlayBackground;
+  background-color: transparent;
   z-index: $zCanvasGui;
 
   .action-menu, .targets-menu, .spells-menu {
@@ -56,8 +56,21 @@ combat-map {
     border-radius: 0;
     text-align: right;
     color: #fff;
+    position: relative;
+    md-progress-linear {
+      height: 100%;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      .md-container {
+        background-color: $menuOverlayBackground;
+      }
+    }
     .text {
       padding: 0 15px;
+      z-index: $z-index-bottom-sheet;
     }
     &.focused {
       color: $gameGold;
@@ -123,7 +136,7 @@ combat-map {
     content: '>';
     @extend .glyphicon-chevron-right;
   }
-  &.attack,&.magic {
+  &.attack, &.magic {
     content: 'X';
     @extend .glyphicon-screenshot;
     color: red;

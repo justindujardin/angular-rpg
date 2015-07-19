@@ -1,4 +1,4 @@
-$progress-linear-bar-height: 5px !default;
+$progress-linear-bar-height: 5px;
 
 md-progress-linear:not([md-mode="indeterminate"]) {
   display: block;
@@ -8,7 +8,7 @@ md-progress-linear:not([md-mode="indeterminate"]) {
   .md-container {
     overflow: hidden;
     position: relative;
-    height: $progress-linear-bar-height;
+    height: inherit;
     transform: translate(0, 5px) scale(1, 0);
     transition: all .3s linear;
   }
@@ -18,7 +18,7 @@ md-progress-linear:not([md-mode="indeterminate"]) {
   }
 
   .md-bar {
-    height: $progress-linear-bar-height;
+    height: inherit;
     position: absolute;
     width: 100%;
   }
@@ -41,7 +41,7 @@ md-progress-linear:not([md-mode="indeterminate"]) {
     .md-dashed:before {
       content: "";
       display: block;
-      height: $progress-linear-bar-height;
+      height: inherit;
       width: 100%;
       margin-top: 0;
       position: absolute;
@@ -68,10 +68,10 @@ md-progress-linear[md-mode="indeterminate"] {
     width: 100%;
     overflow: hidden;
     position: relative;
-    height: $progress-linear-bar-height;
+    height: inherit;
     transition: all .3s linear;
     .md-bar {
-      height: $progress-linear-bar-height;
+      height: inherit;
       left: 0;
       width: 288 * 100% / 360;
       position: absolute;
