@@ -59,7 +59,9 @@ export class CombatItemComponent extends CombatActionComponent {
       user.findComponent(pow2.game.components.PlayerCombatRenderComponent);
 
     userRender.magic(()=> {
-      this.item.use(target.model);
+      this.item.use(target.model).then(() => {
+        user.world.model.removeInventory(this.item);
+      });
       var hitSound:string = "sounds/heal";
       var components = {
         animation: new pow2.tile.components.AnimatedSpriteComponent({

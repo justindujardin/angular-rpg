@@ -212,7 +212,7 @@ export class ChooseUsableItem extends pow2.State {
       throw new Error("Requires Current Player");
     }
     var selectItem = (item:UsableModel) => {
-      machine.item = <UsableModel>item.clone();
+      machine.item = item;
       machine.target = machine.current;
       machine.setCurrentState(ChooseActionTarget.NAME);
     };
