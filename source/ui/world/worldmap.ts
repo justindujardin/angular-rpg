@@ -89,27 +89,12 @@ export class WorldMap extends Map {
         this.notify.show("You found " + feature.gold + " gold!", null, 0);
       }
       if (typeof feature.item === 'string') {
-        // Get items data from spreadsheet
-        GameStateModel.getDataSource((data:pow2.GameDataResource) => {
-          var item:ItemModel = null;
-          var desc:any = _.where(data.getSheetData('weapons'), {id: feature.item})[0];
-          if (desc) {
-            item = new WeaponModel(desc);
-          }
-          else {
-            desc = _.where(data.getSheetData('armor'), {id: feature.item})[0];
-            if (desc) {
-              item = new ArmorModel(desc);
-            }
-          }
-          if (!item) {
-            return;
-          }
-          game.world.model.inventory.push(item);
-          this.notify.show("You found " + item.get('name') + "!", null, 0);
-
-        });
-
+        var item = game.world.itemModelFromId(feature.item);
+        if (!item) {
+          return;
+        }
+        game.world.model.inventory.push(item);
+        this.notify.show("You found " + item.get('name') + "!", null, 0);
       }
     });
 
