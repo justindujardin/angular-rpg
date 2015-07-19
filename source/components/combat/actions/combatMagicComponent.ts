@@ -16,7 +16,7 @@
 import {CombatActionComponent} from './combatActionComponent';
 import {GameEntityObject} from '../../../objects/gameEntityObject';
 import {CreatureModel} from '../../../models/creatureModel';
-import {HeroTypes} from '../../../models/heroModel';
+import {HeroTypes,HeroModel} from '../../../models/heroModel';
 import {IPlayerAction,IPlayerActionCallback,CombatAttackSummary} from '../../../states/playerCombatState';
 import {CombatEndTurnState} from '../../../states/combat/combatEndTurnState';
 import {DamageComponent} from '../../damageComponent';
@@ -112,7 +112,9 @@ export class CombatMagicComponent extends CombatActionComponent {
     var attackerPlayer = <pow2.game.components.PlayerCombatRenderComponent>
         attacker.findComponent(pow2.game.components.PlayerCombatRenderComponent);
     attackerPlayer.magic(() => {
-      var damage:number = defender.model.damage(this.spell.value);
+      var attackModel = <HeroModel>attacker.model;
+      var magicAttack = attackModel.calculateDamage(attackModel.getMagicStrength() + this.spell.value);
+      var damage:number = defender.model.damage(magicAttack);
       var didKill:boolean = defender.model.get('hp') <= 0;
       var hit:boolean = damage > 0;
       var hitSound:string = "sounds/" + (didKill ? "killed" : (hit ? "spell" : "miss"));

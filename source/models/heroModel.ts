@@ -76,6 +76,8 @@ export class HeroModel extends EntityModel {
   accessory:ArmorModel;
   game:GameStateModel;
 
+  attributes:HeroModelOptions;
+
   /**
    * A constant buffer to add to defense of a player.
    *
@@ -150,12 +152,8 @@ export class HeroModel extends EntityModel {
   }
 
   attack(defender:EntityModel):number {
-    var halfStrength = this.attributes.strength / 2;
-    var weaponAttack = this.weapon ? this.weapon.attributes.attack : 0;
-    var amount = halfStrength + weaponAttack;
-    var max = amount * 1.2;
-    var min = amount * 0.8;
-    var damage = Math.max(1, Math.floor(Math.random() * (max - min + 1)) + min);
+    var amount = this.getAttackStrength();
+    var damage = this.calculateDamage(amount);
     if (this.rollHit(defender)) {
       return defender.damage(damage);
     }
@@ -182,8 +180,25 @@ export class HeroModel extends EntityModel {
     return baseDefense + (base ? 0 : this.defenseBuff);
   }
 
-  getDamage():number {
-    return ((this.weapon ? this.weapon.attributes.attack : 0) + this.attributes.strength / 2) | 0;
+  getAttackStrength():number {
+    return this.getWeaponStrength() + this.attributes.strength / 2;
+  }
+
+  getMagicStrength():number {
+    return this.getWeaponStrength() + this.attributes.intelligence / 2;
+  }
+
+  getWeaponStrength():number {
+    return this.weapon ? this.weapon.attributes.attack : 0;
+  }
+
+  /**
+   * Calculate damage for a given base amount.
+   */
+  calculateDamage(amount:number):number {
+    var max = amount * 1.2;
+    var min = amount * 0.8;
+    return Math.max(1, Math.floor(Math.random() * (max - min + 1)) + min);
   }
 
   awardExperience(exp:number):boolean {
