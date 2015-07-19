@@ -15,7 +15,7 @@
  */
 
 
-import * as rpg from '../../index';
+import * as rpg from '../../game';
 import {CombatState} from './combatState';
 import {CombatStateMachine} from './combatStateMachine';
 import {GameEntityObject} from '../../objects/gameEntityObject';

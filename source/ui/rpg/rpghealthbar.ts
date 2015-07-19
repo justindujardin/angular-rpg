@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import '../../index';
+import '../../game';
 import * as md from '../material/components/all';
 import {Component,View,NgIf,CSSClass} from 'angular2/angular2';
 

@@ -31,7 +31,7 @@ import {RPGGame,Animate, Notify} from '../services/all';
 import {RPGHealthBar} from '../rpg/all';
 import {Map} from '../map';
 
-import * as rpg from '../../index';
+import * as rpg from '../../game';
 
 import {CombatDamage} from './combatdamage';
 

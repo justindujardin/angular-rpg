@@ -15,7 +15,7 @@
  */
 
 import {Component,View,NgFor,NgIf,onDestroy} from 'angular2/angular2';
-import '../../index';
+import '../../game';
 import {TempleFeatureComponent} from '../../components/features/templeFeatureComponent';
 import {HeroModel} from '../../models/all';
 import {GameStateModel} from '../../models/gameStateModel';

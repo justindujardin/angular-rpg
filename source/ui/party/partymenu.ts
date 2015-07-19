@@ -15,7 +15,7 @@
  */
 
 import {Component,View,NgIf,NgFor,CSSClass} from 'angular2/angular2';
-import * as rpg from '../../index';
+import * as rpg from '../../game';
 import {RPGSprite} from '../rpg/rpgsprite';
 import {RPGGame, Notify} from '../services/all';
 import {PlayerCard} from './playercard';

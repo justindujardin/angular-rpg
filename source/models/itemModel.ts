@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import * as rpg from '../index';
+import * as rpg from '../game';
 
 export class ItemModel extends Backbone.Model {
   static DEFAULTS:rpg.IGameItem = {

@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import * as rpg from '../../index';
+import * as rpg from '../../game';
 
 import {Inject} from 'angular2/angular2';
 import {RPGGame} from './rpggame';

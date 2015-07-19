@@ -7,11 +7,11 @@
   <meta http-equiv="Content-Style-Type" content="text/css"/>
   <meta http-equiv="Content-Script-Type" content="text/javascript"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="source/app.css" media="all"/>
+  <link rel="stylesheet" type="text/css" href="source/game.css" media="all"/>
 </head>
 <body>
 
-<rpg-app>
+<rpg-game>
   <div class="loading fade pt-page-scaleUp">
     <div class="loading-wrapper">
       <div class="loading-wrapper-inner hero-container">
@@ -21,7 +21,7 @@
       </div>
     </div>
   </div>
-</rpg-app>
+</rpg-game>
 
 <script src="https://github.jspm.io/jmcriffey/bower-traceur-runtime@0.0.87/traceur-runtime.js"></script>
 <script src="https://jspm.io/system@0.16.js"></script>
@@ -40,15 +40,13 @@
 <script src="./bower_components/pow2/lib/pow2.js"></script>
 <script src="./bower_components/pow2/lib/pow2.sprites.js"></script>
 <script>
-  System.import('source/app').then(function (app) {
-    app.load().catch(function(){
-      var heading = document.querySelector('.loading .loading-wrapper-inner h1 a');
-      var text = document.querySelector('.loading .loading-wrapper-inner p');
-      text.innerText = "RPG is built on the Angular2 developer preview, and is currently sad on your system.";
-      heading.innerText = ':(';
-      document.querySelector('.loading .hero-container').className += ' sad';
-    });
-  }, console.error.bind(console));
+  System.import('source/game').then(function (app) {
+    return app.load();
+  }).catch(function () {
+    document.querySelector('.loading p').innerText = "RPG is built on the Angular2 developer preview, and is currently sad on your system.";
+    document.querySelector('.loading h1 a').innerText = ':(';
+    document.querySelector('.loading .hero-container').className += ' sad';
+  });
 </script>
 </body>
 </html>

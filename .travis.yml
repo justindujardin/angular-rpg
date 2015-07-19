@@ -6,7 +6,7 @@ before_script:
   - bower install
   - cd source
   - tsc
-  - node-sass app.scss app.css
+  - node-sass game.scss game.css
   - cd ..
 
 script: npm run-script deploy

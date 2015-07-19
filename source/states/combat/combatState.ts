@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../../index.ts"/>
+import * as rpg from '../../game';
 
 /**
  * CombatState is set when the player transitions in to a combat

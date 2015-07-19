@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import * as rpg from '../index';
+import * as rpg from '../game';
 import {GameWorld} from '../gameWorld';
 import {GameStateModel} from '../models/gameStateModel';
 import {PlayerMapState} from './playerMapState';

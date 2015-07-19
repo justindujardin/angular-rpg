@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import * as rpg from '../../index';
+import * as rpg from '../../game';
 
 import {Component, View, NgFor, NgIf, onDestroy} from 'angular2/angular2';
 import {GameFeatureObject} from '../../objects/gameFeatureObject';

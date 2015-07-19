@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import '../../index';
+import '../../game';
 
 /**
  * Provide an API for animating elements with CSS transitions

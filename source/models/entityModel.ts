@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../index.ts"/>
+import * as rpg from '../game';
 
 export interface EntityModelOptions {
   name:string;

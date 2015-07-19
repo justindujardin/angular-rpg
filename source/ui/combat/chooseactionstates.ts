@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import * as rpg from '../../index';
+import * as rpg from '../../game';
 import {GameEntityObject} from '../../objects/all';
 import {GameWorld} from '../../gameWorld';
 import {CombatMap} from './combatmap';

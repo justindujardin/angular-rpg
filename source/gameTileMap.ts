@@ -16,7 +16,7 @@
 
 import {GameWorld} from './gameWorld';
 import {GameFeatureObject} from './objects/gameFeatureObject';
-import * as rpg from './index';
+import * as rpg from './game';
 
 /**
  * A tile map that supports game feature objects and components.

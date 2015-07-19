@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import * as rpg from '../index';
+import * as rpg from '../game';
 import {ItemModel,EntityModel} from './all';
 
 export class UsableModel extends ItemModel {

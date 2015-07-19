@@ -15,7 +15,7 @@
  */
 
 import {ElementRef} from 'angular2/angular2';
-import * as rpg from '../index';
+import * as rpg from '../game';
 import {RPGGame} from './services/rpggame';
 import {GameTileMap} from '../gameTileMap';
 

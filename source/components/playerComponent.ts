@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-///<reference path="../index.ts"/>
+import * as rpg from '../game';
 
 import {GameEntityObject} from '../objects/gameEntityObject';
 import {GameFeatureObject} from '../objects/gameFeatureObject';
