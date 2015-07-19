@@ -360,7 +360,9 @@ export class CombatMap extends Map implements pow2.IProcessObject {
       this.notify.show("Enemies Defeated!", _done);
     });
     this.combat.machine.on('combat:defeat', (data:CombatDefeatSummary) => {
+      var done = this.combat.machine.notifyWait();
       this.notify.show("Your party was defeated...", () => {
+        this.game.initGame().then(done);
       }, 0);
     });
 

@@ -17,7 +17,7 @@
 import {CombatState} from './combatState';
 import {CombatStateMachine} from './combatStateMachine';
 import {GameEntityObject} from '../../objects/gameEntityObject';
-import {PlayerMapState} from '../playerMapState';
+import {PlayerDefaultState} from '../gameStateMachine';
 
 
 export interface CombatDefeatSummary {
@@ -37,7 +37,9 @@ export class CombatDefeatState extends CombatState {
     };
     machine.notify("combat:defeat", data, ()=> {
       machine.parent.world.reportEncounterResult(false);
-      machine.parent.setCurrentState(PlayerMapState.NAME);
+      // TODO: This is a hack.  Need better game lifetime management.
+      window.location.reload(true);
+      machine.parent.setCurrentState(PlayerDefaultState.NAME);
     });
   }
 }
