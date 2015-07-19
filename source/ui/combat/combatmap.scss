@@ -82,7 +82,7 @@ combat-map {
   }
 }
 
-@media (min-width: $layout-breakpoint-md) {
+@media (min-width: $layout-breakpoint-sm) {
 
   combat-map {
     .combat-view {
@@ -93,16 +93,12 @@ combat-map {
         margin: 20px;
         width: auto;
         padding: 5px 25px;
-        li {
-          text-align: left;
-          display: flex;
-        }
       }
     }
   }
 }
 
-@media (max-width: $layout-breakpoint-md - 1) {
+@media (max-width: $layout-breakpoint-sm - 1) {
 
   combat-map {
     .combat-view {

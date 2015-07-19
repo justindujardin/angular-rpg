@@ -7,7 +7,12 @@
                [position]="d.position"
                [classes]="d.classes"></combat-damage>
 <div class="combat-view">
-  <ul *ng-if="items.length > 0" class="ebp action-menu" layout="row" layout-lg="column" layout-align="space-around center">
+  <ul *ng-if="items.length > 0"
+      class="ebp action-menu"
+      layout="column"
+      layout-sm="row"
+      layout-align-gt-sm="start start"
+      layout-align-sm="space-around center">
     <li *ng-for="#item of items" (click)="item.select()" [inner-text]="item.label"></li>
   </ul>
   <div class="status" *ng-for="#member of combat?.machine?.party" [class]="getMemberClass(member,combat?.focus)" layout="column">
