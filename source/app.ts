@@ -47,8 +47,8 @@ export class RPGAppComponent {
 
   combat:PlayerCombatState = null;
 
-  constructor(public game:RPGGame) {
-    game.initGame().then(()=> {
+  constructor(public game:RPGGame, public notify:Notify) {
+    game.initGame().then((newGame:boolean)=> {
       game.machine.on('combat:begin', (state:PlayerCombatState) => {
         this.game.world.scene.paused = true;
         this.combat = state;
@@ -58,6 +58,15 @@ export class RPGAppComponent {
         this.combat = null;
       });
       console.log("Game fully initialized.");
+      if (newGame) {
+        var msgs:string[] = [
+          'Urrrrrgh.', 'What is this?',
+          'Why am I facing a wall in a strange town?',
+          'Oh well, it is probably not important.',
+          'I better take a look around',
+        ];
+        msgs.forEach((m:string) => this.notify.show(m, null, 0));
+      }
     }).catch(console.error.bind(console));
   }
 }
@@ -69,11 +78,11 @@ export function load():Promise<void> {
       state: new GameStateMachine()
     });
     world.events.once('ready', ()=> {
-      try{
+      try {
         bootstrap(RPGAppComponent);
         resolve();
       }
-      catch(e){
+      catch (e) {
         reject(e);
       }
     });

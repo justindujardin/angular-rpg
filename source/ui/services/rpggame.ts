@@ -103,25 +103,29 @@ export class RPGGame {
     this.sprite.setPoint(at || this.partyPosition);
   }
 
-  initGame(data:any = this.getSaveData()):Promise<void> {
-    return new Promise<void>((resolve, reject) => {
+  /**
+   * Initialize the game and resolve a promise that indicates whether the game
+   * is new or was loaded from save data.  Resolves with true if the game is new.
+   */
+  initGame(data:any = this.getSaveData()):Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
       if (data) {
         return this.world.model.initData(()=> {
           this.world.model.parse(data);
           var at = this.world.model.getKeyData('playerPosition');
           this.partyPosition = at ? new pow2.Point(at.x, at.y) : undefined;
           this.partyMapName = this.world.model.getKeyData('playerMap') || "town";
-          resolve();
+          resolve(false);
         });
       }
-      if (this.world.model.party.length === 0) {
+      else {
         this.world.model.addHero(HeroModel.create(HeroTypes.Warrior, "Warrior"));
         this.world.model.addHero(HeroModel.create(HeroTypes.Ranger, "Ranger"));
         this.world.model.addHero(HeroModel.create(HeroTypes.LifeMage, "Mage"));
         this.partyPosition = new pow2.Point(10, 5);
         this.partyMapName = "town";
+        resolve(true);
       }
-      resolve();
     });
   }
 
