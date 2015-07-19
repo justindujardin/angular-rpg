@@ -220,7 +220,8 @@ export class HeroModel extends EntityModel {
     this.set({
       level: nextLevel,
       maxHP: newHP,
-      hp: newHP,
+      // REMOVE auto-heal when you level up.  I think I'd rather people die from time-to-time.
+      //hp: newHP,
       strength: this.getStrengthForLevel(nextLevel),
       agility: this.getAgilityForLevel(nextLevel),
       vitality: this.getVitalityForLevel(nextLevel),
