@@ -20,9 +20,10 @@ import {ItemModel} from '../../models/itemModel';
 import {WeaponModel} from '../../models/weaponModel';
 import {ArmorModel} from '../../models/armorModel';
 import {HeroModel} from '../../models/heroModel';
+import {UsableModel} from '../../models/usableModel';
 import {GameStateModel} from '../../models/gameStateModel';
 import {RPGGame} from '../services/rpggame';
-import {RPGSprite} from '../rpg/rpgsprite';
+import {RPGSprite,RPGHealthBar} from '../rpg/all';
 import {Notify} from '../services/notify';
 
 @Component({
@@ -31,7 +32,7 @@ import {Notify} from '../services/notify';
 })
 @View({
   templateUrl: 'source/ui/party/partyinventory.html',
-  directives: [NgIf, NgFor, RPGSprite]
+  directives: [NgIf, NgFor, RPGSprite, RPGHealthBar]
 })
 export class PartyInventory {
   currentIndex:number = 0;
@@ -84,6 +85,13 @@ export class PartyInventory {
         this.model.addInventory(hero.weapon);
       }
       hero.weapon = <WeaponModel>item;
+    }
+    else if (item instanceof UsableModel) {
+      var i = <UsableModel>item;
+      return i.use(this.character).then(()=> {
+        this.notify.show("Used " + i.get('name') + " on " + this.character.get('name'), null, 0);
+        this.model.removeInventory(item);
+      });
     }
     this.model.removeInventory(item);
     //powAlert.show("Equipped " + item.attributes.name + " to " + hero.attributes.name);
