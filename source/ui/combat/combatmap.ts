@@ -326,7 +326,7 @@ export class CombatMap extends Map implements pow2.IProcessObject {
         msg = a + " attacked " + b + " for " + data.damage + " damage!";
       }
       else if(data.damage < 0) {
-        msg = a + " healed " + b + " for " + data.damage + " hit points";
+        msg = a + " healed " + b + " for " + Math.abs(data.damage) + " hit points";
       }
       else {
         msg = a + " attacked " + b + ", and MISSED!";
