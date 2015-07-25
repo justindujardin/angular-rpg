@@ -116,19 +116,6 @@ export class GameStateModel extends pow2.Events implements pow2.IWorldObject {
     if (typeof data.keyData !== 'undefined') {
       this.keyData = data.keyData;
     }
-
-    var theChoices:any[] = [];
-    theChoices = theChoices.concat(_.map(_gameData.getSheetData('weapons'), (w)=> {
-      return _.extend({instanceModel: new WeaponModel(w)}, w);
-    }));
-    theChoices = theChoices.concat(_.map(_gameData.getSheetData('armor'), (a)=> {
-      return _.extend({instanceModel: new ArmorModel(a)}, a);
-    }));
-    theChoices = theChoices.concat(_.map(_gameData.getSheetData('items'), (a)=> {
-      return _.extend({instanceModel: new UsableModel(a)}, a);
-    }));
-
-
     this.inventory = _.map(data.inventory, (item:rpg.IGameItem) => {
       return this.world.itemModelFromId(item.id);
     });
