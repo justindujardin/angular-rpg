@@ -34,6 +34,24 @@ export class Map extends pow2.tile.TileMapView {
     this._loadMap(value);
   }
 
+
+  get music():boolean {
+    return this._music;
+  }
+
+  set music(enabled:boolean) {
+    if (this._music === enabled) {
+      return;
+    }
+    this._music = enabled;
+    this._music ? this._playMusic() : this._destroyMusic();
+  }
+  private _music:boolean = true;
+
+
+  private _musicComponent:pow2.scene.components.SoundComponent = null;
+
+
   /**
    * The map view bounds in world space.
    */
@@ -55,13 +73,20 @@ export class Map extends pow2.tile.TileMapView {
           return reject('invalid resource: ' + this.game.world.getMapUrl(value));
         }
         if (this.tileMap) {
+          this._destroyMusic();
           this.tileMap.destroy();
           this.tileMap = null;
         }
         this.tileMap = this.game.world.entities.createObject('GameMapObject', {
           resource: map
         });
+        if(!this.tileMap){
+          return reject('Unable to create tilemap from entity container object');
+        }
         this.setTileMap(this.tileMap);
+        if(this._music){
+          this._playMusic();
+        }
         this.game.world.scene.addObject(this.tileMap);
         this._onMapLoaded(this.tileMap);
         resolve(this.tileMap);
@@ -89,6 +114,29 @@ export class Map extends pow2.tile.TileMapView {
     ctx.webkitImageSmoothingEnabled = false;
     ctx.mozImageSmoothingEnabled = false;
     ctx.imageSmoothingEnabled = false;
+  }
+
+
+  protected _destroyMusic() {
+    if (this._musicComponent) {
+      this.tileMap && this.tileMap.removeComponent(this._musicComponent);
+      this._musicComponent = null;
+    }
+  }
+
+  protected _playMusic() {
+    if(!this.tileMap || !this.game.preferences.music){
+      return;
+    }
+    if (this.tileMap.musicUrl) {
+      this._destroyMusic();
+      this._musicComponent = new pow2.scene.components.SoundComponent({
+        url: this.tileMap.musicUrl,
+        volume: this.game.preferences.musicvolume,
+        loop: true
+      });
+      this.tileMap.addComponent(this._musicComponent);
+    }
   }
 
 
