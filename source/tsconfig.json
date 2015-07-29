@@ -5,6 +5,7 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "sourceMap": true,
     "target": "es5"
   }
