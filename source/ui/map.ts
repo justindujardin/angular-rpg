@@ -125,14 +125,14 @@ export class Map extends pow2.tile.TileMapView {
   }
 
   protected _playMusic() {
-    if(!this.tileMap || !this.game.preferences.music){
+    if(!this.tileMap){
       return;
     }
     if (this.tileMap.musicUrl) {
       this._destroyMusic();
       this._musicComponent = new pow2.scene.components.SoundComponent({
         url: this.tileMap.musicUrl,
-        volume: this.game.preferences.musicvolume,
+        volume: 0.1,
         loop: true
       });
       this.tileMap.addComponent(this._musicComponent);
