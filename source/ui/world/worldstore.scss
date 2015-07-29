@@ -3,7 +3,10 @@ world-store {
   @include pow-dialog();
   z-index: $zCanvasGui;
   text-align: center;
-  min-width: 320px;
+
+  .ebp {
+    min-width: 320px;
+  }
 
   .inventory {
     min-height:200px;
