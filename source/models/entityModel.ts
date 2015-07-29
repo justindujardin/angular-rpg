@@ -63,7 +63,7 @@ export class EntityModel extends Backbone.Model {
 
     // TODO: Fix this calculation, which is producing too many misses
     // and causing the combat to feel too random and arbitrary.
-    return true;
+    //return true;
 
     var roll:number = _.random(0, 200);
     var evasion:number = defender.getEvasion();
