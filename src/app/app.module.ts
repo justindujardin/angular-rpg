@@ -5,6 +5,10 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 
+import {AudioResource} from '../game/pow-core';
+import {TileMap} from '../game/pow2/tile/tileMap';
+
+
 /*
  * Platform and Environment providers/directives/pipes
  */
