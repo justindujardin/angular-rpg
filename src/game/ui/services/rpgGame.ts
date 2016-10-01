@@ -24,7 +24,7 @@ import {GameEntityObject} from '../../rpg/objects/gameEntityObject';
 import {GameStateMachine} from '../../rpg/states/gameStateMachine';
 import {ResourceLoader} from '../../pow-core/resourceLoader';
 import {Point} from '../../pow-core/point';
-import {getWorld, registerWorld} from '../../pow-core/api';
+import {registerWorld} from '../../pow-core/api';
 import {PlayerComponent} from '../../rpg/components/playerComponent';
 import {TileMap} from '../../pow2/tile/tileMap';
 import {Injectable} from '@angular/core';
@@ -82,38 +82,41 @@ export class RPGGame {
   }
 
 
-  createPlayer(from: HeroModel, tileMap: GameTileMap, at?: Point) {
+  createPlayer(from: HeroModel, tileMap: GameTileMap, at?: Point): Promise<GameEntityObject> {
     if (!from) {
-      throw new Error("Cannot create player without valid model");
+      return Promise.reject("Cannot create player without valid model");
     }
     if (!this.world.entities.data) {
-      throw new Error("Cannot create player before entities container is loaded");
+      return Promise.reject("Cannot create player before entities container is loaded");
     }
     if (this.sprite) {
       this.sprite.destroy();
       this.sprite = null;
     }
-    this.world.entities.createObject('GameMapPlayer', {
-      model: from,
-      map: tileMap
-    }).then((sprite: GameEntityObject) => {
-      this.sprite = sprite;
-    });
-    if (!this.sprite) {
-      throw new Error("Failed to create map player");
-    }
-    this.sprite.name = from.attributes.name;
-    this.sprite.icon = from.attributes.icon;
-    this.world.scene.addObject(this.sprite);
+    return this.world.entities
+      .createObject('GameMapPlayer', {
+        model: from,
+        map: tileMap
+      })
+      .then((sprite: GameEntityObject) => {
+        this.sprite = sprite;
+        if (!this.sprite) {
+          return Promise.reject("Failed to create map player");
+        }
+        this.sprite.name = from.attributes.name;
+        this.sprite.icon = from.attributes.icon;
+        this.world.scene.addObject(this.sprite);
 
-    // If no point is specified, use the position of the first Portal on the current map
-    if (typeof at === 'undefined' && tileMap instanceof TileMap && this.partyPosition.isZero()) {
-      var portal: any = _.where(tileMap.features.objects, {type: 'source.components.features.PortalFeatureComponent'})[0];
-      if (portal) {
-        at = new Point(portal.x / portal.width, portal.y / portal.height);
-      }
-    }
-    this.sprite.setPoint(at || this.partyPosition);
+        // If no point is specified, use the position of the first Portal on the current map
+        if (typeof at === 'undefined' && tileMap instanceof TileMap && this.partyPosition.isZero()) {
+          var portal: any = _.where(tileMap.features.objects, {type: 'source.components.features.PortalFeatureComponent'})[0];
+          if (portal) {
+            at = new Point(portal.x / portal.width, portal.y / portal.height);
+          }
+        }
+        this.sprite.setPoint(at || this.partyPosition);
+        return this.sprite;
+      });
   }
 
   /**

@@ -62,8 +62,9 @@ export class GameWorld extends SceneWorld {
     GameStateModel.getDataSource((gsr: GameDataResource)=> {
       this.spreadsheet = gsr;
     });
-    this.entities = this.loader.load(`${GAME_ROOT}entities/rpg.powEntities`)
-      .then(() => {
+    this.loader.load(`${GAME_ROOT}entities/rpg.powEntities`)
+      .then((res: EntityContainerResource[]) => {
+        this.entities = res[0];
         this.events.trigger('ready');
       })
       .catch((e)=> {
