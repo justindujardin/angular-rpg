@@ -18,7 +18,7 @@ import * as tiled from './tiled';
 import {XMLResource} from '../xml';
 import {ImageResource} from '../image';
 
-declare var _: any;
+import * as _ from 'underscore';
 
 
 export class TilesetTile {

@@ -14,25 +14,24 @@
  limitations under the License.
  */
 
-import _ from 'underscore';
+import * as _ from 'underscore';
 import {SpriteRender} from '../core/spriteRender';
-import {Input} from '../core/input';
+import {PowInput} from '../core/input';
 import {IScene} from '../interfaces/IScene';
 import {World} from '../../pow-core/world';
 import {ResourceLoader} from '../../pow-core/resourceLoader';
 
 // TODO(JD): imagine this as a ngrx data store.
 export class SceneWorld extends World {
-  input: Input;
+  input: PowInput;
   sprites: SpriteRender;
   scene: IScene;
 
   constructor(services?: any) {
-    services = _.defaults(services || {}, {
+    super(_.defaults(services || {}, {
       loader: new ResourceLoader()
-    });
-    super(services);
-    this.setService('input', new Input());
+    }));
+    this.setService('input', new PowInput());
     this.setService('sprites', new SpriteRender());
   }
 }

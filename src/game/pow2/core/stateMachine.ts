@@ -17,9 +17,10 @@
 
 // State Machine Interfaces
 // -------------------------------------------------------------------------
+import * as _ from 'underscore';
 import {IWorld, IWorldObject} from '../../pow-core/world';
 import {IState} from './state';
-import {IEvents} from '../../pow-core/events';
+import {IEvents, Events} from '../../pow-core/events';
 
 export interface IStateMachine extends IEvents {
   update(data: any);

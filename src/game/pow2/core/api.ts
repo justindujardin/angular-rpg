@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import _ from 'underscore';
+import * as _ from 'underscore';
 
 /**
  * The Google Spreadsheet ID to load game data from.  This must be a published

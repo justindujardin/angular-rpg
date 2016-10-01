@@ -15,9 +15,9 @@
  */
 
 
-import {Time} from "./time";
-import {ResourceLoader} from "./resourceLoader";
-declare var _: any;
+import {Time} from './time';
+import {ResourceLoader} from './resourceLoader';
+import * as _ from 'underscore';
 
 export interface IWorld {
   loader: ResourceLoader;

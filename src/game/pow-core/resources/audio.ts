@@ -14,10 +14,10 @@
  limitations under the License.
  */
 
-import {Resource} from "../resource";
-import {errors} from "../errors";
+import {Resource} from '../resource';
+import {errors} from '../errors';
 import {Time} from '../time';
-declare var _: any;
+import * as _ from 'underscore';
 
 /**
  * A supported audio format description that maps extensions to resource types.

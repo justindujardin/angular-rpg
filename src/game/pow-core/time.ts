@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-declare var _: any;
+import * as _ from 'underscore';
 
 
 export interface IProcessObject {

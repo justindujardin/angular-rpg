@@ -16,7 +16,7 @@
 
 import {TileObjectRenderer} from '../tile/render/tileObjectRenderer';
 import {TileMapView} from '../tile/tileMapView';
-import {NamedMouseElement, Input} from '../core/input';
+import {NamedMouseElement, PowInput} from '../core/input';
 import {Scene} from '../scene/scene';
 import {SceneView} from '../scene/sceneView';
 import {TileMap} from '../tile/tileMap';
@@ -75,7 +75,7 @@ export class GameMapView extends TileMapView {
     var pathComponent = <PathComponent>this.scene.componentByType(PathComponent);
     var playerComponent = <PlayerComponent>this.scene.componentByType(PlayerComponent);
     if (pathComponent && playerComponent) {
-      Input.mouseOnView(e.originalEvent, this.mouse.view, this.mouse);
+      PowInput.mouseOnView(e.originalEvent, this.mouse.view, this.mouse);
       playerComponent.path = pathComponent.calculatePath(playerComponent.targetPoint, this.mouse.world);
       e.preventDefault();
       return false;

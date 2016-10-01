@@ -14,6 +14,7 @@
  limitations under the License.
  */
 
+import * as _ from 'underscore';
 import {ImageResource} from '../../pow-core/resources/image';
 import {SpriteComponent} from './components/spriteComponent';
 import {Scene} from '../scene/scene';
@@ -45,7 +46,6 @@ var DEFAULTS: TileObjectOptions = {
   visible: true,
   enabled: true,
   icon: "",
-  iconCoords: null,
   scale: 1,
   image: null,
   tileMap: null
@@ -107,7 +107,7 @@ export class TileObject extends SceneObject implements TileObjectOptions {
     }
     else {
       var meta = this.world.sprites.getSpriteMeta(name);
-      this.world.sprites.getSpriteSheet(meta.source, (image: ImageResource) => {
+      this.world.sprites.getSpriteSheet(meta.source).then((image: ImageResource) => {
         this.meta = meta;
         return this.image = image.data;
       });

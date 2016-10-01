@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
+import * as _ from 'underscore';
 import {SceneComponent} from '../sceneComponent';
 import {AudioResource} from '../../../pow-core/resources/audio';
 import {ResourceLoader} from '../../../pow-core/resourceLoader';
@@ -43,7 +43,7 @@ export class SoundComponent extends SceneComponent implements SoundComponentOpti
   }
 
   disconnectComponent(): boolean {
-    if (this.audio.isReady()) {
+    if (this.audio.data) {
       this.audio.data.pause();
       this.audio.data.currentTime = 0;
     }
@@ -54,13 +54,15 @@ export class SoundComponent extends SceneComponent implements SoundComponentOpti
     if (!super.connectComponent() || !this.url) {
       return false;
     }
-    if (this.audio && this.audio.isReady()) {
+    if (this.audio && this.audio.data) {
       this.audio.data.currentTime = 0;
       this.audio.data.volume = this.volume;
       return true;
     }
-    this.audio = ResourceLoader.get().load(this.url, () => {
-      if (this.audio.isReady()) {
+    ResourceLoader.get().load(this.url).then((resources: AudioResource[]) => {
+      const res = resources[0];
+      this.audio = res;
+      if (this.audio.data) {
         this.audio.data.currentTime = 0;
         this.audio.data.volume = this.volume;
         this.audio.data.loop = this.loop;

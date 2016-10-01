@@ -14,8 +14,7 @@
  limitations under the License.
  */
 
-import {Resource} from "../resource";
-declare var $: any;
+import {Resource} from '../resource';
 /**
  * Use jQuery to load a JSON file from a URL.
  */

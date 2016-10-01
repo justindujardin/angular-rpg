@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import _ from 'underscore';
+import * as _ from 'underscore';
 import {ISceneObject, ISceneView, IScene} from '../interfaces/IScene';
 import {IWorld, IWorldObject} from '../../pow-core/world';
 import {SceneSpatialDatabase} from './sceneSpatialDatabase';

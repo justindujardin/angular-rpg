@@ -14,10 +14,9 @@
  limitations under the License.
  */
 
-import _ from 'underscore';
-import {errors} from "./errors";
-import {IComponent} from "./component";
-import {IComponentHost} from "./component";
+import * as _ from 'underscore';
+import {errors} from './errors';
+import {IComponent, IComponentHost} from './component';
 import {Events} from './events';
 
 /**

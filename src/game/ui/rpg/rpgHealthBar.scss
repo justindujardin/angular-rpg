@@ -1,0 +1,28 @@
+rpg-health-bar {
+  display: inline-flex;
+  height: inherit;
+  md-progress-bar {
+    height: inherit;
+    /* Damage states */
+    &.fine {
+      .md-bar {
+        background-color: md-color($md-primary, 800, 0.5);
+      }
+    }
+    &.hurt {
+      .md-bar {
+        background-color: md-color($md-accent, 0.5);
+      }
+    }
+    &.critical {
+      .md-bar {
+        background-color: rgba(183, 0, 5, 0.5);
+      }
+    }
+    &.dead {
+      .md-bar {
+        background-color: rgba(255, 255, 255, 0.5);
+      }
+    }
+  }
+}

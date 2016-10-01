@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import {Resource} from "../resource";
+import {Resource} from '../resource';
 /**
  * Use html image element to load an image resource.
  */

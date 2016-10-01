@@ -15,6 +15,7 @@
  */
 
 
+import * as _ from 'underscore';
 import {SceneComponent} from '../../scene/sceneComponent';
 import {TileObject} from '../tileObject';
 import {ImageResource} from '../../../pow-core/resources/image';

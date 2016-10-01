@@ -14,6 +14,7 @@
  limitations under the License.
  */
 
+import * as _ from 'underscore';
 import {TileComponent} from '../tileComponent';
 import {TileMap} from '../tileMap';
 import {Point} from '../../../pow-core/point';

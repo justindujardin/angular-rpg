@@ -13,6 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+import * as _ from 'underscore';
 import {TileObject} from '../../tile/tileObject';
 import {TickedComponent} from '../../scene/components/tickedComponent';
 import {AnimatedComponent, IAnimationConfig} from './animatedComponent';

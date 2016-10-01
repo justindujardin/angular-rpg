@@ -13,9 +13,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+import * as _ from 'underscore';
 import {Point} from '../../../pow-core/point';
 import {TickedComponent} from '../../scene/components/tickedComponent';
 import {TileObject} from '../../tile/tileObject';
+
 export interface IAnimationConfig {
   // It may seem weird to require name, but it's to enforce
   // a human-readable naming scheme for debugging win.

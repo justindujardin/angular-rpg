@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-
+import * as _ from 'underscore';
 import {Resource} from '../../../pow-core/resource';
 declare var Tabletop: any;
 /**
@@ -31,7 +31,7 @@ export class GameDataResource extends Resource {
       try {
         this.data = JSON.parse(this.getCache(this.url));
         if (this.data) {
-          _.defer(()=> {
+          _.defer(() => {
             resolve(this);
           });
         }
@@ -117,9 +117,9 @@ export class GameDataResource extends Resource {
   }
 
   getSheetData(name: string): any {
-    if (!this.isReady()) {
-      throw new Error("Cannot query spreadsheet before it's loaded");
-    }
+    // if (!this.isReady()) {
+    //   throw new Error("Cannot query spreadsheet before it's loaded");
+    // }
     name = ('' + name).toLocaleLowerCase();
     if (!this.data[name]) {
       return [];

@@ -14,6 +14,7 @@
  limitations under the License.
  */
 
+import * as _ from 'underscore';
 import {SpriteComponent} from './spriteComponent';
 import {TickedComponent} from '../../scene/components/tickedComponent';
 import {TileObject} from '../tileObject';

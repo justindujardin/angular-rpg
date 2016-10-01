@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
+import * as _ from 'underscore';
 import {SceneObjectRenderer} from '../../scene/sceneObjectRenderer';
 import {Rect} from '../../../pow-core/rect';
 import {TileMap} from '../tileMap';

@@ -14,10 +14,10 @@
  limitations under the License.
  */
 
-import {Entity} from "../entity";
-import {JSONResource} from "./json";
-import {errors} from "../errors";
-import _ from 'underscore';
+import {Entity} from '../entity';
+import {JSONResource} from './json';
+import {errors} from '../errors';
+import * as _ from 'underscore';
 
 export enum EntityError {
   NONE = 0,
@@ -200,9 +200,9 @@ export class EntityContainerResource extends JSONResource {
           return Promise.all<any[]>(_.map(templateData.components, (c: any) => this._fetchImportModule(c.type)))
             .then(() => {
               var unsatisfied: EntityError = EntityError.NONE;
-              _.each(templateData.components, (comp: any)=> {
+              _.each(templateData.components, (comp: any) => {
                 if (comp.params) {
-                  _.each(comp.params, (i: string)=> {
+                  _.each(comp.params, (i: string) => {
                     if (typeof inputs[i] === 'undefined') {
                       console.error("EntityContainer: missing component param: " + i);
                       unsatisfied |= EntityError.COMPONENT_INPUT;
@@ -261,7 +261,8 @@ export class EntityContainerResource extends JSONResource {
     var importName = tuple[0];
     var importType = tuple[1];
     return new Promise<any>((resolve, reject) => {
-      System.import(importName).then((importModule: any) => {
+      const promise = System.import(importName);
+      promise.then((importModule: any) => {
         if (!importModule[importType]) {
           reject("INVALID MODULE TYPE: " + importName);
         }

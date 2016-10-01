@@ -1,0 +1,24 @@
+// eight-bit-panel
+@mixin eight-bit-panel($border-width:6px,$color: white, $background-color:#004c62) {
+  background-color: $background-color;
+  color: $color;
+  border: $border-width solid $color;
+  border-radius: $border-width * 1.5;
+  position: relative;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.7);
+}
+
+.drop-panel {
+  background: #333;
+  background-color: rgba(0, 0, 0, .3);
+  border: 1px solid #222;
+  border: 1px solid rgba(0, 0, 0, .1);
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  padding: 0px;
+}
+
+.ebp {
+  @include eight-bit-panel(6px);
+}

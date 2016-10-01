@@ -15,7 +15,7 @@
  */
 
 declare var $: any;
-declare var _: any;
+import * as _ from 'underscore';
 
 
 // -------------------------------------------------------------------------

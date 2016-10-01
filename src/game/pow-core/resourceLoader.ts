@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import _ from 'underscore';
+import * as _ from 'underscore';
 import {errors} from './errors';
 import {Resource, IResource} from './resource';
 import {ImageResource} from './resources/image';
@@ -42,6 +42,15 @@ export class ResourceLoader {
     'tsx': TiledTSXResource,
     '': AudioResource
   };
+
+  private static _instance: ResourceLoader = null;
+
+  static get(): ResourceLoader {
+    if (this._instance === null) {
+      this._instance = new ResourceLoader();
+    }
+    return this._instance;
+  }
 
   registerType(extension: string, type: Function) {
     this._types[extension] = type;

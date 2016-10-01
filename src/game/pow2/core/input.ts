@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import _ from 'underscore';
+import * as _ from 'underscore';
 import {SceneView} from '../scene/sceneView';
 import {Point} from '../../pow-core/point';
 import {IWorldObject, IWorld} from '../../pow-core/world';
@@ -44,7 +44,7 @@ export interface NamedMouseElement extends CanvasMouseCoords {
   view: SceneView;
 }
 
-export class Input implements IWorldObject {
+export class PowInput implements IWorldObject {
   world: IWorld;
   _keysDown: Object = {};
   _mouseElements: NamedMouseElement[] = [];
@@ -83,7 +83,7 @@ export class Input implements IWorldObject {
       for (var i = 0; i < l; i++) {
         var hook: NamedMouseElement = hooks[i];
         if (ev.srcElement === hook.view.canvas) {
-          Input.mouseOnView(ev, hook.view, hook);
+          PowInput.mouseOnView(ev, hook.view, hook);
         }
         else {
           hook.point.set(-1, -1);

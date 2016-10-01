@@ -14,11 +14,10 @@
  limitations under the License.
  */
 
-import {Entity} from "./entity";
-import {IObservable} from './observable';
+import {Entity} from './entity';
 import {Events} from './events';
 
-declare var _: any;
+import * as _ from 'underscore';
 /**
  * Most basic object.  Has an id and a name.
  */

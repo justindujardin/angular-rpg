@@ -1,27 +1,32 @@
-import { NgModule, ApplicationRef } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-import { RouterModule } from '@angular/router';
-import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
-
-import {AudioResource} from '../game/pow-core';
-import {TileMap} from '../game/pow2/tile/tileMap';
+import {NgModule, ApplicationRef, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {FormsModule} from '@angular/forms';
+import {HttpModule} from '@angular/http';
+import {RouterModule} from '@angular/router';
+import {removeNgStyles, createNewHosts, createInputTransfer} from '@angularclass/hmr';
+import {RPGAppComponent} from '../game/rpg/game';
+import {ENV_PROVIDERS} from './environment';
+import {ROUTES} from './app.routes';
+import {App} from './app.component';
+import {APP_RESOLVER_PROVIDERS} from './app.resolver';
+import {AppState, InteralStateType} from './app.service';
+import {Home} from './home';
+import {About} from './about';
+import {NoContent} from './no-content';
+import {XLarge} from './home/x-large';
+import {CombatModule} from '../game/ui/combat/index';
+import {WorldModule} from '../game/ui/world/index';
+import {RpgModule} from '../game/ui/rpg/index';
+import {PartyModule} from '../game/ui/party/index';
+import {ServicesModule} from '../game/ui/services/index';
+import {CommonModule} from '@angular/common';
+import {GameModule} from '../game/game.module';
 
 
 /*
  * Platform and Environment providers/directives/pipes
  */
-import { ENV_PROVIDERS } from './environment';
-import { ROUTES } from './app.routes';
 // App is our top level component
-import { App } from './app.component';
-import { APP_RESOLVER_PROVIDERS } from './app.resolver';
-import { AppState, InteralStateType } from './app.service';
-import { Home } from './home';
-import { About } from './about';
-import { NoContent } from './no-content';
-import { XLarge } from './home/x-large';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -39,7 +44,7 @@ type StoreType = {
  * `AppModule` is the main entry point into Angular2's bootstraping process
  */
 @NgModule({
-  bootstrap: [ App ],
+  bootstrap: [App],
   declarations: [
     App,
     About,
@@ -49,9 +54,11 @@ type StoreType = {
   ],
   imports: [ // import Angular's modules
     BrowserModule,
+    CommonModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(ROUTES, { useHash: true })
+    GameModule.forRoot(),
+    RouterModule.forRoot(ROUTES, {useHash: true})
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
@@ -59,7 +66,8 @@ type StoreType = {
   ]
 })
 export class AppModule {
-  constructor(public appRef: ApplicationRef, public appState: AppState) {}
+  constructor(public appRef: ApplicationRef, public appState: AppState) {
+  }
 
   hmrOnInit(store: StoreType) {
     if (!store || !store.state) return;
@@ -85,7 +93,7 @@ export class AppModule {
     // recreate root elements
     store.disposeOldHosts = createNewHosts(cmpLocation);
     // save input values
-    store.restoreInputValues  = createInputTransfer();
+    store.restoreInputValues = createInputTransfer();
     // remove styles
     removeNgStyles();
   }

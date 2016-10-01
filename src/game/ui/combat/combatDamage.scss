@@ -1,0 +1,27 @@
+.damage-value {
+  pointer-events: none;
+  position: absolute;
+  opacity: 0;
+  z-index: $zCanvasGui;
+  font-family: 'GraphicPixel', sans-serif;
+  font-size: 3em;
+  color: #F00;
+  transition: opacity 1s ease-out, transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+  transform: translateY(0);
+  @include stroke-text(2px, rgba(255, 255, 255, 0.9));
+  &.miss {
+    color: #ccc;
+    @include stroke-text(1px, #222);
+  }
+  &.heal {
+    color: #0E0;
+    @include stroke-text(1px, #222);
+  }
+  &.active {
+    opacity: 1;
+    transform: translateY(-25%);
+  }
+  &.remove {
+    display: none;
+  }
+}

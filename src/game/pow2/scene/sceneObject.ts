@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import _ from 'underscore';
+import * as _ from 'underscore';
 import {SceneComponent} from './sceneComponent';
 import {Entity} from '../../pow-core/entity';
 import {Scene} from './scene';

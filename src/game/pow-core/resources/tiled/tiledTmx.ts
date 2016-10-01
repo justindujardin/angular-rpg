@@ -14,13 +14,13 @@
  limitations under the License.
  */
 
-import {errors} from "../../errors";
-import * as tiled from "./tiled";
-import {XMLResource} from "../xml";
-import {Resource} from "../../resource";
-import {TiledTSXResource} from "./tiledTsx";
+import {errors} from '../../errors';
+import * as tiled from './tiled';
+import {XMLResource} from '../xml';
+import {Resource} from '../../resource';
+import {TiledTSXResource} from './tiledTsx';
 declare var $: any;
-declare var _: any;
+import * as _ from 'underscore';
 
 
 /**

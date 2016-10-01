@@ -14,6 +14,7 @@
  limitations under the License.
  */
 
+import * as _ from 'underscore';
 import {MovableComponent, IMoveDescription} from '../../scene/components/movableComponent';
 import {TileObject} from '../../tile/tileObject';
 import {Point} from '../../../pow-core/point';
@@ -22,7 +23,6 @@ import {TileComponent} from '../../tile/tileComponent';
 import {TileMap} from '../../tile/tileMap';
 import {ITiledLayer} from '../../../pow-core/resources/tiled/tiled';
 import {SceneObject} from '../../scene/sceneObject';
-import {PlayerComponent} from '../../../rpg/components/playerComponent';
 export class BasePlayerComponent extends MovableComponent {
   host: TileObject;
   passableKeys: string[] = ['passable'];

@@ -1,0 +1,40 @@
+<div class="ebp" *ngIf="active" layout="column" layout-padding>
+  <h1>{{getActionVerb()}} {{name}}</h1> <span>Gold: {{buyer.gold}}</span>
+
+  <div class="inventory" layout-padding flex>
+    <ul *ngIf="isBuying()">
+      <li class="item" *ngFor="let item of inventory" (click)="selectItem(item)" layout="row">
+        <rpg-sprite width="32" height="32" class="icon" [name]="item.icon"></rpg-sprite>
+        <span flex class="item-name" [innerText]="item.name"></span>
+        <span class="item-price" [innerText]="item.cost"></span>
+      </li>
+    </ul>
+
+    <ul *ngIf="isSelling()">
+      <li class="item" *ngFor="let item of buyer.inventory" (click)="selectItem(item)" layout="row">
+        <rpg-sprite width="32" height="32" class="icon" [name]="item.attributes.icon"></rpg-sprite>
+        <span flex class="item-name" [innerText]="item.attributes.name"></span>
+        <span class="item-price" [innerText]="item.attributes.cost"></span>
+      </li>
+    </ul>
+    <ul *ngIf="selected">
+      <li class="item selected" layout="row">
+        <rpg-sprite width="32" height="32" class="icon" [name]="selected.icon"></rpg-sprite>
+        <span flex class="item-name" [innerText]="selected.name"></span>
+        <span class="item-price" [innerText]="selected.cost"></span>
+      </li>
+    </ul>
+
+  </div>
+
+
+  <div class="prompt btn-group" *ngIf="selected">
+    <button class="btn btn-flat" (click)="selected=null">Back</button>
+    <button class="btn btn-flat" (click)="actionItem(selected)" [innerText]="selling?'Sell':'Buy'"></button>
+  </div>
+  <div class="prompt btn-group" *ngIf="!selected">
+    <button class="btn btn-flat" (click)="close()">Done</button>
+    <button class="btn btn-flat" (click)="toggleAction()" [innerText]="selling?'Buy':'Sell'"></button>
+  </div>
+
+</div>

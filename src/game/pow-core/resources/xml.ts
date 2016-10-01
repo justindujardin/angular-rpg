@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
-import {Resource} from "../resource";
+import {Resource} from '../resource';
 declare var $: any;
-declare var _: any;
+import * as _ from 'underscore';
 
 
 /**

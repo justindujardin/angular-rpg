@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import _ from 'underscore';
+import * as _ from 'underscore';
 import {SceneObject} from './sceneObject';
 import {IWorldObject, IWorld} from '../../pow-core/world';
 import {ISceneView} from '../interfaces/IScene';
@@ -50,9 +50,14 @@ export class SceneView extends SceneObject implements IWorldObject, ISceneView {
     super();
     this.animations = [];
     this.canvas = canvas;
+    this.loader = loader;
+  }
+
+  init(canvas: HTMLCanvasElement) {
     if (!canvas) {
       throw new Error("A Canvas is required");
     }
+    this.canvas = canvas;
     this.$el = (<any>window).$(canvas);
     this.context = <CanvasRenderingContext2D>canvas.getContext("2d");
     if (!this.context) {
@@ -64,7 +69,6 @@ export class SceneView extends SceneObject implements IWorldObject, ISceneView {
     this.camera = new Rect(0, 0, 9, 9);
     this.cameraScale = 1.0;
     this.unitSize = SceneView.UNIT;
-    this.loader = loader;
   }
 
   // IWorldObject

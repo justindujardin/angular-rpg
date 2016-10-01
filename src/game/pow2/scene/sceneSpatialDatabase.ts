@@ -18,7 +18,7 @@
 // Very, very simple spatial database.  Because all the game objects have
 // an extent of 1 unit, we can just do a point in rect to determine object hits.
 
-import _ from 'underscore';
+import * as _ from 'underscore';
 import {ISceneObject} from '../interfaces/IScene';
 import {Rect} from '../../pow-core/rect';
 import {Point} from '../../pow-core/point';

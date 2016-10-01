@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import {errors} from "./errors";
+import {errors} from './errors';
 
 export interface IPoint {
   x: number;
