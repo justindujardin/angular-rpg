@@ -58,7 +58,7 @@ export class SceneView extends SceneObject implements IWorldObject, ISceneView {
       throw new Error("A Canvas is required");
     }
     this.canvas = canvas;
-    this.$el = (<any>window).$(canvas);
+    this.$el = $(canvas);
     this.context = <CanvasRenderingContext2D>canvas.getContext("2d");
     if (!this.context) {
       throw new Error("Could not retrieve Canvas context");

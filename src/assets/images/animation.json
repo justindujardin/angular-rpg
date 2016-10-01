@@ -1,0 +1,21 @@
+[
+   "data/textures/animation/animArrow.png",
+   "data/textures/animation/animBlackBallSmall.png",
+   "data/textures/animation/animColdBallSmall.png",
+   "data/textures/animation/animFireBall.png",
+   "data/textures/animation/animHit.png",
+   "data/textures/animation/animHitSpell.png",
+   "data/textures/animation/animHotBall.png",
+   "data/textures/animation/animHotBallSmall.png",
+   "data/textures/animation/animLightning.png",
+   "data/textures/animation/animMiss.png",
+   "data/textures/animation/animPoison.png",
+   "data/textures/animation/animPowSlash2.png",
+   "data/textures/animation/animResist.png",
+   "data/textures/animation/animRockSmall1.png",
+   "data/textures/animation/animSlash.png",
+   "data/textures/animation/animSlimeBall.png",
+   "data/textures/animation/animSmoke.png",
+   "data/textures/animation/animSpellCast.png",
+   "data/textures/animation/animThrowingBone.png"
+]

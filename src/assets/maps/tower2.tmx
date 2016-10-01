@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="19" height="19" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="combat" value="true"/>
+  <property name="combatZone" value="zone-ice-tower"/>
+ </properties>
+ <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <layer name="Terrain" width="19" height="19">
+  <data encoding="csv">
+34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,
+34,50,50,50,50,50,34,34,34,34,34,34,34,50,50,50,50,50,34,
+34,34,34,50,50,50,34,34,34,34,34,34,34,50,50,50,50,50,34,
+34,50,50,50,50,50,50,50,34,50,34,50,50,50,50,50,50,50,34,
+34,34,34,50,50,50,34,50,34,50,34,50,34,50,50,50,50,50,34,
+34,50,50,50,50,50,34,50,34,50,34,50,34,50,50,50,50,50,34,
+34,34,34,34,34,34,34,50,34,50,34,50,34,34,34,50,34,34,34,
+34,34,34,34,34,34,34,50,34,50,34,50,34,34,34,50,34,34,34,
+34,34,34,34,34,34,34,50,34,50,34,50,34,34,34,50,34,34,34,
+34,34,34,34,34,34,34,50,50,50,50,50,34,34,34,50,34,34,34,
+34,34,34,34,34,34,34,34,34,50,34,34,34,34,34,50,34,34,34,
+34,34,34,34,34,34,34,34,34,50,34,34,34,34,34,50,34,34,34,
+34,34,34,34,34,34,34,34,34,50,34,34,34,34,34,50,34,34,34,
+34,50,50,50,50,50,34,34,34,34,34,34,34,50,50,50,50,50,34,
+34,50,50,50,50,50,34,34,34,34,34,34,34,50,50,50,50,50,34,
+34,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,34,
+34,50,50,50,50,50,34,34,34,34,34,34,34,50,50,50,50,50,34,
+34,50,50,50,50,50,34,34,34,34,34,34,34,50,50,50,50,50,34,
+34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34
+</data>
+ </layer>
+ <objectgroup draworder="topdown" name="Features" width="19" height="19">
+  <object name="tower1" type="source.components.features.PortalFeatureComponent" x="48" y="240" width="16" height="16">
+   <properties>
+    <property name="icon" value="doorway.png"/>
+    <property name="target" value="tower1"/>
+    <property name="targetX" value="7"/>
+    <property name="targetY" value="16"/>
+    <property name="text" value="Return to the first level of the tower?"/>
+    <property name="transitionType" value="down"/>
+   </properties>
+  </object>
+  <object name="iceGolem.png" type="source.components.features.CombatFeatureComponent" x="144" y="144" width="16" height="16">
+   <properties>
+    <property name="creatures" value=""/>
+    <property name="gold" value="8"/>
+    <property name="icon" value="iceGolem.png"/>
+    <property name="id" value="towerGolem"/>
+    <property name="items" value=""/>
+    <property name="text" value="Two handlers release the bonds on a hulking monstrosity made entirely of ice! It lurches towards you!"/>
+   </properties>
+  </object>
+  <object name="iceTroll.png" type="source.components.features.CombatFeatureComponent" x="80" y="48" width="16" height="16">
+   <properties>
+    <property name="ambushed" value="true"/>
+    <property name="creatures" value=""/>
+    <property name="gold" value="8"/>
+    <property name="icon" value="iceTroll.png"/>
+    <property name="id" value="towerTrolls"/>
+    <property name="items" value=""/>
+    <property name="text" value="You are set upon by a group of trolls!"/>
+   </properties>
+  </object>
+  <object name="Bag of Holding" type="alert" x="144" y="48" width="16" height="16">
+   <properties>
+    <property name="icon" value="bag.png"/>
+    <property name="sets" value="bagOfHolding"/>
+    <property name="text" value="You have found the Bag of Holding! You can now store an additional 15 items in the bag."/>
+    <property name="title" value="Bag of Holding"/>
+    <property name="type" value="alert"/>
+    <property name="until" value="bagOfHolding"/>
+   </properties>
+  </object>
+  <object name="tower3" type="source.components.features.PortalFeatureComponent" x="16" y="80" width="16" height="16">
+   <properties>
+    <property name="icon" value="doorway.png"/>
+    <property name="target" value="tower3"/>
+    <property name="targetX" value="1"/>
+    <property name="targetY" value="1"/>
+    <property name="text" value="Climb to the top level of the tower?"/>
+    <property name="transitionType" value="up"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

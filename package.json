@@ -136,6 +136,7 @@
     "source-map-loader": "^0.1.5",
     "string-replace-loader": "github:gdi2290/string-replace-loader",
     "style-loader": "^0.13.1",
+    "tabletop": "^1.4.3",
     "to-string-loader": "^1.1.4",
     "ts-helpers": "1.1.1",
     "ts-node": "^1.3.0",

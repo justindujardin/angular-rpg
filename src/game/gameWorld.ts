@@ -62,7 +62,7 @@ export class GameWorld extends SceneWorld {
     GameStateModel.getDataSource((gsr: GameDataResource)=> {
       this.spreadsheet = gsr;
     });
-    this.entities = this.loader.load(GAME_ROOT + 'entities/rpg.powEntities')
+    this.entities = this.loader.load(`${GAME_ROOT}entities/rpg.powEntities`)
       .then(() => {
         this.events.trigger('ready');
       })
@@ -89,7 +89,7 @@ export class GameWorld extends SceneWorld {
   }
 
   getMapUrl(name: string): string {
-    return `maps/${name}.tmx`;
+    return `${GAME_ROOT}/maps/${name}.tmx`;
   }
 
   randomEncounter(zone: rpg.IZoneMatch, then?: rpg.IGameEncounterCallback) {

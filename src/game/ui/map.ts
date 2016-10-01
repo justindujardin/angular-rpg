@@ -98,7 +98,7 @@ export class Map extends TileMapView {
           resolve(this.tileMap);
         })
         .catch((e) => {
-          return reject('Unable to create tilemap from entity container object');
+          return reject(`Unable to create Map: ${e}`);
         });
     });
   }

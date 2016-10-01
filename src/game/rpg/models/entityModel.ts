@@ -61,14 +61,6 @@ export class EntityModel extends Model {
     this.set('name', value);
   }
 
-  get id(): string {
-    return this.get('id');
-  }
-
-  set id(value: string) {
-    this.set('id', value);
-  }
-
   // Methods ----
 
   // Chance to hit = (BASE_CHANCE_TO_HIT + PLAYER_HIT_PERCENT) - EVASION

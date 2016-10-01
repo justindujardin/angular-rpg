@@ -126,7 +126,7 @@ export class ResourceLoader {
             results.push(resource);
           })
           .catch((e) => {
-            console.log('failed to load resource with error: ' + e);
+            console.log(`failed to load resource (${src}) with error: ${e}`);
             errors++;
             loadQueue--;
             _checkDone();

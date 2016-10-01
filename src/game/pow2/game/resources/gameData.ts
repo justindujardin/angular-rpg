@@ -24,12 +24,12 @@ export class GameDataResource extends Resource {
 
   static DATA_KEY: string = '__db';
 
-  load(): Promise<GameDataResource> {
+  fetch(url?: string): Promise<GameDataResource> {
     return new Promise<GameDataResource>((resolve, reject) => {
       // Attempt to load db from save game cache to avoid hitting
       // google spreadsheets API on ever page load.
       try {
-        this.data = JSON.parse(this.getCache(this.url));
+        this.data = JSON.parse(this.getCache(url));
         if (this.data) {
           _.defer(() => {
             resolve(this);
@@ -40,10 +40,10 @@ export class GameDataResource extends Resource {
       }
       // TODO: ERROR Condition
       Tabletop.init({
-        key: this.url,
+        key: url,
         callback: (data, tabletop) => {
           data = this.data = this.transformTypes(data);
-          this.setCache(this.url, JSON.stringify(data));
+          this.setCache(url, JSON.stringify(data));
           resolve(this);
         }
       });

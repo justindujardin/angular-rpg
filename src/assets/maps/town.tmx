@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="27" height="22" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="music" value="music/TownTheme"/>
+ </properties>
+ <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <layer name="Terrain" width="27" height="22">
+  <data encoding="csv">
+46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,
+46,46,46,46,46,46,46,46,46,46,46,69,46,69,46,46,46,46,46,46,46,46,46,18,18,18,18,
+46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,
+46,46,46,46,46,46,46,46,46,46,69,69,46,69,69,46,46,46,46,46,46,46,46,18,18,18,18,
+46,46,46,9,9,9,9,9,9,9,9,9,6,9,9,9,9,9,9,9,9,9,9,18,18,18,18,
+46,46,46,9,46,46,46,69,46,46,46,9,33,9,46,46,46,69,69,69,69,69,69,18,18,18,18,
+46,46,46,9,46,69,46,69,46,69,46,33,33,33,46,46,46,46,46,69,69,69,69,18,18,18,18,
+46,46,46,9,66,46,46,46,46,46,46,46,33,46,46,46,46,46,46,46,69,69,18,18,18,18,18,
+46,46,46,9,46,69,33,46,46,46,46,33,33,33,46,46,46,69,46,46,69,69,18,18,18,18,18,
+46,46,46,9,46,46,33,33,33,33,33,33,17,33,33,33,33,46,69,46,46,69,18,18,18,18,18,
+46,46,46,9,69,46,33,46,46,46,46,33,33,33,46,46,46,69,46,46,46,18,18,18,18,18,18,
+46,46,46,9,46,69,46,46,46,46,46,46,46,46,69,69,18,46,46,46,46,18,18,18,18,18,18,
+46,46,46,9,46,46,46,69,46,69,46,46,69,69,69,18,18,18,46,46,46,46,18,18,18,18,18,
+46,46,46,9,46,69,46,46,46,46,46,69,69,18,18,18,46,18,18,46,69,69,18,18,18,18,18,
+46,46,46,9,46,46,46,46,46,69,46,46,69,46,18,18,12,18,46,46,69,18,18,18,18,18,18,
+46,46,46,9,46,46,46,46,46,46,46,46,46,46,46,18,12,18,18,18,18,18,18,18,18,18,18,
+46,46,46,9,69,18,18,69,46,46,46,46,46,46,69,46,69,69,46,46,46,18,18,18,18,18,18,
+46,18,18,46,18,18,18,18,18,46,46,18,18,46,46,46,46,46,69,18,18,18,18,18,18,18,18,
+18,18,18,18,46,46,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,69,69,69,18,18,
+18,18,18,18,18,18,46,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,69,46,69,18,18,
+18,18,18,18,18,18,18,46,18,18,18,18,18,18,18,18,18,18,18,18,18,46,46,46,18,18,18,
+18,18,18,18,18,18,18,18,46,46,18,18,18,18,18,18,18,18,18,18,18,46,46,18,18,18,18
+</data>
+ </layer>
+ <objectgroup draworder="topdown" name="Features" width="27" height="22">
+  <object name="wilderness" type="source.components.features.PortalFeatureComponent" x="192" y="64" width="16" height="16">
+   <properties>
+    <property name="icon" value="doorInWall.png"/>
+    <property name="target" value="wilderness"/>
+    <property name="targetX" value="16"/>
+    <property name="targetY" value="51"/>
+    <property name="text" value="Will you exit the safety of Bryarlake and explore the great Wildernesse?"/>
+    <property name="transitionType" value="outdoor"/>
+   </properties>
+  </object>
+  <object type="block" x="192" y="48" width="16" height="16" visible="0">
+   <properties>
+    <property name="type" value="block"/>
+   </properties>
+  </object>
+  <object name="Guard" type="source.components.features.DialogFeatureComponent" x="176" y="96" width="16" height="16">
+   <properties>
+    <property name="action" value="TALK"/>
+    <property name="icon" value="soldier.png"/>
+    <property name="text" value="Don't forget to equip basic weapons and armor before wandering too far from town."/>
+    <property name="title" value="Guard"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object name="Guard" type="source.components.features.DialogFeatureComponent" x="208" y="96" width="16" height="16">
+   <properties>
+    <property name="action" value="TALK"/>
+    <property name="icon" value="soldier.png"/>
+    <property name="text" value="Be careful exploring heavily forested areas as they contain more monsters than the open fields."/>
+    <property name="title" value="Guard"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object name="Citizen" type="source.components.features.DialogFeatureComponent" x="128" y="256" width="16" height="16">
+   <properties>
+    <property name="action" value="TALK"/>
+    <property name="icon" value="man.png"/>
+    <property name="text" value="I hear the Kobolds have an armory in the sewers beneath the ruins north of here.  It's well-guarded, and for good reason. I bet they have some nice weapons in there."/>
+    <property name="title" value="Citizen"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object name="temple.png" type="source.components.features.TempleFeatureComponent" x="256" y="208" width="16" height="16">
+   <properties>
+    <property name="cost" value="15"/>
+    <property name="icon" value="temple.png"/>
+   </properties>
+  </object>
+  <object name="Weapons" type="source.components.features.StoreFeatureComponent" x="96" y="112" width="16" height="16">
+   <properties>
+    <property name="category" value="weapons"/>
+    <property name="groups" value="default"/>
+    <property name="icon" value="shop.png"/>
+    <property name="level" value="1"/>
+    <property name="name" value="Weapons"/>
+    <property name="sellRate" value="35"/>
+   </properties>
+  </object>
+  <object name="Armors" type="source.components.features.StoreFeatureComponent" x="96" y="176" width="16" height="16">
+   <properties>
+    <property name="category" value="armor"/>
+    <property name="groups" value="default"/>
+    <property name="icon" value="shop.png"/>
+    <property name="level" value="1"/>
+    <property name="name" value="Armors"/>
+   </properties>
+  </object>
+  <object name="chest.png" type="source.components.features.TreasureFeatureComponent" x="368" y="304" width="16" height="16">
+   <properties>
+    <property name="gold" value="5000"/>
+    <property name="icon" value="chest.png"/>
+    <property name="id" value="bryarlake-chest"/>
+   </properties>
+  </object>
+  <object name="wilderness-secret" type="source.components.features.PortalFeatureComponent" x="352" y="336" width="16" height="16">
+   <properties>
+    <property name="target" value="wilderness"/>
+    <property name="targetX" value="17"/>
+    <property name="targetY" value="53"/>
+   </properties>
+  </object>
+  <object name="Items" type="source.components.features.StoreFeatureComponent" x="272" y="144" width="16" height="16">
+   <properties>
+    <property name="category" value="items"/>
+    <property name="groups" value="default"/>
+    <property name="icon" value="shop.png"/>
+    <property name="level" value="1"/>
+    <property name="name" value="Items"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

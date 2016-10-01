@@ -28,7 +28,7 @@ export var NAME: string = "core";
 /**
  * Specified root path.  Used when loading game asset files, to support cross-domain usage.
  */
-export var GAME_ROOT: string = '';
+export var GAME_ROOT: string = 'assets/';
 
 export interface ISpriteMeta {
   width: number;// Pixel width
@@ -79,15 +79,6 @@ export function describeSprites(value: Object) {
   }
 }
 
-/**
- * Resolve a map name to a valid url in the expected location.
- */
-export function getMapUrl(name: string): string {
-  if (name.indexOf('.tmx') === -1) {
-    return GAME_ROOT + 'web/maps/' + name + '.tmx';
-  }
-  return name;
-}
 
 /**
  * Register a dictionary of sprite meta data.  This is for automatically
