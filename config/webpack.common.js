@@ -13,6 +13,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 const HtmlElementsPlugin = require('./html-elements-plugin');
+const SpriteSheetPlugin = require('./sprite-sheet-plugin');
 const AssetsPlugin = require('assets-webpack-plugin');
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 
@@ -61,6 +62,7 @@ module.exports = function(options) {
 
       'polyfills': './src/polyfills.browser.ts',
       'vendor':    './src/vendor.browser.ts',
+      'entities':    './src/entities.browser.ts',
       'main':      './src/main.browser.ts'
 
     },
@@ -93,6 +95,8 @@ module.exports = function(options) {
      * See: http://webpack.github.io/docs/configuration.html#module
      */
     module: {
+      // TODO: Is this correct? https://github.com/AngularClass/angular2-webpack-starter/issues/993
+      exprContextCritical: false,
 
       /*
        * An array of applied pre and post loaders.
@@ -288,6 +292,21 @@ module.exports = function(options) {
         headTags: require('./head-config.common')
       }),
 
+      /*
+       * Plugin: SpriteSheetPlugin
+       * Description: Generate sprite sheet images from a list of source files
+       */
+      new SpriteSheetPlugin([
+        {inputs: 'src/art/sprites/creatures/*.png', output: 'assets/images/creatures'},
+        {inputs: 'src/art/sprites/vehicles/*.png', output: 'assets/images/vehicles'},
+        {inputs: 'src/art/sprites/environment/*.png', output: 'assets/images/environment'},
+        {inputs: 'src/art/sprites/characters/punch/*.png', output: 'assets/images/punch'},
+        {inputs: 'src/art/sprites/characters/magic/*.png', output: 'assets/images/magic'},
+        {inputs: 'src/art/sprites/characters/*.png', output: 'assets/images/characters'},
+        {inputs: 'src/art/sprites/animation/*.png', output: 'assets/images/animation'},
+        {inputs: 'src/art/sprites/equipment/*.png', output: 'assets/images/equipment'},
+        {inputs: 'src/art/sprites/items/*.png', output: 'assets/images/items'}
+      ]),
 
       /*
        * Provide jQuery
