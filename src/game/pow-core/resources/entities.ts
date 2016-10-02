@@ -15,7 +15,6 @@
  */
 
 import {Entity} from '../entity';
-import {JSONResource} from './json';
 import {errors} from '../errors';
 import * as _ from 'underscore';
 
@@ -35,7 +34,7 @@ export enum EntityError {
  * composite entity objects.
  */
 export interface IEntityInputsMap {
-  [name: string]: string
+  [name: string]: Function
 }
 
 /**
@@ -46,15 +45,15 @@ export interface IEntityObject {
   /**
    * The name of the entity to use when creating.
    */
-  name: string;
+  name?: string;
   /**
    * The object type to use for the entity.  Assumed to be an [[ISceneObjectComponentHost]] type.
    */
-    type: string;
+    type: Function;
   /**
    * An array of inputs for the constructor call to the output object of `type`.
    */
-  params: string[];
+  params?: string[];
 }
 
 /**
@@ -66,7 +65,12 @@ export interface IEntityTemplate extends IEntityObject {
   /**
    * A map of named inputs and their types.
    */
-  inputs: IEntityInputsMap;
+  inputs?: IEntityInputsMap;
+
+  /**
+   * A map of named inputs and their types.
+   */
+  depends?: Function[];
 
   /**
    * An array of components to instantiate and add to the output container.
@@ -74,14 +78,11 @@ export interface IEntityTemplate extends IEntityObject {
   components: IEntityObject[];
 }
 
-/**
- * JSON resource describing an array of [[IEntityTemplate]]s that can be used for composite
- * object creation with validated input types.
- */
-export class EntityContainerResource extends JSONResource {
+export class EntityFactory {
 
-  static IMPORT_SPLITTER: string = '|';
+  constructor(public data: IEntityTemplate[]) {
 
+  }
 
   /**
    * Instantiate an object and set of components from a given template.
@@ -91,15 +92,15 @@ export class EntityContainerResource extends JSONResource {
    */
   createObject(templateName: string, inputs?: any): Promise<any> {
     // Valid template name.
-    var tpl: any = this.getTemplate(templateName);
+    var tpl: IEntityTemplate = this.getTemplate(templateName);
     if (!tpl) {
       return Promise.reject('invalid template');
     }
 
     return this
       .validateTemplate(tpl, inputs)
-      .then(() => <any>this._fetchImportModule(tpl.type))
-      .then((type: any)=> {
+      .then(()=> {
+        const type = tpl.type;
         // Create entity object
         //
         // If inputs.params are specified use them explicitly, otherwise pass the inputs
@@ -116,16 +117,13 @@ export class EntityContainerResource extends JSONResource {
             var inputValues: any[] = _.map(comp.params || [], (n: string)=> {
               return inputs[n];
             });
-            this._fetchImportModule(comp.type)
-              .then((ctor: any) => {
-                var compObject = this.constructObject(ctor, inputValues);
-                compObject.name = comp.name;
-                if (!object.addComponent(compObject)) {
-                  reject(errors.COMPONENT_REGISTER_FAIL);
-                }
-                resolve(compObject);
-              }).catch(reject);
-
+            const ctor = comp.type;
+            var compObject = this.constructObject(ctor, inputValues);
+            compObject.name = comp.name;
+            if (!object.addComponent(compObject)) {
+              reject(errors.COMPONENT_REGISTER_FAIL);
+            }
+            resolve(compObject);
           });
         })).then(() => object).catch(() => null);
       });
@@ -138,52 +136,43 @@ export class EntityContainerResource extends JSONResource {
    * @param templateData The template to verify
    * @param inputs
    */
-  validateTemplate(templateData: any, inputs?: any): Promise<void> {
+  validateTemplate(templateData: IEntityTemplate, inputs?: any): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      this._fetchImportModule(templateData.type)
-        .then((type: any): any => {
-          if (!type) {
-            return reject(EntityError.ENTITY_TYPE);
-          }
-          // Verify user supplied required input values
-          if (!templateData.inputs) {
-            return;
-          }
-          var tplInputs: string[] = _.keys(templateData.inputs);
-          if (!tplInputs) {
-            return;
-          }
-          if (typeof inputs === 'undefined') {
-            console.error("EntityContainer: missing inputs for template that requires: " + tplInputs.join(', '));
-            return reject(EntityError.INPUT_NAME);
-          }
+      const type = templateData.type;
+      if (!type) {
+        return reject(EntityError.ENTITY_TYPE);
+      }
+      // Verify user supplied required input values
+      if (!templateData.inputs) {
+        return;
+      }
+      var tplInputs: string[] = _.keys(templateData.inputs);
+      if (!tplInputs) {
+        return;
+      }
+      if (typeof inputs === 'undefined') {
+        console.error("EntityContainer: missing inputs for template that requires: " + tplInputs.join(', '));
+        return reject(EntityError.INPUT_NAME);
+      }
 
-          var verifyInput = (type: string, name: string): Promise<void> => {
-            return new Promise<void>((resolve, reject) => {
-              return this._fetchImportModule(type)
-                .then((inputType: any) => {
-                  if (typeof inputs[name] === 'undefined') {
-                    console.error("EntityContainer: missing input with name: " + name);
-                    reject(EntityError.INPUT_NAME);
-                  }
-                  // Match using instanceof if the inputType was found
-                  else if (inputType && !(inputs[name] instanceof inputType)) {
-                    console.error("EntityContainer: bad input type for input: " + name);
-                    reject(EntityError.INPUT_TYPE);
-                  }
-                  resolve(inputType);
-                }).catch(() => {
-                  // Match using typeof as a last resort
-                  if (!this.typeofCompare(inputs[name], type)) {
-                    console.error("EntityContainer: bad input type for input (" + name + ") expected (" + type + ") but got (" + typeof inputs[name] + ")");
-                    reject(EntityError.INPUT_TYPE);
-                  }
-                  resolve();
-                });
-            });
-          };
-          return Promise.all<void>(_.map(templateData.inputs, verifyInput)).catch((e) => reject(e));
-        })
+      // Async input validation
+      var verifyInput = (inputType: string, name: string): Promise<void> => {
+        return new Promise<void>((resolveInput, rejectInput) => {
+          if (typeof inputs[name] === 'undefined') {
+            console.error("EntityContainer: missing input with name: " + name);
+            rejectInput(EntityError.INPUT_NAME);
+          }
+          // Match using instanceof if the inputType was found
+          else if (inputType && !(inputs[name] instanceof inputType)) {
+            console.error("EntityContainer: bad input type for input: " + name);
+            rejectInput(EntityError.INPUT_TYPE);
+          }
+          else {
+            resolveInput(inputType);
+          }
+        });
+      };
+      return Promise.all<void>(_.map(templateData.inputs, verifyInput))
         .then(() => {
           if (templateData.components) {
             var keys: string[] = _.map(templateData.components, (c: any)=> {
@@ -192,31 +181,28 @@ export class EntityContainerResource extends JSONResource {
             var unique: boolean = _.uniq(keys).length === keys.length;
             if (!unique) {
               console.error("EntityContainer: duplicate name in template components: " + keys.join(', '));
-              return reject(EntityError.COMPONENT_NAME_DUPLICATE);
+              return Promise.reject(EntityError.COMPONENT_NAME_DUPLICATE);
             }
           }
         })
         .then(() => {
-          return Promise.all<any[]>(_.map(templateData.components, (c: any) => this._fetchImportModule(c.type)))
-            .then(() => {
-              var unsatisfied: EntityError = EntityError.NONE;
-              _.each(templateData.components, (comp: any) => {
-                if (comp.params) {
-                  _.each(comp.params, (i: string) => {
-                    if (typeof inputs[i] === 'undefined') {
-                      console.error("EntityContainer: missing component param: " + i);
-                      unsatisfied |= EntityError.COMPONENT_INPUT;
-                    }
-                  });
+          var unsatisfied: EntityError = EntityError.NONE;
+          _.each(templateData.components, (comp: any) => {
+            if (comp.params) {
+              _.each(comp.params, (i: string) => {
+                if (typeof inputs[i] === 'undefined') {
+                  console.error("EntityContainer: missing component param: " + i);
+                  unsatisfied |= EntityError.COMPONENT_INPUT;
                 }
               });
-              if (unsatisfied !== EntityError.NONE) {
-                reject(unsatisfied);
-              }
-            })
-            .catch(() => reject(EntityError.COMPONENT_TYPE));
+            }
+          });
+          if (unsatisfied !== EntityError.NONE) {
+            return Promise.reject(unsatisfied);
+          }
         })
-        .then(() => resolve());
+        .then(() => resolve())
+        .catch((e) => reject(e));
     });
   }
 
@@ -252,36 +238,5 @@ export class EntityContainerResource extends JSONResource {
     var expected: string = '' + expected;
     return typeString.toUpperCase() === expected.toUpperCase();
   }
-
-  private _fetchImportModule(importTuple: string): Promise<any> {
-    var tuple = importTuple.split(EntityContainerResource.IMPORT_SPLITTER);
-    if (tuple.length !== 2) {
-      return Promise.reject('import type (' + importTuple + ') must be of format "path|typename"');
-    }
-    var importName = tuple[0];
-    var importType = tuple[1];
-    return new Promise<any>((resolve, reject) => {
-      const promise = System.import(importName);
-      promise.then((importModule: any) => {
-        if (!importModule[importType]) {
-          reject("INVALID MODULE TYPE: " + importName);
-        }
-        EntityContainerResource._typesCache[importTuple] = importModule[importType];
-        resolve(importModule[importType])
-      }).catch((e) => {
-        reject("INVALID MODULE: " + importName + ' - ' + e);
-      });
-
-    });
-  }
-
-  /**
-   * Type cache for quick look up of imported es6 modules as entity types
-   * @private
-   */
-  static _typesCache: {
-    [fullType: string]: Function
-  } = {};
-
 
 }

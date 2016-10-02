@@ -306,7 +306,9 @@ module.exports = function(options) {
         {inputs: 'src/art/sprites/animation/*.png', output: 'assets/images/animation'},
         {inputs: 'src/art/sprites/equipment/*.png', output: 'assets/images/equipment'},
         {inputs: 'src/art/sprites/items/*.png', output: 'assets/images/items'}
-      ]),
+      ], {
+        indexFile: 'assets/images/index.json'
+      }),
 
       /*
        * Provide jQuery

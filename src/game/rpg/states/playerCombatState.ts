@@ -25,7 +25,7 @@ import {HeroModel} from '../models/heroModel';
 import {CreatureModel} from '../models/creatureModel';
 import {State} from '../../pow2/core/state';
 import {Scene} from '../../pow2/scene/scene';
-import {EntityContainerResource} from '../../pow-core/resources/entities';
+import {EntityFactory} from '../../pow-core/resources/entities';
 import {GameDataResource} from '../../pow2/game/resources/gameData';
 import {TiledTMXResource} from '../../pow-core/resources/tiled/tiledTmx';
 import {Point} from '../../pow-core/point';
@@ -74,7 +74,7 @@ export class PlayerCombatState extends State {
    */
   scene: Scene = null;
 
-  factory: EntityContainerResource;
+  factory: EntityFactory;
   spreadsheet: GameDataResource;
 
   constructor() {

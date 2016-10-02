@@ -23,14 +23,15 @@ import {GameStateModel} from './rpg/models/gameStateModel';
 import {ItemModel, WeaponModel, ArmorModel, UsableModel} from './rpg/models/all';
 import {SceneWorld} from './pow2/scene/sceneWorld';
 import {Scene} from './pow2/scene/scene';
-import {EntityContainerResource} from './pow-core/resources/entities';
-import {Events} from './pow-core/events';
+import {EntityFactory} from './pow-core/resources/entities';
 import {GameDataResource} from './pow2/game/resources/gameData';
-import {GAME_ROOT} from './pow2/core/api';
+import {GAME_ROOT, registerSprites} from './pow2/core/api';
+import {RPG_GAME_ENTITIES} from './game.entities';
+import {Subject} from 'rxjs/Subject';
+import {ReplaySubject} from 'rxjs/Rx';
+import {JSONResource} from './pow-core/resources/json';
 
 var _sharedGameWorld: GameWorld = null;
-
-declare var System: any;
 
 
 export class GameWorld extends SceneWorld {
@@ -41,11 +42,15 @@ export class GameWorld extends SceneWorld {
   /**
    * RPG game entities factory.
    *
-   * Use to instantiate .powEntities file composite objects.
+   * Use to instantiate composite game objects.
    */
-  entities: EntityContainerResource;
+  entities: EntityFactory = new EntityFactory(RPG_GAME_ENTITIES);
 
-  events: Events = new Events();
+  /**
+   * Subject that emits when the game world has been loaded and is
+   * ready to be interacted with.
+   */
+  ready$: Subject = new ReplaySubject(1);
 
   /**
    * Access to the game's Google Doc spreadsheet configuration.  For more
@@ -58,24 +63,40 @@ export class GameWorld extends SceneWorld {
     if (!this.scene) {
       this.setService('scene', new Scene());
     }
-    this.loader.registerType('powEntities', EntityContainerResource);
-    GameStateModel.getDataSource((gsr: GameDataResource)=> {
-      this.spreadsheet = gsr;
-    });
-    this.loader.load(`${GAME_ROOT}entities/rpg.powEntities`)
-      .then((res: EntityContainerResource[]) => {
-        this.entities = res[0];
-        this.events.trigger('ready');
+    // Preload sprite sheets
+    this.loader
+      .load('assets/images/index.json')
+      .then((res: JSONResource[]) => {
+        const jsonRes = res[0];
+        const sources = _.map(jsonRes.data, (baseName: string) => {
+          return `${baseName}.json`
+        });
+        return Promise.all(_.map(sources, (fileName: string) => {
+          return this.loader.load(fileName)
+            .then((spritesLoaded: JSONResource[]) => {
+              const meta = spritesLoaded[0];
+              const name = meta.url
+                .substr(0, meta.url.lastIndexOf('.'))
+                .substr(meta.url.lastIndexOf('/') + 1);
+              console.log("loading name -> " + name);
+              registerSprites(name, meta.data);
+            });
+        }));
       })
-      .catch((e)=> {
-        console.error(e);
-        this.events.trigger('error', e);
-      });
+      .then(() => {
+        GameStateModel.getDataSource((gsr: GameDataResource) => {
+          this.spreadsheet = gsr;
+          this.ready$.next();
+        });
+      })
+      .catch((e) => console.error(e));
   }
 
   static get(): GameWorld {
     if (!_sharedGameWorld) {
       _sharedGameWorld = new GameWorld();
+      _sharedGameWorld.setService('model', new GameStateModel());
+      _sharedGameWorld.setService('state', new GameStateMachine());
     }
     return _sharedGameWorld;
   }
@@ -113,11 +134,11 @@ export class GameWorld extends SceneWorld {
 
   fixedEncounter(zone: rpg.IZoneMatch, encounterId: string, then?: rpg.IGameEncounterCallback) {
     GameStateModel.getDataSource((gsr: GameDataResource)=> {
-      var encounter = <rpg.IGameFixedEncounter>_.where(gsr.getSheetData("fixedencounters"), {
+      var encounter = <rpg.IGameFixedEncounter>_.where(gsr.getSheetData('fixedencounters'), {
         id: encounterId
       })[0];
       if (!encounter) {
-        this.scene.trigger('error', "No encounter found with id: " + encounterId);
+        this.scene.trigger('error', `No encounter found with id: ${encounterId}`);
         return then(true);
       }
       this._encounter(zone, encounter, then);

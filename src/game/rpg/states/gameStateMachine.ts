@@ -15,7 +15,7 @@
  */
 
 import * as rpg from '../game';
-import {GameWorld} from '../gameWorld';
+import {GameWorld} from '../../gameWorld';
 import {GameStateModel} from '../models/gameStateModel';
 import {PlayerMapState} from './playerMapState';
 import {PlayerCombatState} from './playerCombatState';

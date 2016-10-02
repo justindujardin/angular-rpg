@@ -22,7 +22,7 @@ export class SpriteRender implements IWorldObject {
   static SIZE: number = 16;
 
   static getSpriteSheetUrl(name: string): string {
-    return "images/" + name + ".png";
+    return `assets/images/${name}.png`;
   }
 
   canvas: HTMLCanvasElement = null;

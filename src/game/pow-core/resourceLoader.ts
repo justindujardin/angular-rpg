@@ -20,7 +20,7 @@ import {ImageResource} from './resources/image';
 import {ScriptResource} from './resources/script';
 import {JSONResource} from './resources/json';
 import {XMLResource} from './resources/xml';
-import {EntityContainerResource} from './resources/entities';
+import {EntityFactory} from './resources/entities';
 import {TiledTMXResource} from './resources/tiled/tiledTmx';
 import {TiledTSXResource} from './resources/tiled/tiledTsx';
 import {AudioResource} from './resources/audio';
@@ -37,7 +37,7 @@ export class ResourceLoader {
     'js': ScriptResource,
     'json': JSONResource,
     'xml': XMLResource,
-    'entities': EntityContainerResource,
+    'entities': EntityFactory,
     'tmx': TiledTMXResource,
     'tsx': TiledTSXResource,
     '': AudioResource

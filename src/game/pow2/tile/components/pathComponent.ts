@@ -18,8 +18,7 @@ import * as _ from 'underscore';
 import {TileComponent} from '../tileComponent';
 import {TileMap} from '../tileMap';
 import {Point} from '../../../pow-core/point';
-declare var astar: any;
-declare var Graph: any;
+import * as astar from 'astar';
 
 /**
  * A component that can calculate A-star paths.
@@ -49,7 +48,7 @@ export class PathComponent extends TileComponent {
   }
 
   private _updateGraph() {
-    this._graph = new Graph(this.buildWeightedGraph());
+    this._graph = new astar.Graph(this.buildWeightedGraph());
   }
 
   /**
@@ -95,7 +94,7 @@ export class PathComponent extends TileComponent {
     }
     var start = this._graph.nodes[from.x][from.y];
     var end = this._graph.nodes[to.x][to.y];
-    var result = astar.search(this._graph.nodes, start, end);
+    var result = astar.astar.search(this._graph.nodes, start, end);
     return _.map(result, (graphNode: any) => {
       return new Point(graphNode.pos.x, graphNode.pos.y);
     });

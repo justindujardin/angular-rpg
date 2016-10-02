@@ -59,7 +59,7 @@ export class PowInput implements IWorldObject {
         point: new Point(),
         world: new Point()
       };
-    var canoffset = (<any>window).$(relativeElement).offset();
+    var canoffset = $(relativeElement).offset();
     var x = ev.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
     var y = ev.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top);
     result.point.set(x, y);

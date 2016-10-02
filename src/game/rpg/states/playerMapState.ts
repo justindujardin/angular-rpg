@@ -15,7 +15,7 @@
  */
 
 import {GameStateMachine} from './gameStateMachine';
-import {GameTileMap} from '../gameTileMap';
+import {GameTileMap} from '../../gameTileMap';
 import {State} from '../../pow2/core/state';
 
 export class PlayerMapState extends State {

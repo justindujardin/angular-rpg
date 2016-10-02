@@ -5,7 +5,7 @@ var glob = require('glob');
 
 // For generating TS interfaces
 const defaults = {
-  outName: 'spriteSheet',
+  indexFile: 'index.json',
   scale: 1
 };
 
@@ -21,18 +21,41 @@ SpriteSheetPlugin.prototype.apply = function (compiler) {
     console.log("Writing Spritesheet files...");
     var todo = self.files.slice();
 
+    // output file names to emit index json file from
+    var outputs = [];
+
+    // Async item processor
     function processInput() {
       const item = todo.shift();
+      // No items left, output index file
       if (!item) {
+        const indexJson = JSON.stringify(outputs, null, 2);
+        compilation.assets[self.options.indexFile] = {
+          size: function () {
+            return indexJson.length;
+          },
+          source: function () {
+            return indexJson;
+          }
+        };
+        // Tell webpack that we're done.
         callback();
         return;
       }
+
+      // Match glob for inputs (currently just one)
       glob(item.inputs, null, function (er, files) {
-        spritePacker(files, {
+        const spriteOpts = {
           outName: item.output
-        }).then(function spritesDone(results) {
+        };
+        // Generate sprite file and metadata
+        spritePacker(files, spriteOpts).then(function spritesDone(results) {
+
+          // Add generated sheet to the outputs list
+          outputs.push(item.output);
+
+          // Write the image file for the given output base name
           const png = item.output + '.png';
-          const json = item.output + '.json';
           compilation.assets[png] = {
             size: function () {
               return results.file.length;
@@ -41,6 +64,9 @@ SpriteSheetPlugin.prototype.apply = function (compiler) {
               return results.file;
             }
           };
+
+          // Write the metadata JSON file for the given output base name
+          const json = item.output + '.json';
           const jsonData = JSON.stringify(results.meta, null, 2);
           compilation.assets[json] = {
             size: function () {
@@ -50,10 +76,13 @@ SpriteSheetPlugin.prototype.apply = function (compiler) {
               return jsonData;
             }
           };
+
+          // Process the next input
           processInput();
         });
       })
     }
+
     processInput();
     callback();
   });

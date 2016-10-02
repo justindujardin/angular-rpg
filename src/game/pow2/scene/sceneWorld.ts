@@ -26,6 +26,7 @@ export class SceneWorld extends World {
   input: PowInput;
   sprites: SpriteRender;
   scene: IScene;
+  loader: ResourceLoader;
 
   constructor(services?: any) {
     super(_.defaults(services || {}, {

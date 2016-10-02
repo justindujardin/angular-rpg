@@ -15,7 +15,7 @@
  */
 
 import {GameFeatureComponent} from '../gameFeatureComponent';
-import {GameWorld} from '../../gameWorld';
+import {GameWorld} from '../../../gameWorld';
 import {GameFeatureObject} from '../../objects/gameFeatureObject';
 import {GameStateModel} from '../../models/gameStateModel';
 import {PlayerComponent} from '../playerComponent';

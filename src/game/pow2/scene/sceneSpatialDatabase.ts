@@ -15,13 +15,15 @@
  */
 
 
-// Very, very simple spatial database.  Because all the game objects have
-// an extent of 1 unit, we can just do a point in rect to determine object hits.
-
 import * as _ from 'underscore';
 import {ISceneObject} from '../interfaces/IScene';
 import {Rect} from '../../pow-core/rect';
 import {Point} from '../../pow-core/point';
+
+/**
+ * Very, very simple spatial database.  Because all the game objects have
+ * an extent of 1 unit, we can just do a point in rect to determine object hits.
+ */
 export class SceneSpatialDatabase {
   private _objects: ISceneObject[];
   private _pointRect: Rect = new Rect(0, 0, 1, 1);

@@ -24,11 +24,10 @@ import {GameEntityObject} from '../../rpg/objects/gameEntityObject';
 import {GameStateMachine} from '../../rpg/states/gameStateMachine';
 import {ResourceLoader} from '../../pow-core/resourceLoader';
 import {Point} from '../../pow-core/point';
-import {registerWorld} from '../../pow-core/api';
+import {getWorld} from '../../pow-core/api';
 import {PlayerComponent} from '../../rpg/components/playerComponent';
 import {TileMap} from '../../pow2/tile/tileMap';
 import {Injectable} from '@angular/core';
-import {GameStateModel} from '../../rpg/models/gameStateModel';
 
 @Injectable()
 export class RPGGame {
@@ -47,10 +46,7 @@ export class RPGGame {
   partyMapName: string = 'town';
 
   constructor() {
-    this.world = registerWorld('rpg', new GameWorld({
-      model: new GameStateModel(),
-      state: new GameStateMachine()
-    }));
+    this.world = getWorld<GameWorld>('rpg');
 
     this._renderCanvas = <HTMLCanvasElement>document.createElement('canvas');
     this._renderCanvas.width = this._renderCanvas.height = 64;

@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {GameWorld} from '../gameWorld';
 import {GameStateModel} from './models/gameStateModel';
 import {GameStateMachine} from './states/gameStateMachine';
@@ -120,16 +120,10 @@ export interface IZoneMatch {
 
 @Component({
   selector: 'rpg-game',
-  inputs: ['loaded', 'game', 'combat'],
   template: template,
-  // directives: [
-  //   WorldMap, WorldDialog, WorldStore, WorldTemple,
-  //   CombatMap, CombatDamage,
-  //   PlayerCard,
-  //   PartyInventory, PartyMenu,
-  //   RPGSprite, RPGNotification, RPGHealthBar]
 })
 export class RPGAppComponent {
+  @Input()
   maps: string[] = [
     'castle', 'crypt', 'fortress1',
     'fortress2', 'isle', 'keep',
@@ -139,16 +133,12 @@ export class RPGAppComponent {
   ];
   loaded: boolean = true;
 
-  world = new GameWorld({
-    model: new GameStateModel(),
-    state: new GameStateMachine()
-  });
-
   setMap(value: string) {
     this.game.partyPosition.zero();
     this.game.partyMapName = value;
   }
 
+  @Input()
   combat: PlayerCombatState = null;
 
   constructor(public game: RPGGame, public notify: Notify) {

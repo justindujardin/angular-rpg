@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-
+import * as _ from 'underscore';
 import {BasePlayerComponent} from './basePlayerComponent';
 import {PathComponent} from '../../tile/components/pathComponent';
 import {ITiledLayer} from '../../../pow-core/resources/tiled/tiled';

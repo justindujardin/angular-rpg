@@ -1,9 +1,8 @@
 /*
  * Angular 2 decorators and services
  */
-import { Component, ViewEncapsulation } from '@angular/core';
-
-import { AppState } from './app.service';
+import {Component, ViewEncapsulation} from '@angular/core';
+import {AppState} from './app.service';
 
 /*
  * App Component
@@ -22,9 +21,7 @@ export class App {
   name = 'Angular 2 Webpack Starter';
   url = 'https://twitter.com/AngularClass';
 
-  constructor(
-    public appState: AppState) {
-
+  constructor(public appState: AppState) {
   }
 
   ngOnInit() {

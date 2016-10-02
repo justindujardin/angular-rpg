@@ -25,6 +25,7 @@ import {Point} from './pow-core/point';
 import {Rect} from './pow-core/rect';
 import {SceneComponent} from './pow2/scene/sceneComponent';
 import {SceneObject} from './pow2/scene/sceneObject';
+import {ALL_FEATURES} from './rpg/components/features/index';
 
 /**
  * A tile map that supports game feature objects and components.
@@ -96,10 +97,9 @@ export class GameTileMap extends TileMap {
     });
     var object = new GameFeatureObject(options);
     this.world.mark(object);
-
-    console.warn('Feature component instantiation is busted because getClassType was deprecated');
-    // var componentType: any = tiledObject.type === 'alert' ? null : EntityContainerResource.getClassType(tiledObject.type);
-    const componentType: any = null;
+    const componentType = _.find(ALL_FEATURES, (constructor: any) => {
+      return constructor.name === tiledObject.type;
+    });
     if (tiledObject.type && componentType) {
       var component = <SceneComponent>(new componentType());
       if (!object.addComponent(component)) {
