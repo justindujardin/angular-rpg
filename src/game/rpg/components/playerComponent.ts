@@ -31,9 +31,9 @@ export class PlayerComponent extends BasePlayerComponent {
   map: TileMap = null;
 
   static COLLIDE_TYPES: string[] = [
-    'source.components.features.TempleFeatureComponent',
-    'source.components.features.StoreFeatureComponent',
-    'source.components.features.DialogFeatureComponent',
+    'TempleFeatureComponent',
+    'StoreFeatureComponent',
+    'DialogFeatureComponent',
     'sign'
   ];
 

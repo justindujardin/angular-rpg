@@ -51,7 +51,7 @@
 </data>
  </layer>
  <objectgroup draworder="topdown" name="Features" width="23" height="41">
-  <object name="ruins" type="source.components.features.PortalFeatureComponent" x="336" y="16" width="16" height="16">
+  <object name="ruins" type="PortalFeatureComponent" x="336" y="16" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
     <property name="target" value="ruins"/>
@@ -61,48 +61,48 @@
     <property name="transitionType" value="town"/>
    </properties>
   </object>
-  <object name="kobold-sewers" type="source.components.features.CombatFeatureComponent" x="320" y="464" width="16" height="16">
+  <object name="kobold-sewers" type="CombatFeatureComponent" x="320" y="464" width="16" height="16">
    <properties>
     <property name="icon" value="koboldSwordsman.png"/>
     <property name="id" value="sewer-kobolds"/>
    </properties>
   </object>
-  <object name="impTalisman.png" type="source.components.features.TreasureFeatureComponent" x="96" y="32" width="16" height="16">
+  <object name="impTalisman.png" type="TreasureFeatureComponent" x="96" y="32" width="16" height="16">
    <properties>
     <property name="icon" value="chest.png"/>
     <property name="id" value="sewers-treasure-2"/>
     <property name="item" value="apprentice-hat"/>
    </properties>
   </object>
-  <object name="kobold-sewers-elite" type="source.components.features.CombatFeatureComponent" x="64" y="544" width="16" height="16">
+  <object name="kobold-sewers-elite" type="CombatFeatureComponent" x="64" y="544" width="16" height="16">
    <properties>
     <property name="icon" value="koboldShaman.png"/>
     <property name="id" value="sewer-kobolds-elite"/>
     <property name="sets" value="ruinsDone"/>
    </properties>
   </object>
-  <object name="shield treasure" type="source.components.features.TreasureFeatureComponent" x="256" y="512" width="16" height="16">
+  <object name="shield treasure" type="TreasureFeatureComponent" x="256" y="512" width="16" height="16">
    <properties>
     <property name="icon" value="chest.png"/>
     <property name="id" value="sewers-armory-two"/>
     <property name="item" value="leather-shield"/>
    </properties>
   </object>
-  <object name="shield treasure" type="source.components.features.TreasureFeatureComponent" x="256" y="544" width="16" height="16">
+  <object name="shield treasure" type="TreasureFeatureComponent" x="256" y="544" width="16" height="16">
    <properties>
     <property name="icon" value="chest.png"/>
     <property name="id" value="sewers-armory-three"/>
     <property name="item" value="short-bow"/>
    </properties>
   </object>
-  <object name="shield treasure" type="source.components.features.TreasureFeatureComponent" x="320" y="528" width="16" height="16">
+  <object name="shield treasure" type="TreasureFeatureComponent" x="320" y="528" width="16" height="16">
    <properties>
     <property name="gold" value="50"/>
     <property name="icon" value="chest.png"/>
     <property name="id" value="sewers-armory-one"/>
    </properties>
   </object>
-  <object name="shield treasure" type="source.components.features.TreasureFeatureComponent" x="320" y="560" width="16" height="16">
+  <object name="shield treasure" type="TreasureFeatureComponent" x="320" y="560" width="16" height="16">
    <properties>
     <property name="icon" value="chest.png"/>
     <property name="id" value="sewers-armory-four"/>

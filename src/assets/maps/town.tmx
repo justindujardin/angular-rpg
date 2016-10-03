@@ -31,7 +31,7 @@
 </data>
  </layer>
  <objectgroup draworder="topdown" name="Features" width="27" height="22">
-  <object name="wilderness" type="source.components.features.PortalFeatureComponent" x="192" y="64" width="16" height="16">
+  <object name="wilderness" type="PortalFeatureComponent" x="192" y="64" width="16" height="16">
    <properties>
     <property name="icon" value="doorInWall.png"/>
     <property name="target" value="wilderness"/>
@@ -46,7 +46,7 @@
     <property name="type" value="block"/>
    </properties>
   </object>
-  <object name="Guard" type="source.components.features.DialogFeatureComponent" x="176" y="96" width="16" height="16">
+  <object name="Guard" type="DialogFeatureComponent" x="176" y="96" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="soldier.png"/>
@@ -55,7 +55,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="Guard" type="source.components.features.DialogFeatureComponent" x="208" y="96" width="16" height="16">
+  <object name="Guard" type="DialogFeatureComponent" x="208" y="96" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="soldier.png"/>
@@ -64,7 +64,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="Citizen" type="source.components.features.DialogFeatureComponent" x="128" y="256" width="16" height="16">
+  <object name="Citizen" type="DialogFeatureComponent" x="128" y="256" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="man.png"/>
@@ -73,13 +73,13 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="temple.png" type="source.components.features.TempleFeatureComponent" x="256" y="208" width="16" height="16">
+  <object name="temple.png" type="TempleFeatureComponent" x="256" y="208" width="16" height="16">
    <properties>
     <property name="cost" value="15"/>
     <property name="icon" value="temple.png"/>
    </properties>
   </object>
-  <object name="Weapons" type="source.components.features.StoreFeatureComponent" x="96" y="112" width="16" height="16">
+  <object name="Weapons" type="StoreFeatureComponent" x="96" y="112" width="16" height="16">
    <properties>
     <property name="category" value="weapons"/>
     <property name="groups" value="default"/>
@@ -89,7 +89,7 @@
     <property name="sellRate" value="35"/>
    </properties>
   </object>
-  <object name="Armors" type="source.components.features.StoreFeatureComponent" x="96" y="176" width="16" height="16">
+  <object name="Armors" type="StoreFeatureComponent" x="96" y="176" width="16" height="16">
    <properties>
     <property name="category" value="armor"/>
     <property name="groups" value="default"/>
@@ -98,21 +98,21 @@
     <property name="name" value="Armors"/>
    </properties>
   </object>
-  <object name="chest.png" type="source.components.features.TreasureFeatureComponent" x="368" y="304" width="16" height="16">
+  <object name="chest.png" type="TreasureFeatureComponent" x="368" y="304" width="16" height="16">
    <properties>
     <property name="gold" value="5000"/>
     <property name="icon" value="chest.png"/>
     <property name="id" value="bryarlake-chest"/>
    </properties>
   </object>
-  <object name="wilderness-secret" type="source.components.features.PortalFeatureComponent" x="352" y="336" width="16" height="16">
+  <object name="wilderness-secret" type="PortalFeatureComponent" x="352" y="336" width="16" height="16">
    <properties>
     <property name="target" value="wilderness"/>
     <property name="targetX" value="17"/>
     <property name="targetY" value="53"/>
    </properties>
   </object>
-  <object name="Items" type="source.components.features.StoreFeatureComponent" x="272" y="144" width="16" height="16">
+  <object name="Items" type="StoreFeatureComponent" x="272" y="144" width="16" height="16">
    <properties>
     <property name="category" value="items"/>
     <property name="groups" value="default"/>

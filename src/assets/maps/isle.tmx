@@ -25,7 +25,7 @@
 </data>
  </layer>
  <objectgroup name="Features" width="25" height="19">
-  <object name="wilderness" type="source.components.features.PortalFeatureComponent" x="272" y="160" width="16" height="16">
+  <object name="wilderness" type="PortalFeatureComponent" x="272" y="160" width="16" height="16">
    <properties>
     <property name="icon" value="bridgeVertical.png"/>
     <property name="target" value="wilderness"/>
@@ -35,7 +35,7 @@
     <property name="transitionType" value="outdoor"/>
    </properties>
   </object>
-  <object name="Pirate" type="source.components.features.DialogFeatureComponent" x="224" y="160" width="16" height="16">
+  <object name="Pirate" type="DialogFeatureComponent" x="224" y="160" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="pirate.png"/>
@@ -44,7 +44,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="Pirate" type="source.components.features.DialogFeatureComponent" x="112" y="208" width="16" height="16">
+  <object name="Pirate" type="DialogFeatureComponent" x="112" y="208" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="pirate2.png"/>
@@ -53,7 +53,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="Buccaneer's Bazaar" type="source.components.features.StoreFeatureComponent" x="128" y="112" width="16" height="16">
+  <object name="Buccaneer's Bazaar" type="StoreFeatureComponent" x="128" y="112" width="16" height="16">
    <properties>
     <property name="buyRate" value="130"/>
     <property name="groups" value="[&quot;default&quot;,&quot;water&quot;]"/>

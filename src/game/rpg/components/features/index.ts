@@ -5,6 +5,7 @@ import {PortalFeatureComponent} from './portalFeatureComponent';
 import {ShipFeatureComponent} from './shipFeatureComponent';
 import {TempleFeatureComponent} from './templeFeatureComponent';
 import {TreasureFeatureComponent} from './treasureFeatureComponent';
+import {StoreFeatureComponent} from './storeFeatureComponent';
 export * from './combatFeatureComponent';
 export * from './dialogFeatureComponent';
 export * from './portalFeatureComponent';
@@ -17,6 +18,7 @@ export const ALL_FEATURES: GameFeatureComponent[] = [
   DialogFeatureComponent,
   PortalFeatureComponent,
   ShipFeatureComponent,
+  StoreFeatureComponent,
   TempleFeatureComponent,
   TreasureFeatureComponent
 ];

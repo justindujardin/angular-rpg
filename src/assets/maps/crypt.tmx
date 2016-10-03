@@ -9,7 +9,7 @@
     <data encoding="csv">32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,55,32,32,55,55,32,23,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,55,55,55,55,55,23,23,23,23,23,32,32,32,32,32,32,32,32,32,32,32,32,32,32,55,55,55,55,55,55,55,23,23,23,23,32,32,32,32,32,32,32,32,32,32,32,32,32,55,55,55,55,55,55,55,55,55,55,55,55,55,32,23,23,23,23,32,32,32,32,32,32,32,55,55,23,23,23,55,55,55,55,55,55,55,32,32,23,32,32,23,32,32,32,32,32,32,32,55,55,23,23,55,55,55,55,55,55,55,55,55,32,23,32,23,23,32,32,32,32,32,32,32,55,55,55,55,55,55,55,55,55,55,55,55,32,32,23,32,23,32,32,23,23,23,23,32,32,32,55,55,55,55,23,23,55,55,55,23,23,32,23,23,32,23,32,32,23,32,32,23,32,32,32,32,32,55,55,55,23,23,55,55,23,23,32,23,32,32,23,32,32,23,32,23,23,32,32,32,32,55,55,55,55,55,55,55,55,23,32,32,23,32,32,23,32,32,23,32,23,32,32,32,32,55,55,55,55,55,55,32,32,32,32,32,32,23,32,32,23,32,32,23,32,23,32,32,32,32,32,32,55,55,55,55,55,55,32,32,32,32,23,32,23,23,32,32,23,32,23,32,32,32,32,32,32,32,55,55,55,55,55,32,32,32,32,23,32,23,23,23,23,23,32,23,32,32,32,32,55,55,55,55,32,55,55,23,23,23,32,23,23,32,23,23,32,32,32,32,23,23,32,32,32,55,32,32,32,32,55,55,55,32,23,23,23,32,32,32,32,32,32,32,32,32,23,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,23,32,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,6,9,9,9,9,9,9,9,9,9,9,9,9,33,33,9,9,9,9,33,33,9,33,9,33,33,9,9,9,9,9,9,9,9,33,33,9,9,33,33,9,9,9,9,33,33,9,33,9,33,9,9,9,33,33,33,33,33,24,33,33,6,33,33,33,9,9,9,9,9,24,9,24,9,24,9,9,9,33,9,9,9,9,9,33,33,9,9,9,9,9,33,9,33,33,33,33,33,33,33,33,9,9,33,33,33,33,9,9,9,9,9,9,9,33,33,33,6,33,33,33,33,33,33,33,33,9,9,9,9,9,33,33,9,9,9,9,9,9,33,9,33,9,33,33,33,33,33,33,33,33,9,40,40,40,9,9,33,9,9,9,9,9,9,33,9,9,9,9,9,24,9,24,9,24,9,9,39,39,40,40,9,33,9,9,9,9,9,9,33,9,9,9,9,33,33,9,33,9,33,9,9,39,39,39,39,9,33,9,9,9,9,9,9,33,9,9,9,9,33,33,9,33,9,33,9,9,39,39,39,39,9,6,9,9,33,33,33,9,33,9,9,9,9,9,9,9,9,9,9,9,9,39,39,39,39,24,33,6,33,33,17,33,9,33,33,33,9,9,9,9,9,9,9,9,9,9,39,39,39,39,9,6,9,9,33,33,33,9,9,9,33,33,9,9,9,9,9,9,9,9,9,39,39,39,39,9,33,9,9,9,9,9,9,9,9,9,33,33,9,9,9,9,9,9,9,9,39,39,40,40,9,33,9,9,9,9,9,9,9,9,9,9,33,33,33,33,33,33,33,33,9,40,9,9,9,9,33,9,9,33,9,9,9,9,9,9,9,9,9,9,9,9,9,9,33,9,9,9,33,33,24,33,9,33,33,33,9,33,9,9,9,9,9,9,9,9,9,9,9,33,9,9,9,33,33,9,33,9,33,33,33,9,33,9,9,9,9,9,9,9,33,33,9,9,33,9,9,9,9,9,9,33,9,9,24,9,9,24,9,9,33,33,33,33,24,33,33,33,9,33,9,9,9,33,33,24,33,33,33,33,33,33,33,33,33,33,9,9,9,9,33,33,33,9,33,9,9,9,33,33,9,9,9,9,9,9,9,9,9,9,33,33,33,33,9,9,9,33,33,33,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9</data>
   </layer>
   <objectgroup name="Features" width="25" height="39" opacity="1">
-    <object name="wilderness" type="source.components.features.PortalFeatureComponent" x="64" y="448" width="16" height="16">
+    <object name="wilderness" type="PortalFeatureComponent" x="64" y="448" width="16" height="16">
       <properties>
         <property name="icon" value="dungeonGate.png"></property>
         <property name="target" value="wilderness"></property>
@@ -37,7 +37,7 @@
         <property name="type" value="sign"></property>
       </properties>
     </object>
-    <object name="skeletonGuard.png" type="source.components.features.CombatFeatureComponent" x="128" y="528" width="16" height="16">
+    <object name="skeletonGuard.png" type="CombatFeatureComponent" x="128" y="528" width="16" height="16">
       <properties>
         <property name="creatures"></property>
         <property name="gold" value="12"></property>
@@ -48,7 +48,7 @@
         <property name="type" value="encounter"></property>
       </properties>
     </object>
-    <object name="ghoul.png" type="source.components.features.CombatFeatureComponent" x="304" y="560" width="16" height="16">
+    <object name="ghoul.png" type="CombatFeatureComponent" x="304" y="560" width="16" height="16">
       <properties>
         <property name="ambushed" value="true"></property>
         <property name="creatures"></property>
@@ -60,7 +60,7 @@
         <property name="type" value="encounter"></property>
       </properties>
     </object>
-    <object name="phantom2.png" type="source.components.features.CombatFeatureComponent" x="224" y="352" width="16" height="16">
+    <object name="phantom2.png" type="CombatFeatureComponent" x="224" y="352" width="16" height="16">
       <properties>
         <property name="creatures"></property>
         <property name="gold" value="9"></property>
@@ -71,7 +71,7 @@
         <property name="type" value="encounter"></property>
       </properties>
     </object>
-    <object name="ship.png" type="source.components.features.ShipFeatureComponent" x="128" y="224" width="16" height="16">
+    <object name="ship.png" type="ShipFeatureComponent" x="128" y="224" width="16" height="16">
       <properties>
         <property name="icon" value="ship.png"></property>
         <property name="id" value="cryptsShip"></property>
@@ -79,7 +79,7 @@
         <property name="type" value="ship"></property>
       </properties>
     </object>
-    <object name="skeletonWizard.png" type="source.components.features.CombatFeatureComponent" x="160" y="32" width="16" height="16">
+    <object name="skeletonWizard.png" type="CombatFeatureComponent" x="160" y="32" width="16" height="16">
       <properties>
         <property name="ambushed" value="true"></property>
         <property name="creatures"></property>
@@ -91,7 +91,7 @@
         <property name="type" value="encounter"></property>
       </properties>
     </object>
-    <object name="Tablet" type="source.components.features.DialogFeatureComponent" x="160" y="16" width="16" height="16">
+    <object name="Tablet" type="DialogFeatureComponent" x="160" y="16" width="16" height="16">
       <properties>
         <property name="action" value="LOOK"></property>
         <property name="icon" value="dragonStone.png"></property>

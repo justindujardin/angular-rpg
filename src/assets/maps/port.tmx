@@ -31,7 +31,7 @@
 </data>
  </layer>
  <objectgroup draworder="topdown" name="Features" width="29" height="22">
-  <object name="wilderness" type="source.components.features.PortalFeatureComponent" x="320" y="64" width="16" height="16">
+  <object name="wilderness" type="PortalFeatureComponent" x="320" y="64" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
     <property name="target" value="wilderness"/>
@@ -46,7 +46,7 @@
     <property name="type" value="block"/>
    </properties>
   </object>
-  <object name="Elvish Guard" type="source.components.features.DialogFeatureComponent" x="304" y="96" width="16" height="16">
+  <object name="Elvish Guard" type="DialogFeatureComponent" x="304" y="96" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="gnome3.png"/>
@@ -55,7 +55,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="Elvish Guard" type="source.components.features.DialogFeatureComponent" x="336" y="96" width="16" height="16">
+  <object name="Elvish Guard" type="DialogFeatureComponent" x="336" y="96" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="gnome3.png"/>
@@ -64,7 +64,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="Elf" type="source.components.features.DialogFeatureComponent" x="112" y="224" width="16" height="16">
+  <object name="Elf" type="DialogFeatureComponent" x="112" y="224" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="gnome.png"/>
@@ -73,7 +73,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="Nothian Wares" type="source.components.features.StoreFeatureComponent" x="144" y="144" width="16" height="16">
+  <object name="Nothian Wares" type="StoreFeatureComponent" x="144" y="144" width="16" height="16">
    <properties>
     <property name="buyRate" value="120"/>
     <property name="groups" value="rare"/>
@@ -83,7 +83,7 @@
     <property name="sellRate" value="25"/>
    </properties>
   </object>
-  <object name="Elvish Elder" type="source.components.features.DialogFeatureComponent" x="256" y="272" width="16" height="16">
+  <object name="Elvish Elder" type="DialogFeatureComponent" x="256" y="272" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="gnome2.png"/>
@@ -93,7 +93,7 @@
     <property name="until" value="goblinDone"/>
    </properties>
   </object>
-  <object name="Elvish Elder" type="source.components.features.DialogFeatureComponent" x="256" y="272" width="16" height="16">
+  <object name="Elvish Elder" type="DialogFeatureComponent" x="256" y="272" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="after" value="goblinDone"/>
@@ -115,7 +115,7 @@
     <property name="until" value="goblinStart"/>
    </properties>
   </object>
-  <object name="Elvish Councillor" type="source.components.features.DialogFeatureComponent" x="240" y="272" width="16" height="16">
+  <object name="Elvish Councillor" type="DialogFeatureComponent" x="240" y="272" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="after" value="goblinStart"/>
@@ -139,7 +139,7 @@
     <property name="until" value="castleStart"/>
    </properties>
   </object>
-  <object name="Elvish Councillor" type="source.components.features.DialogFeatureComponent" x="240" y="272" width="16" height="16">
+  <object name="Elvish Councillor" type="DialogFeatureComponent" x="240" y="272" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="after" value="castleStart"/>
@@ -150,7 +150,7 @@
     <property name="until" value="castleDone"/>
    </properties>
   </object>
-  <object name="Elvish Councillor" type="source.components.features.DialogFeatureComponent" x="240" y="272" width="16" height="16">
+  <object name="Elvish Councillor" type="DialogFeatureComponent" x="240" y="272" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="after" value="castleDone"/>
@@ -160,7 +160,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="chest.png" type="source.components.features.CombatFeatureComponent" x="240" y="256" width="16" height="16">
+  <object name="chest.png" type="CombatFeatureComponent" x="240" y="256" width="16" height="16">
    <properties>
     <property name="after" value="goblinDone"/>
     <property name="creatures" value=""/>
@@ -171,7 +171,7 @@
     <property name="text" value="The elves reward you for your defeat of the Goblin King!"/>
    </properties>
   </object>
-  <object name="temple.png" type="source.components.features.TempleFeatureComponent" x="320" y="272" width="16" height="16">
+  <object name="temple.png" type="TempleFeatureComponent" x="320" y="272" width="16" height="16">
    <properties>
     <property name="cost" value="20"/>
     <property name="icon" value="temple.png"/>

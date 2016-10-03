@@ -29,7 +29,7 @@
 </data>
  </layer>
  <objectgroup draworder="topdown" name="Features" width="19" height="19">
-  <object name="tower1" type="source.components.features.PortalFeatureComponent" x="48" y="240" width="16" height="16">
+  <object name="tower1" type="PortalFeatureComponent" x="48" y="240" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
     <property name="target" value="tower1"/>
@@ -39,7 +39,7 @@
     <property name="transitionType" value="down"/>
    </properties>
   </object>
-  <object name="iceGolem.png" type="source.components.features.CombatFeatureComponent" x="144" y="144" width="16" height="16">
+  <object name="iceGolem.png" type="CombatFeatureComponent" x="144" y="144" width="16" height="16">
    <properties>
     <property name="creatures" value=""/>
     <property name="gold" value="8"/>
@@ -49,7 +49,7 @@
     <property name="text" value="Two handlers release the bonds on a hulking monstrosity made entirely of ice! It lurches towards you!"/>
    </properties>
   </object>
-  <object name="iceTroll.png" type="source.components.features.CombatFeatureComponent" x="80" y="48" width="16" height="16">
+  <object name="iceTroll.png" type="CombatFeatureComponent" x="80" y="48" width="16" height="16">
    <properties>
     <property name="ambushed" value="true"/>
     <property name="creatures" value=""/>
@@ -70,7 +70,7 @@
     <property name="until" value="bagOfHolding"/>
    </properties>
   </object>
-  <object name="tower3" type="source.components.features.PortalFeatureComponent" x="16" y="80" width="16" height="16">
+  <object name="tower3" type="PortalFeatureComponent" x="16" y="80" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
     <property name="target" value="tower3"/>

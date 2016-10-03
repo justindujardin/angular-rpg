@@ -21,7 +21,7 @@
 </data>
  </layer>
  <objectgroup draworder="topdown" name="Features" width="11" height="11">
-  <object name="tower2" type="source.components.features.PortalFeatureComponent" x="16" y="16" width="16" height="16">
+  <object name="tower2" type="PortalFeatureComponent" x="16" y="16" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
     <property name="target" value="tower2"/>
@@ -31,7 +31,7 @@
     <property name="transitionType" value="down"/>
    </properties>
   </object>
-  <object name="iceMage.png" type="source.components.features.CombatFeatureComponent" x="80" y="128" width="16" height="16">
+  <object name="iceMage.png" type="CombatFeatureComponent" x="80" y="128" width="16" height="16">
    <properties>
     <property name="creatures" value=""/>
     <property name="gold" value="47"/>
@@ -41,7 +41,7 @@
     <property name="text" value="A group of Ice Magi block your passage! &quot;The power in the chamber beyond is no match for your feeble minds!&quot; They attack!"/>
    </properties>
   </object>
-  <object name="Podium" type="source.components.features.DialogFeatureComponent" x="32" y="128" width="16" height="16">
+  <object name="Podium" type="DialogFeatureComponent" x="32" y="128" width="16" height="16">
    <properties>
     <property name="action" value="LOOK"/>
     <property name="icon" value="plaque.png"/>
@@ -51,7 +51,7 @@
     <property name="until" value="towerStart"/>
    </properties>
   </object>
-  <object name="Podium" type="source.components.features.DialogFeatureComponent" x="32" y="128" width="16" height="16">
+  <object name="Podium" type="DialogFeatureComponent" x="32" y="128" width="16" height="16">
    <properties>
     <property name="action" value="PRISM"/>
     <property name="after" value="towerStart"/>
