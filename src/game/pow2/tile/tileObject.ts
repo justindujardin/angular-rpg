@@ -107,9 +107,10 @@ export class TileObject extends SceneObject implements TileObjectOptions {
     }
     else {
       var meta = this.world.sprites.getSpriteMeta(name);
-      this.world.sprites.getSpriteSheet(meta.source).then((image: ImageResource) => {
+      this.world.sprites.getSpriteSheet(meta.source).then((images: ImageResource[]) => {
+        const image = images[0];
         this.meta = meta;
-        return this.image = image.data;
+        this.image = image.data;
       });
     }
     this.icon = name;

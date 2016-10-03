@@ -52,7 +52,7 @@ export class SpriteRender implements IWorldObject {
     (<any>this.context).mozImageSmoothingEnabled = false;
   }
 
-  getSpriteSheet(name: string): Promise<ImageResource> {
+  getSpriteSheet(name: string): Promise<ImageResource[]> {
     if (this.world) {
       return this.world.loader.load(SpriteRender.getSpriteSheetUrl(name));
     }
@@ -65,7 +65,8 @@ export class SpriteRender implements IWorldObject {
       return Promise.reject("Unable to find sprite by name: " + spriteName);
     }
     return new Promise<HTMLImageElement>((resolve, reject) => {
-      this.getSpriteSheet(coords.source).then((image: ImageResource)=> {
+      this.getSpriteSheet(coords.source).then((images: ImageResource[]) => {
+        const image = images[0];
         var cell: Rect = this.getSpriteRect(spriteName, frame);
 
         this.sizeCanvas(cell.extent.x, cell.extent.y);
