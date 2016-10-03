@@ -111,7 +111,7 @@ export class GameWorld extends SceneWorld {
   }
 
   getMapUrl(name: string): string {
-    return `${GAME_ROOT}/maps/${name}.tmx`;
+    return `${GAME_ROOT}maps/${name}.tmx`;
   }
 
   randomEncounter(zone: rpg.IZoneMatch, then?: rpg.IGameEncounterCallback) {

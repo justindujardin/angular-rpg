@@ -1,36 +1,19 @@
-<rpg-notification></rpg-notification>
-
-<div class="select-map ebp" hide-sm *ngIf="!combat">Select Map:
-  <select #themap (change)="setMap(themap.value)">
-    <option *ngFor="let map of maps" [value]="map" [selected]="map==game.partyMapName">{{map}}</option>
-  </select>
-</div>
-
-<div class="dialogs-container"
-     layout="column"
-     layout-fill
-     layout-padding
-     layout-align="start center"
-     *ngIf="!combat">
-  <party-menu></party-menu>
-  <world-dialog></world-dialog>
-  <world-temple></world-temple>
-  <world-store></world-store>
-</div>
-<world-map
-  [style.display]="combat?'none':'inherit'"
-  [position]="game.partyPosition"
-  [player]="game.world.model.party[0]"
-  [mapName]="game.partyMapName"></world-map>
-
-<combat-map *ngIf="combat" [combat]="combat" [map]="combat?.tileMap"></combat-map>
-
 <div class="card-container">
+  <h1 x-large class="sample-content">Your Content Here</h1>
+
+  <div>
+    For material design components use the <a href="https://github.com/AngularClass/angular2-webpack-starter/tree/material2"><b>material2</b></a> branch
+  </div>
+
+  <hr>
+
   <div>
     For hot module reloading run
     <pre>npm run start:hmr</pre>
   </div>
+
   <hr>
+
   <div>
     <h4>Local State</h4>
 

@@ -19,7 +19,6 @@ import * as tiled from './tiled';
 import {XMLResource} from '../xml';
 import {Resource} from '../../resource';
 import {TiledTSXResource} from './tiledTsx';
-declare var $: any;
 import * as _ from 'underscore';
 
 
@@ -193,7 +192,7 @@ export class TiledTMXResource extends XMLResource {
         }
         else if (dep.source) {
           new TiledTSXResource()
-            .fetch(dep.data)
+            .fetch(dep.source)
             .then((resource: TiledTSXResource) => {
               this.tilesets[resource.name] = resource;
               resource.firstgid = dep.firstgid;

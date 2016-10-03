@@ -1,10 +1,9 @@
-import {NgModule, ApplicationRef, ModuleWithProviders, Optional, SkipSelf} from '@angular/core';
+import {NgModule, ApplicationRef} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {RouterModule} from '@angular/router';
 import {removeNgStyles, createNewHosts, createInputTransfer} from '@angularclass/hmr';
-import {RPGAppComponent} from '../game/rpg/game';
 import {ENV_PROVIDERS} from './environment';
 import {ROUTES} from './app.routes';
 import {App} from './app.component';
@@ -14,13 +13,9 @@ import {Home} from './home';
 import {About} from './about';
 import {NoContent} from './no-content';
 import {XLarge} from './home/x-large';
-import {CombatModule} from '../game/ui/combat/index';
-import {WorldModule} from '../game/ui/world/index';
-import {RpgModule} from '../game/ui/rpg/index';
-import {PartyModule} from '../game/ui/party/index';
-import {ServicesModule} from '../game/ui/services/index';
 import {CommonModule} from '@angular/common';
 import {GameModule} from '../game/game.module';
+import {Game} from './game/game.component';
 
 
 /*
@@ -50,6 +45,7 @@ type StoreType = {
     About,
     Home,
     NoContent,
+    Game,
     XLarge
   ],
   imports: [ // import Angular's modules
