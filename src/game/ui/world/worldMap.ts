@@ -42,14 +42,6 @@ import {Rect} from '../../pow-core/rect';
     Your browser doesn't support this.
   </canvas>
   `,
-  styles: [`
-    canvas {
-      display:block;
-      border:2px solid blue;
-      min-height: 240px;
-      min-width: 320px;
-    }
-  `],
   host: {
     '(window:resize)': '_onResize($event)',
     '[style.color]': 'styleBackground'

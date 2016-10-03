@@ -1,8 +1,16 @@
-html, body{
+html, body {
   height: 100%;
-  font-family: Arial, Helvetica, sans-serif
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
+main {
+  overflow: hidden;
+}
 span.active {
   background-color: gray;
 }
+
+
