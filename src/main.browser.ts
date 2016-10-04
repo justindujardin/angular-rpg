@@ -21,14 +21,16 @@ export function main(): Promise<any> {
   return new Promise((resolve, reject) => {
     const subscription = world.ready$.subscribe(() => {
       subscription.unsubscribe();
-      resolve();
+      platformBrowserDynamic().bootstrapModule(AppModule)
+        .then(decorateModuleRef)
+        .then(() => {
+          resolve();
+        })
+        .catch(err => {
+          console.error(err);
+          reject(err);
+        });
     });
-    platformBrowserDynamic().bootstrapModule(AppModule)
-      .then(decorateModuleRef)
-      .catch(err => {
-        console.error(err);
-        reject(err);
-      });
 
   });
 }

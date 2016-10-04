@@ -18,14 +18,10 @@ import * as _ from 'underscore';
 import * as rpg from '../game';
 import {HeroModel, ItemModel} from './all';
 import {GameWorld} from '../../gameWorld';
-import {GameDataResource} from '../../pow2/game/resources/gameData';
 import {Events} from '../../pow-core/events';
 import {IWorldObject} from '../../pow-core/world';
 import {ResourceLoader} from '../../pow-core/resourceLoader';
 import {Point} from '../../pow-core/point';
-import {SPREADSHEET_ID} from '../../pow2/core/api';
-
-var _gameData: GameDataResource = null;
 
 export class GameStateModel extends Events implements IWorldObject {
   world: GameWorld;
@@ -48,27 +44,6 @@ export class GameStateModel extends Events implements IWorldObject {
       party: [],
       inventory: []
     });
-  }
-
-  initData(then?: (data: GameDataResource)=>any) {
-    GameStateModel.getDataSource(then);
-  }
-
-  /**
-   * Get the game data sheets from google and callback when they're loaded.
-   * @param then The function to call when spreadsheet data has been fetched
-   */
-  static getDataSource(then?: (data: GameDataResource)=>any): GameDataResource {
-    if (_gameData) {
-      then && then(_gameData);
-      return _gameData;
-    }
-    else {
-      return <GameDataResource>ResourceLoader.get().loadAsType(SPREADSHEET_ID, GameDataResource).then((resource: GameDataResource) => {
-        _gameData = resource;
-        then && then(resource);
-      });
-    }
   }
 
   setKeyData(key: string, data: any) {
@@ -108,7 +83,7 @@ export class GameStateModel extends Events implements IWorldObject {
   }
 
   parse(data: any, options?: any) {
-    if (!_gameData) {
+    if (!this.world.spreadsheet) {
       throw new Error("cannot instantiate inventory without valid data source.\nCall model.initData(loader) first.")
     }
     try {

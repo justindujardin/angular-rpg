@@ -21,7 +21,6 @@ import {RPGGame, Notify} from '../services/index';
 import {StoreFeatureComponent} from '../../rpg/components/features/storeFeatureComponent';
 import {GameStateModel} from '../../rpg/models/gameStateModel';
 import {ItemModel} from '../../rpg/models/all';
-import {GameDataResource} from '../../pow2/game/resources/gameData';
 
 const template = require('./worldStore.html') as string;
 
@@ -72,32 +71,32 @@ export class WorldStore {
 
   initStoreFromFeature(feature: StoreFeatureComponent) {
     // Get enemies data from spreadsheet
-    GameStateModel.getDataSource((data: GameDataResource) => {
+    const data = this.game.world.spreadsheet;
 
-      var hasCategory: boolean = typeof feature.host.category !== 'undefined';
-      var theChoices: any[] = [];
-      if (!hasCategory || feature.host.category === 'weapons') {
-        theChoices = theChoices.concat(data.getSheetData('weapons'));
-      }
-      if (!hasCategory || feature.host.category === 'armor') {
-        theChoices = theChoices.concat(data.getSheetData('armor'));
-      }
-      if (!hasCategory || feature.host.category === 'items') {
-        theChoices = theChoices.concat(data.getSheetData('items'));
-      }
-      var items: rpg.IGameItem[] = [];
-      _.each(feature.host.groups, (group: string)=> {
-        items = items.concat(_.filter(theChoices, (c: any)=> {
-          // Include items with no "groups" value or items with matching groups.
-          return !c.groups || _.indexOf(c.groups, group) !== -1;
-        }));
-      });
-
-      this.name = feature.name;
-      this.inventory = <rpg.IGameItem[]>_.map(_.where(items, {
-        level: feature.host.feature.level
-      }), (i: any) => _.extend({}, i));
+    var hasCategory: boolean = typeof feature.host.category !== 'undefined';
+    var theChoices: any[] = [];
+    if (!hasCategory || feature.host.category === 'weapons') {
+      theChoices = theChoices.concat(data.getSheetData('weapons'));
+    }
+    if (!hasCategory || feature.host.category === 'armor') {
+      theChoices = theChoices.concat(data.getSheetData('armor'));
+    }
+    if (!hasCategory || feature.host.category === 'items') {
+      theChoices = theChoices.concat(data.getSheetData('items'));
+    }
+    var items: rpg.IGameItem[] = [];
+    _.each(feature.host.groups, (group: string)=> {
+      items = items.concat(_.filter(theChoices, (c: any)=> {
+        // Include items with no "groups" value or items with matching groups.
+        return !c.groups || _.indexOf(c.groups, group) !== -1;
+      }));
     });
+
+    this.name = feature.name;
+    this.inventory = <rpg.IGameItem[]>_.map(_.where(items, {
+      level: feature.host.feature.level
+    }), (i: any) => _.extend({}, i));
+
   }
 
   close() {

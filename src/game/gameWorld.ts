@@ -25,7 +25,7 @@ import {SceneWorld} from './pow2/scene/sceneWorld';
 import {Scene} from './pow2/scene/scene';
 import {EntityFactory} from './pow-core/resources/entities';
 import {GameDataResource} from './pow2/game/resources/gameData';
-import {GAME_ROOT, registerSprites} from './pow2/core/api';
+import {GAME_ROOT, registerSprites, SPREADSHEET_ID} from './pow2/core/api';
 import {RPG_GAME_ENTITIES} from './game.entities';
 import {Subject} from 'rxjs/Subject';
 import {ReplaySubject} from 'rxjs/Rx';
@@ -63,32 +63,11 @@ export class GameWorld extends SceneWorld {
     if (!this.scene) {
       this.setService('scene', new Scene());
     }
+
     // Preload sprite sheets
-    this.loader
-      .load('assets/images/index.json')
-      .then((res: JSONResource[]) => {
-        const jsonRes = res[0];
-        const sources = _.map(jsonRes.data, (baseName: string) => {
-          return `${baseName}.json`
-        });
-        return Promise.all(_.map(sources, (fileName: string) => {
-          return this.loader.load(fileName)
-            .then((spritesLoaded: JSONResource[]) => {
-              const meta = spritesLoaded[0];
-              const name = meta.url
-                .substr(0, meta.url.lastIndexOf('.'))
-                .substr(meta.url.lastIndexOf('/') + 1);
-              console.log("loading name -> " + name);
-              registerSprites(name, meta.data);
-            });
-        }));
-      })
-      .then(() => {
-        GameStateModel.getDataSource((gsr: GameDataResource) => {
-          this.spreadsheet = gsr;
-          this.ready$.next();
-        });
-      })
+    this.loadSprites()
+      .then(() => this.loadGameData())
+      .then(() => this.ready$.next())
       .catch((e) => console.error(e));
   }
 
@@ -115,34 +94,32 @@ export class GameWorld extends SceneWorld {
   }
 
   randomEncounter(zone: rpg.IZoneMatch, then?: rpg.IGameEncounterCallback) {
-    GameStateModel.getDataSource((gsr: GameDataResource)=> {
-      var encountersData = gsr.getSheetData("randomencounters");
-      var encounters: rpg.IGameRandomEncounter[] = _.filter(encountersData, (enc: any)=> {
-        return _.indexOf(enc.zones, zone.map) !== -1 || _.indexOf(enc.zones, zone.target) !== -1;
-      });
-      if (encounters.length === 0) {
-        then && then(true);
-        return;
-      }
-      var max = encounters.length - 1;
-      var min = 0;
-      var encounter = encounters[Math.floor(Math.random() * (max - min + 1)) + min];
-      this._encounter(zone, encounter, then);
+    const gsr = this.spreadsheet;
+    var encountersData = gsr.getSheetData("randomencounters");
+    var encounters: rpg.IGameRandomEncounter[] = _.filter(encountersData, (enc: any)=> {
+      return _.indexOf(enc.zones, zone.map) !== -1 || _.indexOf(enc.zones, zone.target) !== -1;
     });
+    if (encounters.length === 0) {
+      then && then(true);
+      return;
+    }
+    var max = encounters.length - 1;
+    var min = 0;
+    var encounter = encounters[Math.floor(Math.random() * (max - min + 1)) + min];
+    this.doEncounter(zone, encounter, then);
   }
 
 
   fixedEncounter(zone: rpg.IZoneMatch, encounterId: string, then?: rpg.IGameEncounterCallback) {
-    GameStateModel.getDataSource((gsr: GameDataResource)=> {
-      var encounter = <rpg.IGameFixedEncounter>_.where(gsr.getSheetData('fixedencounters'), {
-        id: encounterId
-      })[0];
-      if (!encounter) {
-        this.scene.trigger('error', `No encounter found with id: ${encounterId}`);
-        return then(true);
-      }
-      this._encounter(zone, encounter, then);
-    });
+    const gsr = this.spreadsheet;
+    var encounter = <rpg.IGameFixedEncounter>_.where(gsr.getSheetData('fixedencounters'), {
+      id: encounterId
+    })[0];
+    if (!encounter) {
+      this.scene.trigger('error', `No encounter found with id: ${encounterId}`);
+      return then(true);
+    }
+    this.doEncounter(zone, encounter, then);
   }
 
   /**
@@ -178,11 +155,40 @@ export class GameWorld extends SceneWorld {
   }
 
 
-  private _encounter(zoneInfo: rpg.IZoneMatch, encounter: rpg.IGameEncounter, then?: rpg.IGameEncounterCallback) {
+  private doEncounter(zoneInfo: rpg.IZoneMatch, encounter: rpg.IGameEncounter, then?: rpg.IGameEncounterCallback) {
     this.scene.trigger('combat:encounter', this);
     this.state.encounter = encounter;
     this.state.encounterInfo = zoneInfo;
     this.state.setCurrentState(PlayerCombatState.NAME);
     this._encounterCallback = then;
+  }
+
+
+  /** Load game data from google spreadsheet */
+  private loadGameData(): Promise<void> {
+    return this.loader.loadAsType(SPREADSHEET_ID, GameDataResource).then((resource: GameDataResource) => {
+      this.spreadsheet = resource;
+    });
+  }
+
+  /** Preload sprite sheet metadata */
+  private loadSprites(): Promise<void> {
+    return this.loader.load('assets/images/index.json')
+      .then((res: JSONResource[]) => {
+        const jsonRes = res[0];
+        const sources = _.map(jsonRes.data, (baseName: string) => {
+          return `${baseName}.json`
+        });
+        return Promise.all(_.map(sources, (fileName: string) => {
+          return this.loader.load(fileName)
+            .then((spritesLoaded: JSONResource[]) => {
+              const meta = spritesLoaded[0];
+              const name = meta.url
+                .substr(0, meta.url.lastIndexOf('.'))
+                .substr(meta.url.lastIndexOf('/') + 1);
+              registerSprites(name, meta.data);
+            });
+        }));
+      });
   }
 }

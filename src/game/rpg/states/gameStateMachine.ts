@@ -45,7 +45,6 @@ export class GameStateMachine extends StateMachine {
 
   onAddToWorld(world: GameWorld) {
     super.onAddToWorld(world);
-    GameStateModel.getDataSource();
     this.model = world.model || new GameStateModel();
   }
 

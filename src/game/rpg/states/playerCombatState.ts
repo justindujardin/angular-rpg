@@ -16,7 +16,6 @@
 
 import * as rpg from '../game';
 import {GameEntityObject} from '../objects/gameEntityObject';
-import {GameStateModel} from '../models/gameStateModel';
 import {GameStateMachine} from './gameStateMachine';
 import {CombatStateMachine} from './combat/combatStateMachine';
 import {GameTileMap} from '../../gameTileMap';
@@ -26,7 +25,6 @@ import {CreatureModel} from '../models/creatureModel';
 import {State} from '../../pow2/core/state';
 import {Scene} from '../../pow2/scene/scene';
 import {EntityFactory} from '../../pow-core/resources/entities';
-import {GameDataResource} from '../../pow2/game/resources/gameData';
 import {TiledTMXResource} from '../../pow-core/resources/tiled/tiledTmx';
 import {Point} from '../../pow-core/point';
 import * as _ from 'underscore';
@@ -75,14 +73,10 @@ export class PlayerCombatState extends State {
   scene: Scene = null;
 
   factory: EntityFactory;
-  spreadsheet: GameDataResource;
 
   constructor() {
     super();
     this.factory = GameWorld.get().entities;
-    GameStateModel.getDataSource((spreadsheet: GameDataResource) => {
-      this.spreadsheet = spreadsheet;
-    });
   }
 
   enter(machine: GameStateMachine) {
@@ -91,7 +85,8 @@ export class PlayerCombatState extends State {
     this.machine = new CombatStateMachine(machine);
     this.scene = new Scene();
     machine.world.mark(this.scene);
-    if (!this.factory || !this.spreadsheet) {
+    const spreadsheet = this.parent.world.spreadsheet;
+    if (!this.factory || !spreadsheet) {
       throw new Error("Invalid combat entity container or game data spreadsheet");
     }
 
@@ -140,7 +135,7 @@ export class PlayerCombatState extends State {
         // Position Party/Enemies
 
         // Get enemies data from spreadsheet
-        var enemyList: any[] = this.spreadsheet.getSheetData("enemies");
+        var enemyList: any[] = spreadsheet.getSheetData("enemies");
         var enemiesLength: number = machine.encounter.enemies.length;
         for (var i: number = 0; i < enemiesLength; i++) {
           var tpl = _.where(enemyList, {id: machine.encounter.enemies[i]});

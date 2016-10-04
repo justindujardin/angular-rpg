@@ -45,7 +45,7 @@ export class Point {
   }
 
   toString(): string {
-    return "" + this.x + "," + this.y;
+    return `${this.x},${this.y}`;
   }
 
   set(point: Point): Point;

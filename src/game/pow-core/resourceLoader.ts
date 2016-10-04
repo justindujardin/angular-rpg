@@ -85,7 +85,7 @@ export class ResourceLoader {
         resource = this._cache[source] = new resourceType(source, null);
       }
       resource
-        .fetch()
+        .fetch(source)
         .then(() => resolve(resource))
         .catch((e) => reject(e));
     });

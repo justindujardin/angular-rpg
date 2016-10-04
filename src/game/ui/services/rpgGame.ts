@@ -94,7 +94,7 @@ export class RPGGame {
         model: from,
         map: tileMap
       })
-      .then((sprite: GameEntityObject) => {
+      .then((sprite: GameEntityObject): Promise<GameEntityObject> => {
         this.sprite = sprite;
         if (!this.sprite) {
           return Promise.reject("Failed to create map player");
@@ -122,13 +122,11 @@ export class RPGGame {
   initGame(data: any = this.getSaveData()): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       if (data) {
-        return this.world.model.initData(()=> {
-          this.world.model.parse(data);
-          var at = this.world.model.getKeyData('playerPosition');
-          this.partyPosition = at ? new Point(at.x, at.y) : undefined;
-          this.partyMapName = this.world.model.getKeyData('playerMap') || "town";
-          resolve(false);
-        });
+        this.world.model.parse(data);
+        var at = this.world.model.getKeyData('playerPosition');
+        this.partyPosition = at ? new Point(at.x, at.y) : undefined;
+        this.partyMapName = this.world.model.getKeyData('playerMap') || "town";
+        resolve(false);
       }
       else {
         this.world.model.addHero(HeroModel.create(HeroTypes.Warrior, "Warrior"));
