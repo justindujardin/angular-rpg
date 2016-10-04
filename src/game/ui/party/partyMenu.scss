@@ -1,15 +1,13 @@
+@import '../style/variables.scss';
 
-party-menu {
+:host {
   position: fixed;
   bottom: 5px;
   left: 5px;
   z-index: $zCanvasGui;
   font-family: 'GraphicPixel', sans-serif;
-  .options, .trigger {
+  .btn-open {
     font-size: 42px;
-    font-weight: 300;
-  }
-  .trigger {
     position: fixed;
     left: 5px;
     bottom: 0;
@@ -33,9 +31,9 @@ party-menu {
     }
   }
 
-  player-card {
-    @extend .flex-inline;
-  }
+  //player-card {
+  //  @extend .flex-inline;
+  //}
 
   .navigation {
     position: fixed;
@@ -51,11 +49,11 @@ party-menu {
       padding: 5px;
       li {
         a.ng-click-active {
-          color: md-color($md-accent);
+          //color: md-color($md-accent);
         }
         &.active {
           a {
-            color: md-color($md-primary, A700);
+            //color: md-color($md-primary, A700);
           }
         }
 

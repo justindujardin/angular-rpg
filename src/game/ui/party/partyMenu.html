@@ -1,25 +1,15 @@
-<a href="#" class="trigger glyphicon glyphicon-collapse-down" (click)="toggle()" *ngIf="!open"></a>
-
+<a href="#" class="btn-open" (click)="toggle()" *ngIf="!open">OPEN MENU</a>
 <div class="navigation" *ngIf="open">
-  <ul class="options">
+  <nav class="options">
     <!-- Close -->
-    <li>
-      <a href="#" (click)="toggle()" class="glyphicon glyphicon glyphicon-collapse-up"></a>
-    </li>
+    <a href="#" (click)="toggle()" class="btn-close">CLOSE MENU</a>
     <!-- Characters -->
-    <li [class]="getActiveClass('party')">
-      <a href="#" (click)="showParty()" class="pow2-black-flag"></a>
-    </li>
+    <a href="#" (click)="showParty()" class="btn-party">CHARACTERS</a>
     <!-- Inventory/Equipment -->
-    <li [class]="getActiveClass('inventory')">
-      <a href="#" (click)="showInventory()" class="pow2-battle-gear"></a>
-    </li>
+    <a href="#" (click)="showInventory()" class="btn-inventory">INVENTORY</a>
     <!-- Save/Reset -->
-    <li [class]="getActiveClass('save')">
-      <a href="#" (click)="showSave()" class="glyphicon glyphicon-floppy-disk"></a>
-    </li>
-
-  </ul>
+    <a href="#" (click)="showSave()" class="btn-save">SAVE</a>
+  </nav>
 </div>
 <div class="views" *ngIf="open">
   <div class="party" *ngIf="page == 'party'">
@@ -31,13 +21,9 @@
       flex-sm="100"
       *ngFor="let member of game.world.model.party"></player-card>
   </div>
-  <div class="inventory" *ngIf="page == 'inventory'">
-    <party-inventory></party-inventory>
-  </div>
-  <div class="save" *ngIf="page == 'save'">
-    <button class="btn btn-flat" (click)="menuSaveGame()"><i class="glyphicon glyphicon-floppy-disk"></i> Save Game
-    </button>
-    <button class="btn btn-flat" (click)="menuResetGame()"><i class="glyphicon glyphicon-floppy-remove"></i> Reset Game
-    </button>
+  <party-inventory *ngIf="page == 'inventory'"></party-inventory>
+  <div *ngIf="page == 'save'">
+    <button (click)="menuSaveGame()">Save Game</button>
+    <button (click)="menuResetGame()">Reset Game</button>
   </div>
 </div>

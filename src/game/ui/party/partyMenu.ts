@@ -22,6 +22,7 @@ const template = require('./partyMenu.html') as string;
 @Component({
   selector: 'party-menu',
   inputs: ['game', 'page', 'open'],
+  styleUrls: ['./partyMenu.scss'],
   template: template
 })
 export class PartyMenu {
