@@ -18,7 +18,7 @@ import * as _ from 'underscore';
 import {TileComponent} from '../tileComponent';
 import {TileMap} from '../tileMap';
 import {Point} from '../../../pow-core/point';
-import * as astar from 'astar';
+import * as astar from 'javascript-astar';
 
 /**
  * A component that can calculate A-star paths.
@@ -48,7 +48,8 @@ export class PathComponent extends TileComponent {
   }
 
   private _updateGraph() {
-    this._graph = new astar.Graph(this.buildWeightedGraph());
+    const nodes = this.buildWeightedGraph();
+    this._graph = new astar.Graph(nodes);
   }
 
   /**
@@ -75,28 +76,28 @@ export class PathComponent extends TileComponent {
     if (!this._graph) {
       this._updateGraph();
     }
-    if (!this._graph || !this._graph.nodes) {
+    if (!this._graph || !this._graph.grid) {
       throw new Error("Invalid AStar graph");
     }
     // Treat out of range errors as non-critical, and just
     // return an empty array.
-    if (from.x >= this._graph.nodes.length || from.x < 0) {
+    if (from.x >= this._graph.grid.length || from.x < 0) {
       return [];
     }
-    if (from.y >= this._graph.nodes[from.x].length) {
+    if (from.y >= this._graph.grid[from.x].length) {
       return [];
     }
-    if (to.x >= this._graph.nodes.length || to.x < 0) {
+    if (to.x >= this._graph.grid.length || to.x < 0) {
       return [];
     }
-    if (to.y >= this._graph.nodes[to.x].length) {
+    if (to.y >= this._graph.grid[to.x].length) {
       return [];
     }
-    var start = this._graph.nodes[from.x][from.y];
-    var end = this._graph.nodes[to.x][to.y];
-    var result = astar.astar.search(this._graph.nodes, start, end);
+    var start = this._graph.grid[from.x][from.y];
+    var end = this._graph.grid[to.x][to.y];
+    var result = astar.astar.search(this._graph, start, end);
     return _.map(result, (graphNode: any) => {
-      return new Point(graphNode.pos.x, graphNode.pos.y);
+      return new Point(graphNode.x, graphNode.y);
     });
   }
 }
