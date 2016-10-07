@@ -84,7 +84,6 @@ SpriteSheetPlugin.prototype.apply = function (compiler) {
     }
 
     processInput();
-    callback();
   });
 };
 
