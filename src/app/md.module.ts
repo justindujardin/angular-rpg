@@ -3,17 +3,17 @@
  */
 import { NgModule, ModuleWithProviders }      from '@angular/core';
 
-import { MdButtonModule }                     from '@angular2-material/button';
-import { MdCardModule }                       from '@angular2-material/card';
-import { MdCheckboxModule }                   from '@angular2-material/checkbox';
-import { MdIconModule }                       from '@angular2-material/icon';
-import { MdInputModule }                      from '@angular2-material/input';
-import { MdListModule }                       from '@angular2-material/list';
-import { MdSidenavModule }                    from '@angular2-material/sidenav';
-import { MdTabsModule }                       from '@angular2-material/tabs';
-import { MdToolbarModule }                    from '@angular2-material/toolbar';
-import { MdTooltipModule }                    from '@angular2-material/tooltip';
-import { MdProgressBarModule }                from '@angular2-material/progress-bar';
+import { MdButtonModule }                     from '@angular/material/button';
+import { MdCardModule }                       from '@angular/material/card';
+import { MdCheckboxModule }                   from '@angular/material/checkbox';
+import { MdIconModule }                       from '@angular/material/icon';
+import { MdInputModule }                      from '@angular/material/input';
+import { MdListModule }                       from '@angular/material/list';
+import { MdSidenavModule }                    from '@angular/material/sidenav';
+import { MdTabsModule }                       from '@angular/material/tabs';
+import { MdToolbarModule }                    from '@angular/material/toolbar';
+import { MdTooltipModule }                    from '@angular/material/tooltip';
+import { MdProgressBarModule }                from '@angular/material/progress-bar';
 
 @NgModule({
 

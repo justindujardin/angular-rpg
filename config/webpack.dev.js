@@ -120,12 +120,12 @@ module.exports = function(options) {
       }),
 
       /**
-         * Plugin: NamedModulesPlugin (experimental)
-         * Description: Uses file names as module name.
-         *
-         * See: https://github.com/webpack/webpack/commit/a04ffb928365b19feb75087c63f13cadfc08e1eb
-         */
-        new NamedModulesPlugin(),
+       * Plugin: NamedModulesPlugin (experimental)
+       * Description: Uses file names as module name.
+       *
+       * See: https://github.com/webpack/webpack/commit/a04ffb928365b19feb75087c63f13cadfc08e1eb
+       */
+      new NamedModulesPlugin(),
 
     ],
 

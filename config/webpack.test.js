@@ -87,10 +87,10 @@ module.exports = function(options) {
           test: /\.js$/,
           loader: 'source-map-loader',
           exclude: [
-          // these packages have problems with their sourcemaps
-          helpers.root('node_modules/rxjs'),
-          helpers.root('node_modules/@angular')
-        ]}
+            // these packages have problems with their sourcemaps
+            helpers.root('node_modules/rxjs'),
+            helpers.root('node_modules/@angular')
+          ]}
 
       ],
 
@@ -113,6 +113,9 @@ module.exports = function(options) {
           test: /\.ts$/,
           loader: 'awesome-typescript-loader',
           query: {
+            // use inline sourcemaps for "karma-remap-coverage" reporter
+            sourceMap: false,
+            inlineSourceMap: true,
             compilerOptions: {
 
               // Remove TypeScript helpers to be injected

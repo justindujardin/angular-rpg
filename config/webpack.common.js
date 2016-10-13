@@ -50,7 +50,7 @@ module.exports = function(options) {
      *
      * See: http://webpack.github.io/docs/configuration.html#cache
      */
-     //cache: false,
+    //cache: false,
 
     /*
      * The entry point for the bundle
@@ -257,6 +257,16 @@ module.exports = function(options) {
       new CopyWebpackPlugin([{
         from: 'src/assets',
         to: 'assets'
+      }], {
+        ignore: [
+          'humans.txt',
+          'robots.txt'
+        ]
+      }),
+      new CopyWebpackPlugin([{
+        from: 'src/assets/robots.txt'
+      }, {
+        from: 'src/assets/humans.txt'
       }]),
 
       /*
