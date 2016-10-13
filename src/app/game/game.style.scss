@@ -1,0 +1,21 @@
+@import '../../game/ui/style/variables.scss';
+@import '../../game/ui/style/mixins.scss';
+@import '../../game/ui/style/fonts.scss';
+@import '../../game/ui/style/icons.scss';
+@import '../../game/ui/style/buttons.scss';
+@import '../../game/ui/style/pageTransitions.scss';
+@import '../../game/ui/style/eightBitPanel.scss';
+@import '../../game/ui/style/animation.scss';
+@import '~ng2-material/core.scss';
+
+.ebp {
+  font-family: 'GraphicPixel', sans-serif;
+  font-size: rem(2);
+}
+
+.select-map {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  padding: 32px;
+}

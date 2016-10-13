@@ -26,6 +26,7 @@ const template = require('./worldTemple.html') as string;
 @Component({
   selector: 'world-temple',
   inputs: ['model', 'party', 'active', 'cost', 'icon', 'name'],
+  styleUrls: ['./worldTemple.scss'],
   template: template
 })
 export class WorldTemple {

@@ -1,4 +1,7 @@
-rpg-health-bar {
+@import '../style/variables';
+@import '../style/mixins';
+
+:host {
   display: inline-flex;
   height: inherit;
   md-progress-bar {
@@ -6,12 +9,12 @@ rpg-health-bar {
     /* Damage states */
     &.fine {
       .md-bar {
-        background-color: md-color($md-primary, 800, 0.5);
+        background-color: rgb(46, 109, 166);
       }
     }
     &.hurt {
       .md-bar {
-        background-color: md-color($md-accent, 0.5);
+        background-color: rgba(230, 200, 40, 1);
       }
     }
     &.critical {

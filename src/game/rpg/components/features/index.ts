@@ -13,7 +13,7 @@ export * from './shipFeatureComponent';
 export * from './templeFeatureComponent';
 export * from './treasureFeatureComponent';
 
-export const ALL_FEATURES: GameFeatureComponent[] = [
+export const ALL_FEATURES: Function[] = [
   CombatFeatureComponent,
   DialogFeatureComponent,
   PortalFeatureComponent,

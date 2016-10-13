@@ -1,13 +1,13 @@
 // Combat View
 // --------------------------------------------------------------------------
-combat-map {
+@import '../style/variables';
+@import '../style/mixins';
+@import '../style/icons';
+
+:host {
   * {
     @extend .no-select;
   }
-  canvas {
-    @extend .game-canvas;
-  }
-
   rpg-health-bar {
     width: 100%;
     @extend .flex-inline;
@@ -21,13 +21,11 @@ combat-map {
   bottom: 0;
   left: 0;
   right: 0;
-
+  background-color: $menuOverlayBackground;
   font-size: rem(2);
   margin-left: auto;
   margin-right: auto;
   width: 100%;
-
-  background-color: transparent;
   z-index: $zCanvasGui;
 
   .action-menu, .targets-menu, .spells-menu {
@@ -65,7 +63,6 @@ combat-map {
       left: 0;
       right: 0;
       .md-container {
-        background-color: $menuOverlayBackground;
       }
     }
     .text {
@@ -89,7 +86,7 @@ combat-map {
       text-align: right;
       @include stroke-text(1px, #000);
     }
-    health-bar {
+    rpg-health-bar {
       min-width: 25%;
     }
   }

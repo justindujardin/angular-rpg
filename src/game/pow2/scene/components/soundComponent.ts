@@ -43,7 +43,7 @@ export class SoundComponent extends SceneComponent implements SoundComponentOpti
   }
 
   disconnectComponent(): boolean {
-    if (this.audio.data) {
+    if (this.audio && this.audio.data) {
       this.audio.data.pause();
       this.audio.data.currentTime = 0;
     }

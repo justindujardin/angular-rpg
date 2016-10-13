@@ -1,6 +1,11 @@
+@import '../style/variables';
+@import '../style/mixins';
+@import '../style/buttons';
+@import '../style/eightBitPanel';
 
-world-store {
+:host {
   @include pow-dialog();
+  max-width: 600px;
   z-index: $zCanvasGui;
   text-align: center;
 

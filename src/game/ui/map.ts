@@ -21,6 +21,7 @@ import {TileMapView} from '../pow2/tile/tileMapView';
 import {SoundComponent} from '../pow2/scene/components/soundComponent';
 import {Point} from '../pow-core/point';
 import {TiledTMXResource} from '../pow-core/resources/tiled/tiledTmx';
+import {GameWorld} from '../gameWorld';
 
 
 /**
@@ -72,11 +73,11 @@ export class Map extends TileMapView {
    */
   protected _loadMap(value: string): Promise<GameTileMap> {
     return new Promise<GameTileMap>((resolve, reject)=> {
-      this.game.loader.load(this.game.world.getMapUrl(value))
+      this.game.loader.load(GameWorld.getMapUrl(value))
         .then((maps: TiledTMXResource[]) => {
           const map = maps[0];
           if (!map || !map.data) {
-            return reject(`invalid resource: ${this.game.world.getMapUrl(value)}`);
+            return reject(`invalid resource: ${GameWorld.getMapUrl(value)}`);
           }
           if (this.tileMap) {
             this._destroyMusic();

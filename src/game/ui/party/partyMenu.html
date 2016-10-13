@@ -1,13 +1,9 @@
-<a href="#" class="btn-open" (click)="toggle()" *ngIf="!open">OPEN MENU</a>
+<a href="#" class="btn-open" (click)="toggle()" *ngIf="!open">MENU</a>
 <div class="navigation" *ngIf="open">
   <nav class="options">
-    <!-- Close -->
     <a href="#" (click)="toggle()" class="btn-close">CLOSE MENU</a>
-    <!-- Characters -->
     <a href="#" (click)="showParty()" class="btn-party">CHARACTERS</a>
-    <!-- Inventory/Equipment -->
     <a href="#" (click)="showInventory()" class="btn-inventory">INVENTORY</a>
-    <!-- Save/Reset -->
     <a href="#" (click)="showSave()" class="btn-save">SAVE</a>
   </nav>
 </div>
@@ -16,9 +12,6 @@
     <h1>Party Gold: {{game.world.model.gold}}</h1>
     <player-card
       [model]="member"
-      layout-wrap
-      flex="30"
-      flex-sm="100"
       *ngFor="let member of game.world.model.party"></player-card>
   </div>
   <party-inventory *ngIf="page == 'inventory'"></party-inventory>

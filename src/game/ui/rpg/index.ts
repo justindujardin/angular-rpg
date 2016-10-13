@@ -19,6 +19,7 @@ import {RPGHealthBar} from './rpgHealthBar';
 import {RPGNotification} from './rpgNotification';
 import {RPGSprite} from './rpgSprite';
 import {CommonModule} from '@angular/common';
+import {MdModule} from '../../../app/md.module';
 export * from './rpgHealthBar';
 export * from './rpgNotification';
 export * from './rpgSprite';
@@ -33,7 +34,8 @@ const RPG_EXPORTS = [
   declarations: RPG_EXPORTS,
   exports: RPG_EXPORTS,
   imports: [
-    CommonModule
+    CommonModule,
+    MdModule
   ]
 })
 export class RpgModule {

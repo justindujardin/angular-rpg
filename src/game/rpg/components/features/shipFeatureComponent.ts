@@ -26,7 +26,7 @@ export class ShipFeatureComponent extends GameFeatureComponent {
   party: PlayerComponent;
   partyObject: TileObject;
   partySprite: string;
-  private _tickInterval: number = -1;
+  private _tickInterval: any = -1;
 
   syncComponent(): boolean {
     if (super.syncComponent()) {
@@ -72,7 +72,7 @@ export class ShipFeatureComponent extends GameFeatureComponent {
     this.host.visible = false;
     this.host.enabled = false;
 
-    this._tickInterval = setInterval(()=> {
+    this._tickInterval = setInterval(() => {
       if (this.partyObject.point.equal(this.party.targetPoint) && !this.party.heading.isZero()) {
         var from: Point = this.partyObject.point;
         var to: Point = from.clone().add(this.party.heading);

@@ -18,6 +18,7 @@ import {Notify} from '../services/index';
 
 @Component({
   selector: 'rpg-notification',
+  styleUrls: ['./rpgNotification.scss'],
   template: `<span class="message" [innerText]="notify.message"></span>`,
 })
 export class RPGNotification {

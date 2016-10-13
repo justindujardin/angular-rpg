@@ -40,7 +40,12 @@ export class ResourceLoader {
     'entities': EntityFactory,
     'tmx': TiledTMXResource,
     'tsx': TiledTSXResource,
-    '': AudioResource
+    '': AudioResource,
+    'mp3': AudioResource,
+    'm4a': AudioResource,
+    'aac': AudioResource,
+    'ogg': AudioResource,
+    'wav': AudioResource
   };
 
   private static _instance: ResourceLoader = null;

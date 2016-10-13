@@ -94,7 +94,7 @@ export class RPGGame {
         model: from,
         map: tileMap
       })
-      .then((sprite: GameEntityObject): Promise<GameEntityObject> => {
+      .then((sprite: GameEntityObject): GameEntityObject|Promise<GameEntityObject> => {
         this.sprite = sprite;
         if (!this.sprite) {
           return Promise.reject("Failed to create map player");

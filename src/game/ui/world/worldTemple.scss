@@ -1,5 +1,8 @@
+@import '../style/variables';
+@import '../style/mixins';
+@import '../style/eightBitPanel';
 
-world-temple {
+:host {
   @include pow-dialog();
   .temple-view {
     z-index: $zCanvasGui;

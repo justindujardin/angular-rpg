@@ -25,6 +25,7 @@ import {PlayerCombatRenderComponent} from '../../../../pow2/game/components/play
 import {AnimatedSpriteComponent} from '../../../../pow2/tile/components/animatedSpriteComponent';
 import {SpriteComponent} from '../../../../pow2/tile/components/spriteComponent';
 import {SoundComponent} from '../../../../pow2/scene/components/soundComponent';
+import {GameWorld} from '../../../../gameWorld';
 
 
 /**
@@ -76,7 +77,7 @@ export class CombatMagicComponent extends CombatActionComponent {
       target.model.damage(healAmount);
 
 
-      var hitSound: string = "sounds/heal";
+      var hitSound: string = GameWorld.getSoundEffectUrl("heal");
       var components = {
         animation: new AnimatedSpriteComponent({
           spriteName: "heal",
@@ -109,19 +110,18 @@ export class CombatMagicComponent extends CombatActionComponent {
 
   hurtSpell(done?: (error?: any)=>any) {
     //
-    var attacker: GameEntityObject = this.from;
-    var defender: GameEntityObject = this.to;
+    const attacker: GameEntityObject = this.from;
+    const defender: GameEntityObject = this.to;
 
-    var attackerPlayer = <PlayerCombatRenderComponent>
-      attacker.findComponent(PlayerCombatRenderComponent);
+    const attackerPlayer = attacker.findComponent(PlayerCombatRenderComponent) as PlayerCombatRenderComponent;
     attackerPlayer.magic(() => {
-      var attackModel = <HeroModel>attacker.model;
-      var magicAttack = attackModel.calculateDamage(attackModel.getMagicStrength() + this.spell.value);
-      var damage: number = defender.model.damage(magicAttack);
-      var didKill: boolean = defender.model.get('hp') <= 0;
-      var hit: boolean = damage > 0;
-      var hitSound: string = "sounds/" + (didKill ? "killed" : (hit ? "spell" : "miss"));
-      var components = {
+      const attackModel = <HeroModel>attacker.model;
+      const magicAttack = attackModel.calculateDamage(attackModel.getMagicStrength() + this.spell.value);
+      const damage: number = defender.model.damage(magicAttack);
+      const didKill: boolean = defender.model.get('hp') <= 0;
+      const hit: boolean = damage > 0;
+      const hitSound: string = GameWorld.getSoundEffectUrl((didKill ? "killed" : (hit ? "spell" : "miss")));
+      const components = {
         animation: new AnimatedSpriteComponent({
           spriteName: "attack",
           lengthMS: 550
@@ -145,7 +145,7 @@ export class CombatMagicComponent extends CombatActionComponent {
         }
         defender.removeComponentDictionary(components);
       });
-      var data: CombatAttackSummary = {
+      const data: CombatAttackSummary = {
         damage: damage,
         attacker: attacker,
         defender: defender

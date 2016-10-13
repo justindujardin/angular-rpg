@@ -15,7 +15,7 @@
  */
 
 import * as _ from 'underscore';
-import {Component, ElementRef, Input} from '@angular/core';
+import {Component, ElementRef, Input, AfterViewInit} from '@angular/core';
 import {GameTileMap} from '../../gameTileMap';
 import {CombatCameraComponent} from '../../rpg/components/combat/combatCameraComponent';
 import {HeroModel, ItemModel} from '../../rpg/models/all';
@@ -51,6 +51,7 @@ export interface ICombatMenuItem<T> {
 
 @Component({
   selector: 'combat-map',
+  styleUrls: ['./combatMap.scss'],
   host: {
     '(window:resize)': '_onResize($event)'
   },
@@ -59,7 +60,7 @@ export interface ICombatMenuItem<T> {
 /**
  * Render and provide input for a combat encounter.
  */
-export class CombatMap extends Map implements IProcessObject {
+export class CombatMap extends Map implements IProcessObject, AfterViewInit {
   /**
    * A pointing UI element that can be attached to `SceneObject`s to attract attention
    * @type {null}
@@ -117,14 +118,16 @@ export class CombatMap extends Map implements IProcessObject {
 
   constructor(public elRef: ElementRef, public game: RPGGame, public animate: Animate, public notify: Notify) {
     super(elRef, game);
-    _.defer(() => this.initialize());
+    this.mouseClick = _.bind(this.mouseClick, this);
   }
 
-  initialize() {
+  ngAfterViewInit() {
+    this.init(this.elRef.nativeElement.querySelector('canvas'));
     _.defer(()=>this._onResize());
-    this.camera.point.zero();
-    this.camera.extent.set(25, 25);
-    this.mouseClick = _.bind(this.mouseClick, this);
+    if (this.camera) {
+      this.camera.point.zero();
+      this.camera.extent.set(25, 25);
+    }
     this._bindRenderCombat();
 
     this.combat.scene.addView(this);

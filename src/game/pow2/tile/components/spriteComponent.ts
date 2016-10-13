@@ -64,8 +64,8 @@ export class SpriteComponent extends SceneComponent {
     }
     else {
       this.meta = this.host.world.sprites.getSpriteMeta(name);
-      this.host.world.sprites.getSpriteSheet(this.meta.source).then((image: ImageResource) => {
-        this.image = image.data;
+      this.host.world.sprites.getSpriteSheet(this.meta.source).then((images: ImageResource[]) => {
+        this.image = images[0].data;
       });
     }
     this.icon = name;

@@ -23,6 +23,7 @@ const template = require('./worldDialog.html') as string;
 @Component({
   selector: 'world-dialog',
   inputs: ['text', 'title', 'icon', 'active'],
+  styleUrls:['./worldDialog.scss'],
   template: template
 })
 export class WorldDialog {

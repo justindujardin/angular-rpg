@@ -52,60 +52,41 @@ export const RPG_GAME_ENTITIES: IEntityTemplate[] = [
     inputs: {
       resource: TiledTMXResource
     },
-    params: ["resource"],
+    params: ['resource'],
     components: [
       {
-        name: "encounters",
+        name: 'encounters',
         type: CombatEncounterComponent
       },
       {
-        name: "input",
+        name: 'input',
         type: GameFeatureInputComponent
       }
     ]
   },
   {
-    name: "GameMapPlayer",
+    name: 'GameMapPlayer',
     type: GameEntityObject,
     inputs: {
-      "model": HeroModel,
-      "map": GameTileMap
+      model: HeroModel,
+      map: GameTileMap
     },
     components: [
-      {
-        name: "render",
-        type: PlayerRenderComponent
-      },
-      {
-        name: "collision",
-        type: CollisionComponent
-      },
-      {
-        name: "paths",
-        type: GameMapPathComponent,
-        params: ["map"]
-      },
-      {
-        name: "player",
-        type: PlayerComponent
-      },
-      {
-        name: "camera",
-        type: PlayerCameraComponent
-      },
-      {
-        name: "touch",
-        type: PlayerTouchComponent
-      }
+      {name: 'render', type: PlayerRenderComponent},
+      {name: 'collision', type: CollisionComponent},
+      {name: 'paths', type: GameMapPathComponent, params: ['map']},
+      {name: 'player', type: PlayerComponent},
+      {name: 'camera', type: PlayerCameraComponent},
+      {name: 'touch', type: PlayerTouchComponent}
     ]
   },
   {
-    name: "GameCombatMap",
+    name: 'GameCombatMap',
     type: GameTileMap,
     inputs: {
       resource: TiledTMXResource
     },
-    params: ["resource"],
+    params: ['resource'],
     components: [
       {
         type: CombatCameraComponent
@@ -113,66 +94,40 @@ export const RPG_GAME_ENTITIES: IEntityTemplate[] = [
     ]
   },
   {
-    name: "CombatPlayer",
+    name: 'CombatPlayer',
     type: GameEntityObject,
     inputs: {
       model: HeroModel,
       combat: PlayerCombatState
     },
     components: [
-      {
-        name: "render",
-        type: PlayerCombatRenderComponent
-      },
-      {
-        name: "animation",
-        type: AnimatedComponent
-      },
-      {
-        name: "attack",
-        type: CombatAttackComponent,
-        params: ["combat"]
-      },
-      {
-        name: "magic",
-        type: CombatMagicComponent,
-        params: ["combat"]
-      },
-      {
-        name: "item",
-        type: CombatItemComponent,
-        params: ["combat"]
-      },
-      {
-        name: "run",
-        type: CombatRunComponent,
-        params: ["combat"]
-      },
-      {
-        name: "guard",
-        type: CombatGuardComponent,
-        params: ["combat"]
-      }
+      {name: 'render', type: PlayerCombatRenderComponent},
+      {name: 'animation', type: AnimatedComponent},
+      {name: 'attack', type: CombatAttackComponent, params: ['combat']},
+      {name: 'magic', type: CombatMagicComponent, params: ['combat']},
+      {name: 'item', type: CombatItemComponent, params: ['combat']},
+      {name: 'run', type: CombatRunComponent, params: ['combat']},
+      {name: 'guard', type: CombatGuardComponent, params: ['combat']}
     ]
   },
   {
-    name: "CombatEnemy",
+    name: 'CombatEnemy',
     type: GameEntityObject,
     inputs: {
-      "model": EntityModel,
-      "combat": PlayerCombatState,
-      "sprite": Object
+      'model': EntityModel,
+      'combat': PlayerCombatState,
+      'sprite': Object
     },
     components: [
       {
-        name: "sprite",
+        name: 'sprite',
         type: SpriteComponent,
-        params: ["sprite"]
+        params: ['sprite']
       },
       {
-        name: "attack",
+        name: 'attack',
         type: CombatAttackComponent,
-        params: ["combat"]
+        params: ['combat']
       }
     ]
   }

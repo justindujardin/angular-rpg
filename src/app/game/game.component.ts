@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {PlayerCombatState} from '../../game/rpg/states/playerCombatState';
 import {Notify} from '../../game/ui/services/notify';
 import {RPGGame} from '../../game/ui/services/rpgGame';
@@ -12,7 +12,8 @@ import {Animate} from '../../game/ui/services/animate';
     Notify,
     Animate
   ],
-  styleUrls: ['./game.style.css'],
+  styleUrls: ['./game.style.scss'],
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './game.template.html'
 })
 export class Game {

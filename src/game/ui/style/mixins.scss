@@ -1,3 +1,6 @@
+@import './variables';
+@import './fonts';
+
 @mixin extrude-stroke-text($width:2px,$lightColor:rgba(255, 255, 255, 0.2),$shadowColor:rgba(0, 0, 0, 0.1)) {
   text-shadow: $width $width 0 $shadowColor,
   -$width -$width 0 $lightColor,
@@ -17,6 +20,12 @@
 }
 
 @mixin pow-dialog() {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  font-family: $pixelFont;
   .ebp {
     max-height: 90%;
   }

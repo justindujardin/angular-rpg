@@ -110,17 +110,21 @@ export class AudioResource extends Resource implements IAudioSource {
 
   fetch(url?: string): Promise<Resource> {
     this.url = url || this.url;
-    var formats: IAudioFormat[] = AudioResource.supportedFormats();
-    var sources: number = formats.length;
-    if (sources === 0) {
-      return Promise.reject(errors.UNSUPPORTED_OPERATION);
+    let formats: IAudioFormat[] = AudioResource.supportedFormats();
+    // If the url specifies a format, sort it to the front of the formats
+    // list so it will be tried first.
+    const dotIndex = this.url.lastIndexOf('.');
+    if (dotIndex !== -1) {
+      const urlExtension = this.url.substr(dotIndex + 1);
+      formats = formats.sort((a: IAudioFormat, b: IAudioFormat) => {
+        if (b.extension === urlExtension) {
+          return 1;
+        }
+        return 0;
+      });
     }
-    var reference: HTMLAudioElement = document.createElement('audio');
-    if (AudioResource._context) {
-      this._source = AudioResource._context.createMediaElementSource(reference);
-      if (this._source) {
-        return this._loadAudioBuffer(formats);
-      }
+    if (formats.length === 0) {
+      return Promise.reject(errors.UNSUPPORTED_OPERATION);
     }
     return this._loadAudioElement(formats);
   }
@@ -151,32 +155,14 @@ export class AudioResource extends Resource implements IAudioSource {
     return this._volume;
   }
 
-  private _loadAudioBuffer(formats: IAudioFormat[]): Promise<AudioResource> {
+  private _getUrlForFormat(format: IAudioFormat): string {
+    const index = this.url.lastIndexOf('.');
+    let url = this.url;
+    if (index !== -1) {
+      url = url.substr(0, index);
+    }
+    return `${url}.${format.extension}`;
 
-    return new Promise<AudioResource>((resolve, reject) => {
-      var todo = formats.slice();
-      var decodeFile = () => {
-        if (todo.length === 0) {
-          return reject("no sources");
-        }
-        var fileWithExtension = this.url + '.' + todo.shift().extension;
-        var request = new XMLHttpRequest();
-        request.open('GET', fileWithExtension, true);
-        request.responseType = 'arraybuffer';
-        request.onload = () => {
-          AudioResource._context.decodeAudioData(request.response, (buffer) => {
-            var source = AudioResource._context.createBufferSource();
-            source.buffer = buffer;
-            source.connect(AudioResource._context.destination);
-            this._source = source;
-            resolve(this);
-          }, decodeFile);
-        };
-        request.send();
-      };
-      decodeFile();
-
-    });
   }
 
   private _loadAudioElement(formats: IAudioFormat[]): Promise<AudioResource> {
@@ -197,10 +183,6 @@ export class AudioResource extends Resource implements IAudioSource {
       }
 
       var reference: HTMLAudioElement = document.createElement('audio');
-      if (AudioResource._context) {
-        this._source = AudioResource._context.createMediaElementSource(reference);
-      }
-
       let timer = new Time()
         .start()
         .addObject({
@@ -222,7 +204,7 @@ export class AudioResource extends Resource implements IAudioSource {
         });
 
         source.type = format.type.substr(0, format.type.indexOf(';'));
-        source.src = this.url + '.' + format.extension;
+        source.src = this._getUrlForFormat(format);
         reference.appendChild(source);
       });
 

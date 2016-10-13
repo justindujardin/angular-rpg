@@ -15,7 +15,6 @@
  */
 
 import {Resource} from '../resource';
-declare var $: any;
 import * as _ from 'underscore';
 
 

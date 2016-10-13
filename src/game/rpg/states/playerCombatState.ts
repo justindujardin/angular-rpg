@@ -113,12 +113,12 @@ export class PlayerCombatState extends State {
 
     promise
       .then(() => {
-        var mapUrl: string = machine.world.getMapUrl('combat');
+        var mapUrl: string = GameWorld.getMapUrl('combat');
         return machine.world.loader.load(mapUrl);
       })
-      .then((map: TiledTMXResource) => {
+      .then((maps: TiledTMXResource[]) => {
         return this.factory.createObject('GameCombatMap', {
-          resource: map
+          resource: maps[0]
         });
       })
       .then((map: GameTileMap) => {
@@ -133,6 +133,7 @@ export class PlayerCombatState extends State {
         this.scene.addObject(this.tileMap);
 
         // Position Party/Enemies
+        let enemyPromises = [];
 
         // Get enemies data from spreadsheet
         var enemyList: any[] = spreadsheet.getSheetData("enemies");
@@ -142,22 +143,29 @@ export class PlayerCombatState extends State {
           if (tpl.length === 0) {
             continue;
           }
-          var nmeModel = new CreatureModel(tpl[0]);
+          var enemyModel = new CreatureModel(tpl[0]);
 
-          var nme: GameEntityObject = this.factory.createObject('CombatEnemy', {
-            model: nmeModel,
+          let createEnemyPromise = this.factory.createObject('CombatEnemy', {
+            model: enemyModel,
             combat: this,
             sprite: {
               name: "enemy",
-              icon: nmeModel.get('icon')
+              icon: enemyModel.get('icon')
             }
           });
-          if (!nme) {
-            throw new Error("Entity failed to validate with given inputs");
-          }
-          this.scene.addObject(nme);
-          this.machine.enemies.push(nme);
+          createEnemyPromise = createEnemyPromise.then((nme: GameEntityObject) => {
+            if (!nme) {
+              throw new Error("Entity failed to validate with given inputs");
+            }
+            this.scene.addObject(nme);
+            this.machine.enemies.push(nme);
+          });
+          enemyPromises.push(createEnemyPromise);
         }
+        return Promise.all(enemyPromises);
+      })
+      .then(() => {
+
         if (this.machine.enemies.length) {
           _.each(this.machine.party, (heroEntity: GameEntityObject, index: number) => {
             var battleSpawn = this.tileMap.getFeature('p' + (index + 1));

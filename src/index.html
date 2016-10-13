@@ -17,19 +17,122 @@
   <!-- base url -->
   <base href="<%= webpackConfig.metadata.baseUrl %>">
 
+  <!-- TODO: Setup a global style loader so this can be a `require('./startup.global.scss');` -->
+  <style>
+    html, body {
+      background-color: black;
+    }
+    /* Stroke Text Effect */
+    @font-face {
+      font-family: 'GraphicPixel';
+      src: url("../../../assets/fonts/graphicpixel-webfont.eot");
+      src: url("../../../assets/fonts/graphicpixel-webfont.eot?#iefix") format("embedded-opentype"), url("../../../assets/fonts/graphicpixel-webfont.woff") format("woff"), url("../../../assets/fonts/graphicpixel-webfont.ttf") format("truetype"), url("../../../assets/fonts/graphicpixel-webfont.svg#GraphicPixelRegular") format("svg");
+      font-weight: normal;
+      font-style: normal;
+    }
 
+    @font-face {
+      font-family: 'AdvoCut';
+      src: url("../../../assets/fonts/advocut-webfont.eot");
+      src: url("../../../assets/fonts/advocut-webfont.eot?#iefix") format("embedded-opentype"), url("../../../assets/fonts/advocut-webfont.woff") format("woff"), url("../../../assets/fonts/advocut-webfont.ttf") format("truetype"), url("../../../assets/fonts/advocut-webfont.svg#AndinaRegular") format("svg");
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    /* Extra markup and styles for table-esque vertical and horizontal centering */
+    .loading {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
+
+    .loading .loading-wrapper {
+      display: table;
+      width: 100%;
+      height: 100%;
+      /* For at least Firefox */
+      min-height: 100%;
+    }
+
+    .loading .loading-wrapper-inner {
+      display: table-cell;
+      vertical-align: middle;
+      text-align: center;
+    }
+
+    html,
+    body {
+      background-color: #222222;
+      overflow: hidden;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .hero-container > * {
+      font-family: "GraphicPixel", "AdvoCut", sans-serif;
+      text-align: center;
+      color: #fff;
+    }
+
+    .hero-container > h1 {
+      margin-top: 10px;
+      margin-bottom: 25px;
+      font-size: 8em;
+    }
+
+    .hero-container > h1 a {
+      text-decoration: none;
+      color: inherit;
+      text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1), -8px 0 rgba(255, 255, 255, 0.2), 0px 0 rgba(0, 0, 0, 0.1), -4px 4px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .hero-container p {
+      padding: 15px;
+      font-size: 1.2em;
+      text-shadow: -2px 0 rgba(255, 255, 255, 0.2), 1px 1px 0 rgba(0, 0, 0, 0.1), -1px 1px 0 rgba(255, 255, 255, 0.2), 0px 0 rgba(0, 0, 0, 0.1);
+      color: #eeaa13;
+    }
+
+    .hero-container.sad > h1 {
+      color: #ffcdd2;
+      -webkit-transform-origin: 50% 54%;
+      transform-origin: 50% 54%;
+      -webkit-transform: rotate(90deg) scale(1.5);
+      transform: rotate(90deg) scale(1.5);
+      -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.35, 0, 0.25, 1);
+      transition: transform 0.3s cubic-bezier(0.35, 0, 0.25, 1);
+      margin: 0;
+    }
+
+    .hero-container.sad > h1 a {
+      text-shadow: -2px 0 #ff5252, 1px 1px 0 #f44336, -1px 1px 0 #ff5252, 0px 0 #f44336;
+    }
+
+    .hero-container.sad > p {
+      color: #ef5350;
+    }
+  </style>
 </head>
 
 <body>
 
-  <app>
-    Loading...
-  </app>
+<app>
+  <div class="loading fade pt-page-scaleUp">
+    <div class="loading-wrapper">
+      <div class="loading-wrapper-inner hero-container">
+        <h1><a href="https://github.com/justindujardin/angular2-rpg">RPG!</a></h1>
 
-  <% if (webpackConfig.metadata.isDevServer && webpackConfig.metadata.HMR !== true) { %>
-  <!-- Webpack Dev Server reload -->
-  <script src="/webpack-dev-server.js"></script>
-  <% } %>
+        <p>Waking up...</p>
+      </div>
+    </div>
+  </div>
+</app>
+
+<% if (webpackConfig.metadata.isDevServer && webpackConfig.metadata.HMR !== true) { %>
+<!-- Webpack Dev Server reload -->
+<script src="/webpack-dev-server.js"></script>
+<% } %>
 
 
 </body>

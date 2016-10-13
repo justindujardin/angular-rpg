@@ -33,6 +33,8 @@ import {JSONResource} from './pow-core/resources/json';
 
 var _sharedGameWorld: GameWorld = null;
 
+require('./game.global.scss');
+
 
 export class GameWorld extends SceneWorld {
   state: GameStateMachine;
@@ -89,13 +91,17 @@ export class GameWorld extends SceneWorld {
     }
   }
 
-  getMapUrl(name: string): string {
+  static getMapUrl(name: string): string {
     return `${GAME_ROOT}maps/${name}.tmx`;
+  }
+
+  static getSoundEffectUrl(name: string, extension: string = 'wav'): string {
+    return `${GAME_ROOT}sounds/${name}.${extension}`;
   }
 
   randomEncounter(zone: rpg.IZoneMatch, then?: rpg.IGameEncounterCallback) {
     const gsr = this.spreadsheet;
-    var encountersData = gsr.getSheetData("randomencounters");
+    var encountersData = gsr.getSheetData('randomencounters');
     var encounters: rpg.IGameRandomEncounter[] = _.filter(encountersData, (enc: any)=> {
       return _.indexOf(enc.zones, zone.map) !== -1 || _.indexOf(enc.zones, zone.target) !== -1;
     });
@@ -173,6 +179,7 @@ export class GameWorld extends SceneWorld {
 
   /** Preload sprite sheet metadata */
   private loadSprites(): Promise<void> {
+
     return this.loader.load('assets/images/index.json')
       .then((res: JSONResource[]) => {
         const jsonRes = res[0];

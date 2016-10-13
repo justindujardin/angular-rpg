@@ -27,6 +27,7 @@ const template = require('./worldStore.html') as string;
 @Component({
   selector: 'world-store',
   inputs: ['selected', 'inventory', 'name', 'buyer'],
+  styleUrls: ['./worldStore.scss'],
   template: template
 })
 export class WorldStore {

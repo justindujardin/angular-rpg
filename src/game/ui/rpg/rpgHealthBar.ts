@@ -18,7 +18,8 @@ import {EntityModel} from '../../rpg/models/all';
 
 @Component({
   selector: 'rpg-health-bar',
-  template: `<span [class]="getCSSClassMap()" [innerText]="getProgressBarWidth()"></span>`
+  styleUrls: ['./rpgHealthBar.scss'],
+  template: `<md-progress-bar [ngClass]="getCSSClassMap()" [value]="getProgressBarWidth()"></md-progress-bar>`
 })
 export class RPGHealthBar {
   @Input()

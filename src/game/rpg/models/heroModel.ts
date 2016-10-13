@@ -113,7 +113,13 @@ export class HeroModel extends EntityModel {
     baseVitality: 0,
     hitpercent: 5,
     hitPercentPerLevel: 1,
-    evade: 0
+    evade: 0,
+    strength: 5,
+    vitality: 4,
+    intelligence: 1,
+    agility: 1,
+
+
   };
 
   defaults(): any {
