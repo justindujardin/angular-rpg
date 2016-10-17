@@ -5,7 +5,8 @@ import {
 
 // Load the implementations that should be tested
 import { App } from './app.component';
-import { AppState } from './app.service';
+import {AppState} from './app.model';
+
 
 describe('App', () => {
   // provide our implementations or mocks to the dependency injector
@@ -15,8 +16,8 @@ describe('App', () => {
       App
     ]}));
 
-  it('should have a url', inject([ App ], (app: App) => {
-    expect(app.url).toEqual('https://twitter.com/AngularClass');
+  it('should have an @ngrx/store injectable', inject([ App ], (app: App) => {
+    expect(app.store).toBeDefined();
   }));
 
 });

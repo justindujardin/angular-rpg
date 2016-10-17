@@ -6,7 +6,7 @@ import {Item} from './item.model';
 
 export class ItemActions {
 
-  static ADD = '[Item] Add Item';
+  static ADD = 'rpg/item/add';
 
   addItem(item: Item): Action {
     return {
@@ -15,7 +15,7 @@ export class ItemActions {
     };
   }
 
-  static REMOVE = '[Item] Remove Item';
+  static REMOVE = 'rpg/item/remove';
 
   removeItem(item: Item): Action {
     return {

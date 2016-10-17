@@ -1,16 +1,13 @@
-import { compose } from '@ngrx/core/compose';
-import { ActionReducer, combineReducers } from '@ngrx/store';
-import { storeFreeze } from 'ngrx-store-freeze';
-import { storeLogger } from 'ngrx-store-logger';
-import { routerReducer, RouterState } from '@ngrx/router-store';
-
-import { itemReducer, ItemState} from '../models/item/item.reducer';
+import {compose} from '@ngrx/core/compose';
+import {ActionReducer, combineReducers} from '@ngrx/store';
+import {storeFreeze} from 'ngrx-store-freeze';
+import {storeLogger} from 'ngrx-store-logger';
+import {routerReducer} from '@ngrx/router-store';
+import {itemReducer} from '../models/item/item.reducer';
 import {gameStateReducer} from './game-state/game-state.reducer';
+import {GameStateActions} from './game-state/game-state.actions';
+import {ItemActions} from './item/item.actions';
 
-export interface AppState {
-  router: RouterState;
-  items: ItemState;
-}
 
 export const reducers = {
   router: routerReducer,
@@ -40,3 +37,8 @@ export function rootReducer(state: any, action: any) {
     return developmentReducer(state, action);
   }
 }
+
+export const MODEL_PROVIDERS: any[] = [
+  GameStateActions,
+  ItemActions,
+];

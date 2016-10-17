@@ -87,7 +87,6 @@ export interface ISceneView {
   cameraScale: number;
   unitSize: number;
   scene: IScene;
-  loader: ResourceLoader;
 
   setScene(scene: IScene);
 

@@ -32,7 +32,7 @@ import {Point} from '../../pow-core/point';
  *  - rendering a set of sprites with [spriteName].json files that describe
  *    the frames and timing.
  */
-export class SceneView extends SceneObject implements IWorldObject, ISceneView {
+export class SceneView extends SceneObject implements ISceneView {
   static UNIT: number = 16;
 
   animations: any[];
@@ -44,13 +44,11 @@ export class SceneView extends SceneObject implements IWorldObject, ISceneView {
   cameraScale: number;
   unitSize: number;
   scene: Scene = null;
-  loader: ResourceLoader = null;
 
-  constructor(canvas: HTMLCanvasElement, loader: any) {
+  constructor(canvas: HTMLCanvasElement) {
     super();
     this.animations = [];
     this.canvas = canvas;
-    this.loader = loader;
   }
 
   init(canvas: HTMLCanvasElement) {
@@ -69,14 +67,6 @@ export class SceneView extends SceneObject implements IWorldObject, ISceneView {
     this.camera = new Rect(0, 0, 9, 9);
     this.cameraScale = 1.0;
     this.unitSize = SceneView.UNIT;
-  }
-
-  // IWorldObject
-  // -----------------------------------------------------------------------------
-  onAddToWorld(world: IWorld) {
-  }
-
-  onRemoveFromWorld(world: IWorld) {
   }
 
   setScene(scene: Scene) {

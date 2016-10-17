@@ -14,22 +14,18 @@
  limitations under the License.
  */
 
-import {TileObjectRenderer} from './render/tileObjectRenderer';
 import {SceneView} from '../scene/sceneView';
 import {TileMapRenderer} from './render/tileMapRenderer';
 import {TileMap} from './tileMap';
 import {Scene} from '../scene/scene';
 import {IRect} from '../../pow-core/rect';
 import {CameraComponent} from '../scene/components/cameraComponent';
-import {GameWorld} from '../../../app/services/gameWorld';
 export class TileMapView extends SceneView {
-  objectRenderer: TileObjectRenderer = new TileObjectRenderer;
   mapRenderer: TileMapRenderer = new TileMapRenderer;
-  tileMap: TileMap = null;
-  world: GameWorld;
+  map: TileMap;
 
   setTileMap(tileMap: TileMap) {
-    this.tileMap = tileMap;
+    this.map = tileMap;
   }
 
   setScene(scene: Scene) {
@@ -45,7 +41,7 @@ export class TileMapView extends SceneView {
    * @returns {Rect}
    */
   getCameraClip() {
-    if (!this.tileMap) {
+    if (!this.map) {
       return this.camera;
     }
     var clipGrow = this.camera.clone();
@@ -53,7 +49,7 @@ export class TileMapView extends SceneView {
     clipGrow.extent.round();
 
     // Clamp to tilemap bounds.
-    var rect: IRect = this.tileMap.bounds;
+    var rect: IRect = this.map.bounds;
     if (clipGrow.point.x < rect.point.x) {
       clipGrow.point.x += rect.point.x - clipGrow.point.x;
     }
@@ -74,8 +70,8 @@ export class TileMapView extends SceneView {
    */
   processCamera() {
     this.cameraComponent = <CameraComponent>this.findComponent(CameraComponent);
-    if (!this.cameraComponent && this.tileMap) {
-      this.cameraComponent = <CameraComponent>this.tileMap.findComponent(CameraComponent);
+    if (!this.cameraComponent && this.map) {
+      this.cameraComponent = <CameraComponent>this.map.findComponent(CameraComponent);
     }
     if (!this.cameraComponent) {
       this.cameraComponent = <CameraComponent>this.scene.componentByType(CameraComponent);
@@ -89,10 +85,10 @@ export class TileMapView extends SceneView {
   setRenderState() {
     var worldCameraPos, worldTilePos;
     super.setRenderState();
-    if (!this.camera || !this.context || !this.tileMap) {
+    if (!this.camera || !this.context || !this.map) {
       return;
     }
-    worldTilePos = this.worldToScreen(this.tileMap.bounds.point);
+    worldTilePos = this.worldToScreen(this.map.bounds.point);
     worldTilePos.x = parseFloat(worldTilePos.x.toFixed(2));
     worldTilePos.y = parseFloat(worldTilePos.y.toFixed(2));
     worldCameraPos = this.worldToScreen(this.camera.point);
@@ -106,10 +102,10 @@ export class TileMapView extends SceneView {
    */
   renderFrame(elapsed: number) {
     this.clearRect();
-    if (!this.tileMap) {
+    if (!this.map) {
       return;
     }
-    this.mapRenderer.render(this.tileMap, this);
+    this.mapRenderer.render(this.map, this);
     return this;
   }
 

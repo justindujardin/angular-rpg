@@ -5,8 +5,8 @@ import {App} from './app.component';
 import {APP_PROVIDERS} from './app.providers';
 import {APP_IMPORTS} from './app.imports';
 import {APP_DECLARATIONS} from './app.declarations';
-import {AppState} from './reducers/index';
 import {Store} from '@ngrx/store';
+import {AppState} from './app.model';
 
 
 /**

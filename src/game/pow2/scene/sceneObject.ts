@@ -27,7 +27,6 @@ export class SceneObject extends Entity {
   id: string;
   _uid: string = _.uniqueId('so');
   scene: Scene;
-  world: IWorld;
   enabled: boolean;
   // The object point
   point: Point;

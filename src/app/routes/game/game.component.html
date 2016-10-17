@@ -2,10 +2,4 @@
 <world-dialog *ngIf="!combat"></world-dialog>
 <world-temple *ngIf="!combat"></world-temple>
 <world-store *ngIf="!combat"></world-store>
-<world-map
-  [style.display]="combat?'none':'inherit'"
-  [position]="game.partyPosition"
-  [player]="world.model?.party[0]"
-  [mapName]="game.partyMapName"></world-map>
-
 <combat-map *ngIf="combat" [combat]="combat" [map]="combat?.tileMap"></combat-map>

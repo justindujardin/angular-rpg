@@ -1,6 +1,6 @@
 <rpg-notification></rpg-notification>
 <loading></loading>
-<pre class="app-state">{{items$ | async | json}}</pre>
+<pre class="app-state">{{state$ | async | json}}</pre>
 <md-sidenav-layout>
   <md-sidenav #start (open)="mybutton.focus()">
     <button md-button #mybutton (click)="start.close()">Close</button>

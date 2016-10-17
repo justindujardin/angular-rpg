@@ -21,7 +21,7 @@ import {RPGGame, Notify} from '../../services/index';
 import {StoreFeatureComponent} from '../../../game/rpg/components/features/storeFeatureComponent';
 import {GameStateModel} from '../../../game/rpg/models/gameStateModel';
 import {ItemModel} from '../../../game/rpg/models/all';
-import {AppState} from '../../models/index';
+import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
 import {ItemActions} from '../../models/item/item.actions';
 

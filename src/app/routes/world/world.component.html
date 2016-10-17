@@ -1,0 +1,6 @@
+<pre>{{ currentZone$ | async }}</pre>
+<world-map *ngIf="currentZone$ | async"
+           [position]="game.partyPosition"
+           [player]="world.model?.party[0]"
+           [map]="map$ | async">
+</world-map>

@@ -27,6 +27,9 @@ import {Point} from '../../game/pow-core/point';
 import {PlayerComponent} from '../../game/rpg/components/playerComponent';
 import {TileMap} from '../../game/pow2/tile/tileMap';
 import {Injectable} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {GameStateActions} from '../models/game-state/game-state.actions';
+import {AppState} from '../app.model';
 
 @Injectable()
 export class RPGGame {
@@ -42,7 +45,10 @@ export class RPGGame {
   partyPosition: Point = new Point(0, 0);
   partyMapName: string = 'town';
 
-  constructor(public loader: ResourceLoader, public world: GameWorld) {
+  constructor(public loader: ResourceLoader,
+              public world: GameWorld,
+              private gameStateActions: GameStateActions,
+              private store: Store<AppState>) {
     this._renderCanvas = <HTMLCanvasElement>document.createElement('canvas');
     this._renderCanvas.width = this._renderCanvas.height = 64;
     this._renderCanvas.style.position = 'absolute';
@@ -116,10 +122,12 @@ export class RPGGame {
   initGame(data: any = this.getSaveData()): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       if (data) {
-        this.world.model.parse(data);
-        var at = this.world.model.getKeyData('playerPosition');
+        const json = JSON.parse(data);
+        // Set the root game state
+        this.store.dispatch(this.gameStateActions.load(json));
+        var at = json.position;
         this.partyPosition = at ? new Point(at.x, at.y) : undefined;
-        this.partyMapName = this.world.model.getKeyData('playerMap') || "town";
+        this.partyMapName = json.map || 'town';
         resolve(false);
       }
       else {

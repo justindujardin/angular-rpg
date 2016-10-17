@@ -31,7 +31,6 @@ import {ALL_FEATURES} from './rpg/components/features/index';
  * A tile map that supports game feature objects and components.
  */
 export class GameTileMap extends TileMap {
-  world: GameWorld;
 
   musicUrl: string;
 
@@ -96,7 +95,6 @@ export class GameTileMap extends TileMap {
       y: Math.round(tiledObject.y / this.map.tileheight)
     });
     var object = new GameFeatureObject(options);
-    this.world.mark(object);
     const componentType = _.find(ALL_FEATURES, (constructor: any) => {
       return constructor.name === tiledObject.type;
     });

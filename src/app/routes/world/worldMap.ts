@@ -15,7 +15,7 @@
  */
 
 import * as _ from 'underscore';
-import {Component, ElementRef, Input, AfterViewInit} from '@angular/core';
+import {Component, ElementRef, Input, AfterViewInit, OnDestroy, OnInit} from '@angular/core';
 import {GameTileMap} from '../../../game/gameTileMap';
 import {TileObjectRenderer} from '../../../game/pow2/tile/render/tileObjectRenderer';
 import {NamedMouseElement, PowInput} from '../../../game/pow2/core/input';
@@ -34,7 +34,11 @@ import {MovableComponent} from '../../../game/pow2/scene/components/movableCompo
 import {GameFeatureObject} from '../../../game/rpg/objects/gameFeatureObject';
 import {Rect} from '../../../game/pow-core/rect';
 import {PlayerRenderComponent} from '../../../game/pow2/game/components/playerRenderComponent';
-import {Map} from '../../components/map';
+import {AppState} from '../../app.model';
+import {Store} from '@ngrx/store';
+import {GameStateActions} from '../../models/game-state/game-state.actions';
+import {TileMapView} from '../../../game/pow2/tile/tileMapView';
+import {GameWorld} from '../../services/gameWorld';
 
 @Component({
   selector: 'world-map',
@@ -48,18 +52,24 @@ import {Map} from '../../components/map';
     '[style.color]': 'styleBackground'
   }
 })
-export class WorldMap extends Map implements AfterViewInit {
+export class WorldMap extends TileMapView implements AfterViewInit, OnInit, OnDestroy {
 
   styleBackground: string = 'rgba(0,0,0,1)';
-  tileMap: GameTileMap = null;
 
   objectRenderer: TileObjectRenderer = new TileObjectRenderer;
   mouse: NamedMouseElement = null;
-  scene: Scene;
+  scene: Scene = new Scene();
 
+  get map(): GameTileMap {
+    return this._map;
+  }
 
   @Input()
-  mapName: string;
+  set map(value: GameTileMap) {
+    this._changeMap(value);
+  }
+
+  private _map: GameTileMap;
 
 
   /**
@@ -75,28 +85,47 @@ export class WorldMap extends Map implements AfterViewInit {
    */
   targetStrokeWidth: number = 1.5;
 
-  constructor(public elRef: ElementRef, public game: RPGGame, public notify: Notify) {
-    super(elRef, game);
+  constructor(public elRef: ElementRef,
+              public game: RPGGame,
+              public world: GameWorld,
+              public store: Store<AppState>,
+              public gameStateActions: GameStateActions,
+              public notify: Notify) {
+    super(elRef.nativeElement);
   }
+
+  ngOnInit(): void {
+    this.world.mark(this.scene);
+  }
+
+  ngOnDestroy(): void {
+    this.world.erase(this.scene);
+  }
+
 
   ngAfterViewInit(): void {
     this.init(this.elRef.nativeElement.querySelector('canvas'));
     this.mouseClick = _.bind(this.mouseClick, this);
     this.camera.point.set(-0.5, -0.5);
-    this.game.world.scene.addView(this);
+    this.scene.addView(this);
     _.defer(() => this._onResize());
 
     // When a portal is entered, update the map view to reflect the change.
-    this.game.world.scene.on('portal:entered', (data: any) => {
-      this._loadMap(data.map).then(()=> {
-        this.game.partyMapName = data.map;
-        this.game.partyPosition = data.target;
-        this.game.world.model.setKeyData('playerMap', data.map);
-        this.game.world.model.setKeyData('playerPosition', data.target);
-      }).catch(console.error.bind(console));
+    this.scene.on('portal:entered', (data: any) => {
+      // this._loadMap(data.map).then(()=> {
+      //   this.game.partyMapName = data.map;
+      //   this.game.partyPosition = data.target;
+
+      // TODO: Express the portal enter as something other than an event? Then express this as an effect?
+      this.store.dispatch(this.gameStateActions.setMap(data.map));
+      this.store.dispatch(this.gameStateActions.setMapPosition(data.target));
+
+      //   this.game.world.model.setKeyData('playerMap', data.map);
+      //   this.game.world.model.setKeyData('playerPosition', data.target);
+      // }).catch(console.error.bind(console));
     });
 
-    this.game.world.scene.on('treasure:entered', (feature: any) => {
+    this.scene.on('treasure:entered', (feature: any) => {
       if (typeof feature.gold !== 'undefined') {
         this.game.world.model.addGold(feature.gold);
         this.notify.show("You found " + feature.gold + " gold!", null, 0);
@@ -112,22 +141,31 @@ export class WorldMap extends Map implements AfterViewInit {
     });
   }
 
-  protected _onMapLoaded(map: GameTileMap) {
-    map.buildFeatures();
-    if (this._player) {
-      this.game.createPlayer(this._player, this.tileMap);
+  private _changeMap(map: GameTileMap) {
+    // Release any exist map resource
+    if (this._map) {
+      this._map.removeFeaturesFromScene();
+      this.scene.removeObject(this._map);
     }
+    this._map = map;
     this.clearCache();
-    this._onResize();
-    this.tileMap.syncComponents();
+    if (!this._map) {
+      return;
+    }
+    this.scene.addObject(this._map);
+    this._map.addFeaturesToScene();
+    if (this._player) {
+      this.game.createPlayer(this._player, this._map);
+    }
+    this._map.syncComponents();
   }
 
   private _player: HeroModel = null;
   @Input()
   set player(value: HeroModel) {
     this._player = value;
-    if (this.tileMap) {
-      this.game.createPlayer(this._player, this.tileMap);
+    if (this._player && this._map) {
+      this.game.createPlayer(this._player, this._map);
     }
   }
 
@@ -148,12 +186,25 @@ export class WorldMap extends Map implements AfterViewInit {
     return this._position;
   }
 
+  /**
+   * The map view bounds in world space.
+   */
+  protected _bounds: Point = new Point();
+
+
   protected _onResize() {
-    super._onResize();
-    // TileMap
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
+    this._bounds.set(this.canvas.width, this.canvas.height);
+    this._bounds = this.screenToWorld(this._bounds);
+    var ctx: any = this.context;
+    ctx.webkitImageSmoothingEnabled = false;
+    ctx.mozImageSmoothingEnabled = false;
+    ctx.imageSmoothingEnabled = false;
+
     // Camera (window bounds)
-    if (this.tileMap) {
-      var tileOffset = this.tileMap.bounds.getCenter();
+    if (this._map) {
+      var tileOffset = this._map.bounds.getCenter();
       var offset = this._bounds.clone().divide(2).multiply(-1).add(tileOffset);
       this.camera.point.set(offset.floor());
     }
@@ -166,7 +217,7 @@ export class WorldMap extends Map implements AfterViewInit {
   onAddToScene(scene: Scene) {
     this.clearCache();
     super.onAddToScene(scene);
-    this.mouse = scene.world.input.mouseHook(<SceneView>this, "world");
+    this.mouse = this.world.input.mouseHook(<SceneView>this, "world");
     // TODO: Move this elsewhere.
     this.$el.on('click touchstart', this.mouseClick);
     this.scene.on(TileMap.Events.MAP_LOADED, this.syncComponents, this);
@@ -174,7 +225,7 @@ export class WorldMap extends Map implements AfterViewInit {
 
   onRemoveFromScene(scene: Scene) {
     this.clearCache();
-    scene.world.input.mouseUnhook("world");
+    this.world.input.mouseUnhook("world");
     this.$el.off('click', this.mouseClick);
     this.scene.off(TileMap.Events.MAP_LOADED, this.syncComponents, this);
   }

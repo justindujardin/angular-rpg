@@ -12,7 +12,7 @@ const template = require('./game.component.html');
   encapsulation: ViewEncapsulation.None,
   template: template
 })
-export class Game {
+export class GameComponent {
   maps: string[] = [
     'castle', 'crypt', 'fortress1',
     'fortress2', 'isle', 'keep',

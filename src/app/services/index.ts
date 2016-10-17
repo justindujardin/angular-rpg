@@ -21,6 +21,8 @@ import {GameWorld} from './gameWorld';
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {PowCoreModule} from '../../game/pow-core/index';
 import {SpriteRender} from './spriteRender';
+import {StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
 export * from './animate';
 export * from './notify';
 export * from './rpgGame';
@@ -35,7 +37,7 @@ export const SERVICE_PROVIDERS = [
 
 @NgModule({
   providers: SERVICE_PROVIDERS,
-  imports: [PowCoreModule]
+  imports: [PowCoreModule, StoreModule, EffectsModule]
 })
 export class ServicesModule {
   static forRoot(): ModuleWithProviders {
