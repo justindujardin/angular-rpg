@@ -16,11 +16,9 @@
 
 
 import {Time} from './time';
-import {ResourceLoader} from './resourceLoader';
-import * as _ from 'underscore';
+import {Injectable} from '@angular/core';
 
 export interface IWorld {
-  loader: ResourceLoader;
   time: Time;
   mark(object?: IWorldObject);
   erase(object?: IWorldObject);
@@ -33,18 +31,9 @@ export interface IWorldObject {
 }
 
 
+@Injectable()
 export class World implements IWorld {
-  loader: ResourceLoader = null;
-  time: Time;
-
-  constructor(services?: any) {
-    services = _.defaults(services || {}, {
-      loader: new ResourceLoader,
-      time: Time.get()
-    });
-    _.extend(this, services);
-    _.each(services, (s: IWorldObject) => this.mark(s));
-  }
+  time: Time = Time.get();
 
   setService(name: string, value: IWorldObject): IWorldObject {
     this.mark(value);

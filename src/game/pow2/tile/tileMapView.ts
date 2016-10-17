@@ -18,15 +18,15 @@ import {TileObjectRenderer} from './render/tileObjectRenderer';
 import {SceneView} from '../scene/sceneView';
 import {TileMapRenderer} from './render/tileMapRenderer';
 import {TileMap} from './tileMap';
-import {SceneWorld} from '../scene/sceneWorld';
 import {Scene} from '../scene/scene';
 import {IRect} from '../../pow-core/rect';
 import {CameraComponent} from '../scene/components/cameraComponent';
+import {GameWorld} from '../../../app/services/gameWorld';
 export class TileMapView extends SceneView {
   objectRenderer: TileObjectRenderer = new TileObjectRenderer;
   mapRenderer: TileMapRenderer = new TileMapRenderer;
   tileMap: TileMap = null;
-  world: SceneWorld;
+  world: GameWorld;
 
   setTileMap(tileMap: TileMap) {
     this.tileMap = tileMap;

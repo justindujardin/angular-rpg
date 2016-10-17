@@ -1,9 +1,9 @@
-@import '../game/ui/style/variables.scss';
-@import '../game/ui/style/mixins.scss';
-//@import '../game/ui/style/pageTransitions.scss';
-@import '../game/ui/style/eightBitPanel.scss';
-//@import '../game/ui/style/animation.scss';
-@import '../game/ui/style/loading.scss';
+@import '../app/style/variables.scss';
+@import '../app/style/mixins.scss';
+@import '../app/style/pageTransitions.scss';
+@import '../app/style/eightBitPanel.scss';
+@import '../app/style/animation.scss';
+@import '../app/style/loading.scss';
 @import '../../node_modules/ng2-material/core/style/variables.scss';
 @import '../../node_modules/ng2-material/core/style/default-theme';
 @import '../../node_modules/ng2-material/core/style/theme-functions.scss';

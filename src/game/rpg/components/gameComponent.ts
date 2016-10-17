@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
-import {GameTileMap} from '../gameTileMap';
 import {TileComponent} from '../../pow2/tile/tileComponent';
 import {TileObject} from '../../pow2/tile/tileObject';
+import {GameTileMap} from '../../gameTileMap';
 
 
 export class GameComponent extends TileComponent {

@@ -14,6 +14,7 @@ export * from './templeFeatureComponent';
 export * from './treasureFeatureComponent';
 
 export const ALL_FEATURES: Function[] = [
+  GameFeatureComponent,
   CombatFeatureComponent,
   DialogFeatureComponent,
   PortalFeatureComponent,

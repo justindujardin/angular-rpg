@@ -16,7 +16,7 @@
 
 import * as _ from 'underscore';
 import {GameTileMap} from '../../gameTileMap';
-import {GameWorld} from '../../gameWorld';
+import {GameWorld} from '../../../app/services/gameWorld';
 import {TileObject} from '../../pow2/tile/tileObject';
 
 export class GameFeatureObject extends TileObject {

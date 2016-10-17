@@ -20,7 +20,7 @@ import {SpriteComponent} from './components/spriteComponent';
 import {Scene} from '../scene/scene';
 import {Point} from '../../pow-core/point';
 import {MovableComponent} from '../scene/components/movableComponent';
-import {SceneWorld} from '../scene/sceneWorld';
+import {GameWorld} from '../../../app/services/gameWorld';
 import {TileMap} from './tileMap';
 import {SceneObject} from '../scene/sceneObject';
 export interface TileObjectOptions {
@@ -58,11 +58,11 @@ export class TileObject extends SceneObject implements TileObjectOptions {
   visible: boolean;
   enabled: boolean;
   tileMap: TileMap;
+  world: GameWorld;
   scale: number;
   icon: string;
   meta: any;
   frame: number;
-  world: SceneWorld;
 
   constructor(options: TileObjectOptions = DEFAULTS) {
     super(options);
@@ -99,6 +99,7 @@ export class TileObject extends SceneObject implements TileObjectOptions {
 
   /**
    * Set the current sprite name.  Returns the previous sprite name.
+   * TODO: Refactor to async friendly method (promise?)
    */
   setSprite(name: string, frame: number = 0): string {
     var oldSprite: string = this.icon;
@@ -106,8 +107,12 @@ export class TileObject extends SceneObject implements TileObjectOptions {
       this.meta = null;
     }
     else {
-      var meta = this.world.sprites.getSpriteMeta(name);
-      this.world.sprites.getSpriteSheet(meta.source).then((images: ImageResource[]) => {
+      const world = GameWorld.get();
+      if(!world) {
+        return oldSprite;
+      }
+      var meta = world.sprites.getSpriteMeta(name);
+      world.sprites.getSpriteSheet(meta.source).then((images: ImageResource[]) => {
         const image = images[0];
         this.meta = meta;
         this.image = image.data;

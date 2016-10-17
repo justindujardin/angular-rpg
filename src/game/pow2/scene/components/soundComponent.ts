@@ -16,7 +16,8 @@
 import * as _ from 'underscore';
 import {SceneComponent} from '../sceneComponent';
 import {AudioResource} from '../../../pow-core/resources/audio';
-import {ResourceLoader} from '../../../pow-core/resourceLoader';
+import {GameWorld} from '../../../../app/services/gameWorld';
+
 export interface SoundComponentOptions {
   url: string;
   loop?: boolean;
@@ -59,7 +60,11 @@ export class SoundComponent extends SceneComponent implements SoundComponentOpti
       this.audio.data.volume = this.volume;
       return true;
     }
-    ResourceLoader.get().load(this.url).then((resources: AudioResource[]) => {
+    const world = GameWorld.get();
+    if (!world || !world.loader) {
+      return false;
+    }
+    world.loader.load(this.url).then((resources: AudioResource[]) => {
       const res = resources[0];
       this.audio = res;
       if (this.audio.data) {

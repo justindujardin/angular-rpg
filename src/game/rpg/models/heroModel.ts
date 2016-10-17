@@ -16,7 +16,7 @@
 
 import * as _ from 'underscore';
 import {GameStateModel} from './gameStateModel';
-import {GameWorld} from '../../gameWorld';
+import {GameWorld} from '../../../app/services/gameWorld';
 import {ArmorModel} from './armorModel';
 import {WeaponModel} from './weaponModel';
 import {EntityModel, EntityModelOptions} from './entityModel';

@@ -24,12 +24,15 @@ import {EntityFactory} from './resources/entities';
 import {TiledTMXResource} from './resources/tiled/tiledTmx';
 import {TiledTSXResource} from './resources/tiled/tiledTsx';
 import {AudioResource} from './resources/audio';
+import {Injectable} from '@angular/core';
+import {Http} from '@angular/http';
 
 /**
  * A basic resource loading manager.  Supports a basic api for requesting
  * resources by file name, and uses registered types and file extension
  * matching to create and load a resource.
  */
+@Injectable()
 export class ResourceLoader {
   private _cache: Object = {};
   private _types: Object = {
@@ -48,15 +51,15 @@ export class ResourceLoader {
     'wav': AudioResource
   };
 
-  private static _instance: ResourceLoader = null;
+  constructor(public http: Http) {
 
-  static get(): ResourceLoader {
-    if (this._instance === null) {
-      this._instance = new ResourceLoader();
-    }
-    return this._instance;
   }
 
+  /**
+   * Register a custom resource class type
+   * @param extension The extension without any period
+   * @param type The class constructor function
+   */
   registerType(extension: string, type: Function) {
     this._types[extension] = type;
   }

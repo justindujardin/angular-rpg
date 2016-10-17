@@ -19,7 +19,7 @@ import {GameEntityObject} from '../objects/gameEntityObject';
 import {GameStateMachine} from './gameStateMachine';
 import {CombatStateMachine} from './combat/combatStateMachine';
 import {GameTileMap} from '../../gameTileMap';
-import {GameWorld} from '../../gameWorld';
+import {GameWorld} from '../../../app/services/gameWorld';
 import {HeroModel} from '../models/heroModel';
 import {CreatureModel} from '../models/creatureModel';
 import {State} from '../../pow2/core/state';
@@ -74,13 +74,9 @@ export class PlayerCombatState extends State {
 
   factory: EntityFactory;
 
-  constructor() {
-    super();
-    this.factory = GameWorld.get().entities;
-  }
-
   enter(machine: GameStateMachine) {
     super.enter(machine);
+    this.factory = GameWorld.get().entities;
     this.parent = machine;
     this.machine = new CombatStateMachine(machine);
     this.scene = new Scene();
@@ -93,7 +89,7 @@ export class PlayerCombatState extends State {
     let promise: Promise<any> = Promise.resolve();
 
     // Build party
-    _.each(machine.model.party, (hero: HeroModel, index: number) => {
+    _.each(machine.world.model.party, (hero: HeroModel, index: number) => {
       const config = {
         model: hero,
         combat: this

@@ -15,6 +15,7 @@
  */
 
 import * as _ from 'underscore';
+import {Injectable} from '@angular/core';
 
 
 export interface IProcessObject {
@@ -24,6 +25,8 @@ export interface IProcessObject {
 }
 
 var _shared: Time = null;
+
+@Injectable()
 export class Time {
   tickRateMS: number = 32;
   mspf: number = 0;
@@ -120,7 +123,7 @@ export class Time {
       window.requestAnimationFrame = function (callback: FrameRequestCallback): number {
         var currTime: number = new Date().getTime();
         var timeToCall: number = Math.max(0, 16 - (currTime - lastTime));
-        var tickListener: Function = function () {
+        var tickListener: Function = function powRAFTimeTick() {
           callback(currTime + timeToCall);
         };
         var id: number = window.setTimeout(tickListener, timeToCall);

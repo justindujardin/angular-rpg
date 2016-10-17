@@ -41,7 +41,7 @@ export interface IResumeCallback {
 
 // Implementation
 // -------------------------------------------------------------------------
-export class StateMachine extends Events implements IStateMachine, IWorldObject {
+export class StateMachine extends Events implements IStateMachine {
 
   static DEBUG_STATES: boolean = false;
 
@@ -56,14 +56,6 @@ export class StateMachine extends Events implements IStateMachine, IWorldObject 
   private _previousState: IState = null;
   private _newState: boolean = false;
   private _pendingState: IState = null;
-
-  world: IWorld;
-
-  onAddToWorld(world) {
-  }
-
-  onRemoveFromWorld(world) {
-  }
 
 
   update(data?: any) {
@@ -200,7 +192,7 @@ export class StateMachine extends Events implements IStateMachine, IWorldObject 
 /**
  * A state machine that updates with every game tick.
  */
-export class TickedStateMachine extends StateMachine {
+export class TickedStateMachine extends StateMachine implements IWorldObject {
   paused: boolean = false;
   // IWorldObject interface
   world: IWorld;

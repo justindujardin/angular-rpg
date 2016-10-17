@@ -17,7 +17,7 @@
 import * as _ from 'underscore';
 import * as rpg from '../game';
 import {HeroModel, ItemModel} from './all';
-import {GameWorld} from '../../gameWorld';
+import {GameWorld} from '../../../app/services/gameWorld';
 import {Events} from '../../pow-core/events';
 import {IWorldObject} from '../../pow-core/world';
 import {ResourceLoader} from '../../pow-core/resourceLoader';

@@ -74,7 +74,7 @@ export class CombatVictoryState extends CombatState {
 
     // Award gold
     //
-    machine.parent.model.addGold(gold);
+    machine.world.model.addGold(gold);
 
     // Award items
     //
@@ -83,7 +83,7 @@ export class CombatVictoryState extends CombatState {
       var model = machine.parent.world.itemModelFromId(i);
       if (model) {
         itemModels.push(model);
-        machine.parent.model.inventory.push(model);
+        machine.world.model.inventory.push(model);
       }
     });
 

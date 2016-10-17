@@ -14,16 +14,7 @@
  limitations under the License.
  */
 
-import {Component, Input} from '@angular/core';
-import {GameWorld} from '../gameWorld';
-import {GameStateModel} from './models/gameStateModel';
-import {GameStateMachine} from './states/gameStateMachine';
-import {PlayerCombatState} from './states/playerCombatState';
-import {RPGGame, Notify, Animate} from '../ui/services/index';
 import {Point} from '../pow-core/point';
-import {registerWorld} from '../pow-core/api';
-
-const template = require('./game.html') as string;
 
 /**
  * A Combat encounter descriptor.  Used to describe the configuration of combat.

@@ -1,18 +1,10 @@
-import {CombatModule} from './ui/combat/index';
 import {NgModule, ModuleWithProviders} from '@angular/core';
-import {WorldModule} from './ui/world/index';
-import {RpgModule} from './ui/rpg/index';
-import {PartyModule} from './ui/party/index';
-import {ServicesModule} from './ui/services/index';
+import {PowCoreModule} from './pow-core/index';
 
 
 @NgModule({
   exports: [
-    CombatModule,
-    WorldModule,
-    RpgModule,
-    PartyModule,
-    ServicesModule
+    PowCoreModule
   ]
 })
 export class GameModule {

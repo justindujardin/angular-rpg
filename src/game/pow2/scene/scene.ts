@@ -20,8 +20,8 @@ import {IWorld, IWorldObject} from '../../pow-core/world';
 import {SceneSpatialDatabase} from './sceneSpatialDatabase';
 import {IProcessObject} from '../../pow-core/time';
 import {Events} from '../../pow-core/events';
-import {SceneWorld} from './sceneWorld';
 import {IComponent} from '../../pow-core/component';
+import {GameWorld} from '../../../app/services/gameWorld';
 
 export class Scene extends Events implements IScene, IProcessObject, IWorldObject {
   id: string = _.uniqueId('scene');
@@ -30,7 +30,7 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
   options: any = {};
   private _objects: ISceneObject[] = [];
   private _views: ISceneView[] = [];
-  world: SceneWorld = null;
+  world: GameWorld = null;
   fps: number = 0;
   time: number = 0;
   paused: boolean = false;

@@ -118,7 +118,14 @@ export class EntityFactory {
               return inputs[n];
             });
             const ctor = comp.type;
-            var compObject = this.constructObject(ctor, inputValues);
+            let compObject = null;
+            try {
+              compObject = this.constructObject(ctor, inputValues);
+            }
+            catch (e) {
+              console.error(e);
+              reject('Failed to construct component with error' + e);
+            }
             compObject.name = comp.name;
             if (!object.addComponent(compObject)) {
               reject(errors.COMPONENT_REGISTER_FAIL);

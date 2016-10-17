@@ -15,7 +15,7 @@
  */
 
 import * as _ from 'underscore';
-import {GameWorld} from './gameWorld';
+import {GameWorld} from '../app/services/gameWorld';
 import {GameFeatureObject} from './rpg/objects/gameFeatureObject';
 import * as rpg from './rpg/game';
 import {TileMap} from './pow2/tile/tileMap';

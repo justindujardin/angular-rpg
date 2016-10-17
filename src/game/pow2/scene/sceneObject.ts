@@ -26,7 +26,6 @@ import {Point} from '../../pow-core/point';
 export class SceneObject extends Entity {
   id: string;
   _uid: string = _.uniqueId('so');
-  name: string;
   scene: Scene;
   world: IWorld;
   enabled: boolean;

@@ -1,0 +1,22 @@
+<button md-fab color="accent" class="btn-open" (click)="toggle()" *ngIf="!open">MENU</button>
+<div class="navigation" *ngIf="open">
+  <nav class="options">
+    <button md-raised-button (click)="toggle()" class="btn-close">CLOSE MENU</button>
+    <button md-raised-button (click)="showParty()" class="btn-party">CHARACTERS</button>
+    <button md-raised-button (click)="showInventory()" class="btn-inventory">INVENTORY</button>
+    <button md-raised-button (click)="showSave()" class="btn-save">SAVE</button>
+  </nav>
+</div>
+<div class="views" *ngIf="open">
+  <div class="party" *ngIf="page == 'party'">
+    <h1>Party Gold: {{game.world.model.gold}}</h1>
+    <player-card
+      [model]="member"
+      *ngFor="let member of game.world.model.party"></player-card>
+  </div>
+  <party-inventory *ngIf="page == 'inventory'"></party-inventory>
+  <div *ngIf="page == 'save'">
+    <button (click)="menuSaveGame()">Save Game</button>
+    <button (click)="menuResetGame()">Reset Game</button>
+  </div>
+</div>

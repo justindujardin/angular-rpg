@@ -26,7 +26,7 @@ import {SoundComponent} from '../../../../pow2/scene/components/soundComponent';
 import {SpriteComponent} from '../../../../pow2/tile/components/spriteComponent';
 import {AnimatedSpriteComponent} from '../../../../pow2/tile/components/animatedSpriteComponent';
 import {PlayerCombatRenderComponent} from '../../../../pow2/game/components/playerCombatRenderComponent';
-import {GameWorld} from '../../../../gameWorld';
+import {GameWorld} from '../../../../../app/services/gameWorld';
 
 /**
  * Attack another entity in combat.

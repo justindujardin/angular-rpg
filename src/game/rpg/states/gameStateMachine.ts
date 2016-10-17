@@ -15,8 +15,7 @@
  */
 
 import * as rpg from '../game';
-import {GameWorld} from '../../gameWorld';
-import {GameStateModel} from '../models/gameStateModel';
+import {GameWorld} from '../../../app/services/gameWorld';
 import {PlayerMapState} from './playerMapState';
 import {PlayerCombatState} from './playerCombatState';
 import {State, IState} from '../../pow2/core/state';
@@ -32,7 +31,6 @@ export class PlayerDefaultState extends State {
 
 export class GameStateMachine extends StateMachine {
   world: GameWorld;
-  model: GameStateModel = null;
   defaultState: string = PlayerDefaultState.NAME;
   player: TileObject = null;
   encounterInfo: rpg.IZoneMatch = null;
@@ -42,11 +40,6 @@ export class GameStateMachine extends StateMachine {
     new PlayerMapState(),
     new PlayerCombatState()
   ];
-
-  onAddToWorld(world: GameWorld) {
-    super.onAddToWorld(world);
-    this.model = world.model || new GameStateModel();
-  }
 
   setCurrentState(newState: any): boolean {
     if (this.world && this.world.scene) {

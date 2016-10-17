@@ -17,9 +17,8 @@
 import * as rpg from '../../game';
 import {GameEntityObject} from '../../objects/gameEntityObject';
 import {GameTileMap} from '../../../gameTileMap';
-import {GameWorld} from '../../../gameWorld';
+import {GameWorld} from '../../../../app/services/gameWorld';
 import {SceneComponent} from '../../../pow2/scene/sceneComponent';
-import {getWorld} from '../../../pow-core/api';
 import {PlayerComponent} from '../playerComponent';
 import {Point} from '../../../pow-core/point';
 
@@ -36,13 +35,14 @@ export class CombatEncounterComponent extends SceneComponent {
   combatZone: string = 'default';
   isDangerous: boolean = false;
   enabled: boolean = false;
-  world: GameWorld = getWorld<GameWorld>('rpg');
 
   connectComponent(): boolean {
-    if (!super.connectComponent() || !(this.host instanceof GameTileMap)) {
+    const world = GameWorld.get();
+    if (!world || !world.model || !super.connectComponent() || !(this.host instanceof GameTileMap)) {
       return false;
     }
-    this.battleCounter = this.world.model.getKeyData('battleCounter');
+
+    this.battleCounter = world.model.getKeyData('battleCounter');
     if (typeof this.battleCounter === 'undefined') {
       this.resetBattleCounter();
     }
@@ -118,6 +118,9 @@ export class CombatEncounterComponent extends SceneComponent {
 
   private _setCounter(value: number) {
     this.battleCounter = value;
-    this.world.model.setKeyData('battleCounter', this.battleCounter);
+    const world = GameWorld.get();
+    if (world) {
+      world.model.setKeyData('battleCounter', this.battleCounter);
+    }
   }
 }

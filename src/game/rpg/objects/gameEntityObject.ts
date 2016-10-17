@@ -16,16 +16,15 @@
 
 import * as _ from 'underscore';
 import * as rpg from '../game';
-import {GameWorld} from '../../gameWorld';
+import {GameWorld} from '../../../app/services/gameWorld';
 import {EntityModel} from '../models/entityModel';
 import {TileObject} from '../../pow2/tile/tileObject';
-import {getWorld} from '../../pow-core/api';
 
 export class GameEntityObject extends TileObject {
   model: EntityModel;
   type: string; // TODO: enum?
   groups: any;
-  world: GameWorld = getWorld<GameWorld>('rpg');
+  world: GameWorld;
 
   constructor(options: any) {
     super(_.omit(options || {}, ["x", "y", "type"]));

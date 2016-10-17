@@ -25,7 +25,7 @@ import {PlayerCombatRenderComponent} from '../../../../pow2/game/components/play
 import {AnimatedSpriteComponent} from '../../../../pow2/tile/components/animatedSpriteComponent';
 import {SpriteComponent} from '../../../../pow2/tile/components/spriteComponent';
 import {SoundComponent} from '../../../../pow2/scene/components/soundComponent';
-import {GameWorld} from '../../../../gameWorld';
+import {GameWorld} from '../../../../../app/services/gameWorld';
 
 
 /**

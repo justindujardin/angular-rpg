@@ -15,12 +15,12 @@
  */
 
 import {GameFeatureComponent} from '../gameFeatureComponent';
-import {GameWorld} from '../../../gameWorld';
 import {GameFeatureObject} from '../../objects/gameFeatureObject';
 import {GameStateModel} from '../../models/gameStateModel';
 import {PlayerComponent} from '../playerComponent';
 import {TileObject} from '../../../pow2/tile/tileObject';
 import {Point} from '../../../pow-core/point';
+import {GameWorld} from '../../../../app/services/gameWorld';
 
 export class ShipFeatureComponent extends GameFeatureComponent {
   party: PlayerComponent;
@@ -32,7 +32,7 @@ export class ShipFeatureComponent extends GameFeatureComponent {
     if (super.syncComponent()) {
       var gameWorld: GameWorld = <GameWorld>this.host.world;
       if (gameWorld && gameWorld.state) {
-        var gameState: GameStateModel = gameWorld.state.model;
+        var gameState: GameStateModel = gameWorld.model;
         var location = gameState.getKeyData('shipPosition');
         if (location) {
           this.host.setPoint(new Point(location.x, location.y));
@@ -97,8 +97,8 @@ export class ShipFeatureComponent extends GameFeatureComponent {
     this.party = null;
 
     var gameWorld: GameWorld = <GameWorld>this.host.world;
-    if (gameWorld && gameWorld.state && gameWorld.state.model) {
-      gameWorld.state.model.setKeyData('shipPosition', this.host.point);
+    if (gameWorld && gameWorld.model) {
+      gameWorld.model.setKeyData('shipPosition', this.host.point);
     }
   }
 }

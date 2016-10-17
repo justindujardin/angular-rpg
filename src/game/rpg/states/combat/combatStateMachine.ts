@@ -27,6 +27,7 @@ import {CombatStartState} from './combatStartState';
 import {CombatVictoryState} from './combatVictoryState';
 import {StateMachine} from '../../../pow2/core/stateMachine';
 import {IState} from '../../../pow2/core/state';
+import {GameWorld} from '../../../../app/services/gameWorld';
 
 
 // Combat State Machine
@@ -34,6 +35,7 @@ import {IState} from '../../../pow2/core/state';
 export class CombatStateMachine extends StateMachine {
   parent: GameStateMachine;
   defaultState: string = CombatStartState.NAME;
+  world: GameWorld;
   states: IState[] = [
     new CombatStartState(),
     new CombatVictoryState(),
