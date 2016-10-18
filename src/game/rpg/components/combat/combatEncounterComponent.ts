@@ -109,7 +109,10 @@ export class CombatEncounterComponent extends SceneComponent {
     this.combatZone = zone.map || zone.target;
     console.log("Combat in zone : " + this.combatZone);
     this.stopListening();
-    this.host.world.randomEncounter(zone, ()=> {
+
+    console.warn('HACK in triggerCombat - static get GameWorld... need injection strategy');
+    const world = GameWorld.get();
+    world.randomEncounter(zone, ()=> {
       this.resetBattleCounter();
       this.listenMoves();
     });

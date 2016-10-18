@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
 import {Component, ElementRef, Input, AfterViewInit} from '@angular/core';
 import {Map} from '../../components/map';
@@ -58,7 +57,8 @@ export interface ICombatMenuItem<T> {
   selector: 'combat-map',
   styleUrls: ['./combatMap.scss'],
   host: {
-    '(window:resize)': '_onResize($event)'
+    '(window:resize)': '_onResize($event)',
+    '(click)': '_onClick($event)'
   },
   template: template
 })
@@ -111,9 +111,9 @@ export class CombatMap extends Map implements IProcessObject, AfterViewInit {
   @Input()
   set map(value: GameTileMap) {
     this._map = value;
-    if (this._map) {
-      this.setTileMap(value);
-    }
+    // if (this._map) {
+    //   this.setTileMap(value);
+    // }
   }
 
   get map(): GameTileMap {
@@ -121,14 +121,16 @@ export class CombatMap extends Map implements IProcessObject, AfterViewInit {
   }
 
 
-  constructor(public elRef: ElementRef, public game: RPGGame, public animate: Animate, public notify: Notify) {
+  constructor(public elRef: ElementRef,
+              public game: RPGGame,
+              public animate: Animate,
+              public notify: Notify) {
     super(elRef, game);
-    this.mouseClick = _.bind(this.mouseClick, this);
   }
 
   ngAfterViewInit() {
-    this.init(this.elRef.nativeElement.querySelector('canvas'));
-    _.defer(()=>this._onResize());
+    this.canvas = this.elRef.nativeElement.querySelector('canvas');
+    _.defer(() => this._onResize());
     if (this.camera) {
       this.camera.point.zero();
       this.camera.extent.set(25, 25);
@@ -167,14 +169,12 @@ export class CombatMap extends Map implements IProcessObject, AfterViewInit {
     if (scene.world && scene.world.input) {
       this.mouse = scene.world.input.mouseHook(this, "combat");
     }
-    this.$el.on('click touchstart', this.mouseClick);
   }
 
   onRemoveFromScene(scene: Scene) {
     if (scene.world && scene.world.input) {
       scene.world.input.mouseUnhook("combat");
     }
-    this.$el.off('click touchstart', this.mouseClick);
   }
 
   //
@@ -230,7 +230,7 @@ export class CombatMap extends Map implements IProcessObject, AfterViewInit {
     if (!this.combat.scene) {
       throw new Error("Invalid Combat Scene");
     }
-    var chooseSubmit = (action: CombatActionComponent)=> {
+    var chooseSubmit = (action: CombatActionComponent) => {
       inputState.data.choose(action);
       next();
     };
@@ -299,10 +299,10 @@ export class CombatMap extends Map implements IProcessObject, AfterViewInit {
   /**
    * Mouse input
    */
-  mouseClick(e: any) {
+  _onClick(e: any) {
     //console.log("clicked at " + this.mouse.world);
-    var hits: GameEntityObject[] = [];
-    PowInput.mouseOnView(e.originalEvent, this, this.mouse);
+    const hits: GameEntityObject[] = [];
+    PowInput.mouseOnView(e, this, this.mouse);
     if (this.combat.scene.db.queryPoint(this.mouse.world, GameEntityObject, hits)) {
       this.combat.scene.trigger('click', this.mouse, hits);
       e.stopImmediatePropagation();
@@ -347,7 +347,7 @@ export class CombatMap extends Map implements IProcessObject, AfterViewInit {
       this.applyDamage(data.defender, data.damage);
       this.notify.show(msg, _done);
     });
-    this.combat.machine.on('combat:run', (data: CombatRunSummary)=> {
+    this.combat.machine.on('combat:run', (data: CombatRunSummary) => {
       var _done = this.combat.machine.notifyWait();
       var msg: string = data.player.model.get('name');
       if (data.success) {

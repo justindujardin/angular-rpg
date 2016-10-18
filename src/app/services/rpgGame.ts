@@ -13,8 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
-
 import * as _ from 'underscore';
 import {GameWorld} from './gameWorld';
 import {GameTileMap} from '../../game/gameTileMap';
@@ -34,7 +32,6 @@ import {AppState} from '../app.model';
 @Injectable()
 export class RPGGame {
   styleBackground: string = 'rgba(0,0,0,1)';
-  sprite: GameEntityObject;
   machine: GameStateMachine;
   private _renderCanvas: HTMLCanvasElement;
   private _canvasAcquired: boolean = false;
@@ -68,16 +65,17 @@ export class RPGGame {
   }
 
   saveGame() {
-    var party = <PlayerComponent>this.world.scene.componentByType(PlayerComponent);
+    const party = <PlayerComponent>this.world.scene.componentByType(PlayerComponent);
     if (party) {
       this.world.model.setKeyData('playerPosition', party.host.point);
     }
     this.world.model.setKeyData('playerMap', this.partyMapName);
-    var data = JSON.stringify(this.world.model.toJSON());
+    const data = JSON.stringify(this.world.model.toJSON());
     localStorage.setItem(this._stateKey, data);
   }
 
 
+  /** Create a detached player entity that can be added to an arbitrary scene. */
   createPlayer(from: HeroModel, tileMap: GameTileMap, at?: Point): Promise<GameEntityObject> {
     if (!from) {
       return Promise.reject("Cannot create player without valid model");
@@ -85,23 +83,17 @@ export class RPGGame {
     if (!this.world.entities.data) {
       return Promise.reject("Cannot create player before entities container is loaded");
     }
-    if (this.sprite) {
-      this.sprite.destroy();
-      this.sprite = null;
-    }
     return this.world.entities
       .createObject('GameMapPlayer', {
         model: from,
         map: tileMap
       })
       .then((sprite: GameEntityObject): GameEntityObject|Promise<GameEntityObject> => {
-        this.sprite = sprite;
-        if (!this.sprite) {
+        if (!sprite) {
           return Promise.reject("Failed to create map player");
         }
-        this.sprite.name = from.attributes.name;
-        this.sprite.icon = from.attributes.icon;
-        this.world.scene.addObject(this.sprite);
+        sprite.name = from.attributes.name;
+        sprite.icon = from.attributes.icon;
 
         // If no point is specified, use the position of the first Portal on the current map
         if (typeof at === 'undefined' && tileMap instanceof TileMap && this.partyPosition.isZero()) {
@@ -110,8 +102,8 @@ export class RPGGame {
             at = new Point(portal.x / portal.width, portal.y / portal.height);
           }
         }
-        this.sprite.setPoint(at || this.partyPosition);
-        return this.sprite;
+        sprite.setPoint(at || this.partyPosition);
+        return sprite;
       });
   }
 

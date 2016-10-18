@@ -16,11 +16,9 @@
 
 import * as _ from 'underscore';
 import {SceneObject} from './sceneObject';
-import {IWorldObject, IWorld} from '../../pow-core/world';
 import {ISceneView} from '../interfaces/IScene';
 import {Rect} from '../../pow-core/rect';
 import {Scene} from './scene';
-import {ResourceLoader} from '../../pow-core/resourceLoader';
 import {SceneViewComponent} from './sceneViewComponent';
 import {Point} from '../../pow-core/point';
 /**
@@ -35,9 +33,7 @@ import {Point} from '../../pow-core/point';
 export class SceneView extends SceneObject implements ISceneView {
   static UNIT: number = 16;
 
-  animations: any[];
-  $el: any; // JQuery
-  canvas: HTMLCanvasElement;
+  animations: any[] = [];
   context: CanvasRenderingContext2D;
   camera: Rect;
   cameraComponent: any = null; // TODO: ICameraComponent
@@ -45,40 +41,29 @@ export class SceneView extends SceneObject implements ISceneView {
   unitSize: number;
   scene: Scene = null;
 
-  constructor(canvas: HTMLCanvasElement) {
-    super();
-    this.animations = [];
-    this.canvas = canvas;
+  get canvas(): HTMLCanvasElement {
+    return this._canvas;
   }
 
-  init(canvas: HTMLCanvasElement) {
-    if (!canvas) {
-      throw new Error("A Canvas is required");
+  set canvas(value: HTMLCanvasElement) {
+    this._canvas = value;
+    if (!value) {
+      this.context = this.canvas = null;
+      return;
     }
-    this.canvas = canvas;
-    this.$el = $(canvas as any);
-    this.context = <CanvasRenderingContext2D>canvas.getContext("2d");
+    this.context = value.getContext("2d");
     if (!this.context) {
-      throw new Error("Could not retrieve Canvas context");
+      throw new Error('SceneView: could not retrieve 2d Canvas context');
     }
-    var contextAny: any = this.context;
-    contextAny.webkitImageSmoothingEnabled = false;
-    contextAny.mozImageSmoothingEnabled = false;
+    const context = this.context as any;
+    context.webkitImageSmoothingEnabled = false;
+    context.mozImageSmoothingEnabled = false;
     this.camera = new Rect(0, 0, 9, 9);
     this.cameraScale = 1.0;
     this.unitSize = SceneView.UNIT;
   }
 
-  setScene(scene: Scene) {
-    if (this.scene) {
-      this.scene.removeView(this);
-    }
-    this.scene = scene;
-    if (this.scene) {
-      this.scene.addView(this);
-    }
-  }
-
+  private _canvas: HTMLCanvasElement = null;
 
   // Scene rendering interfaces
   // -----------------------------------------------------------------------------

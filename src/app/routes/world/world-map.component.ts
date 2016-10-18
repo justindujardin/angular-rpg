@@ -13,9 +13,8 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
-import {Component, ElementRef, Input, AfterViewInit, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, AfterViewInit, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {GameTileMap} from '../../../game/gameTileMap';
 import {TileObjectRenderer} from '../../../game/pow2/tile/render/tileObjectRenderer';
 import {NamedMouseElement, PowInput} from '../../../game/pow2/core/input';
@@ -39,6 +38,7 @@ import {Store} from '@ngrx/store';
 import {GameStateActions} from '../../models/game-state/game-state.actions';
 import {TileMapView} from '../../../game/pow2/tile/tileMapView';
 import {GameWorld} from '../../services/gameWorld';
+import {GameEntityObject} from '../../../game/rpg/objects/gameEntityObject';
 
 @Component({
   selector: 'world-map',
@@ -49,11 +49,20 @@ import {GameWorld} from '../../services/gameWorld';
   `,
   host: {
     '(window:resize)': '_onResize($event)',
+    '(click)': '_onClick($event)',
     '[style.color]': 'styleBackground'
-  }
+  },
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WorldMap extends TileMapView implements AfterViewInit, OnInit, OnDestroy {
 
+
+  /** The fill color to use when rendering a path target. */
+  targetFill: string = "rgba(10,255,10,0.3)";
+  /** The stroke to use when outlining path target. */
+  targetStroke: string = "rgba(10,255,10,0.3)";
+  /** Line width for the path target stroke. */
+  targetStrokeWidth: number = 1.5;
   styleBackground: string = 'rgba(0,0,0,1)';
 
   objectRenderer: TileObjectRenderer = new TileObjectRenderer;
@@ -72,26 +81,13 @@ export class WorldMap extends TileMapView implements AfterViewInit, OnInit, OnDe
   private _map: GameTileMap;
 
 
-  /**
-   * The fill color to use when rendering a path target.
-   */
-  targetFill: string = "rgba(10,255,10,0.3)";
-  /**
-   * The stroke to use when outlining path target.
-   */
-  targetStroke: string = "rgba(10,255,10,0.3)";
-  /**
-   * Line width for the path target stroke.
-   */
-  targetStrokeWidth: number = 1.5;
-
   constructor(public elRef: ElementRef,
               public game: RPGGame,
               public world: GameWorld,
               public store: Store<AppState>,
               public gameStateActions: GameStateActions,
               public notify: Notify) {
-    super(elRef.nativeElement);
+    super();
   }
 
   ngOnInit(): void {
@@ -104,8 +100,7 @@ export class WorldMap extends TileMapView implements AfterViewInit, OnInit, OnDe
 
 
   ngAfterViewInit(): void {
-    this.init(this.elRef.nativeElement.querySelector('canvas'));
-    this.mouseClick = _.bind(this.mouseClick, this);
+    this.canvas = this.elRef.nativeElement.querySelector('canvas');
     this.camera.point.set(-0.5, -0.5);
     this.scene.addView(this);
     _.defer(() => this._onResize());
@@ -160,13 +155,28 @@ export class WorldMap extends TileMapView implements AfterViewInit, OnInit, OnDe
     this._map.syncComponents();
   }
 
+  private _playerObj: GameEntityObject = null;
   private _player: HeroModel = null;
   @Input()
   set player(value: HeroModel) {
     this._player = value;
-    if (this._player && this._map) {
-      this.game.createPlayer(this._player, this._map);
+    if (!this._player || !this._map) {
+      return;
     }
+    // Create a player entity
+    this.game.createPlayer(this._player, this._map)
+      .then((player: GameEntityObject) => {
+        // Remove existing instances if called multiple times
+        if (this._playerObj) {
+          this.scene.removeObject(this._playerObj);
+        }
+        this._playerObj = player;
+        // Add new valid instances to the scene
+        if (player) {
+          this.scene.addObject(player);
+        }
+      });
+
   }
 
   get player(): HeroModel {
@@ -176,9 +186,9 @@ export class WorldMap extends TileMapView implements AfterViewInit, OnInit, OnDe
   private _position = new Point();
   @Input()
   set position(value: Point) {
-    this._position.set(value);
-    if (this.game.sprite) {
-      this.game.sprite.setPoint(value);
+    this._position.set(value.x, value.y);
+    if (this._playerObj) {
+      this._playerObj.setPoint(value);
     }
   }
 
@@ -216,25 +226,21 @@ export class WorldMap extends TileMapView implements AfterViewInit, OnInit, OnDe
   //
   onAddToScene(scene: Scene) {
     this.clearCache();
-    super.onAddToScene(scene);
     this.mouse = this.world.input.mouseHook(<SceneView>this, "world");
-    // TODO: Move this elsewhere.
-    this.$el.on('click touchstart', this.mouseClick);
     this.scene.on(TileMap.Events.MAP_LOADED, this.syncComponents, this);
   }
 
   onRemoveFromScene(scene: Scene) {
     this.clearCache();
     this.world.input.mouseUnhook("world");
-    this.$el.off('click', this.mouseClick);
     this.scene.off(TileMap.Events.MAP_LOADED, this.syncComponents, this);
   }
 
-  mouseClick(e: any) {
+  private _onClick(e: any) {
     var pathComponent = <PathComponent>this.scene.componentByType(PathComponent);
     var playerComponent = <PlayerComponent>this.scene.componentByType(PlayerComponent);
     if (pathComponent && playerComponent) {
-      PowInput.mouseOnView(e.originalEvent, this.mouse.view, this.mouse);
+      PowInput.mouseOnView(e, this.mouse.view, this.mouse);
       playerComponent.path = pathComponent.calculatePath(playerComponent.targetPoint, this.mouse.world);
       e.preventDefault();
       return false;

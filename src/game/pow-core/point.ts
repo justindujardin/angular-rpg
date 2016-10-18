@@ -21,16 +21,16 @@ export interface IPoint {
   y: number;
 }
 
-export class Point {
+export class Point implements IPoint {
   x: number;
   y: number;
 
   constructor();
-  constructor(point: Point);
+  constructor(point: IPoint);
   constructor(x: number, y: number);
   constructor(x: string, y: string);
   constructor(pointOrX?: any, y?: any) {
-    if (pointOrX instanceof Point) {
+    if (pointOrX && pointOrX.hasOwnProperty('x') && pointOrX.hasOwnProperty('y')) {
       this.set(pointOrX.x, pointOrX.y);
     }
     else if (typeof pointOrX === 'string' && typeof y === 'string') {

@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as rpg from '../game';
 import {GameWorld} from '../../../app/services/gameWorld';
 import {PlayerMapState} from './playerMapState';
@@ -42,6 +41,9 @@ export class GameStateMachine extends StateMachine {
   ];
 
   setCurrentState(newState: any): boolean {
+    if (!this.world) {
+      this.world = GameWorld.get();
+    }
     if (this.world && this.world.scene) {
       var scene: Scene = this.world.scene;
       this.player = <TileObject>scene.objectByComponent(PlayerComponent);

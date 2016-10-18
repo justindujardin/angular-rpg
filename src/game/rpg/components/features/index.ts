@@ -10,6 +10,7 @@ export * from './combatFeatureComponent';
 export * from './dialogFeatureComponent';
 export * from './portalFeatureComponent';
 export * from './shipFeatureComponent';
+export * from './storeFeatureComponent';
 export * from './templeFeatureComponent';
 export * from './treasureFeatureComponent';
 

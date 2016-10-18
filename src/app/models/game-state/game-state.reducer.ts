@@ -16,11 +16,19 @@ const initialState: GameState = {
 export function gameStateReducer(state: GameState = initialState, action: Action): GameState {
   switch (action.type) {
     case GameStateActions.LOAD:
-      return Immutable.fromJS(action.payload).toObject();
+      return Immutable.fromJS(action.payload).toJS();
     case GameStateActions.SAVE:
       return Immutable.fromJS(state).merge({
         ts: action.payload
-      }).toObject();
+      }).toJS();
+    case GameStateActions.SET_MAP:
+      return Immutable.fromJS(state).merge({
+        map: action.payload
+      }).toJS();
+    case GameStateActions.SET_POSITION:
+      return Immutable.fromJS(state).merge({
+        position: action.payload
+      }).toJS();
     default:
       return state;
   }

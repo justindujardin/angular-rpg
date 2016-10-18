@@ -13,36 +13,45 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
 import * as rpg from '../../../game/rpg/game';
-import {Component, ViewEncapsulation} from '@angular/core';
-import {RPGGame, Notify} from '../../services/index';
-import {StoreFeatureComponent} from '../../../game/rpg/components/features/storeFeatureComponent';
+import {Component, ViewEncapsulation, Input} from '@angular/core';
+import {RPGGame, Notify} from '../../services';
 import {GameStateModel} from '../../../game/rpg/models/gameStateModel';
 import {ItemModel} from '../../../game/rpg/models/all';
 import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
 import {ItemActions} from '../../models/item/item.actions';
-
-const template = require('./worldStore.html') as string;
+import {IScene} from '../../../game/pow2/interfaces/IScene';
+import {StoreFeatureComponent} from '../../../game/rpg/components/features/storeFeatureComponent';
 
 @Component({
   selector: 'world-store',
-  inputs: ['selected', 'inventory', 'name', 'buyer'],
+  // inputs: ['selected', 'inventory', 'name', 'buyer'],
   encapsulation: ViewEncapsulation.None,
-  styleUrls: ['./worldStore.scss'],
-  template: template
+  styleUrls: ['./world-store.component.scss'],
+  templateUrl: './world-store.component.html'
 })
 export class WorldStore {
+
+  private _scene: IScene;
+  @Input()
+  set scene(value: IScene) {
+    this._scene = value;
+  }
+
+  get scene(): IScene {
+    return this._scene;
+  }
+
   active: boolean = false;
+  @Input()
   name: string = 'Invalid Store';
   buyer: GameStateModel;
   inventory: rpg.IGameItem[] = [];
 
   constructor(public game: RPGGame, public notify: Notify, public store: Store<AppState>, private itemActions: ItemActions) {
     this.buyer = game.world.model;
-    this.gameModel = game.world.model;
     game.world.scene.on('store:entered', (feature: StoreFeatureComponent) => {
       this.active = true;
       this.initStoreFromFeature(feature);
@@ -59,18 +68,15 @@ export class WorldStore {
   }
 
   /**
-   * The game state model to modify.
-   */
-  gameModel: GameStateModel = null;
-
-  /**
    * The selected item to purchase/sell.
    */
+  @Input()
   selected: ItemModel = null;
 
   /**
    * Determine if the UI is in a selling state.
    */
+  @Input()
   selling: boolean = false;
 
 
@@ -78,16 +84,16 @@ export class WorldStore {
     // Get enemies data from spreadsheet
     const data = this.game.world.spreadsheet;
 
-    var hasCategory: boolean = typeof feature.host.category !== 'undefined';
-    var theChoices: any[] = [];
+    let hasCategory: boolean = typeof feature.host.category !== 'undefined';
+    let theChoices: any[] = [];
     ['weapons', 'armor', 'items'].forEach((category: string) => {
       if (!hasCategory || feature.host.category === category) {
         theChoices = theChoices.concat(data.getSheetData(category));
       }
     });
     let items: rpg.IGameItem[] = [];
-    _.each(feature.host.groups, (group: string)=> {
-      items = items.concat(_.filter(theChoices, (c: any)=> {
+    _.each(feature.host.groups, (group: string) => {
+      items = items.concat(_.filter(theChoices, (c: any) => {
         // Include items with no "groups" value or items with matching groups.
         return !c.groups || _.indexOf(c.groups, group) !== -1;
       }));
@@ -111,11 +117,11 @@ export class WorldStore {
       return;
     }
 
-    var model: GameStateModel = this.game.world.model;
-    var value: number = parseInt(item.cost);
+    const model: GameStateModel = this.game.world.model;
+    const value: number = parseInt(item.cost);
     if (this.selling) {
-      var itemIndex: number = -1;
-      for (var i = 0; i < model.inventory.length; i++) {
+      let itemIndex: number = -1;
+      for (let i = 0; i < model.inventory.length; i++) {
         if (model.inventory[i].id === item.id) {
           itemIndex = i;
           break;
@@ -136,7 +142,7 @@ export class WorldStore {
       else {
         model.gold -= value;
         this.notify.show("Purchased " + item.name + ".", null, 1500);
-        var instanceModel = this.game.world.itemModelFromId<ItemModel>(item.id);
+        let instanceModel = this.game.world.itemModelFromId<ItemModel>(item.id);
         this.store.dispatch(this.itemActions.addItem(item));
         if (!instanceModel) {
           throw new Error("Tried (and failed) to create item from invalid id: '" + item.id + "'.  Make sure ID is present in game data source");

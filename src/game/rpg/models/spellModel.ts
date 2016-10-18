@@ -31,7 +31,7 @@ export class SpellModel extends ItemModel {
     level: 99,
     type: 'target',
     usedby: [],
-    groups: 'default',
+    groups: ['default'],
     elements: '',
     benefit: false,
     value: 0

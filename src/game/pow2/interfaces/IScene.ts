@@ -20,7 +20,6 @@ import {Point} from '../../pow-core/point';
 import {IEvents} from '../../pow-core/events';
 import {IWorld} from '../../pow-core/world';
 import {Rect} from '../../pow-core/rect';
-import {ResourceLoader} from '../../pow-core/resourceLoader';
 /**
  * SceneObject interface
  */
@@ -75,11 +74,9 @@ export interface ISceneViewRenderer {
 
 
 /**
- * Renders a scene to a particular HTML5 Canvas object.
- *
+ * Renders a scene to a Canvas object.
  */
 export interface ISceneView {
-  $el: any;
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
   camera: Rect;
@@ -87,8 +84,6 @@ export interface ISceneView {
   cameraScale: number;
   unitSize: number;
   scene: IScene;
-
-  setScene(scene: IScene);
 
   // Scene rendering interfaces
   // -----------------------------------------------------------------------------

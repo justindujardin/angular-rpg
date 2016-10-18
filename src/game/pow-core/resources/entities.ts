@@ -153,7 +153,7 @@ export class EntityFactory {
       if (!templateData.inputs) {
         return;
       }
-      var tplInputs: string[] = _.keys(templateData.inputs);
+      let tplInputs: string[] = _.keys(templateData.inputs);
       if (!tplInputs) {
         return;
       }
@@ -163,7 +163,7 @@ export class EntityFactory {
       }
 
       // Async input validation
-      var verifyInput = (inputType: string, name: string): Promise<void> => {
+      const verifyInput = (inputType: any, name: string): Promise<any> => {
         return new Promise<void>((resolveInput, rejectInput) => {
           if (typeof inputs[name] === 'undefined') {
             console.error("EntityContainer: missing input with name: " + name);
@@ -175,17 +175,17 @@ export class EntityFactory {
             rejectInput(EntityError.INPUT_TYPE);
           }
           else {
-            resolveInput(inputType);
+            resolveInput();
           }
         });
       };
       return Promise.all<void>(_.map(templateData.inputs, verifyInput))
         .then(() => {
           if (templateData.components) {
-            var keys: string[] = _.map(templateData.components, (c: any)=> {
+            const keys: string[] = _.map(templateData.components, (c: any) => {
               return c.name;
             });
-            var unique: boolean = _.uniq(keys).length === keys.length;
+            let unique: boolean = _.uniq(keys).length === keys.length;
             if (!unique) {
               console.error("EntityContainer: duplicate name in template components: " + keys.join(', '));
               return Promise.reject(EntityError.COMPONENT_NAME_DUPLICATE);
@@ -193,7 +193,7 @@ export class EntityFactory {
           }
         })
         .then(() => {
-          var unsatisfied: EntityError = EntityError.NONE;
+          let unsatisfied: EntityError = EntityError.NONE;
           _.each(templateData.components, (comp: any) => {
             if (comp.params) {
               _.each(comp.params, (i: string) => {

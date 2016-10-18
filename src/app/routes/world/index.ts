@@ -13,19 +13,29 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
-import {WorldDialog} from './worldDialog';
-import {WorldMap} from './worldMap';
-import {WorldStore} from './worldStore';
-import {WorldTemple} from './worldTemple';
+import {WorldDialog} from './world-dialog.component';
+import {WorldMap} from './world-map.component';
+import {WorldStore} from './world-store.component';
+import {WorldTemple} from './world-temple.component';
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {RpgModule} from '../../components/rpg/index';
+import {RpgModule} from '../../components/rpg';
+import {CanActivateWorld} from './world.guards';
+import {WorldResolver} from './world.resolver';
+import {WorldEffects} from './world.effects';
 
-export * from './worldDialog';
-export * from './worldMap';
-export * from './worldStore';
-export * from './worldTemple';
+export * from './world.component';
+export * from './world.effects';
+export * from './world-map.component';
+export * from './world-dialog.component';
+export * from './world-store.component';
+export * from './world-temple.component';
+
+export const WORLD_PROVIDERS = [
+  CanActivateWorld,
+  WorldResolver,
+  WorldEffects
+];
 
 const WORLD_EXPORTS = [
   WorldDialog,
@@ -46,7 +56,8 @@ export class WorldModule {
 
   static forRoot(): ModuleWithProviders {
     return {
-      ngModule: WorldModule
+      ngModule: WorldModule,
+      providers: WORLD_PROVIDERS
     };
   }
 

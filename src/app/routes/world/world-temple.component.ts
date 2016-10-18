@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
 import {Component} from '@angular/core';
 import {TempleFeatureComponent} from '../../../game/rpg/components/features/templeFeatureComponent';
@@ -21,13 +20,13 @@ import {HeroModel} from '../../../game/rpg/models/all';
 import {GameStateModel} from '../../../game/rpg/models/gameStateModel';
 import {RPGGame, Notify} from '../../services/index';
 
-const template = require('./worldTemple.html') as string;
+// TODO: bind Scene to these components to setup listeners for the proper scene.
 
 @Component({
   selector: 'world-temple',
   inputs: ['model', 'party', 'active', 'cost', 'icon', 'name'],
-  styleUrls: ['./worldTemple.scss'],
-  template: template
+  styleUrls: ['./world-temple.component.scss'],
+  templateUrl: './world-temple.component.html'
 })
 export class WorldTemple {
 
@@ -65,11 +64,11 @@ export class WorldTemple {
     if (!this.active) {
       return;
     }
-    var model: GameStateModel = this.game.world.model;
-    var money: number = model.gold;
-    var cost: number = this.cost;
+    const model: GameStateModel = this.game.world.model;
+    const money: number = model.gold;
+    const cost: number = this.cost;
 
-    var alreadyHealed: boolean = !_.find(model.party, (hero: HeroModel) => {
+    const alreadyHealed: boolean = !_.find(model.party, (hero: HeroModel) => {
       return hero.get('hp') !== hero.get('maxHP');
     });
 

@@ -4,29 +4,13 @@
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@angular/common/-/common-2.1.0.tgz#159037ee8ea5b75951cbcb371749504b535f2c2d"
 
-"@angular/common@2.0.0-rc.4":
-  version "2.0.0-rc.4"
-  resolved "https://registry.yarnpkg.com/@angular/common/-/common-2.0.0-rc.4.tgz#c3b0a87cd1e316be2a940bb80319e055898f89e6"
-
 "@angular/compiler@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-2.1.0.tgz#1388e1b6adadb4495e1cb5f0fa5322728de0d003"
 
-"@angular/compiler@2.0.0-rc.4":
-  version "2.0.0-rc.4"
-  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-2.0.0-rc.4.tgz#1cb82028b8ed732009cf4c82dbc7f3385dca3684"
-
 "@angular/core@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@angular/core/-/core-2.1.0.tgz#a2fdb0f76f72e5ac521feadd4d119f60afff2bd3"
-
-"@angular/core@2.0.0-rc.4":
-  version "2.0.0-rc.4"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-2.0.0-rc.4.tgz#f3f98f906fcf0cb87d2c7d7f230ca95ea81cb6e0"
-
-"@angular/forms@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-0.2.0.tgz#fc5d41f16b9f561cb322255626428045f7d14cf9"
 
 "@angular/forms@^2.1.0":
   version "2.1.0"
@@ -46,17 +30,9 @@
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-2.1.0.tgz#05de532f46bbfdf80a603768e994f33c2ddf73e7"
 
-"@angular/platform-browser-dynamic@2.0.0-rc.4":
-  version "2.0.0-rc.4"
-  resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-2.0.0-rc.4.tgz#8653d31018c54c65a6d88864bb0af8d024691788"
-
 "@angular/platform-browser@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-2.1.0.tgz#f53b2234a460def5f9e718bb812b91a0a5f6c1e7"
-
-"@angular/platform-browser@2.0.0-rc.4":
-  version "2.0.0-rc.4"
-  resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-2.0.0-rc.4.tgz#519e9057b5cc73f0f615c54d45a1c185956df7d1"
 
 "@angular/platform-server@^2.1.0":
   version "2.1.0"
@@ -67,18 +43,6 @@
 "@angular/router@3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@angular/router/-/router-3.0.0.tgz#cdf91b3a5d85ad39aff4fd882455c9b8c3129cd9"
-
-"@angular/router@3.0.0-alpha.8":
-  version "3.0.0-alpha.8"
-  resolved "https://registry.yarnpkg.com/@angular/router/-/router-3.0.0-alpha.8.tgz#f0992f229c9e8ffdc9308ac4323ecf32d5315e41"
-
-"@angular2-material/checkbox@2.0.0-alpha.6":
-  version "2.0.0-alpha.6"
-  resolved "https://registry.yarnpkg.com/@angular2-material/checkbox/-/checkbox-2.0.0-alpha.6.tgz#bccd55d95adc8f576d586213b3866105f2f7511a"
-
-"@angular2-material/core@2.0.0-alpha.6":
-  version "2.0.0-alpha.6"
-  resolved "https://registry.yarnpkg.com/@angular2-material/core/-/core-2.0.0-alpha.6.tgz#ffa26578e8bcfd29c7c74ee6032b89b89fac6d08"
 
 "@angularclass/conventions-loader@^1.0.2":
   version "1.0.12"
@@ -1521,13 +1485,6 @@ duplexer2@0.0.2:
   dependencies:
     readable-stream "~1.1.9"
 
-each-async@^1.0.0:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/each-async/-/each-async-1.1.1.tgz#dee5229bdf0ab6ba2012a395e1b869abf8813473"
-  dependencies:
-    onetime "^1.0.0"
-    set-immediate-shim "^1.0.0"
-
 ecc-jsbn@~0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/ecc-jsbn/-/ecc-jsbn-0.1.1.tgz#0fc73a9ed5f0d53c38193398523ef7e543777505"
@@ -1646,13 +1603,9 @@ es6-iterator@2:
     es5-ext "^0.10.7"
     es6-symbol "3"
 
-es6-promise@>=3.0.2, es6-promise@~4.0.3:
+es6-promise@~4.0.3:
   version "4.0.5"
   resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.0.5.tgz#7882f30adde5b240ccfa7f7d78c548330951ae42"
-
-es6-shim@^0.35.0:
-  version "0.35.1"
-  resolved "https://registry.yarnpkg.com/es6-shim/-/es6-shim-0.35.1.tgz#a23524009005b031ab4a352ac196dfdfd1144ab7"
 
 es6-symbol@^3.0.2, es6-symbol@~3.1, es6-symbol@3:
   version "3.1.0"
@@ -2268,14 +2221,6 @@ grunt-legacy-util@~1.0.0:
     lodash "~4.3.0"
     underscore.string "~3.2.3"
     which "~1.2.1"
-
-grunt-sass@^1.2.0:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/grunt-sass/-/grunt-sass-1.2.1.tgz#fb87b6caac46fb32d45177fd2e4b6ff7468c1919"
-  dependencies:
-    each-async "^1.0.0"
-    node-sass "^3.7.0"
-    object-assign "^4.0.1"
 
 grunt@*:
   version "1.0.1"
@@ -3736,25 +3681,9 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
-ng2-material@^0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/ng2-material/-/ng2-material-0.6.1.tgz#cebc14339941a05467ab98624c95c4c5b9ed5c17"
-  dependencies:
-    "@angular/common" "2.0.0-rc.4"
-    "@angular/compiler" "2.0.0-rc.4"
-    "@angular/core" "2.0.0-rc.4"
-    "@angular/forms" "^0.2.0"
-    "@angular/platform-browser" "2.0.0-rc.4"
-    "@angular/platform-browser-dynamic" "2.0.0-rc.4"
-    "@angular/router" "3.0.0-alpha.8"
-    "@angular2-material/checkbox" "2.0.0-alpha.6"
-    "@angular2-material/core" "2.0.0-alpha.6"
-    es6-promise ">=3.0.2"
-    es6-shim "^0.35.0"
-    grunt-sass "^1.2.0"
-    reflect-metadata "^0.1.3"
-    rxjs "5.0.0-beta.6"
-    zone.js "^0.6.12"
+ng2-material@beta:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/ng2-material/-/ng2-material-0.8.0.tgz#a6a4abef90ff3e81bba265bb4bb470d62a2bcba6"
 
 ngrx-store-freeze:
   version "0.1.4"
@@ -3839,7 +3768,7 @@ node-pre-gyp@^0.6.29:
     tar "~2.2.0"
     tar-pack "~3.1.0"
 
-node-sass@^3.10.1, node-sass@^3.7.0:
+node-sass@^3.10.1:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/node-sass/-/node-sass-3.10.1.tgz#c535b2e1a5439240591e06d7308cb663820d616c"
   dependencies:
@@ -4000,10 +3929,6 @@ once@~1.3.3:
   resolved "https://registry.yarnpkg.com/once/-/once-1.3.3.tgz#b2e261557ce4c314ec8304f3fa82663e4297ca20"
   dependencies:
     wrappy "1"
-
-onetime@^1.0.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/onetime/-/onetime-1.1.0.tgz#a1f7838f8314c516f05ecefcbc4ccfe04b4ed789"
 
 opener@~1.4.0:
   version "1.4.2"
@@ -4803,10 +4728,6 @@ reduce-function-call@^1.0.1:
   dependencies:
     balanced-match "~0.1.0"
 
-reflect-metadata@^0.1.3:
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.8.tgz#72426d570b60776e3688968bd5ab9537a15cecf6"
-
 regenerate@^1.2.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/regenerate/-/regenerate-1.3.1.tgz#0300203a5d2fdcf89116dce84275d011f5903f33"
@@ -5046,10 +4967,6 @@ rxjs@5.0.0-beta.12:
   dependencies:
     symbol-observable "^1.0.1"
 
-rxjs@5.0.0-beta.6:
-  version "5.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.0.0-beta.6.tgz#cb6dc46d6ddfedfeefc9b15dafd09c34a4370d23"
-
 sass-graph@^2.1.1:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/sass-graph/-/sass-graph-2.1.2.tgz#965104be23e8103cb7e5f710df65935b317da57b"
@@ -5162,7 +5079,7 @@ set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/set-blocking/-/set-blocking-2.0.0.tgz#045f9782d011ae9a6803ddd382b24392b3d890f7"
 
-set-immediate-shim@^1.0.0, set-immediate-shim@^1.0.1:
+set-immediate-shim@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/set-immediate-shim/-/set-immediate-shim-1.0.1.tgz#4b2b1b27eb808a9f8dcc481a58e5e56f599f3f61"
 
@@ -6286,7 +6203,7 @@ zip-object@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/zip-object/-/zip-object-0.1.0.tgz#c1a0da04c88c837756e248680a03ff902ec3f53a"
 
-zone.js@^0.6.12, zone.js@~0.6.17:
+zone.js@~0.6.17:
   version "0.6.25"
   resolved "https://registry.yarnpkg.com/zone.js/-/zone.js-0.6.25.tgz#a41b57fe8c0ff3b8f077de3b193a86a234420301"
 

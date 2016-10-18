@@ -18,11 +18,12 @@ import * as _ from 'underscore';
 import {ImageResource} from '../../pow-core/resources/image';
 import {SpriteComponent} from './components/spriteComponent';
 import {Scene} from '../scene/scene';
-import {Point} from '../../pow-core/point';
+import {Point} from '../../pow-core';
 import {MovableComponent} from '../scene/components/movableComponent';
 import {GameWorld} from '../../../app/services/gameWorld';
 import {TileMap} from './tileMap';
 import {SceneObject} from '../scene/sceneObject';
+import {IPoint} from '../../pow-core';
 export interface TileObjectOptions {
   point?: Point;
   renderPoint?: Point;
@@ -42,7 +43,7 @@ export interface TileObjectOptions {
   frame?: number;
 }
 
-var DEFAULTS: TileObjectOptions = {
+const DEFAULTS: TileObjectOptions = {
   visible: true,
   enabled: true,
   icon: "",
@@ -70,16 +71,15 @@ export class TileObject extends SceneObject implements TileObjectOptions {
     return this;
   }
 
-  setPoint(point: Point) {
-    point.round();
+  setPoint(point: IPoint) {
+    const newPoint = new Point(point).round();
     if (this.renderPoint) {
-      this.renderPoint = point.clone();
+      this.renderPoint = newPoint.clone();
     }
-    this.point = point.clone();
-    var moveComponent = <MovableComponent>
-      this.findComponent(MovableComponent);
+    this.point = newPoint.clone();
+    const moveComponent = this.findComponent(MovableComponent) as MovableComponent;
     if (moveComponent) {
-      moveComponent.targetPoint.set(point);
+      moveComponent.targetPoint.set(newPoint);
       moveComponent.path.length = 0;
     }
   }
@@ -102,7 +102,7 @@ export class TileObject extends SceneObject implements TileObjectOptions {
    * TODO: Refactor to async friendly method (promise?)
    */
   setSprite(name: string, frame: number = 0): string {
-    var oldSprite: string = this.icon;
+    const oldSprite: string = this.icon;
     if (!name) {
       this.meta = null;
     }
@@ -111,7 +111,7 @@ export class TileObject extends SceneObject implements TileObjectOptions {
       if(!world) {
         return oldSprite;
       }
-      var meta = world.sprites.getSpriteMeta(name);
+      const meta = world.sprites.getSpriteMeta(name);
       world.sprites.getSpriteSheet(meta.source).then((images: ImageResource[]) => {
         const image = images[0];
         this.meta = meta;
@@ -126,7 +126,7 @@ export class TileObject extends SceneObject implements TileObjectOptions {
     if (this.icon) {
       return this.icon;
     }
-    var spriteComponent = <SpriteComponent>this.findComponent(SpriteComponent);
+    const spriteComponent = this.findComponent(SpriteComponent) as SpriteComponent;
     if (spriteComponent) {
       return spriteComponent.icon;
     }

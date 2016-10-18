@@ -88,18 +88,18 @@ export class GameTileMap extends TileMap {
   }
 
   createFeatureObject(tiledObject: ITiledObject): TileObject {
-    var options = _.extend({}, tiledObject.properties || {}, {
+    const options = _.extend({}, tiledObject.properties || {}, {
       tileMap: this,
       type: tiledObject.type,
       x: Math.round(tiledObject.x / this.map.tilewidth),
       y: Math.round(tiledObject.y / this.map.tileheight)
     });
-    var object = new GameFeatureObject(options);
+    const object = new GameFeatureObject(options);
     const componentType = _.find(ALL_FEATURES, (constructor: any) => {
       return constructor.name === tiledObject.type;
     });
     if (tiledObject.type && componentType) {
-      var component = <SceneComponent>(new componentType());
+      const component = new componentType() as SceneComponent;
       if (!object.addComponent(component)) {
         throw new Error("Component " + component.name + " failed to connect to host " + this.name);
       }

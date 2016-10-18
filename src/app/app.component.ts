@@ -4,13 +4,8 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import {NavigationEnd, Router, Event, NavigationStart, NavigationCancel, NavigationError} from '@angular/router';
 import {LoadingService} from './components/loading/loading.service';
-import {Observable} from 'rxjs/Rx';
-import {Store, Action} from '@ngrx/store';
-import {GameState} from './models/game-state/game-state.model';
+import {Store} from '@ngrx/store';
 import {AppState} from './app.model';
-import {Effect, Actions} from '@ngrx/effects';
-import {GameStateActions} from './models/game-state/game-state.actions';
-import {go} from '@ngrx/router-store';
 
 function isStart(e: Event): boolean {
   return e instanceof NavigationStart;
@@ -28,21 +23,8 @@ function isEnd(e: Event): boolean {
 })
 export class App {
 
-
-  @Effect() gameStateLoaded$ = this.actions$
-    .ofType(GameStateActions.LOAD_COMPLETED)
-    .distinctUntilChanged()
-    .map((action: Action) => {
-      return go(['world', action.payload.map]);
-    });
-
-
-  /* DEBUG: Visualize store state as JSON */
-  state$: Observable<GameState> = this.store.select((state) => state.gameState);
-
   constructor(public store: Store<AppState>,
               private router: Router,
-              private actions$: Actions,
               public loadingService: LoadingService) {
 
 
@@ -64,7 +46,7 @@ export class App {
     // Reduces events and returns Observable<Observable<Event[]>>.
     // The inner observable has only one element. map(collectAllEventsForNavigation).
     // Returns Observable<Event[]>.
-    mergeAll().subscribe((es: Event[]) => {
+    mergeAll().subscribe((es) => {
       console.log("navigation events", es);
     });
   }

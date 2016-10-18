@@ -15,7 +15,7 @@ export function itemReducer(state: ItemState = initialState, action: Action): It
   switch (action.type) {
     case ItemActions.ADD: {
       const items = Immutable.List(state.inventory).push(action.payload).toArray();
-      return Immutable.fromJS({inventory: items}).toObject();
+      return Immutable.fromJS({inventory: items}).toJS();
     }
     case ItemActions.REMOVE: {
 
@@ -37,7 +37,7 @@ export function itemReducer(state: ItemState = initialState, action: Action): It
         }
         return true;
       }).toArray();
-      return Immutable.fromJS({inventory: items}).toObject();
+      return Immutable.fromJS({inventory: items}).toJS();
     }
     default:
       return state;

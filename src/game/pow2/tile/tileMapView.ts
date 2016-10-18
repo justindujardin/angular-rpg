@@ -17,24 +17,11 @@
 import {SceneView} from '../scene/sceneView';
 import {TileMapRenderer} from './render/tileMapRenderer';
 import {TileMap} from './tileMap';
-import {Scene} from '../scene/scene';
 import {IRect} from '../../pow-core/rect';
 import {CameraComponent} from '../scene/components/cameraComponent';
 export class TileMapView extends SceneView {
   mapRenderer: TileMapRenderer = new TileMapRenderer;
   map: TileMap;
-
-  setTileMap(tileMap: TileMap) {
-    this.map = tileMap;
-  }
-
-  setScene(scene: Scene) {
-    if (scene === this.scene) {
-      return;
-    }
-    this.cameraComponent = null;
-    super.setScene(scene);
-  }
 
   /*
    * Get the camera clip rectangle.

@@ -40,9 +40,6 @@ export class WorldResolver implements Resolve<any> {
           resource: map
         });
       })
-      .then((map: GameTileMap) => {
-        return map;
-      })
       .catch((e) => {
         console.error(e);
         return Promise.reject('WorldResolver error: ' + e);

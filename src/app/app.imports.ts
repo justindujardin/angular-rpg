@@ -12,12 +12,13 @@ import {ROUTES} from './app.routes';
 import {rootReducer} from './models/index';
 import {PartyModule} from './components/party/index';
 import {RpgModule} from './components/rpg/index';
-import {WorldModule} from './routes/world/index';
+import {WorldModule, WorldEffects} from './routes/world/index';
 import {CombatModule} from './routes/combat/index';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {GameStateEffects} from './models/game-state/game-state.effects';
 import {EffectsModule} from '@ngrx/effects';
-import {App} from './app.component';
+import {Ng2MaterialModule} from 'ng2-material';
+import {AppEffects} from './app.effects';
 
 export const APP_IMPORTS = [
   BrowserModule,
@@ -31,6 +32,7 @@ export const APP_IMPORTS = [
   MaterialModule.forRoot(),
   PowCoreModule.forRoot(),
   GameModule.forRoot(),
+  Ng2MaterialModule.forRoot(),
   MaterialModule.forRoot(),
   ReactiveFormsModule,
   RouterModule.forRoot(ROUTES, {useHash: true}),
@@ -38,5 +40,6 @@ export const APP_IMPORTS = [
   RouterStoreModule.connectRouter(),
   StoreDevtoolsModule.instrumentOnlyWithExtension(),
   EffectsModule.run(GameStateEffects),
-  EffectsModule.runAfterBootstrap(App)
+  EffectsModule.run(WorldEffects),
+  EffectsModule.run(AppEffects)
 ];

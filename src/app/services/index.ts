@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {Notify} from './notify';
 import {Animate} from './animate';
 import {RPGGame} from './rpgGame';
@@ -23,6 +22,7 @@ import {PowCoreModule} from '../../game/pow-core/index';
 import {SpriteRender} from './spriteRender';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
+import {Visibility} from './visibility';
 export * from './animate';
 export * from './notify';
 export * from './rpgGame';
@@ -32,7 +32,8 @@ export const SERVICE_PROVIDERS = [
   Animate,
   RPGGame,
   GameWorld,
-  SpriteRender
+  SpriteRender,
+  Visibility
 ];
 
 @NgModule({

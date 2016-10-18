@@ -13,19 +13,16 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {Component, ViewEncapsulation} from '@angular/core';
 import {DialogFeatureComponent} from '../../../game/rpg/components/features/dialogFeatureComponent';
 import {RPGGame} from '../../services/index';
-
-const template = require('./worldDialog.html') as string;
 
 @Component({
   selector: 'world-dialog',
   inputs: ['text', 'title', 'icon', 'active'],
   encapsulation: ViewEncapsulation.None,
-  styleUrls:['./worldDialog.scss'],
-  template: template
+  styleUrls:['./world-dialog.component.scss'],
+  templateUrl: './world-dialog.component.html'
 })
 export class WorldDialog {
 

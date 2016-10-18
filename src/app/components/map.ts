@@ -63,7 +63,7 @@ export class Map extends TileMapView {
   protected _bounds: Point = new Point();
 
   constructor(elRef: ElementRef, public game: RPGGame) {
-    super(elRef.nativeElement.querySelector('canvas'), game.loader);
+    super(elRef.nativeElement.querySelector('canvas'));
   }
 
   /**
@@ -92,7 +92,6 @@ export class Map extends TileMapView {
         })
         .then((map: GameTileMap) => {
           this.tileMap = map;
-          this.setTileMap(this.tileMap);
           if (this._music) {
             this._playMusic();
           }

@@ -73,6 +73,7 @@ export interface IGameSpell extends IGameItem {
   benefit: boolean; // hurt/heal
   value: number; // the impact
   level: number; // minimum level to use the spell
+  groups?: string[]; // categories this item belongs to
 }
 
 export interface IGameWeapon extends IGameItem {
