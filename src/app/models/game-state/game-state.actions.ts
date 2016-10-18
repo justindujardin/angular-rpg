@@ -1,63 +1,110 @@
-import {Injectable} from '@angular/core';
 import {Action} from '@ngrx/store';
 import {GameState} from './game-state.model';
-import {IPoint} from '../../../game/pow-core/point';
+import {type} from '../util';
+import {IPoint} from '../../../game/pow-core';
 
 
-@Injectable()
-export class GameStateActions {
+export const GameStateActionTypes = {
+  LOAD: type('rpg/state/load'),
+  LOAD_SUCCESS: type('rpg/state/load-success'),
+  LOAD_FAIL: type('rpg/state/load-fail'),
+  SAVE: type('rpg/state/save'),
+  SAVE_SUCCESS: type('rpg/state/save-success'),
+  SAVE_FAIL: type('rpg/state/save-fail'),
+  TRAVEL: type('rpg/state/travel'),
+  TRAVEL_SUCCESS: type('rpg/state/travel-success'),
+  TRAVEL_FAIL: type('rpg/state/travel-fail'),
+};
 
-  static LOAD = 'rpg/state/load';
 
-  load(item: GameState): Action {
-    return {
-      type: GameStateActions.LOAD,
-      payload: item
-    };
+//
+// Load state Actions
+//
+export class GameStateLoadAction implements Action {
+  type = GameStateActionTypes.LOAD;
+
+  constructor(public payload: GameState) {
   }
+}
 
-  static LOAD_FAILED = 'rpg/state/load/failed';
+export class GameStateLoadSuccessAction implements Action {
+  type = GameStateActionTypes.LOAD_SUCCESS;
 
-  loadFailed(error: string): Action {
-    return {
-      type: GameStateActions.LOAD_FAILED,
-      payload: error
-    };
+  constructor(public payload: GameState) {
   }
+}
 
-  static LOAD_COMPLETED = 'rpg/state/load/completed';
+export class GameStateLoadFailAction implements Action {
+  type = GameStateActionTypes.LOAD_FAIL;
 
-  loadCompleted(item: GameState): Action {
-    return {
-      type: GameStateActions.LOAD_COMPLETED,
-      payload: item
-    };
+  constructor(public payload: any) {
   }
+}
 
-  static SAVE = 'rpg/state/save';
+//
+// Save state Actions
+//
+export class GameStateSaveAction implements Action {
+  type = GameStateActionTypes.SAVE;
 
-  save(): Action {
-    return {
-      type: GameStateActions.LOAD,
-      payload: new Date().getTime()
-    };
+  constructor(public payload: GameState) {
   }
+}
 
-  static SET_MAP = 'rpg/state/set/map';
+export class GameStateSaveSuccessAction implements Action {
+  type = GameStateActionTypes.SAVE_SUCCESS;
 
-  setMap(map: string): Action {
-    return {
-      type: GameStateActions.SET_MAP,
-      payload: map
-    };
+  constructor(public payload: GameState) {
   }
+}
 
-  static SET_POSITION = 'rpg/state/set/position';
+export class GameStateSaveFailAction implements Action {
+  type = GameStateActionTypes.SAVE_FAIL;
 
-  setMapPosition(position: IPoint): Action {
-    return {
-      type: GameStateActions.SET_POSITION,
-      payload: position
+  constructor(public payload: any) {
+  }
+}
+
+//
+// Travel state actions
+//
+export class GameStateTravelAction implements Action {
+  type = GameStateActionTypes.TRAVEL;
+
+  payload: {
+    map: string;
+    position: IPoint;
+  };
+
+  constructor(map:string, position:IPoint) {
+    this.payload = {
+      map, position
     };
   }
 }
+
+export class GameStateTravelSuccessAction implements Action {
+  type = GameStateActionTypes.TRAVEL_SUCCESS;
+
+  constructor(public payload: string) {
+  }
+}
+
+export class GameStateTravelFailAction implements Action {
+  type = GameStateActionTypes.TRAVEL_FAIL;
+
+  constructor(public payload: any) {
+  }
+}
+
+
+export type GameStateActions
+  = GameStateLoadAction
+  | GameStateLoadSuccessAction
+  | GameStateLoadFailAction
+  | GameStateSaveAction
+  | GameStateSaveSuccessAction
+  | GameStateSaveFailAction
+  | GameStateTravelAction
+  | GameStateTravelSuccessAction
+  | GameStateTravelFailAction

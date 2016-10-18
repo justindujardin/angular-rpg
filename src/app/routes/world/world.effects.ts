@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
-import {Action} from '@ngrx/store';
 import {Effect, Actions} from '@ngrx/effects';
-import {GameStateActions} from '../../models/game-state/game-state.actions';
-import {go, replace} from '@ngrx/router-store';
+import {
+  GameStateActionTypes,
+  GameStateTravelSuccessAction
+} from '../../models/game-state/game-state.actions';
+import {replace} from '@ngrx/router-store';
 
 @Injectable()
 export class WorldEffects {
@@ -11,10 +13,10 @@ export class WorldEffects {
 
   /** Load the TMX resource needed for files when the map is changed */
   @Effect() preloadMap$ = this.actions$
-    .ofType(GameStateActions.SET_MAP)
+    .ofType(GameStateActionTypes.TRAVEL_SUCCESS)
     .debounceTime(100)
     .distinctUntilChanged()
-    .map((action: Action) => {
+    .map((action: GameStateTravelSuccessAction) => {
       return replace(['world', action.payload]);
     });
 }

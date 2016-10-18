@@ -1,5 +1,4 @@
-import {Action} from '@ngrx/store';
-import {GameStateActions} from './game-state.actions';
+import {GameStateActions, GameStateActionTypes, GameStateTravelAction} from './game-state.actions';
 import {GameState} from './game-state.model';
 import * as Immutable from 'immutable';
 
@@ -13,22 +12,24 @@ const initialState: GameState = {
   ts: -1
 };
 
-export function gameStateReducer(state: GameState = initialState, action: Action): GameState {
+export function gameStateReducer(state: GameState = initialState, action: GameStateActions): GameState {
   switch (action.type) {
-    case GameStateActions.LOAD:
+    case GameStateActionTypes.LOAD: {
       return Immutable.fromJS(action.payload).toJS();
-    case GameStateActions.SAVE:
-      return Immutable.fromJS(state).merge({
+    }
+    case GameStateActionTypes.SAVE: {
+      const gameState = action.payload;
+      return Immutable.fromJS(gameState).merge({
         ts: action.payload
       }).toJS();
-    case GameStateActions.SET_MAP:
+    }
+    case GameStateActionTypes.TRAVEL: {
+      const travel: GameStateTravelAction = action;
       return Immutable.fromJS(state).merge({
-        map: action.payload
+        map: travel.payload.map,
+        position: travel.payload.position
       }).toJS();
-    case GameStateActions.SET_POSITION:
-      return Immutable.fromJS(state).merge({
-        position: action.payload
-      }).toJS();
+    }
     default:
       return state;
   }

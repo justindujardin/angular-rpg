@@ -1,29 +1,38 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Rx';
-import {GameStateActions} from './game-state.actions';
+import {
+  GameStateActionTypes,
+  GameStateLoadSuccessAction,
+  GameStateLoadFailAction,
+  GameStateTravelAction, GameStateTravelFailAction, GameStateTravelSuccessAction
+} from './game-state.actions';
 import {Effect, Actions} from '@ngrx/effects';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../app.model';
 
 @Injectable()
 export class GameStateEffects {
 
-  constructor(private actions$: Actions,
-              private store: Store<AppState>,
-              private gameStateActions: GameStateActions) {
+  constructor(private actions$: Actions) {
   }
-
 
   // switchMap -> world.ready$
   // router navigate to state map
   //
-  @Effect() loadedGame$ = this.actions$.ofType(GameStateActions.LOAD)
-    .debounce(() => Observable.interval(10))
+  @Effect() loadedGame$ = this.actions$.ofType(GameStateActionTypes.LOAD)
+    .debounceTime(10)
     .map((action) => {
-      return this.gameStateActions.loadCompleted(action.payload);
+      return new GameStateLoadSuccessAction(action.payload);
     })
     .catch((e) => {
-      return Observable.of(this.gameStateActions.loadFailed(e.toString()));
+      return Observable.of(new GameStateLoadFailAction(e.toString()));
+    });
+
+  @Effect() travel$ = this.actions$.ofType(GameStateActionTypes.TRAVEL)
+    .debounceTime(10)
+    .map((action: GameStateTravelAction) => {
+      return new GameStateTravelSuccessAction(action.payload.map);
+    })
+    .catch((e) => {
+      return Observable.of(new GameStateTravelFailAction(e.toString()));
     });
 
 }

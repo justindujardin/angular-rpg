@@ -35,7 +35,7 @@ import {Rect} from '../../../game/pow-core/rect';
 import {PlayerRenderComponent} from '../../../game/pow2/game/components/playerRenderComponent';
 import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
-import {GameStateActions} from '../../models/game-state/game-state.actions';
+import {GameStateTravelAction} from '../../models/game-state/game-state.actions';
 import {TileMapView} from '../../../game/pow2/tile/tileMapView';
 import {GameWorld} from '../../services/gameWorld';
 import {GameEntityObject} from '../../../game/rpg/objects/gameEntityObject';
@@ -85,7 +85,6 @@ export class WorldMap extends TileMapView implements AfterViewInit, OnInit, OnDe
               public game: RPGGame,
               public world: GameWorld,
               public store: Store<AppState>,
-              public gameStateActions: GameStateActions,
               public notify: Notify) {
     super();
   }
@@ -112,8 +111,7 @@ export class WorldMap extends TileMapView implements AfterViewInit, OnInit, OnDe
       //   this.game.partyPosition = data.target;
 
       // TODO: Express the portal enter as something other than an event? Then express this as an effect?
-      this.store.dispatch(this.gameStateActions.setMap(data.map));
-      this.store.dispatch(this.gameStateActions.setMapPosition(data.target));
+      this.store.dispatch(new GameStateTravelAction(data.map, data.target));
 
       //   this.game.world.model.setKeyData('playerMap', data.map);
       //   this.game.world.model.setKeyData('playerPosition', data.target);

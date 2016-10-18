@@ -49,7 +49,7 @@ export class WorldComponent {
   constructor(public route: ActivatedRoute,
               public game: RPGGame,
               public notify: Notify,
-              public store: Store < AppState >,
+              public store: Store<AppState>,
               public world: GameWorld) {
   }
 
