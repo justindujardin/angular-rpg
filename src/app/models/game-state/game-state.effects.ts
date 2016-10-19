@@ -4,9 +4,12 @@ import {
   GameStateActionTypes,
   GameStateLoadSuccessAction,
   GameStateLoadFailAction,
-  GameStateTravelAction, GameStateTravelFailAction, GameStateTravelSuccessAction
+  GameStateTravelAction,
+  GameStateTravelFailAction,
+  GameStateTravelSuccessAction
 } from './game-state.actions';
 import {Effect, Actions} from '@ngrx/effects';
+import {GameState} from './game-state.model';
 
 @Injectable()
 export class GameStateEffects {
@@ -24,6 +27,16 @@ export class GameStateEffects {
     })
     .catch((e) => {
       return Observable.of(new GameStateLoadFailAction(e.toString()));
+    });
+
+  // After a successful game load, travel to the current location
+  //
+  @Effect() afterLoadTravelToCurrentLocation$ = this.actions$
+    .ofType(GameStateActionTypes.LOAD_SUCCESS)
+    .debounceTime(10)
+    .map((action) => {
+      const gameState: GameState = action.payload;
+      return new GameStateTravelAction(gameState.map, gameState.position);
     });
 
   @Effect() travel$ = this.actions$.ofType(GameStateActionTypes.TRAVEL)

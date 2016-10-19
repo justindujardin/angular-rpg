@@ -4,7 +4,6 @@ import {GameComponent} from './routes/game/game.component';
 import {GameResolver} from './routes/game/game.resolver';
 import {WorldComponent} from './routes/world/world.component';
 import {CanActivateWorld} from './routes/world/world.guards';
-import {WorldResolver} from './routes/world/world.resolver';
 
 
 export const ROUTES: Routes = [
@@ -18,10 +17,7 @@ export const ROUTES: Routes = [
   {
     path: 'world/:id',
     component: WorldComponent,
-    canActivate: [CanActivateWorld],
-    resolve: {
-      world: WorldResolver
-    }
+    canActivate: [CanActivateWorld]
   },
-  {path: '**', component: NoContent},
+  {path: '**', component: NoContent}
 ];

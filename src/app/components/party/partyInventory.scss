@@ -19,14 +19,8 @@
 $inventoryIconSize: 64px;
 $inventoryLabelPaddingTop: 30px;
 
-party-inventory {
+:host {
   text-align: center;
-  .ebp {
-    width: 100%;
-    min-height: 10em;
-    overflow: auto;
-    overflow-x: hidden;
-  }
   .btn {
     margin: 5px 5px;
     font-size: 2em;

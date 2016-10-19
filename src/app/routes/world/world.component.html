@@ -1,9 +1,18 @@
-<party-menu></party-menu>
-<world-map *ngIf="zone$ | async"
-           [position]="position$ | async"
-           [player]="partyLeader$ | async"
-           [map]="map$ | async">
-</world-map>
-<world-dialog [scene]="scene$ | async"></world-dialog>
-<world-store [scene]="scene$ | async"></world-store>
-<world-temple [scene]="scene$ | async"></world-temple>
+<canvas #worldCanvas>
+  Your browser doesn't support this.
+</canvas>
+
+<world-dialog
+  *ngIf="(featureType$ | async) == 'DialogFeatureComponent'"
+  [feature]="featureComponent$ | async"
+  [scene]="scene"></world-dialog>
+
+<world-store
+  *ngIf="(featureType$ | async) == 'StoreFeatureComponent'"
+  [feature]="featureComponent$ | async"
+  [scene]="scene"></world-store>
+
+<world-temple
+  *ngIf="(featureType$ | async) == 'TempleFeatureComponent'"
+  [feature]="featureComponent$ | async"
+  [scene]="scene"></world-temple>

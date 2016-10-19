@@ -42,7 +42,7 @@ export class TreasureFeatureComponent extends GameFeatureComponent {
   }
 
   enter(object: TileObject): boolean {
-    object.scene.trigger('treasure:entered', this);
+    object.scene.trigger('TreasureFeatureComponent:entered', this);
     this.setDataHidden(true);
     return true;
   }

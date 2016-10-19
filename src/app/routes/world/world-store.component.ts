@@ -15,7 +15,7 @@
  */
 import * as _ from 'underscore';
 import * as rpg from '../../../game/rpg/game';
-import {Component, ViewEncapsulation, Input} from '@angular/core';
+import {Component, ViewEncapsulation, Input, Output} from '@angular/core';
 import {RPGGame, Notify} from '../../services';
 import {GameStateModel} from '../../../game/rpg/models/gameStateModel';
 import {ItemModel} from '../../../game/rpg/models/all';
@@ -24,7 +24,6 @@ import {Store} from '@ngrx/store';
 import {ItemRemoveAction, ItemAddAction} from '../../models/item/item.actions';
 import {StoreFeatureComponent} from '../../../game/rpg/components/features/storeFeatureComponent';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {WorldFeatureBase} from './world-feature';
 import {IScene} from '../../../game/pow2/interfaces/IScene';
 import {Item} from '../../models/item/item.model';
 
@@ -32,17 +31,12 @@ import {Item} from '../../models/item/item.model';
   selector: 'world-store',
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./world-store.component.scss'],
-  templateUrl: './world-store.component.html'
+  templateUrl: './world-store.component.html',
 })
-export class WorldStore extends WorldFeatureBase {
-
-  eventName = 'store';
+export class WorldStore {
 
   private _name$ = new BehaviorSubject<string>('Invalid Store');
   name$: Observable<string> = this._name$;
-
-  private _active$ = new BehaviorSubject<boolean>(false);
-  active$: Observable<boolean> = this._active$;
 
   private _selling$ = new BehaviorSubject<boolean>(false);
   /** Determine if the UI is in a selling state. */
@@ -71,31 +65,16 @@ export class WorldStore extends WorldFeatureBase {
   // Have to add @Input() here because decorators are not inherited with extends
   @Input() scene: IScene;
 
-  onEnter(feature: StoreFeatureComponent) {
-    this._active$.next(true);
-    this.initStoreFromFeature(feature);
-  }
-
-  onExit(feature: StoreFeatureComponent) {
-    this._active$.next(false);
-  }
-
   private _inventory$ = new BehaviorSubject<rpg.IGameItem[]>([]);
   inventory$: Observable<rpg.IGameItem[]> = this._inventory$;
 
   constructor(public game: RPGGame,
               public notify: Notify,
               public store: Store<AppState>) {
-    super();
   }
 
-  ngOnDestroy() {
-    super.ngOnDestroy();
-    this.close();
-  }
-
-
-  initStoreFromFeature(feature: StoreFeatureComponent) {
+  @Input()
+  set feature(feature: StoreFeatureComponent) {
     // Get enemies data from spreadsheet
     const data = this.game.world.spreadsheet;
 
@@ -118,13 +97,11 @@ export class WorldStore extends WorldFeatureBase {
     this._inventory$.next(<rpg.IGameItem[]>_.map(_.where(items, {
       level: feature.host.feature.level
     }), (i: any) => _.extend({}, i)));
-
   }
 
   close() {
     this._selling$.next(false);
     this._selected$.next(null);
-    this._active$.next(false);
   }
 
   actionItem(item: any) {

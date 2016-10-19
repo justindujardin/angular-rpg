@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
 
 /**
@@ -29,6 +28,16 @@ export var NAME: string = "core";
  * Specified root path.  Used when loading game asset files, to support cross-domain usage.
  */
 export var GAME_ROOT: string = 'assets/';
+
+
+export function getMapUrl(name: string): string {
+  return `${GAME_ROOT}maps/${name}.tmx`;
+}
+
+export function getSoundEffectUrl(name: string, extension: string = 'wav'): string {
+  return `${GAME_ROOT}sounds/${name}.${extension}`;
+}
+
 
 export interface ISpriteMeta {
   width: number;// Pixel width

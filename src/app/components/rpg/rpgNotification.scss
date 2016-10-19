@@ -27,7 +27,7 @@
     pointer-events: auto;
   }
   .message {
-    @extend .no-select;
+    @include no-select();
     top: 45%;
     left: 0;
     right: 0;

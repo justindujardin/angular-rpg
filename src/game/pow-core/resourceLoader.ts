@@ -65,7 +65,7 @@ export class ResourceLoader {
   }
 
   getResourceExtension(url: string): string {
-    var index: number = url.lastIndexOf('.');
+    const index: number = url.lastIndexOf('.');
     if (index === -1 || index <= url.lastIndexOf('/')) {
       return '';
     }
@@ -76,8 +76,7 @@ export class ResourceLoader {
     if (typeof typeConstructor !== 'function') {
       throw new Error(errors.INVALID_ARGUMENTS);
     }
-    var type: Resource = <Resource>new typeConstructor(null, data);
-    return <T><any>type;
+    return new typeConstructor(null, data) as any;
   }
 
   loadAsType<T extends IResource>(source: string, resourceType: any): Promise<T> {
@@ -85,7 +84,7 @@ export class ResourceLoader {
       if (!source || !resourceType) {
         return reject(errors.INVALID_ARGUMENTS);
       }
-      var resource: T = this._cache[source];
+      let resource: T = this._cache[source];
       if (resource && resource.data) {
         return resolve(resource);
       }
@@ -104,9 +103,9 @@ export class ResourceLoader {
   load<T extends IResource|IResource[]>(source: string): Promise<T[]>;
   load<T extends IResource|IResource[]>(sources: any): Promise<T[]> {
     return new Promise<T|T[]>((resolve, reject) => {
-      var results: Array<T> = [];
-      var loadQueue: number = 0;
-      var errors: number = 0;
+      const results: Array<T> = [];
+      let loadQueue: number = 0;
+      let errors: number = 0;
       if (!_.isArray(sources)) {
         sources = [sources];
       }
@@ -116,10 +115,10 @@ export class ResourceLoader {
         }
       }
 
-      for (var i: number = 0; i < sources.length; i++) {
-        var src: string = sources[i];
-        var extension: string = this.getResourceExtension(src);
-        var type: any = this._types[extension];
+      for (let i: number = 0; i < sources.length; i++) {
+        let src: string = sources[i];
+        let extension: string = this.getResourceExtension(src);
+        let type: any = this._types[extension];
         if (!type) {
           errors++;
           continue;

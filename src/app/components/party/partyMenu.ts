@@ -23,7 +23,6 @@ const template = require('./partyMenu.html') as string;
   selector: 'party-menu',
   inputs: ['game', 'page', 'open'],
   styleUrls: ['./partyMenu.scss'],
-  encapsulation: ViewEncapsulation.None,
   template: template
 })
 export class PartyMenu {

@@ -49,12 +49,12 @@ export class StoreFeatureComponent extends GameFeatureComponent {
   }
 
   enter(object: TileObject): boolean {
-    object.scene.trigger('store:entered', this);
+    object.scene.trigger('StoreFeatureComponent:entered', this);
     return true;
   }
 
   exit(object: TileObject): boolean {
-    object.scene.trigger('store:exited', this);
+    object.scene.trigger('StoreFeatureComponent:exited', this);
     return true;
   }
 

@@ -1,19 +1,14 @@
 @import '../../style/variables';
 @import '../../style/mixins';
-@import '../../style/buttons';
-@import '../../style/eightBitPanel';
 
 world-store {
-  @include pow-dialog();
   max-width: 600px;
+  min-width: 320px;
   z-index: $zCanvasGui;
+  @include pow-dialog();
   text-align: center;
-
-  .ebp {
-    min-width: 320px;
-    padding-bottom: 16px;
-  }
-
+  color: white;
+  display: block;
   .inventory {
     min-height: 200px;
     overflow-y: auto;

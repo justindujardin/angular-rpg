@@ -28,6 +28,7 @@ import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {GameStateLoadAction} from '../models/game-state/game-state.actions';
 import {AppState} from '../app.model';
+import {PartyMember} from '../models/party-member.model';
 
 @Injectable()
 export class RPGGame {
@@ -75,24 +76,25 @@ export class RPGGame {
 
 
   /** Create a detached player entity that can be added to an arbitrary scene. */
-  createPlayer(from: HeroModel, tileMap: GameTileMap, at?: Point): Promise<GameEntityObject> {
+  createPlayer(from: PartyMember, tileMap: GameTileMap, at?: Point): Promise<GameEntityObject> {
     if (!from) {
       return Promise.reject("Cannot create player without valid model");
     }
+    const heroModel = new HeroModel(from);
     if (!this.world.entities.data) {
       return Promise.reject("Cannot create player before entities container is loaded");
     }
     return this.world.entities
       .createObject('GameMapPlayer', {
-        model: from,
+        model: heroModel,
         map: tileMap
       })
       .then((sprite: GameEntityObject): GameEntityObject|Promise<GameEntityObject> => {
         if (!sprite) {
           return Promise.reject("Failed to create map player");
         }
-        sprite.name = from.attributes.name;
-        sprite.icon = from.attributes.icon;
+        sprite.name = from.name;
+        sprite.icon = from.icon;
 
         // If no point is specified, use the position of the first Portal on the current map
         if (typeof at === 'undefined' && tileMap instanceof TileMap && this.partyPosition.isZero()) {

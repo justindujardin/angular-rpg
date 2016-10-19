@@ -20,16 +20,16 @@ import {HeroModel} from '../../../game/rpg/models/all';
 import {GameStateModel} from '../../../game/rpg/models/gameStateModel';
 import {RPGGame, Notify} from '../../services/index';
 import {IScene} from '../../../game/pow2/interfaces/IScene';
-import {WorldFeatureBase} from './world-feature';
 import {BehaviorSubject, Observable} from 'rxjs';
 
 @Component({
   selector: 'world-temple',
   styleUrls: ['./world-temple.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './world-temple.component.html'
 })
-export class WorldTemple extends WorldFeatureBase {
+export class WorldTemple {
 
   eventName = 'temple';
 
@@ -67,20 +67,16 @@ export class WorldTemple extends WorldFeatureBase {
   @Input() model: GameStateModel;
   @Input() party: HeroModel[];
 
-  onEnter(feature: TempleFeatureComponent) {
+
+  @Input()
+  set feature(feature:TempleFeatureComponent) {
     this.name = feature.name;
     this.icon = feature.icon;
     this.cost = parseInt(feature.cost);
     this.active = true;
   }
 
-  onExit(feature: TempleFeatureComponent) {
-    this.cost = 200;
-    this.active = false;
-  }
-
   constructor(public game: RPGGame, public notify: Notify) {
-    super();
     this.model = game.world.model;
     this.party = this.model.party;
   }

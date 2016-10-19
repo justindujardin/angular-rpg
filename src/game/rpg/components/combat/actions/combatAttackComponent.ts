@@ -27,6 +27,7 @@ import {SpriteComponent} from '../../../../pow2/tile/components/spriteComponent'
 import {AnimatedSpriteComponent} from '../../../../pow2/tile/components/animatedSpriteComponent';
 import {PlayerCombatRenderComponent} from '../../../../pow2/game/components/playerCombatRenderComponent';
 import {GameWorld} from '../../../../../app/services/gameWorld';
+import {getSoundEffectUrl} from '../../../../pow2/core/api';
 
 /**
  * Attack another entity in combat.
@@ -63,7 +64,7 @@ export class CombatAttackComponent extends CombatActionComponent {
       var didKill: boolean = defender.model.get('hp') <= 0;
       var hit: boolean = damage > 0;
       var defending: boolean = (defender.model instanceof HeroModel) && (<HeroModel>defender.model).defenseBuff > 0;
-      var hitSound: string = GameWorld.getSoundEffectUrl(didKill ? "killed" : (hit ? (defending ? "miss" : "hit") : "miss"));
+      var hitSound: string = getSoundEffectUrl(didKill ? "killed" : (hit ? (defending ? "miss" : "hit") : "miss"));
       var components = {
         animation: new AnimatedSpriteComponent({
           spriteName: "attack",

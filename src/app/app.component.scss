@@ -1,3 +1,29 @@
+@import './style/variables.scss';
+@import './style/pageTransitions.scss';
+@import './style/animation.scss';
+@import './style/mixins.scss';
+@import './style/buttons.scss';
+@import './style/loading.scss';
+
+html,
+body {
+  background-color: #222222;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+canvas {
+  image-rendering: -moz-crisp-edges; /* Firefox */
+  image-rendering: -o-crisp-edges; /* Opera */
+  image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard naming) */
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
+}
+
+.ebp {
+  font-family: 'GraphicPixel', sans-serif;
+  @include eight-bit-panel(6px);
+}
 
 .select-map {
   position: absolute;

@@ -14,32 +14,29 @@
  limitations under the License.
  */
 import {WorldDialog} from './world-dialog.component';
-import {WorldMap} from './world-map.component';
 import {WorldStore} from './world-store.component';
 import {WorldTemple} from './world-temple.component';
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RpgModule} from '../../components/rpg';
 import {CanActivateWorld} from './world.guards';
-import {WorldResolver} from './world.resolver';
 import {WorldEffects} from './world.effects';
+import {WorldComponent} from './';
 
 export * from './world.component';
 export * from './world.effects';
-export * from './world-map.component';
 export * from './world-dialog.component';
 export * from './world-store.component';
 export * from './world-temple.component';
 
 export const WORLD_PROVIDERS = [
   CanActivateWorld,
-  WorldResolver,
   WorldEffects
 ];
 
 const WORLD_EXPORTS = [
+  WorldComponent,
   WorldDialog,
-  WorldMap,
   WorldStore,
   WorldTemple
 ];
@@ -60,6 +57,5 @@ export class WorldModule {
       providers: WORLD_PROVIDERS
     };
   }
-
 
 }

@@ -28,6 +28,7 @@ import {EntityFactory} from '../../pow-core/resources/entities';
 import {TiledTMXResource} from '../../pow-core/resources/tiled/tiledTmx';
 import {Point} from '../../pow-core/point';
 import * as _ from 'underscore';
+import {getMapUrl} from '../../pow2/core/api';
 
 
 /**
@@ -109,7 +110,7 @@ export class PlayerCombatState extends State {
 
     promise
       .then(() => {
-        var mapUrl: string = GameWorld.getMapUrl('combat');
+        var mapUrl: string = getMapUrl('combat');
         return machine.world.loader.load(mapUrl);
       })
       .then((maps: TiledTMXResource[]) => {

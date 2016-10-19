@@ -35,7 +35,7 @@ export class PortalFeatureComponent extends GameFeatureComponent {
     if (!this.target || !this.host.tileMap) {
       return false;
     }
-    object.scene.trigger('portal:entered', {
+    object.scene.trigger('PortalFeatureComponent:entered', {
       map: this.map,
       target: this.target,
     });

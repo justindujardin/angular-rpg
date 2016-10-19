@@ -32,12 +32,12 @@ export class TempleFeatureComponent extends GameFeatureComponent {
   }
 
   enter(object: TileObject): boolean {
-    object.scene.trigger('temple:entered', this);
+    object.scene.trigger('TempleFeatureComponent:entered', this);
     return true;
   }
 
   exit(object: TileObject): boolean {
-    object.scene.trigger('temple:exited', this);
+    object.scene.trigger('TempleFeatureComponent:exited', this);
     return true;
   }
 

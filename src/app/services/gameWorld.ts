@@ -90,14 +90,6 @@ export class GameWorld extends World {
     }
   }
 
-  static getMapUrl(name: string): string {
-    return `${GAME_ROOT}maps/${name}.tmx`;
-  }
-
-  static getSoundEffectUrl(name: string, extension: string = 'wav'): string {
-    return `${GAME_ROOT}sounds/${name}.${extension}`;
-  }
-
   randomEncounter(zone: rpg.IZoneMatch, then?: rpg.IGameEncounterCallback) {
     const gsr = this.spreadsheet;
     var encountersData = gsr.getSheetData('randomencounters');

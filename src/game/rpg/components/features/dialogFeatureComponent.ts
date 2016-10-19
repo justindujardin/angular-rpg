@@ -35,14 +35,14 @@ export class DialogFeatureComponent extends GameFeatureComponent {
 
   enter(object: TileObject): boolean {
     if (this.title && this.text) {
-      object.scene.trigger('dialog:entered', this);
+      object.scene.trigger('DialogFeatureComponent:entered', this);
     }
     return true;
   }
 
   exit(object: TileObject): boolean {
     if (this.title && this.text) {
-      object.scene.trigger('dialog:exited', this);
+      object.scene.trigger('DialogFeatureComponent:exited', this);
     }
     return true;
   }

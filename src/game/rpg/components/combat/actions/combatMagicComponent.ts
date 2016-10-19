@@ -26,6 +26,7 @@ import {AnimatedSpriteComponent} from '../../../../pow2/tile/components/animated
 import {SpriteComponent} from '../../../../pow2/tile/components/spriteComponent';
 import {SoundComponent} from '../../../../pow2/scene/components/soundComponent';
 import {GameWorld} from '../../../../../app/services/gameWorld';
+import {getSoundEffectUrl} from '../../../../pow2/core/api';
 
 
 /**
@@ -77,7 +78,7 @@ export class CombatMagicComponent extends CombatActionComponent {
       target.model.damage(healAmount);
 
 
-      var hitSound: string = GameWorld.getSoundEffectUrl("heal");
+      var hitSound: string = getSoundEffectUrl("heal");
       var components = {
         animation: new AnimatedSpriteComponent({
           spriteName: "heal",
@@ -120,7 +121,7 @@ export class CombatMagicComponent extends CombatActionComponent {
       const damage: number = defender.model.damage(magicAttack);
       const didKill: boolean = defender.model.get('hp') <= 0;
       const hit: boolean = damage > 0;
-      const hitSound: string = GameWorld.getSoundEffectUrl((didKill ? "killed" : (hit ? "spell" : "miss")));
+      const hitSound: string = getSoundEffectUrl((didKill ? "killed" : (hit ? "spell" : "miss")));
       const components = {
         animation: new AnimatedSpriteComponent({
           spriteName: "attack",

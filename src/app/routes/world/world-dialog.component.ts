@@ -13,28 +13,26 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {Component, ViewEncapsulation, Input, ChangeDetectionStrategy} from '@angular/core';
+import {Component, Input, ChangeDetectionStrategy, ViewEncapsulation} from '@angular/core';
 import {DialogFeatureComponent} from '../../../game/rpg/components/features/dialogFeatureComponent';
-import {WorldFeatureBase} from './world-feature';
 import {IScene} from '../../../game/pow2/interfaces/IScene';
 import {BehaviorSubject, Observable} from 'rxjs';
 
 @Component({
   selector: 'world-dialog',
-  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./world-dialog.component.scss'],
   templateUrl: './world-dialog.component.html'
 })
-export class WorldDialog extends WorldFeatureBase {
+export class WorldDialog {
 
   static DEFAULT_TEXT: string = 'Nothing to see here';
   static DEFAULT_TITLE: string = 'Untitled';
 
   @Input() scene: IScene;
-  eventName = 'dialog';
 
-  private _text$ = new BehaviorSubject<string>('');
+  private _text$ = new BehaviorSubject<string>(WorldDialog.DEFAULT_TEXT);
   text$: Observable<string> = this._text$;
 
   @Input()
@@ -42,7 +40,7 @@ export class WorldDialog extends WorldFeatureBase {
     this._text$.next(value);
   }
 
-  private _title$ = new BehaviorSubject<string>('');
+  private _title$ = new BehaviorSubject<string>(WorldDialog.DEFAULT_TITLE);
   title$: Observable<string> = this._title$;
 
   @Input()
@@ -66,21 +64,11 @@ export class WorldDialog extends WorldFeatureBase {
     this._active$.next(value);
   }
 
-  onEnter(feature: DialogFeatureComponent) {
+  @Input()
+  set feature(feature:DialogFeatureComponent) {
     this.active = true;
     this.icon = feature.icon;
     this.text = feature.text;
     this.title = feature.title;
-  }
-
-  onExit(feature: DialogFeatureComponent) {
-    this.active = false;
-    this.text = WorldDialog.DEFAULT_TEXT;
-    this.title = WorldDialog.DEFAULT_TITLE;
-    this.icon = '';
-  }
-
-  onClose(event: Event) {
-    this.active = false;
   }
 }

@@ -13,9 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
-import {GameWorld} from '../app/services/gameWorld';
 import {GameFeatureObject} from './rpg/objects/gameFeatureObject';
 import * as rpg from './rpg/game';
 import {TileMap} from './pow2/tile/tileMap';
@@ -57,6 +55,16 @@ export class GameTileMap extends TileMap {
     return _.find(<any>this.features.objects, (feature: any) => {
       return feature.name === name;
     });
+  }
+
+
+  getEntryPoint(): Point {
+    // If no point is specified, use the position of the first Portal on the current map
+    var portal: any = _.where(this.features.objects, {type: 'PortalFeatureComponent'})[0];
+    if (portal) {
+      return new Point(portal.x / portal.width, portal.y / portal.height);
+    }
+    return new Point(-1, -1);
   }
 
   // Construct
