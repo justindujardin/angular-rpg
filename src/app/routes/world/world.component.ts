@@ -1,10 +1,10 @@
-import {Component, ViewEncapsulation, ChangeDetectionStrategy} from '@angular/core';
+import {Component, ViewEncapsulation, ChangeDetectionStrategy, ViewChild, AfterViewInit} from '@angular/core';
 import {Notify} from '../../services/notify';
 import {RPGGame} from '../../services/rpgGame';
 import {GameWorld} from '../../services/gameWorld';
 import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
-import {Observable} from 'rxjs/Rx';
+import {Observable, BehaviorSubject} from 'rxjs/Rx';
 import {ActivatedRoute} from '@angular/router';
 import {GameState} from '../../models/game-state/game-state.model';
 import {GameTileMap} from '../../../game/gameTileMap';
@@ -12,6 +12,8 @@ import {PartyMember} from '../../models/party-member.model';
 import {HeroModel} from '../../../game/rpg/models/heroModel';
 import {IPoint} from '../../../game/pow-core';
 import * as Immutable from 'immutable';
+import {WorldMap} from './world-map.component';
+import {IScene} from '../../../game/pow2/interfaces/IScene';
 
 @Component({
   selector: 'world',
@@ -20,7 +22,15 @@ import * as Immutable from 'immutable';
   encapsulation: ViewEncapsulation.None,
   templateUrl: './world.component.html'
 })
-export class WorldComponent {
+export class WorldComponent implements AfterViewInit {
+  private _scene$ = new BehaviorSubject<IScene>(null);
+  scene$: Observable<IScene> = this._scene$;
+
+  ngAfterViewInit(): void {
+    this._scene$.next(this._map.scene);
+  }
+
+  @ViewChild(WorldMap) _map: WorldMap;
 
   map$ = this.route.data.pluck('world') as Observable<GameTileMap>;
 

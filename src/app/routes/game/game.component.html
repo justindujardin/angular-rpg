@@ -1,5 +1,2 @@
 <party-menu *ngIf="!combat"></party-menu>
-<world-dialog *ngIf="!combat"></world-dialog>
-<world-temple *ngIf="!combat"></world-temple>
-<world-store *ngIf="!combat"></world-store>
 <combat-map *ngIf="combat" [combat]="combat" [map]="combat?.tileMap"></combat-map>

@@ -39,5 +39,4 @@ export function rootReducer(state: any, action: any) {
 }
 
 export const MODEL_PROVIDERS: any[] = [
-  ItemActions,
 ];

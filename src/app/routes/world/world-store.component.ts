@@ -21,63 +21,78 @@ import {GameStateModel} from '../../../game/rpg/models/gameStateModel';
 import {ItemModel} from '../../../game/rpg/models/all';
 import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
-import {ItemActions} from '../../models/item/item.actions';
-import {IScene} from '../../../game/pow2/interfaces/IScene';
+import {ItemRemoveAction, ItemAddAction} from '../../models/item/item.actions';
 import {StoreFeatureComponent} from '../../../game/rpg/components/features/storeFeatureComponent';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {WorldFeatureBase} from './world-feature';
+import {IScene} from '../../../game/pow2/interfaces/IScene';
+import {Item} from '../../models/item/item.model';
 
 @Component({
   selector: 'world-store',
-  // inputs: ['selected', 'inventory', 'name', 'buyer'],
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./world-store.component.scss'],
   templateUrl: './world-store.component.html'
 })
-export class WorldStore {
+export class WorldStore extends WorldFeatureBase {
 
-  private _scene: IScene;
-  @Input()
-  set scene(value: IScene) {
-    this._scene = value;
+  eventName = 'store';
+
+  private _name$ = new BehaviorSubject<string>('Invalid Store');
+  name$: Observable<string> = this._name$;
+
+  private _active$ = new BehaviorSubject<boolean>(false);
+  active$: Observable<boolean> = this._active$;
+
+  private _selling$ = new BehaviorSubject<boolean>(false);
+  /** Determine if the UI is in a selling state. */
+  selling$: Observable<boolean> = this._selling$;
+
+  private _selected$ = new BehaviorSubject<Item>(null);
+  /** The selected item to purchase/sell. */
+  selected$: Observable<Item> = this._selected$;
+
+
+  isBuying$: Observable<boolean> = Observable
+    .combineLatest(this.selected$, this.selling$, (selected: boolean, selling: boolean) => {
+      return !selected && !selling;
+    });
+
+  isSelling$: Observable<boolean> = Observable
+    .combineLatest(this.selected$, this.selling$, (selected: boolean, selling: boolean) => {
+      return !selected && selling;
+    });
+
+  actionVerb$: Observable<string> = this.selling$.map((selling: boolean) => {
+    return selling ? 'Sell' : 'Buy';
+  });
+
+
+  // Have to add @Input() here because decorators are not inherited with extends
+  @Input() scene: IScene;
+
+  onEnter(feature: StoreFeatureComponent) {
+    this._active$.next(true);
+    this.initStoreFromFeature(feature);
   }
 
-  get scene(): IScene {
-    return this._scene;
+  onExit(feature: StoreFeatureComponent) {
+    this._active$.next(false);
   }
 
-  active: boolean = false;
-  @Input()
-  name: string = 'Invalid Store';
-  buyer: GameStateModel;
-  inventory: rpg.IGameItem[] = [];
+  private _inventory$ = new BehaviorSubject<rpg.IGameItem[]>([]);
+  inventory$: Observable<rpg.IGameItem[]> = this._inventory$;
 
-  constructor(public game: RPGGame, public notify: Notify, public store: Store<AppState>, private itemActions: ItemActions) {
-    this.buyer = game.world.model;
-    game.world.scene.on('store:entered', (feature: StoreFeatureComponent) => {
-      this.active = true;
-      this.initStoreFromFeature(feature);
-    }, this);
-    game.world.scene.on('store:exited', () => {
-      this.active = false;
-    }, this);
+  constructor(public game: RPGGame,
+              public notify: Notify,
+              public store: Store<AppState>) {
+    super();
   }
 
-  onDestroy() {
-    this.game.world.scene.off('store:entered', null, this);
-    this.game.world.scene.off('store:exited', null, this);
+  ngOnDestroy() {
+    super.ngOnDestroy();
     this.close();
   }
-
-  /**
-   * The selected item to purchase/sell.
-   */
-  @Input()
-  selected: ItemModel = null;
-
-  /**
-   * Determine if the UI is in a selling state.
-   */
-  @Input()
-  selling: boolean = false;
 
 
   initStoreFromFeature(feature: StoreFeatureComponent) {
@@ -99,17 +114,17 @@ export class WorldStore {
       }));
     });
 
-    this.name = feature.name;
-    this.inventory = <rpg.IGameItem[]>_.map(_.where(items, {
+    this._name$.next(feature.name);
+    this._inventory$.next(<rpg.IGameItem[]>_.map(_.where(items, {
       level: feature.host.feature.level
-    }), (i: any) => _.extend({}, i));
+    }), (i: any) => _.extend({}, i)));
 
   }
 
   close() {
-    this.active = false;
-    this.selling = false;
-    this.selected = null;
+    this._selling$.next(false);
+    this._selected$.next(null);
+    this._active$.next(false);
   }
 
   actionItem(item: any) {
@@ -130,7 +145,7 @@ export class WorldStore {
       if (itemIndex !== -1) {
         model.gold += value;
         this.notify.show(`Sold ${item.name} for ${item.cost} gold.`, null, 1500);
-        this.store.dispatch(this.itemActions.removeItem(item));
+        this.store.dispatch(new ItemRemoveAction(item));
         model.inventory.splice(itemIndex, 1);
       }
     }
@@ -143,7 +158,7 @@ export class WorldStore {
         model.gold -= value;
         this.notify.show("Purchased " + item.name + ".", null, 1500);
         let instanceModel = this.game.world.itemModelFromId<ItemModel>(item.id);
-        this.store.dispatch(this.itemActions.addItem(item));
+        this.store.dispatch(new ItemAddAction(item));
         if (!instanceModel) {
           throw new Error("Tried (and failed) to create item from invalid id: '" + item.id + "'.  Make sure ID is present in game data source");
         }
@@ -151,39 +166,27 @@ export class WorldStore {
       }
     }
 
-    this.selected = null;
-    this.selling = false;
+    this._selected$.next(null);
+    this._selling$.next(false);
 
-  }
-
-  getActionVerb(): string {
-    return this.selling ? "Sell" : "Buy";
-  }
-
-  isBuying(): boolean {
-    return !this.selected && !this.selling;
-  }
-
-  isSelling(): boolean {
-    return !this.selected && this.selling;
   }
 
   toggleAction() {
-    if (!this.selling) {
-      if (this.gameModel.inventory.length === 0) {
+    if (!this._selling$.value) {
+      if (this._inventory$.value.length === 0) {
         this.notify.show("You don't have any unequipped inventory to sell.", null, 1500);
-        this.selling = false;
+        this._selling$.next(false);
         return;
       }
     }
-    this.selling = !this.selling;
+    this._selling$.next(!this._selling$.value);
   }
 
   selectItem(item: any) {
     if (item instanceof ItemModel) {
       item = item.toJSON();
     }
-    this.selected = item;
+    this._selected$.next(item);
   }
 
 }

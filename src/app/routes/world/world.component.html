@@ -1,5 +1,9 @@
+<party-menu></party-menu>
 <world-map *ngIf="zone$ | async"
            [position]="position$ | async"
            [player]="partyLeader$ | async"
            [map]="map$ | async">
 </world-map>
+<world-dialog [scene]="scene$ | async"></world-dialog>
+<world-store [scene]="scene$ | async"></world-store>
+<world-temple [scene]="scene$ | async"></world-temple>

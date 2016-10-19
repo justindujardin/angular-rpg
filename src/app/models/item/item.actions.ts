@@ -1,26 +1,27 @@
-import {Injectable} from '@angular/core';
 import {Action} from '@ngrx/store';
+import {type} from '../util';
 import {Item} from './item.model';
 
-@Injectable()
 
-export class ItemActions {
+export const ItemActionTypes = {
+  ADD: type('rpg/item/add'),
+  REMOVE: type('rpg/item/remove')
+};
 
-  static ADD = 'rpg/item/add';
+export class ItemAddAction implements Action {
+  type = ItemActionTypes.ADD;
 
-  addItem(item: Item): Action {
-    return {
-      type: ItemActions.ADD,
-      payload: item
-    };
-  }
-
-  static REMOVE = 'rpg/item/remove';
-
-  removeItem(item: Item): Action {
-    return {
-      type: ItemActions.REMOVE,
-      payload: item
-    };
+  constructor(public payload: Item) {
   }
 }
+
+export class ItemRemoveAction implements Action {
+  type = ItemActionTypes.REMOVE;
+
+  constructor(public payload: Item) {
+  }
+}
+
+export type ItemActions
+  = ItemAddAction
+  | ItemRemoveAction

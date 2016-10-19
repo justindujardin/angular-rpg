@@ -14,59 +14,84 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {Component} from '@angular/core';
+import {Component, Input, ChangeDetectionStrategy, ViewEncapsulation} from '@angular/core';
 import {TempleFeatureComponent} from '../../../game/rpg/components/features/templeFeatureComponent';
 import {HeroModel} from '../../../game/rpg/models/all';
 import {GameStateModel} from '../../../game/rpg/models/gameStateModel';
 import {RPGGame, Notify} from '../../services/index';
-
-// TODO: bind Scene to these components to setup listeners for the proper scene.
+import {IScene} from '../../../game/pow2/interfaces/IScene';
+import {WorldFeatureBase} from './world-feature';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 @Component({
   selector: 'world-temple',
-  inputs: ['model', 'party', 'active', 'cost', 'icon', 'name'],
   styleUrls: ['./world-temple.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './world-temple.component.html'
 })
-export class WorldTemple {
+export class WorldTemple extends WorldFeatureBase {
 
-  static NAME: string = 'Mystery Temple';
+  eventName = 'temple';
 
-  active: boolean = false;
-  name: string = WorldTemple.NAME;
-  icon: string = null;
-  cost: number = 200;
-  model: GameStateModel;
-  party: HeroModel[];
+  @Input() scene: IScene;
 
-  constructor(public game: RPGGame, public notify: Notify) {
-    this.model = game.world.model;
-    this.party = this.model.party;
-    game.world.scene.on('temple:entered', (feature: TempleFeatureComponent) => {
-      this.name = feature.name;
-      this.icon = feature.icon;
-      this.cost = parseInt(feature.cost);
-      this.active = true;
-    }, this);
-    game.world.scene.on('temple:exited', () => {
-      this.close();
-    }, this);
 
+  private _name$ = new BehaviorSubject<string>('Mystery Temple');
+  name$: Observable<string> = this._name$;
+
+  @Input() set name(value: string) {
+    this._name$.next(value);
   }
 
-  onDestroy() {
-    this.game.world.scene.off('temple:entered', null, this);
-    this.game.world.scene.off('temple:exited', null, this);
+  private _active$ = new BehaviorSubject<boolean>(false);
+  active$: Observable<boolean> = this._active$;
+
+  @Input() set active(value: boolean) {
+    this._active$.next(value);
+  }
+
+  private _icon$ = new BehaviorSubject<string>(null);
+  icon$: Observable<string> = this._icon$;
+
+  @Input() set icon(value: string) {
+    this._icon$.next(value);
+  }
+
+  private _cost$ = new BehaviorSubject<number>(200);
+  cost$: Observable<number> = this._cost$;
+
+  @Input() set cost(value: number) {
+    this._cost$.next(value);
+  }
+
+  @Input() model: GameStateModel;
+  @Input() party: HeroModel[];
+
+  onEnter(feature: TempleFeatureComponent) {
+    this.name = feature.name;
+    this.icon = feature.icon;
+    this.cost = parseInt(feature.cost);
+    this.active = true;
+  }
+
+  onExit(feature: TempleFeatureComponent) {
+    this.cost = 200;
     this.active = false;
   }
 
+  constructor(public game: RPGGame, public notify: Notify) {
+    super();
+    this.model = game.world.model;
+    this.party = this.model.party;
+  }
+
   rest() {
-    if (!this.active) {
+    if (!this._active$.value) {
       return;
     }
     const model: GameStateModel = this.game.world.model;
     const money: number = model.gold;
-    const cost: number = this.cost;
+    const cost: number = this._cost$.value;
 
     const alreadyHealed: boolean = !_.find(model.party, (hero: HeroModel) => {
       return hero.get('hp') !== hero.get('maxHP');
@@ -88,14 +113,7 @@ export class WorldTemple {
       this.notify.show("Your party has been healed! \nYou now have (" + model.gold + ") monies.", null, 2500);
 
     }
-    this.close();
-
-
-  }
-
-  close() {
-    this.cost = 200;
-    this.name = WorldTemple.NAME;
     this.active = false;
   }
+
 }

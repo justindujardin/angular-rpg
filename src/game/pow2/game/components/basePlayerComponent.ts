@@ -28,9 +28,9 @@ export class BasePlayerComponent extends MovableComponent {
   passableKeys: string[] = ['passable'];
   // TODO: Pass in collide types during entity creation, and assert on invalid types.
   static COLLIDE_TYPES: string[] = [
-    'rpg.components.features.TempleFeatureComponent',
-    'rpg.components.features.StoreFeatureComponent',
-    'rpg.components.features.DialogFeatureComponent',
+    'TempleFeatureComponent',
+    'StoreFeatureComponent',
+    'DialogFeatureComponent',
     'sign'
   ];
   private _lastFrame: number = 3;

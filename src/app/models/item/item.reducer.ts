@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {ItemActions} from './item.actions';
+import {ItemActionTypes} from './item.actions';
 import {Item} from './item.model';
 import * as Immutable from 'immutable';
 
@@ -13,11 +13,11 @@ const initialState: ItemState = {
 
 export function itemReducer(state: ItemState = initialState, action: Action): ItemState {
   switch (action.type) {
-    case ItemActions.ADD: {
+    case ItemActionTypes.ADD: {
       const items = Immutable.List(state.inventory).push(action.payload).toArray();
       return Immutable.fromJS({inventory: items}).toJS();
     }
-    case ItemActions.REMOVE: {
+    case ItemActionTypes.REMOVE: {
 
       //
       //

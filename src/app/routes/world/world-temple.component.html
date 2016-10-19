@@ -1,11 +1,11 @@
-<div class="temple-view ebp" *ngIf="active" layout="column" layout-padding>
+<div class="temple-view ebp" *ngIf="active$ | async" layout="column" layout-padding>
   <div class="header" layout="row" layout-align="center center">
-    <rpg-sprite [name]="icon"></rpg-sprite>
-    <h1>{{name}}</h1>
+    <rpg-sprite [name]="icon$ | async"></rpg-sprite>
+    <h1>{{name$ | async}}</h1>
   </div>
 
   <div class="prompt" flex>
-    <h2>It will cost you {{cost}} of your {{model.gold}} gold to recover here.</h2>
+    <h2>It will cost you {{cost$ | async}} of your {{model?.gold}} gold to recover here.</h2>
 
     <p>Would you like to heal your party members?</p>
   </div>
