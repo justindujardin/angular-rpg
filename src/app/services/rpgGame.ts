@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import * as _ from 'underscore';
 import {GameWorld} from './gameWorld';
 import {GameTileMap} from '../../game/gameTileMap';
 import {HeroModel, HeroTypes} from '../../game/rpg/models/heroModel';
@@ -21,14 +20,12 @@ import {ItemModel} from '../../game/rpg/models/itemModel';
 import {GameEntityObject} from '../../game/rpg/objects/gameEntityObject';
 import {GameStateMachine} from '../../game/rpg/states/gameStateMachine';
 import {ResourceLoader} from '../../game/pow-core/resourceLoader';
-import {Point} from '../../game/pow-core/point';
-import {PlayerComponent} from '../../game/rpg/components/playerComponent';
-import {TileMap} from '../../game/pow2/tile/tileMap';
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {GameStateLoadAction} from '../models/game-state/game-state.actions';
 import {AppState} from '../app.model';
 import {PartyMember} from '../models/party-member.model';
+import {Point} from '../../game/pow-core';
 
 @Injectable()
 export class RPGGame {
@@ -37,11 +34,6 @@ export class RPGGame {
   private _renderCanvas: HTMLCanvasElement;
   private _canvasAcquired: boolean = false;
   private _stateKey: string = "_angular2PowRPGState";
-
-
-  // Party Position Data
-  partyPosition: Point = new Point(0, 0);
-  partyMapName: string = 'town';
 
   constructor(public loader: ResourceLoader,
               public world: GameWorld,
@@ -65,13 +57,14 @@ export class RPGGame {
   }
 
   saveGame() {
-    const party = <PlayerComponent>this.world.scene.componentByType(PlayerComponent);
-    if (party) {
-      this.world.model.setKeyData('playerPosition', party.host.point);
-    }
-    this.world.model.setKeyData('playerMap', this.partyMapName);
-    const data = JSON.stringify(this.world.model.toJSON());
-    localStorage.setItem(this._stateKey, data);
+    throw new Error('to reimplement with redux store');
+    // const party = <PlayerComponent>this.world.scene.componentByType(PlayerComponent);
+    // if (party) {
+    //   this.world.model.setKeyData('playerPosition', party.host.point);
+    // }
+    // this.world.model.setKeyData('playerMap', this.partyMapName);
+    // const data = JSON.stringify(this.world.model.toJSON());
+    // localStorage.setItem(this._stateKey, data);
   }
 
 
@@ -95,15 +88,6 @@ export class RPGGame {
         }
         sprite.name = from.name;
         sprite.icon = from.icon;
-
-        // If no point is specified, use the position of the first Portal on the current map
-        if (typeof at === 'undefined' && tileMap instanceof TileMap && this.partyPosition.isZero()) {
-          var portal: any = _.where(tileMap.features.objects, {type: 'PortalFeatureComponent'})[0];
-          if (portal) {
-            at = new Point(portal.x / portal.width, portal.y / portal.height);
-          }
-        }
-        sprite.setPoint(at || this.partyPosition);
         return sprite;
       });
   }
@@ -119,16 +103,12 @@ export class RPGGame {
         // Set the root game state
         this.store.dispatch(new GameStateLoadAction(json));
         const at = json.position;
-        this.partyPosition = at ? new Point(at.x, at.y) : undefined;
-        this.partyMapName = json.map || 'town';
         resolve(false);
       }
       else {
         this.world.model.addHero(HeroModel.create(HeroTypes.Warrior, "Warrior"));
         this.world.model.addHero(HeroModel.create(HeroTypes.Ranger, "Ranger"));
         this.world.model.addHero(HeroModel.create(HeroTypes.LifeMage, "Mage"));
-        this.partyPosition = new Point(10, 5);
-        this.partyMapName = "town";
         resolve(true);
       }
     });

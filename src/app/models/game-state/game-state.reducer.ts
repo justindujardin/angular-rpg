@@ -1,4 +1,4 @@
-import {GameStateActions, GameStateActionTypes, GameStateTravelAction} from './game-state.actions';
+import {GameStateActions, GameStateActionTypes, GameStateTravelAction, GameStateMoveAction} from './game-state.actions';
 import {GameState} from './game-state.model';
 import * as Immutable from 'immutable';
 import {Observable} from 'rxjs/Rx';
@@ -30,6 +30,12 @@ export function gameStateReducer(state: GameState = initialState, action: GameSt
       return Immutable.fromJS(state).merge({
         map: travel.payload.map,
         position: travel.payload.position
+      }).toJS();
+    }
+    case GameStateActionTypes.MOVE: {
+      const travel: GameStateMoveAction = action;
+      return Immutable.fromJS(state).merge({
+        position: travel.payload
       }).toJS();
     }
     default:

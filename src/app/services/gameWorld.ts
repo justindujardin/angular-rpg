@@ -29,11 +29,13 @@ import {RPG_GAME_ENTITIES} from '../../game/game.entities';
 import {Subject} from 'rxjs/Subject';
 import {ReplaySubject, Observable} from 'rxjs/Rx';
 import {JSONResource} from '../../game/pow-core/resources/json';
-import {Injectable} from '@angular/core';
+import {Injectable, Injector} from '@angular/core';
 import {ResourceLoader} from '../../game/pow-core/resourceLoader';
 import {PowInput} from '../../game/pow2/core/input';
 import {World} from '../../game/pow-core/world';
 import {SpriteRender} from './spriteRender';
+import {AppState} from '../app.model';
+import {Store} from '@ngrx/store';
 
 
 var _sharedGameWorld: GameWorld = null;
@@ -65,7 +67,7 @@ export class GameWorld extends World {
    */
   spreadsheet: GameDataResource = null;
 
-  constructor(public loader: ResourceLoader, public sprites: SpriteRender) {
+  constructor(public loader: ResourceLoader, public store: Store<AppState>, public sprites: SpriteRender) {
     super();
     _sharedGameWorld = this;
     this.mark(this.scene);

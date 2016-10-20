@@ -12,8 +12,7 @@ import {RPGGame} from '../../services/rpgGame';
 import {GameWorld} from '../../services/gameWorld';
 import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
-import {Observable, ReplaySubject, Subscription} from 'rxjs/Rx';
-import {GameState} from '../../models/game-state/game-state.model';
+import {Observable, ReplaySubject, Subscription, BehaviorSubject} from 'rxjs/Rx';
 import {GameTileMap} from '../../../game/gameTileMap';
 import {PartyMember} from '../../models/party-member.model';
 import {IPoint, Point, Rect} from '../../../game/pow-core';
@@ -69,6 +68,11 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
 
   featureComponent$: Observable<GameFeatureComponent> = this._featureComponent$;
 
+
+  private _playerEntity$ = new BehaviorSubject<GameEntityObject>(null);
+
+  playerEntity$: Observable<GameEntityObject> = this._playerEntity$;
+
   @ViewChild("worldCanvas") canvasElementRef: ElementRef;
 
   /**
@@ -86,10 +90,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
 
   /** Observable of the current player position in the world */
   position$: Observable<IPoint> = this.store
-    .select((s) => s.gameState)
-    .map((s: GameState) => {
-      return Immutable.Map(s.position).toJS()
-    })
+    .select((s) => s.gameState.position)
     .distinctUntilChanged();
 
   /** Observable of PartyMember representing the party leader to be rendered in the world */
@@ -97,7 +98,8 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     .select((s) => s.gameState.party)
     .map((party: PartyMember[]) => {
       return Immutable.Map(party[0]).toJS();
-    });
+    })
+    .distinctUntilChanged();
 
 
   /** Update router URL when travel completes */
@@ -110,10 +112,10 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
 
   /** Load map and create player entity when the store changes */
   map$: Observable<GameTileMap> = getMap(this.store)
+    .distinctUntilChanged()
     .switchMap((map: string) => {
       return this.gameResources.loadMap(map);
-    })
-    .distinctUntilChanged();
+    });
 
   map: GameTileMap;
 
@@ -138,7 +140,20 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
               public gameResources: GameResources,
               public world: GameWorld) {
     super();
+    // Whenever the player is created, or the position changes
+    this._subscriptions.push(this.position$.combineLatest(this.playerEntity$)
+      .distinctUntilChanged()
+      .do((tuple: any) => {
+        const position: IPoint = tuple[0];
+        const player: GameEntityObject = tuple[1];
+        if (player && !player.point.equal(position)) {
+          player.setPoint(position);
+        }
+      }).subscribe());
+
+    // When the state position doesn't match where the user is
     this._subscriptions.push(this.map$.combineLatest(this.partyLeader$)
+      .distinctUntilChanged()
       .do((tuple: any) => {
         const map: GameTileMap = tuple[0];
         const player: PartyMember = tuple[1];
@@ -161,8 +176,6 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     this.scene.addView(this);
     setTimeout(() => this._onResize(), 1);
   }
-
-  private _playerObj: GameEntityObject = null;
 
   /**
    * The map view bounds in world space.
@@ -193,6 +206,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
   // ISceneView implementation
   //
   onAddToScene(scene: Scene) {
+    super.onAddToScene(scene);
     this.clearCache();
     this.mouse = this.world.input.mouseHook(<SceneView>this, "world");
     this.scene.on(TileMap.Events.MAP_LOADED, this.syncComponents, this);
@@ -208,7 +222,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
         this.notify.show("You found " + feature.gold + " gold!", null, 0);
       }
       if (typeof feature.item === 'string') {
-        var item = this.game.world.itemModelFromId(feature.item);
+        const item = this.game.world.itemModelFromId(feature.item);
         if (!item) {
           return;
         }
@@ -243,7 +257,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
   private _onClick(e: MouseEvent) {
 
     // Ignore clicks that did not originate on the canvas
-    if(e.srcElement !== this.canvas) {
+    if (e.srcElement !== this.canvas) {
       return;
     }
 
@@ -337,9 +351,18 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
    * @internal
    */
   private renderModel(map: GameTileMap, player: PartyMember) {
+    const removePlayer = () => {
+      if (this._playerEntity$.value && this.scene) {
+        this.scene.removeObject(this._playerEntity$.value);
+      }
+      this._playerEntity$.next(null);
+    };
     if (this.map) {
-      this.map.removeFeaturesFromScene();
-      this.scene.removeObject(this.map);
+      if (this.map.map.url !== map.map.url) {
+        this.map.removeFeaturesFromScene();
+        this.scene.removeObject(this.map);
+        removePlayer();
+      }
     }
     this.map = map;
     this.clearCache();
@@ -349,18 +372,14 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     this.scene.addObject(map);
     map.addFeaturesToScene();
     map.syncComponents();
-    if (player) {
+    if (player && !this._playerEntity$.value) {
       this.game.createPlayer(player, map).then((player: GameEntityObject) => {
-        // Remove existing instances if called multiple times
-        if (this._playerObj) {
-          this.scene.removeObject(this._playerObj);
-        }
-        this._playerObj = player;
-        // Add new valid instances to the scene
-        if (player) {
-          this.scene.addObject(player);
-        }
+        this.scene.addObject(player);
+        this._playerEntity$.next(player);
       });
+    }
+    else if (!player) {
+      removePlayer();
     }
   }
 }

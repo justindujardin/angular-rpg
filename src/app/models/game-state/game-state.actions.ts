@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {GameState} from './game-state.model';
+import {GameState, GameMoveData} from './game-state.model';
 import {type} from '../util';
 import {IPoint} from '../../../game/pow-core';
 
@@ -14,6 +14,7 @@ export const GameStateActionTypes = {
   TRAVEL: type('rpg/state/travel'),
   TRAVEL_SUCCESS: type('rpg/state/travel-success'),
   TRAVEL_FAIL: type('rpg/state/travel-fail'),
+  MOVE: type('rpg/state/move'),
 };
 
 
@@ -76,7 +77,7 @@ export class GameStateTravelAction implements Action {
     position: IPoint;
   };
 
-  constructor(map:string, position:IPoint) {
+  constructor(map: string, position: IPoint) {
     this.payload = {
       map, position
     };
@@ -98,6 +99,17 @@ export class GameStateTravelFailAction implements Action {
 }
 
 
+//
+// Move state actions
+//
+export class GameStateMoveAction implements Action {
+  type = GameStateActionTypes.MOVE;
+
+  constructor(public payload: GameMoveData) {
+  }
+}
+
+
 export type GameStateActions
   = GameStateLoadAction
   | GameStateLoadSuccessAction
@@ -108,3 +120,4 @@ export type GameStateActions
   | GameStateTravelAction
   | GameStateTravelSuccessAction
   | GameStateTravelFailAction
+  | GameStateMoveAction

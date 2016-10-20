@@ -13,22 +13,7 @@ const template = require('./game.component.html');
   template: template
 })
 export class GameComponent {
-  maps: string[] = [
-    'castle', 'crypt', 'fortress1',
-    'fortress2', 'isle', 'keep',
-    'lair', 'port', 'ruins', 'sewer',
-    'tower1', 'tower2', 'tower3', 'town',
-    'village', 'wilderness'
-  ];
-  loaded: boolean = true;
-
-  setMap(value: string) {
-    this.game.partyPosition.zero();
-    this.game.partyMapName = value;
-  }
-
   combat: PlayerCombatState = null;
-
   constructor(public game: RPGGame, public notify: Notify, public world: GameWorld) {
   }
 

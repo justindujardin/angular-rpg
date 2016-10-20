@@ -21,6 +21,8 @@ import {BasePlayerComponent} from '../../pow2/game/components/basePlayerComponen
 import {TileMap} from '../../pow2/tile/tileMap';
 import {SceneObject} from '../../pow2/scene/sceneObject';
 import {ITiledLayer} from '../../pow-core/resources/tiled/tiled';
+import {IMoveDescription} from '../../pow2/scene/components/movableComponent';
+import {GameStateMoveAction} from '../../../app/models/game-state/game-state.actions';
 
 /**
  * Basic Dorkapon player that can navigate around the map
@@ -76,4 +78,15 @@ export class PlayerComponent extends BasePlayerComponent {
     }
     return false;
   }
+
+  /**
+   * Called when a complete tick of movement occurs.
+   * @param move The move that is now completed.
+   */
+  completeMove(move: IMoveDescription) {
+    // HACKS: Need an injection strategy for these behavior components.
+    this.host.world.store.dispatch(new GameStateMoveAction(move.to));
+    super.completeMove(move);
+  }
+
 }

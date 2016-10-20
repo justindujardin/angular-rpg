@@ -172,7 +172,7 @@ export class Point implements IPoint {
     return this;
   }
 
-  equal(point: Point) {
+  equal(point: IPoint) {
     // TODO epsilon.
     return this.x === point.x && this.y === point.y;
   }
