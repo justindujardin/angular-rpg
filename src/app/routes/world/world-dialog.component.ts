@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {Component, Input, ChangeDetectionStrategy, ViewEncapsulation} from '@angular/core';
+import {Component, Input, ChangeDetectionStrategy, ViewEncapsulation, Output, EventEmitter} from '@angular/core';
 import {DialogFeatureComponent} from '../../../game/rpg/components/features/dialogFeatureComponent';
 import {IScene} from '../../../game/pow2/interfaces/IScene';
 import {BehaviorSubject, Observable} from 'rxjs';
@@ -29,6 +29,8 @@ export class WorldDialog {
 
   static DEFAULT_TEXT: string = 'Nothing to see here';
   static DEFAULT_TITLE: string = 'Untitled';
+
+  @Output() onClose = new EventEmitter();
 
   @Input() scene: IScene;
 
@@ -65,7 +67,7 @@ export class WorldDialog {
   }
 
   @Input()
-  set feature(feature:DialogFeatureComponent) {
+  set feature(feature: DialogFeatureComponent) {
     this.active = true;
     this.icon = feature.icon;
     this.text = feature.text;

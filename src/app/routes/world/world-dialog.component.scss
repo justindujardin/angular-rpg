@@ -11,7 +11,8 @@ world-dialog {
     .body-text {
       pointer-events: none;
     }
-    .btn-close {
+    button {
+      @include btn-flap();
       position: absolute;
       font-size: 1.5em;
       padding: 10px 20px 5px;

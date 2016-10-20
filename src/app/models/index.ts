@@ -5,8 +5,6 @@ import {storeLogger} from 'ngrx-store-logger';
 import {routerReducer} from '@ngrx/router-store';
 import {itemReducer} from '../models/item/item.reducer';
 import {gameStateReducer} from './game-state/game-state.reducer';
-import {GameStateActions} from './game-state/game-state.actions';
-import {ItemActions} from './item/item.actions';
 
 
 export const reducers = {
@@ -25,7 +23,7 @@ function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
   };
 }
 
-const DEV_REDUCERS = [stateSetter, storeFreeze, storeLogger()];
+const DEV_REDUCERS = [stateSetter, storeFreeze/*, storeLogger()*/];
 
 const developmentReducer = compose(...DEV_REDUCERS, combineReducers)(reducers);
 const productionReducer = combineReducers(reducers);

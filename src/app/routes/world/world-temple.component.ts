@@ -14,13 +14,28 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {Component, Input, ChangeDetectionStrategy, ViewEncapsulation} from '@angular/core';
+import {
+  Component,
+  Input,
+  ChangeDetectionStrategy,
+  ViewEncapsulation,
+  Output,
+  EventEmitter,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import {TempleFeatureComponent} from '../../../game/rpg/components/features/templeFeatureComponent';
 import {HeroModel} from '../../../game/rpg/models/all';
 import {GameStateModel} from '../../../game/rpg/models/gameStateModel';
 import {RPGGame, Notify} from '../../services/index';
 import {IScene} from '../../../game/pow2/interfaces/IScene';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
+import {getGold, getParty, getGameState} from '../../models/game-state/game-state.reducer';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../app.model';
+import {PartyMember} from '../../models/party-member.model';
+import {GameState} from '../../models/game-state/game-state.model';
+import {GameStateHealPartyAction} from '../../models/game-state/game-state.actions';
 
 @Component({
   selector: 'world-temple',
@@ -29,25 +44,22 @@ import {BehaviorSubject, Observable} from 'rxjs';
   encapsulation: ViewEncapsulation.None,
   templateUrl: './world-temple.component.html'
 })
-export class WorldTemple {
-
-  eventName = 'temple';
+export class WorldTemple implements OnInit, OnDestroy {
+  @Output() onClose = new EventEmitter();
 
   @Input() scene: IScene;
 
+  partyGold$: Observable<number> = getGold(this.store);
+  party$: Observable<PartyMember> = getParty(this.store).map((p: PartyMember[]) => {
+    console.log(p);
+    return p;
+  });
 
   private _name$ = new BehaviorSubject<string>('Mystery Temple');
   name$: Observable<string> = this._name$;
 
   @Input() set name(value: string) {
     this._name$.next(value);
-  }
-
-  private _active$ = new BehaviorSubject<boolean>(false);
-  active$: Observable<boolean> = this._active$;
-
-  @Input() set active(value: boolean) {
-    this._active$.next(value);
   }
 
   private _icon$ = new BehaviorSubject<string>(null);
@@ -69,47 +81,50 @@ export class WorldTemple {
 
 
   @Input()
-  set feature(feature:TempleFeatureComponent) {
+  set feature(feature: TempleFeatureComponent) {
     this.name = feature.name;
     this.icon = feature.icon;
     this.cost = parseInt(feature.cost);
-    this.active = true;
   }
 
-  constructor(public game: RPGGame, public notify: Notify) {
+  constructor(public game: RPGGame,
+              public store: Store<AppState>,
+              public notify: Notify) {
     this.model = game.world.model;
     this.party = this.model.party;
   }
 
-  rest() {
-    if (!this._active$.value) {
-      return;
-    }
-    const model: GameStateModel = this.game.world.model;
-    const money: number = model.gold;
-    const cost: number = this._cost$.value;
+  private _onRest$ = new Subject<void>();
+  private _onRestSubscription$: Subscription;
 
-    const alreadyHealed: boolean = !_.find(model.party, (hero: HeroModel) => {
-      return hero.get('hp') !== hero.get('maxHP');
-    });
-
-
-    if (cost > money) {
-      this.notify.show("You don't have enough money");
-    }
-    else if (alreadyHealed) {
-      this.notify.show("Keep your monies.\nYour party is already fully healed.");
-    }
-    else {
-      //console.log("You have (" + money + ") monies.  Spending (" + cost + ") on temple");
-      model.gold -= cost;
-      _.each(model.party, (hero: HeroModel) => {
-        hero.set({hp: hero.get('maxHP')});
-      });
-      this.notify.show("Your party has been healed! \nYou now have (" + model.gold + ") monies.", null, 2500);
-
-    }
-    this.active = false;
+  ngOnInit(): void {
+    this._onRestSubscription$ = this._onRest$
+      .switchMap(() => getGameState(this.store).withLatestFrom(this.cost$))
+      .do((tuple: any) => {
+        const gameState: GameState = tuple[0];
+        const cost: number = tuple[1];
+        const alreadyHealed: boolean = !_.find(gameState.party, (p: PartyMember) => {
+          return p.hp !== p.maxHP;
+        });
+        if (cost > gameState.gold) {
+          this.notify.show("You don't have enough money");
+        }
+        else if (alreadyHealed) {
+          this.notify.show("Keep your monies.\nYour party is already fully healed.");
+        }
+        else {
+          this.store.dispatch(new GameStateHealPartyAction(cost));
+          this.notify.show("Your party has been healed! \nYou have (" + (gameState.gold - cost) + ") monies.", null, 2500);
+        }
+        _.defer(() => {
+          this.onClose.next({});
+        });
+      }).subscribe();
   }
+
+  ngOnDestroy(): void {
+    this._onRestSubscription$.unsubscribe();
+  }
+
 
 }

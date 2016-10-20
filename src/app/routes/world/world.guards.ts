@@ -10,6 +10,8 @@ export class CanActivateWorld implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+    // TODO: This check is hosed if a reasonable default value is set for the initial state for
+    // map. Investigate whether this is sane.
     const mapName$ = this.store.select((app) => app.gameState.map);
     return mapName$.take(1)
       .map((mapName: string) => {

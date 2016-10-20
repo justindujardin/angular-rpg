@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {GameFeatureComponent} from '../gameFeatureComponent';
 import {GameFeatureObject} from '../../objects/gameFeatureObject';
 import {GameStateModel} from '../../models/gameStateModel';
@@ -21,6 +20,9 @@ import {PlayerComponent} from '../playerComponent';
 import {TileObject} from '../../../pow2/tile/tileObject';
 import {Point} from '../../../pow-core/point';
 import {GameWorld} from '../../../../app/services/gameWorld';
+import {Subscription} from 'rxjs';
+import {getKeyData} from '../../../../app/models/game-state/game-state.reducer';
+import {IPoint} from '../../../pow-core';
 
 export class ShipFeatureComponent extends GameFeatureComponent {
   party: PlayerComponent;
@@ -28,18 +30,29 @@ export class ShipFeatureComponent extends GameFeatureComponent {
   partySprite: string;
   private _tickInterval: any = -1;
 
-  syncComponent(): boolean {
-    if (super.syncComponent()) {
-      var gameWorld: GameWorld = <GameWorld>this.host.world;
-      if (gameWorld && gameWorld.state) {
-        var gameState: GameStateModel = gameWorld.model;
-        var location = gameState.getKeyData('shipPosition');
-        if (location) {
-          this.host.setPoint(new Point(location.x, location.y));
-        }
-      }
+  private _subscription: Subscription = null;
+
+  disconnectComponent(): boolean {
+    if(this._subscription) {
+      this._subscription.unsubscribe();
+      this._subscription = null;
     }
-    return false;
+    return true;
+  }
+
+  connectComponent(): boolean {
+    if (!super.connectComponent()) {
+      return false;
+    }
+    const gameWorld = this.host.world;
+    if (gameWorld) {
+      this._subscription = getKeyData(this.host.world.store, 'shipPosition')
+        .distinctUntilChanged()
+        .subscribe((p: IPoint) => {
+          this.host.setPoint(p);
+        });
+    }
+    return true;
   }
 
   enter(object: GameFeatureObject): boolean {

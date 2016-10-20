@@ -15,17 +15,18 @@
  */
 import * as _ from 'underscore';
 import * as rpg from '../../../game/rpg/game';
-import {Component, ViewEncapsulation, Input, Output} from '@angular/core';
+import {Component, ViewEncapsulation, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
 import {RPGGame, Notify} from '../../services';
-import {GameStateModel} from '../../../game/rpg/models/gameStateModel';
-import {ItemModel} from '../../../game/rpg/models/all';
 import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
 import {ItemRemoveAction, ItemAddAction} from '../../models/item/item.actions';
 import {StoreFeatureComponent} from '../../../game/rpg/components/features/storeFeatureComponent';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {IScene} from '../../../game/pow2/interfaces/IScene';
 import {Item} from '../../models/item/item.model';
+import {getGameState, getGold} from '../../models/game-state/game-state.reducer';
+import {GameState} from '../../models/game-state/game-state.model';
+import {GameStateAddGoldAction} from '../../models/game-state/game-state.actions';
 
 @Component({
   selector: 'world-store',
@@ -33,7 +34,10 @@ import {Item} from '../../models/item/item.model';
   styleUrls: ['./world-store.component.scss'],
   templateUrl: './world-store.component.html',
 })
-export class WorldStore {
+export class WorldStore implements OnDestroy {
+  @Output() onClose = new EventEmitter();
+
+  partyGold$: Observable<number> = getGold(this.store);
 
   private _name$ = new BehaviorSubject<string>('Invalid Store');
   name$: Observable<string> = this._name$;
@@ -57,10 +61,58 @@ export class WorldStore {
       return !selected && selling;
     });
 
+  /** Verb for the current buy/sell state for an action button */
   actionVerb$: Observable<string> = this.selling$.map((selling: boolean) => {
     return selling ? 'Sell' : 'Buy';
   });
 
+  private _onAction$ = new Subject<void>();
+  private _onToggleAction$ = new Subject<Item>();
+
+  private _doToggleActionSubscription$ = this._onToggleAction$
+    .do(() => {
+      let selling = this._selling$.value;
+      if (!selling) {
+        if (this._inventory$.value.length === 0) {
+          this.notify.show("You don't have any unequipped inventory to sell.", null, 1500);
+          this._selling$.next(false);
+          return;
+        }
+      }
+      this._selling$.next(!selling);
+    }).subscribe();
+
+  /** Stream of clicks on the actionable button */
+  private _doActionSubscription$ = this._onAction$
+    .switchMap(() => getGameState(this.store))
+    .do((model: GameState) => {
+      if (!this._selected$.value) {
+        return;
+      }
+      const item = this._selected$.value;
+      const value: number = item.cost;
+
+      if (this._selling$.value) {
+        this.store.dispatch(new GameStateAddGoldAction(value));
+        this.notify.show(`Sold ${item.name} for ${item.cost} gold.`, null, 1500);
+        this.store.dispatch(new ItemRemoveAction(item));
+      }
+      else {
+        if (value > model.gold) {
+          this.notify.show("You don't have enough money");
+          return;
+        }
+        this.store.dispatch(new GameStateAddGoldAction(-value));
+        this.notify.show("Purchased " + item.name + ".", null, 1500);
+        this.store.dispatch(new ItemAddAction(item));
+      }
+
+      this._selected$.next(null);
+      this._selling$.next(false);
+
+    }).subscribe();
+  /** Stream of clicks on the actionable button */
+  actionClick$: Observable<MouseEvent> = new Subject<MouseEvent>();
 
   // Have to add @Input() here because decorators are not inherited with extends
   @Input() scene: IScene;
@@ -71,6 +123,11 @@ export class WorldStore {
   constructor(public game: RPGGame,
               public notify: Notify,
               public store: Store<AppState>) {
+  }
+
+  ngOnDestroy(): void {
+    this._doActionSubscription$.unsubscribe();
+    this._doToggleActionSubscription$.unsubscribe();
   }
 
   @Input()
@@ -97,73 +154,6 @@ export class WorldStore {
     this._inventory$.next(<rpg.IGameItem[]>_.map(_.where(items, {
       level: feature.host.feature.level
     }), (i: any) => _.extend({}, i)));
-  }
-
-  close() {
-    this._selling$.next(false);
-    this._selected$.next(null);
-  }
-
-  actionItem(item: any) {
-    if (!item) {
-      return;
-    }
-
-    const model: GameStateModel = this.game.world.model;
-    const value: number = parseInt(item.cost);
-    if (this.selling) {
-      let itemIndex: number = -1;
-      for (let i = 0; i < model.inventory.length; i++) {
-        if (model.inventory[i].id === item.id) {
-          itemIndex = i;
-          break;
-        }
-      }
-      if (itemIndex !== -1) {
-        model.gold += value;
-        this.notify.show(`Sold ${item.name} for ${item.cost} gold.`, null, 1500);
-        this.store.dispatch(new ItemRemoveAction(item));
-        model.inventory.splice(itemIndex, 1);
-      }
-    }
-    else {
-      if (value > model.gold) {
-        this.notify.show("You don't have enough money");
-        return;
-      }
-      else {
-        model.gold -= value;
-        this.notify.show("Purchased " + item.name + ".", null, 1500);
-        let instanceModel = this.game.world.itemModelFromId<ItemModel>(item.id);
-        this.store.dispatch(new ItemAddAction(item));
-        if (!instanceModel) {
-          throw new Error("Tried (and failed) to create item from invalid id: '" + item.id + "'.  Make sure ID is present in game data source");
-        }
-        model.inventory.push(instanceModel);
-      }
-    }
-
-    this._selected$.next(null);
-    this._selling$.next(false);
-
-  }
-
-  toggleAction() {
-    if (!this._selling$.value) {
-      if (this._inventory$.value.length === 0) {
-        this.notify.show("You don't have any unequipped inventory to sell.", null, 1500);
-        this._selling$.next(false);
-        return;
-      }
-    }
-    this._selling$.next(!this._selling$.value);
-  }
-
-  selectItem(item: any) {
-    if (item instanceof ItemModel) {
-      item = item.toJSON();
-    }
-    this._selected$.next(item);
   }
 
 }

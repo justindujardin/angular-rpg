@@ -19,7 +19,7 @@ import {CombatDamage} from './combatDamage';
 import {CombatMap} from './combatMap';
 import {CommonModule} from '@angular/common';
 import {MaterialModule} from '@angular/material';
-import {RpgModule} from '../../components/rpg/index';
+import {RPGHealthBarModule} from '../../components/health-bar';
 
 
 export * from './chooseActionStates';
@@ -37,7 +37,7 @@ export const COMBAT_EXPORTS = [
   imports: [
     MaterialModule,
     CommonModule,
-    RpgModule
+    RPGHealthBarModule
   ]
 })
 export class CombatModule {

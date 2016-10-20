@@ -20,6 +20,9 @@ world-store {
 
   .btn-group {
     text-align: center;
+    button {
+      @include btn-flat();
+    }
   }
   ul {
     padding: 0;

@@ -4,5 +4,5 @@
     <p [innerText]="title$ | async"></p>
     <span class="text" [innerText]="text$ | async"></span>
   </div>
-  <button class="btn-close btn btn-flap" (click)="onClose($event)"><i class="glyphicon glyphicon-remove"></i></button>
+  <button class="btn-close" (click)="onClose.next($event)">x</button>
 </div>

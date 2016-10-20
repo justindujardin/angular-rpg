@@ -1,9 +1,9 @@
 <div layout="column" layout-padding>
-  <h1>{{actionVerb$ | async}} {{name$ | async}}</h1> <span>Gold: {{buyer?.gold}}</span>
+  <h1>{{actionVerb$ | async}} {{name$ | async}}</h1> <span>Gold: {{partyGold$ | async}}</span>
 
   <div class="inventory" layout-padding flex>
     <ul *ngIf="isBuying$ | async">
-      <li class="item" *ngFor="let item of inventory$ | async" (click)="selectItem(item)" layout="row">
+      <li class="item" *ngFor="let item of inventory$ | async" (click)="_selected$.next(item)" layout="row">
         <rpg-sprite width="32" height="32" class="icon" [name]="item.icon"></rpg-sprite>
         <span flex class="item-name" [innerText]="item.name"></span>
         <span class="item-price" [innerText]="item.cost"></span>
@@ -11,7 +11,7 @@
     </ul>
 
     <ul *ngIf="isSelling$ | async">
-      <li class="item" *ngFor="let item of inventory$ | async" (click)="selectItem(item)" layout="row">
+      <li class="item" *ngFor="let item of inventory$ | async" (click)="_selected$.next(item)" layout="row">
         <rpg-sprite width="32" height="32" class="icon" [name]="item.icon"></rpg-sprite>
         <span flex class="item-name" [innerText]="item.name"></span>
         <span class="item-price" [innerText]="item.cost"></span>
@@ -29,12 +29,12 @@
 
 
   <div class="prompt btn-group" *ngIf="selected$ | async">
-    <button class="btn btn-flat" (click)="_selected$.next(null)">Back</button>
-    <button class="btn btn-flat" (click)="actionItem(selected)" [innerText]="(selling$ | async)?'Sell':'Buy'"></button>
+    <button (click)="_selected$.next(null)">Back</button>
+    <button (click)="_onAction$.next()" [innerText]="(selling$ | async)?'Sell':'Buy'"></button>
   </div>
   <div class="prompt btn-group" *ngIf="!(selected$ | async)">
-    <button class="btn btn-flat" (click)="close()">Done</button>
-    <button class="btn btn-flat" (click)="toggleAction()" [innerText]="(selling$ | async)?'Buy':'Sell'"></button>
+    <button (click)="onClose.next($event)">Done</button>
+    <button (click)="_onToggleAction$.next()" [innerText]="(selling$ | async)?'Buy':'Sell'"></button>
   </div>
 
 </div>

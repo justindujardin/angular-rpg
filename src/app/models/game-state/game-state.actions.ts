@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {GameState, GameMoveData} from './game-state.model';
+import {GameState, GamePositionFacing} from './game-state.model';
 import {type} from '../util';
 import {IPoint} from '../../../game/pow-core';
 
@@ -15,6 +15,8 @@ export const GameStateActionTypes = {
   TRAVEL_SUCCESS: type('rpg/state/travel-success'),
   TRAVEL_FAIL: type('rpg/state/travel-fail'),
   MOVE: type('rpg/state/move'),
+  ADD_GOLD: type('rpg/state/gold'),
+  HEAL_PARTY: type('rpg/state/party/heal'),
 };
 
 
@@ -102,10 +104,42 @@ export class GameStateTravelFailAction implements Action {
 //
 // Move state actions
 //
+
+export interface GameStateMoveData {
+  from: IPoint;
+  to: IPoint;
+  facing: GamePositionFacing;
+}
+
 export class GameStateMoveAction implements Action {
   type = GameStateActionTypes.MOVE;
 
-  constructor(public payload: GameMoveData) {
+  constructor(public payload: GameStateMoveData) {
+  }
+}
+
+
+//
+// Gold state actions
+//
+export class GameStateAddGoldAction implements Action {
+  type = GameStateActionTypes.ADD_GOLD;
+
+  constructor(public payload: number) {
+  }
+}
+
+
+//
+// Party state actions
+//
+export class GameStateHealPartyAction implements Action {
+  type = GameStateActionTypes.HEAL_PARTY;
+
+  payload: number;
+
+  constructor(healingCost: number) {
+    this.payload = healingCost;
   }
 }
 
@@ -121,3 +155,5 @@ export type GameStateActions
   | GameStateTravelSuccessAction
   | GameStateTravelFailAction
   | GameStateMoveAction
+  | GameStateAddGoldAction
+  | GameStateHealPartyAction

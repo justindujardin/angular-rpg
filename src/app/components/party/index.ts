@@ -19,8 +19,10 @@ import {PartyMenu} from './partyMenu';
 import {PlayerCard} from './playerCard';
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {RpgModule} from '../rpg/index';
 import {MaterialModule} from '@angular/material';
+import {RPGSpriteModule} from '../sprite';
+import {RPGNotificationModule} from '../notification';
+import {RPGHealthBarModule} from '../health-bar';
 
 export * from './partyInventory';
 export * from './partyMenu';
@@ -38,7 +40,9 @@ const PARTY_EXPORTS = [
   imports: [
     MaterialModule,
     CommonModule,
-    RpgModule
+    RPGSpriteModule,
+    RPGNotificationModule,
+    RPGHealthBarModule
   ]
 })
 export class PartyModule {

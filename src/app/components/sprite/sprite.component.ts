@@ -30,7 +30,7 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 })
 export class RPGSprite {
 
-  static INVALID_IMAGE: string = 'images/a/blank.gif';
+  static INVALID_IMAGE: string = 'assets/images/a/blank.gif';
 
   private _dataUrl$ = new ReplaySubject<SafeResourceUrl>(1);
   dataUrl$: Observable<SafeResourceUrl> = this._dataUrl$;
@@ -57,7 +57,7 @@ export class RPGSprite {
   set frame(value: number) {
     if (this._frame$.value !== value) {
       this._frame$.next(value);
-      this._get();
+      this._get(this._name$.value);
     }
   }
 
@@ -69,7 +69,7 @@ export class RPGSprite {
       return;
     }
     this._name$.next(value);
-    this._get();
+    this._get(value);
   }
 
   constructor(private game: RPGGame,
@@ -77,8 +77,12 @@ export class RPGSprite {
               private renderer: SpriteRender) {
   }
 
-  private _get() {
-    this.renderer.getSingleSprite(this._name$.value, this._frame$.value).then((sprite: HTMLImageElement) => {
+  private _get(src:string) {
+    if(!src || src === RPGSprite.INVALID_IMAGE) {
+      this._dataUrl$.next(RPGSprite.INVALID_IMAGE);
+      return;
+    }
+    this.renderer.getSingleSprite(src, this._frame$.value).then((sprite: HTMLImageElement) => {
       // Get the context for drawing
       const width: number = parseInt(this._width$.value);
       const height: number = parseInt(this._height$.value);

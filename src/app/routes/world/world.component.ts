@@ -41,6 +41,7 @@ import {TileObjectRenderer} from '../../../game/pow2/tile/render/tileObjectRende
 import {Actions} from '@ngrx/effects';
 import {replace} from '@ngrx/router-store';
 import {getMap} from '../../models/game-state/game-state.reducer';
+import {GameStateService} from '../../services/game-state.service';
 
 @Component({
   selector: 'world',
@@ -110,13 +111,6 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
       return replace(['world', action.payload]);
     });
 
-  /** Load map and create player entity when the store changes */
-  map$: Observable<GameTileMap> = getMap(this.store)
-    .distinctUntilChanged()
-    .switchMap((map: string) => {
-      return this.gameResources.loadMap(map);
-    });
-
   map: GameTileMap;
 
   /** The fill color to use when rendering a path target. */
@@ -137,7 +131,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
               public actions$: Actions,
               public notify: Notify,
               public store: Store<AppState>,
-              public gameResources: GameResources,
+              public gameStateService: GameStateService,
               public world: GameWorld) {
     super();
     // Whenever the player is created, or the position changes
@@ -152,7 +146,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
       }).subscribe());
 
     // When the state position doesn't match where the user is
-    this._subscriptions.push(this.map$.combineLatest(this.partyLeader$)
+    this._subscriptions.push(this.gameStateService.worldMap$.combineLatest(this.partyLeader$)
       .distinctUntilChanged()
       .do((tuple: any) => {
         const map: GameTileMap = tuple[0];
@@ -261,8 +255,8 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
       return;
     }
 
-    var pathComponent = <PathComponent>this.scene.componentByType(PathComponent);
-    var playerComponent = <PlayerComponent>this.scene.componentByType(PlayerComponent);
+    const pathComponent = this.scene.componentByType(PathComponent) as PathComponent;
+    const playerComponent = this.scene.componentByType(PlayerComponent) as PlayerComponent;
     if (pathComponent && playerComponent) {
       PowInput.mouseOnView(e, this.mouse.view, this.mouse);
       playerComponent.path = pathComponent.calculatePath(playerComponent.targetPoint, this.mouse.world);
@@ -315,24 +309,24 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
       this._sprites = <SpriteComponent[]>this.scene.componentsByType(SpriteComponent);
       this._renderables = this._renderables.concat(this._sprites);
     }
-    var l: number = this._renderables.length;
-    for (var i = 0; i < l; i++) {
-      var renderObj: any = this._renderables[i];
+    let iterableLen: number = this._renderables.length;
+    for (let i = 0; i < iterableLen; i++) {
+      const renderObj: any = this._renderables[i];
       this.objectRenderer.render(renderObj, renderObj, this);
     }
     if (!this._movers) {
       this._movers = <MovableComponent[]>this.scene.componentsByType(MovableComponent);
     }
-    l = this._movers.length;
-    for (var i = 0; i < l; i++) {
-      var target: MovableComponent = this._movers[i];
+    iterableLen = this._movers.length;
+    for (let j = 0; j < iterableLen; j++) {
+      const target: MovableComponent = this._movers[j];
       if (target.path.length > 0) {
         this.context.save();
-        var destination: Point = target.path[target.path.length - 1].clone();
+        const destination: Point = target.path[target.path.length - 1].clone();
         destination.x -= 0.5;
         destination.y -= 0.5;
 
-        var screenTile: Rect = this.worldToScreen(new Rect(destination, new Point(1, 1)));
+        const screenTile: Rect = this.worldToScreen(new Rect(destination, new Point(1, 1)));
         this.context.fillStyle = this.targetFill;
         this.context.fillRect(screenTile.point.x, screenTile.point.y, screenTile.extent.x, screenTile.extent.y);
         this.context.strokeStyle = this.targetStroke;

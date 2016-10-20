@@ -23,7 +23,7 @@ import {SpriteRender} from './spriteRender';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {Visibility} from './visibility';
-import {GameResources} from './game-resources.service';
+import {GameStateService} from './game-state.service';
 export * from './animate';
 export * from './notify';
 export * from './rpgGame';
@@ -35,7 +35,7 @@ export const SERVICE_PROVIDERS = [
   GameWorld,
   SpriteRender,
   Visibility,
-  GameResources
+  GameStateService
 ];
 
 @NgModule({

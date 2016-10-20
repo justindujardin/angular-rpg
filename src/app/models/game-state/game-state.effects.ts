@@ -6,24 +6,28 @@ import {
   GameStateLoadFailAction,
   GameStateTravelAction,
   GameStateTravelFailAction,
-  GameStateTravelSuccessAction
+  GameStateTravelSuccessAction,
+  GameStateLoadAction
 } from './game-state.actions';
 import {Effect, Actions} from '@ngrx/effects';
 import {GameState} from './game-state.model';
+import {GameStateService} from '../../services/game-state.service';
 
 @Injectable()
 export class GameStateEffects {
 
-  constructor(private actions$: Actions) {
+  constructor(private actions$: Actions, private gameStateService: GameStateService) {
   }
 
   // switchMap -> world.ready$
   // router navigate to state map
   //
   @Effect() loadedGame$ = this.actions$.ofType(GameStateActionTypes.LOAD)
-    .debounceTime(10)
-    .map((action) => {
-      return new GameStateLoadSuccessAction(action.payload);
+    .switchMap((a: GameStateLoadAction) => {
+      return this.gameStateService.loadGame(a.payload);
+    })
+    .map((g: GameState) => {
+      return new GameStateLoadSuccessAction(g);
     })
     .catch((e) => {
       return Observable.of(new GameStateLoadFailAction(e.toString()));
@@ -40,9 +44,13 @@ export class GameStateEffects {
     });
 
   @Effect() travel$ = this.actions$.ofType(GameStateActionTypes.TRAVEL)
-    .debounceTime(10)
-    .map((action: GameStateTravelAction) => {
-      return new GameStateTravelSuccessAction(action.payload.map);
+    .switchMap((action: GameStateTravelAction) => {
+      return this.gameStateService
+        .loadMap(action.payload.map)
+        .map(() => action.payload.map);
+    })
+    .map((map: string) => {
+      return new GameStateTravelSuccessAction(map);
     })
     .catch((e) => {
       return Observable.of(new GameStateTravelFailAction(e.toString()));

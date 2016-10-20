@@ -18,10 +18,12 @@ import {WorldStore} from './world-store.component';
 import {WorldTemple} from './world-temple.component';
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {RpgModule} from '../../components/rpg';
 import {CanActivateWorld} from './world.guards';
 import {WorldEffects} from './world.effects';
 import {WorldComponent} from './';
+import {RPGSpriteModule} from '../../components/sprite';
+import {RPGNotificationModule} from '../../components/notification';
+import {RPGHealthBarModule} from '../../components/health-bar';
 
 export * from './world.component';
 export * from './world.effects';
@@ -46,7 +48,9 @@ const WORLD_EXPORTS = [
   exports: WORLD_EXPORTS,
   imports: [
     CommonModule,
-    RpgModule
+    RPGSpriteModule,
+    RPGHealthBarModule,
+    RPGNotificationModule
   ]
 })
 export class WorldModule {

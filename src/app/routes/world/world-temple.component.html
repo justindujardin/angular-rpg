@@ -5,28 +5,19 @@
   </div>
 
   <div class="prompt" flex>
-    <h2>It will cost you {{cost$ | async}} of your {{model?.gold}} gold to recover here.</h2>
+    <h2>It will cost you {{cost$ | async}} of your {{partyGold$ | async}} gold to recover here.</h2>
 
     <p>Would you like to heal your party members?</p>
   </div>
   <div layout="row" layout-padding>
-    <button flex="50" class="btn btn-flat" (click)="rest()">Yes</button>
-    <button flex="50" class="btn btn-flat" (click)="close()">No</button>
+    <button flex="50" (click)="_onRest$.next()">Yes</button>
+    <button flex="50" (click)="onClose.next($event)">No</button>
   </div>
 
-  <div class="party" hide-sm>
-    <div class="member" *ngFor="let hero of party" layout="column" layout-padding>
-      <div layout="row">
-        <rpg-sprite class="image" frame="7" [name]="hero.attributes.icon"></rpg-sprite>
-        <p class="name" flex>{{hero.attributes.name}}</p>
-
-        <div class="stats" layout="column" flex="20" hide-sm>
-          <div>Level {{hero.attributes.level}}</div>
-          <div>HP {{hero.attributes.hp}} / {{hero.attributes.maxHP}}</div>
-        </div>
-
-      </div>
+  <ul class="party">
+    <li *ngFor="let hero of party$ | async">
+      <rpg-sprite class="image" frame="7" width="96" height="96" [name]="hero.icon"></rpg-sprite>
       <rpg-health-bar [model]="hero"></rpg-health-bar>
-    </div>
-  </div>
+    </li>
+  </ul>
 </div>
