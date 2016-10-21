@@ -17,7 +17,7 @@
 import * as _ from 'underscore';
 import {GameEntityObject} from '../../../game/rpg/objects/all';
 import {GameWorld} from '../../services/gameWorld';
-import {CombatMap} from './combatMap';
+import {CombatComponent} from './combat.component';
 import {IPlayerAction} from '../../../game/rpg/states/playerCombatState';
 import {IChooseActionEvent} from '../../../game/rpg/states/combat/combatChooseActionState';
 import {CombatMagicComponent, CombatActionComponent, CombatItemComponent} from '../../../game/rpg/components/combat/actions/all';
@@ -66,7 +66,7 @@ export class ChooseActionStateMachine extends StateMachine {
   item: UsableModel = null;
   world: GameWorld = GameWorld.get();
 
-  constructor(public map: CombatMap,
+  constructor(public map: CombatComponent,
               public data: IChooseActionEvent,
               submit: (action: CombatActionComponent)=>any) {
     super();

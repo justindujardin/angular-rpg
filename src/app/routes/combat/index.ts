@@ -15,20 +15,20 @@
  */
 
 import {NgModule, ModuleWithProviders} from '@angular/core';
-import {CombatDamage} from './combatDamage';
-import {CombatMap} from './combatMap';
+import {CombatDamage} from './combat-damage.component';
+import {CombatComponent} from './combat.component';
 import {CommonModule} from '@angular/common';
 import {MaterialModule} from '@angular/material';
 import {RPGHealthBarModule} from '../../components/health-bar';
 
 
 export * from './chooseActionStates';
-export * from './combatDamage';
-export * from './combatMap';
+export * from './combat-damage.component';
+export * from './combat.component';
 
 export const COMBAT_EXPORTS = [
   CombatDamage,
-  CombatMap
+  CombatComponent
 ];
 
 @NgModule({

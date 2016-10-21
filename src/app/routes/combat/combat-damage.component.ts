@@ -28,7 +28,7 @@ import {Point} from '../../../game/pow-core/point';
           [style.left]="position?.x + 'px'">
     </span>
   `,
-  styleUrls: ['./combatDamage.scss']
+  styleUrls: ['./combat-damage.component.scss']
 })
 export class CombatDamage implements AfterViewInit {
   @Input()

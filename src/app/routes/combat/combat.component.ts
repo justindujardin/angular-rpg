@@ -14,8 +14,7 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {Component, ElementRef, Input, AfterViewInit} from '@angular/core';
-import {Map} from '../../components/map';
+import {Component, ElementRef, Input, AfterViewInit, ViewChild} from '@angular/core';
 import {IProcessObject} from '../../../game/pow-core/time';
 import {UIAttachment, ChooseActionStateMachine, ChooseActionType} from './chooseActionStates';
 import {PlayerCombatState, CombatAttackSummary} from '../../../game/rpg/states/playerCombatState';
@@ -42,8 +41,7 @@ import {CombatVictorySummary} from '../../../game/rpg/states/combat/combatVictor
 import {ItemModel} from '../../../game/rpg/models/itemModel';
 import {CombatDefeatSummary} from '../../../game/rpg/states/combat/combatDefeatState';
 import {HeroModel} from '../../../game/rpg/models/heroModel';
-
-const template = require('./combatMap.html') as string;
+import {TileMapView} from '../../../game/pow2/tile/tileMapView';
 
 /**
  * Describe a selectable menu item for a user input in combat.
@@ -55,17 +53,17 @@ export interface ICombatMenuItem<T> {
 
 @Component({
   selector: 'combat-map',
-  styleUrls: ['./combatMap.scss'],
+  styleUrls: ['./combat.component.scss'],
+  templateUrl: './combat.component.html',
   host: {
     '(window:resize)': '_onResize($event)',
     '(click)': '_onClick($event)'
-  },
-  template: template
+  }
 })
 /**
  * Render and provide input for a combat encounter.
  */
-export class CombatMap extends Map implements IProcessObject, AfterViewInit {
+export class CombatComponent extends TileMapView implements IProcessObject, AfterViewInit {
   /**
    * A pointing UI element that can be attached to `SceneObject`s to attract attention
    * @type {null}
@@ -120,16 +118,17 @@ export class CombatMap extends Map implements IProcessObject, AfterViewInit {
     return this._map;
   }
 
+  @ViewChild('combatCanvas') canvasElementRef: ElementRef;
+  @ViewChild('combatPointer') pointerElementRef: ElementRef;
 
-  constructor(public elRef: ElementRef,
-              public game: RPGGame,
+  constructor(public game: RPGGame,
               public animate: Animate,
               public notify: Notify) {
-    super(elRef, game);
+    super();
   }
 
   ngAfterViewInit() {
-    this.canvas = this.elRef.nativeElement.querySelector('canvas');
+    this.canvas = this.canvasElementRef.nativeElement;
     _.defer(() => this._onResize());
     if (this.camera) {
       this.camera.point.zero();
@@ -143,11 +142,12 @@ export class CombatMap extends Map implements IProcessObject, AfterViewInit {
     this.combat.machine.on('combat:chooseMoves', this.chooseTurns, this);
 
     this.pointer = {
-      element: this.elRef.nativeElement.querySelector('.point-to-player'),
+      element: this.pointerElementRef.nativeElement,
       object: null,
       offset: new Point()
     };
   }
+
 
   //
   // Events
@@ -283,7 +283,7 @@ export class CombatMap extends Map implements IProcessObject, AfterViewInit {
     targetPos.y -= (this.camera.point.y + 1.25);
     targetPos.x -= this.camera.point.x;
     var screenPos: Point = this.worldToScreen(targetPos, this.cameraScale);
-    screenPos.add(this.elRef.nativeElement.offsetLeft, this.elRef.nativeElement.offsetTop);
+    screenPos.add(this.canvasElementRef.nativeElement.offsetLeft, this.canvasElementRef.nativeElement.offsetTop);
     this.damages.push({
       timeout: new Date().getTime() + 5 * 1000,
       value: Math.abs(value),

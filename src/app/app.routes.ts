@@ -4,6 +4,8 @@ import {GameComponent} from './routes/game/game.component';
 import {GameResolver} from './routes/game/game.resolver';
 import {WorldComponent} from './routes/world/world.component';
 import {CanActivateWorld} from './routes/world/world.guards';
+import {CombatComponent} from './routes/combat';
+import {CanActivateCombat} from './routes/combat/combat.guards';
 
 
 export const ROUTES: Routes = [
@@ -13,6 +15,11 @@ export const ROUTES: Routes = [
     resolve: {
       gameState: GameResolver
     }
+  },
+  {
+    path: 'combat/:id',
+    component: CombatComponent,
+    canActivate: [CanActivateCombat]
   },
   {
     path: 'world/:id',

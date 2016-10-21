@@ -1,16 +1,18 @@
 import {inject, TestBed} from '@angular/core/testing';
-// Load the implementations that should be tested
 import {App} from './app.component';
+import {StoreModule} from '@ngrx/store';
+import {rootReducer} from './models';
 
 
 describe('App', () => {
-  // provide our implementations or mocks to the dependency injector
-  beforeEach(() => TestBed.configureTestingModule({
-    providers: [
-      App
-    ]}));
+  beforeEach(() => {
+    return TestBed.configureTestingModule({
+      providers: [App],
+      imports: [StoreModule.provideStore(rootReducer)]
+    });
+  });
 
-  it('should have an @ngrx/store injectable', inject([ App ], (app: App) => {
+  it('should have an @ngrx/store injectable', inject([App], (app: App) => {
     expect(app.store).toBeDefined();
   }));
 

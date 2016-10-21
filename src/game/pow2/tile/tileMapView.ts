@@ -13,15 +13,32 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {SceneView} from '../scene/sceneView';
 import {TileMapRenderer} from './render/tileMapRenderer';
 import {TileMap} from './tileMap';
 import {IRect} from '../../pow-core/rect';
 import {CameraComponent} from '../scene/components/cameraComponent';
+import {Point} from '../../pow-core';
+
 export class TileMapView extends SceneView {
   mapRenderer: TileMapRenderer = new TileMapRenderer;
   map: TileMap;
+
+  /**
+   * The map view bounds in world space.
+   */
+  protected _bounds: Point = new Point();
+
+  protected _onResize() {
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
+    this._bounds.set(this.canvas.width, this.canvas.height);
+    this._bounds = this.screenToWorld(this._bounds);
+    var ctx: any = this.context;
+    ctx.webkitImageSmoothingEnabled = false;
+    ctx.mozImageSmoothingEnabled = false;
+    ctx.imageSmoothingEnabled = false;
+  }
 
   /*
    * Get the camera clip rectangle.

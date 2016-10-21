@@ -1,7 +1,7 @@
-<canvas>
+<canvas #combatCanvas>
   Your browser doesn't support this.
 </canvas>
-<span class="point-to-player"></span>
+<span #combatPointer class="point-to-player"></span>
 <combat-damage *ngFor="let d of damages"
                [value]="d.value"
                [position]="d.position"

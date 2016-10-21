@@ -34,14 +34,15 @@ import {GameEntityObject} from '../../../game/rpg/objects/gameEntityObject';
 import {
   GameStateTravelAction,
   GameStateTravelSuccessAction,
-  GameStateActionTypes
+  GameStateActionTypes,
+  GameStateActions
 } from '../../models/game-state/game-state.actions';
 import {TileMapView} from '../../../game/pow2/tile/tileMapView';
 import {TileObjectRenderer} from '../../../game/pow2/tile/render/tileObjectRenderer';
 import {Actions} from '@ngrx/effects';
 import {replace} from '@ngrx/router-store';
-import {getMap} from '../../models/game-state/game-state.reducer';
 import {GameStateService} from '../../services/game-state.service';
+import {LoadingService} from '../../components/loading/loading.service';
 
 @Component({
   selector: 'world',
@@ -74,7 +75,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
 
   playerEntity$: Observable<GameEntityObject> = this._playerEntity$;
 
-  @ViewChild("worldCanvas") canvasElementRef: ElementRef;
+  @ViewChild('worldCanvas') canvasElementRef: ElementRef;
 
   /**
    * The feature type (if any) that is active.
@@ -101,7 +102,6 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
       return Immutable.Map(party[0]).toJS();
     })
     .distinctUntilChanged();
-
 
   /** Update router URL when travel completes */
   changeRouteTravel$ = this.actions$
@@ -130,10 +130,13 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
   constructor(public game: RPGGame,
               public actions$: Actions,
               public notify: Notify,
+              public loadingService: LoadingService,
               public store: Store<AppState>,
               public gameStateService: GameStateService,
               public world: GameWorld) {
     super();
+    this.world.mark(this.scene);
+
     // Whenever the player is created, or the position changes
     this._subscriptions.push(this.position$.combineLatest(this.playerEntity$)
       .distinctUntilChanged()
@@ -164,33 +167,18 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
   }
 
   ngAfterViewInit(): void {
-    this.world.mark(this.scene);
     this.canvas = this.canvasElementRef.nativeElement;
     this.camera.point.set(-0.5, -0.5);
     this.scene.addView(this);
     setTimeout(() => this._onResize(), 1);
   }
 
-  /**
-   * The map view bounds in world space.
-   */
-  protected _bounds: Point = new Point();
-
-
   protected _onResize() {
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
-    this._bounds.set(this.canvas.width, this.canvas.height);
-    this._bounds = this.screenToWorld(this._bounds);
-    var ctx: any = this.context;
-    ctx.webkitImageSmoothingEnabled = false;
-    ctx.mozImageSmoothingEnabled = false;
-    ctx.imageSmoothingEnabled = false;
-
+    super._onResize();
     // Camera (window bounds)
     if (this.map) {
-      var tileOffset = this.map.bounds.getCenter();
-      var offset = this._bounds.clone().divide(2).multiply(-1).add(tileOffset);
+      const tileOffset = this.map.bounds.getCenter();
+      const offset = this._bounds.clone().divide(2).multiply(-1).add(tileOffset);
       this.camera.point.set(offset.floor());
     }
     this.camera.extent.set(this._bounds);

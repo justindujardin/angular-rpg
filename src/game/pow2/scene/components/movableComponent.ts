@@ -50,7 +50,7 @@ export class MovableComponent extends TickedComponent {
   }
 
   syncComponent(): boolean {
-    this.collider = <CollisionComponent>this.host.findComponent(CollisionComponent);
+    this.collider = this.host.findComponent(CollisionComponent) as CollisionComponent;
     return super.syncComponent();
   }
 

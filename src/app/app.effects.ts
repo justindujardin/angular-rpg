@@ -3,8 +3,6 @@ import {Effect, Actions} from '@ngrx/effects';
 import {
   GameStateActionTypes,
   GameStateTravelAction,
-  GameStateSaveAction,
-  GameStateLoadAction,
   GameStateTravelFailAction,
   GameStateTravelSuccessAction
 } from './models/game-state/game-state.actions';
@@ -13,16 +11,17 @@ import {LoadingService} from './components/loading';
 @Injectable()
 export class AppEffects {
 
-  constructor(private actions$: Actions, private loading: LoadingService) {
+  constructor(private actions$: Actions, private loadingService: LoadingService) {
   }
 
   // When the game is loading or traveling, show the loading ui.
   @Effect({dispatch: false}) loadingIndicator$ = this.actions$
     .ofType(GameStateActionTypes.TRAVEL)
     .distinctUntilChanged()
-    .do((action: GameStateTravelAction|GameStateSaveAction|GameStateLoadAction) => {
+    .do((action: GameStateTravelAction) => {
       console.log("Traveling to " + action.payload);
-      this.loading.loading = true;
+      this.loadingService.message = `Traveling to ${action.payload.map}...`;
+      this.loadingService.loading = true;
     });
   // When the game is loading or traveling, show the loading ui.
   @Effect({dispatch: false}) loadingDoneIndicator$ = this.actions$
@@ -30,6 +29,6 @@ export class AppEffects {
     .distinctUntilChanged()
     .do((action: GameStateTravelSuccessAction|GameStateTravelFailAction) => {
       console.log("Traveling completed with result " + action.payload);
-      this.loading.loading = false;
+      this.loadingService.loading = false;
     });
 }

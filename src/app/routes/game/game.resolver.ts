@@ -19,7 +19,6 @@ export class GameResolver implements Resolve<any> {
       this.loadingService.title = 'RPG!';
       this.loadingService.message = 'Initializing the world...';
       const sub = this.world.ready$.subscribe(() => {
-        this.loadingService.loading = false;
         sub && sub.unsubscribe();
         resolve();
       });

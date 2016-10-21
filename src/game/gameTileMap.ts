@@ -103,6 +103,9 @@ export class GameTileMap extends TileMap {
       y: Math.round(tiledObject.y / this.map.tileheight)
     });
     const object = new GameFeatureObject(options);
+    if (this.scene && this.scene.world) {
+      this.scene.world.mark(object);
+    }
     const componentType = _.find(ALL_FEATURES, (constructor: any) => {
       return constructor.name === tiledObject.type;
     });
@@ -134,7 +137,7 @@ export class GameTileMap extends TileMap {
     }
     // Determine which zone and combat type
     var invTileSize = 1 / this.map.tilewidth;
-    var zones: any[] = _.map(this.zones.objects, (z: any)=> {
+    var zones: any[] = _.map(this.zones.objects, (z: any) => {
       var x = z.x * invTileSize;
       var y = z.y * invTileSize;
       var w = z.width * invTileSize;
@@ -145,7 +148,7 @@ export class GameTileMap extends TileMap {
       }
     });
     // TODO: This will always get the first zone.  What about overlapping zones?
-    var zone = _.find(zones, (z: any)=> {
+    var zone = _.find(zones, (z: any) => {
       return z.bounds.pointInRect(at) && z.name;
     });
     if (zone) {

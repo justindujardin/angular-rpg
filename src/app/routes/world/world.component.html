@@ -1,4 +1,4 @@
-<canvas #worldCanvas>
+<canvas #worldCanvas [hidden]="loadingService.loading$ | async">
   Your browser doesn't support this.
 </canvas>
 

@@ -50,10 +50,7 @@ export class WorldTemple implements OnInit, OnDestroy {
   @Input() scene: IScene;
 
   partyGold$: Observable<number> = getGold(this.store);
-  party$: Observable<PartyMember> = getParty(this.store).map((p: PartyMember[]) => {
-    console.log(p);
-    return p;
-  });
+  party$: Observable<PartyMember> = getParty(this.store);
 
   private _name$ = new BehaviorSubject<string>('Mystery Temple');
   name$: Observable<string> = this._name$;

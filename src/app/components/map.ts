@@ -58,10 +58,6 @@ export class Map extends TileMapView {
   private _musicComponent: SoundComponent = null;
 
 
-  /**
-   * The map view bounds in world space.
-   */
-  protected _bounds: Point = new Point();
 
   constructor(elRef: ElementRef, public game: RPGGame) {
     super(elRef.nativeElement.querySelector('canvas'));

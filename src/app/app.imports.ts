@@ -15,7 +15,6 @@ import {CombatModule} from './routes/combat/index';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {GameStateEffects} from './models/game-state/game-state.effects';
 import {EffectsModule} from '@ngrx/effects';
-import {Ng2MaterialModule} from 'ng2-material';
 import {AppEffects} from './app.effects';
 import {WorldModule, WorldEffects} from './routes/world';
 import {RPGHealthBarModule} from './components/health-bar';
@@ -40,7 +39,6 @@ export const APP_IMPORTS = [
   MaterialModule.forRoot(),
   PowCoreModule.forRoot(),
   GameModule.forRoot(),
-  Ng2MaterialModule.forRoot(),
   MaterialModule.forRoot(),
   ReactiveFormsModule,
   RouterModule.forRoot(ROUTES, {useHash: true}),
