@@ -79,6 +79,7 @@ export class PathComponent extends TileComponent {
     if (!this._graph || !this._graph.grid) {
       throw new Error("Invalid AStar graph");
     }
+    this._graph.init();
     // Treat out of range errors as non-critical, and just
     // return an empty array.
     if (from.x >= this._graph.grid.length || from.x < 0) {
@@ -93,9 +94,9 @@ export class PathComponent extends TileComponent {
     if (to.y >= this._graph.grid[to.x].length) {
       return [];
     }
-    var start = this._graph.grid[from.x][from.y];
-    var end = this._graph.grid[to.x][to.y];
-    var result = astar.astar.search(this._graph, start, end);
+    const start = this._graph.grid[from.x][from.y];
+    const end = this._graph.grid[to.x][to.y];
+    const result = astar.astar.search(this._graph, start, end);
     return _.map(result, (graphNode: any) => {
       return new Point(graphNode.x, graphNode.y);
     });
