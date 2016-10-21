@@ -34,8 +34,7 @@ import {GameEntityObject} from '../../../game/rpg/objects/gameEntityObject';
 import {
   GameStateTravelAction,
   GameStateTravelSuccessAction,
-  GameStateActionTypes,
-  GameStateActions
+  GameStateActionTypes
 } from '../../models/game-state/game-state.actions';
 import {TileMapView} from '../../../game/pow2/tile/tileMapView';
 import {TileObjectRenderer} from '../../../game/pow2/tile/render/tileObjectRenderer';
@@ -43,6 +42,7 @@ import {Actions} from '@ngrx/effects';
 import {replace} from '@ngrx/router-store';
 import {GameStateService} from '../../services/game-state.service';
 import {LoadingService} from '../../components/loading/loading.service';
+import {getParty} from '../../models/game-state/game-state.reducer';
 
 @Component({
   selector: 'world',
@@ -96,12 +96,10 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     .distinctUntilChanged();
 
   /** Observable of PartyMember representing the party leader to be rendered in the world */
-  partyLeader$: Observable<PartyMember> = this.store
-    .select((s) => s.gameState.party)
+  partyLeader$: Observable<PartyMember> = getParty(this.store)
     .map((party: PartyMember[]) => {
       return Immutable.Map(party[0]).toJS();
-    })
-    .distinctUntilChanged();
+    });
 
   /** Update router URL when travel completes */
   changeRouteTravel$ = this.actions$
@@ -333,27 +331,29 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
    * @internal
    */
   private renderModel(map: GameTileMap, player: PartyMember) {
+    const mapSet = !!(!this.map && map);
+    const mapChanged = !!(this.map && map && this.map.map.url !== map.map.url);
     const removePlayer = () => {
       if (this._playerEntity$.value && this.scene) {
         this.scene.removeObject(this._playerEntity$.value);
       }
       this._playerEntity$.next(null);
     };
-    if (this.map) {
-      if (this.map.map.url !== map.map.url) {
-        this.map.removeFeaturesFromScene();
-        this.scene.removeObject(this.map);
-        removePlayer();
-      }
+    if (mapChanged) {
+      this.map.removeFeaturesFromScene();
+      this.scene.removeObject(this.map);
+      removePlayer();
+      this.clearCache();
     }
     this.map = map;
-    this.clearCache();
     if (!map) {
       return;
     }
-    this.scene.addObject(map);
-    map.addFeaturesToScene();
-    map.syncComponents();
+    if (mapChanged || mapSet) {
+      this.scene.addObject(map);
+      map.addFeaturesToScene();
+      map.syncComponents();
+    }
     if (player && !this._playerEntity$.value) {
       this.game.createPlayer(player, map).then((player: GameEntityObject) => {
         this.scene.addObject(player);
