@@ -1,9 +1,9 @@
 import {GameStateActions, GameStateActionTypes, GameStateTravelAction, GameStateMoveAction} from './game-state.actions';
 import {GameState} from './game-state.model';
 import * as Immutable from 'immutable';
-import {Observable} from 'rxjs/Rx';
 import {AppState} from '../../app.model';
 import {PartyMember} from '../party-member.model';
+import {Store} from '@ngrx/store';
 
 const initialState: GameState = {
   party: [],
@@ -11,20 +11,13 @@ const initialState: GameState = {
   gold: 0,
   combatZone: '',
   map: '',
-  position: {x: 0, y: 0},
-  ts: -1
+  position: {x: 0, y: 0}
 };
 
 export function gameStateReducer(state: GameState = initialState, action: GameStateActions): GameState {
   switch (action.type) {
     case GameStateActionTypes.LOAD: {
       return Immutable.fromJS(action.payload).toJS();
-    }
-    case GameStateActionTypes.SAVE: {
-      const gameState = action.payload;
-      return Immutable.fromJS(gameState).merge({
-        ts: action.payload
-      }).toJS();
     }
     case GameStateActionTypes.TRAVEL: {
       const travel: GameStateTravelAction = action;
@@ -63,34 +56,34 @@ export function gameStateReducer(state: GameState = initialState, action: GameSt
 }
 
 
-export function getGameState(state$: Observable<AppState>) {
+export function getGameState(state$: Store<AppState>) {
   return state$.select(state => state.gameState);
 }
 
-export function getGold(state$: Observable<AppState>) {
+export function getGold(state$: Store<AppState>) {
   return state$.select(state => state.gameState.gold);
 }
 
-export function getMap(state$: Observable<AppState>) {
+export function getMap(state$: Store<AppState>) {
   return state$.select(state => state.gameState.map);
 }
 
-export function getPosition(state$: Observable<AppState>) {
+export function getPosition(state$: Store<AppState>) {
   return state$.select(state => state.gameState.position);
 }
 
-export function getCombatZone(state$: Observable<AppState>) {
+export function getCombatZone(state$: Store<AppState>) {
   return state$.select(state => state.gameState.combatZone);
 }
 
-export function getAllKeyData(state$: Observable<AppState>) {
+export function getAllKeyData(state$: Store<AppState>) {
   return state$.select(state => state.gameState.keyData);
 }
 
-export function getKeyData(state$: Observable<AppState>, key: string) {
+export function getKeyData(state$: Store<AppState>, key: string) {
   return state$.select(state => state.gameState.keyData[key]);
 }
 
-export function getParty(state$: Observable<AppState>) {
+export function getParty(state$: Store<AppState>) {
   return state$.select(state => state.gameState.party);
 }

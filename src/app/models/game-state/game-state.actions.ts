@@ -8,9 +8,6 @@ export const GameStateActionTypes = {
   LOAD: type('rpg/state/load'),
   LOAD_SUCCESS: type('rpg/state/load-success'),
   LOAD_FAIL: type('rpg/state/load-fail'),
-  SAVE: type('rpg/state/save'),
-  SAVE_SUCCESS: type('rpg/state/save-success'),
-  SAVE_FAIL: type('rpg/state/save-fail'),
   TRAVEL: type('rpg/state/travel'),
   TRAVEL_SUCCESS: type('rpg/state/travel-success'),
   TRAVEL_FAIL: type('rpg/state/travel-fail'),
@@ -39,30 +36,6 @@ export class GameStateLoadSuccessAction implements Action {
 
 export class GameStateLoadFailAction implements Action {
   type = GameStateActionTypes.LOAD_FAIL;
-
-  constructor(public payload: any) {
-  }
-}
-
-//
-// Save state Actions
-//
-export class GameStateSaveAction implements Action {
-  type = GameStateActionTypes.SAVE;
-
-  constructor(public payload: GameState) {
-  }
-}
-
-export class GameStateSaveSuccessAction implements Action {
-  type = GameStateActionTypes.SAVE_SUCCESS;
-
-  constructor(public payload: GameState) {
-  }
-}
-
-export class GameStateSaveFailAction implements Action {
-  type = GameStateActionTypes.SAVE_FAIL;
 
   constructor(public payload: any) {
   }
@@ -114,7 +87,7 @@ export interface GameStateMoveData {
 export class GameStateMoveAction implements Action {
   type = GameStateActionTypes.MOVE;
 
-  constructor(public payload: GameStateMoveData) {
+  constructor(public payload: IPoint) {
   }
 }
 
@@ -148,9 +121,6 @@ export type GameStateActions
   = GameStateLoadAction
   | GameStateLoadSuccessAction
   | GameStateLoadFailAction
-  | GameStateSaveAction
-  | GameStateSaveSuccessAction
-  | GameStateSaveFailAction
   | GameStateTravelAction
   | GameStateTravelSuccessAction
   | GameStateTravelFailAction

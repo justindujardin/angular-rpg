@@ -6,12 +6,12 @@ import {
   GameStateLoadFailAction,
   GameStateTravelAction,
   GameStateTravelFailAction,
-  GameStateTravelSuccessAction,
-  GameStateLoadAction
+  GameStateTravelSuccessAction
 } from './game-state.actions';
 import {Effect, Actions} from '@ngrx/effects';
 import {GameState} from './game-state.model';
 import {GameStateService} from '../../services/game-state.service';
+import {Action} from '@ngrx/store';
 
 @Injectable()
 export class GameStateEffects {
@@ -19,15 +19,13 @@ export class GameStateEffects {
   constructor(private actions$: Actions, private gameStateService: GameStateService) {
   }
 
-  // switchMap -> world.ready$
-  // router navigate to state map
-  //
-  @Effect() loadedGame$ = this.actions$.ofType(GameStateActionTypes.LOAD)
-    .switchMap((a: GameStateLoadAction) => {
-      return this.gameStateService.loadGame(a.payload);
-    })
-    .map((g: GameState) => {
-      return new GameStateLoadSuccessAction(g);
+  /**
+   * When a load action is dispatched, async load the state and then dispatch
+   * a Success action.
+   */
+  @Effect() initLoadedGame$ = this.actions$.ofType(GameStateActionTypes.LOAD)
+    .map((action: Action) => {
+      return new GameStateLoadSuccessAction(action.payload);
     })
     .catch((e) => {
       return Observable.of(new GameStateLoadFailAction(e.toString()));
@@ -49,6 +47,9 @@ export class GameStateEffects {
         .loadMap(action.payload.map)
         .map(() => action.payload.map);
     })
+    // TODO: This debounce is to let the UI transition to a loading screen for at least and appropriate
+    //       amount of time to let the map hide (to flashes of camera movement and map changing)
+    .debounceTime(1000)
     .map((map: string) => {
       return new GameStateTravelSuccessAction(map);
     })
