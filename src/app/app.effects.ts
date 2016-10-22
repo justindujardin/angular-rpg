@@ -7,6 +7,9 @@ import {
   GameStateTravelSuccessAction
 } from './models/game-state/game-state.actions';
 import {LoadingService} from './components/loading';
+import {CombatActionTypes, CombatActions} from './models/combat/combat.actions';
+import {CombatEncounter} from './models/combat/combat.model';
+import {replace} from '@ngrx/router-store';
 
 @Injectable()
 export class AppEffects {
@@ -30,5 +33,26 @@ export class AppEffects {
     .do((action: GameStateTravelSuccessAction|GameStateTravelFailAction) => {
       console.log("Traveling completed with result " + action.payload);
       this.loadingService.loading = false;
+    });
+
+
+  /** route update to combat encounter */
+  @Effect() navigateToCombatRoute$ = this.actions$
+    .ofType(CombatActionTypes.FIXED_ENCOUNTER, CombatActionTypes.RANDOM_ENCOUNTER)
+    .debounceTime(100)
+    .distinctUntilChanged()
+    .map((action: CombatActions) => {
+      const encounter: CombatEncounter = action.payload;
+      return replace(['combat', encounter.id]);
+    });
+
+
+  /** route update to world map */
+  @Effect() navigateToWorldRoute$ = this.actions$
+    .ofType(GameStateActionTypes.TRAVEL_SUCCESS)
+    .debounceTime(100)
+    .distinctUntilChanged()
+    .map((action: GameStateTravelSuccessAction) => {
+      return replace(['world', action.payload]);
     });
 }

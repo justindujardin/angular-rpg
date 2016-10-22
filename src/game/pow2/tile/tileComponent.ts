@@ -30,11 +30,11 @@ export class TileComponent extends SceneComponent {
     EXITED: "tile:exited"
   };
 
-  syncComponent(): boolean {
+  syncBehavior(): boolean {
     return !!this.host.tileMap && this.host.tileMap instanceof TileMap;
   }
 
-  disconnectComponent(): boolean {
+  disconnectBehavior(): boolean {
     return true;
   }
 

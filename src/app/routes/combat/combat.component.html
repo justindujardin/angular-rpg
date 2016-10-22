@@ -6,24 +6,15 @@
                [value]="d.value"
                [position]="d.position"
                [classes]="d.classes"></combat-damage>
+<combat-player></combat-player>
 <div class="combat-view">
-  <ul *ngIf="items.length > 0"
-      class="ebp action-menu"
-      layout="column"
-      layout-sm="row"
-      layout-align-gt-sm="start start"
-      layout-align-sm="space-around center">
-    <li *ngFor="let item of items"
-        (click)="item.select()"
-        [innerText]="item.label"></li>
+  <ul *ngIf="items.length > 0" class="ebp action-menu">
+    <li *ngFor="let item of items" (click)="item.select()" [innerText]="item.label"></li>
   </ul>
-  <div class="status"
-       *ngFor="let member of combat?.machine?.party"
-       [class]="getMemberClass(member,combat?.focus)"
-       layout="column">
-    <div class="text" layout="row">
+  <div class="status" *ngFor="let member of combat?.machine?.party" [class]="getMemberClass(member,combat?.focus)">
+    <div class="text">
       <span class="name">{{member.model.attributes.name}}</span>
-      <span flex class="hp">HP {{member.model.attributes.hp}} / {{member.model.attributes.maxHP}}</span>
+      <span class="hp">HP {{member.model.attributes.hp}} / {{member.model.attributes.maxHP}}</span>
     </div>
     <rpg-health-bar [model]="member.model"></rpg-health-bar>
   </div>

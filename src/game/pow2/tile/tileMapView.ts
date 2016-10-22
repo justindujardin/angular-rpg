@@ -73,9 +73,9 @@ export class TileMapView extends SceneView {
    * Update the camera for this frame.
    */
   processCamera() {
-    this.cameraComponent = <CameraComponent>this.findComponent(CameraComponent);
+    this.cameraComponent = <CameraComponent>this.findBehavior(CameraComponent);
     if (!this.cameraComponent && this.map) {
-      this.cameraComponent = <CameraComponent>this.map.findComponent(CameraComponent);
+      this.cameraComponent = <CameraComponent>this.map.findBehavior(CameraComponent);
     }
     if (!this.cameraComponent) {
       this.cameraComponent = <CameraComponent>this.scene.componentByType(CameraComponent);

@@ -13,29 +13,28 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as Backbone from 'backbone';
 import * as _ from 'underscore';
 import * as rpg from '../../game/rpg/game';
-import {GameStateMachine} from '../../game/rpg/states/gameStateMachine';
-import {PlayerCombatState} from '../../game/rpg/states/playerCombatState';
 import {GameStateModel} from '../../game/rpg/models/gameStateModel';
 import {ItemModel, WeaponModel, ArmorModel, UsableModel} from '../../game/rpg/models/all';
 import {Scene} from '../../game/pow2/scene/scene';
 import {EntityFactory} from '../../game/pow-core/resources/entities';
 import {GameDataResource} from '../../game/pow2/game/resources/gameData';
-import {GAME_ROOT, registerSprites, SPREADSHEET_ID} from '../../game/pow2/core/api';
+import {registerSprites, SPREADSHEET_ID} from '../../game/pow2/core/api';
 import {RPG_GAME_ENTITIES} from '../../game/game.entities';
 import {Subject} from 'rxjs/Subject';
 import {ReplaySubject, Observable} from 'rxjs/Rx';
 import {JSONResource} from '../../game/pow-core/resources/json';
-import {Injectable, Injector} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ResourceLoader} from '../../game/pow-core/resourceLoader';
 import {PowInput} from '../../game/pow2/core/input';
 import {World} from '../../game/pow-core/world';
 import {SpriteRender} from './spriteRender';
 import {AppState} from '../app.model';
 import {Store} from '@ngrx/store';
+import {CombatFixedEncounter, Combatant} from '../models/combat/combat.model';
+import {CombatFixedEncounterAction} from '../models/combat/combat.actions';
 
 
 var _sharedGameWorld: GameWorld = null;
@@ -43,7 +42,6 @@ var _sharedGameWorld: GameWorld = null;
 @Injectable()
 export class GameWorld extends World {
   input: PowInput = new PowInput();
-  state: GameStateMachine = new GameStateMachine();
   model: GameStateModel = new GameStateModel();
   scene: Scene = new Scene();
 
@@ -95,7 +93,7 @@ export class GameWorld extends World {
   randomEncounter(zone: rpg.IZoneMatch, then?: rpg.IGameEncounterCallback) {
     const gsr = this.spreadsheet;
     var encountersData = gsr.getSheetData('randomencounters');
-    var encounters: rpg.IGameRandomEncounter[] = _.filter(encountersData, (enc: any)=> {
+    var encounters: rpg.IGameRandomEncounter[] = _.filter(encountersData, (enc: any) => {
       return _.indexOf(enc.zones, zone.map) !== -1 || _.indexOf(enc.zones, zone.target) !== -1;
     });
     if (encounters.length === 0) {
@@ -155,10 +153,27 @@ export class GameWorld extends World {
 
 
   private doEncounter(zoneInfo: rpg.IZoneMatch, encounter: rpg.IGameEncounter, then?: rpg.IGameEncounterCallback) {
+
+    const enemyList: any[] = this.spreadsheet.getSheetData('enemies');
+    const toCombatant = (id: string): Combatant => {
+      const itemTemplate = _.where(enemyList, {
+        id: id
+      })[0];
+      return Object.assign({}, itemTemplate) as any;
+    };
+
+    const payload: CombatFixedEncounter = {
+      id: encounter.id,
+      enemies: encounter.enemies.map(toCombatant),
+      party: []
+    };
+
+    this.store.dispatch(new CombatFixedEncounterAction(payload));
+
     this.scene.trigger('combat:encounter', this);
-    this.state.encounter = encounter;
-    this.state.encounterInfo = zoneInfo;
-    this.state.setCurrentState(PlayerCombatState.NAME);
+    // this.state.encounter = encounter;
+    // this.state.encounterInfo = zoneInfo;
+    // this.state.setCurrentState(PlayerCombatState.NAME);
     this._encounterCallback = then;
   }
 

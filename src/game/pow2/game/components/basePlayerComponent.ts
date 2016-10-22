@@ -44,10 +44,10 @@ export class BasePlayerComponent extends MovableComponent {
     MOVE_END: 'move:end'
   };
 
-  syncComponent(): boolean {
+  syncBehavior(): boolean {
     this.sprite = <PlayerRenderComponent>
-      this.host.findComponent(PlayerRenderComponent);
-    return super.syncComponent();
+      this.host.findBehavior(PlayerRenderComponent);
+    return super.syncBehavior();
   }
 
   tick(elapsed: number) {
@@ -142,7 +142,7 @@ export class BasePlayerComponent extends MovableComponent {
     this.collider.collide(move.from.x, move.from.y, TileObject, results);
     for (var i = 0; i < results.length; i++) {
       var o: TileObject = results[i];
-      var comp: TileComponent = <TileComponent>o.findComponent(this.collideComponentType);
+      var comp: TileComponent = <TileComponent>o.findBehavior(this.collideComponentType);
       if (!comp || !comp.enter) {
         continue;
       }
@@ -154,7 +154,7 @@ export class BasePlayerComponent extends MovableComponent {
     this.collider.collide(move.to.x, move.to.y, TileObject, results);
     for (var i = 0; i < results.length; i++) {
       var o: TileObject = results[i];
-      var comp = <TileComponent>o.findComponent(this.collideComponentType);
+      var comp = <TileComponent>o.findBehavior(this.collideComponentType);
       if (!comp || !comp.enter) {
         continue;
       }
@@ -177,7 +177,7 @@ export class BasePlayerComponent extends MovableComponent {
       return o._uid !== this.host._uid;
     });
     if (fromObject) {
-      var comp = <TileComponent>fromObject.findComponent(this.collideComponentType);
+      var comp = <TileComponent>fromObject.findBehavior(this.collideComponentType);
       if (comp && comp.host._uid !== this.host._uid) {
         comp.exited(this.host);
       }
@@ -190,7 +190,7 @@ export class BasePlayerComponent extends MovableComponent {
       return o._uid !== this.host._uid;
     });
     if (toObject) {
-      var comp = <TileComponent>toObject.findComponent(this.collideComponentType);
+      var comp = <TileComponent>toObject.findBehavior(this.collideComponentType);
       if (comp && comp.host._uid !== this.host._uid) {
         comp.entered(this.host);
       }

@@ -19,21 +19,18 @@ import {WorldTemple} from './world-temple.component';
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {CanActivateWorld} from './world.guards';
-import {WorldEffects} from './world.effects';
 import {WorldComponent} from './';
 import {RPGSpriteModule} from '../../components/sprite';
 import {RPGNotificationModule} from '../../components/notification';
 import {RPGHealthBarModule} from '../../components/health-bar';
 
 export * from './world.component';
-export * from './world.effects';
 export * from './world-dialog.component';
 export * from './world-store.component';
 export * from './world-temple.component';
 
 export const WORLD_PROVIDERS = [
-  CanActivateWorld,
-  WorldEffects
+  CanActivateWorld
 ];
 
 const WORLD_EXPORTS = [

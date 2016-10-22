@@ -7,18 +7,9 @@ import {ShipFeatureComponent} from './rpg/components/features/shipFeatureCompone
 import {StoreFeatureComponent} from './rpg/components/features/storeFeatureComponent';
 import {TempleFeatureComponent} from './rpg/components/features/templeFeatureComponent';
 import {TreasureFeatureComponent} from './rpg/components/features/treasureFeatureComponent';
-import {CombatEncounterComponent} from './rpg/components/combat/combatEncounterComponent';
 import {GameFeatureInputComponent} from './rpg/components/gameFeatureInputComponent';
-import {PlayerCombatRenderComponent} from './pow2/game/components/playerCombatRenderComponent';
-import {PlayerCombatState} from './rpg/states/playerCombatState';
 import {HeroModel} from './rpg/models/heroModel';
 import {GameEntityObject} from './rpg/objects/gameEntityObject';
-import {CombatMagicComponent} from './rpg/components/combat/actions/combatMagicComponent';
-import {CombatAttackComponent} from './rpg/components/combat/actions/combatAttackComponent';
-import {AnimatedComponent} from './pow2/game/components/animatedComponent';
-import {CombatItemComponent} from './rpg/components/combat/actions/combatItemComponent';
-import {CombatRunComponent} from './rpg/components/combat/actions/combatRunComponent';
-import {CombatGuardComponent} from './rpg/components/combat/actions/combatGuardComponent';
 import {EntityModel} from './rpg/models/entityModel';
 import {SpriteComponent} from './pow2/tile/components/spriteComponent';
 import {TiledTMXResource} from './pow-core/resources/tiled/tiledTmx';
@@ -28,7 +19,9 @@ import {GameMapPathComponent} from './pow2/game/components/gameMapPathComponent'
 import {PlayerComponent} from './rpg/components/playerComponent';
 import {PlayerCameraComponent} from './rpg/components/playerCameraComponent';
 import {PlayerTouchComponent} from './rpg/components/playerTouchComponent';
-import {CombatCameraComponent} from './rpg/components/combat/combatCameraComponent';
+import {CombatCameraBehavior} from '../app/routes/combat/behaviors/combat-camera.behavior';
+import {CombatAttackComponent} from '../app/routes/combat/behaviors/actions/combat-attack.behavior';
+import {CombatEncounterBehavior} from '../app/routes/world/behaviors/combat-encounter.behavior';
 
 
 /**
@@ -56,7 +49,7 @@ export const RPG_GAME_ENTITIES: IEntityTemplate[] = [
     components: [
       {
         name: 'encounters',
-        type: CombatEncounterComponent
+        type: CombatEncounterBehavior
       },
       {
         name: 'input',
@@ -89,33 +82,33 @@ export const RPG_GAME_ENTITIES: IEntityTemplate[] = [
     params: ['resource'],
     components: [
       {
-        type: CombatCameraComponent
+        type: CombatCameraBehavior
       }
     ]
   },
-  {
-    name: 'CombatPlayer',
-    type: GameEntityObject,
-    inputs: {
-      model: HeroModel,
-      combat: PlayerCombatState
-    },
-    components: [
-      {name: 'render', type: PlayerCombatRenderComponent},
-      {name: 'animation', type: AnimatedComponent},
-      {name: 'attack', type: CombatAttackComponent, params: ['combat']},
-      {name: 'magic', type: CombatMagicComponent, params: ['combat']},
-      {name: 'item', type: CombatItemComponent, params: ['combat']},
-      {name: 'run', type: CombatRunComponent, params: ['combat']},
-      {name: 'guard', type: CombatGuardComponent, params: ['combat']}
-    ]
-  },
+  // {
+  //   name: 'CombatPlayer',
+  //   type: GameEntityObject,
+  //   inputs: {
+  //     model: HeroModel,
+  //     // combat: PlayerCombatState
+  //   },
+  //   components: [
+  //     {name: 'render', type: PlayerCombatRenderComponent},
+  //     {name: 'animation', type: AnimatedComponent},
+  //     {name: 'attack', type: CombatAttackComponent, params: ['combat']},
+  //     {name: 'magic', type: CombatMagicComponent, params: ['combat']},
+  //     {name: 'item', type: CombatItemComponent, params: ['combat']},
+  //     {name: 'run', type: CombatRunComponent, params: ['combat']},
+  //     {name: 'guard', type: CombatGuardComponent, params: ['combat']}
+  //   ]
+  // },
   {
     name: 'CombatEnemy',
     type: GameEntityObject,
     inputs: {
       'model': EntityModel,
-      'combat': PlayerCombatState,
+      // 'combat': PlayerCombatState,
       'sprite': Object
     },
     components: [

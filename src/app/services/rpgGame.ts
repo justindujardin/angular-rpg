@@ -30,7 +30,6 @@ import {Point} from '../../game/pow-core';
 @Injectable()
 export class RPGGame {
   styleBackground: string = 'rgba(0,0,0,1)';
-  machine: GameStateMachine;
   private _renderCanvas: HTMLCanvasElement;
   private _canvasAcquired: boolean = false;
   private _stateKey: string = "_angular2PowRPGState";
@@ -42,9 +41,6 @@ export class RPGGame {
     this._renderCanvas.width = this._renderCanvas.height = 64;
     this._renderCanvas.style.position = 'absolute';
     this._renderCanvas.style.left = this._renderCanvas.style.top = '-9000px';
-
-    this.machine = this.world.state;
-    // Tell the world time manager to start ticking.
     this.world.time.start();
   }
 

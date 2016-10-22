@@ -13,12 +13,10 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
 import {SceneComponent} from './sceneComponent';
 import {Entity} from '../../pow-core/entity';
 import {Scene} from './scene';
-import {IWorld} from '../../pow-core/world';
 import {Point} from '../../pow-core/point';
 /**
  * An object that may exist in a `Scene` and receives time updates.
@@ -76,7 +74,7 @@ export class SceneObject extends Entity {
 
   destroy() {
     _.each(this._components, (o: SceneComponent) => {
-      o.disconnectComponent();
+      o.disconnectBehavior();
     });
     this._components.length = 0;
     if (this.scene) {
@@ -85,7 +83,7 @@ export class SceneObject extends Entity {
   }
 
   onAddToScene(scene: Scene) {
-    this.syncComponents();
+    this.syncBehaviors();
   }
 
   addComponentDictionary(components: any, silent?: boolean): boolean {
@@ -94,7 +92,7 @@ export class SceneObject extends Entity {
       if (failed) {
         return;
       }
-      if (!this.addComponent(comp, true)) {
+      if (!this.addBehavior(comp, true)) {
         failed = comp;
       }
     });
@@ -102,7 +100,7 @@ export class SceneObject extends Entity {
       console.log("Failed to add component set to host. Component " + failed.toString() + " failed to connect to host.");
     }
     else {
-      this.syncComponents();
+      this.syncBehaviors();
     }
     return !failed;
   }
@@ -114,7 +112,7 @@ export class SceneObject extends Entity {
     });
     this._components = _.filter(this._components, (obj: SceneComponent) => {
       if (_.indexOf(removeIds, obj.id) !== -1) {
-        if (obj.disconnectComponent() === false) {
+        if (obj.disconnectBehavior() === false) {
           return true;
         }
         obj.host = null;
@@ -124,7 +122,7 @@ export class SceneObject extends Entity {
     });
     var change: boolean = this._components.length === previousCount;
     if (change && silent !== true) {
-      this.syncComponents();
+      this.syncBehaviors();
     }
     return change;
   }

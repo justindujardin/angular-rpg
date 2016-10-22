@@ -16,10 +16,12 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {GameStateEffects} from './models/game-state/game-state.effects';
 import {EffectsModule} from '@ngrx/effects';
 import {AppEffects} from './app.effects';
-import {WorldModule, WorldEffects} from './routes/world';
+import {WorldModule} from './routes/world';
 import {RPGHealthBarModule} from './components/health-bar';
 import {RPGNotificationModule} from './components/notification';
 import {RPGSpriteModule} from './components/sprite';
+import {BehaviorsModule} from './behaviors/index';
+
 
 export const APP_IMPORTS = [
   BrowserModule,
@@ -28,6 +30,7 @@ export const APP_IMPORTS = [
   HttpModule,
 
   // Components
+  BehaviorsModule.forRoot(),
   PartyModule.forRoot(),
   RPGHealthBarModule.forRoot(),
   RPGNotificationModule.forRoot(),
@@ -46,6 +49,5 @@ export const APP_IMPORTS = [
   RouterStoreModule.connectRouter(),
   StoreDevtoolsModule.instrumentOnlyWithExtension(),
   EffectsModule.run(GameStateEffects),
-  EffectsModule.run(WorldEffects),
   EffectsModule.run(AppEffects)
 ];

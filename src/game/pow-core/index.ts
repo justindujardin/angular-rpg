@@ -3,7 +3,7 @@ import {ResourceLoader} from './resourceLoader';
 import {HttpModule} from '@angular/http';
 import {CommonModule} from '@angular/common';
 
-export * from './component';
+export * from './behavior';
 export * from './entity';
 export * from './errors';
 export * from './point';

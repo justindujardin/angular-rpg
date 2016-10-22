@@ -30,17 +30,17 @@ import {GameEntityObject} from '../../objects/gameEntityObject';
 export class CombatFeatureComponent extends GameFeatureComponent {
   party: PlayerComponent = null;
 
-  connectComponent(): boolean {
+  connectBehavior(): boolean {
     if (typeof this.host.id === 'undefined') {
       console.error("Fixed encounters must have a given id so they may be hidden");
       return false;
     }
-    return super.connectComponent();
+    return super.connectBehavior();
   }
 
   enter(object: GameEntityObject): boolean {
     this.party = <PlayerComponent>
-      object.findComponent(PlayerComponent);
+      object.findBehavior(PlayerComponent);
     if (!this.party) {
       return false;
     }

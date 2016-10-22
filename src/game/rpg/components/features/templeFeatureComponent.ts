@@ -21,8 +21,8 @@ export class TempleFeatureComponent extends GameFeatureComponent {
   cost: string;
   icon: string;
 
-  syncComponent(): boolean {
-    if (!super.syncComponent() || !this.host.feature) {
+  syncBehavior(): boolean {
+    if (!super.syncBehavior() || !this.host.feature) {
       return false;
     }
     this.name = "Temple";

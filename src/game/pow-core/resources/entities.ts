@@ -127,7 +127,7 @@ export class EntityFactory {
               reject('Failed to construct component with error' + e);
             }
             compObject.name = comp.name;
-            if (!object.addComponent(compObject)) {
+            if (!object.addBehavior(compObject)) {
               reject(errors.COMPONENT_REGISTER_FAIL);
             }
             resolve(compObject);

@@ -27,16 +27,16 @@ export class DamageComponent extends SceneComponent {
   sound: SoundComponent;
   started: boolean = false;
 
-  syncComponent(): boolean {
-    if (!super.syncComponent()) {
+  syncBehavior(): boolean {
+    if (!super.syncBehavior()) {
       return false;
     }
     this.animation = <AnimatedSpriteComponent>
-      this.host.findComponent(AnimatedSpriteComponent);
+      this.host.findBehavior(AnimatedSpriteComponent);
     this.sprite = <SpriteComponent>
-      this.host.findComponent(SpriteComponent);
+      this.host.findBehavior(SpriteComponent);
     this.sound = <SoundComponent>
-      this.host.findComponent(SoundComponent);
+      this.host.findBehavior(SoundComponent);
     var ok = !!(this.animation && this.sprite);
     if (!this.started && ok) {
       this.started = true;

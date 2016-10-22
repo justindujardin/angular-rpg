@@ -22,15 +22,13 @@ import {TileObject} from '../../pow2/tile/tileObject';
 
 export class GameEntityObject extends TileObject {
   model: EntityModel;
-  type: string; // TODO: enum?
+  type = 'player';
   groups: any;
   world: GameWorld;
 
-  constructor(options: any) {
-    super(_.omit(options || {}, ["x", "y", "type"]));
-    this.type = options.type || "player";
-    this.groups = typeof options.groups === 'string' ? JSON.parse(options.groups) : options.groups;
-    this.model = options.model || new EntityModel(options);
+  constructor() {
+    super();
+    this.model = new EntityModel();
   }
 
   isDefeated(): boolean {

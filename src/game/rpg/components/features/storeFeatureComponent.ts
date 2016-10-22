@@ -23,8 +23,8 @@ export class StoreFeatureComponent extends GameFeatureComponent {
   name: string;
   inventory: any[];
 
-  syncComponent(): boolean {
-    if (!super.syncComponent()) {
+  syncBehavior(): boolean {
+    if (!super.syncBehavior()) {
       return false;
     }
     this.name = this.host.feature.name;
@@ -43,9 +43,9 @@ export class StoreFeatureComponent extends GameFeatureComponent {
     return true;
   }
 
-  disconnectComponent(): boolean {
+  disconnectBehavior(): boolean {
     this.inventory = null;
-    return super.disconnectComponent();
+    return super.disconnectBehavior();
   }
 
   enter(object: TileObject): boolean {

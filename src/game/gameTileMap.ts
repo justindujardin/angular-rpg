@@ -111,7 +111,7 @@ export class GameTileMap extends TileMap {
     });
     if (tiledObject.type && componentType) {
       const component = new componentType() as SceneComponent;
-      if (!object.addComponent(component)) {
+      if (!object.addBehavior(component)) {
         throw new Error("Component " + component.name + " failed to connect to host " + this.name);
       }
     }

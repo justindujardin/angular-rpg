@@ -15,11 +15,11 @@
  */
 
 import {SceneObject} from './sceneObject';
-import {Component} from '../../pow-core/component';
+import {Behavior} from '../../pow-core/behavior';
 /**
  * Simplest component that is hosted by an object in a scene.
  */
-export class SceneComponent extends Component {
+export class SceneComponent extends Behavior {
   host: SceneObject;
 }
 

@@ -23,8 +23,8 @@ export class DialogFeatureComponent extends GameFeatureComponent {
   text: string;
   icon: string;
 
-  syncComponent(): boolean {
-    if (!super.syncComponent() || !this.host.feature) {
+  syncBehavior(): boolean {
+    if (!super.syncBehavior() || !this.host.feature) {
       return false;
     }
     this.title = this.host.feature.title;

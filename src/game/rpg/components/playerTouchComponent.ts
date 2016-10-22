@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
 import {GameFeatureComponent} from './gameFeatureComponent';
 import {GameFeatureObject} from '../objects/gameFeatureObject';
@@ -33,12 +32,10 @@ export class PlayerTouchComponent extends TickedComponent {
   touch: GameFeatureObject = null;
   touchedComponent: GameFeatureComponent = null;
 
-  syncComponent(): boolean {
-    super.syncComponent();
-    this.player = <PlayerComponent>
-      this.host.findComponent(PlayerComponent);
-    this.collider = <CollisionComponent>
-      this.host.findComponent(CollisionComponent);
+  syncBehavior(): boolean {
+    super.syncBehavior();
+    this.player = this.host.findBehavior(PlayerComponent) as PlayerComponent;
+    this.collider = this.host.findBehavior(CollisionComponent) as CollisionComponent;
     return !!(this.player && this.collider);
   }
 
@@ -47,11 +44,11 @@ export class PlayerTouchComponent extends TickedComponent {
     if (!this.player || !this.collider) {
       return;
     }
-    var results: GameFeatureObject[] = [];
-    var newTouch: boolean = this.collider.collide(this.host.point.x + this.player.heading.x, this.host.point.y + this.player.heading.y, GameFeatureObject, results);
-    var touched = <GameFeatureObject>_.find(results, (r: GameFeatureObject) => {
-      return !!r.findComponent(GameFeatureComponent);
-    });
+    const results: GameFeatureObject[] = [];
+    const headingX = this.host.point.x + this.player.heading.x;
+    const headingY = this.host.point.y + this.player.heading.y;
+    const newTouch: boolean = this.collider.collide(headingX, headingY, GameFeatureObject, results);
+    const touched = _.find(results, (r: GameFeatureObject) => !!r.findBehavior(GameFeatureComponent));
     if (!newTouch || !touched) {
       if (this.touchedComponent) {
         this.touchedComponent.exit(this.host);
@@ -60,8 +57,8 @@ export class PlayerTouchComponent extends TickedComponent {
       this.touch = null;
     }
     else {
-      var touchComponent = <GameFeatureComponent>touched.findComponent(GameFeatureComponent);
-      var previousTouch = this.touchedComponent ? this.touchedComponent.id : null;
+      const touchComponent = touched.findBehavior(GameFeatureComponent) as GameFeatureComponent;
+      const previousTouch = this.touchedComponent ? this.touchedComponent.id : null;
       if (this.touchedComponent && this.touchedComponent.id !== touchComponent.id) {
         this.touchedComponent.exit(this.host);
         this.touchedComponent = null;
@@ -72,7 +69,6 @@ export class PlayerTouchComponent extends TickedComponent {
         this.touchedComponent.enter(this.host);
       }
       this.touch = touched;
-
     }
   }
 }

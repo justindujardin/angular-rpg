@@ -13,15 +13,12 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {ElementRef} from '@angular/core';
 import {RPGGame} from '../services/rpgGame';
 import {GameTileMap} from '../../game/gameTileMap';
 import {TileMapView} from '../../game/pow2/tile/tileMapView';
 import {SoundComponent} from '../../game/pow2/scene/components/soundComponent';
-import {Point} from '../../game/pow-core/point';
 import {TiledTMXResource} from '../../game/pow-core/resources/tiled/tiledTmx';
-import {GameWorld} from '../services/gameWorld';
 import {getMapUrl} from '../../game/pow2/core/api';
 
 
@@ -127,7 +124,7 @@ export class Map extends TileMapView {
 
   protected _destroyMusic() {
     if (this._musicComponent) {
-      this.tileMap && this.tileMap.removeComponent(this._musicComponent);
+      this.tileMap && this.tileMap.removeBehavior(this._musicComponent);
       this._musicComponent = null;
     }
   }
@@ -145,7 +142,7 @@ export class Map extends TileMapView {
       //   volume: 0.1,
       //   loop: true
       // });
-      // this.tileMap.addComponent(this._musicComponent);
+      // this.tileMap.addBehavior(this._musicComponent);
     }
   }
 

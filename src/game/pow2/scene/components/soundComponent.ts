@@ -43,16 +43,16 @@ export class SoundComponent extends SceneComponent implements SoundComponentOpti
     }
   }
 
-  disconnectComponent(): boolean {
+  disconnectBehavior(): boolean {
     if (this.audio && this.audio.data) {
       this.audio.data.pause();
       this.audio.data.currentTime = 0;
     }
-    return super.disconnectComponent();
+    return super.disconnectBehavior();
   }
 
-  connectComponent(): boolean {
-    if (!super.connectComponent() || !this.url) {
+  connectBehavior(): boolean {
+    if (!super.connectBehavior() || !this.url) {
       return false;
     }
     if (this.audio && this.audio.data) {

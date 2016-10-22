@@ -1,16 +1,17 @@
 import {compose} from '@ngrx/core/compose';
 import {ActionReducer, combineReducers} from '@ngrx/store';
 import {storeFreeze} from 'ngrx-store-freeze';
-import {storeLogger} from 'ngrx-store-logger';
 import {routerReducer} from '@ngrx/router-store';
 import {itemReducer} from '../models/item/item.reducer';
 import {gameStateReducer} from './game-state/game-state.reducer';
+import {combatReducer} from './combat/combat.reducer';
 
 
 export const reducers = {
   router: routerReducer,
   items: itemReducer,
-  gameState: gameStateReducer
+  gameState: gameStateReducer,
+  combat: combatReducer
 };
 
 // Generate a reducer to set the root state in dev mode for HMR

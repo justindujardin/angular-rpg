@@ -31,20 +31,20 @@ export class PathComponent extends TileComponent {
     super();
   }
 
-  connectComponent(): boolean {
-    return super.connectComponent() && !!this.tileMap;
+  connectBehavior(): boolean {
+    return super.connectBehavior() && !!this.tileMap;
   }
 
-  syncComponent(): boolean {
+  syncBehavior(): boolean {
     this.tileMap.off(TileMap.Events.LOADED, this._updateGraph, this);
     this.tileMap.on(TileMap.Events.LOADED, this._updateGraph, this);
-    return super.syncComponent();
+    return super.syncBehavior();
   }
 
-  disconnectComponent(): boolean {
+  disconnectBehavior(): boolean {
     this.tileMap.off(TileMap.Events.LOADED, this._updateGraph, this);
     this._graph = null;
-    return super.disconnectComponent();
+    return super.disconnectBehavior();
   }
 
   private _updateGraph() {

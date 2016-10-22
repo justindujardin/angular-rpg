@@ -26,8 +26,8 @@ export class GameFeatureInputComponent extends TickedComponent {
   hits: TileObject[] = [];
   mouse: NamedMouseElement = null;
 
-  syncComponent(): boolean {
-    if (!super.syncComponent() || !this.host.scene || !this.host.scene.world || !this.host.scene.world.input) {
+  syncBehavior(): boolean {
+    if (!super.syncBehavior() || !this.host.scene || !this.host.scene.world || !this.host.scene.world.input) {
       return false;
     }
     this.mouse = this.host.scene.world.input.getMouseHook("world");

@@ -20,7 +20,7 @@ import {IWorld, IWorldObject} from '../../pow-core/world';
 import {SceneSpatialDatabase} from './sceneSpatialDatabase';
 import {IProcessObject} from '../../pow-core/time';
 import {Events} from '../../pow-core/events';
-import {IComponent} from '../../pow-core/component';
+import {IBehavior} from '../../pow-core/behavior';
 import {GameWorld} from '../../../app/services/gameWorld';
 
 export class Scene extends Events implements IScene, IProcessObject, IWorldObject {
@@ -201,12 +201,12 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     return !!this.findIt('_objects', object);
   }
 
-  componentByType(type): IComponent {
+  componentByType(type): IBehavior {
     var values: any[] = this._objects;
     var l: number = this._objects.length;
     for (var i = 0; i < l; i++) {
       var o: ISceneObject = values[i];
-      var c: IComponent = o.findComponent(type);
+      var c: IBehavior = o.findBehavior(type);
       if (c) {
         return c;
       }
@@ -214,13 +214,13 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     return null;
   }
 
-  componentsByType(type): IComponent[] {
+  componentsByType(type): IBehavior[] {
     var values: any[] = this._objects;
     var l: number = this._objects.length;
-    var results: IComponent[] = [];
+    var results: IBehavior[] = [];
     for (var i = 0; i < l; i++) {
       var o: ISceneObject = values[i];
-      var c: IComponent[] = o.findComponents(type);
+      var c: IBehavior[] = o.findBehaviors(type);
       if (c) {
         results = results.concat(c);
       }
@@ -285,7 +285,7 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     var results: ISceneObject[] = [];
     for (var i = 0; i < l; i++) {
       var o: ISceneObject = values[i];
-      if (o.findComponent(type)) {
+      if (o.findBehavior(type)) {
         results.push(o);
       }
     }
@@ -297,7 +297,7 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     var l: number = this._objects.length;
     for (var i = 0; i < l; i++) {
       var o: ISceneObject = values[i];
-      if (o.findComponent(type)) {
+      if (o.findBehavior(type)) {
         return o;
       }
     }

@@ -101,14 +101,6 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
       return Immutable.Map(party[0]).toJS();
     });
 
-  /** Update router URL when travel completes */
-  changeRouteTravel$ = this.actions$
-    .ofType(GameStateActionTypes.TRAVEL_SUCCESS)
-    .distinctUntilChanged()
-    .map((action: GameStateTravelSuccessAction) => {
-      return replace(['world', action.payload]);
-    });
-
   map: GameTileMap;
 
   /** The fill color to use when rendering a path target. */
@@ -189,14 +181,14 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     super.onAddToScene(scene);
     this.clearCache();
     this.mouse = this.world.input.mouseHook(<SceneView>this, "world");
-    this.scene.on(TileMap.Events.MAP_LOADED, this.syncComponents, this);
+    scene.on(TileMap.Events.MAP_LOADED, this.syncBehaviors, this);
 
     // When a portal is entered, update the map view to reflect the change.
-    this.scene.on('PortalFeatureComponent:entered', (data: any) => {
+    scene.on('PortalFeatureComponent:entered', (data: any) => {
       this.store.dispatch(new GameStateTravelAction(data.map, data.target));
     }, this);
 
-    this.scene.on('TreasureFeatureComponent:entered', (feature: any) => {
+    scene.on('TreasureFeatureComponent:entered', (feature: any) => {
       if (typeof feature.gold !== 'undefined') {
         this.game.world.model.addGold(feature.gold);
         this.notify.show("You found " + feature.gold + " gold!", null, 0);
@@ -224,9 +216,9 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
   onRemoveFromScene(scene: Scene) {
     this.clearCache();
     this.world.input.mouseUnhook("world");
-    this.scene.off(TileMap.Events.MAP_LOADED, this.syncComponents, this);
-    this.scene.off('PortalFeatureComponent:entered', null, this);
-    this.scene.off('TreasureFeatureComponent:entered', null, this);
+    scene.off(TileMap.Events.MAP_LOADED, this.syncBehaviors, this);
+    scene.off('PortalFeatureComponent:entered', null, this);
+    scene.off('TreasureFeatureComponent:entered', null, this);
 
     this._featureTypes.forEach((eventName: string) => {
       scene.off(eventName + ':entered', null, this);
@@ -259,7 +251,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
   private _features: GameFeatureObject[] = null;
 
   syncComponents() {
-    super.syncComponents();
+    super.syncBehaviors();
     this.clearCache();
   }
 
@@ -352,7 +344,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     if (mapChanged || mapSet) {
       this.scene.addObject(map);
       map.addFeaturesToScene();
-      map.syncComponents();
+      map.syncBehaviors();
     }
     if (player && !this._playerEntity$.value) {
       this.game.createPlayer(player, map).then((player: GameEntityObject) => {

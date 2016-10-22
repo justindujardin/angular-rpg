@@ -48,11 +48,11 @@ export class SpriteComponent extends SceneComponent {
     }
   }
 
-  syncComponent(): boolean {
+  syncBehavior(): boolean {
     if (this.host.world) {
       this.setSprite(this.icon, this.frame);
     }
-    return super.syncComponent();
+    return super.syncBehavior();
   }
 
   /**

@@ -42,16 +42,16 @@ export class MovableComponent extends TickedComponent {
   collider: CollisionComponent;
   currentMove: IMoveDescription = null;
 
-  connectComponent(): boolean {
+  connectBehavior(): boolean {
     this.host.point.round();
     this.targetPoint = this.host.point.clone();
     this.host.renderPoint = this.targetPoint.clone();
-    return super.connectComponent();
+    return super.connectBehavior();
   }
 
-  syncComponent(): boolean {
-    this.collider = this.host.findComponent(CollisionComponent) as CollisionComponent;
-    return super.syncComponent();
+  syncBehavior(): boolean {
+    this.collider = this.host.findBehavior(CollisionComponent) as CollisionComponent;
+    return super.syncBehavior();
   }
 
   /**

@@ -22,16 +22,16 @@ export class TreasureFeatureComponent extends GameFeatureComponent {
   item: string;
   icon: string;
 
-  connectComponent(): boolean {
+  connectBehavior(): boolean {
     if (typeof this.host.id === 'undefined') {
       console.error("Treasure must have a given id so it may be hidden");
       return false;
     }
-    return super.connectComponent();
+    return super.connectBehavior();
   }
 
-  syncComponent(): boolean {
-    if (!super.syncComponent() || !this.host.feature) {
+  syncBehavior(): boolean {
+    if (!super.syncBehavior() || !this.host.feature) {
       return false;
     }
     this.name = "Treasure Chest";

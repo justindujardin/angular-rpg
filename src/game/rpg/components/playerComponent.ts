@@ -44,7 +44,7 @@ export class PlayerComponent extends BasePlayerComponent {
    */
   collideMove(x: number, y: number, results: SceneObject[] = []) {
     if (this.host.scene && !this.map) {
-      this.map = <TileMap>this.host.scene.objectByType(TileMap);
+      this.map = this.host.scene.objectByType(TileMap) as TileMap;
     }
 
     var collision: boolean = this.collider && this.collider.collide(x, y, GameFeatureObject, results);

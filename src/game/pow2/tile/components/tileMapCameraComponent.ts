@@ -20,8 +20,8 @@ import {SceneView} from '../../scene/sceneView';
 export class TileMapCameraComponent extends CameraComponent {
   host: TileMap;
 
-  connectComponent(): boolean {
-    return super.connectComponent() && this.host instanceof TileMap;
+  connectBehavior(): boolean {
+    return super.connectBehavior() && this.host instanceof TileMap;
   }
 
   process(view: SceneView) {

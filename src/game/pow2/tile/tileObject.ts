@@ -77,7 +77,7 @@ export class TileObject extends SceneObject implements TileObjectOptions {
       this.renderPoint = newPoint.clone();
     }
     this.point = newPoint.clone();
-    const moveComponent = this.findComponent(MovableComponent) as MovableComponent;
+    const moveComponent = this.findBehavior(MovableComponent) as MovableComponent;
     if (moveComponent) {
       moveComponent.targetPoint.set(newPoint);
       moveComponent.path.length = 0;
@@ -126,7 +126,7 @@ export class TileObject extends SceneObject implements TileObjectOptions {
     if (this.icon) {
       return this.icon;
     }
-    const spriteComponent = this.findComponent(SpriteComponent) as SpriteComponent;
+    const spriteComponent = this.findBehavior(SpriteComponent) as SpriteComponent;
     if (spriteComponent) {
       return spriteComponent.icon;
     }

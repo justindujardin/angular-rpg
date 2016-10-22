@@ -41,17 +41,17 @@ export class AnimatedSpriteComponent extends TickedComponent {
     }
   }
 
-  connectComponent(): boolean {
+  connectBehavior(): boolean {
     this._renderFrame = 0;
     this._elapsed = 0;
-    return super.connectComponent();
+    return super.connectBehavior();
   }
 
-  syncComponent(): boolean {
-    if (!super.syncComponent()) {
+  syncBehavior(): boolean {
+    if (!super.syncBehavior()) {
       return false;
     }
-    var sprites = <SpriteComponent[]>this.host.findComponents(SpriteComponent);
+    var sprites = <SpriteComponent[]>this.host.findBehaviors(SpriteComponent);
     this.spriteComponent = <SpriteComponent>_.where(sprites, {name: this.spriteName})[0];
     return !!this.spriteComponent;
   }

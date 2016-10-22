@@ -16,8 +16,6 @@
 import * as _ from 'underscore';
 import {Component, ElementRef, Input, AfterViewInit, ViewChild} from '@angular/core';
 import {IProcessObject} from '../../../game/pow-core/time';
-import {UIAttachment, ChooseActionStateMachine, ChooseActionType} from './chooseActionStates';
-import {PlayerCombatState, CombatAttackSummary} from '../../../game/rpg/states/playerCombatState';
 import {TileObjectRenderer} from '../../../game/pow2/tile/render/tileObjectRenderer';
 import {NamedMouseElement, PowInput} from '../../../game/pow2/core/input';
 import {GameTileMap} from '../../../game/gameTileMap';
@@ -27,21 +25,24 @@ import {Notify} from '../../services/notify';
 import {Point} from '../../../game/pow-core/point';
 import {Scene} from '../../../game/pow2/scene/scene';
 import {CameraComponent} from '../../../game/pow2/scene/components/cameraComponent';
-import {CombatCameraComponent} from '../../../game/rpg/components/combat/combatCameraComponent';
-import {PlayerCombatRenderComponent} from '../../../game/pow2/game/components/playerCombatRenderComponent';
 import {SpriteComponent} from '../../../game/pow2/tile/components/spriteComponent';
 import {SceneComponent} from '../../../game/pow2/scene/sceneComponent';
-import {IChooseActionEvent} from '../../../game/rpg/states/combat/combatChooseActionState';
-import {CombatActionComponent} from '../../../game/rpg/components/combat/actions/combatActionComponent';
 import {GameEntityObject} from '../../../game/rpg/objects/gameEntityObject';
 import {SceneObject} from '../../../game/pow2/scene/sceneObject';
 import {IGameEncounter} from '../../../game/rpg/game';
-import {CombatRunSummary} from '../../../game/rpg/states/combat/combatEscapeState';
-import {CombatVictorySummary} from '../../../game/rpg/states/combat/combatVictoryState';
 import {ItemModel} from '../../../game/rpg/models/itemModel';
-import {CombatDefeatSummary} from '../../../game/rpg/states/combat/combatDefeatState';
 import {HeroModel} from '../../../game/rpg/models/heroModel';
 import {TileMapView} from '../../../game/pow2/tile/tileMapView';
+import {UIAttachment, ChooseActionStateMachine, ChooseActionType} from './states/choose-action.machine';
+import {PlayerCombatState, CombatAttackSummary} from './playerCombatState';
+import {IChooseActionEvent} from './states/combat-choose-action.state';
+import {CombatRunSummary} from './states/combat-escape.state';
+import {CombatVictorySummary} from './states/combat-victory.state';
+import {CombatDefeatSummary} from './states/combat-defeat.state';
+import {CombatCameraBehavior} from './behaviors/combat-camera.behavior';
+import {CombatPlayerRenderBehavior} from './behaviors/combat-player-render.behavior';
+import {CombatActionBehavior} from './behaviors/combat-action.behavior';
+import {IScene} from '../../../game/pow2/interfaces/IScene';
 
 /**
  * Describe a selectable menu item for a user input in combat.
@@ -64,6 +65,8 @@ export interface ICombatMenuItem<T> {
  * Render and provide input for a combat encounter.
  */
 export class CombatComponent extends TileMapView implements IProcessObject, AfterViewInit {
+
+  @Input() scene: Scene = new Scene();
   /**
    * A pointing UI element that can be attached to `SceneObject`s to attract attention
    * @type {null}
@@ -80,7 +83,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
    * The combat state.
    */
   @Input()
-  combat: PlayerCombatState = null;
+  combat: PlayerCombatState = new PlayerCombatState();
 
   /**
    * Damages displaying on screen.
@@ -134,7 +137,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
       this.camera.point.zero();
       this.camera.extent.set(25, 25);
     }
-    this._bindRenderCombat();
+    // this._bindRenderCombat();
 
     this.combat.scene.addView(this);
     this.game.world.time.addObject(this);
@@ -200,7 +203,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
    * Update the camera for this frame.
    */
   processCamera() {
-    this.cameraComponent = <CameraComponent>this.scene.componentByType(CombatCameraComponent);
+    this.cameraComponent = <CameraComponent>this.scene.componentByType(CombatCameraBehavior);
     super.processCamera();
   }
 
@@ -210,12 +213,12 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
   renderFrame(elapsed: number) {
     super.renderFrame(elapsed);
 
-    var players = this.scene.objectsByComponent(PlayerCombatRenderComponent);
+    const players = this.scene.objectsByComponent(CombatPlayerRenderBehavior);
     _.each(players, (player) => {
       this.objectRenderer.render(player, player, this);
     });
 
-    var sprites = <SceneComponent[]>this.scene.componentsByType(SpriteComponent);
+    const sprites = <SceneComponent[]>this.scene.componentsByType(SpriteComponent);
     _.each(sprites, (sprite: any) => {
       this.objectRenderer.render(sprite.host, sprite, this);
     });
@@ -230,7 +233,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
     if (!this.combat.scene) {
       throw new Error("Invalid Combat Scene");
     }
-    var chooseSubmit = (action: CombatActionComponent) => {
+    var chooseSubmit = (action: CombatActionBehavior) => {
       inputState.data.choose(action);
       next();
     };

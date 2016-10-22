@@ -1,8 +1,8 @@
 import {Component, ViewEncapsulation} from '@angular/core';
-import {PlayerCombatState} from '../../../game/rpg/states/playerCombatState';
 import {Notify} from '../../services/notify';
 import {RPGGame} from '../../services/rpgGame';
 import {GameWorld} from '../../services/gameWorld';
+import {PlayerCombatState} from '../combat/playerCombatState';
 
 const template = require('./game.component.html');
 

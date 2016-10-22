@@ -32,7 +32,7 @@ export class ShipFeatureComponent extends GameFeatureComponent {
 
   private _subscription: Subscription = null;
 
-  disconnectComponent(): boolean {
+  disconnectBehavior(): boolean {
     if(this._subscription) {
       this._subscription.unsubscribe();
       this._subscription = null;
@@ -40,8 +40,8 @@ export class ShipFeatureComponent extends GameFeatureComponent {
     return true;
   }
 
-  connectComponent(): boolean {
-    if (!super.connectComponent()) {
+  connectBehavior(): boolean {
+    if (!super.connectBehavior()) {
       return false;
     }
     const gameWorld = this.host.world;
@@ -59,7 +59,7 @@ export class ShipFeatureComponent extends GameFeatureComponent {
     // Must have a party component to board a ship.  Don't want buildings
     // and NPCs boarding ships... or do we?  [maniacal laugh]
     this.party = <PlayerComponent>
-      object.findComponent(PlayerComponent);
+      object.findBehavior(PlayerComponent);
     if (!this.party) {
       return false;
     }

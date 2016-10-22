@@ -23,8 +23,8 @@ import {TileComponent} from '../../pow2/tile/tileComponent';
 export class GameFeatureComponent extends TileComponent {
   host: GameFeatureObject;
 
-  connectComponent(): boolean {
-    if (!super.connectComponent()) {
+  connectBehavior(): boolean {
+    if (!super.connectBehavior()) {
       return false;
     }
     if (!this.host.feature) {
@@ -36,8 +36,8 @@ export class GameFeatureComponent extends TileComponent {
     return true;
   }
 
-  syncComponent(): boolean {
-    if (!super.syncComponent()) {
+  syncBehavior(): boolean {
+    if (!super.syncBehavior()) {
       return false;
     }
     this.host.visible = this.host.enabled = !this.getDataHidden();
@@ -54,7 +54,7 @@ export class GameFeatureComponent extends TileComponent {
       this.host.world.model.setKeyData('' + this.host.id, {
         hidden: hidden
       });
-      this.syncComponent();
+      this.syncBehavior();
     }
   }
 

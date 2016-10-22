@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import {IObject, IComponentHost, IComponent} from '../../pow-core/component';
+import {IObject, IBehaviorHost, IBehavior} from '../../pow-core/behavior';
 import {IProcessObject} from '../../pow-core/time';
 import {Point} from '../../pow-core/point';
 import {IEvents} from '../../pow-core/events';
@@ -23,7 +23,7 @@ import {Rect} from '../../pow-core/rect';
 /**
  * SceneObject interface
  */
-export interface ISceneObject extends IObject, IProcessObject, IComponentHost {
+export interface ISceneObject extends IObject, IProcessObject, IBehaviorHost {
   scene: IScene;
   enabled: boolean;
   point: Point;
@@ -50,8 +50,8 @@ export interface IScene extends IEvents {
   findObject(object): boolean;
 
   // Component and object lookups
-  componentByType(type): IComponent;
-  componentsByType(type): IComponent[];
+  componentByType(type): IBehavior;
+  componentsByType(type): IBehavior[];
   objectsByName(name: string): ISceneObject[];
   objectByName(name: string): ISceneObject;
   objectsByType(type): ISceneObject[];

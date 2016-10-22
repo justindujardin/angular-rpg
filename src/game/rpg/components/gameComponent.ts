@@ -22,7 +22,7 @@ import {GameTileMap} from '../../gameTileMap';
 export class GameComponent extends TileComponent {
   host: TileObject = null;
 
-  syncComponent(): boolean {
-    return super.syncComponent() && this.host.tileMap instanceof GameTileMap;
+  syncBehavior(): boolean {
+    return super.syncBehavior() && this.host.tileMap instanceof GameTileMap;
   }
 }

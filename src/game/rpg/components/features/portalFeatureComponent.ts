@@ -22,8 +22,8 @@ export class PortalFeatureComponent extends GameFeatureComponent {
   map: string;
   target: Point;
 
-  syncComponent(): boolean {
-    if (!super.syncComponent()) {
+  syncBehavior(): boolean {
+    if (!super.syncBehavior()) {
       return false;
     }
     this.map = this.host.feature.target;

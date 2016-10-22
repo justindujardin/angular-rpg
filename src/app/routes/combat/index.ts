@@ -13,22 +13,28 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CombatDamage} from './combat-damage.component';
 import {CombatComponent} from './combat.component';
 import {CommonModule} from '@angular/common';
 import {MaterialModule} from '@angular/material';
 import {RPGHealthBarModule} from '../../components/health-bar';
+import {CanActivateCombat} from './combat.guards';
+import {COMBAT_PLAYER_COMPONENTS} from './combat-player.entity';
+import {BehaviorsModule} from '../../behaviors/index';
 
 
-export * from './chooseActionStates';
 export * from './combat-damage.component';
 export * from './combat.component';
 
 export const COMBAT_EXPORTS = [
   CombatDamage,
-  CombatComponent
+  CombatComponent,
+  ...COMBAT_PLAYER_COMPONENTS
+];
+
+export const COMBAT_PROVIDERS = [
+  CanActivateCombat
 ];
 
 @NgModule({
@@ -37,6 +43,7 @@ export const COMBAT_EXPORTS = [
   imports: [
     MaterialModule,
     CommonModule,
+    BehaviorsModule,
     RPGHealthBarModule
   ]
 })
@@ -47,6 +54,5 @@ export class CombatModule {
       ngModule: CombatModule
     };
   }
-
 
 }
