@@ -38,7 +38,7 @@ export interface IAnimationTask extends IAnimationConfig {
   selector: 'animated-behavior',
   template: '<ng-content></ng-content>'
 })
-export class AnimatedComponent extends TickedComponent {
+export class AnimatedBehavior extends TickedComponent {
   host: TileObject;
 
   static EVENTS = {
@@ -82,7 +82,7 @@ export class AnimatedComponent extends TickedComponent {
         task.done && task.done(task);
         task.callback && task.callback(task);
         //this.host.frame = task.startFrame;
-        this.trigger(AnimatedComponent.EVENTS.Stopped, {
+        this.trigger(AnimatedBehavior.EVENTS.Stopped, {
           task: task,
           component: this
         });

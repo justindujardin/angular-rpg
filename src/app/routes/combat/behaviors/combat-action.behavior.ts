@@ -16,10 +16,11 @@
 
 
 import {SceneComponent} from '../../../../game/pow2/scene/sceneComponent';
-import {IPlayerAction} from '../playerCombatState';
+import {IPlayerAction, IPlayerActionCallback} from '../playerCombatState';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 import {IGameSpell} from '../../../../game/rpg/game';
 import {UsableModel} from '../../../../game/rpg/models/usableModel';
+
 export class CombatActionBehavior extends SceneComponent implements IPlayerAction {
   name: string = "default";
   from: GameEntityObject = null;
@@ -27,7 +28,7 @@ export class CombatActionBehavior extends SceneComponent implements IPlayerActio
   spell: IGameSpell = null;
   item: UsableModel = null;
 
-  constructor(public combat: PlayerCombatState) {
+  constructor() {
     super();
   }
 
@@ -55,7 +56,8 @@ export class CombatActionBehavior extends SceneComponent implements IPlayerActio
    * @returns {boolean} True if the entity may use this action.
    */
   canBeUsedBy(entity: GameEntityObject) {
-    return entity.model && entity.model instanceof EntityModel;
+    // return entity.model && entity.model instanceof EntityModel;
+    return true;
   }
 
   /**

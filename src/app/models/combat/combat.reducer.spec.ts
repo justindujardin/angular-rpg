@@ -3,41 +3,40 @@ import {combatReducer} from './combat.reducer';
 import {CombatFixedEncounterAction} from './combat.actions';
 
 function defaultState(overrides?: any): CombatState {
-  return Object.assign({}, {
+  const base: CombatState = {
     loading: false,
-    current: -1,
-    encounters: []
-  }, overrides || {});
+    encounter: null
+  };
+  return Object.assign({}, base, overrides || {});
 }
 
 function fixedEncounter(overrides?: any): CombatFixedEncounter {
-  return Object.assign({}, {
+  const base: CombatFixedEncounter = {
     id: 'fake-encounter',
     enemies: [],
-    party: [],
     gold: 1,
     experience: 1,
     items: []
-  }, overrides || {});
+  };
+  return Object.assign({}, base, overrides || {});
 }
 
 function randomEncounter(overrides?: any): CombatFixedEncounter {
-  return Object.assign({}, {
+  const base: CombatFixedEncounter = {
     id: 'fake-encounter',
-    enemies: [],
-    party: [],
-    zones: []
-  }, overrides || {});
+    enemies: []
+  };
+  return Object.assign({}, base, overrides || {});
 }
 
 describe('Combat', () => {
   describe('Actions', () => {
     describe('CombatFixedEncounterAction', () => {
-      it('should add to encounters array and tag the encounter with type "fixed"', () => {
+      it('should set current encounter and tag the encounter with type "fixed"', () => {
         const state = fixedEncounter();
-        const expected = fixedEncounter({type:'fixed'});
+        const expected = fixedEncounter({type: 'fixed'});
         const actual = combatReducer(defaultState(), new CombatFixedEncounterAction(state));
-        expect(actual.encounters[0]).toEqual(expected);
+        expect(actual.encounter).toEqual(expected);
       });
       it('should set loading to true', () => {
         const state = defaultState();

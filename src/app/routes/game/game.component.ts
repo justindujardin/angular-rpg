@@ -2,7 +2,6 @@ import {Component, ViewEncapsulation} from '@angular/core';
 import {Notify} from '../../services/notify';
 import {RPGGame} from '../../services/rpgGame';
 import {GameWorld} from '../../services/gameWorld';
-import {PlayerCombatState} from '../combat/playerCombatState';
 
 const template = require('./game.component.html');
 
@@ -13,23 +12,15 @@ const template = require('./game.component.html');
   template: template
 })
 export class GameComponent {
-  combat: PlayerCombatState = null;
-  constructor(public game: RPGGame, public notify: Notify, public world: GameWorld) {
+  constructor(public game: RPGGame,
+              public notify: Notify,
+              public world: GameWorld) {
   }
 
   ngOnInit() {
     this.game.initGame().then((newGame: boolean) => {
-      this.game.machine.on('combat:begin', (state: PlayerCombatState) => {
-        this.world.scene.paused = true;
-        this.combat = state;
-      });
-      this.game.machine.on('combat:end', () => {
-        this.world.scene.paused = false;
-        this.combat = null;
-      });
-      console.log("Game fully initialized.");
       if (newGame) {
-        var msgs: string[] = [
+        const msgs: string[] = [
           'Urrrrrgh.', 'What is this?',
           'Why am I staring at a wall?',
           'Oh well, it is probably not important.',

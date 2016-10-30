@@ -1,28 +1,12 @@
-/*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
 import * as _ from 'underscore';
-import {Component, ElementRef, Input, AfterViewInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, AfterViewInit, ViewChild, ViewChildren, QueryList} from '@angular/core';
 import {IProcessObject} from '../../../game/pow-core/time';
 import {TileObjectRenderer} from '../../../game/pow2/tile/render/tileObjectRenderer';
 import {NamedMouseElement, PowInput} from '../../../game/pow2/core/input';
-import {GameTileMap} from '../../../game/gameTileMap';
 import {RPGGame} from '../../services/rpgGame';
-import {Animate} from '../../services/animate';
+import {GameWorld} from '../../services/gameWorld';
 import {Notify} from '../../services/notify';
-import {Point} from '../../../game/pow-core/point';
+import {Point, IPoint} from '../../../game/pow-core/point';
 import {Scene} from '../../../game/pow2/scene/scene';
 import {CameraComponent} from '../../../game/pow2/scene/components/cameraComponent';
 import {SpriteComponent} from '../../../game/pow2/tile/components/spriteComponent';
@@ -33,7 +17,7 @@ import {IGameEncounter} from '../../../game/rpg/game';
 import {ItemModel} from '../../../game/rpg/models/itemModel';
 import {HeroModel} from '../../../game/rpg/models/heroModel';
 import {TileMapView} from '../../../game/pow2/tile/tileMapView';
-import {UIAttachment, ChooseActionStateMachine, ChooseActionType} from './states/choose-action.machine';
+import {UIAttachment, ChooseActionStateMachine, ChooseActionType} from './behaviors/choose-action.machine';
 import {PlayerCombatState, CombatAttackSummary} from './playerCombatState';
 import {IChooseActionEvent} from './states/combat-choose-action.state';
 import {CombatRunSummary} from './states/combat-escape.state';
@@ -42,7 +26,18 @@ import {CombatDefeatSummary} from './states/combat-defeat.state';
 import {CombatCameraBehavior} from './behaviors/combat-camera.behavior';
 import {CombatPlayerRenderBehavior} from './behaviors/combat-player-render.behavior';
 import {CombatActionBehavior} from './behaviors/combat-action.behavior';
-import {IScene} from '../../../game/pow2/interfaces/IScene';
+import {Actions} from '@ngrx/effects';
+import {LoadingService} from '../../components/loading/loading.service';
+import {AppState} from '../../app.model';
+import {Store} from '@ngrx/store';
+import {CombatService} from '../../services/combat.service';
+import {Subscription} from 'rxjs/Rx';
+import {CombatStateMachine} from './states/combat.machine';
+import {GameTileMap} from '../../../game/gameTileMap';
+import {getEncounterEnemies} from '../../models/combat/combat.reducer';
+import {getParty} from '../../models/game-state/game-state.reducer';
+import {CombatEnemy} from './combat-enemy.entity';
+import {CombatPlayer} from './combat-player.entity';
 
 /**
  * Describe a selectable menu item for a user input in combat.
@@ -85,6 +80,9 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
   @Input()
   combat: PlayerCombatState = new PlayerCombatState();
 
+  /** The combat state machine */
+  machine = new CombatStateMachine();
+
   /**
    * Damages displaying on screen.
    * @type {Array}
@@ -104,43 +102,55 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
    */
   mouse: NamedMouseElement = null;
 
-  private _map: GameTileMap = null;
-  /**
-   * The `GameTileMap` to render.
-   * @param value
-   */
-  @Input()
-  set map(value: GameTileMap) {
-    this._map = value;
-    // if (this._map) {
-    //   this.setTileMap(value);
-    // }
-  }
-
-  get map(): GameTileMap {
-    return this._map;
-  }
-
   @ViewChild('combatCanvas') canvasElementRef: ElementRef;
   @ViewChild('combatPointer') pointerElementRef: ElementRef;
 
+  @ViewChildren(CombatEnemy) enemies: QueryList<CombatEnemy>;
+  @ViewChildren(CombatPlayer) party: QueryList<CombatPlayer>;
+
+  enemies$ = getEncounterEnemies(this.store);
+
+  party$ = getParty(this.store);
+
+  private _subscriptions: Subscription[] = [];
+
   constructor(public game: RPGGame,
-              public animate: Animate,
-              public notify: Notify) {
+              public actions$: Actions,
+              public notify: Notify,
+              public loadingService: LoadingService,
+              public store: Store<AppState>,
+              public combatService: CombatService,
+              public world: GameWorld) {
     super();
+    this.world.mark(this.scene);
   }
 
-  ngAfterViewInit() {
+
+  ngOnDestroy(): void {
+    this.world.erase(this.scene);
+    this.world.time.removeObject(this);
+    this._subscriptions.forEach((s) => s.unsubscribe());
+    this._subscriptions.length = 0;
+    this.scene.removeView(this);
+
+    if (this.combat && this.combat.machine) {
+      this.combat.machine.off('combat:chooseMoves', this.chooseTurns, this);
+    }
+    this.pointer = null;
+    this.damages = [];
+
+  }
+
+  ngAfterViewInit(): void {
     this.canvas = this.canvasElementRef.nativeElement;
-    _.defer(() => this._onResize());
     if (this.camera) {
       this.camera.point.zero();
       this.camera.extent.set(25, 25);
     }
+    this.scene.addView(this);
+    setTimeout(() => this._onResize(), 1);
     // this._bindRenderCombat();
-
-    this.combat.scene.addView(this);
-    this.game.world.time.addObject(this);
+    this.world.time.addObject(this);
 
     this.combat.machine.on('combat:chooseMoves', this.chooseTurns, this);
 
@@ -149,23 +159,37 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
       object: null,
       offset: new Point()
     };
+
+    // Because the base class looks for instance.map before rendering the tilemap.  TODO: Remove this.
+    this._subscriptions.push(this.combatService.combatMap$
+      .distinctUntilChanged()
+      .do((map: GameTileMap) => {
+        this.map = map;
+      })
+      .subscribe());
+
+    this._subscriptions.push(this.combatService.combatMap$
+      .distinctUntilChanged()
+      .do((map: GameTileMap) => {
+        this.party.forEach((p: CombatPlayer, index: number) => {
+          p.setSprite(p.model.icon);
+          const battleSpawn = map.getFeature('p' + (index + 1)) as IPoint;
+          p.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
+        });
+        this.enemies.forEach((e: CombatEnemy, index: number) => {
+          const battleSpawn = map.getFeature('e' + (index + 1)) as IPoint;
+          if (battleSpawn) {
+            e.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
+          }
+        });
+      })
+      .subscribe());
   }
 
 
   //
   // Events
   //
-  onDestroy() {
-    if (this.combat && this.combat.scene) {
-      this.combat.scene.removeView(this);
-      if (this.combat.machine) {
-        this.combat.machine.off('combat:chooseMoves', this.chooseTurns, this);
-      }
-    }
-    this.game.world.time.removeObject(this);
-    this.pointer = null;
-    this.damages = [];
-  }
 
   onAddToScene(scene: Scene) {
     super.onAddToScene(scene);
@@ -230,7 +254,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
   // API
   //
   chooseTurns(data: IChooseActionEvent) {
-    if (!this.combat.scene) {
+    if (!this.scene) {
       throw new Error("Invalid Combat Scene");
     }
     var chooseSubmit = (action: CombatActionBehavior) => {
@@ -306,8 +330,8 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
     //console.log("clicked at " + this.mouse.world);
     const hits: GameEntityObject[] = [];
     PowInput.mouseOnView(e, this, this.mouse);
-    if (this.combat.scene.db.queryPoint(this.mouse.world, GameEntityObject, hits)) {
-      this.combat.scene.trigger('click', this.mouse, hits);
+    if (this.scene.db.queryPoint(this.mouse.world, GameEntityObject, hits)) {
+      this.scene.trigger('click', this.mouse, hits);
       e.stopImmediatePropagation();
       return false;
     }

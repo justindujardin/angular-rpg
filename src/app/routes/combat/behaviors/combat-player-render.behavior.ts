@@ -1,9 +1,11 @@
 import * as _ from 'underscore';
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TickedComponent} from '../../../../game/pow2/scene/components/tickedComponent';
-import {TileObject} from '../../../../game/pow2/tile/tileObject';
 import {Headings} from '../../../../game/pow2/game/components/playerRenderComponent';
-import {AnimatedComponent} from '../../../behaviors/animated.behavior';
+import {AnimatedBehavior, IAnimationConfig} from '../../../behaviors/animated.behavior';
+import {Point} from '../../../../game/pow-core/point';
+import {CombatService} from '../../../services/combat.service';
+import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 export enum StateFrames {
   DEFAULT = 10,
   SWING = 1,
@@ -19,18 +21,31 @@ export enum StateFrames {
   selector: 'combat-player-render-behavior',
   template: `<ng-content></ng-content>`
 })
-export class CombatPlayerRenderBehavior extends TickedComponent {
-  host: TileObject;
+export class CombatPlayerRenderBehavior extends TickedComponent implements OnInit, OnDestroy {
   _elapsed: number = 0;
   private _renderFrame: number = 3;
   state: string = "";
   animating: boolean = false;
-  animator: AnimatedComponent = null;
+  animator: AnimatedBehavior = null;
   attackDirection: Headings = Headings.WEST;
+  host: GameEntityObject;
 
-  syncComponent(): boolean {
-    this.animator = <AnimatedComponent>this.host.findBehavior(AnimatedComponent);
-    return super.syncComponent();
+  constructor(private combatService: CombatService) {
+    super();
+  }
+
+
+  ngOnInit(): void {
+    console.log("prender");
+    console.info(this.combatService);
+  }
+
+  ngOnDestroy(): void {
+  }
+
+  syncBehavior(): boolean {
+    this.animator = this.host.findBehavior(AnimatedBehavior) as AnimatedBehavior;
+    return super.syncBehavior();
   }
 
   setState(name: string = "Default") {

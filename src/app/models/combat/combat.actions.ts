@@ -5,10 +5,12 @@ import {CombatFixedEncounter, CombatRandomEncounter} from './combat.model';
 export const CombatActionTypes = {
   FIXED_ENCOUNTER:          type('rpg/combat/fixed'),
   FIXED_ENCOUNTER_READY:    type('rpg/combat/fixed/ready'),
+  FIXED_ENCOUNTER_ERROR:    type('rpg/combat/fixed/error'),
   FIXED_ENCOUNTER_VICTORY:  type('rpg/combat/fixed/victory'),
   FIXED_ENCOUNTER_DEFEAT:   type('rpg/combat/fixed/defeat'),
   RANDOM_ENCOUNTER:         type('rpg/combat/random'),
   RANDOM_ENCOUNTER_READY:   type('rpg/combat/random/ready'),
+  RANDOM_ENCOUNTER_ERROR:   type('rpg/combat/random/error'),
   RANDOM_ENCOUNTER_VICTORY: type('rpg/combat/random/victory'),
   RANDOM_ENCOUNTER_DEFEAT:  type('rpg/combat/random/defeat'),
 };
@@ -24,13 +26,19 @@ export class CombatFixedEncounterAction implements Action {
   }
 }
 
+export class CombatFixedEncounterErrorAction implements Action {
+  type = CombatActionTypes.FIXED_ENCOUNTER_ERROR;
+
+  constructor(public payload: CombatFixedEncounter) {
+  }
+}
+
 export class CombatFixedEncounterReadyAction implements Action {
   type = CombatActionTypes.FIXED_ENCOUNTER_READY;
 
   constructor(public payload: CombatFixedEncounter) {
   }
 }
-
 
 export class CombatFixedEncounterVictoryAction implements Action {
   type = CombatActionTypes.FIXED_ENCOUNTER_VICTORY;
@@ -53,6 +61,13 @@ export class CombatFixedEncounterDefeatAction implements Action {
 
 export class CombatRandomEncounterAction implements Action {
   type = CombatActionTypes.RANDOM_ENCOUNTER;
+
+  constructor(public payload: CombatRandomEncounter) {
+  }
+}
+
+export class CombatRandomEncounterErrorAction implements Action {
+  type = CombatActionTypes.RANDOM_ENCOUNTER_ERROR;
 
   constructor(public payload: CombatRandomEncounter) {
   }

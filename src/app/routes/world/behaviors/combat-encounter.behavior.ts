@@ -43,14 +43,14 @@ export class CombatEncounterBehavior extends SceneComponent {
 
   player: GameEntityObject = null;
 
-  syncComponent(): boolean {
-    super.syncComponent();
+  syncBehavior(): boolean {
+    super.syncBehavior();
     // Determine if the map wants this component to be enabled.
     this.enabled = this.host.map && this.host.map.properties && this.host.map.properties.combat;
     this.stopListening();
     this.player = null;
     if (this.host.scene) {
-      this.player = <GameEntityObject>this.host.scene.objectByComponent(PlayerComponent);
+      this.player = this.host.scene.objectByComponent(PlayerComponent) as GameEntityObject;
     }
     this.listenMoves();
     return !!this.player;
@@ -70,9 +70,9 @@ export class CombatEncounterBehavior extends SceneComponent {
   }
 
   moveProcess(player: PlayerComponent, from: Point, to: Point) {
-    var terrain = this.host.getTerrain("Terrain", to.x, to.y);
+    const terrain = this.host.getTerrain('Terrain', to.x, to.y);
     this.isDangerous = terrain && terrain.isDangerous;
-    var dangerValue = this.isDangerous ? 10 : 6;
+    const dangerValue = this.isDangerous ? 10 : 6;
     if (this.battleCounter <= 0) {
       this.triggerCombat(to);
     }
@@ -81,14 +81,14 @@ export class CombatEncounterBehavior extends SceneComponent {
   }
 
   resetBattleCounter() {
-    var max: number = 255;
-    var min: number = 64;
+    const max: number = 255;
+    const min: number = 64;
     this._setCounter(Math.floor(Math.random() * (max - min + 1)) + min);
     this.combatFlag = false;
   }
 
   triggerCombat(at: Point) {
-    var zone: IZoneMatch = this.host.getCombatZones(at);
+    const zone: IZoneMatch = this.host.getCombatZones(at);
     zone.fixed = false;
     this.combatZone = zone.map || zone.target;
     console.log("Combat in zone : " + this.combatZone);

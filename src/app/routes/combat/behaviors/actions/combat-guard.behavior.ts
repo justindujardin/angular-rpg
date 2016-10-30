@@ -9,9 +9,13 @@ import {CombatDefeatState} from '../../states/combat-defeat.state';
 import {CombatEscapeState} from '../../states/combat-escape.state';
 import {CombatMachineState} from '../../states/combat-base.state';
 import {CombatActionBehavior} from '../combat-action.behavior';
+import {Component} from '@angular/core';
 
-
-export class CombatGuardComponent extends CombatActionBehavior {
+@Component({
+  selector: 'combat-guard-behavior',
+  template: '<ng-content></ng-content>'
+})
+export class CombatGuardBehavior extends CombatActionBehavior {
   name: string = "guard";
 
   canTarget(): boolean {
@@ -30,12 +34,12 @@ export class CombatGuardComponent extends CombatActionBehavior {
    */
   select() {
     this.combat.machine.on(CombatStateMachine.Events.ENTER, this.enterState, this);
-    console.info("Adding guard defense buff to player: " + this.from.model.get('name'));
+    console.info("Adding guard defense buff to player: " + this.from.model.name);
     if (!(this.from.model instanceof HeroModel)) {
       throw new Error("This action is not currently applicable to non hero characters.");
     }
-    var heroModel = <HeroModel>this.from.model;
-    var multiplier: number = heroModel.get('level') < 10 ? 2 : 0.5;
+    var heroModel = this.from.model;
+    var multiplier: number = heroModel.level < 10 ? 2 : 0.5;
     heroModel.defenseBuff += (heroModel.getDefense(true) * multiplier);
   }
 
@@ -47,7 +51,7 @@ export class CombatGuardComponent extends CombatActionBehavior {
       CombatEscapeState.NAME
     ];
     if (_.indexOf(exitStates, newState.name) !== -1) {
-      console.info("Removing guard defense buff from player: " + this.from.model.get('name'));
+      console.info("Removing guard defense buff from player: " + this.from.model.name);
       this.combat.machine.off(CombatStateMachine.Events.ENTER, this.enterState, this);
       var heroModel = <HeroModel>this.from.model;
       heroModel.defenseBuff = 0;

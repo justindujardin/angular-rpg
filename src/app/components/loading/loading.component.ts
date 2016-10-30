@@ -5,7 +5,7 @@ import {LoadingService} from './loading.service';
   selector: 'loading',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-  <div class="loading fade pt-page-scaleUp" *ngIf="loadingService.loading$ | async">
+  <div class="loading fade" *ngIf="loadingService.loading$ | async">
     <div class="loading-wrapper">
       <div class="loading-wrapper-inner hero-container">
         <h1>

@@ -6,7 +6,8 @@
                [value]="d.value"
                [position]="d.position"
                [classes]="d.classes"></combat-damage>
-<combat-player></combat-player>
+<combat-player *ngFor="let p of party$ | async" [model]="p"></combat-player>
+<combat-enemy *ngFor="let e of enemies$ | async" [model]="e"></combat-enemy>
 <div class="combat-view">
   <ul *ngIf="items.length > 0" class="ebp action-menu">
     <li *ngFor="let item of items" (click)="item.select()" [innerText]="item.label"></li>

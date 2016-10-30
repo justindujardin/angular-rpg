@@ -1,0 +1,893 @@
+{
+  "amulet.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 0,
+    "y": 0
+  },
+  "amulet10.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 16,
+    "y": 0
+  },
+  "amulet11.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 0,
+    "y": 16
+  },
+  "amulet12.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 16,
+    "y": 16
+  },
+  "amulet2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 32,
+    "y": 0
+  },
+  "amulet3.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 32,
+    "y": 16
+  },
+  "amulet4.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 0,
+    "y": 32
+  },
+  "amulet5.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 16,
+    "y": 32
+  },
+  "amulet7.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 32,
+    "y": 32
+  },
+  "amulet9.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 48,
+    "y": 0
+  },
+  "armoredBoots.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 48,
+    "y": 16
+  },
+  "axe2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 48,
+    "y": 32
+  },
+  "battleAxe.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 0,
+    "y": 48
+  },
+  "bigShield.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 16,
+    "y": 48
+  },
+  "blackBow.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 32,
+    "y": 48
+  },
+  "blackStaff.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 48,
+    "y": 48
+  },
+  "blackSword.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 64,
+    "y": 0
+  },
+  "blueStaff.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 64,
+    "y": 16
+  },
+  "blueWand2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 64,
+    "y": 32
+  },
+  "bow.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 64,
+    "y": 48
+  },
+  "cloak.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 0,
+    "y": 64
+  },
+  "clothes.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 16,
+    "y": 64
+  },
+  "club.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 32,
+    "y": 64
+  },
+  "coralHelm.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 48,
+    "y": 64
+  },
+  "coralStaff.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 64,
+    "y": 64
+  },
+  "coralSword.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 80,
+    "y": 0
+  },
+  "crossbow2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 80,
+    "y": 16
+  },
+  "crossbow3.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 80,
+    "y": 32
+  },
+  "cyclopsTalisman.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 80,
+    "y": 48
+  },
+  "elvishArmor.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 80,
+    "y": 64
+  },
+  "elvishBoots.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 0,
+    "y": 80
+  },
+  "elvishCloak.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 16,
+    "y": 80
+  },
+  "elvishHat.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 32,
+    "y": 80
+  },
+  "elvishHelm.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 48,
+    "y": 80
+  },
+  "elvishStaff.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 64,
+    "y": 80
+  },
+  "embroideredCloak.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 80,
+    "y": 80
+  },
+  "enchantedBoots.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 96,
+    "y": 0
+  },
+  "enchantedHelm.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 96,
+    "y": 16
+  },
+  "enchantedHelm2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 96,
+    "y": 32
+  },
+  "equipAmulet.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 96,
+    "y": 48
+  },
+  "equipArmor.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 96,
+    "y": 64
+  },
+  "equipHat.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 96,
+    "y": 80
+  },
+  "equipShield.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 0,
+    "y": 96
+  },
+  "equipWeapon.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 16,
+    "y": 96
+  },
+  "fancyHelm.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 32,
+    "y": 96
+  },
+  "flamberge2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 48,
+    "y": 96
+  },
+  "flayerTalisman.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 64,
+    "y": 96
+  },
+  "forceShield.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 80,
+    "y": 96
+  },
+  "greatHelm.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 96,
+    "y": 96
+  },
+  "greenBow.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 112,
+    "y": 0
+  },
+  "greenWand.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 112,
+    "y": 16
+  },
+  "hookedStaff.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 112,
+    "y": 32
+  },
+  "impTalisman.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 112,
+    "y": 48
+  },
+  "ironShield.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 112,
+    "y": 64
+  },
+  "leatherArmor.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 112,
+    "y": 80
+  },
+  "leatherBoots2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 112,
+    "y": 96
+  },
+  "leatherHelm.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 0,
+    "y": 112
+  },
+  "leatherShield.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 16,
+    "y": 112
+  },
+  "longSword.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 32,
+    "y": 112
+  },
+  "magicBow.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 48,
+    "y": 112
+  },
+  "magicBow2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 64,
+    "y": 112
+  },
+  "magicSword.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 80,
+    "y": 112
+  },
+  "magicSword2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 96,
+    "y": 112
+  },
+  "mermanShield.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 112,
+    "y": 112
+  },
+  "mermanTalisman.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 128,
+    "y": 0
+  },
+  "militaryBoots.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 128,
+    "y": 16
+  },
+  "mithrilArmor.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 128,
+    "y": 32
+  },
+  "ogreTalisman.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 128,
+    "y": 48
+  },
+  "oliphantTalisman.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 128,
+    "y": 64
+  },
+  "plateMail.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 128,
+    "y": 80
+  },
+  "purpleCloak.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 128,
+    "y": 96
+  },
+  "redWand.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 128,
+    "y": 112
+  },
+  "redWand2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 0,
+    "y": 128
+  },
+  "scaleArmor.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 16,
+    "y": 128
+  },
+  "scimitar.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 32,
+    "y": 128
+  },
+  "seaweedArmor.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 48,
+    "y": 128
+  },
+  "seaweedCloak.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 64,
+    "y": 128
+  },
+  "serpentRobes.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 80,
+    "y": 128
+  },
+  "sharkbow.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 96,
+    "y": 128
+  },
+  "shortBow.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 112,
+    "y": 128
+  },
+  "shortBow2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 128,
+    "y": 128
+  },
+  "shortStaff.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 144,
+    "y": 0
+  },
+  "shortSword.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 144,
+    "y": 16
+  },
+  "sling.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 144,
+    "y": 32
+  },
+  "sparkStaff.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 144,
+    "y": 48
+  },
+  "speedBoots.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 144,
+    "y": 64
+  },
+  "staff.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 144,
+    "y": 80
+  },
+  "staff2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 144,
+    "y": 96
+  },
+  "studdedArmor.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 144,
+    "y": 112
+  },
+  "sword.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 144,
+    "y": 128
+  },
+  "sword2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 0,
+    "y": 144
+  },
+  "wand.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 16,
+    "y": 144
+  },
+  "whiteWand.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 32,
+    "y": 144
+  },
+  "winterBoots.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 48,
+    "y": 144
+  },
+  "wizardHat1.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 64,
+    "y": 144
+  },
+  "wizardHat2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 80,
+    "y": 144
+  },
+  "yellowStaff.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 96,
+    "y": 144
+  },
+  "yellowWand.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 112,
+    "y": 144
+  },
+  "yellowWand2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "equipment",
+    "index": null,
+    "x": 128,
+    "y": 144
+  }
+}

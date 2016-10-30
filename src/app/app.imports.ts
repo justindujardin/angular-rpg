@@ -21,6 +21,7 @@ import {RPGHealthBarModule} from './components/health-bar';
 import {RPGNotificationModule} from './components/notification';
 import {RPGSpriteModule} from './components/sprite';
 import {BehaviorsModule} from './behaviors/index';
+import {CombatEffects} from './models/combat/combat.effects';
 
 
 export const APP_IMPORTS = [
@@ -49,5 +50,6 @@ export const APP_IMPORTS = [
   RouterStoreModule.connectRouter(),
   StoreDevtoolsModule.instrumentOnlyWithExtension(),
   EffectsModule.run(GameStateEffects),
+  EffectsModule.run(CombatEffects),
   EffectsModule.run(AppEffects)
 ];

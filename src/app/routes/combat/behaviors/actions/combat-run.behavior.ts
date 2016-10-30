@@ -3,9 +3,13 @@ import {CombatActionBehavior} from '../combat-action.behavior';
 import {IPlayerActionCallback} from '../../playerCombatState';
 import {CombatRunSummary, CombatEscapeState} from '../../states/combat-escape.state';
 import {CombatEndTurnState} from '../../states/combat-end-turn.state';
+import {Component} from '@angular/core';
 
-
-export class CombatRunComponent extends CombatActionBehavior {
+@Component({
+  selector: 'combat-run-behavior',
+  template: '<ng-content></ng-content>'
+})
+export class CombatRunBehavior extends CombatActionBehavior {
   name: string = "run";
 
   canTarget(): boolean {

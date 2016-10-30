@@ -1,21 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Rx';
-import {
-  GameStateActionTypes,
-  GameStateLoadSuccessAction,
-  GameStateLoadFailAction,
-  GameStateTravelAction,
-  GameStateTravelFailAction,
-  GameStateTravelSuccessAction
-} from './game-state.actions';
 import {Effect, Actions} from '@ngrx/effects';
-import {GameState} from './game-state.model';
-import {GameStateService} from '../../services/game-state.service';
-import {Action} from '@ngrx/store';
 import {
-  CombatActionTypes, CombatActions, CombatFixedEncounterReadyAction,
-  CombatFixedEncounterAction
+  CombatActionTypes,
+  CombatFixedEncounterReadyAction,
+  CombatFixedEncounterAction,
+  CombatFixedEncounterErrorAction
 } from './combat.actions';
+import {CombatService} from '../../services/combat.service';
+import {CombatEncounter} from './combat.model';
 
 @Injectable()
 export class CombatEffects {
@@ -24,14 +17,14 @@ export class CombatEffects {
   }
 
   @Effect() beginFixedCombat$ = this.actions$.ofType(CombatActionTypes.FIXED_ENCOUNTER)
-    .switchMap((action: CombatActions) => {
-      return this.combatService.loadMap('combat').map(() => action);
+    .switchMap((action: CombatFixedEncounterAction) => {
+      return this.combatService.loadEncounter(action.payload);
     })
-    .map((action: CombatFixedEncounterAction) => {
-      return new CombatFixedEncounterReadyAction(action.payload);
+    .map((encounter: CombatEncounter) => {
+      return new CombatFixedEncounterReadyAction(encounter);
     })
     .catch((e) => {
-      return Observable.of(new GameStateTravelFailAction(e.toString()));
+      return Observable.of(new CombatFixedEncounterErrorAction(e.toString()));
     });
 
 }

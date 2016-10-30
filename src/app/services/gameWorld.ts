@@ -15,7 +15,6 @@
  */
 import * as Backbone from 'backbone';
 import * as _ from 'underscore';
-import * as rpg from '../../game/rpg/game';
 import {GameStateModel} from '../../game/rpg/models/gameStateModel';
 import {ItemModel, WeaponModel, ArmorModel, UsableModel} from '../../game/rpg/models/all';
 import {Scene} from '../../game/pow2/scene/scene';
@@ -35,6 +34,14 @@ import {AppState} from '../app.model';
 import {Store} from '@ngrx/store';
 import {CombatFixedEncounter, Combatant} from '../models/combat/combat.model';
 import {CombatFixedEncounterAction} from '../models/combat/combat.actions';
+import {
+  IGameEncounterCallback,
+  IZoneMatch,
+  IGameRandomEncounter,
+  IGameFixedEncounter,
+  IGameItem,
+  IGameEncounter
+} from '../../game/rpg/game';
 
 
 var _sharedGameWorld: GameWorld = null;
@@ -81,7 +88,7 @@ export class GameWorld extends World {
     return _sharedGameWorld;
   }
 
-  private _encounterCallback: rpg.IGameEncounterCallback = null;
+  private _encounterCallback: IGameEncounterCallback = null;
 
   reportEncounterResult(victory: boolean) {
     if (this._encounterCallback) {
@@ -90,10 +97,10 @@ export class GameWorld extends World {
     }
   }
 
-  randomEncounter(zone: rpg.IZoneMatch, then?: rpg.IGameEncounterCallback) {
+  randomEncounter(zone: IZoneMatch, then?: IGameEncounterCallback) {
     const gsr = this.spreadsheet;
     var encountersData = gsr.getSheetData('randomencounters');
-    var encounters: rpg.IGameRandomEncounter[] = _.filter(encountersData, (enc: any) => {
+    var encounters: IGameRandomEncounter[] = _.filter(encountersData, (enc: any) => {
       return _.indexOf(enc.zones, zone.map) !== -1 || _.indexOf(enc.zones, zone.target) !== -1;
     });
     if (encounters.length === 0) {
@@ -107,9 +114,9 @@ export class GameWorld extends World {
   }
 
 
-  fixedEncounter(zone: rpg.IZoneMatch, encounterId: string, then?: rpg.IGameEncounterCallback) {
+  fixedEncounter(zone: IZoneMatch, encounterId: string, then?: IGameEncounterCallback) {
     const gsr = this.spreadsheet;
-    var encounter = <rpg.IGameFixedEncounter>_.where(gsr.getSheetData('fixedencounters'), {
+    var encounter = <IGameFixedEncounter>_.where(gsr.getSheetData('fixedencounters'), {
       id: encounterId
     })[0];
     if (!encounter) {
@@ -133,7 +140,7 @@ export class GameWorld extends World {
     var item: T = null;
     while (!item && sheets.length > 0) {
       var sheetName = sheets.shift();
-      var itemData: rpg.IGameItem = _.find(data.getSheetData(sheetName), (w: rpg.IGameItem) => w.id === modelId);
+      var itemData: IGameItem = _.find(data.getSheetData(sheetName), (w: IGameItem) => w.id === modelId);
       if (itemData) {
         switch (sheetName) {
           case 'weapons':
@@ -152,7 +159,7 @@ export class GameWorld extends World {
   }
 
 
-  private doEncounter(zoneInfo: rpg.IZoneMatch, encounter: rpg.IGameEncounter, then?: rpg.IGameEncounterCallback) {
+  private doEncounter(zoneInfo: IZoneMatch, encounter: IGameEncounter, then?: IGameEncounterCallback) {
 
     const enemyList: any[] = this.spreadsheet.getSheetData('enemies');
     const toCombatant = (id: string): Combatant => {
@@ -165,7 +172,8 @@ export class GameWorld extends World {
     const payload: CombatFixedEncounter = {
       id: encounter.id,
       enemies: encounter.enemies.map(toCombatant),
-      party: []
+      party: [],
+      zone: zoneInfo.target
     };
 
     this.store.dispatch(new CombatFixedEncounterAction(payload));

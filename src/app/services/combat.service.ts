@@ -1,17 +1,17 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Inject, forwardRef} from '@angular/core';
 import {Observable, ReplaySubject} from 'rxjs/Rx';
 import {ResourceLoader} from '../../game/pow-core/resourceLoader';
 import {GameWorld} from './gameWorld';
 import {GameTileMap} from '../../game/gameTileMap';
-import {GameState} from '../models/game-state/game-state.model';
 import {CombatEncounter} from '../models/combat/combat.model';
-import {CombatStateMachine} from '../routes/combat/states/combat.machine';
-import {Scene} from '../../game/pow2/scene/scene';
 import {PartyMember} from '../models/party-member.model';
 import {AppState} from '../app.model';
 import {Store} from '@ngrx/store';
 import {getParty} from '../models/game-state/game-state.reducer';
 import {GameEntityObject} from '../../game/rpg/objects/gameEntityObject';
+import {getMapUrl} from '../../game/pow2/core/api';
+import {TiledTMXResource} from '../../game/pow-core/resources/tiled/tiledTmx';
+import {IZoneMatch} from '../../game/rpg/game';
 
 function myObservable(observer) {
   const datasource = null;
@@ -37,7 +37,7 @@ function map(source, project) {
 @Injectable()
 export class CombatService {
 
-  constructor(private gameWorld: GameWorld,
+  constructor(@Inject(forwardRef(() => GameWorld)) private gameWorld: GameWorld,
               private store: Store<AppState>,
               private resourceLoader: ResourceLoader) {
   }
@@ -47,26 +47,48 @@ export class CombatService {
 
   buildParty(encounter: CombatEncounter): Observable<GameEntityObject> {
     return getParty(this.store).map((party: PartyMember[]) => {
+
     });
   }
 
-  loadEncounter(encounter: CombatEncounter): Observable<GameState> {
-    return getParty(this.store).map((party: PartyMember[]) => {
+  loadCombatMap(combatZone: string): Observable<GameTileMap> {
+    const mapUrl = getMapUrl('combat');
+    return Observable.fromPromise(this.resourceLoader.load(mapUrl)
+      .then((maps: TiledTMXResource[]) => {
+        if (!maps[0] || !maps[0].data) {
+          return Promise.reject('invalid resource: ' + mapUrl);
+        }
+        const inputs = {
+          resource: maps[0]
+        };
+        return this.gameWorld.entities.createObject('GameCombatMap', inputs);
+      })
+      .then((g: GameTileMap) => {
+        // Hide all layers that don't correspond to the current combat zone
+        g.getLayers().forEach((l) => {
+          l.visible = (l.name === combatZone);
+        });
+        g.dirtyLayers = true;
+        this._combatMap$.next(g);
+        return g;
+      }));
+
+  }
+
+  loadEncounter(encounter: CombatEncounter): Observable<CombatEncounter> {
+    return this.loadCombatMap(encounter.zone).map((m: GameTileMap) => {
+
     });
+    // return Observable.create((observer: Observer) => {
+    //   observer.next(42);
+    //   observer.complete();
+    //
+    //   // Any cleanup logic might go here
+    //   return () => {
+    //     console.log('disposed')
+    //   };
+    // });
 
-    return Observable.create(observer => {
-      // Yield a single value and complete
-      observer.onNext(42);
-      observer.onCompleted();
-
-      // Any cleanup logic might go here
-      return () => console.log('disposed')
-    });
-
-
-    this.factory = GameWorld.get().entities;
-    this.machine = new CombatStateMachine();
-    this.scene = new Scene();
     // machine.world.mark(this.scene);
     const spreadsheet = this.parent.world.spreadsheet;
     if (!this.factory || !spreadsheet) {

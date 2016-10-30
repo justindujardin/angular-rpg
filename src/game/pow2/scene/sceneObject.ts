@@ -31,7 +31,6 @@ export class SceneObject extends Entity {
   size: Point;
   // The render point that is interpolated between ticks.
   renderPoint: Point;
-  _components: SceneComponent[] = [];
 
   constructor(options?: any) {
     super();
@@ -47,8 +46,8 @@ export class SceneObject extends Entity {
     if (!this.enabled) {
       return;
     }
-    var values: any[] = this._components;
-    var l: number = this._components.length;
+    var values: any[] = this._connectedBehaviors;
+    var l: number = this._connectedBehaviors.length;
     for (var i = 0; i < l; i++) {
       if (!values[i]) {
         throw new Error("Component deleted during tick, use _.defer to delay removal until the callstack unwinds");
@@ -62,8 +61,8 @@ export class SceneObject extends Entity {
     if (!this.enabled) {
       return;
     }
-    var values: any[] = this._components;
-    var l: number = this._components.length;
+    var values: any[] = this._connectedBehaviors;
+    var l: number = this._connectedBehaviors.length;
     for (var i = 0; i < l; i++) {
       if (!values[i]) {
         throw new Error("Component deleted during interpolateTick, use _.defer to delay removal until the callstack unwinds");
@@ -73,10 +72,10 @@ export class SceneObject extends Entity {
   }
 
   destroy() {
-    _.each(this._components, (o: SceneComponent) => {
+    _.each(this._connectedBehaviors, (o: SceneComponent) => {
       o.disconnectBehavior();
     });
-    this._components.length = 0;
+    this._connectedBehaviors.length = 0;
     if (this.scene) {
       this.scene.removeObject(this, false);
     }
@@ -106,11 +105,11 @@ export class SceneObject extends Entity {
   }
 
   removeComponentDictionary(components: any, silent?: boolean): boolean {
-    var previousCount: number = this._components.length;
+    var previousCount: number = this._connectedBehaviors.length;
     var removeIds: string[] = _.map(components, (value: SceneComponent) => {
       return value.id;
     });
-    this._components = _.filter(this._components, (obj: SceneComponent) => {
+    this._connectedBehaviors = _.filter(this._connectedBehaviors, (obj: SceneComponent) => {
       if (_.indexOf(removeIds, obj.id) !== -1) {
         if (obj.disconnectBehavior() === false) {
           return true;
@@ -120,7 +119,7 @@ export class SceneObject extends Entity {
       }
       return true;
     });
-    var change: boolean = this._components.length === previousCount;
+    var change: boolean = this._connectedBehaviors.length === previousCount;
     if (change && silent !== true) {
       this.syncBehaviors();
     }
@@ -135,7 +134,7 @@ export class SceneObject extends Entity {
     if (ctor && ctor.name != "Function") {
       name = ctor.name || (this.toString().match(/function (.+?)\(/) || [, ''])[1];
     }
-    _.each(this._components, (comp: SceneComponent) => {
+    _.each(this._connectedBehaviors, (comp: SceneComponent) => {
       name += ', ' + comp;
     });
     return name;

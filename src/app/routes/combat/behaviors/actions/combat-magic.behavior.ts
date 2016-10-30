@@ -11,13 +11,18 @@ import {SoundComponent} from '../../../../../game/pow2/scene/components/soundCom
 import {DamageComponent} from '../../../../../game/rpg/components/damageComponent';
 import {CreatureModel} from '../../../../../game/rpg/models/creatureModel';
 import {CombatPlayerRenderBehavior} from '../combat-player-render.behavior';
+import {Component} from '@angular/core';
 
 
 
 /**
  * Use magic in
  */
-export class CombatMagicComponent extends CombatActionBehavior {
+@Component({
+  selector: 'combat-magic-behavior',
+  template: '<ng-content></ng-content>'
+})
+export class CombatMagicBehavior extends CombatActionBehavior {
   name: string = "magic";
 
   canBeUsedBy(entity: GameEntityObject) {
@@ -26,14 +31,14 @@ export class CombatMagicComponent extends CombatActionBehavior {
       HeroTypes.LifeMage,
       HeroTypes.Necromancer
     ];
-    return super.canBeUsedBy(entity) && _.indexOf(supportedTypes, entity.model.get('type')) !== -1;
+    return super.canBeUsedBy(entity) && _.indexOf(supportedTypes, entity.model.type) !== -1;
   }
 
   act(then?: IPlayerActionCallback): boolean {
     if (!this.isCurrentTurn()) {
       return false;
     }
-    var done = (error?: any) => {
+    const done = (error?: any) => {
       then && then(this, error);
       this.combat.machine.setCurrentState(CombatEndTurnState.NAME);
     };
@@ -42,9 +47,9 @@ export class CombatMagicComponent extends CombatActionBehavior {
       return false;
     }
     switch (this.spell.id) {
-      case "heal":
+      case 'heal':
         return this.healSpell(done);
-      case "push":
+      case 'push':
         return this.hurtSpell(done);
     }
     return true;
@@ -57,7 +62,7 @@ export class CombatMagicComponent extends CombatActionBehavior {
     const attackerPlayer = caster.findBehavior(CombatPlayerRenderBehavior) as CombatPlayerRenderBehavior;
 
     attackerPlayer.magic(()=> {
-      var level: number = target.model.get('level');
+      var level: number = target.model.level;
       var healAmount: number = -this.spell.value;
       target.model.damage(healAmount);
 
@@ -98,12 +103,12 @@ export class CombatMagicComponent extends CombatActionBehavior {
     const attacker: GameEntityObject = this.from;
     const defender: GameEntityObject = this.to;
 
-    const attackerPlayer = attacker.findBehavior(PlayerCombatRenderComponent) as PlayerCombatRenderComponent;
+    const attackerPlayer = attacker.findBehavior(CombatPlayerRenderBehavior) as CombatPlayerRenderBehavior;
     attackerPlayer.magic(() => {
       const attackModel = <HeroModel>attacker.model;
       const magicAttack = attackModel.calculateDamage(attackModel.getMagicStrength() + this.spell.value);
       const damage: number = defender.model.damage(magicAttack);
-      const didKill: boolean = defender.model.get('hp') <= 0;
+      const didKill: boolean = defender.model.hp <= 0;
       const hit: boolean = damage > 0;
       const hitSound: string = getSoundEffectUrl((didKill ? "killed" : (hit ? "spell" : "miss")));
       const components = {
@@ -135,7 +140,7 @@ export class CombatMagicComponent extends CombatActionBehavior {
         attacker: attacker,
         defender: defender
       };
-      this.combat.machine.notify("combat:attack", data, done);
+      this.combat.machine.notify('combat:attack', data, done);
     });
     return true;
 

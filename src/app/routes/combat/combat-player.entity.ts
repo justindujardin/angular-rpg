@@ -1,48 +1,66 @@
-import {Component, ElementRef, AfterViewInit, ViewChildren, QueryList} from '@angular/core';
-import {Animate} from '../../services/index';
+import {Component, AfterViewInit, ViewChildren, QueryList, OnDestroy, Inject, Input, forwardRef} from '@angular/core';
 import {GameEntityObject} from '../../../game/rpg/objects/gameEntityObject';
 import {CombatPlayerRenderBehavior} from './behaviors/combat-player-render.behavior';
 import {SceneComponent} from '../../../game/pow2/scene/sceneComponent';
-
+import {CombatAttackBehavior} from './behaviors/actions/combat-attack.behavior';
+import {CombatMagicBehavior} from './behaviors/actions/combat-magic.behavior';
+import {CombatItemBehavior} from './behaviors/actions/combat-item.behavior';
+import {CombatRunBehavior} from './behaviors/actions/combat-run.behavior';
+import {CombatGuardBehavior} from './behaviors/actions/combat-guard.behavior';
+import {CombatComponent} from './combat.component';
+import {PartyMember} from '../../models/party-member.model';
 
 
 @Component({
   selector: 'combat-player',
   template: `
-  <combat-player-render-behavior></combat-player-render-behavior>
-  <animated-behavior></animated-behavior>
+  <combat-player-render-behavior #render></combat-player-render-behavior>
+  <animated-behavior #animation></animated-behavior>
+  <combat-attack-behavior #attack></combat-attack-behavior>
+  <combat-magic-behavior #magic></combat-magic-behavior>
+  <combat-item-behavior #item></combat-item-behavior>
+  <combat-run-behavior #run></combat-run-behavior>
+  <combat-guard-behavior #guard></combat-guard-behavior>
+  <ng-content></ng-content>
 `
 })
-export class CombatPlayer extends GameEntityObject implements AfterViewInit {
-  @ViewChildren(SceneComponent) components: QueryList<SceneComponent>;
+export class CombatPlayer extends GameEntityObject implements AfterViewInit, OnDestroy {
+  @ViewChildren('render,animation,attack,magic,guard,item,run') behaviors: QueryList<SceneComponent>;
 
-  constructor(public elRef: ElementRef, public animate: Animate) {
+  @Input() model: PartyMember;
+
+  constructor(@Inject(forwardRef(() => CombatComponent)) private host: CombatComponent) {
     super();
-    //   model: HeroModel,
-    //     combat: PlayerCombatState
-    // },
-    // components: [
-    //   {name: 'render', type: CombatPlayerRenderBehavior},
-    //   {name: 'animation', type: AnimatedComponent},
-    //   {name: 'attack', type: CombatAttackComponent, params: ['combat']},
-    //   {name: 'magic', type: CombatMagicComponent, params: ['combat']},
-    //   {name: 'item', type: CombatItemComponent, params: ['combat']},
-    //   {name: 'run', type: CombatRunComponent, params: ['combat']},
-    //   {name: 'guard', type: CombatGuardComponent, params: ['combat']}
-    //   ]
-
   }
 
   ngAfterViewInit(): void {
-    console.log("CombatPlayer components: ");
-    console.log(this.components);
+    this.host.scene.addObject(this);
+
+    console.log("CombatPlayer");
+    console.log(this);
+    this.behaviors.forEach((c: SceneComponent) => {
+      this.addBehavior(c);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.host.scene.removeObject(this);
+    this.behaviors.forEach((c: SceneComponent) => {
+      this.removeBehavior(c);
+    });
+    this.destroy();
   }
 
 }
 
 
-/** Components assocaited with combat player */
+/** Components associated with combat player */
 export const COMBAT_PLAYER_COMPONENTS = [
   CombatPlayerRenderBehavior,
+  CombatAttackBehavior,
+  CombatMagicBehavior,
+  CombatItemBehavior,
+  CombatRunBehavior,
+  CombatGuardBehavior,
   CombatPlayer
 ];

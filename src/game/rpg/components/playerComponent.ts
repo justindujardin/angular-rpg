@@ -36,6 +36,7 @@ export class PlayerComponent extends BasePlayerComponent {
     'TempleFeatureComponent',
     'StoreFeatureComponent',
     'DialogFeatureComponent',
+    'CombatFeatureComponent',
     'sign'
   ];
 

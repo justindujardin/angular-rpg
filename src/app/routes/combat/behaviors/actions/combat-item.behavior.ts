@@ -8,12 +8,17 @@ import {AnimatedSpriteComponent} from '../../../../../game/pow2/tile/components/
 import {SpriteComponent} from '../../../../../game/pow2/tile/components/spriteComponent';
 import {SoundComponent} from '../../../../../game/pow2/scene/components/soundComponent';
 import {CombatPlayerRenderBehavior} from '../combat-player-render.behavior';
+import {Component} from '@angular/core';
 
 
 /**
  * Use an item in combat
  */
-export class CombatItemComponent extends CombatActionBehavior {
+@Component({
+  selector: 'combat-item-behavior',
+  template: '<ng-content></ng-content>'
+})
+export class CombatItemBehavior extends CombatActionBehavior {
   name: string = "item";
 
 

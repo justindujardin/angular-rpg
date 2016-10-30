@@ -1,12 +1,12 @@
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {AnimatedComponent} from './animated.behavior';
+import {AnimatedBehavior} from './animated.behavior';
 
 export * from './animated.behavior';
 
 /** Common behavior components */
 export const BEHAVIOR_COMPONENTS = [
-  AnimatedComponent
+  AnimatedBehavior
 ];
 
 @NgModule({

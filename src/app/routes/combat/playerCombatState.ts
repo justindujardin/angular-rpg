@@ -65,23 +65,15 @@ export class PlayerCombatState {
 
   static NAME: string = "combat";
   name: string = PlayerCombatState.NAME;
-  machine: CombatStateMachine = null;
+  machine: CombatStateMachine = new CombatStateMachine();
   tileMap: GameTileMap;
   finished: boolean = false; // Trigger state to exit when true.
-
-  /**
-   * The scene that combat happens in
-   */
-  scene: Scene = null;
-
   factory: EntityFactory;
 
   enter() {
     this.factory = GameWorld.get().entities;
-    this.machine = new CombatStateMachine();
-    this.scene = new Scene();
     // machine.world.mark(this.scene);
-    const spreadsheet = this.parent.world.spreadsheet;
+    const spreadsheet = this.host.world.spreadsheet;
     if (!this.factory || !spreadsheet) {
       throw new Error("Invalid combat entity container or game data spreadsheet");
     }

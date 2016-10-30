@@ -13,15 +13,14 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
-import {Component, ElementRef, Input, AfterViewInit} from '@angular/core';
+import {Component, Input, AfterViewInit, ViewChild, ElementRef} from '@angular/core';
 import {Animate} from '../../services/index';
 import {Point} from '../../../game/pow-core/point';
 
 @Component({
   selector: 'combat-damage',
   template: `
-    <span class="damage-value"
+    <span #damageValue class="damage-value"
           [ngClass]="classes"
           [innerText]="value"
           [style.top]="position?.y + 'px'"
@@ -31,25 +30,23 @@ import {Point} from '../../../game/pow-core/point';
   styleUrls: ['./combat-damage.component.scss']
 })
 export class CombatDamage implements AfterViewInit {
-  @Input()
-  classes: string[] = [];
-  @Input()
-  value: number = 0;
-  @Input()
-  position: Point = new Point();
+  @Input() classes: string[] = [];
+  @Input() value: number = 0;
+  @Input() position: Point = new Point();
+  @ViewChild('damageValue') damageValue: ElementRef;
 
-  constructor(public elRef: ElementRef, public animate: Animate) {
+  constructor(public animate: Animate) {
   }
 
   ngAfterViewInit(): void {
-    var anim: string = 'active';
-    var element = this.elRef.nativeElement.querySelector('.damage-value');
+    const anim: string = 'active';
+    const element = this.damageValue.nativeElement;
     if (!element) {
       return console.warn('unable to find damage value');
     }
-    this.animate.enter(element, anim).then(()=> {
+    this.animate.enter(element, anim).then(() => {
       element.classList.remove('active');
-      this.animate.enter(element, 'remove').then(()=> {
+      this.animate.enter(element, 'remove').then(() => {
         element.classList.remove('remove');
       });
     });

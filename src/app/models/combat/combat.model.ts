@@ -45,12 +45,12 @@ export interface CombatEncounter {
   readonly id: string;
   /** array of enemies in this encounter */
   readonly enemies: Combatant[];
-  /** array of enemies in this encounter */
-  readonly party: PartyMember[];
   /** message to display when combat begins */
   readonly message?: string;
   /** The type of combat */
   readonly type?: CombatType;
+  /** The combat zone name, e.g. 'world-plains', 'sewer', ... */
+  readonly zone?: string;
 }
 
 /**
@@ -79,13 +79,15 @@ export interface CombatRandomEncounter extends CombatEncounter {
   readonly zones: string[];
 }
 
+/** Union of valid CombatEncounter class types */
 export type CombatEncounterTypes = CombatEncounter | CombatFixedEncounter | CombatRandomEncounter;
+
+/** Union of either a CombatEncounter instance or false */
+export type CombatCurrentType = CombatEncounterTypes | boolean;
 
 export interface CombatState {
   /** Is the current encounter loading */
   readonly loading: boolean;
-  /** The index of the active encounter in encounters or -1 if there is no active encounter */
-  readonly current: number;
-  /** An array of encounters */
-  readonly encounters: CombatEncounterTypes[];
+  /** The current encounter or null */
+  readonly encounter: CombatEncounterTypes;
 }

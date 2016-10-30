@@ -82,7 +82,7 @@ export class SceneView extends SceneObject implements ISceneView {
 
   // Render a frame. Subclass this to do your specific rendering.
   renderFrame(elapsed: number) {
-    _.each(this._components, (o: any) => {
+    _.each(this._connectedBehaviors, (o: any) => {
       o instanceof SceneViewComponent && o.renderFrame(this, elapsed);
     });
   }
@@ -118,13 +118,13 @@ export class SceneView extends SceneObject implements ISceneView {
   _render(elapsed: number) {
     this.processCamera();
     this.setRenderState();
-    _.each(this._components, (o: any) => {
+    _.each(this._connectedBehaviors, (o: any) => {
       o instanceof SceneViewComponent && o.beforeFrame(this, elapsed);
     });
     this.renderFrame(elapsed);
     this.renderAnimations();
     this.renderPost();
-    _.each(this._components, (o: any) => {
+    _.each(this._connectedBehaviors, (o: any) => {
       o instanceof SceneViewComponent && o.afterFrame(this, elapsed);
     });
     this.restoreRenderState();

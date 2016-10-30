@@ -24,6 +24,7 @@ import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {Visibility} from './visibility';
 import {GameStateService} from './game-state.service';
+import {CombatService} from './combat.service';
 export * from './animate';
 export * from './notify';
 export * from './rpgGame';
@@ -35,6 +36,7 @@ export const SERVICE_PROVIDERS = [
   GameWorld,
   SpriteRender,
   Visibility,
+  CombatService,
   GameStateService
 ];
 

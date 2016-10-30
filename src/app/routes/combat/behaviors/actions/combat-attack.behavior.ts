@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
 import {GameEntityObject} from '../../../../../game/rpg/objects/gameEntityObject';
 import {HeroTypes, HeroModel} from '../../../../../game/rpg/models/heroModel';
@@ -27,20 +26,24 @@ import {SoundComponent} from '../../../../../game/pow2/scene/components/soundCom
 import {CreatureModel} from '../../../../../game/rpg/models/creatureModel';
 import {CombatPlayerRenderBehavior} from '../combat-player-render.behavior';
 import {CombatActionBehavior} from '../combat-action.behavior';
-
+import {Component} from '@angular/core';
 /**
  * Attack another entity in combat.
  */
-export class CombatAttackComponent extends CombatActionBehavior {
+@Component({
+  selector: 'combat-attack-behavior',
+  template: '<ng-content></ng-content>'
+})
+export class CombatAttackBehavior extends CombatActionBehavior {
   name: string = "attack";
 
   canBeUsedBy(entity: GameEntityObject) {
     // Exclude magic casters from physical attacks
-    var excludedTypes = [
+    const excludedTypes = [
       HeroTypes.LifeMage,
       HeroTypes.Necromancer
     ];
-    return super.canBeUsedBy(entity) && _.indexOf(excludedTypes, entity.model.get('type')) === -1;
+    return super.canBeUsedBy(entity) && _.indexOf(excludedTypes, entity.model.type) === -1;
   }
 
 
@@ -48,29 +51,29 @@ export class CombatAttackComponent extends CombatActionBehavior {
     if (!this.isCurrentTurn()) {
       return false;
     }
-    var done = (error?: any) => {
+    const done = (error?: any) => {
       then && then(this, error);
       this.combat.machine.setCurrentState(CombatEndTurnState.NAME);
     };
 
     //
-    var attacker: GameEntityObject = this.from;
-    var defender: GameEntityObject = this.to;
-    var attackerPlayer = attacker.findBehavior(CombatPlayerRenderBehavior) as CombatPlayerRenderBehavior;
-    var attack = () => {
-      var damage: number = attacker.model.attack(defender.model);
-      var didKill: boolean = defender.model.get('hp') <= 0;
-      var hit: boolean = damage > 0;
-      var defending: boolean = (defender.model instanceof HeroModel) && (<HeroModel>defender.model).defenseBuff > 0;
-      var hitSound: string = getSoundEffectUrl(didKill ? "killed" : (hit ? (defending ? "miss" : "hit") : "miss"));
-      var components = {
+    const attacker: GameEntityObject = this.from;
+    const defender: GameEntityObject = this.to;
+    let attackerPlayer = attacker.findBehavior(CombatPlayerRenderBehavior) as CombatPlayerRenderBehavior;
+    const attack = () => {
+      const damage: number = attacker.model.attack(defender.model);
+      const didKill: boolean = defender.model.hp <= 0;
+      const hit: boolean = damage > 0;
+      const defending: boolean = (defender.model instanceof HeroModel) && (<HeroModel>defender.model).defenseBuff > 0;
+      const hitSound: string = getSoundEffectUrl(didKill ? 'killed' : (hit ? (defending ? 'miss' : 'hit') : 'miss'));
+      const components = {
         animation: new AnimatedSpriteComponent({
-          spriteName: "attack",
+          spriteName: 'attack',
           lengthMS: 350
         }),
         sprite: new SpriteComponent({
-          name: "attack",
-          icon: hit ? (defending ? "animSmoke.png" : "animHit.png") : "animMiss.png"
+          name: 'attack',
+          icon: hit ? (defending ? 'animSmoke.png' : 'animHit.png') : 'animMiss.png'
         }),
         damage: new DamageComponent(),
         sound: new SoundComponent({
@@ -79,7 +82,7 @@ export class CombatAttackComponent extends CombatActionBehavior {
         })
       };
       if (!!attackerPlayer) {
-        attackerPlayer.setState("Moving");
+        attackerPlayer.setState('Moving');
       }
       defender.addComponentDictionary(components);
       components.damage.once('damage:done', () => {
@@ -93,19 +96,19 @@ export class CombatAttackComponent extends CombatActionBehavior {
         }
         defender.removeComponentDictionary(components);
       });
-      var data: CombatAttackSummary = {
+      const data: CombatAttackSummary = {
         damage: damage,
         attacker: attacker,
         defender: defender
       };
-      this.combat.machine.notify("combat:attack", data, done);
+      this.combat.machine.notify('combat:attack', data, done);
     };
 
-    // TODO: Shouldn't be here.  This mess is currently to delay NPC attacks.
     if (!!attackerPlayer) {
       attackerPlayer.attack(attack);
     }
     else {
+      // TODO: Shouldn't be here.  This mess is currently to delay NPC attacks.
       _.delay(() => {
         attack();
       }, 1000);

@@ -13,32 +13,33 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
 import * as rpg from '../game';
 import {GameWorld} from '../../../app/services/gameWorld';
-import {EntityModel} from '../models/entityModel';
 import {TileObject} from '../../pow2/tile/tileObject';
+import {PartyMember} from '../../../app/models/party-member.model';
 
 export class GameEntityObject extends TileObject {
-  model: EntityModel;
+  model: PartyMember;
   type = 'player';
   groups: any;
   world: GameWorld;
 
   constructor() {
     super();
-    this.model = new EntityModel();
+    // this.model = new EntityModel();
   }
 
   isDefeated(): boolean {
-    return this.model.isDefeated();
+    return false;
+    // return this.model.isDefeated();
   }
 
   getSpells(): rpg.IGameSpell[] {
-    var spells: any = this.world.spreadsheet.getSheetData('magic');
-    var userLevel: number = this.model.get('level');
-    var userClass: string = this.model.get('type');
+    const spells: any = this.world.spreadsheet.getSheetData('magic');
+    console.warn('getSpells needs to be updated for non-backbone data model');
+    const userLevel: number = 1;// this.model.get('level');
+    const userClass: string = 'warrior';// this.model.get('type');
     return _.filter(spells, (spell: rpg.IGameSpell) => {
       return spell.level <= userLevel && _.indexOf(spell.usedby, userClass) !== -1;
     });
