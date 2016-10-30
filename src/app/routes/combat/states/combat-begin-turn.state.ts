@@ -16,11 +16,10 @@
 
 
 import * as _ from 'underscore';
-import {IPlayerAction} from '../playerCombatState';
 import {CombatMachineState} from './combat-base.state';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
-import {CombatStateMachine} from './combat.machine';
-import {CombatAttackComponent} from '../behaviors/actions/combat-attack.behavior';
+import {CombatStateMachine, IPlayerAction} from './combat.machine';
+import {CombatAttackBehavior} from '../behaviors/actions/combat-attack.behavior';
 
 // Combat Begin
 //--------------------------------------------------------------------------
@@ -41,14 +40,14 @@ export class CombatBeginTurnState extends CombatMachineState {
       machine.focus = machine.current;
     }
 
-    machine.trigger("combat:beginTurn", machine.current);
-    var choice: IPlayerAction = null;
+    machine.trigger('combat:beginTurn', machine.current);
+    let choice: IPlayerAction = null;
     if (machine.isFriendlyTurn()) {
-      console.log("TURN: " + machine.current.model.get('name'));
+      console.log("TURN: " + machine.current.model.name);
       choice = machine.playerChoices[machine.current._uid];
     }
     else {
-      choice = <CombatAttackComponent>machine.current.findBehavior(CombatAttackComponent);
+      choice = machine.current.findBehavior(CombatAttackBehavior) as CombatAttackBehavior;
       // TODO: This config should not be here.   Just pick a random person to attack.
       if (choice) {
         choice.to = machine.getRandomPartyMember();

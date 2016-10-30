@@ -35,17 +35,17 @@ describe('GameState', () => {
     });
 
     describe('GameStateHealPartyAction', () => {
-      it('should restore all party members hp to maxHP', () => {
+      it('should restore all party members hp to maxhp', () => {
         const state = defaultState({
           party: [
-            {hp: 0, maxHP: 25},
-            {hp: 25, maxHP: 22}
+            {hp: 0, maxhp: 25},
+            {hp: 25, maxhp: 22}
           ]
         });
         const expected = defaultState({
           party: [
-            {hp: 25, maxHP: 25},
-            {hp: 22, maxHP: 22}
+            {hp: 25, maxhp: 25},
+            {hp: 22, maxhp: 22}
           ]
         });
         const actual = gameStateReducer(state, new GameStateHealPartyAction(0));

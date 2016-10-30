@@ -84,8 +84,8 @@ export class EntityModel extends Model {
 
   damage(amount: number): number {
     amount = Math.ceil(amount);
-    this.set({hp: Math.min(this.attributes.maxHP, Math.max(0, this.attributes.hp - amount))});
-    if (this.attributes.hp <= 0) {
+    this.set({hp: Math.min(this.maxhp, Math.max(0, this.hp - amount))});
+    if (this.hp <= 0) {
       this.set({dead: true});
     }
     return amount;
@@ -100,7 +100,7 @@ export class EntityModel extends Model {
   }
 
   attack(defender: EntityModel): number {
-    var halfStrength = this.attributes.strength / 2;
+    var halfStrength = this.strength / 2;
     return defender.damage(halfStrength);
   }
 }

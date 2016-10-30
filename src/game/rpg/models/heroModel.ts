@@ -46,7 +46,7 @@ export interface HeroModelOptions extends EntityModelOptions {
 
   level?: number;
   hp?: number;
-  maxHP?: number;
+  maxhp?: number;
   exp?: number;
   strength?: number;
   vitality?: number;
@@ -104,7 +104,7 @@ export class HeroModel extends EntityModel {
     nextLevelExp: 0,
     prevLevelExp: 0,
     hp: 0,
-    maxHP: 6,
+    maxhp: 6,
     description: '',
     // Hidden attributes.
     baseStrength: 0,
@@ -230,7 +230,7 @@ export class HeroModel extends EntityModel {
     var newHP = this.getHPForLevel(nextLevel);
     this.set({
       level: nextLevel,
-      maxHP: newHP,
+      maxhp: newHP,
       // REMOVE auto-heal when you level up.  I think I'd rather people die from time-to-time.
       //hp: newHP,
       strength: this.getStrengthForLevel(nextLevel),
@@ -370,7 +370,7 @@ export class HeroModel extends EntityModel {
     }
     character.awardLevelUp();
     character.set({
-      hp: character.get('maxHP')
+      hp: character.get('maxhp')
     });
     return character;
   }

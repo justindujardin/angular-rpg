@@ -1,7 +1,6 @@
 import * as _ from 'underscore';
-import {IPlayerActionCallback} from '../../playerCombatState';
 import {CombatEndTurnState} from '../../states/combat-end-turn.state';
-import {CombatStateMachine} from '../../states/combat.machine';
+import {CombatStateMachine, IPlayerActionCallback} from '../../states/combat.machine';
 import {HeroModel} from '../../../../../game/rpg/models/heroModel';
 import {CombatChooseActionState} from '../../states/combat-choose-action.state';
 import {CombatVictoryState} from '../../states/combat-victory.state';
@@ -9,7 +8,8 @@ import {CombatDefeatState} from '../../states/combat-defeat.state';
 import {CombatEscapeState} from '../../states/combat-escape.state';
 import {CombatMachineState} from '../../states/combat-base.state';
 import {CombatActionBehavior} from '../combat-action.behavior';
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {CombatComponent} from '../../combat.component';
 
 @Component({
   selector: 'combat-guard-behavior',
@@ -17,7 +17,7 @@ import {Component} from '@angular/core';
 })
 export class CombatGuardBehavior extends CombatActionBehavior {
   name: string = "guard";
-
+  @Input() combat: CombatComponent;
   canTarget(): boolean {
     return false;
   }

@@ -1,22 +1,6 @@
-/*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
 import * as _ from 'underscore';
 import {GameEntityObject} from '../../../../../game/rpg/objects/gameEntityObject';
 import {HeroTypes, HeroModel} from '../../../../../game/rpg/models/heroModel';
-import {IPlayerActionCallback, CombatAttackSummary} from '../../playerCombatState';
 import {CombatEndTurnState} from '../../states/combat-end-turn.state';
 import {getSoundEffectUrl} from '../../../../../game/pow2/core/api';
 import {AnimatedSpriteComponent} from '../../../../../game/pow2/tile/components/animatedSpriteComponent';
@@ -26,7 +10,10 @@ import {SoundComponent} from '../../../../../game/pow2/scene/components/soundCom
 import {CreatureModel} from '../../../../../game/rpg/models/creatureModel';
 import {CombatPlayerRenderBehavior} from '../combat-player-render.behavior';
 import {CombatActionBehavior} from '../combat-action.behavior';
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {CombatAttackSummary, IPlayerActionCallback} from '../../states/combat.machine';
+import {PartyMember} from '../../../../models/party-member.model';
+import {CombatComponent} from '../../combat.component';
 /**
  * Attack another entity in combat.
  */
@@ -37,13 +24,19 @@ import {Component} from '@angular/core';
 export class CombatAttackBehavior extends CombatActionBehavior {
   name: string = "attack";
 
+  @Input() combat: CombatComponent;
+
   canBeUsedBy(entity: GameEntityObject) {
     // Exclude magic casters from physical attacks
     const excludedTypes = [
       HeroTypes.LifeMage,
       HeroTypes.Necromancer
     ];
-    return super.canBeUsedBy(entity) && _.indexOf(excludedTypes, entity.model.type) === -1;
+    const partyMember = entity.model as PartyMember;
+    if (partyMember.type !== undefined && _.indexOf(excludedTypes, partyMember.type) !== -1) {
+      return false;
+    }
+    return super.canBeUsedBy(entity);
   }
 
 

@@ -1,22 +1,30 @@
 <canvas #combatCanvas>
   Your browser doesn't support this.
 </canvas>
-<span #combatPointer class="point-to-player"></span>
+
+<span #combatPointer
+      class="point-to-player"></span>
+
 <combat-damage *ngFor="let d of damages"
                [value]="d.value"
                [position]="d.position"
                [classes]="d.classes"></combat-damage>
-<combat-player *ngFor="let p of party$ | async" [model]="p"></combat-player>
-<combat-enemy *ngFor="let e of enemies$ | async" [model]="e"></combat-enemy>
+
+<combat-player *ngFor="let p of party$ | async"
+               [model]="p"></combat-player>
+
+<combat-enemy *ngFor="let e of enemies$ | async"
+              [model]="e"></combat-enemy>
+
 <div class="combat-view">
   <ul *ngIf="items.length > 0" class="ebp action-menu">
     <li *ngFor="let item of items" (click)="item.select()" [innerText]="item.label"></li>
   </ul>
-  <div class="status" *ngFor="let member of combat?.machine?.party" [class]="getMemberClass(member,combat?.focus)">
+  <div class="status" *ngFor="let member of party$ | async" [class]="getMemberClass(member,combat?.focus)">
     <div class="text">
-      <span class="name">{{member.model.attributes.name}}</span>
-      <span class="hp">HP {{member.model.attributes.hp}} / {{member.model.attributes.maxHP}}</span>
+      <span class="name">{{member.name}}</span>
+      <span class="hp">HP {{member.hp}} / {{member.maxhp}}</span>
     </div>
-    <rpg-health-bar [model]="member.model"></rpg-health-bar>
+    <rpg-health-bar [model]="member"></rpg-health-bar>
   </div>
 </div>

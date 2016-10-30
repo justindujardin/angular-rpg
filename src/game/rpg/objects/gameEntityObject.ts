@@ -17,10 +17,10 @@ import * as _ from 'underscore';
 import * as rpg from '../game';
 import {GameWorld} from '../../../app/services/gameWorld';
 import {TileObject} from '../../pow2/tile/tileObject';
-import {PartyMember} from '../../../app/models/party-member.model';
+import {Being} from '../../../app/models/being';
 
 export class GameEntityObject extends TileObject {
-  model: PartyMember;
+  model: Being;
   type = 'player';
   groups: any;
   world: GameWorld;

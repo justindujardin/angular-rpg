@@ -2,7 +2,6 @@ import * as _ from 'underscore';
 import {CombatActionBehavior} from '../combat-action.behavior';
 import {GameEntityObject} from '../../../../../game/rpg/objects/gameEntityObject';
 import {HeroTypes, HeroModel} from '../../../../../game/rpg/models/heroModel';
-import {IPlayerActionCallback, CombatAttackSummary} from '../../playerCombatState';
 import {CombatEndTurnState} from '../../states/combat-end-turn.state';
 import {getSoundEffectUrl} from '../../../../../game/pow2/core/api';
 import {AnimatedSpriteComponent} from '../../../../../game/pow2/tile/components/animatedSpriteComponent';
@@ -11,7 +10,9 @@ import {SoundComponent} from '../../../../../game/pow2/scene/components/soundCom
 import {DamageComponent} from '../../../../../game/rpg/components/damageComponent';
 import {CreatureModel} from '../../../../../game/rpg/models/creatureModel';
 import {CombatPlayerRenderBehavior} from '../combat-player-render.behavior';
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {CombatAttackSummary, IPlayerActionCallback} from '../../states/combat.machine';
+import {CombatComponent} from '../../combat.component';
 
 
 
@@ -24,7 +25,7 @@ import {Component} from '@angular/core';
 })
 export class CombatMagicBehavior extends CombatActionBehavior {
   name: string = "magic";
-
+  @Input() combat: CombatComponent;
   canBeUsedBy(entity: GameEntityObject) {
     // Include only magic casters
     var supportedTypes = [

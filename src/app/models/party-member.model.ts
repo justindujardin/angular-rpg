@@ -1,12 +1,8 @@
+import {Being} from './being';
 export type PartyMemberType = 'warrior' | 'thief' | 'mage' | 'healer';
 
-export interface PartyMember {
-  readonly name?: string;
-  readonly icon?: string;
+export interface PartyMember extends Being {
   readonly type?: PartyMemberType;
-  readonly level?: number;
-  readonly hp?: number;
-  readonly maxHP?: number;
   readonly exp?: number;
   readonly strength?: number;
   readonly vitality?: number;

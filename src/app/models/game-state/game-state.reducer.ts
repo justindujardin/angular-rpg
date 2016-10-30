@@ -42,7 +42,7 @@ export function gameStateReducer(state: GameState = initialState, action: GameSt
       const cost: number = action.payload;
       const party = Immutable.List(state.party).map((p: PartyMember) => {
         return Immutable.Map(p).merge({
-          hp: p.maxHP
+          hp: p.maxhp
         });
       });
       return Immutable.fromJS(state).merge({

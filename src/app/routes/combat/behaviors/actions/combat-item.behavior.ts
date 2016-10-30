@@ -1,14 +1,15 @@
 import * as _ from 'underscore';
 import {CombatActionBehavior} from '../combat-action.behavior';
 import {GameEntityObject} from '../../../../../game/rpg/objects/gameEntityObject';
-import {IPlayerActionCallback} from '../../playerCombatState';
 import {UsableModel} from '../../../../../game/rpg/models/usableModel';
 import {CombatEndTurnState} from '../../states/combat-end-turn.state';
 import {AnimatedSpriteComponent} from '../../../../../game/pow2/tile/components/animatedSpriteComponent';
 import {SpriteComponent} from '../../../../../game/pow2/tile/components/spriteComponent';
 import {SoundComponent} from '../../../../../game/pow2/scene/components/soundComponent';
 import {CombatPlayerRenderBehavior} from '../combat-player-render.behavior';
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {IPlayerActionCallback} from '../../states/combat.machine';
+import {CombatComponent} from '../../combat.component';
 
 
 /**
@@ -20,7 +21,7 @@ import {Component} from '@angular/core';
 })
 export class CombatItemBehavior extends CombatActionBehavior {
   name: string = "item";
-
+  @Input() combat: CombatComponent;
 
   canBeUsedBy(entity: GameEntityObject): boolean {
     return super.canBeUsedBy(entity)

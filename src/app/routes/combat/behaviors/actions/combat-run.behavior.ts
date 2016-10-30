@@ -1,9 +1,10 @@
 import * as _ from 'underscore';
 import {CombatActionBehavior} from '../combat-action.behavior';
-import {IPlayerActionCallback} from '../../playerCombatState';
 import {CombatRunSummary, CombatEscapeState} from '../../states/combat-escape.state';
 import {CombatEndTurnState} from '../../states/combat-end-turn.state';
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {IPlayerActionCallback} from '../../states/combat.machine';
+import {CombatComponent} from '../../combat.component';
 
 @Component({
   selector: 'combat-run-behavior',
@@ -11,7 +12,7 @@ import {Component} from '@angular/core';
 })
 export class CombatRunBehavior extends CombatActionBehavior {
   name: string = "run";
-
+  @Input() combat: CombatComponent;
   canTarget(): boolean {
     return false;
   }

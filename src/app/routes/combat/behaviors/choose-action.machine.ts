@@ -9,11 +9,11 @@ import {UsableModel} from '../../../../game/rpg/models/usableModel';
 import {GameWorld} from '../../../services/gameWorld';
 import {CombatComponent} from '../combat.component';
 import {State} from '../../../../game/pow2/core/state';
-import {IPlayerAction} from '../playerCombatState';
 import {CombatPlayerRenderBehavior} from '../behaviors/combat-player-render.behavior';
 import {CombatItemBehavior} from '../behaviors/actions/combat-item.behavior';
 import {CombatMagicBehavior} from '../behaviors/actions/combat-magic.behavior';
 import {IChooseActionEvent} from '../states/combat-choose-action.state';
+import {IPlayerAction} from '../states/combat.machine';
 
 /**
  * Attach an HTML element to the position of a game object.

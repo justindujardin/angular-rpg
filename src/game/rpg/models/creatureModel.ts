@@ -145,8 +145,8 @@ export class CreatureModel extends EntityModel implements CreatureModelOptions {
     super.initialize(attributes);
     // Set max values to the specified value for the creature.
     this.set({
-      maxHP: attributes.hp,
-      maxMP: attributes.mp
+      maxhp: attributes.hp,
+      maxmp: attributes.mp
     })
   }
 

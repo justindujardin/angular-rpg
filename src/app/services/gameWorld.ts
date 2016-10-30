@@ -166,23 +166,17 @@ export class GameWorld extends World {
       const itemTemplate = _.where(enemyList, {
         id: id
       })[0];
-      return Object.assign({}, itemTemplate) as any;
+      itemTemplate.maxhp = itemTemplate.hp;
+      itemTemplate.maxmp = itemTemplate.mp;
+      return Object.assign({}, itemTemplate) as Combatant;
     };
 
     const payload: CombatFixedEncounter = {
       id: encounter.id,
       enemies: encounter.enemies.map(toCombatant),
-      party: [],
       zone: zoneInfo.target
     };
-
     this.store.dispatch(new CombatFixedEncounterAction(payload));
-
-    this.scene.trigger('combat:encounter', this);
-    // this.state.encounter = encounter;
-    // this.state.encounterInfo = zoneInfo;
-    // this.state.setCurrentState(PlayerCombatState.NAME);
-    this._encounterCallback = then;
   }
 
 

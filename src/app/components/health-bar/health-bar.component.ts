@@ -14,7 +14,7 @@
  limitations under the License.
  */
 import {Component, Input} from '@angular/core';
-import {EntityModel} from '../../../game/rpg/models/all';
+import {Being} from '../../models/being';
 
 @Component({
   selector: 'rpg-health-bar',
@@ -23,13 +23,13 @@ import {EntityModel} from '../../../game/rpg/models/all';
 })
 export class RPGHealthBar {
   @Input()
-  model: EntityModel;
+  model: Being;
 
   getCSSClassMap(): {[className: string]: boolean} {
-    if (!this.model || !this.model.attributes) {
+    if (!this.model) {
       return {};
     }
-    var pct: number = Math.round(this.model.attributes.hp / this.model.attributes.maxHP * 100);
+    var pct: number = Math.round(this.model.hp / this.model.maxhp * 100);
     return {
       dead: pct === 0,
       critical: pct < 33,
@@ -40,8 +40,8 @@ export class RPGHealthBar {
 
   getProgressBarWidth(): number {
     var width = 0;
-    if (this.model && this.model.attributes) {
-      width = Math.ceil(this.model.attributes.hp / this.model.attributes.maxHP * 100);
+    if (this.model && this.model) {
+      width = Math.ceil(this.model.hp / this.model.maxhp * 100);
     }
     return width;
   }

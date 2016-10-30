@@ -18,7 +18,6 @@ import {ItemModel} from '../../../game/rpg/models/itemModel';
 import {HeroModel} from '../../../game/rpg/models/heroModel';
 import {TileMapView} from '../../../game/pow2/tile/tileMapView';
 import {UIAttachment, ChooseActionStateMachine, ChooseActionType} from './behaviors/choose-action.machine';
-import {PlayerCombatState, CombatAttackSummary} from './playerCombatState';
 import {IChooseActionEvent} from './states/combat-choose-action.state';
 import {CombatRunSummary} from './states/combat-escape.state';
 import {CombatVictorySummary} from './states/combat-victory.state';
@@ -32,7 +31,7 @@ import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
 import {CombatService} from '../../services/combat.service';
 import {Subscription} from 'rxjs/Rx';
-import {CombatStateMachine} from './states/combat.machine';
+import {CombatStateMachine, CombatAttackSummary} from './states/combat.machine';
 import {GameTileMap} from '../../../game/gameTileMap';
 import {getEncounterEnemies} from '../../models/combat/combat.reducer';
 import {getParty} from '../../models/game-state/game-state.reducer';
@@ -74,14 +73,8 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
   @Input()
   items: ICombatMenuItem<any>[] = [];
 
-  /**
-   * The combat state.
-   */
-  @Input()
-  combat: PlayerCombatState = new PlayerCombatState();
-
   /** The combat state machine */
-  machine = new CombatStateMachine();
+  readonly machine: CombatStateMachine = new CombatStateMachine();
 
   /**
    * Damages displaying on screen.
@@ -108,8 +101,10 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
   @ViewChildren(CombatEnemy) enemies: QueryList<CombatEnemy>;
   @ViewChildren(CombatPlayer) party: QueryList<CombatPlayer>;
 
+  /** Observable<Combatant[]> of enemies */
   enemies$ = getEncounterEnemies(this.store);
 
+  /** Observable<PartyMember[]> of party members */
   party$ = getParty(this.store);
 
   private _subscriptions: Subscription[] = [];
@@ -132,10 +127,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
     this._subscriptions.forEach((s) => s.unsubscribe());
     this._subscriptions.length = 0;
     this.scene.removeView(this);
-
-    if (this.combat && this.combat.machine) {
-      this.combat.machine.off('combat:chooseMoves', this.chooseTurns, this);
-    }
+    this.machine.off('combat:chooseMoves', this.chooseTurns, this);
     this.pointer = null;
     this.damages = [];
 
@@ -152,7 +144,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
     // this._bindRenderCombat();
     this.world.time.addObject(this);
 
-    this.combat.machine.on('combat:chooseMoves', this.chooseTurns, this);
+    this.machine.on('combat:chooseMoves', this.chooseTurns, this);
 
     this.pointer = {
       element: this.pointerElementRef.nativeElement,
@@ -162,7 +154,6 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
 
     // Because the base class looks for instance.map before rendering the tilemap.  TODO: Remove this.
     this._subscriptions.push(this.combatService.combatMap$
-      .distinctUntilChanged()
       .do((map: GameTileMap) => {
         this.map = map;
       })
@@ -296,7 +287,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
 
   getMemberClass(member: GameEntityObject, focused?: GameEntityObject): any {
     return {
-      focused: focused && focused.model && member.model.get('name') === focused.model.get('name')
+      focused: focused && focused.model && member.model.name === focused.model.name
     };
   }
 
@@ -306,10 +297,10 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
    * @param value The damage value (negative is considered healing, 0 is miss)
    */
   applyDamage(to: SceneObject, value: number) {
-    var targetPos: Point = to.point.clone();
+    const targetPos: Point = to.point.clone();
     targetPos.y -= (this.camera.point.y + 1.25);
     targetPos.x -= this.camera.point.x;
-    var screenPos: Point = this.worldToScreen(targetPos, this.cameraScale);
+    const screenPos: Point = this.worldToScreen(targetPos, this.cameraScale);
     screenPos.add(this.canvasElementRef.nativeElement.offsetLeft, this.canvasElementRef.nativeElement.offsetTop);
     this.damages.push({
       timeout: new Date().getTime() + 5 * 1000,
@@ -343,9 +334,9 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
    * @private
    */
   private _bindRenderCombat() {
-    this.combat.machine.on('combat:start', (encounter: IGameEncounter) => {
+    this.machine.on('combat:start', (encounter: IGameEncounter) => {
       if (encounter && encounter.message) {
-        var _done = this.combat.machine.notifyWait();
+        var _done = this.machine.notifyWait();
         // If the message contains pipe's, treat what is between each pipe as a separate
         // message to be displayed.
         var msgs = [encounter.message];
@@ -357,25 +348,25 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
         this.notify.show(last, _done, 0);
       }
     });
-    this.combat.machine.on('combat:attack', (data: CombatAttackSummary) => {
-      var _done = this.combat.machine.notifyWait();
+    this.machine.on('combat:attack', (data: CombatAttackSummary) => {
+      var _done = this.machine.notifyWait();
       var msg: string = '';
-      var a = data.attacker.model.get('name');
-      var b = data.defender.model.get('name');
+      var a = data.attacker.name;
+      var b = data.defender.name;
       if (data.damage > 0) {
-        msg = a + " attacked " + b + " for " + data.damage + " damage!";
+        msg = `${a} attacked ${b} for ${data.damage} damage!`;
       }
       else if (data.damage < 0) {
-        msg = a + " healed " + b + " for " + Math.abs(data.damage) + " hit points";
+        msg = `${a} healed ${b} for ${Math.abs(data.damage)} hit points`;
       }
       else {
-        msg = a + " attacked " + b + ", and MISSED!";
+        msg = `${a} attacked ${b}, and MISSED!`;
       }
       this.applyDamage(data.defender, data.damage);
       this.notify.show(msg, _done);
     });
-    this.combat.machine.on('combat:run', (data: CombatRunSummary) => {
-      var _done = this.combat.machine.notifyWait();
+    this.machine.on('combat:run', (data: CombatRunSummary) => {
+      var _done = this.machine.notifyWait();
       var msg: string = data.player.model.get('name');
       if (data.success) {
         msg += ' bravely ran away!';
@@ -385,8 +376,8 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
       }
       this.notify.show(msg, _done);
     });
-    this.combat.machine.on('combat:victory', (data: CombatVictorySummary) => {
-      var _done = this.combat.machine.notifyWait();
+    this.machine.on('combat:victory', (data: CombatVictorySummary) => {
+      var _done = this.machine.notifyWait();
       this.notify.show("Found " + data.gold + " gold!", null, 0);
       if (data.items) {
         _.each(data.items, (item: ItemModel) => {
@@ -399,8 +390,8 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
       });
       this.notify.show("Enemies Defeated!", _done);
     });
-    this.combat.machine.on('combat:defeat', (data: CombatDefeatSummary) => {
-      var done = this.combat.machine.notifyWait();
+    this.machine.on('combat:defeat', (data: CombatDefeatSummary) => {
+      var done = this.machine.notifyWait();
       this.notify.show("Your party was defeated...", () => {
         this.game.initGame().then(done);
       }, 0);

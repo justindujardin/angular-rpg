@@ -1,29 +1,17 @@
 import {Item} from '../item/item.model';
-import {PartyMember} from '../party-member.model';
+import {Being} from '../being';
 export type CombatType = 'none' | 'fixed' | 'random';
 
 /** A combatant in a combat encounter */
-export interface Combatant {
+export interface Combatant extends Being {
   /** The hyphenated-lower-case-unique-id of the combatant */
   readonly id: string;
   /** The name of the combatant */
   readonly name: string;
-  /** The level of the combatant */
-  readonly level: number;
-  /** The sprite texture name, e.g. hugeSpider.png, kobold.png */
-  readonly icon: string;
   /** The experience awarded for defeating this combatant */
   readonly exp: number;
   /** The gold awarded for defeating this combatant */
   readonly gold: number;
-  /** The current hp of the combatant */
-  readonly hp: number;
-  /** The current mp of the combatant */
-  readonly mp: number;
-  /** The current hp of the combatant */
-  readonly maxhp: number;
-  /** The current mp of the combatant */
-  readonly maxmp: number;
 
   // Combat ability values ----
 

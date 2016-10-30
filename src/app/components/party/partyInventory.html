@@ -13,7 +13,7 @@
     </button>
   </div>
   <h3 layout="column">
-    <div>HP {{character.attributes.hp}} / {{character.attributes.maxHP}}</div>
+    <div>HP {{character.hp}} / {{character.maxhp}}</div>
     <rpg-health-bar [model]="character"></rpg-health-bar>
     <div layout="row" layout-align="space-around center" flex>
       <div class="hero-stat">Attack : {{character.getAttackStrength()}}</div>

@@ -3,7 +3,7 @@
 
   <rpg-sprite class="image" [name]="model.attributes.icon" frame="7" width="64" height="72"></rpg-sprite>
   <div>Level {{model.attributes.level}}</div>
-  <div>HP {{model.attributes.hp}} / {{model.attributes.maxHP}}</div>
+  <div>HP {{model.attributes.hp}} / {{model.maxhp}}</div>
   <rpg-health-bar [model]="model"></rpg-health-bar>
   <div>EXP {{model.attributes.exp}} / {{model.attributes.nextLevelExp}}</div>
 

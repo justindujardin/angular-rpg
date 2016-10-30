@@ -20,6 +20,7 @@ import {HeroModel} from '../../../../game/rpg/models/heroModel';
 import {ItemModel} from '../../../../game/rpg/models/itemModel';
 import {CombatStateMachine} from './combat.machine';
 import {IGameFixedEncounter} from '../../../../game/rpg/game';
+import {Combatant} from '../../../models/combat/combat.model';
 
 
 export interface CombatVictorySummary {
@@ -46,19 +47,20 @@ export class CombatVictoryState extends CombatMachineState {
       throw new Error("Invalid state, cannot be in victory with no living party members");
     }
 
-    var gold: number = 0;
-    var exp: number = 0;
-    var items: string[] = [];
+    let gold: number = 0;
+    let exp: number = 0;
+    let items: string[] = [];
     _.each(machine.enemies, (nme: GameEntityObject) => {
-      gold += nme.model.get('gold') || 0;
-      exp += nme.model.get('exp') || 0;
+      const combatant = nme.model as Combatant;
+      gold += combatant.gold || 0;
+      exp += combatant.exp || 0;
     });
 
 
     // Apply Fixed encounter bonus awards
     //
     if (machine.parent.encounterInfo.fixed) {
-      var encounter = <IGameFixedEncounter>machine.parent.encounter;
+      const encounter = <IGameFixedEncounter>machine.parent.encounter;
       if (encounter.gold > 0) {
         gold += encounter.gold;
       }
@@ -76,9 +78,9 @@ export class CombatVictoryState extends CombatMachineState {
 
     // Award items
     //
-    var itemModels: ItemModel[] = [];
+    const itemModels: ItemModel[] = [];
     items.forEach((i: string) => {
-      var model = machine.parent.world.itemModelFromId(i);
+      const model = machine.parent.world.itemModelFromId(i);
       if (model) {
         itemModels.push(model);
         machine.world.model.inventory.push(model);
@@ -88,17 +90,17 @@ export class CombatVictoryState extends CombatMachineState {
 
     // Award experience
     //
-    var expPerParty: number = Math.round(exp / players.length);
-    var leveledHeros: HeroModel[] = [];
+    const expPerParty: number = Math.round(exp / players.length);
+    const leveledHeros: HeroModel[] = [];
     _.each(players, (p: GameEntityObject) => {
-      var heroModel = <HeroModel>p.model;
-      var leveled: boolean = heroModel.awardExperience(expPerParty);
+      const heroModel = <HeroModel>p.model;
+      const leveled: boolean = heroModel.awardExperience(expPerParty);
       if (leveled) {
         leveledHeros.push(heroModel);
       }
     });
 
-    var summary: CombatVictorySummary = {
+    const summary: CombatVictorySummary = {
       state: this,
       party: machine.party,
       enemies: machine.enemies,

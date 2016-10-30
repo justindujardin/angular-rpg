@@ -13,9 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
-import {IPlayerAction} from '../playerCombatState';
 import {GameWorld} from '../../../../app/services/gameWorld';
 import {StateMachine} from '../../../../game/pow2/core/stateMachine';
 import {IState} from '../../../../game/pow2/core/state';
@@ -27,6 +25,29 @@ import {CombatBeginTurnState} from './combat-begin-turn.state';
 import {CombatChooseActionState} from './combat-choose-action.state';
 import {CombatEndTurnState} from './combat-end-turn.state';
 import {CombatEscapeState} from './combat-escape.state';
+import {Being} from '../../../models/being';
+
+
+/**
+ * Completion callback for a player action.
+ */
+export interface IPlayerActionCallback {
+  (action: IPlayerAction, error?: any): void;
+}
+/**
+ * A Player action during combat
+ */
+export interface IPlayerAction {
+  name: string;
+  from: Being;
+  to: Being;
+  act(then?: IPlayerActionCallback): boolean;
+}
+export interface CombatAttackSummary {
+  damage: number;
+  attacker: Being;
+  defender: Being;
+}
 
 
 // Combat State Machine
@@ -96,14 +117,14 @@ export class CombatStateMachine extends StateMachine {
 
   partyDefeated(): boolean {
     var deadList = _.reject(this.party, (obj: GameEntityObject) => {
-      return obj.model.attributes.hp <= 0;
+      return obj.model.hp <= 0;
     });
     return deadList.length === 0;
   }
 
   enemiesDefeated(): boolean {
     return _.reject(this.enemies, (obj: GameEntityObject) => {
-        return obj.model.attributes.hp <= 0;
+        return obj.model.hp <= 0;
       }).length === 0;
   }
 

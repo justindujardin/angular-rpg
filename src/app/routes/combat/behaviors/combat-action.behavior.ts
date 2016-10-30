@@ -16,10 +16,10 @@
 
 
 import {SceneComponent} from '../../../../game/pow2/scene/sceneComponent';
-import {IPlayerAction, IPlayerActionCallback} from '../playerCombatState';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 import {IGameSpell} from '../../../../game/rpg/game';
 import {UsableModel} from '../../../../game/rpg/models/usableModel';
+import {IPlayerAction, IPlayerActionCallback} from '../states/combat.machine';
 
 export class CombatActionBehavior extends SceneComponent implements IPlayerAction {
   name: string = "default";
@@ -28,16 +28,14 @@ export class CombatActionBehavior extends SceneComponent implements IPlayerActio
   spell: IGameSpell = null;
   item: UsableModel = null;
 
-  constructor() {
-    super();
-  }
-
   getActionName(): string {
     return this.name;
   }
 
   isCurrentTurn(): boolean {
-    return this.combat.machine.current === this.from;
+    console.warn('combat: current turn update needed');
+    // return this.combat.machine.current === this.from;
+    return true;
   }
 
   canTarget(): boolean {

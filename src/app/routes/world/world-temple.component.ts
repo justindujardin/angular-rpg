@@ -101,7 +101,7 @@ export class WorldTemple implements OnInit, OnDestroy {
         const gameState: GameState = tuple[0];
         const cost: number = tuple[1];
         const alreadyHealed: boolean = !_.find(gameState.party, (p: PartyMember) => {
-          return p.hp !== p.maxHP;
+          return p.hp !== p.maxhp;
         });
         if (cost > gameState.gold) {
           this.notify.show("You don't have enough money");

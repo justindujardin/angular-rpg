@@ -22,7 +22,6 @@ export class AppEffects {
     .ofType(GameStateActionTypes.TRAVEL)
     .distinctUntilChanged()
     .do((action: GameStateTravelAction) => {
-      console.log("Traveling to " + action.payload);
       this.loadingService.message = `Traveling to ${action.payload.map}...`;
       this.loadingService.loading = true;
     });
@@ -31,7 +30,6 @@ export class AppEffects {
     .ofType(GameStateActionTypes.TRAVEL_SUCCESS, GameStateActionTypes.TRAVEL_FAIL)
     .distinctUntilChanged()
     .do((action: GameStateTravelSuccessAction|GameStateTravelFailAction) => {
-      console.log("Traveling completed with result " + action.payload);
       this.loadingService.loading = false;
     });
 

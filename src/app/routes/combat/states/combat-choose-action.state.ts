@@ -57,7 +57,7 @@ export class CombatChooseActionState extends CombatMachineState {
         this.pending = _.filter(this.pending, (p: GameEntityObject)=> {
           return action.from._uid !== p._uid;
         });
-        console.log(action.from.model.get('name') + " chose " + action.getActionName());
+        console.log(action.from.model.name + " chose " + action.getActionName());
         if (this.pending.length === 0) {
           machine.setCurrentState(CombatBeginTurnState.NAME);
         }
