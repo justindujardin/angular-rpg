@@ -92,7 +92,6 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
   mouse: NamedMouseElement = null;
 
   @ViewChild('combatCanvas') canvasElementRef: ElementRef;
-  @ViewChild('combatPointer') pointerElementRef: ElementRef;
 
   @ViewChildren(CombatEnemy) enemies: QueryList<CombatEnemy>;
   @ViewChildren(CombatPlayer) party: QueryList<CombatPlayer>;
@@ -154,12 +153,6 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
     setTimeout(() => this._onResize(), 1);
     // this._bindRenderCombat();
     this.world.time.addObject(this);
-
-    this.pointer = {
-      element: this.pointerElementRef.nativeElement,
-      object: null,
-      offset: new Point()
-    };
 
     // Because the base class looks for instance.map before rendering the tilemap.  TODO: Remove this.
     this._subscriptions.push(this.combatService.combatMap$

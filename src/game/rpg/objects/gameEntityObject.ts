@@ -18,6 +18,7 @@ import * as rpg from '../game';
 import {GameWorld} from '../../../app/services/gameWorld';
 import {TileObject} from '../../pow2/tile/tileObject';
 import {Being} from '../../../app/models/being';
+import {PartyMember} from '../../../app/models/party-member.model';
 
 export class GameEntityObject extends TileObject {
   model: Being;
@@ -25,21 +26,11 @@ export class GameEntityObject extends TileObject {
   groups: any;
   world: GameWorld;
 
-  constructor() {
-    super();
-    // this.model = new EntityModel();
-  }
-
-  isDefeated(): boolean {
-    return false;
-    // return this.model.isDefeated();
-  }
-
   getSpells(): rpg.IGameSpell[] {
     const spells: any = this.world.spreadsheet.getSheetData('magic');
-    console.warn('getSpells needs to be updated for non-backbone data model');
-    const userLevel: number = 1;// this.model.get('level');
-    const userClass: string = 'warrior';// this.model.get('type');
+    const caster = this.model as PartyMember;
+    const userLevel: number = caster.level;
+    const userClass: string = caster.type;
     return _.filter(spells, (spell: rpg.IGameSpell) => {
       return spell.level <= userLevel && _.indexOf(spell.usedby, userClass) !== -1;
     });

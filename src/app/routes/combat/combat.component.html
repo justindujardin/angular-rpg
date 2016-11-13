@@ -2,13 +2,9 @@
   Your browser doesn't support this.
 </canvas>
 
-<span #combatPointer
-      class="point-to-player"></span>
-
 <combat-state-machine [scene]="scene"
                       [party]="combatPlayers$ | async"
                       [enemies]="combatEnemies$ | async"
-                      [pointer]="combatPointer"
                       [encounter]="encounter$ | async"></combat-state-machine>
 
 <combat-damage *ngFor="let d of damages"
@@ -23,9 +19,6 @@
               [model]="e"></combat-enemy>
 
 <div class="combat-view">
-  <ul *ngIf="items.length > 0" class="ebp action-menu">
-    <li *ngFor="let item of items" (click)="item.select()" [innerText]="item.label"></li>
-  </ul>
   <div class="status" *ngFor="let member of party$ | async" [class]="getMemberClass(member,combat?.focus)">
     <div class="text">
       <span class="name">{{member.name}}</span>

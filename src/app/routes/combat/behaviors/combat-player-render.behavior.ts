@@ -209,9 +209,9 @@ export class CombatPlayerRenderBehavior extends TickedComponent implements OnIni
     if (!this.animating) {
 
       // Choose frame for interpolated position
-      var factor = this._elapsed / this.tickRateMS;
-      var altFrame = !!((factor > 0.0 && factor < 0.5));
-      var frame = StateFrames.DEFAULT;
+      const factor = this._elapsed / this.tickRateMS;
+      const altFrame = (factor > 0.0 && factor < 0.5);
+      let frame = StateFrames.DEFAULT;
       switch (this.state) {
         case "Injured":
           frame = StateFrames.DEFAULT;

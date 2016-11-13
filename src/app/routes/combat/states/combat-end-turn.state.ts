@@ -20,6 +20,7 @@ import {CombatChooseActionState} from './combat-choose-action.state';
 import {CombatDefeatState} from './combat-defeat.state';
 import {CombatVictoryState} from './combat-victory.state';
 import {Component} from '@angular/core';
+import {isDefeated} from '../../../models/combat/combat.api';
 
 @Component({
   selector: 'combat-end-turn-state',
@@ -36,7 +37,7 @@ export class CombatEndTurnState extends CombatMachineState {
     while (machine.turnList.length > 0 && !machine.current) {
       machine.current = machine.turnList.shift();
       // Strip out defeated players.
-      if (machine.current && machine.current.isDefeated()) {
+      if (machine.current && isDefeated(machine.current)) {
         machine.current = null;
       }
     }

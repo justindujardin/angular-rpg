@@ -14,7 +14,10 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {Component} from '@angular/core';
+import {
+  Component, Input, ElementRef, ViewChild, Renderer, AfterViewInit, OnDestroy, Inject,
+  forwardRef
+} from '@angular/core';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 import {CombatMachineState} from './combat-base.state';
 import {CombatStateMachine} from './combat.machine';
@@ -22,6 +25,8 @@ import {CombatBeginTurnState} from './combat-begin-turn.state';
 import {CombatActionBehavior} from '../behaviors/combat-action.behavior';
 import {ChooseActionType, ChooseActionStateMachine} from '../behaviors/choose-action.machine';
 import {Point} from '../../../../game/pow-core/point';
+import {Observable, BehaviorSubject, Subscription} from 'rxjs';
+import {CombatComponent} from '../combat.component';
 
 export interface IChooseActionEvent {
   players: GameEntityObject[];
@@ -42,20 +47,62 @@ export interface ICombatMenuItem<T> {
  */
 @Component({
   selector: 'combat-choose-action-state',
-  template: `<ng-content></ng-content>`
+  styleUrls: ['./combat-choose-action.state.scss'],
+  template: `<ul *ngIf="items.length > 0" class="ebp action-menu">
+  <li *ngFor="let item of items" (click)="item.select()" [innerText]="item.label"></li>
+</ul>
+<span #combatPointer 
+      class="point-to-player"
+       [style.left]="(pointerPosition$ | async).x + 'px'"
+       [style.top]="(pointerPosition$ | async).y + 'px'"
+      >X</span>
+<ng-content></ng-content>`
 })
-export class CombatChooseActionState extends CombatMachineState {
+export class CombatChooseActionState extends CombatMachineState implements AfterViewInit, OnDestroy {
   static NAME: string = "Combat Choose Actions";
   name: string = CombatChooseActionState.NAME;
   pending: GameEntityObject[] = [];
-
   machine: CombatStateMachine = null;
 
-
+  @ViewChild('combatPointer') pointerElementRef: ElementRef;
   /**
    * Available menu items for selection.
    */
+  @Input()
   items: ICombatMenuItem<any>[] = [];
+
+  pointAt: GameEntityObject = null;
+
+  pointOffset: Point = new Point();
+  private _pointerPosition$ = new BehaviorSubject(new Point());
+
+  /** The screen translated pointer position */
+  pointerPosition$: Observable<Point> = this._pointerPosition$;
+
+  private _timerSubscription: Subscription;
+
+
+  constructor(private renderer: Renderer,
+              @Inject(forwardRef(() => CombatComponent)) private combat: CombatComponent) {
+    super();
+  }
+
+  ngAfterViewInit(): void {
+    this._timerSubscription = Observable.interval(100).do(() => {
+      if (!this.pointAt || !this.combat) {
+        return;
+      }
+      const targetPos: Point = this.pointAt.point.clone();
+      targetPos.y = (targetPos.y - this.combat.camera.point.y) + this.pointOffset.y;
+      targetPos.x = (targetPos.x - this.combat.camera.point.x) + this.pointOffset.x;
+      const screenPos: Point = this.combat.worldToScreen(targetPos, this.combat.cameraScale);
+      this._pointerPosition$.next(screenPos);
+    }).subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this._timerSubscription.unsubscribe();
+  }
 
   enter(machine: CombatStateMachine) {
     super.enter(machine);
@@ -118,38 +165,28 @@ export class CombatChooseActionState extends CombatMachineState {
 
 
   setPointerTarget(object: GameEntityObject, directionClass: string = 'right', offset: Point = new Point()) {
-    if (this.machine) {
-      const pointer: HTMLElement = this.machine.pointer;
-      pointer.classList.remove('left');
-      pointer.classList.remove('right');
-      pointer.classList.add(directionClass);
-      this.machine.pointAt = object;
-      this.machine.pointOffset = offset;
-    }
+    const pointer: HTMLElement = this.pointerElementRef.nativeElement;
+    this.renderer.setElementClass(pointer, 'left', false);
+    this.renderer.setElementClass(pointer, 'right', false);
+    this.renderer.setElementClass(pointer, directionClass, true);
+    this.pointAt = object;
+    this.pointOffset = offset;
   }
 
   addPointerClass(clazz: string) {
-    if (this.machine) {
-      this.machine.pointer.classList.add(clazz);
-    }
+    this.renderer.setElementClass(this.pointerElementRef.nativeElement, clazz, true);
   }
 
   removePointerClass(clazz: string) {
-    if (this.machine) {
-      this.machine.pointer.classList.remove(clazz);
-    }
+    this.renderer.setElementClass(this.pointerElementRef.nativeElement, clazz, false);
   }
 
   hidePointer() {
-    if (this.machine) {
-      this.machine.pointer.classList.add('hidden');
-    }
+    this.renderer.setElementClass(this.pointerElementRef.nativeElement, 'hidden', true);
   }
 
   showPointer() {
-    if (this.machine) {
-      this.machine.pointer.classList.remove('hidden');
-    }
+    this.renderer.setElementClass(this.pointerElementRef.nativeElement, 'hidden', false);
   }
 
 }

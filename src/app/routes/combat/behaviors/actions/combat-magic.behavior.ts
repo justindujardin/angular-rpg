@@ -55,7 +55,7 @@ export class CombatMagicBehavior extends CombatActionBehavior {
     return true;
   }
 
-  healSpell(done?: (error?: any)=>any) {
+  healSpell(done?: (error?: any) => any) {
     //
     const caster: GameEntityObject = this.from;
     const target: GameEntityObject = this.to;

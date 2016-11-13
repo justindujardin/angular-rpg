@@ -14,6 +14,8 @@ import {Component, Input} from '@angular/core';
 import {CombatAttackSummary, IPlayerActionCallback} from '../../states/combat.machine';
 import {PartyMember} from '../../../../models/party-member.model';
 import {CombatComponent} from '../../combat.component';
+import {AppState} from '../../../../app.model';
+import {Store} from '@ngrx/store';
 /**
  * Attack another entity in combat.
  */
@@ -25,6 +27,10 @@ export class CombatAttackBehavior extends CombatActionBehavior {
   name: string = "attack";
 
   @Input() combat: CombatComponent;
+
+  constructor(private store: Store<AppState>) {
+    super();
+  }
 
   canBeUsedBy(entity: GameEntityObject) {
     // Exclude magic casters from physical attacks

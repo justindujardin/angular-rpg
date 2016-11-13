@@ -79,3 +79,13 @@ export interface CombatState {
   /** The current encounter or null */
   readonly encounter: CombatEncounterTypes;
 }
+
+
+// Combat Behaviors
+
+/** Description of a combat attack */
+export interface CombatAttack {
+  damage: number;
+  attacker: Being;
+  defender: Being;
+}

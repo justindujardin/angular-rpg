@@ -26,8 +26,8 @@ import {Scene} from '../../../../game/pow2/scene/scene';
 import {isDefeated} from '../../../models/combat/combat.api';
 import {CombatPlayer} from '../combat-player.entity';
 import {CombatEnemy} from '../combat-enemy.entity';
-import {Point} from '../../../../game/pow-core/point';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
+import {TileMapView} from '../../../../game/pow2/tile/tileMapView';
 
 
 /**
@@ -44,11 +44,6 @@ export interface IPlayerAction {
   from: Being;
   to: Being;
   act(then?: IPlayerActionCallback): boolean;
-}
-export interface CombatAttackSummary {
-  damage: number;
-  attacker: Being;
-  defender: Being;
 }
 
 
@@ -71,22 +66,20 @@ export class CombatStateMachine extends StateMachine implements AfterViewInit {
   defaultState: string = CombatStartState.NAME;
   world: GameWorld;
   states: IState[] = [];
-  turnList: Being[] = [];
+  turnList: GameEntityObject[] = [];
   playerChoices: {
     [id: string]: IPlayerAction
   } = {};
-  focus: Being;
-  current: Being;
+  focus: GameEntityObject;
+  current: GameEntityObject;
   currentDone: boolean = false;
 
-  @Input() pointer: HTMLElement;
   @Input() scene: Scene;
   @Input() encounter: CombatEncounter;
   @Input() party: CombatPlayer[] = [];
   @Input() enemies: CombatEnemy[] = [];
 
-  pointAt: GameEntityObject = null;
-  pointOffset: Point = new Point();
+  @Input() view: TileMapView;
 
   @ViewChildren('start,beginTurn,chooseAction,endTurn,defeat,victory,escape') childStates: QueryList<CombatMachineState>;
 
@@ -109,7 +102,7 @@ export class CombatStateMachine extends StateMachine implements AfterViewInit {
     });
   }
 
-  getLiveEnemies(): Being[] {
+  getLiveEnemies(): CombatEnemy[] {
     return _.reject(this.enemies, (obj: CombatEnemy) => {
       return isDefeated(obj.model);
     });
