@@ -44,7 +44,7 @@ export interface UIAttachment {
  * point the implementation may do whatever it wants.
  */
 export class ChooseActionStateMachine extends StateMachine {
-  current: CombatPlayer = null;
+  current: GameEntityObject = null;
   target: GameEntityObject = null;
   player: CombatPlayerRenderBehavior = null;
   action: CombatActionBehavior = null;

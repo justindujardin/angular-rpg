@@ -51,20 +51,20 @@
     &.hidden {
       display: none;
     }
+    @include glyphicon();
     z-index: $zCanvasGui;
     position: absolute;
-    //@extend .glyphicon;
     &.left {
       content: '<';
-      //@extend .glyphicon-chevron-left;
+      @include glyphicon-chevron-left();
     }
     &.right {
       content: '>';
-      //@extend .glyphicon-chevron-right;
+      @include glyphicon-chevron-right();
     }
     &.attack, &.magic {
       content: 'X';
-      //@extend .glyphicon-screenshot;
+      @include glyphicon-screenshot();
       color: red;
     }
     font-size: 2em;

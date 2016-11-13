@@ -15,7 +15,14 @@
  */
 import * as _ from 'underscore';
 import {
-  Component, Input, ElementRef, ViewChild, Renderer, AfterViewInit, OnDestroy, Inject,
+  Component,
+  Input,
+  ElementRef,
+  ViewChild,
+  Renderer,
+  AfterViewInit,
+  OnDestroy,
+  Inject,
   forwardRef
 } from '@angular/core';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
@@ -51,11 +58,12 @@ export interface ICombatMenuItem<T> {
   template: `<ul *ngIf="items.length > 0" class="ebp action-menu">
   <li *ngFor="let item of items" (click)="item.select()" [innerText]="item.label"></li>
 </ul>
-<span #combatPointer 
+<span #combatPointer
       class="point-to-player"
-       [style.left]="(pointerPosition$ | async).x + 'px'"
-       [style.top]="(pointerPosition$ | async).y + 'px'"
-      >X</span>
+      [class.hidden]="!pointAt"
+      [style.left]="(pointerPosition$ | async).x + 'px'"
+      [style.top]="(pointerPosition$ | async).y + 'px'"
+></span>
 <ng-content></ng-content>`
 })
 export class CombatChooseActionState extends CombatMachineState implements AfterViewInit, OnDestroy {
@@ -88,7 +96,8 @@ export class CombatChooseActionState extends CombatMachineState implements After
   }
 
   ngAfterViewInit(): void {
-    this._timerSubscription = Observable.interval(100).do(() => {
+    // Every n milliseconds, update the pointer to track the current target
+    this._timerSubscription = Observable.interval(250).do(() => {
       if (!this.pointAt || !this.combat) {
         return;
       }
@@ -112,7 +121,8 @@ export class CombatChooseActionState extends CombatMachineState implements After
     this.machine = machine;
 
 
-    machine.turnList = <GameEntityObject[]>_.shuffle(_.union(machine.getLiveParty(), machine.getLiveEnemies()));
+    const combatants = [...machine.getLiveParty(), ...machine.getLiveEnemies()];
+    machine.turnList = _.shuffle(combatants);
     machine.current = machine.turnList.shift();
     machine.currentDone = true;
 
