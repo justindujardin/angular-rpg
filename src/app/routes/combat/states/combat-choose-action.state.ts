@@ -85,7 +85,7 @@ export class CombatChooseActionState extends CombatMachineState implements After
   private _pointerPosition$ = new BehaviorSubject(new Point());
 
   /** The screen translated pointer position */
-  pointerPosition$: Observable<Point> = this._pointerPosition$;
+  pointerPosition$: Observable<Point> = this._pointerPosition$.distinctUntilChanged();
 
   private _timerSubscription: Subscription;
 
@@ -97,7 +97,7 @@ export class CombatChooseActionState extends CombatMachineState implements After
 
   ngAfterViewInit(): void {
     // Every n milliseconds, update the pointer to track the current target
-    this._timerSubscription = Observable.interval(250).do(() => {
+    this._timerSubscription = Observable.interval(50).do(() => {
       if (!this.pointAt || !this.combat) {
         return;
       }
