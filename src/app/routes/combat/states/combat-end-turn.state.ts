@@ -13,14 +13,18 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {CombatMachineState} from './combat-base.state';
 import {CombatStateMachine} from './combat.machine';
 import {CombatBeginTurnState} from './combat-begin-turn.state';
 import {CombatChooseActionState} from './combat-choose-action.state';
 import {CombatDefeatState} from './combat-defeat.state';
 import {CombatVictoryState} from './combat-victory.state';
+import {Component} from '@angular/core';
 
+@Component({
+  selector: 'combat-end-turn-state',
+  template: `<ng-content></ng-content>`
+})
 export class CombatEndTurnState extends CombatMachineState {
   static NAME: string = "Combat End Turn";
   name: string = CombatEndTurnState.NAME;

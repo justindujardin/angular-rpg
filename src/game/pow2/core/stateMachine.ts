@@ -43,7 +43,7 @@ export interface IResumeCallback {
 // -------------------------------------------------------------------------
 export class StateMachine extends Events implements IStateMachine {
 
-  static DEBUG_STATES: boolean = false;
+  static DEBUG_STATES: boolean = true;
 
   static Events: any = {
     ENTER: "enter",

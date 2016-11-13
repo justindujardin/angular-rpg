@@ -13,7 +13,14 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
+import {CombatBeginTurnState} from './combat-begin-turn.state';
+import {CombatChooseActionState} from './combat-choose-action.state';
+import {CombatDefeatState} from './combat-defeat.state';
+import {CombatEndTurnState} from './combat-end-turn.state';
+import {CombatEscapeState} from './combat-escape.state';
+import {CombatStartState} from './combat-start.state';
+import {CombatVictoryState} from './combat-victory.state';
+import {CombatStateMachine} from './combat.machine';
 export * from './combat-base.state';
 export * from './combat-begin-turn.state';
 export * from './combat-choose-action.state';
@@ -23,3 +30,15 @@ export * from './combat-escape.state';
 export * from './combat-start.state';
 export * from './combat-victory.state';
 export * from './combat.machine';
+
+
+export const COMBAT_STATE_COMPONENTS = [
+  CombatStateMachine,
+  CombatBeginTurnState,
+  CombatChooseActionState,
+  CombatDefeatState,
+  CombatEndTurnState,
+  CombatEscapeState,
+  CombatStartState,
+  CombatVictoryState
+];

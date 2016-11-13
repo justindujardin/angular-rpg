@@ -13,17 +13,20 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {CombatMachineState} from './combat-base.state';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 import {CombatStateMachine} from './combat.machine';
+import {Component} from '@angular/core';
 
 
 export interface CombatDefeatSummary {
   party: GameEntityObject[];
   enemies: GameEntityObject[];
 }
-
+@Component({
+  selector: 'combat-defeat-state',
+  template: `<ng-content></ng-content>`
+})
 export class CombatDefeatState extends CombatMachineState {
   static NAME: string = "Combat Defeat";
   name: string = CombatDefeatState.NAME;

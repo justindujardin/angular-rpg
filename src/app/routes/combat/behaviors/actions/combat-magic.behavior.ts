@@ -15,7 +15,6 @@ import {CombatAttackSummary, IPlayerActionCallback} from '../../states/combat.ma
 import {CombatComponent} from '../../combat.component';
 
 
-
 /**
  * Use magic in
  */

@@ -21,6 +21,7 @@ import {ItemModel} from '../../../../game/rpg/models/itemModel';
 import {CombatStateMachine} from './combat.machine';
 import {IGameFixedEncounter} from '../../../../game/rpg/game';
 import {Combatant} from '../../../models/combat/combat.model';
+import {Component} from '@angular/core';
 
 
 export interface CombatVictorySummary {
@@ -33,6 +34,10 @@ export interface CombatVictorySummary {
   state: CombatVictoryState;
 }
 
+@Component({
+  selector: 'combat-victory-state',
+  template: `<ng-content></ng-content>`
+})
 export class CombatVictoryState extends CombatMachineState {
   static NAME: string = "Combat Victory";
   name: string = CombatVictoryState.NAME;

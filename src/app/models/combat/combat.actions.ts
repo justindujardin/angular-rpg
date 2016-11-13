@@ -13,6 +13,21 @@ export const CombatActionTypes = {
   RANDOM_ENCOUNTER_ERROR:   type('rpg/combat/random/error'),
   RANDOM_ENCOUNTER_VICTORY: type('rpg/combat/random/victory'),
   RANDOM_ENCOUNTER_DEFEAT:  type('rpg/combat/random/defeat'),
+  ACTION_ATTACK:            type('rpg/combat/attack'),
+  ACTION_ATTACK_HIT:        type('rpg/combat/attack/hit'),
+  ACTION_ATTACK_MISS:       type('rpg/combat/attack/miss'),
+  ACTION_GUARD:             type('rpg/combat/guard'),
+  ACTION_GUARD_HIT:         type('rpg/combat/guard/hit'),
+  ACTION_GUARD_MISS:        type('rpg/combat/guard/miss'),
+  ACTION_MAGIC:             type('rpg/combat/magic'),
+  ACTION_MAGIC_HIT:         type('rpg/combat/magic/hit'),
+  ACTION_MAGIC_MISS:        type('rpg/combat/magic/miss'),
+  ACTION_ITEM:              type('rpg/combat/item'),
+  ACTION_ITEM_HIT:          type('rpg/combat/item/hit'),
+  ACTION_ITEM_MISS:         type('rpg/combat/item/miss'),
+  ACTION_RUN:               type('rpg/combat/run'),
+  ACTION_RUN_HIT:           type('rpg/combat/run/hit'),
+  ACTION_RUN_MISS:          type('rpg/combat/run/miss'),
 };
 
 //

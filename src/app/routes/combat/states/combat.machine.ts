@@ -17,15 +17,17 @@ import * as _ from 'underscore';
 import {GameWorld} from '../../../../app/services/gameWorld';
 import {StateMachine} from '../../../../game/pow2/core/stateMachine';
 import {IState} from '../../../../game/pow2/core/state';
-import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 import {CombatStartState} from './combat-start.state';
-import {CombatVictoryState} from './combat-victory.state';
-import {CombatDefeatState} from './combat-defeat.state';
-import {CombatBeginTurnState} from './combat-begin-turn.state';
-import {CombatChooseActionState} from './combat-choose-action.state';
-import {CombatEndTurnState} from './combat-end-turn.state';
-import {CombatEscapeState} from './combat-escape.state';
 import {Being} from '../../../models/being';
+import {Component, AfterViewInit, ViewChildren, QueryList, Input} from '@angular/core';
+import {CombatEncounter} from '../../../models/combat/combat.model';
+import {CombatMachineState} from './combat-base.state';
+import {Scene} from '../../../../game/pow2/scene/scene';
+import {isDefeated} from '../../../models/combat/combat.api';
+import {CombatPlayer} from '../combat-player.entity';
+import {CombatEnemy} from '../combat-enemy.entity';
+import {Point} from '../../../../game/pow-core/point';
+import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 
 
 /**
@@ -52,63 +54,83 @@ export interface CombatAttackSummary {
 
 // Combat State Machine
 //--------------------------------------------------------------------------
-export class CombatStateMachine extends StateMachine {
+
+@Component({
+  selector: 'combat-state-machine',
+  template: `
+  <combat-start-state #start></combat-start-state>
+  <combat-begin-turn-state #beginTurn></combat-begin-turn-state>
+  <combat-choose-action-state #chooseAction></combat-choose-action-state>
+  <combat-end-turn-state #endTurn></combat-end-turn-state>
+  <combat-defeat-state #defeat></combat-defeat-state>
+  <combat-victory-state #victory></combat-victory-state>
+  <combat-escape-state #escape></combat-escape-state>
+`
+})
+export class CombatStateMachine extends StateMachine implements AfterViewInit {
   defaultState: string = CombatStartState.NAME;
   world: GameWorld;
-  states: IState[] = [
-    new CombatStartState(),
-    new CombatVictoryState(),
-    new CombatDefeatState(),
-    new CombatBeginTurnState(),
-    new CombatChooseActionState(),
-    new CombatEndTurnState(),
-    new CombatEscapeState()
-  ];
-
-  party: GameEntityObject[] = [];
-  enemies: GameEntityObject[] = [];
-  turnList: GameEntityObject[] = [];
+  states: IState[] = [];
+  turnList: Being[] = [];
   playerChoices: {
     [id: string]: IPlayerAction
   } = {};
-  focus: GameEntityObject;
-  current: GameEntityObject;
+  focus: Being;
+  current: Being;
   currentDone: boolean = false;
 
+  @Input() pointer: HTMLElement;
+  @Input() scene: Scene;
+  @Input() encounter: CombatEncounter;
+  @Input() party: CombatPlayer[] = [];
+  @Input() enemies: CombatEnemy[] = [];
+
+  pointAt: GameEntityObject = null;
+  pointOffset: Point = new Point();
+
+  @ViewChildren('start,beginTurn,chooseAction,endTurn,defeat,victory,escape') childStates: QueryList<CombatMachineState>;
+
+  ngAfterViewInit(): void {
+    this.addStates(this.childStates.toArray());
+    this.setCurrentState(this.getState(this.defaultState));
+  }
+
   isFriendlyTurn(): boolean {
-    return this.current && !!_.find(this.party, (h: GameEntityObject) => {
-        return h._uid === this.current._uid;
+    return this.current && !!_.find(this.party, (h: Being) => {
+        console.warn('friendly compare logic is busted');
+        // return h.id === this.current.id;
+        return true;
       });
   }
 
-  getLiveParty(): GameEntityObject[] {
-    return _.reject(this.party, (obj: GameEntityObject) => {
-      return obj.isDefeated();
+  getLiveParty(): CombatPlayer[] {
+    return _.reject(this.party, (obj: CombatPlayer) => {
+      return isDefeated(obj.model);
     });
   }
 
-  getLiveEnemies(): GameEntityObject[] {
-    return _.reject(this.enemies, (obj: GameEntityObject) => {
-      return obj.isDefeated();
+  getLiveEnemies(): Being[] {
+    return _.reject(this.enemies, (obj: CombatEnemy) => {
+      return isDefeated(obj.model);
     });
   }
 
-  getRandomPartyMember(): GameEntityObject {
-    var players = <GameEntityObject[]>_.shuffle(this.party);
+  getRandomPartyMember(): Being {
+    const players = <CombatPlayer[]>_.shuffle(this.party);
     while (players.length > 0) {
-      var p = players.shift();
-      if (!p.isDefeated()) {
+      const p = players.shift();
+      if (!isDefeated(p.model)) {
         return p;
       }
     }
     return null;
   }
 
-  getRandomEnemy(): GameEntityObject {
-    var players = <GameEntityObject[]>_.shuffle(this.enemies);
+  getRandomEnemy(): Being {
+    const players = <CombatEnemy[]>_.shuffle(this.enemies);
     while (players.length > 0) {
-      var p = players.shift();
-      if (!p.isDefeated()) {
+      const p = players.shift();
+      if (!isDefeated(p.model)) {
         return p;
       }
     }
@@ -116,15 +138,15 @@ export class CombatStateMachine extends StateMachine {
   }
 
   partyDefeated(): boolean {
-    var deadList = _.reject(this.party, (obj: GameEntityObject) => {
-      return obj.model.hp <= 0;
+    const deadList = _.reject(this.party, (obj: CombatPlayer) => {
+      return isDefeated(obj.model);
     });
     return deadList.length === 0;
   }
 
   enemiesDefeated(): boolean {
-    return _.reject(this.enemies, (obj: GameEntityObject) => {
-        return obj.model.hp <= 0;
+    return _.reject(this.enemies, (obj: CombatEnemy) => {
+        return isDefeated(obj.model);
       }).length === 0;
   }
 

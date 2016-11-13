@@ -13,30 +13,27 @@ import {SpriteComponent} from '../../../game/pow2/tile/components/spriteComponen
 import {SceneComponent} from '../../../game/pow2/scene/sceneComponent';
 import {GameEntityObject} from '../../../game/rpg/objects/gameEntityObject';
 import {SceneObject} from '../../../game/pow2/scene/sceneObject';
-import {IGameEncounter} from '../../../game/rpg/game';
 import {ItemModel} from '../../../game/rpg/models/itemModel';
 import {HeroModel} from '../../../game/rpg/models/heroModel';
 import {TileMapView} from '../../../game/pow2/tile/tileMapView';
-import {UIAttachment, ChooseActionStateMachine, ChooseActionType} from './behaviors/choose-action.machine';
-import {IChooseActionEvent} from './states/combat-choose-action.state';
+import {UIAttachment} from './behaviors/choose-action.machine';
 import {CombatRunSummary} from './states/combat-escape.state';
 import {CombatVictorySummary} from './states/combat-victory.state';
 import {CombatDefeatSummary} from './states/combat-defeat.state';
 import {CombatCameraBehavior} from './behaviors/combat-camera.behavior';
 import {CombatPlayerRenderBehavior} from './behaviors/combat-player-render.behavior';
-import {CombatActionBehavior} from './behaviors/combat-action.behavior';
 import {Actions} from '@ngrx/effects';
 import {LoadingService} from '../../components/loading/loading.service';
 import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
 import {CombatService} from '../../services/combat.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription, ReplaySubject, Observable} from 'rxjs/Rx';
 import {CombatStateMachine, CombatAttackSummary} from './states/combat.machine';
 import {GameTileMap} from '../../../game/gameTileMap';
-import {getEncounterEnemies} from '../../models/combat/combat.reducer';
-import {getParty} from '../../models/game-state/game-state.reducer';
+import {getEncounter, getEncounterEnemies} from '../../models/combat/combat.reducer';
 import {CombatEnemy} from './combat-enemy.entity';
 import {CombatPlayer} from './combat-player.entity';
+import {getParty} from '../../models/game-state/game-state.reducer';
 
 /**
  * Describe a selectable menu item for a user input in combat.
@@ -74,14 +71,13 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
   items: ICombatMenuItem<any>[] = [];
 
   /** The combat state machine */
-  readonly machine: CombatStateMachine = new CombatStateMachine();
+  @ViewChild(CombatStateMachine) machine: CombatStateMachine;
 
   /**
    * Damages displaying on screen.
    * @type {Array}
    */
-  @Input()
-  damages: any[] = [];
+  @Input() damages: any[] = [];
 
   /**
    * For rendering `TileObject`s
@@ -101,11 +97,25 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
   @ViewChildren(CombatEnemy) enemies: QueryList<CombatEnemy>;
   @ViewChildren(CombatPlayer) party: QueryList<CombatPlayer>;
 
+
   /** Observable<Combatant[]> of enemies */
   enemies$ = getEncounterEnemies(this.store);
 
   /** Observable<PartyMember[]> of party members */
   party$ = getParty(this.store);
+
+  /** Observable<CombatEncounter> */
+  encounter$ = getEncounter(this.store);
+
+  private _combatEnemies$ = new ReplaySubject<CombatEnemy[]>(1);
+
+  /** Observable<CombatEnemy[]> of enemies */
+  combatEnemies$: Observable<CombatEnemy[]> = this._combatEnemies$;
+
+  private _combatPlayers$ = new ReplaySubject<CombatPlayer[]>(1);
+
+  /** Observable<CombatPlayer[]> of party members */
+  combatPlayers$: Observable<CombatPlayer[]> = this._combatPlayers$;
 
   private _subscriptions: Subscription[] = [];
 
@@ -127,13 +137,14 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
     this._subscriptions.forEach((s) => s.unsubscribe());
     this._subscriptions.length = 0;
     this.scene.removeView(this);
-    this.machine.off('combat:chooseMoves', this.chooseTurns, this);
     this.pointer = null;
     this.damages = [];
 
   }
 
   ngAfterViewInit(): void {
+    this._combatEnemies$.next(this.enemies.toArray());
+    this._combatPlayers$.next(this.party.toArray());
     this.canvas = this.canvasElementRef.nativeElement;
     if (this.camera) {
       this.camera.point.zero();
@@ -143,8 +154,6 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
     setTimeout(() => this._onResize(), 1);
     // this._bindRenderCombat();
     this.world.time.addObject(this);
-
-    this.machine.on('combat:chooseMoves', this.chooseTurns, this);
 
     this.pointer = {
       element: this.pointerElementRef.nativeElement,
@@ -202,7 +211,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
     if (!this || !this.pointer || !this.pointer.object) {
       return;
     }
-    var targetPos: Point = this.pointer.object.point.clone();
+    const targetPos: Point = this.pointer.object.point.clone();
     targetPos.y = (targetPos.y - this.camera.point.y) + this.pointer.offset.y;
     targetPos.x = (targetPos.x - this.camera.point.x) + this.pointer.offset.x;
     var screenPos: Point = this.worldToScreen(targetPos, this.cameraScale);
@@ -218,7 +227,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
    * Update the camera for this frame.
    */
   processCamera() {
-    this.cameraComponent = <CameraComponent>this.scene.componentByType(CombatCameraBehavior);
+    this.cameraComponent = this.scene.componentByType(CombatCameraBehavior) as CameraComponent;
     super.processCamera();
   }
 
@@ -244,45 +253,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
   //
   // API
   //
-  chooseTurns(data: IChooseActionEvent) {
-    if (!this.scene) {
-      throw new Error("Invalid Combat Scene");
-    }
-    var chooseSubmit = (action: CombatActionBehavior) => {
-      inputState.data.choose(action);
-      next();
-    };
-    var inputState = new ChooseActionStateMachine(this, data, chooseSubmit);
-    inputState.data = data;
-    var choices: GameEntityObject[] = data.players.slice();
-    var next = () => {
-      var p: GameEntityObject = choices.shift();
-      if (!p) {
-        return;
-      }
-      inputState.current = p;
-      inputState.setCurrentState(ChooseActionType.NAME);
-    };
-    next();
-  }
 
-  setPointerTarget(object: GameEntityObject, directionClass: string = "right", offset: Point = new Point()) {
-    var el: JQuery = jQuery(this.pointer.element);
-    el.removeClass('left right');
-    el.addClass(directionClass);
-    if (this.pointer) {
-      this.pointer.object = object;
-      this.pointer.offset = offset;
-    }
-  }
-
-  addPointerClass(clazz: string) {
-    jQuery(this.pointer.element).addClass(clazz);
-  }
-
-  removePointerClass(clazz: string) {
-    jQuery(this.pointer.element).removeClass(clazz);
-  }
 
 
   getMemberClass(member: GameEntityObject, focused?: GameEntityObject): any {
@@ -334,20 +305,6 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
    * @private
    */
   private _bindRenderCombat() {
-    this.machine.on('combat:start', (encounter: IGameEncounter) => {
-      if (encounter && encounter.message) {
-        var _done = this.machine.notifyWait();
-        // If the message contains pipe's, treat what is between each pipe as a separate
-        // message to be displayed.
-        var msgs = [encounter.message];
-        if (encounter.message.indexOf('|') !== -1) {
-          msgs = encounter.message.split('|')
-        }
-        var last = msgs.pop();
-        msgs.forEach((m) => this.notify.show(m, null, 0));
-        this.notify.show(last, _done, 0);
-      }
-    });
     this.machine.on('combat:attack', (data: CombatAttackSummary) => {
       var _done = this.machine.notifyWait();
       var msg: string = '';

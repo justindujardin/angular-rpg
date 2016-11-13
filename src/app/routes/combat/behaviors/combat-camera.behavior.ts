@@ -13,8 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
-
 import {CameraComponent} from '../../../../game/pow2/scene/components/cameraComponent';
 import {GameTileMap} from '../../../../game/gameTileMap';
 import {SceneView} from '../../../../game/pow2/scene/sceneView';

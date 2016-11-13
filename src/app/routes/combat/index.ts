@@ -23,6 +23,7 @@ import {CanActivateCombat} from './combat.guards';
 import {COMBAT_PLAYER_COMPONENTS} from './combat-player.entity';
 import {BehaviorsModule} from '../../behaviors/index';
 import {COMBAT_ENEMY_COMPONENTS} from './combat-enemy.entity';
+import {COMBAT_STATE_COMPONENTS} from './states/index';
 
 
 export * from './combat-damage.component';
@@ -35,7 +36,8 @@ export const COMBAT_EXPORTS = [
   CombatDamage,
   CombatComponent,
   ...COMBAT_PLAYER_COMPONENTS,
-  ...COMBAT_ENEMY_COMPONENTS
+  ...COMBAT_ENEMY_COMPONENTS,
+  ...COMBAT_STATE_COMPONENTS
 ];
 
 export const COMBAT_PROVIDERS = [

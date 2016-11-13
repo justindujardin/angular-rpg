@@ -16,7 +16,7 @@
 
 
 import {Resource} from '../resource';
-declare var $: any;
+
 /**
  * Use jQuery to load a Javascript file from a URL.
  */

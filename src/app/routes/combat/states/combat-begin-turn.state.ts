@@ -13,9 +13,8 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
-
 import * as _ from 'underscore';
+import {Component} from '@angular/core';
 import {CombatMachineState} from './combat-base.state';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 import {CombatStateMachine, IPlayerAction} from './combat.machine';
@@ -23,6 +22,10 @@ import {CombatAttackBehavior} from '../behaviors/actions/combat-attack.behavior'
 
 // Combat Begin
 //--------------------------------------------------------------------------
+@Component({
+  selector: 'combat-begin-turn-state',
+  template: `<ng-content></ng-content>`
+})
 export class CombatBeginTurnState extends CombatMachineState {
   static NAME: string = "Combat Begin Turn";
   name: string = CombatBeginTurnState.NAME;

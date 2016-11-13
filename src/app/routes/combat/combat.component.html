@@ -5,6 +5,12 @@
 <span #combatPointer
       class="point-to-player"></span>
 
+<combat-state-machine [scene]="scene"
+                      [party]="combatPlayers$ | async"
+                      [enemies]="combatEnemies$ | async"
+                      [pointer]="combatPointer"
+                      [encounter]="encounter$ | async"></combat-state-machine>
+
 <combat-damage *ngFor="let d of damages"
                [value]="d.value"
                [position]="d.position"

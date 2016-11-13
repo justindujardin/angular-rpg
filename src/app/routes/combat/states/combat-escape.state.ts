@@ -13,10 +13,10 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {CombatMachineState} from './combat-base.state';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 import {CombatStateMachine} from './combat.machine';
+import {Component} from '@angular/core';
 
 /**
  * Describe the result of a combat run action.
@@ -26,6 +26,10 @@ export interface CombatRunSummary {
   player: GameEntityObject;
 }
 
+@Component({
+  selector: 'combat-escape-state',
+  template: `<ng-content></ng-content>`
+})
 export class CombatEscapeState extends CombatMachineState {
   static NAME: string = "Combat Escaped";
   name: string = CombatEscapeState.NAME;

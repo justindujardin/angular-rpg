@@ -174,7 +174,8 @@ export class GameWorld extends World {
     const payload: CombatFixedEncounter = {
       id: encounter.id,
       enemies: encounter.enemies.map(toCombatant),
-      zone: zoneInfo.target
+      zone: zoneInfo.target,
+      message: encounter.message
     };
     this.store.dispatch(new CombatFixedEncounterAction(payload));
   }

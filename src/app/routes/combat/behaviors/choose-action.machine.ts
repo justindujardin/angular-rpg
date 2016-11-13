@@ -7,13 +7,14 @@ import {CombatActionBehavior} from '../behaviors/combat-action.behavior';
 import {IGameSpell} from '../../../../game/rpg/game';
 import {UsableModel} from '../../../../game/rpg/models/usableModel';
 import {GameWorld} from '../../../services/gameWorld';
-import {CombatComponent} from '../combat.component';
 import {State} from '../../../../game/pow2/core/state';
 import {CombatPlayerRenderBehavior} from '../behaviors/combat-player-render.behavior';
 import {CombatItemBehavior} from '../behaviors/actions/combat-item.behavior';
 import {CombatMagicBehavior} from '../behaviors/actions/combat-magic.behavior';
-import {IChooseActionEvent} from '../states/combat-choose-action.state';
+import {IChooseActionEvent, CombatChooseActionState} from '../states/combat-choose-action.state';
 import {IPlayerAction} from '../states/combat.machine';
+import {ElementRef} from '@angular/core';
+import {CombatPlayer} from '../combat-player.entity';
 
 /**
  * Attach an HTML element to the position of a game object.
@@ -21,7 +22,7 @@ import {IPlayerAction} from '../states/combat.machine';
 export interface UIAttachment {
   object: GameEntityObject;
   offset: Point;
-  element: any;
+  element: ElementRef;
 }
 
 
@@ -43,7 +44,7 @@ export interface UIAttachment {
  * point the implementation may do whatever it wants.
  */
 export class ChooseActionStateMachine extends StateMachine {
-  current: GameEntityObject = null;
+  current: CombatPlayer = null;
   target: GameEntityObject = null;
   player: CombatPlayerRenderBehavior = null;
   action: CombatActionBehavior = null;
@@ -51,7 +52,7 @@ export class ChooseActionStateMachine extends StateMachine {
   item: UsableModel = null;
   world: GameWorld = GameWorld.get();
 
-  constructor(public combatComponent: CombatComponent,
+  constructor(public parent: CombatChooseActionState,
               public scene: Scene,
               public data: IChooseActionEvent,
               submit: (action: CombatActionBehavior)=>any) {
@@ -75,22 +76,24 @@ export class ChooseActionType extends State {
   name: string = ChooseActionType.NAME;
 
   enter(machine: ChooseActionStateMachine) {
-    if (!machine.combatComponent || !machine.combatComponent.pointer) {
-      throw new Error("Requires UIAttachment");
-    }
+    let clickSelect = (mouse: any, hits: any) => {
+      machine.scene.off('click', clickSelect);
+      machine.target = hits[0];
+      machine.parent.items[0].select();
+    };
     if (!machine.current) {
       throw new Error("Requires Current Player");
     }
-    var p: GameEntityObject = machine.current;
-    machine.player = p.findBehavior(CombatPlayerRenderBehavior) as CombatPlayerRenderBehavior;
+    const p: CombatPlayer = machine.current;
+    machine.player = p.render;
     if (!machine.player) {
       throw new Error("Requires player render component for combat animations.");
     }
-    var pointerOffset: Point = new Point(-1, -0.25);
+    let pointerOffset: Point = new Point(-1, -0.25);
     machine.action = machine.target = machine.spell = machine.item = null;
 
     // Enable menu selection of action type.
-    var selectAction = (action: IPlayerAction) => {
+    const selectAction = (action: IPlayerAction) => {
       machine.action = action as CombatActionBehavior;
       machine.scene.off('click', clickSelect);
 
@@ -114,34 +117,30 @@ export class ChooseActionType extends State {
       }
     };
 
-    var items = _.filter(p.findBehaviors(CombatActionBehavior), (c: CombatActionBehavior)=> c.canBeUsedBy(p));
-    machine.combatComponent.items = _.map(items, (a: CombatActionBehavior) => {
+    const items = _.filter(p.findBehaviors(CombatActionBehavior), (c: CombatActionBehavior) => c.canBeUsedBy(p));
+    machine.parent.items = _.map(items, (a: CombatActionBehavior) => {
       return <any>{
         select: selectAction.bind(this, a),
         label: a.getActionName()
       };
     });
 
-    // TODO: Eradicate JQuery
-    var el: any = jQuery(machine.combatComponent.pointer.element);
+    // No pointer target
     if (!p) {
-      el.hide();
+      machine.parent.hidePointer();
       return;
     }
-    var clickSelect = (mouse: any, hits: any) => {
-      machine.scene.off('click', clickSelect);
-      machine.target = hits[0];
-      machine.combatComponent.items[0].select();
-    };
+
+
     machine.player.moveForward(() => {
-      machine.combatComponent.setPointerTarget(p, "right", pointerOffset);
-      el.show();
+      machine.parent.setPointerTarget(p, 'right', pointerOffset);
+      machine.parent.showPointer();
       machine.scene.on('click', clickSelect);
     });
   }
 
   exit(machine: ChooseActionStateMachine) {
-    machine.combatComponent.items = [];
+    machine.parent.items = [];
   }
 }
 /**
@@ -171,7 +170,7 @@ export class ChooseMagicSpell extends State {
       }
     };
     var spells: any = machine.current.getSpells();
-    machine.combatComponent.items = _.map(spells, (a: any) => {
+    machine.parent.items = _.map(spells, (a: any) => {
       return <any>{
         select: selectSpell.bind(this, a),
         label: a.name
@@ -181,13 +180,13 @@ export class ChooseMagicSpell extends State {
     var clickSelect = (mouse: any, hits: any) => {
       machine.scene.off('click', clickSelect);
       machine.target = hits[0];
-      machine.combatComponent.items[0].select();
+      machine.parent.items[0].select();
     };
     machine.scene.on('click', clickSelect);
   }
 
   exit(machine: ChooseActionStateMachine) {
-    machine.combatComponent.items = [];
+    machine.parent.items = [];
   }
 }
 /**
@@ -207,7 +206,7 @@ export class ChooseUsableItem extends State {
       machine.setCurrentState(ChooseActionTarget.NAME);
     };
     var items: any = machine.current.world.model.inventory;
-    machine.combatComponent.items = _.map(items, (a: UsableModel) => {
+    machine.parent.items = _.map(items, (a: UsableModel) => {
       return <any>{
         select: selectItem.bind(this, a),
         label: a.get('name')
@@ -216,7 +215,7 @@ export class ChooseUsableItem extends State {
   }
 
   exit(machine: ChooseActionStateMachine) {
-    machine.combatComponent.items = [];
+    machine.parent.items = [];
   }
 }
 
@@ -228,19 +227,15 @@ export class ChooseActionTarget extends State {
   name: string = ChooseActionTarget.NAME;
 
   enter(machine: ChooseActionStateMachine) {
-    if (!machine.combatComponent || !machine.combatComponent.pointer) {
-      throw new Error("Requires UIAttachment");
-    }
-    var enemies = <GameEntityObject[]>machine.data.enemies;
+    const enemies: GameEntityObject[] = machine.data.enemies;
 
-    var p: GameEntityObject = machine.target || enemies[0];
-    var el: any = jQuery(machine.combatComponent.pointer.element);
-    machine.combatComponent.addPointerClass(machine.action.getActionName());
+    const p: GameEntityObject = machine.target || enemies[0];
+    machine.parent.addPointerClass(machine.action.getActionName());
     if (!p) {
-      el.hide();
+      machine.parent.hidePointer();
       return;
     }
-    var selectTarget = (target: GameEntityObject) => {
+    const selectTarget = (target: GameEntityObject) => {
       if (machine.target && machine.target._uid === target._uid) {
         machine.target = target;
         machine.scene.off('click', clickTarget);
@@ -248,12 +243,12 @@ export class ChooseActionTarget extends State {
         return;
       }
       machine.target = target;
-      machine.combatComponent.setPointerTarget(target, "left", pointerOffset);
+      machine.parent.setPointerTarget(target, 'left', pointerOffset);
     };
 
     const beneficial: boolean = !!(machine && ((machine.spell && machine.spell.benefit) || machine.item));
     const targets: GameEntityObject[] = beneficial ? machine.data.players : machine.data.enemies;
-    machine.combatComponent.items = _.map(targets, (a: GameEntityObject) => {
+    machine.parent.items = _.map(targets, (a: GameEntityObject) => {
       return <any>{
         select: selectTarget.bind(this, a),
         label: a.model.name
@@ -264,12 +259,12 @@ export class ChooseActionTarget extends State {
     var clickTarget = (mouse: any, hits: GameEntityObject[]) => {
       selectTarget(hits[0]);
     };
-    machine.combatComponent.setPointerTarget(p, "left", pointerOffset);
+    machine.parent.setPointerTarget(p, "left", pointerOffset);
     machine.scene.on('click', clickTarget);
   }
 
   exit(machine: ChooseActionStateMachine) {
-    machine.combatComponent.items = [];
+    machine.parent.items = [];
   }
 }
 
@@ -292,16 +287,14 @@ export class ChooseActionSubmit extends State {
     if (machine.action.canTarget() && !machine.target) {
       throw new Error("Invalid target");
     }
-    machine.player.moveBackward(()=> {
-      if (machine.combatComponent.pointer) {
-        jQuery(machine.combatComponent.pointer.element).hide();
-      }
+    machine.player.moveBackward(() => {
+      machine.parent.hidePointer();
       machine.action.from = machine.current;
       machine.action.to = machine.target;
       machine.action.spell = machine.spell;
       machine.action.item = machine.item;
       machine.action.select();
-      machine.combatComponent.removePointerClass(machine.action.getActionName());
+      machine.parent.removePointerClass(machine.action.getActionName());
       this.submit(machine.action);
     });
   }

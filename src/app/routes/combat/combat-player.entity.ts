@@ -1,4 +1,14 @@
-import {Component, AfterViewInit, ViewChildren, QueryList, OnDestroy, Inject, Input, forwardRef} from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  ViewChildren,
+  QueryList,
+  OnDestroy,
+  Inject,
+  Input,
+  forwardRef,
+  ViewChild
+} from '@angular/core';
 import {GameEntityObject} from '../../../game/rpg/objects/gameEntityObject';
 import {CombatPlayerRenderBehavior} from './behaviors/combat-player-render.behavior';
 import {SceneComponent} from '../../../game/pow2/scene/sceneComponent';
@@ -27,6 +37,8 @@ import {PartyMember} from '../../models/party-member.model';
 export class CombatPlayer extends GameEntityObject implements AfterViewInit, OnDestroy {
   @ViewChildren('render,animation,attack,magic,guard,item,run') behaviors: QueryList<SceneComponent>;
 
+  @ViewChild(CombatPlayerRenderBehavior) render: CombatPlayerRenderBehavior;
+
   @Input() model: PartyMember;
 
   constructor(@Inject(forwardRef(() => CombatComponent)) private host: CombatComponent) {
@@ -35,9 +47,6 @@ export class CombatPlayer extends GameEntityObject implements AfterViewInit, OnD
 
   ngAfterViewInit(): void {
     this.host.scene.addObject(this);
-
-    console.log("CombatPlayer");
-    console.log(this);
     this.behaviors.forEach((c: SceneComponent) => {
       this.addBehavior(c);
     });

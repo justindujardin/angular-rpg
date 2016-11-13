@@ -13,8 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
-
 import {SceneComponent} from '../../../../game/pow2/scene/sceneComponent';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 import {IGameSpell} from '../../../../game/rpg/game';
