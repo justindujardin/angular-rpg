@@ -61,6 +61,7 @@ declare var ENV: string;
 declare var HMR: boolean;
 declare var System: SystemJS;
 
+// Pow2 a-star path finding
 declare var Graph:any;
 declare var astar:any;
 
@@ -84,15 +85,15 @@ type FactoryPromise = () => Promise<any>;
 
 type AsyncRoutes = {
   [component: string]: Es6PromiseLoader |
-    Function |
-    FactoryEs6PromiseLoader |
-    FactoryPromise
+                               Function |
+                FactoryEs6PromiseLoader |
+                         FactoryPromise
 };
 
 type IdleCallbacks = Es6PromiseLoader |
-  Function |
-  FactoryEs6PromiseLoader |
-  FactoryPromise ;
+                             Function |
+              FactoryEs6PromiseLoader |
+                       FactoryPromise ;
 
 interface WebpackModule {
   hot: {

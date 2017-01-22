@@ -2,8 +2,49 @@
 @import './style/pageTransitions.scss';
 @import './style/animation.scss';
 @import './style/mixins.scss';
-@import './style/fonts.scss';
 @import './style/loading.scss';
+
+@font-face {
+  font-family: 'GraphicPixel';
+  src: url('../assets/fonts/graphicpixel-webfont.eot');
+  src: url('../assets/fonts/graphicpixel-webfont.eot?#iefix') format('embedded-opentype'),
+  url('../assets/fonts/graphicpixel-webfont.woff') format('woff'),
+  url('../assets/fonts/graphicpixel-webfont.ttf') format('truetype'),
+  url('../assets/fonts/graphicpixel-webfont.svg#GraphicPixelRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'AdvoCut';
+  src: url('../assets/fonts/advocut-webfont.eot');
+  src: url('../assets/fonts/advocut-webfont.eot?#iefix') format('embedded-opentype'),
+  url('../assets/fonts/advocut-webfont.woff') format('woff'),
+  url('../assets/fonts/advocut-webfont.ttf') format('truetype'),
+  url('../assets/fonts/advocut-webfont.svg#AndinaRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('../assets/fonts/glyphicons-halflings-regular.eot');
+  src: url('../assets/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
+  url('../assets/fonts/glyphicons-halflings-regular.woff') format('woff'),
+  url('../assets/fonts/glyphicons-halflings-regular.ttf') format('truetype'),
+  url('../assets/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+@font-face {
+  font-family: "pow2";
+  src: url("../assets/fonts/pow2.eot");
+  src: url("../assets/fonts/pow2.eot?#iefix") format("embedded-opentype"),
+  url("../assets/fonts/pow2.woff") format("woff"),
+  url("../assets/fonts/pow2.ttf") format("truetype"),
+  url("../assets/fonts/pow2.svg#pow2") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
 
 html,
 body {
