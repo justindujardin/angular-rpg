@@ -27,6 +27,11 @@ export function combatReducer(state: CombatState = initialState, action: CombatA
         encounter: encounter
       }).toJS();
     }
+    case CombatActionTypes.ACTION_ATTACK: {
+
+      console.log("attack for: " + JSON.stringify(action.payload, null, 2));
+      return state;
+    }
     default:
       return state;
   }

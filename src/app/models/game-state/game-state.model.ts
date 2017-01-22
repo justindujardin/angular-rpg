@@ -1,5 +1,5 @@
 import {IPoint} from '../../../game/pow-core/point';
-import {PartyMember} from '../party-member.model';
+import {PartyMember} from '../party/party.model';
 
 export enum GamePositionFacing {
   WEST = 0,

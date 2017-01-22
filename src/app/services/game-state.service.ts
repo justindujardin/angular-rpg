@@ -33,8 +33,11 @@ export class GameStateService {
         return this.gameWorld.entities.createObject('GameMapObject', inputs);
       })
       .then((g: GameTileMap) => {
+        if (!g) {
+          return Promise.reject('failed to load map: ' + mapUrl);
+        }
         this._worldMap$.next(g);
-        return g;
+        return Promise.resolve(g);
       }));
   }
 

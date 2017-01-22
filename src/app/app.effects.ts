@@ -11,6 +11,9 @@ import {CombatActionTypes, CombatActions} from './models/combat/combat.actions';
 import {CombatEncounter} from './models/combat/combat.model';
 import {replace} from '@ngrx/router-store';
 
+/**
+ * App effects describe the navigation side-effects of various game actions.
+ */
 @Injectable()
 export class AppEffects {
 
@@ -40,7 +43,7 @@ export class AppEffects {
     .debounceTime(100)
     .distinctUntilChanged()
     .map((action: CombatActions) => {
-      const encounter: CombatEncounter = action.payload;
+      const encounter = action.payload as CombatEncounter;
       return replace(['combat', encounter.id]);
     });
 

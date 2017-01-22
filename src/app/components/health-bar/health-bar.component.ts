@@ -19,7 +19,7 @@ import {Being} from '../../models/being';
 @Component({
   selector: 'rpg-health-bar',
   styleUrls: ['./health-bar.component.scss'],
-  template: `<md-progress-bar [ngClass]="getCSSClassMap()" [value]="getProgressBarWidth()"></md-progress-bar>`
+  template: `<div [ngClass]="getCSSClassMap()" [style.width]="getProgressBarWidth() + '%'"></div>`
 })
 export class RPGHealthBar {
   @Input()

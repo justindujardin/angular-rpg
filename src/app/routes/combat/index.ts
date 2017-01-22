@@ -17,7 +17,6 @@ import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CombatDamage} from './combat-damage.component';
 import {CombatComponent} from './combat.component';
 import {CommonModule} from '@angular/common';
-import {MaterialModule} from '@angular/material';
 import {RPGHealthBarModule} from '../../components/health-bar';
 import {CanActivateCombat} from './combat.guards';
 import {COMBAT_PLAYER_COMPONENTS} from './combat-player.entity';
@@ -48,7 +47,6 @@ export const COMBAT_PROVIDERS = [
   declarations: COMBAT_EXPORTS,
   exports: COMBAT_EXPORTS,
   imports: [
-    MaterialModule,
     CommonModule,
     BehaviorsModule,
     RPGHealthBarModule

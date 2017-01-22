@@ -22,11 +22,7 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 @Component({
   selector: 'rpg-sprite',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '[style.width]': 'width$ | async',
-    '[style.height]': 'height$ | async'
-  },
-  template: `<img [src]="dataUrl$ | async">`
+  template: `<img [style.width]="width$ | async" [style.height]="height$ | async" [src]="dataUrl$ | async">`
 })
 export class RPGSprite {
 

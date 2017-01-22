@@ -33,9 +33,9 @@ import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
 import {getGold, getParty, getGameState} from '../../models/game-state/game-state.reducer';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.model';
-import {PartyMember} from '../../models/party-member.model';
 import {GameState} from '../../models/game-state/game-state.model';
 import {GameStateHealPartyAction} from '../../models/game-state/game-state.actions';
+import {PartyMember} from "../../models/party/party.model";
 
 @Component({
   selector: 'world-temple',

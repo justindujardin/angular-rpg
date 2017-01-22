@@ -28,7 +28,7 @@ import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
 import {CombatService} from '../../services/combat.service';
 import {Subscription, ReplaySubject, Observable} from 'rxjs/Rx';
-import {CombatStateMachine, CombatAttackSummary} from './states/combat.machine';
+import {CombatStateMachine} from './states/combat.machine';
 import {GameTileMap} from '../../../game/gameTileMap';
 import {getEncounter, getEncounterEnemies} from '../../models/combat/combat.reducer';
 import {CombatEnemy} from './combat-enemy.entity';
@@ -56,6 +56,8 @@ export interface ICombatMenuItem<T> {
  * Render and provide input for a combat encounter.
  */
 export class CombatComponent extends TileMapView implements IProcessObject, AfterViewInit {
+
+  combat: CombatComponent = this;
 
   @Input() scene: Scene = new Scene();
   /**

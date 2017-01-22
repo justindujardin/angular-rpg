@@ -11,8 +11,9 @@ import {DamageComponent} from '../../../../../game/rpg/components/damageComponen
 import {CreatureModel} from '../../../../../game/rpg/models/creatureModel';
 import {CombatPlayerRenderBehavior} from '../combat-player-render.behavior';
 import {Component, Input} from '@angular/core';
-import {CombatAttackSummary, IPlayerActionCallback} from '../../states/combat.machine';
+import {IPlayerActionCallback} from '../../states/combat.machine';
 import {CombatComponent} from '../../combat.component';
+import {damage} from '../../../../models/combat/combat.api';
 
 
 /**
@@ -25,6 +26,7 @@ import {CombatComponent} from '../../combat.component';
 export class CombatMagicBehavior extends CombatActionBehavior {
   name: string = "magic";
   @Input() combat: CombatComponent;
+
   canBeUsedBy(entity: GameEntityObject) {
     // Include only magic casters
     var supportedTypes = [
@@ -61,20 +63,20 @@ export class CombatMagicBehavior extends CombatActionBehavior {
     const target: GameEntityObject = this.to;
     const attackerPlayer = caster.findBehavior(CombatPlayerRenderBehavior) as CombatPlayerRenderBehavior;
 
-    attackerPlayer.magic(()=> {
+    attackerPlayer.magic(() => {
       var level: number = target.model.level;
       var healAmount: number = -this.spell.value;
       target.model.damage(healAmount);
 
 
-      var hitSound: string = getSoundEffectUrl("heal");
+      var hitSound: string = getSoundEffectUrl('heal');
       var components = {
         animation: new AnimatedSpriteComponent({
-          spriteName: "heal",
+          spriteName: 'heal',
           lengthMS: 550
         }),
         sprite: new SpriteComponent({
-          name: "heal",
+          name: 'heal',
           icon: "animSpellCast.png"
         }),
         sound: new SoundComponent({
@@ -90,7 +92,7 @@ export class CombatMagicBehavior extends CombatActionBehavior {
           attacker: caster,
           defender: target
         };
-        this.combat.machine.notify("combat:attack", data, done);
+        this.combat.machine.notify('combat:attack', data, done);
       });
     });
 
@@ -105,9 +107,9 @@ export class CombatMagicBehavior extends CombatActionBehavior {
 
     const attackerPlayer = attacker.findBehavior(CombatPlayerRenderBehavior) as CombatPlayerRenderBehavior;
     attackerPlayer.magic(() => {
-      const attackModel = <HeroModel>attacker.model;
+      const attackModel = attacker.model;
       const magicAttack = attackModel.calculateDamage(attackModel.getMagicStrength() + this.spell.value);
-      const damage: number = defender.model.damage(magicAttack);
+      const damage: number = damage(defender.model, magicAttack);
       const didKill: boolean = defender.model.hp <= 0;
       const hit: boolean = damage > 0;
       const hitSound: string = getSoundEffectUrl((didKill ? "killed" : (hit ? "spell" : "miss")));

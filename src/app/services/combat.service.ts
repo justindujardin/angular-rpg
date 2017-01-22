@@ -38,9 +38,13 @@ export class CombatService {
         this._combatMap$.next(g);
         return g;
       }));
-
   }
+
   loadEncounter(encounter: CombatEncounter): Observable<CombatEncounter> {
     return this.loadCombatMap(encounter.zone).map(() => encounter);
+  }
+
+  attack(from: Being, to: Being) {
+
   }
 }

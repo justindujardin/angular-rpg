@@ -6,43 +6,38 @@ import {
   ElementRef,
   OnDestroy,
   ViewChild
-} from '@angular/core';
-import {Notify} from '../../services/notify';
-import {RPGGame} from '../../services/rpgGame';
-import {GameWorld} from '../../services/gameWorld';
-import {AppState} from '../../app.model';
-import {Store} from '@ngrx/store';
-import {Observable, ReplaySubject, Subscription, BehaviorSubject} from 'rxjs/Rx';
-import {GameTileMap} from '../../../game/gameTileMap';
-import {PartyMember} from '../../models/party-member.model';
-import {IPoint, Point, Rect} from '../../../game/pow-core';
-import * as Immutable from 'immutable';
-import {GameResources} from '../../services/game-resources.service';
-import {GameFeatureComponent} from '../../../game/rpg/components/gameFeatureComponent';
-import {MovableComponent} from '../../../game/pow2/scene/components/movableComponent';
-import {SpriteComponent} from '../../../game/pow2/tile/components/spriteComponent';
-import {PlayerComponent} from '../../../game/rpg/components/playerComponent';
-import {PlayerRenderComponent} from '../../../game/pow2/game/components/playerRenderComponent';
-import {GameFeatureObject} from '../../../game/rpg/objects/gameFeatureObject';
-import {SceneObject} from '../../../game/pow2/scene/sceneObject';
-import {Scene} from '../../../game/pow2/scene/scene';
-import {SceneView} from '../../../game/pow2/scene/sceneView';
-import {TileMap} from '../../../game/pow2/tile/tileMap';
-import {PathComponent} from '../../../game/pow2/tile/components/pathComponent';
-import {PowInput, NamedMouseElement} from '../../../game/pow2/core/input';
-import {GameEntityObject} from '../../../game/rpg/objects/gameEntityObject';
-import {
-  GameStateTravelAction,
-  GameStateTravelSuccessAction,
-  GameStateActionTypes
-} from '../../models/game-state/game-state.actions';
-import {TileMapView} from '../../../game/pow2/tile/tileMapView';
-import {TileObjectRenderer} from '../../../game/pow2/tile/render/tileObjectRenderer';
-import {Actions} from '@ngrx/effects';
-import {replace} from '@ngrx/router-store';
-import {GameStateService} from '../../services/game-state.service';
-import {LoadingService} from '../../components/loading/loading.service';
-import {getParty} from '../../models/game-state/game-state.reducer';
+} from "@angular/core";
+import {Notify} from "../../services/notify";
+import {RPGGame} from "../../services/rpgGame";
+import {GameWorld} from "../../services/gameWorld";
+import {AppState} from "../../app.model";
+import {Store} from "@ngrx/store";
+import {Observable, ReplaySubject, Subscription, BehaviorSubject} from "rxjs/Rx";
+import {GameTileMap} from "../../../game/gameTileMap";
+import {IPoint, Point, Rect} from "../../../game/pow-core";
+import * as Immutable from "immutable";
+import {GameResources} from "../../services/game-resources.service";
+import {GameFeatureComponent} from "../../../game/rpg/components/gameFeatureComponent";
+import {MovableComponent} from "../../../game/pow2/scene/components/movableComponent";
+import {SpriteComponent} from "../../../game/pow2/tile/components/spriteComponent";
+import {PlayerComponent} from "../../../game/rpg/components/playerComponent";
+import {PlayerRenderComponent} from "../../../game/pow2/game/components/playerRenderComponent";
+import {GameFeatureObject} from "../../../game/rpg/objects/gameFeatureObject";
+import {SceneObject} from "../../../game/pow2/scene/sceneObject";
+import {Scene} from "../../../game/pow2/scene/scene";
+import {SceneView} from "../../../game/pow2/scene/sceneView";
+import {TileMap} from "../../../game/pow2/tile/tileMap";
+import {PathComponent} from "../../../game/pow2/tile/components/pathComponent";
+import {PowInput, NamedMouseElement} from "../../../game/pow2/core/input";
+import {GameEntityObject} from "../../../game/rpg/objects/gameEntityObject";
+import {GameStateTravelAction} from "../../models/game-state/game-state.actions";
+import {TileMapView} from "../../../game/pow2/tile/tileMapView";
+import {TileObjectRenderer} from "../../../game/pow2/tile/render/tileObjectRenderer";
+import {Actions} from "@ngrx/effects";
+import {GameStateService} from "../../services/game-state.service";
+import {LoadingService} from "../../components/loading/loading.service";
+import {getParty} from "../../models/game-state/game-state.reducer";
+import {PartyMember} from "../../models/party/party.model";
 
 @Component({
   selector: 'world',

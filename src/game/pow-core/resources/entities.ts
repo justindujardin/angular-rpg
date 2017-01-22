@@ -99,22 +99,22 @@ export class EntityFactory {
 
     return this
       .validateTemplate(tpl, inputs)
-      .then(()=> {
+      .then(() => {
         const type = tpl.type;
         // Create entity object
         //
         // If inputs.params are specified use them explicitly, otherwise pass the inputs
         // dire
-        var inputValues: any[] = tpl.params ? _.map(tpl.params, (n: string)=> {
-          return inputs[n];
-        }) : [inputs];
+        var inputValues: any[] = tpl.params ? _.map(tpl.params, (n: string) => {
+            return inputs[n];
+          }) : [inputs];
 
 
         var object: Entity = this.constructObject(type, inputValues);
 
         return Promise.all(_.map(tpl.components, (comp: IEntityObject) => {
           return new Promise<void>((resolve, reject) => {
-            var inputValues: any[] = _.map(comp.params || [], (n: string)=> {
+            var inputValues: any[] = _.map(comp.params || [], (n: string) => {
               return inputs[n];
             });
             const ctor = comp.type;
@@ -132,7 +132,10 @@ export class EntityFactory {
             }
             resolve(compObject);
           });
-        })).then(() => object).catch(() => null);
+        })).then(() => object).catch((e) => {
+          console.warn('failed to create entity with error: ' + e);
+          return null;
+        });
       });
   }
 

@@ -10,7 +10,7 @@ import {CombatAttackBehavior} from './behaviors/actions/combat-attack.behavior';
 @Component({
   selector: 'combat-enemy',
   template: `
-  <combat-attack-behavior #attack></combat-attack-behavior>
+  <combat-attack-behavior [combat]="combat" #attack></combat-attack-behavior>
   <ng-content></ng-content>
 `
 })
@@ -33,12 +33,12 @@ export class CombatEnemy extends GameEntityObject implements AfterViewInit, OnDe
 
   private _spriteSubscription: Subscription;
 
-  constructor(@Inject(forwardRef(() => CombatComponent)) private host: CombatComponent) {
+  constructor(@Inject(forwardRef(() => CombatComponent)) private combat: CombatComponent) {
     super();
   }
 
   ngAfterViewInit(): void {
-    this.host.scene.addObject(this);
+    this.combat.scene.addObject(this);
     this.addBehavior(this.sprite);
     this.addBehavior(this.attack);
     this._spriteSubscription = this.model$.distinctUntilChanged().do((m: Combatant) => {
@@ -49,7 +49,7 @@ export class CombatEnemy extends GameEntityObject implements AfterViewInit, OnDe
   ngOnDestroy(): void {
     this.removeBehavior(this.sprite);
     this.removeBehavior(this.attack);
-    this.host.scene.removeObject(this);
+    this.combat.scene.removeObject(this);
     this._spriteSubscription.unsubscribe();
     this.destroy();
   }

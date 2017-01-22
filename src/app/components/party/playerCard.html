@@ -7,7 +7,7 @@
   <rpg-health-bar [model]="model"></rpg-health-bar>
   <div>EXP {{model.attributes.exp}} / {{model.attributes.nextLevelExp}}</div>
 
-  <md-progress-bar [value]="getCSSProgressWidth()"></md-progress-bar>
+  <div [innerText]="getCSSProgressWidth()"></div>
   <div class="hero-stat">Strength : {{model.attributes.strength}}</div>
   <div class="hero-stat">Agility : {{model.attributes.agility}}</div>
   <div class="hero-stat">Vitality : {{model.attributes.vitality}}</div>

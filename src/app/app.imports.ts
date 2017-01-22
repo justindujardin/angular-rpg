@@ -1,6 +1,5 @@
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
-import {MaterialModule} from '@angular/material';
 import {RouterStoreModule} from '@ngrx/router-store';
 import {StoreModule} from '@ngrx/store';
 import {CommonModule} from '@angular/common';
@@ -40,10 +39,8 @@ export const APP_IMPORTS = [
   CombatModule.forRoot(),
   WorldModule.forRoot(),
 
-  MaterialModule.forRoot(),
   PowCoreModule.forRoot(),
   GameModule.forRoot(),
-  MaterialModule.forRoot(),
   ReactiveFormsModule,
   RouterModule.forRoot(ROUTES, {useHash: true}),
   StoreModule.provideStore(rootReducer),

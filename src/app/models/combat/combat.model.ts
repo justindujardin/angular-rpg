@@ -33,6 +33,13 @@ export interface CombatEncounter {
   readonly id: string;
   /** array of enemies in this encounter */
   readonly enemies: Combatant[];
+  /**
+   * Working copy of party members in the combat simulation. When the combat
+   * encounter is complete, the state of party members will be transferred back
+   * to the main game state party. This allows us to encapsulate combat encounters
+   * and potentially abort them without having to undo any actions on the game party.
+   */
+  readonly party: Combatant[];
   /** message to display when combat begins */
   readonly message?: string;
   /** The type of combat */
@@ -45,7 +52,7 @@ export interface CombatEncounter {
  * A Fixed combat encounter.
  *
  * Fixed encounters are ones that happen when you interact with some fixed part
- * of the game map.
+ * of the game world.
  */
 export interface CombatFixedEncounter extends CombatEncounter {
   /** The amount of gold to award the player after a victory */

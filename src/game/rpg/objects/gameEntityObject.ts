@@ -18,7 +18,7 @@ import * as rpg from '../game';
 import {GameWorld} from '../../../app/services/gameWorld';
 import {TileObject} from '../../pow2/tile/tileObject';
 import {Being} from '../../../app/models/being';
-import {PartyMember} from '../../../app/models/party-member.model';
+import {PartyMember} from "../../../app/models/party/party.model";
 
 export class GameEntityObject extends TileObject {
   model: Being;

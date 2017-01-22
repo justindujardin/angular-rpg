@@ -14,6 +14,7 @@ function fixedEncounter(overrides?: any): CombatFixedEncounter {
   const base: CombatFixedEncounter = {
     id: 'fake-encounter',
     enemies: [],
+    party: [],
     gold: 1,
     experience: 1,
     items: []
@@ -24,7 +25,8 @@ function fixedEncounter(overrides?: any): CombatFixedEncounter {
 function randomEncounter(overrides?: any): CombatFixedEncounter {
   const base: CombatFixedEncounter = {
     id: 'fake-encounter',
-    enemies: []
+    enemies: [],
+    party: []
   };
   return Object.assign({}, base, overrides || {});
 }

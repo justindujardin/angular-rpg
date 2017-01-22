@@ -89,11 +89,7 @@ export class CombatStateMachine extends StateMachine implements AfterViewInit {
   }
 
   isFriendlyTurn(): boolean {
-    return this.current && !!_.find(this.party, (h: Being) => {
-        console.warn('friendly compare logic is busted');
-        // return h.id === this.current.id;
-        return true;
-      });
+    return this.current && !!_.find(this.party, (member) => member._uid === this.current._uid);
   }
 
   getLiveParty(): CombatPlayer[] {

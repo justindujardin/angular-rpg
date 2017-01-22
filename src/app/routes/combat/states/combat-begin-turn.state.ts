@@ -19,6 +19,7 @@ import {CombatMachineState} from './combat-base.state';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 import {CombatStateMachine, IPlayerAction} from './combat.machine';
 import {CombatAttackBehavior} from '../behaviors/actions/combat-attack.behavior';
+import {isDefeated} from '../../../models/combat/combat.api';
 
 // Combat Begin
 //--------------------------------------------------------------------------
@@ -60,7 +61,7 @@ export class CombatBeginTurnState extends CombatMachineState {
     if (!choice) {
       throw new Error("Invalid Combat Action Choice. This should not happen.");
     }
-    if (choice.to && choice.to.isDefeated()) {
+    if (choice.to && isDefeated(choice.to)) {
       choice.to = machine.getRandomEnemy();
     }
     _.defer(()=> {

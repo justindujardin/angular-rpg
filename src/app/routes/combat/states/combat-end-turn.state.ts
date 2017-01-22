@@ -42,7 +42,7 @@ export class CombatEndTurnState extends CombatMachineState {
       }
     }
 
-    var targetState: string = machine.current ? CombatBeginTurnState.NAME : CombatChooseActionState.NAME;
+    let targetState: string = machine.current ? CombatBeginTurnState.NAME : CombatChooseActionState.NAME;
     if (machine.partyDefeated()) {
       targetState = CombatDefeatState.NAME;
     }

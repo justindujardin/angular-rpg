@@ -1,4 +1,4 @@
-import {Being} from './being';
+import {Being} from '../being';
 export type PartyMemberType = 'warrior' | 'thief' | 'mage' | 'healer';
 
 export interface PartyMember extends Being {

@@ -1,21 +1,24 @@
-import * as _ from 'underscore';
-import {GameEntityObject} from '../../../../../game/rpg/objects/gameEntityObject';
-import {HeroTypes, HeroModel} from '../../../../../game/rpg/models/heroModel';
-import {CombatEndTurnState} from '../../states/combat-end-turn.state';
-import {getSoundEffectUrl} from '../../../../../game/pow2/core/api';
-import {AnimatedSpriteComponent} from '../../../../../game/pow2/tile/components/animatedSpriteComponent';
-import {SpriteComponent} from '../../../../../game/pow2/tile/components/spriteComponent';
-import {DamageComponent} from '../../../../../game/rpg/components/damageComponent';
-import {SoundComponent} from '../../../../../game/pow2/scene/components/soundComponent';
-import {CreatureModel} from '../../../../../game/rpg/models/creatureModel';
-import {CombatPlayerRenderBehavior} from '../combat-player-render.behavior';
-import {CombatActionBehavior} from '../combat-action.behavior';
-import {Component, Input} from '@angular/core';
-import {CombatAttackSummary, IPlayerActionCallback} from '../../states/combat.machine';
-import {PartyMember} from '../../../../models/party-member.model';
-import {CombatComponent} from '../../combat.component';
-import {AppState} from '../../../../app.model';
-import {Store} from '@ngrx/store';
+import * as _ from "underscore";
+import {GameEntityObject} from "../../../../../game/rpg/objects/gameEntityObject";
+import {HeroTypes} from "../../../../../game/rpg/models/heroModel";
+import {CombatEndTurnState} from "../../states/combat-end-turn.state";
+import {getSoundEffectUrl} from "../../../../../game/pow2/core/api";
+import {AnimatedSpriteComponent} from "../../../../../game/pow2/tile/components/animatedSpriteComponent";
+import {SpriteComponent} from "../../../../../game/pow2/tile/components/spriteComponent";
+import {DamageComponent} from "../../../../../game/rpg/components/damageComponent";
+import {SoundComponent} from "../../../../../game/pow2/scene/components/soundComponent";
+import {CreatureModel} from "../../../../../game/rpg/models/creatureModel";
+import {CombatPlayerRenderBehavior} from "../combat-player-render.behavior";
+import {CombatActionBehavior} from "../combat-action.behavior";
+import {Component, Input} from "@angular/core";
+import {IPlayerActionCallback} from "../../states/combat.machine";
+import {CombatComponent} from "../../combat.component";
+import {AppState} from "../../../../app.model";
+import {Store} from "@ngrx/store";
+import {CombatAttackAction} from "../../../../models/combat/combat.actions";
+import {CombatAttack} from "../../../../models/combat/combat.model";
+import * as rules from "../../../../models/combat/combat.api";
+import {PartyMember} from "../../../../models/party/party.model";
 /**
  * Attack another entity in combat.
  */
@@ -60,11 +63,19 @@ export class CombatAttackBehavior extends CombatActionBehavior {
     const defender: GameEntityObject = this.to;
     let attackerPlayer = attacker.findBehavior(CombatPlayerRenderBehavior) as CombatPlayerRenderBehavior;
     const attack = () => {
-      const damage: number = attacker.model.attack(defender.model);
+      const damage: number = rules.attack(attacker.model, defender.model);
       const didKill: boolean = defender.model.hp <= 0;
       const hit: boolean = damage > 0;
-      const defending: boolean = (defender.model instanceof HeroModel) && (<HeroModel>defender.model).defenseBuff > 0;
+      const defending: boolean = false; // TODO: Maps to guard action
       const hitSound: string = getSoundEffectUrl(didKill ? 'killed' : (hit ? (defending ? 'miss' : 'hit') : 'miss'));
+
+      const attackData: CombatAttack = {
+        attacker: attacker.model,
+        defender: defender.model,
+        damage: damage
+      };
+      this.store.dispatch(new CombatAttackAction(attackData));
+
       const components = {
         animation: new AnimatedSpriteComponent({
           spriteName: 'attack',
@@ -95,12 +106,7 @@ export class CombatAttackBehavior extends CombatActionBehavior {
         }
         defender.removeComponentDictionary(components);
       });
-      const data: CombatAttackSummary = {
-        damage: damage,
-        attacker: attacker,
-        defender: defender
-      };
-      this.combat.machine.notify('combat:attack', data, done);
+      done();
     };
 
     if (!!attackerPlayer) {

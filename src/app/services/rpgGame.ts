@@ -24,8 +24,10 @@ import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {GameStateLoadAction} from '../models/game-state/game-state.actions';
 import {AppState} from '../app.model';
-import {PartyMember} from '../models/party-member.model';
 import {Point} from '../../game/pow-core';
+import {GameState} from "../models/game-state/game-state.model";
+import * as _ from 'underscore';
+import {PartyMember} from "../models/party/party.model";
 
 @Injectable()
 export class RPGGame {
@@ -105,6 +107,17 @@ export class RPGGame {
         this.world.model.addHero(HeroModel.create(HeroTypes.Warrior, "Warrior"));
         this.world.model.addHero(HeroModel.create(HeroTypes.Ranger, "Ranger"));
         this.world.model.addHero(HeroModel.create(HeroTypes.LifeMage, "Mage"));
+        const gameData = _.pick(this.world.model.toJSON(), ['party', 'gold']);
+        const initialState: GameState = _.extend({}, {
+          party: [],
+          keyData: {},
+          gold: 0,
+          combatZone: '',
+          map: 'town',
+          position: {x: 12, y: 5}
+        }, gameData);
+        this.store.dispatch(new GameStateLoadAction(initialState));
+
         resolve(true);
       }
     });

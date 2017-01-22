@@ -10,6 +10,7 @@ import {CombatMachineState} from '../../states/combat-base.state';
 import {CombatActionBehavior} from '../combat-action.behavior';
 import {Component, Input} from '@angular/core';
 import {CombatComponent} from '../../combat.component';
+import {PartyMember} from "../../../../models/party/party.model";
 
 @Component({
   selector: 'combat-guard-behavior',
@@ -18,6 +19,7 @@ import {CombatComponent} from '../../combat.component';
 export class CombatGuardBehavior extends CombatActionBehavior {
   name: string = "guard";
   @Input() combat: CombatComponent;
+
   canTarget(): boolean {
     return false;
   }
@@ -33,14 +35,15 @@ export class CombatGuardBehavior extends CombatActionBehavior {
    * current players defense.
    */
   select() {
+    console.warn('guard action is ignored in combat-attack behavior');
     this.combat.machine.on(CombatStateMachine.Events.ENTER, this.enterState, this);
     console.info("Adding guard defense buff to player: " + this.from.model.name);
     if (!(this.from.model instanceof HeroModel)) {
       throw new Error("This action is not currently applicable to non hero characters.");
     }
-    var heroModel = this.from.model;
-    var multiplier: number = heroModel.level < 10 ? 2 : 0.5;
-    heroModel.defenseBuff += (heroModel.getDefense(true) * multiplier);
+    const model = this.from.model as PartyMember;
+    const multiplier: number = model.level < 10 ? 2 : 0.5;
+    model.defenseBuff += (model.getDefense(true) * multiplier);
   }
 
   enterState(newState: CombatMachineState, oldState: CombatMachineState) {
