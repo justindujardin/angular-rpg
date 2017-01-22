@@ -1,19 +1,17 @@
 import {Component, ViewEncapsulation} from '@angular/core';
-import {Notify} from '../../services/notify';
+import {NotificationService} from '../../components/notification/notification.service';
 import {RPGGame} from '../../services/rpgGame';
 import {GameWorld} from '../../services/gameWorld';
-
-const template = require('./game.component.html');
 
 @Component({
   selector: 'game',
   styleUrls: ['./game.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  template: template
+  templateUrl: './game.component.html'
 })
 export class GameComponent {
   constructor(public game: RPGGame,
-              public notify: Notify,
+              public notify: NotificationService,
               public world: GameWorld) {
   }
 

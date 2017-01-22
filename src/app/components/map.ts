@@ -13,13 +13,13 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {ElementRef} from '@angular/core';
-import {RPGGame} from '../services/rpgGame';
-import {GameTileMap} from '../../game/gameTileMap';
-import {TileMapView} from '../../game/pow2/tile/tileMapView';
-import {SoundComponent} from '../../game/pow2/scene/components/soundComponent';
-import {TiledTMXResource} from '../../game/pow-core/resources/tiled/tiledTmx';
-import {getMapUrl} from '../../game/pow2/core/api';
+import {ElementRef} from "@angular/core";
+import {RPGGame} from "../services/rpgGame";
+import {GameTileMap} from "../../game/gameTileMap";
+import {TileMapView} from "../../game/pow2/tile/tileMapView";
+import {SoundComponent} from "../../game/pow2/scene/components/soundComponent";
+import {TiledTMXResource} from "../../game/pow-core/resources/tiled/tiledTmx";
+import {getMapUrl} from "../../game/pow2/core/api";
 
 
 /**
@@ -55,7 +55,6 @@ export class Map extends TileMapView {
   private _musicComponent: SoundComponent = null;
 
 
-
   constructor(elRef: ElementRef, public game: RPGGame) {
     super(elRef.nativeElement.querySelector('canvas'));
   }
@@ -68,7 +67,7 @@ export class Map extends TileMapView {
   protected _loadMap(value: string): Promise<GameTileMap> {
 
     // TODO: Check if value is already set map (set binding of mapName is calling this multiple times.)
-    return new Promise<GameTileMap>((resolve, reject)=> {
+    return new Promise<GameTileMap>((resolve, reject) => {
       this.game.loader.load(getMapUrl(value))
         .then((maps: TiledTMXResource[]) => {
           const map = maps[0];

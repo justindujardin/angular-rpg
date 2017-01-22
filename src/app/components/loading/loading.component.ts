@@ -1,5 +1,5 @@
-import {Component, ChangeDetectionStrategy} from '@angular/core';
-import {LoadingService} from './loading.service';
+import {Component, ChangeDetectionStrategy} from "@angular/core";
+import {LoadingService} from "./loading.service";
 
 @Component({
   selector: 'loading',

@@ -11,7 +11,7 @@ export enum GamePositionFacing {
 export interface GameState {
   readonly id?: number | string;
   readonly name?: string;
-  readonly party: PartyMember[]; // The player's party
+  readonly party: PartyMember[]; // The player's player-card
   readonly keyData: {
     [key: string]: any
   };

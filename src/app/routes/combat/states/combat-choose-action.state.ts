@@ -50,7 +50,7 @@ export interface ICombatMenuItem<T> {
 }
 
 /**
- * Choose actions for all characters in the party.
+ * Choose actions for all characters in the player-card.
  */
 @Component({
   selector: 'combat-choose-action-state',
@@ -129,10 +129,10 @@ export class CombatChooseActionState extends CombatMachineState implements After
     this.pending = machine.getLiveParty();
     machine.playerChoices = {};
 
-    // Trigger an event with a list of GameEntityObject party members to
+    // Trigger an event with a list of GameEntityObject player-card members to
     // choose an action for.   Provide a callback function that may be
     // invoked while handling the event to trigger status on the choosing
-    // of moves.  Once data.choose(g,a) has been called for all party members
+    // of moves.  Once data.choose(g,a) has been called for all player-card members
     // the state will transition to begin execution of player and enemy turns.
     const chooseData: IChooseActionEvent = {
       choose: (action: CombatActionBehavior) => {

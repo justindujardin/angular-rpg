@@ -6,7 +6,7 @@ import {AppState} from './app.model';
   selector: 'app',
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./app.component.scss'],
-  template: require('./app.component.html')
+  templateUrl: './app.component.html'
 })
 export class App {
 

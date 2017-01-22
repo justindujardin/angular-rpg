@@ -27,7 +27,7 @@ import {
 import {TempleFeatureComponent} from '../../../game/rpg/components/features/templeFeatureComponent';
 import {HeroModel} from '../../../game/rpg/models/all';
 import {GameStateModel} from '../../../game/rpg/models/gameStateModel';
-import {RPGGame, Notify} from '../../services/index';
+import {RPGGame, NotificationService} from '../../services/index';
 import {IScene} from '../../../game/pow2/interfaces/IScene';
 import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
 import {getGold, getParty, getGameState} from '../../models/game-state/game-state.reducer';
@@ -86,7 +86,7 @@ export class WorldTemple implements OnInit, OnDestroy {
 
   constructor(public game: RPGGame,
               public store: Store<AppState>,
-              public notify: Notify) {
+              public notify: NotificationService) {
     this.model = game.world.model;
     this.party = this.model.party;
   }
@@ -107,11 +107,11 @@ export class WorldTemple implements OnInit, OnDestroy {
           this.notify.show("You don't have enough money");
         }
         else if (alreadyHealed) {
-          this.notify.show("Keep your monies.\nYour party is already fully healed.");
+          this.notify.show("Keep your monies.\nYour player-card is already fully healed.");
         }
         else {
           this.store.dispatch(new GameStateHealPartyAction(cost));
-          this.notify.show("Your party has been healed! \nYou have (" + (gameState.gold - cost) + ") monies.", null, 2500);
+          this.notify.show("Your player-card has been healed! \nYou have (" + (gameState.gold - cost) + ") monies.", null, 2500);
         }
         _.defer(() => {
           this.onClose.next({});

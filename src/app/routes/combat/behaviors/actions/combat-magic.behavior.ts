@@ -1,19 +1,19 @@
-import * as _ from 'underscore';
-import {CombatActionBehavior} from '../combat-action.behavior';
-import {GameEntityObject} from '../../../../../game/rpg/objects/gameEntityObject';
-import {HeroTypes, HeroModel} from '../../../../../game/rpg/models/heroModel';
-import {CombatEndTurnState} from '../../states/combat-end-turn.state';
-import {getSoundEffectUrl} from '../../../../../game/pow2/core/api';
-import {AnimatedSpriteComponent} from '../../../../../game/pow2/tile/components/animatedSpriteComponent';
-import {SpriteComponent} from '../../../../../game/pow2/tile/components/spriteComponent';
-import {SoundComponent} from '../../../../../game/pow2/scene/components/soundComponent';
-import {DamageComponent} from '../../../../../game/rpg/components/damageComponent';
-import {CreatureModel} from '../../../../../game/rpg/models/creatureModel';
-import {CombatPlayerRenderBehavior} from '../combat-player-render.behavior';
-import {Component, Input} from '@angular/core';
-import {IPlayerActionCallback} from '../../states/combat.machine';
-import {CombatComponent} from '../../combat.component';
-import {damage} from '../../../../models/combat/combat.api';
+import * as _ from "underscore";
+import {CombatActionBehavior} from "../combat-action.behavior";
+import {GameEntityObject} from "../../../../../game/rpg/objects/gameEntityObject";
+import {HeroTypes} from "../../../../../game/rpg/models/heroModel";
+import {CombatEndTurnState} from "../../states/combat-end-turn.state";
+import {getSoundEffectUrl} from "../../../../../game/pow2/core/api";
+import {AnimatedSpriteComponent} from "../../../../../game/pow2/tile/components/animatedSpriteComponent";
+import {SpriteComponent} from "../../../../../game/pow2/tile/components/spriteComponent";
+import {SoundComponent} from "../../../../../game/pow2/scene/components/soundComponent";
+import {DamageComponent} from "../../../../../game/rpg/components/damageComponent";
+import {CreatureModel} from "../../../../../game/rpg/models/creatureModel";
+import {CombatPlayerRenderBehavior} from "../combat-player-render.behavior";
+import {Component, Input} from "@angular/core";
+import {IPlayerActionCallback} from "../../states/combat.machine";
+import {CombatComponent} from "../../combat.component";
+import {damage} from "../../../../models/combat/combat.api";
 
 
 /**

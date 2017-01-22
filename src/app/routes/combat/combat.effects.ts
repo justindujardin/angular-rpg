@@ -1,10 +1,18 @@
 import {Injectable} from '@angular/core';
 import {Effect, Actions} from '@ngrx/effects';
+import {
+  GameStateActionTypes, GameStateTravelAction,
+  GameStateTravelSuccessAction
+} from "../../models/game-state/game-state.actions";
+import {CombatAttack, CombatEncounter} from "../../models/combat/combat.model";
+import {CombatActionTypes, CombatActions} from "../../models/combat/combat.actions";
+import {replace} from "@ngrx/router-store";
+import {LoadingService} from "../../components/loading/loading.service";
 
 @Injectable()
 export class CombatEffects {
 
-  constructor(private actions$: Actions) {
+  constructor(private actions$: Actions, private loadingService: LoadingService) {
   }
 
   // When the game is loading or traveling, show the loading ui.

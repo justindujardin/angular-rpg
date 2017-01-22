@@ -13,8 +13,8 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {Component, Input} from '@angular/core';
-import {Being} from '../../models/being';
+import {Component, Input} from "@angular/core";
+import {Being} from "../../models/being";
 
 @Component({
   selector: 'rpg-health-bar',

@@ -13,8 +13,8 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {Component, ElementRef} from '@angular/core';
-import {Notify} from '../../services/index';
+import {Component, ElementRef} from "@angular/core";
+import {NotificationService} from "../../services/index";
 
 @Component({
   selector: 'rpg-notification',
@@ -22,7 +22,7 @@ import {Notify} from '../../services/index';
   template: `<span class="message" [innerText]="notify.message"></span>`,
 })
 export class RPGNotification {
-  constructor(public notify: Notify, public element: ElementRef) {
+  constructor(public notify: NotificationService, public element: ElementRef) {
     notify.container = element.nativeElement;
   }
 }

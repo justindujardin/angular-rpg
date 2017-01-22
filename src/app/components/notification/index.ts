@@ -1,23 +1,12 @@
-import {NgModule, ModuleWithProviders} from '@angular/core';
-import {RPGNotification} from './notification.component';
+import {RPGNotification} from "./notification.component";
+import {NotificationService} from "./notification.service";
 
 export * from './notification.component';
 
-const NOTIFICATION_EXPORTS = [
+export const RPG_NOTIFICATION_EXPORTS = [
   RPGNotification
 ];
 
-@NgModule({
-  declarations: NOTIFICATION_EXPORTS,
-  exports: NOTIFICATION_EXPORTS,
-  imports: []
-})
-export class RPGNotificationModule {
-
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: RPGNotificationModule
-    };
-  }
-
-}
+export const RPG_NOTIFICATION_PROVIDERS = [
+  NotificationService
+];

@@ -18,7 +18,7 @@ import {CombatMachineState} from './combat-base.state';
 import {CombatStateMachine} from './combat.machine';
 import {CombatChooseActionState} from './combat-choose-action.state';
 import {Component} from '@angular/core';
-import {Notify} from '../../../services/notify';
+import {NotificationService} from '../../../components/notification/notification.service';
 
 // Combat Begin
 //--------------------------------------------------------------------------
@@ -30,7 +30,7 @@ export class CombatStartState extends CombatMachineState {
   static NAME: string = "Combat Started";
   name: string = CombatStartState.NAME;
 
-  constructor(private notify: Notify) {
+  constructor(private notify: NotificationService) {
     super();
   }
 

@@ -49,7 +49,7 @@ export class CombatVictoryState extends CombatMachineState {
       return p.isDefeated();
     });
     if (players.length === 0) {
-      throw new Error("Invalid state, cannot be in victory with no living party members");
+      throw new Error("Invalid state, cannot be in victory with no living player-card members");
     }
 
     let gold: number = 0;

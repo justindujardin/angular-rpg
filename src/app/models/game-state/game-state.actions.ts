@@ -13,7 +13,7 @@ export const GameStateActionTypes = {
   TRAVEL_FAIL: type('rpg/state/travel-fail'),
   MOVE: type('rpg/state/move'),
   ADD_GOLD: type('rpg/state/gold'),
-  HEAL_PARTY: type('rpg/state/party/heal'),
+  HEAL_PARTY: type('rpg/state/player-card/heal'),
 };
 
 

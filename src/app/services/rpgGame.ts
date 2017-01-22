@@ -44,6 +44,7 @@ export class RPGGame {
     this._renderCanvas.style.position = 'absolute';
     this._renderCanvas.style.left = this._renderCanvas.style.top = '-9000px';
     this.world.time.start();
+    this.store.subscribe()
   }
 
   getSaveData(): any {

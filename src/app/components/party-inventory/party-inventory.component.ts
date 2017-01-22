@@ -13,24 +13,21 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
-import * as _ from 'underscore';
-import {Component} from '@angular/core';
-import {ItemModel} from '../../../game/rpg/models/itemModel';
-import {WeaponModel} from '../../../game/rpg/models/weaponModel';
-import {ArmorModel} from '../../../game/rpg/models/armorModel';
-import {HeroModel} from '../../../game/rpg/models/heroModel';
-import {UsableModel} from '../../../game/rpg/models/usableModel';
-import {GameStateModel} from '../../../game/rpg/models/gameStateModel';
-import {RPGGame} from '../../services/rpgGame';
-import {Notify} from '../../services/notify';
-
-const template = require('./partyInventory.html') as string;
+import * as _ from "underscore";
+import {Component} from "@angular/core";
+import {ItemModel} from "../../../game/rpg/models/itemModel";
+import {WeaponModel} from "../../../game/rpg/models/weaponModel";
+import {ArmorModel} from "../../../game/rpg/models/armorModel";
+import {HeroModel} from "../../../game/rpg/models/heroModel";
+import {UsableModel} from "../../../game/rpg/models/usableModel";
+import {GameStateModel} from "../../../game/rpg/models/gameStateModel";
+import {RPGGame} from "../../services/rpgGame";
+import {NotificationService} from "../notification/notification.service";
 
 @Component({
   selector: 'party-inventory',
   inputs: ['model', 'character', 'currentIndex', 'game', 'active'],
-  template: template
+  templateUrl: 'party-inventory.component.html'
 })
 export class PartyInventory {
   currentIndex: number = 0;
@@ -38,7 +35,7 @@ export class PartyInventory {
   model: GameStateModel;
   active: boolean = false;
 
-  constructor(public game: RPGGame, public notify: Notify) {
+  constructor(public game: RPGGame, public notify: NotificationService) {
     this.model = game.world.model;
     this.character = this.model.party[this.currentIndex];
   }
@@ -86,7 +83,7 @@ export class PartyInventory {
     }
     else if (item instanceof UsableModel) {
       var i = <UsableModel>item;
-      return i.use(this.character).then(()=> {
+      return i.use(this.character).then(() => {
         this.notify.show("Used " + i.get('name') + " on " + this.character.get('name'), null, 0);
         this.model.removeInventory(item);
       });

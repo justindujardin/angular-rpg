@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {Notify} from './notify';
+import {NotificationService} from '../components/notification/notification.service';
 import {Animate} from './animate';
 import {RPGGame} from './rpgGame';
 import {GameWorld} from './gameWorld';
@@ -26,11 +26,10 @@ import {Visibility} from './visibility';
 import {GameStateService} from './game-state.service';
 import {CombatService} from './combat.service';
 export * from './animate';
-export * from './notify';
+export * from '../components/notification/notification.service';
 export * from './rpgGame';
 
 export const SERVICE_PROVIDERS = [
-  Notify,
   Animate,
   RPGGame,
   GameWorld,

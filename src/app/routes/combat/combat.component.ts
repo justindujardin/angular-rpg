@@ -5,7 +5,7 @@ import {TileObjectRenderer} from '../../../game/pow2/tile/render/tileObjectRende
 import {NamedMouseElement, PowInput} from '../../../game/pow2/core/input';
 import {RPGGame} from '../../services/rpgGame';
 import {GameWorld} from '../../services/gameWorld';
-import {Notify} from '../../services/notify';
+import {NotificationService} from '../../components/notification/notification.service';
 import {Point, IPoint} from '../../../game/pow-core/point';
 import {Scene} from '../../../game/pow2/scene/scene';
 import {CameraComponent} from '../../../game/pow2/scene/components/cameraComponent';
@@ -102,7 +102,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
   /** Observable<Combatant[]> of enemies */
   enemies$ = getEncounterEnemies(this.store);
 
-  /** Observable<PartyMember[]> of party members */
+  /** Observable<PartyMember[]> of player-card members */
   party$ = getParty(this.store);
 
   /** Observable<CombatEncounter> */
@@ -115,14 +115,14 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
 
   private _combatPlayers$ = new ReplaySubject<CombatPlayer[]>(1);
 
-  /** Observable<CombatPlayer[]> of party members */
+  /** Observable<CombatPlayer[]> of player-card members */
   combatPlayers$: Observable<CombatPlayer[]> = this._combatPlayers$;
 
   private _subscriptions: Subscription[] = [];
 
   constructor(public game: RPGGame,
               public actions$: Actions,
-              public notify: Notify,
+              public notify: NotificationService,
               public loadingService: LoadingService,
               public store: Store<AppState>,
               public combatService: CombatService,

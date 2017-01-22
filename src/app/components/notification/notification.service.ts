@@ -13,13 +13,12 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
-import {Injectable} from '@angular/core';
-import {RPGGame} from './rpgGame';
-import {Animate} from './animate';
-import {GameWorld} from './gameWorld';
-import {IWorldObject} from '../../game/pow-core/world';
-import {IProcessObject} from '../../game/pow-core/time';
+import {Injectable} from "@angular/core";
+import {RPGGame} from "../../services/rpgGame";
+import {Animate} from "../../services/animate";
+import {GameWorld} from "../../services/gameWorld";
+import {IWorldObject} from "../../../game/pow-core/world";
+import {IProcessObject} from "../../../game/pow-core/time";
 
 /**
  * Describe a notification that exists in the queue.
@@ -56,7 +55,7 @@ export interface INotifyItem {
  * Provide a basic service for queuing and showing messages to the user.
  */
 @Injectable()
-export class Notify implements IWorldObject, IProcessObject {
+export class NotificationService implements IWorldObject, IProcessObject {
   world: GameWorld;
   paused: boolean = false;
   public animationClass: string = 'active';

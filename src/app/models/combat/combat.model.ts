@@ -34,10 +34,10 @@ export interface CombatEncounter {
   /** array of enemies in this encounter */
   readonly enemies: Combatant[];
   /**
-   * Working copy of party members in the combat simulation. When the combat
-   * encounter is complete, the state of party members will be transferred back
-   * to the main game state party. This allows us to encapsulate combat encounters
-   * and potentially abort them without having to undo any actions on the game party.
+   * Working copy of player-card members in the combat simulation. When the combat
+   * encounter is complete, the state of player-card members will be transferred back
+   * to the main game state player-card. This allows us to encapsulate combat encounters
+   * and potentially abort them without having to undo any actions on the game player-card.
    */
   readonly party: Combatant[];
   /** message to display when combat begins */
@@ -57,9 +57,9 @@ export interface CombatEncounter {
 export interface CombatFixedEncounter extends CombatEncounter {
   /** The amount of gold to award the player after a victory */
   readonly gold?: number;
-  /** The experience to divide amongst the party after a victory */
+  /** The experience to divide amongst the player-card after a victory */
   readonly experience?: number;
-  /** Any items to award the party after a victory */
+  /** Any items to award the player-card after a victory */
   readonly items?: Item[];
 }
 

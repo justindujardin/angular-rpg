@@ -16,7 +16,7 @@
 import * as _ from 'underscore';
 import * as rpg from '../../../game/rpg/game';
 import {Component, ViewEncapsulation, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
-import {RPGGame, Notify} from '../../services';
+import {RPGGame, NotificationService} from '../../services';
 import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
 import {ItemRemoveAction, ItemAddAction} from '../../models/item/item.actions';
@@ -121,7 +121,7 @@ export class WorldStore implements OnDestroy {
   inventory$: Observable<rpg.IGameItem[]> = this._inventory$;
 
   constructor(public game: RPGGame,
-              public notify: Notify,
+              public notify: NotificationService,
               public store: Store<AppState>) {
   }
 

@@ -7,7 +7,7 @@ import {
   OnDestroy,
   ViewChild
 } from "@angular/core";
-import {Notify} from "../../services/notify";
+import {NotificationService} from "../../components/notification/notification.service";
 import {RPGGame} from "../../services/rpgGame";
 import {GameWorld} from "../../services/gameWorld";
 import {AppState} from "../../app.model";
@@ -90,7 +90,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     .select((s) => s.gameState.position)
     .distinctUntilChanged();
 
-  /** Observable of PartyMember representing the party leader to be rendered in the world */
+  /** Observable of PartyMember representing the player-card leader to be rendered in the world */
   partyLeader$: Observable<PartyMember> = getParty(this.store)
     .map((party: PartyMember[]) => {
       return Immutable.Map(party[0]).toJS();
@@ -114,7 +114,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
 
   constructor(public game: RPGGame,
               public actions$: Actions,
-              public notify: Notify,
+              public notify: NotificationService,
               public loadingService: LoadingService,
               public store: Store<AppState>,
               public gameStateService: GameStateService,

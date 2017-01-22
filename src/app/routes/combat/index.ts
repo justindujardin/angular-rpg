@@ -17,12 +17,12 @@ import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CombatDamage} from './combat-damage.component';
 import {CombatComponent} from './combat.component';
 import {CommonModule} from '@angular/common';
-import {RPGHealthBarModule} from '../../components/health-bar';
 import {CanActivateCombat} from './combat.guards';
 import {COMBAT_PLAYER_COMPONENTS} from './combat-player.entity';
 import {BehaviorsModule} from '../../behaviors/index';
 import {COMBAT_ENEMY_COMPONENTS} from './combat-enemy.entity';
 import {COMBAT_STATE_COMPONENTS} from './states/index';
+import {AppComponentsModule} from "../../components/index";
 
 
 export * from './combat-damage.component';
@@ -49,7 +49,7 @@ export const COMBAT_PROVIDERS = [
   imports: [
     CommonModule,
     BehaviorsModule,
-    RPGHealthBarModule
+    AppComponentsModule
   ]
 })
 export class CombatModule {
