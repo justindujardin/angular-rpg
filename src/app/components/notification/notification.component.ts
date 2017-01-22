@@ -15,14 +15,17 @@
  */
 import {Component, ElementRef} from "@angular/core";
 import {NotificationService} from "../../services/index";
+import {LoadingService} from "../loading/loading.service";
 
 @Component({
   selector: 'rpg-notification',
   styleUrls: ['./notification.component.scss'],
-  template: `<span class="message" [innerText]="notify.message"></span>`,
+  template: `<span class="message" [innerText]="notify.message" [class.loading]="loadingService.loading$ | async"></span>`,
 })
 export class RPGNotification {
-  constructor(public notify: NotificationService, public element: ElementRef) {
+  constructor(private notify: NotificationService,
+              private loadingService: LoadingService,
+              private element: ElementRef) {
     notify.container = element.nativeElement;
   }
 }

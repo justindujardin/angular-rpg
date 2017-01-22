@@ -20,7 +20,6 @@ export class GameComponent {
       if (newGame) {
         const msgs: string[] = [
           'Urrrrrgh.', 'What is this?',
-          'Why am I staring at a wall?',
           'Oh well, it is probably not important.',
           'I better take a look around'
         ];
