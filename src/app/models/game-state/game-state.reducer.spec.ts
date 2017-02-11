@@ -13,7 +13,6 @@ function defaultState(overrides?: any): GameState {
     party: [],
     keyData: {},
     gold: 0,
-    combatZone: '',
     map: '',
     position: {x: 0, y: 0},
     ts: -1
@@ -35,7 +34,7 @@ describe('GameState', () => {
     });
 
     describe('GameStateHealPartyAction', () => {
-      it('should restore all player-card members hp to maxhp', () => {
+      it('should restore all party members hp to maxhp', () => {
         const state = defaultState({
           party: [
             {hp: 0, maxhp: 25},

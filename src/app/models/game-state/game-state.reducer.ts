@@ -9,7 +9,6 @@ const initialState: GameState = {
   party: [],
   keyData: {},
   gold: 0,
-  combatZone: '',
   map: '',
   position: {x: 0, y: 0}
 };
@@ -20,14 +19,14 @@ export function gameStateReducer(state: GameState = initialState, action: GameSt
       return Immutable.fromJS(action.payload).toJS();
     }
     case GameStateActionTypes.TRAVEL: {
-      const travel: GameStateTravelAction = action;
+      const travel = action as GameStateTravelAction;
       return Immutable.fromJS(state).merge({
         map: travel.payload.map,
         position: travel.payload.position
       }).toJS();
     }
     case GameStateActionTypes.MOVE: {
-      const travel: GameStateMoveAction = action;
+      const travel = action as GameStateMoveAction;
       return Immutable.fromJS(state).merge({
         position: travel.payload
       }).toJS();
@@ -70,10 +69,6 @@ export function getMap(state$: Store<AppState>) {
 
 export function getPosition(state$: Store<AppState>) {
   return state$.select(state => state.gameState.position);
-}
-
-export function getCombatZone(state$: Store<AppState>) {
-  return state$.select(state => state.gameState.combatZone);
 }
 
 export function getAllKeyData(state$: Store<AppState>) {

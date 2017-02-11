@@ -39,7 +39,8 @@ export class CombatEscapeState extends CombatMachineState {
     machine.notify("combat:escape", {
       player: machine.current
     }, ()=> {
-      machine.parent.world.reportEncounterResult(false);
+      alert('combat escape needs fixin\'');
+      // machine.parent.world.reportEncounterResult(false);
       // machine.parent.setCurrentState(PlayerMapState.NAME);
     });
   }

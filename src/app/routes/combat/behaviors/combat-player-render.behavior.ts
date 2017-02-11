@@ -121,7 +121,7 @@ export class CombatPlayerRenderBehavior extends TickedComponent implements OnIni
         frames: this.getForwardFrames(),
         move: new Point(this.getForwardDirection(), 0),
         callback: () => {
-          var attackAnimationsSource = this.host.icon.replace(".png", "-attack.png");
+          var attackAnimationsSource = this.host.icon.replace(".png", "-attackCombatant.png");
           if (this.host.world.sprites.getSpriteMeta(attackAnimationsSource)) {
             this.host.setSprite(attackAnimationsSource, 12);
           }
@@ -133,7 +133,7 @@ export class CombatPlayerRenderBehavior extends TickedComponent implements OnIni
         duration: 100,
         frames: this.getAttackFrames(),
         callback: () => {
-          this.host.setSprite(this.host.icon.replace("-attack.png", ".png"), 10);
+          this.host.setSprite(this.host.icon.replace("-attackCombatant.png", ".png"), 10);
           strikeCb && strikeCb();
         }
       },

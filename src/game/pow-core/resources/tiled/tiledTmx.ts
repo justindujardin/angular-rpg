@@ -20,6 +20,7 @@ import {XMLResource} from '../xml';
 import {Resource} from '../../resource';
 import {TiledTSXResource} from './tiledTsx';
 import * as _ from 'underscore';
+import 'jquery';
 
 
 /**

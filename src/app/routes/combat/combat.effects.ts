@@ -27,7 +27,7 @@ export class CombatEffects {
   @Effect({dispatch: false}) loadingDoneIndicator$ = this.actions$
     .ofType(GameStateActionTypes.TRAVEL_SUCCESS, GameStateActionTypes.TRAVEL_FAIL)
     .distinctUntilChanged()
-    .do((action: CombatAttack) => {
+    .do((action: CombatAttack): void => {
       this.loadingService.loading = false;
     });
 
@@ -38,7 +38,7 @@ export class CombatEffects {
     .debounceTime(100)
     .distinctUntilChanged()
     .map((action: CombatActions) => {
-      const encounter: CombatEncounter = action.payload;
+      const encounter = action.payload as CombatEncounter;
       return replace(['combat', encounter.id]);
     });
 

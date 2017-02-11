@@ -27,7 +27,7 @@ import {PartyMember} from "../../../../models/party/party.model";
   template: '<ng-content></ng-content>'
 })
 export class CombatAttackBehavior extends CombatActionBehavior {
-  name: string = "attack";
+  name: string = 'attackCombatant';
 
   @Input() combat: CombatComponent;
 
@@ -63,7 +63,7 @@ export class CombatAttackBehavior extends CombatActionBehavior {
     const defender: GameEntityObject = this.to;
     let attackerPlayer = attacker.findBehavior(CombatPlayerRenderBehavior) as CombatPlayerRenderBehavior;
     const attack = () => {
-      const damage: number = rules.attack(attacker.model, defender.model);
+      const damage: number = rules.attackCombatant(attacker.model, defender.model);
       const didKill: boolean = defender.model.hp <= 0;
       const hit: boolean = damage > 0;
       const defending: boolean = false; // TODO: Maps to guard action

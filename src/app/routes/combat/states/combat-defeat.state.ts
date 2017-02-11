@@ -38,7 +38,8 @@ export class CombatDefeatState extends CombatMachineState {
       party: machine.party
     };
     machine.notify("combat:defeat", data, ()=> {
-      machine.parent.world.reportEncounterResult(false);
+      alert('defeat is not implemented');
+      //machine.parent.world.reportEncounterResult(false);
       // TODO: This is a hack.  Need better game lifetime management.
       window.location.reload(true);
       // machine.parent.setCurrentState(PlayerDefaultState.NAME);

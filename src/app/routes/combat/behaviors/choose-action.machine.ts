@@ -9,12 +9,13 @@ import {UsableModel} from '../../../../game/rpg/models/usableModel';
 import {GameWorld} from '../../../services/gameWorld';
 import {State} from '../../../../game/pow2/core/state';
 import {CombatPlayerRenderBehavior} from '../behaviors/combat-player-render.behavior';
-import {CombatItemBehavior} from '../behaviors/actions/combat-item.behavior';
-import {CombatMagicBehavior} from '../behaviors/actions/combat-magic.behavior';
+// import {CombatItemBehavior} from '../behaviors/actions/combat-item.behavior';
+// import {CombatMagicBehavior} from '../behaviors/actions/combat-magic.behavior';
 import {IChooseActionEvent, CombatChooseActionState} from '../states/combat-choose-action.state';
 import {IPlayerAction} from '../states/combat.machine';
 import {ElementRef} from '@angular/core';
 import {CombatPlayer} from '../combat-player.entity';
+import {Item} from "../../../models/item/item.model";
 
 /**
  * Attach an HTML element to the position of a game object.
@@ -49,7 +50,7 @@ export class ChooseActionStateMachine extends StateMachine {
   player: CombatPlayerRenderBehavior = null;
   action: CombatActionBehavior = null;
   spell: IGameSpell = null;
-  item: UsableModel = null;
+  item: Item = null;
   world: GameWorld = GameWorld.get();
 
   constructor(public parent: CombatChooseActionState,
@@ -84,7 +85,7 @@ export class ChooseActionType extends State {
     if (!machine.current) {
       throw new Error("Requires Current Player");
     }
-    const p: CombatPlayer = machine.current;
+    const p: CombatPlayer = machine.current as CombatPlayer;
     machine.player = p.render;
     if (!machine.player) {
       throw new Error("Requires player render component for combat animations.");
@@ -97,19 +98,20 @@ export class ChooseActionType extends State {
       machine.action = action as CombatActionBehavior;
       machine.scene.off('click', clickSelect);
 
-      if (machine.action instanceof CombatMagicBehavior) {
-        if (machine.current.getSpells().length === 1) {
-          machine.spell = machine.current.getSpells()[0];
-          machine.setCurrentState(ChooseActionTarget.NAME);
-        }
-        else {
-          machine.setCurrentState(ChooseMagicSpell.NAME);
-        }
-      }
-      else if (machine.action instanceof CombatItemBehavior) {
-        machine.setCurrentState(ChooseUsableItem.NAME);
-      }
-      else if (machine.action.canTarget()) {
+      // if (machine.action instanceof CombatMagicBehavior) {
+      //   if (machine.current.getSpells().length === 1) {
+      //     machine.spell = machine.current.getSpells()[0];
+      //     machine.setCurrentState(ChooseActionTarget.NAME);
+      //   }
+      //   else {
+      //     machine.setCurrentState(ChooseMagicSpell.NAME);
+      //   }
+      // }
+      // else if (machine.action instanceof CombatItemBehavior) {
+      //   machine.setCurrentState(ChooseUsableItem.NAME);
+      // }
+      // else
+      if (machine.action.canTarget()) {
         machine.setCurrentState(ChooseActionTarget.NAME);
       }
       else {
@@ -200,18 +202,19 @@ export class ChooseUsableItem extends State {
     if (!machine.current) {
       throw new Error("Requires Current Player");
     }
-    var selectItem = (item: UsableModel) => {
+    var selectItem = (item: Item) => {
       machine.item = item;
       machine.target = machine.current;
       machine.setCurrentState(ChooseActionTarget.NAME);
     };
-    var items: any = machine.current.world.model.inventory;
-    machine.parent.items = _.map(items, (a: UsableModel) => {
-      return <any>{
-        select: selectItem.bind(this, a),
-        label: a.get('name')
-      };
-    });
+    console.warn('todo: combat items');
+    // var items: any = machine.current.world.model.inventory;
+    // machine.parent.items = _.map(items, (a: Item) => {
+    //   return <any>{
+    //     select: selectItem.bind(this, a),
+    //     label: a.name
+    //   };
+    // });
   }
 
   exit(machine: ChooseActionStateMachine) {

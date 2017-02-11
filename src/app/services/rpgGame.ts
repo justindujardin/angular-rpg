@@ -15,7 +15,6 @@
  */
 import {GameWorld} from './gameWorld';
 import {GameTileMap} from '../../game/gameTileMap';
-import {HeroModel, HeroTypes} from '../../game/rpg/models/heroModel';
 import {ItemModel} from '../../game/rpg/models/itemModel';
 import {GameEntityObject} from '../../game/rpg/objects/gameEntityObject';
 import {GameStateMachine} from '../../game/rpg/states/gameStateMachine';
@@ -72,7 +71,7 @@ export class RPGGame {
     if (!from) {
       return Promise.reject("Cannot create player without valid model");
     }
-    const heroModel = new HeroModel(from);
+    const heroModel = Object.assign({}, from);
     if (!this.world.entities.data) {
       return Promise.reject("Cannot create player before entities container is loaded");
     }
@@ -105,9 +104,9 @@ export class RPGGame {
         resolve(false);
       }
       else {
-        this.world.model.addHero(HeroModel.create(HeroTypes.Warrior, "Warrior"));
-        this.world.model.addHero(HeroModel.create(HeroTypes.Ranger, "Ranger"));
-        this.world.model.addHero(HeroModel.create(HeroTypes.LifeMage, "Mage"));
+        // this.world.model.addHero(HeroModel.create(HeroTypes.Warrior, "Warrior"));
+        // this.world.model.addHero(HeroModel.create(HeroTypes.Ranger, "Ranger"));
+        // this.world.model.addHero(HeroModel.create(HeroTypes.LifeMage, "Mage"));
         const gameData = _.pick(this.world.model.toJSON(), ['party', 'gold']);
         const initialState: GameState = _.extend({}, {
           party: [],
@@ -123,10 +122,6 @@ export class RPGGame {
       }
     });
   }
-
-  party: HeroModel[] = [];
-  inventory: ItemModel[] = [];
-  player: HeroModel = null;
 
 
   /**

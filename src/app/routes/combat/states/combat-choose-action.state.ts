@@ -38,7 +38,7 @@ import {CombatComponent} from '../combat.component';
 export interface IChooseActionEvent {
   players: GameEntityObject[];
   enemies: GameEntityObject[];
-  choose: (action: CombatActionBehavior)=>any;
+  choose: (action: CombatActionBehavior) => any;
 }
 
 /**
@@ -121,8 +121,8 @@ export class CombatChooseActionState extends CombatMachineState implements After
     this.machine = machine;
 
 
-    const combatants = [...machine.getLiveParty(), ...machine.getLiveEnemies()];
-    machine.turnList = _.shuffle(combatants);
+    const combatants: GameEntityObject[] = [...machine.getLiveParty(), ...machine.getLiveEnemies()];
+    machine.turnList = _.shuffle<GameEntityObject>(combatants);
     machine.current = machine.turnList.shift();
     machine.currentDone = true;
 

@@ -29,7 +29,8 @@
   "exclude": [
     "node_modules",
     "dist",
-    "./src/**/*.tsx"
+    "compiled",
+    "src/**/*.tsx"
   ],
   "awesomeTypescriptLoaderOptions": {
     "forkChecker": true,

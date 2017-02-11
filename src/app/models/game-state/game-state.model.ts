@@ -11,12 +11,11 @@ export enum GamePositionFacing {
 export interface GameState {
   readonly id?: number | string;
   readonly name?: string;
-  readonly party: PartyMember[]; // The player's player-card
+  readonly party: PartyMember[]; // The player's party
   readonly keyData: {
     [key: string]: any
   };
   readonly gold: number;
-  readonly combatZone: string;
   /** The current map this player is in */
   readonly map: string;
 

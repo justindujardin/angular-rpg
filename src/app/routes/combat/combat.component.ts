@@ -34,6 +34,9 @@ import {getEncounter, getEncounterEnemies} from '../../models/combat/combat.redu
 import {CombatEnemy} from './combat-enemy.entity';
 import {CombatPlayer} from './combat-player.entity';
 import {getParty} from '../../models/game-state/game-state.reducer';
+import {Item} from "../../models/item/item.model";
+import {PartyMember} from "../../models/party/party.model";
+import {CombatAttack} from "../../models/combat/combat.model";
 
 /**
  * Describe a selectable menu item for a user input in combat.
@@ -42,6 +45,15 @@ export interface ICombatMenuItem<T> {
   select(): any;
   label: string;
 }
+
+
+/** Description of a combat entity attackCombatant */
+export interface CombatAttackSummary {
+  damage: number;
+  attacker: GameEntityObject;
+  defender: GameEntityObject;
+}
+
 
 @Component({
   selector: 'combat-map',
@@ -209,12 +221,10 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
     const targetPos: Point = this.pointer.object.point.clone();
     targetPos.y = (targetPos.y - this.camera.point.y) + this.pointer.offset.y;
     targetPos.x = (targetPos.x - this.camera.point.x) + this.pointer.offset.x;
-    var screenPos: Point = this.worldToScreen(targetPos, this.cameraScale);
-    var el: any = jQuery(this.pointer.element);
-    el.css({
-      left: screenPos.x,
-      top: screenPos.y
-    });
+    const screenPos: Point = this.worldToScreen(targetPos, this.cameraScale);
+    const el: HTMLElement = this.pointer.element.nativeElement;
+    el.style.left = `${screenPos.x}px`;
+    el.style.top = `${screenPos.y}px`;
   }
 
 
@@ -248,7 +258,6 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
   //
   // API
   //
-
 
 
   getMemberClass(member: GameEntityObject, focused?: GameEntityObject): any {
@@ -301,10 +310,10 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
    */
   private _bindRenderCombat() {
     this.machine.on('combat:attack', (data: CombatAttackSummary) => {
-      var _done = this.machine.notifyWait();
-      var msg: string = '';
-      var a = data.attacker.name;
-      var b = data.defender.name;
+      const _done = this.machine.notifyWait();
+      let msg: string = '';
+      const a = data.attacker.name;
+      const b = data.defender.name;
       if (data.damage > 0) {
         msg = `${a} attacked ${b} for ${data.damage} damage!`;
       }
@@ -318,8 +327,8 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
       this.notify.show(msg, _done);
     });
     this.machine.on('combat:run', (data: CombatRunSummary) => {
-      var _done = this.machine.notifyWait();
-      var msg: string = data.player.model.get('name');
+      const _done = this.machine.notifyWait();
+      let msg: string = data.player.model.name;
       if (data.success) {
         msg += ' bravely ran away!';
       }
@@ -329,22 +338,22 @@ export class CombatComponent extends TileMapView implements IProcessObject, Afte
       this.notify.show(msg, _done);
     });
     this.machine.on('combat:victory', (data: CombatVictorySummary) => {
-      var _done = this.machine.notifyWait();
-      this.notify.show("Found " + data.gold + " gold!", null, 0);
+      const _done = this.machine.notifyWait();
+      this.notify.show(`Found ${data.gold} gold!`, null, 0);
       if (data.items) {
-        _.each(data.items, (item: ItemModel) => {
-          this.notify.show("Found " + item.get('name'), null, 0);
+        _.each(data.items, (item: Item) => {
+          this.notify.show(`Found ${item.name}`, null, 0);
         });
       }
-      this.notify.show("Gained " + data.exp + " experience!", null, 0);
-      _.each(data.levels, (hero: HeroModel) => {
-        this.notify.show(hero.get('name') + " reached level " + hero.get('level') + "!", null, 0);
+      this.notify.show(`Gained ${data.exp} experience!`, null, 0);
+      _.each(data.levels, (hero: PartyMember) => {
+        this.notify.show(`${hero.name} reached level ${hero.level}!`, null, 0);
       });
-      this.notify.show("Enemies Defeated!", _done);
+      this.notify.show('Enemies Defeated!', _done);
     });
     this.machine.on('combat:defeat', (data: CombatDefeatSummary) => {
-      var done = this.machine.notifyWait();
-      this.notify.show("Your party was defeated...", () => {
+      const done = this.machine.notifyWait();
+      this.notify.show('Your party was defeated...', () => {
         this.game.initGame().then(done);
       }, 0);
     });

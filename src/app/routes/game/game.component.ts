@@ -1,4 +1,4 @@
-import {Component, ViewEncapsulation} from '@angular/core';
+import {Component, ViewEncapsulation, OnInit} from '@angular/core';
 import {NotificationService} from '../../components/notification/notification.service';
 import {RPGGame} from '../../services/rpgGame';
 import {GameWorld} from '../../services/gameWorld';
@@ -9,7 +9,7 @@ import {GameWorld} from '../../services/gameWorld';
   encapsulation: ViewEncapsulation.None,
   templateUrl: './game.component.html'
 })
-export class GameComponent {
+export class GameComponent implements OnInit {
   constructor(public game: RPGGame,
               public notify: NotificationService,
               public world: GameWorld) {
@@ -20,7 +20,7 @@ export class GameComponent {
       if (newGame) {
         const msgs: string[] = [
           'Urrrrrgh.', 'What is this?',
-          'Oh well, it is probably not important.',
+          'Oh well, it\'s probably not important.',
           'I better take a look around'
         ];
         msgs.forEach((m: string) => this.notify.show(m, null, 0));

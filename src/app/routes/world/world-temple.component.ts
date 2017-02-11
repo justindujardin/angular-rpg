@@ -50,7 +50,7 @@ export class WorldTemple implements OnInit, OnDestroy {
   @Input() scene: IScene;
 
   partyGold$: Observable<number> = getGold(this.store);
-  party$: Observable<PartyMember> = getParty(this.store);
+  party$: Observable<PartyMember[]> = getParty(this.store);
 
   private _name$ = new BehaviorSubject<string>('Mystery Temple');
   name$: Observable<string> = this._name$;
@@ -73,8 +73,8 @@ export class WorldTemple implements OnInit, OnDestroy {
     this._cost$.next(value);
   }
 
-  @Input() model: GameStateModel;
-  @Input() party: HeroModel[];
+  @Input() model: GameState;
+  @Input() party: PartyMember[];
 
 
   @Input()

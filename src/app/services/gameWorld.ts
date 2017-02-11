@@ -13,27 +13,26 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import * as Backbone from 'backbone';
-import * as _ from 'underscore';
-import {GameStateModel} from '../../game/rpg/models/gameStateModel';
-import {ItemModel, WeaponModel, ArmorModel, UsableModel} from '../../game/rpg/models/all';
-import {Scene} from '../../game/pow2/scene/scene';
-import {EntityFactory} from '../../game/pow-core/resources/entities';
-import {GameDataResource} from '../../game/pow2/game/resources/gameData';
-import {registerSprites, SPREADSHEET_ID} from '../../game/pow2/core/api';
-import {RPG_GAME_ENTITIES} from '../../game/game.entities';
-import {Subject} from 'rxjs/Subject';
-import {ReplaySubject, Observable} from 'rxjs/Rx';
-import {JSONResource} from '../../game/pow-core/resources/json';
-import {Injectable} from '@angular/core';
-import {ResourceLoader} from '../../game/pow-core/resourceLoader';
-import {PowInput} from '../../game/pow2/core/input';
-import {World} from '../../game/pow-core/world';
-import {SpriteRender} from './spriteRender';
-import {AppState} from '../app.model';
-import {Store} from '@ngrx/store';
-import {CombatFixedEncounter, Combatant} from '../models/combat/combat.model';
-import {CombatFixedEncounterAction} from '../models/combat/combat.actions';
+import * as _ from "underscore";
+import {GameStateModel} from "../../game/rpg/models/gameStateModel";
+import {ItemModel, WeaponModel, ArmorModel, UsableModel} from "../../game/rpg/models/all";
+import {Scene} from "../../game/pow2/scene/scene";
+import {EntityFactory} from "../../game/pow-core/resources/entities";
+import {GameDataResource} from "../../game/pow2/game/resources/gameData";
+import {registerSprites, SPREADSHEET_ID} from "../../game/pow2/core/api";
+import {RPG_GAME_ENTITIES} from "../../game/game.entities";
+import {Subject} from "rxjs/Subject";
+import {ReplaySubject, Observable} from "rxjs/Rx";
+import {JSONResource} from "../../game/pow-core/resources/json";
+import {Injectable} from "@angular/core";
+import {ResourceLoader} from "../../game/pow-core/resourceLoader";
+import {PowInput} from "../../game/pow2/core/input";
+import {World} from "../../game/pow-core/world";
+import {SpriteRender} from "./spriteRender";
+import {AppState} from "../app.model";
+import {Store} from "@ngrx/store";
+import {CombatFixedEncounter, Combatant} from "../models/combat/combat.model";
+import {CombatFixedEncounterAction} from "../models/combat/combat.actions";
 import {
   IGameEncounterCallback,
   IZoneMatch,
@@ -41,15 +40,14 @@ import {
   IGameFixedEncounter,
   IGameItem,
   IGameEncounter
-} from '../../game/rpg/game';
+} from "../../game/rpg/game";
 
 
-var _sharedGameWorld: GameWorld = null;
+let _sharedGameWorld: GameWorld = null;
 
 @Injectable()
 export class GameWorld extends World {
   input: PowInput = new PowInput();
-  model: GameStateModel = new GameStateModel();
   scene: Scene = new Scene();
 
   /**
@@ -76,7 +74,6 @@ export class GameWorld extends World {
     super();
     _sharedGameWorld = this;
     this.mark(this.scene);
-    this.mark(this.model);
     // Preload sprite sheets
     this.loadSprites()
       .then(() => this.loadGameData())
@@ -99,24 +96,24 @@ export class GameWorld extends World {
 
   randomEncounter(zone: IZoneMatch, then?: IGameEncounterCallback) {
     const gsr = this.spreadsheet;
-    var encountersData = gsr.getSheetData('randomencounters');
-    var encounters: IGameRandomEncounter[] = _.filter(encountersData, (enc: any) => {
+    const encountersData = gsr.getSheetData('randomencounters');
+    const encounters: IGameRandomEncounter[] = _.filter(encountersData, (enc: any) => {
       return _.indexOf(enc.zones, zone.map) !== -1 || _.indexOf(enc.zones, zone.target) !== -1;
     });
     if (encounters.length === 0) {
       then && then(true);
       return;
     }
-    var max = encounters.length - 1;
-    var min = 0;
-    var encounter = encounters[Math.floor(Math.random() * (max - min + 1)) + min];
+    const max = encounters.length - 1;
+    const min = 0;
+    const encounter = encounters[Math.floor(Math.random() * (max - min + 1)) + min];
     this.doEncounter(zone, encounter, then);
   }
 
 
   fixedEncounter(zone: IZoneMatch, encounterId: string, then?: IGameEncounterCallback) {
     const gsr = this.spreadsheet;
-    var encounter = <IGameFixedEncounter>_.where(gsr.getSheetData('fixedencounters'), {
+    const encounter = <IGameFixedEncounter>_.where(gsr.getSheetData('fixedencounters'), {
       id: encounterId
     })[0];
     if (!encounter) {
@@ -131,26 +128,28 @@ export class GameWorld extends World {
    * @param modelId string The item id, e.g. `leather-shield` or `potion`
    * @returns {ItemModel|null} The model for the given item, or null.
    */
-  itemModelFromId<T extends Backbone.Model>(modelId: string): T {
+  itemModelFromId<T>(modelId: string): T {
     if (!this.spreadsheet) {
       return null;
     }
-    var data = this.spreadsheet;
-    var sheets: string[] = ['weapons', 'armor', 'items'];
-    var item: T = null;
+    const data = this.spreadsheet;
+    const sheets: string[] = ['weapons', 'armor', 'items'];
+    let item: T = null;
     while (!item && sheets.length > 0) {
-      var sheetName = sheets.shift();
-      var itemData: IGameItem = _.find(data.getSheetData(sheetName), (w: IGameItem) => w.id === modelId);
+      const sheetName = sheets.shift();
+      const itemData: IGameItem = _.find(data.getSheetData(sheetName), (w: IGameItem) => w.id === modelId);
       if (itemData) {
+        // TODO: How to deal with item creation?
+        console.warn('revisit GameWorld.itemModelFromId - todo');
         switch (sheetName) {
           case 'weapons':
-            item = <any>new WeaponModel(itemData);
+            item = itemData as any; // <any>new WeaponModel(itemData);
             break;
           case 'armor':
-            item = <any>new ArmorModel(itemData);
+            item = itemData as any; // <any>new ArmorModel(itemData);
             break;
           case 'items':
-            item = <any>new UsableModel(itemData);
+            item = itemData as any; // <any>new UsableModel(itemData);
             break;
         }
       }
@@ -206,7 +205,7 @@ export class GameWorld extends World {
                 .substr(meta.url.lastIndexOf('/') + 1);
               registerSprites(name, meta.data);
             });
-        }));
+        })).then(() => Promise.resolve<void>(undefined));
       });
   }
 }

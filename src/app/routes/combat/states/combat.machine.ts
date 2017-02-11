@@ -41,8 +41,8 @@ export interface IPlayerActionCallback {
  */
 export interface IPlayerAction {
   name: string;
-  from: Being;
-  to: Being;
+  from: GameEntityObject;
+  to: GameEntityObject;
   act(then?: IPlayerActionCallback): boolean;
 }
 
@@ -104,7 +104,7 @@ export class CombatStateMachine extends StateMachine implements AfterViewInit {
     });
   }
 
-  getRandomPartyMember(): Being {
+  getRandomPartyMember(): GameEntityObject {
     const players = <CombatPlayer[]>_.shuffle(this.party);
     while (players.length > 0) {
       const p = players.shift();
@@ -115,7 +115,7 @@ export class CombatStateMachine extends StateMachine implements AfterViewInit {
     return null;
   }
 
-  getRandomEnemy(): Being {
+  getRandomEnemy(): GameEntityObject {
     const players = <CombatEnemy[]>_.shuffle(this.enemies);
     while (players.length > 0) {
       const p = players.shift();

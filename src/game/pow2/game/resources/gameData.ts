@@ -68,7 +68,7 @@ export class GameDataResource extends Resource {
   // TODO: More sophisticated deserializing of types, removing hardcoded keys.
   transformTypes(data: any): any {
     var results: any = {};
-    _.each(data, (dataValue: any, dataKey)=> {
+    _.each(data, (dataValue: any, dataKey: any) => {
       var sheetElements = dataValue.elements.slice(0);
       var length: number = sheetElements.length;
       for (var i = 0; i < length; i++) {

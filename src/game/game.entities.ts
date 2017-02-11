@@ -8,7 +8,6 @@ import {StoreFeatureComponent} from './rpg/components/features/storeFeatureCompo
 import {TempleFeatureComponent} from './rpg/components/features/templeFeatureComponent';
 import {TreasureFeatureComponent} from './rpg/components/features/treasureFeatureComponent';
 import {GameFeatureInputComponent} from './rpg/components/gameFeatureInputComponent';
-import {HeroModel} from './rpg/models/heroModel';
 import {GameEntityObject} from './rpg/objects/gameEntityObject';
 import {TiledTMXResource} from './pow-core/resources/tiled/tiledTmx';
 import {PlayerRenderComponent} from './pow2/game/components/playerRenderComponent';
@@ -58,7 +57,7 @@ export const RPG_GAME_ENTITIES: IEntityTemplate[] = [
     name: 'GameMapPlayer',
     type: GameEntityObject,
     inputs: {
-      model: HeroModel,
+      model: Object,
       map: GameTileMap
     },
     components: [

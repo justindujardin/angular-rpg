@@ -29,7 +29,7 @@ export function combatReducer(state: CombatState = initialState, action: CombatA
     }
     case CombatActionTypes.ACTION_ATTACK: {
 
-      console.log("attack for: " + JSON.stringify(action.payload, null, 2));
+      console.log("attackCombatant for: " + JSON.stringify(action.payload, null, 2));
       return state;
     }
     default:

@@ -52,7 +52,7 @@ export class CombatBeginTurnState extends CombatMachineState {
     }
     else {
       choice = machine.current.findBehavior(CombatAttackBehavior) as CombatAttackBehavior;
-      // TODO: This config should not be here.   Just pick a random person to attack.
+      // TODO: This config should not be here.   Just pick a random person to attackCombatant.
       if (choice) {
         choice.to = machine.getRandomPartyMember();
         choice.from = machine.current;
@@ -61,7 +61,7 @@ export class CombatBeginTurnState extends CombatMachineState {
     if (!choice) {
       throw new Error("Invalid Combat Action Choice. This should not happen.");
     }
-    if (choice.to && isDefeated(choice.to)) {
+    if (choice.to && isDefeated(choice.to.model)) {
       choice.to = machine.getRandomEnemy();
     }
     _.defer(()=> {

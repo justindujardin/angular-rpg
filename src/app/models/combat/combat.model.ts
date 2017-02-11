@@ -5,24 +5,11 @@ export type CombatType = 'none' | 'fixed' | 'random';
 /** A combatant in a combat encounter */
 export interface Combatant extends Being {
   /** The hyphenated-lower-case-unique-id of the combatant */
-  readonly id: string;
+  readonly id?: string;
   /** The name of the combatant */
-  readonly name: string;
+  readonly name?: string;
   /** The experience awarded for defeating this combatant */
-  readonly exp: number;
-  /** The gold awarded for defeating this combatant */
-  readonly gold: number;
-
-  // Combat ability values ----
-
-  /** The lower bound of attack for the combatant */
-  readonly attacklow: number;
-  /** The upper bound of attack for the combatant */
-  readonly attackhigh: number;
-  /** The evasion value for the combatant */
-  readonly evade: number;
-  /** The hit percentage value for the combatant */
-  readonly hitpercent: number;
+  readonly exp?: number;
 }
 
 /**
@@ -34,10 +21,10 @@ export interface CombatEncounter {
   /** array of enemies in this encounter */
   readonly enemies: Combatant[];
   /**
-   * Working copy of player-card members in the combat simulation. When the combat
-   * encounter is complete, the state of player-card members will be transferred back
-   * to the main game state player-card. This allows us to encapsulate combat encounters
-   * and potentially abort them without having to undo any actions on the game player-card.
+   * Working copy of party members in the combat simulation. When the combat
+   * encounter is complete, the state of party members will be transferred back
+   * to the main game state party. This allows us to encapsulate combat encounters
+   * and potentially abort them without having to undo any actions on the game party.
    */
   readonly party: Combatant[];
   /** message to display when combat begins */
@@ -57,9 +44,9 @@ export interface CombatEncounter {
 export interface CombatFixedEncounter extends CombatEncounter {
   /** The amount of gold to award the player after a victory */
   readonly gold?: number;
-  /** The experience to divide amongst the player-card after a victory */
+  /** The experience to divide amongst the party after a victory */
   readonly experience?: number;
-  /** Any items to award the player-card after a victory */
+  /** Any items to award the party after a victory */
   readonly items?: Item[];
 }
 
@@ -90,7 +77,7 @@ export interface CombatState {
 
 // Combat Behaviors
 
-/** Description of a combat attack */
+/** Description of a combat attackCombatant */
 export interface CombatAttack {
   damage: number;
   attacker: Being;

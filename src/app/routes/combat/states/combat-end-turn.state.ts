@@ -37,7 +37,7 @@ export class CombatEndTurnState extends CombatMachineState {
     while (machine.turnList.length > 0 && !machine.current) {
       machine.current = machine.turnList.shift();
       // Strip out defeated players.
-      if (machine.current && isDefeated(machine.current)) {
+      if (machine.current && isDefeated(machine.current.model)) {
         machine.current = null;
       }
     }
