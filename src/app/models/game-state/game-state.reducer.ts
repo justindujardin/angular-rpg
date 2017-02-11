@@ -1,4 +1,7 @@
-import {GameStateActions, GameStateActionTypes, GameStateTravelAction, GameStateMoveAction} from './game-state.actions';
+import {
+  GameStateActions, GameStateActionTypes, GameStateTravelAction, GameStateMoveAction,
+  GameStateSetKeyDataAction
+} from './game-state.actions';
 import {GameState} from './game-state.model';
 import * as Immutable from 'immutable';
 import {AppState} from '../../app.model';
@@ -31,6 +34,12 @@ export function gameStateReducer(state: GameState = initialState, action: GameSt
         position: travel.payload
       }).toJS();
     }
+    case GameStateActionTypes.SET_KEY_DATA:
+      const setKeyAction = action as GameStateSetKeyDataAction;
+      const keyData = Immutable.fromJS(state.keyData);
+      return Immutable.fromJS(state).merge({
+        keyData: keyData.set(setKeyAction.payload.key, setKeyAction.payload.value)
+      }).toJS();
     case GameStateActionTypes.ADD_GOLD: {
       const delta: number = action.payload;
       return Immutable.fromJS(state).merge({

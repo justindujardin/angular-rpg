@@ -3,7 +3,7 @@ import {TestBed, inject} from '@angular/core/testing';
 import {GameStateEffects} from './game-state.effects';
 import {GameState} from './game-state.model';
 import {Observable} from 'rxjs';
-import {GameStateService} from '../../services/game-state.service';
+import {GameStateService} from './game-state.service';
 import {GameStateLoadAction, GameStateActionTypes, GameStateTravelAction} from './game-state.actions';
 
 describe('GameState', () => {

@@ -30,14 +30,15 @@ export class CombatService {
         };
         return this.gameWorld.entities.createObject('GameCombatMap', inputs);
       })
-      .then((g: GameTileMap) => {
+      .then((g: any) => {
+        const map: GameTileMap = g;
         // Hide all layers that don't correspond to the current combat zone
-        g.getLayers().forEach((l) => {
+        map.getLayers().forEach((l) => {
           l.visible = (l.name === combatZone);
         });
-        g.dirtyLayers = true;
-        this._combatMap$.next(g);
-        return g;
+        map.dirtyLayers = true;
+        this._combatMap$.next(map);
+        return map;
       }));
   }
 

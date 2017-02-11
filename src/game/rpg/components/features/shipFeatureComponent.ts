@@ -23,6 +23,7 @@ import {GameWorld} from '../../../../app/services/gameWorld';
 import {Subscription} from 'rxjs';
 import {getKeyData} from '../../../../app/models/game-state/game-state.reducer';
 import {IPoint} from '../../../pow-core';
+import {GameStateSetKeyDataAction} from "../../../../app/models/game-state/game-state.actions";
 
 export class ShipFeatureComponent extends GameFeatureComponent {
   party: PlayerComponent;
@@ -58,8 +59,7 @@ export class ShipFeatureComponent extends GameFeatureComponent {
   enter(object: GameFeatureObject): boolean {
     // Must have a party component to board a ship.  Don't want buildings
     // and NPCs boarding ships... or do we?  [maniacal laugh]
-    this.party = <PlayerComponent>
-      object.findBehavior(PlayerComponent);
+    this.party = object.findBehavior(PlayerComponent) as PlayerComponent;
     if (!this.party) {
       return false;
     }
@@ -87,8 +87,8 @@ export class ShipFeatureComponent extends GameFeatureComponent {
 
     this._tickInterval = setInterval(() => {
       if (this.partyObject.point.equal(this.party.targetPoint) && !this.party.heading.isZero()) {
-        var from: Point = this.partyObject.point;
-        var to: Point = from.clone().add(this.party.heading);
+        const from: Point = this.partyObject.point;
+        const to: Point = from.clone().add(this.party.heading);
         if (!this.party.collideWithMap(from, 'shipPassable') && !this.party.collideWithMap(to, 'passable')) {
           this.disembark(from, to, this.party.heading.clone());
         }
@@ -108,10 +108,6 @@ export class ShipFeatureComponent extends GameFeatureComponent {
     this.host.enabled = true;
     this.partyObject = null;
     this.party = null;
-
-    var gameWorld: GameWorld = <GameWorld>this.host.world;
-    if (gameWorld && gameWorld.model) {
-      gameWorld.model.setKeyData('shipPosition', this.host.point);
-    }
+    this.host.world.store.dispatch(new GameStateSetKeyDataAction('shipPosition', this.host.point));
   }
 }

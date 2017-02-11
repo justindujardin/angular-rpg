@@ -27,7 +27,7 @@ export class CombatEffects {
   @Effect({dispatch: false}) loadingDoneIndicator$ = this.actions$
     .ofType(GameStateActionTypes.TRAVEL_SUCCESS, GameStateActionTypes.TRAVEL_FAIL)
     .distinctUntilChanged()
-    .do((action: CombatAttack): void => {
+    .do(() => {
       this.loadingService.loading = false;
     });
 

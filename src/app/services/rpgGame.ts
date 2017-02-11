@@ -90,6 +90,119 @@ export class RPGGame {
       });
   }
 
+
+  // awardLevelUp() {
+  //   var nextLevel: number = this.attributes.level + 1;
+  //   var newHP = this.getHPForLevel(nextLevel);
+  //   this.set({
+  //     level: nextLevel,
+  //     maxhp: newHP,
+  //     // REMOVE auto-heal when you level up.  I think I'd rather people die from time-to-time.
+  //     //hp: newHP,
+  //     strength: this.getStrengthForLevel(nextLevel),
+  //     agility: this.getAgilityForLevel(nextLevel),
+  //     vitality: this.getVitalityForLevel(nextLevel),
+  //     intelligence: this.getIntelligenceForLevel(nextLevel),
+  //
+  //     nextLevelExp: this.getXPForLevel(nextLevel + 1),
+  //     prevLevelExp: this.getXPForLevel(nextLevel)
+  //   });
+  //   this.trigger('levelUp', this);
+  // }
+
+  static create(type: string, name: string) {
+    const HERO_DEFAULTS = {
+      id: 'invalid-hero',
+      name: 'Hero',
+      icon: '',
+      combatSprite: '',
+      // type: HeroTypes.Warrior,
+      level: 1,
+      exp: 0,
+      nextLevelExp: 0,
+      prevLevelExp: 0,
+      hp: 0,
+      maxhp: 6,
+      description: '',
+      // Hidden attributes.
+      baseStrength: 0,
+      baseAgility: 0,
+      baseIntelligence: 0,
+      baseVitality: 0,
+      hitpercent: 5,
+      hitPercentPerLevel: 1,
+      evade: 0,
+      strength: 5,
+      vitality: 4,
+      intelligence: 1,
+      agility: 1,
+    };
+    var character: PartyMember = null;
+    switch (type) {
+      case 'warrior':
+        character = _.extend({}, HERO_DEFAULTS, {
+          type: type,
+          level: 0,
+          name: name,
+          icon: "warrior-male.png",
+          baseStrength: 10,
+          baseAgility: 2,
+          baseIntelligence: 1,
+          baseVitality: 7,
+          hitpercent: 10,
+          hitPercentPerLevel: 3
+        });
+        break;
+      case 'lifemage':
+        character = _.extend({}, HERO_DEFAULTS, {
+          type: type,
+          name: name,
+          level: 0,
+          icon: "magician-female.png",
+          baseStrength: 1,
+          baseAgility: 6,
+          baseIntelligence: 9,
+          baseVitality: 4,
+          hitpercent: 5,
+          hitPercentPerLevel: 1
+        });
+        break;
+      case 'ranger':
+        character = _.extend({}, HERO_DEFAULTS, {
+          type: type,
+          name: name,
+          level: 0,
+          icon: "ranger-female.png",
+          baseStrength: 3,
+          baseAgility: 10,
+          baseIntelligence: 2,
+          baseVitality: 5,
+          hitpercent: 7,
+          hitPercentPerLevel: 2
+        });
+        break;
+      case 'deathmage':
+        character = _.extend({}, HERO_DEFAULTS, {
+          type: type,
+          name: name,
+          level: 0,
+          icon: "magician-male.png",
+          baseStrength: 2,
+          baseAgility: 10,
+          baseIntelligence: 4,
+          baseVitality: 4,
+          hitpercent: 5,
+          hitPercentPerLevel: 2
+        });
+        break;
+      default:
+        throw new Error("Unknown character class: " + type);
+    }
+    // character.awardLevelUp();
+    // character.hp = character.maxhp;
+    return character;
+  }
+
   /**
    * Initialize the game and resolve a promise that indicates whether the game
    * is new or was loaded from save data.  Resolves with true if the game is new.
@@ -104,20 +217,20 @@ export class RPGGame {
         resolve(false);
       }
       else {
-        // this.world.model.addHero(HeroModel.create(HeroTypes.Warrior, "Warrior"));
-        // this.world.model.addHero(HeroModel.create(HeroTypes.Ranger, "Ranger"));
-        // this.world.model.addHero(HeroModel.create(HeroTypes.LifeMage, "Mage"));
-        const gameData = _.pick(this.world.model.toJSON(), ['party', 'gold']);
+        // const gameData = _.pick(this.world.model.toJSON(), ['party', 'gold']);
         const initialState: GameState = _.extend({}, {
-          party: [],
+          party: [
+            RPGGame.create('warrior','Warrior'),
+            RPGGame.create('ranger','Ranger'),
+            RPGGame.create('lifemage','Mage'),
+          ],
           keyData: {},
           gold: 0,
           combatZone: '',
           map: 'town',
           position: {x: 12, y: 5}
-        }, gameData);
+        });
         this.store.dispatch(new GameStateLoadAction(initialState));
-
         resolve(true);
       }
     });

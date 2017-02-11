@@ -73,7 +73,6 @@ export class WorldTemple implements OnInit, OnDestroy {
     this._cost$.next(value);
   }
 
-  @Input() model: GameState;
   @Input() party: PartyMember[];
 
 
@@ -87,8 +86,6 @@ export class WorldTemple implements OnInit, OnDestroy {
   constructor(public game: RPGGame,
               public store: Store<AppState>,
               public notify: NotificationService) {
-    this.model = game.world.model;
-    this.party = this.model.party;
   }
 
   private _onRest$ = new Subject<void>();
@@ -107,11 +104,11 @@ export class WorldTemple implements OnInit, OnDestroy {
           this.notify.show("You don't have enough money");
         }
         else if (alreadyHealed) {
-          this.notify.show("Keep your monies.\nYour player-card is already fully healed.");
+          this.notify.show("Keep your money.\nYour party is already fully healed.");
         }
         else {
           this.store.dispatch(new GameStateHealPartyAction(cost));
-          this.notify.show("Your player-card has been healed! \nYou have (" + (gameState.gold - cost) + ") monies.", null, 2500);
+          this.notify.show("Your party has been healed! \nYou have (" + (gameState.gold - cost) + ") monies.", null, 2500);
         }
         _.defer(() => {
           this.onClose.next({});

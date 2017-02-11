@@ -8,6 +8,7 @@ export const GameStateActionTypes = {
   LOAD: type('rpg/state/load'),
   LOAD_SUCCESS: type('rpg/state/load-success'),
   LOAD_FAIL: type('rpg/state/load-fail'),
+  SET_KEY_DATA: type('rpg/state/set-key-data'),
   TRAVEL: type('rpg/state/travel'),
   TRAVEL_SUCCESS: type('rpg/state/travel-success'),
   TRAVEL_FAIL: type('rpg/state/travel-fail'),
@@ -38,6 +39,23 @@ export class GameStateLoadFailAction implements Action {
   type = GameStateActionTypes.LOAD_FAIL;
 
   constructor(public payload: any) {
+  }
+}
+
+//
+// key/value data for map features and such
+//
+export class GameStateSetKeyDataAction implements Action {
+  type = GameStateActionTypes.SET_KEY_DATA;
+  payload: {
+    key: string;
+    value: any;
+  };
+
+  constructor(key: string, value: any) {
+    this.payload = {
+      key, value
+    };
   }
 }
 

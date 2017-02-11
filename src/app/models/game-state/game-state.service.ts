@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Observable, ReplaySubject} from 'rxjs/Rx';
-import {ResourceLoader} from '../../game/pow-core/resourceLoader';
-import {TiledTMXResource} from '../../game/pow-core/resources/tiled/tiledTmx';
-import {getMapUrl} from '../../game/pow2/core/api';
-import {GameWorld} from './gameWorld';
-import {GameTileMap} from '../../game/gameTileMap';
-import {GameState} from '../models/game-state/game-state.model';
+import {ResourceLoader} from '../../../game/pow-core/resourceLoader';
+import {TiledTMXResource} from '../../../game/pow-core/resources/tiled/tiledTmx';
+import {getMapUrl} from '../../../game/pow2/core/api';
+import {GameWorld} from '../../services/gameWorld';
+import {GameTileMap} from '../../../game/gameTileMap';
+import {GameState} from './game-state.model';
 
 @Injectable()
 export class GameStateService {
@@ -32,12 +32,12 @@ export class GameStateService {
         };
         return this.gameWorld.entities.createObject('GameMapObject', inputs);
       })
-      .then((g: GameTileMap) => {
+      .then((g: any) => {
         if (!g) {
           return Promise.reject('failed to load map: ' + mapUrl);
         }
         this._worldMap$.next(g);
-        return Promise.resolve(g);
+        return g;
       }));
   }
 

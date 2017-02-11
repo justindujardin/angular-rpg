@@ -23,7 +23,7 @@ import {SpriteRender} from './spriteRender';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {Visibility} from './visibility';
-import {GameStateService} from './game-state.service';
+import {GameStateService} from '../models/game-state/game-state.service';
 import {CombatService} from './combat.service';
 export * from './animate';
 export * from '../components/notification/notification.service';

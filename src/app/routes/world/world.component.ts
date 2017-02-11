@@ -30,14 +30,17 @@ import {TileMap} from "../../../game/pow2/tile/tileMap";
 import {PathComponent} from "../../../game/pow2/tile/components/pathComponent";
 import {PowInput, NamedMouseElement} from "../../../game/pow2/core/input";
 import {GameEntityObject} from "../../../game/rpg/objects/gameEntityObject";
-import {GameStateTravelAction} from "../../models/game-state/game-state.actions";
+import {GameStateTravelAction, GameStateAddGoldAction} from "../../models/game-state/game-state.actions";
 import {TileMapView} from "../../../game/pow2/tile/tileMapView";
 import {TileObjectRenderer} from "../../../game/pow2/tile/render/tileObjectRenderer";
 import {Actions} from "@ngrx/effects";
-import {GameStateService} from "../../services/game-state.service";
+import {GameStateService} from "../../models/game-state/game-state.service";
 import {LoadingService} from "../../components/loading/loading.service";
 import {getParty} from "../../models/game-state/game-state.reducer";
 import {PartyMember} from "../../models/party/party.model";
+import {TreasureFeatureComponent} from "../../../game/rpg/components/features/treasureFeatureComponent";
+import {ItemAddAction} from "../../models/item/item.actions";
+import {Item} from "../../models/item/item.model";
 
 @Component({
   selector: 'world',
@@ -113,7 +116,6 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
   private _subscriptions: Subscription[] = [];
 
   constructor(public game: RPGGame,
-              public actions$: Actions,
               public notify: NotificationService,
               public loadingService: LoadingService,
               public store: Store<AppState>,
@@ -183,18 +185,18 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
       this.store.dispatch(new GameStateTravelAction(data.map, data.target));
     }, this);
 
-    scene.on('TreasureFeatureComponent:entered', (feature: any) => {
+    scene.on('TreasureFeatureComponent:entered', (feature: TreasureFeatureComponent) => {
       if (typeof feature.gold !== 'undefined') {
-        this.game.world.model.addGold(feature.gold);
+        this.store.dispatch(new GameStateAddGoldAction(feature.gold));
         this.notify.show("You found " + feature.gold + " gold!", null, 0);
       }
       if (typeof feature.item === 'string') {
-        const item = this.game.world.itemModelFromId(feature.item);
+        const item = this.game.world.itemModelFromId<Item>(feature.item);
         if (!item) {
           return;
         }
-        this.game.world.model.inventory.push(item);
-        this.notify.show("You found " + item.get('name') + "!", null, 0);
+        this.store.dispatch(new ItemAddAction(item));
+        this.notify.show(`You found ${item.name}!`, null, 0);
       }
     }, this);
 

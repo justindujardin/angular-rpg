@@ -94,8 +94,8 @@ export class Behavior extends Events implements IBehavior {
   }
 
   toString(): string {
-    var ctor: any = this.constructor;
-    var ctorString: string = ctor ? ctor.toString().match(/function (.+?)\(/) : null;
+    const ctor: any = this.constructor;
+    const ctorString: string = ctor ? ctor.toString().match(/function (.+?)\(/) : null;
     if (ctor && ctor.name) {
       return ctor.name;
     }

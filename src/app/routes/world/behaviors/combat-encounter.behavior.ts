@@ -5,6 +5,9 @@ import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 import {PlayerComponent} from '../../../../game/rpg/components/playerComponent';
 import {Point} from '../../../../game/pow-core/point';
 import {IZoneMatch} from '../../../../game/rpg/game';
+import {getKeyData} from "../../../models/game-state/game-state.reducer";
+import {Subscription} from "rxjs";
+import {GameStateSetKeyDataAction} from "../../../models/game-state/game-state.actions";
 
 /**
  * A component that when added to a GameTileMap listens
@@ -22,14 +25,15 @@ export class CombatEncounterBehavior extends SceneComponent {
 
   connectBehavior(): boolean {
     const world = GameWorld.get();
-    if (!world || !world.model || !super.connectBehavior() || !(this.host instanceof GameTileMap)) {
+    if (!world || !super.connectBehavior() || !(this.host instanceof GameTileMap)) {
       return false;
     }
-
-    this.battleCounter = world.model.getKeyData('battleCounter');
-    if (typeof this.battleCounter === 'undefined') {
-      this.resetBattleCounter();
-    }
+    // Get the initial battle counter value
+    getKeyData(world.store, 'battleCounter').take(1).subscribe((p: number) => {
+      if (p === undefined) {
+        this.resetBattleCounter();
+      }
+    });
     return true;
   }
 
@@ -96,7 +100,7 @@ export class CombatEncounterBehavior extends SceneComponent {
 
     console.warn('HACK in triggerCombat - static get GameWorld... need injection strategy');
     const world = GameWorld.get();
-    world.randomEncounter(zone, ()=> {
+    world.randomEncounter(zone, () => {
       this.resetBattleCounter();
       this.listenMoves();
     });
@@ -107,7 +111,7 @@ export class CombatEncounterBehavior extends SceneComponent {
     this.battleCounter = value;
     const world = GameWorld.get();
     if (world) {
-      world.model.setKeyData('battleCounter', this.battleCounter);
+      world.store.dispatch(new GameStateSetKeyDataAction('battleCounter', this.battleCounter));
     }
   }
 }

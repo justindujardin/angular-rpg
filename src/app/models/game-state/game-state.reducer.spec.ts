@@ -5,7 +5,7 @@ import {
   GameStateHealPartyAction,
   GameStateTravelAction,
   GameStateMoveAction,
-  GameStateAddGoldAction
+  GameStateAddGoldAction, GameStateSetKeyDataAction
 } from './game-state.actions';
 
 function defaultState(overrides?: any): GameState {
@@ -59,6 +59,29 @@ describe('GameState', () => {
         expect(actual.gold).toEqual(50);
       });
     });
+
+    describe('GameStateSetKeyDataAction', () => {
+      it('should set a new key/value pair if none exist', () => {
+        const state = defaultState();
+        const newKey = 'testKey';
+        const newValue = true;
+        expect(state.keyData[newKey]).toBeUndefined();
+        const newState = gameStateReducer(state, new GameStateSetKeyDataAction(newKey, newValue));
+        expect(newState.keyData[newKey]).toBe(newValue);
+      });
+      it('should update an existing keys value if it already exists', () => {
+        const state = defaultState({
+          keyData: {
+            testKey: true
+          }
+        });
+        const keyName = 'testKey';
+        expect(state.keyData[keyName]).toBe(true);
+        const newState = gameStateReducer(state, new GameStateSetKeyDataAction(keyName, false));
+        expect(newState.keyData[keyName]).toBe(false);
+      });
+    });
+
 
     describe('GameStateTravelAction', () => {
       it('should update the current world map', () => {

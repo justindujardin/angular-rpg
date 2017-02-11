@@ -10,7 +10,7 @@ import {
 } from './game-state.actions';
 import {Effect, Actions} from '@ngrx/effects';
 import {GameState} from './game-state.model';
-import {GameStateService} from '../../services/game-state.service';
+import {GameStateService} from './game-state.service';
 import {Action} from '@ngrx/store';
 
 @Injectable()
