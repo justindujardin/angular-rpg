@@ -43,6 +43,7 @@ export interface IEvents {
 //
 import * as _ from 'underscore';
 
+
 export class Events implements IEvents {
 
   private _events: any;

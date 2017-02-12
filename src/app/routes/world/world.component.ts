@@ -36,7 +36,7 @@ import {TileObjectRenderer} from '../../../game/pow2/tile/render/tileObjectRende
 import {GameStateService} from '../../models/game-state/game-state.service';
 import {LoadingService} from '../../components/loading/loading.service';
 import {getParty} from '../../models/game-state/game-state.reducer';
-import {PartyMember} from '../../models/party/party.model';
+import {PartyMember} from '../../models/entity/entity.model';
 import {TreasureFeatureComponent} from '../../../game/rpg/components/features/treasureFeatureComponent';
 import {ItemAddAction} from '../../models/item/item.actions';
 import {Item} from '../../models/item/item.model';

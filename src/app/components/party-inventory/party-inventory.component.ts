@@ -23,7 +23,7 @@ import {GameStateModel} from '../../../game/rpg/models/gameStateModel';
 import {RPGGame} from '../../services/rpgGame';
 import {NotificationService} from '../notification/notification.service';
 import {GameState} from '../../models/game-state/game-state.model';
-import {PartyMember} from '../../models/party/party.model';
+import {PartyMember} from '../../models/entity/entity.model';
 import {Item} from '../../models/item/item.model';
 
 @Component({
@@ -61,7 +61,7 @@ export class PartyInventoryComponent {
   }
 
   equipItem(item: Item) {
-    console.warn('party-inventory: implement equip');
+    console.warn('entity-inventory: implement equip');
     // var hero: PartyMember = this.character;
     // if (!this.model.inventory || !item || !hero) {
     //   return;
@@ -98,7 +98,7 @@ export class PartyInventoryComponent {
   }
 
   unequipItem(item: Item) {
-    console.warn('party-inventory: implement unequip');
+    console.warn('entity-inventory: implement unequip');
     // var hero: HeroModel = this.character;
     // if (!this.model.inventory || !item || !hero) {
     //   return;

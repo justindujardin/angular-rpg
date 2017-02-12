@@ -177,7 +177,7 @@ export class GameWorld extends World {
       enemies: encounter.enemies.map(toCombatant),
       zone: zoneInfo.target,
       message: encounter.message,
-      party: [] // TODO: party
+      party: [] // TODO: entity
     };
     this.store.dispatch(new CombatFixedEncounterAction(payload));
   }

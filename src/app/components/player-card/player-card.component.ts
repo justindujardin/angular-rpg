@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {RPGGame} from '../../services/index';
 import {HeroModel} from '../../../game/rpg/models/all';
-import {PartyMember} from '../../models/party/party.model';
+import {PartyMember} from '../../models/entity/entity.model';
 
 @Component({
   selector: 'player-card',

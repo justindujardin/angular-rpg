@@ -16,7 +16,7 @@ import {Store} from '@ngrx/store';
 import {CombatAttackAction} from '../../../../models/combat/combat.actions';
 import {CombatAttack} from '../../../../models/combat/combat.model';
 import * as rules from '../../../../models/combat/combat.api';
-import {PartyMember} from '../../../../models/party/party.model';
+import {PartyMember} from '../../../../models/entity/entity.model';
 /**
  * Attack another entity in combat.
  */

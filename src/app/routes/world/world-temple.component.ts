@@ -35,7 +35,7 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../../app.model';
 import {GameState} from '../../models/game-state/game-state.model';
 import {GameStateHealPartyAction} from '../../models/game-state/game-state.actions';
-import {PartyMember} from '../../models/party/party.model';
+import {PartyMember} from '../../models/entity/entity.model';
 
 @Component({
   selector: 'world-temple',
@@ -103,11 +103,11 @@ export class WorldTempleComponent implements OnInit, OnDestroy {
           this.notify.show('You don\'t have enough money');
         }
         else if (alreadyHealed) {
-          this.notify.show('Keep your money.\nYour party is already fully healed.');
+          this.notify.show('Keep your money.\nYour entity is already fully healed.');
         }
         else {
           this.store.dispatch(new GameStateHealPartyAction(cost));
-          const msg = 'Your party has been healed! \nYou have (' + (gameState.gold - cost) + ') monies.';
+          const msg = 'Your entity has been healed! \nYou have (' + (gameState.gold - cost) + ') monies.';
           this.notify.show(msg, null, 2500);
         }
         _.defer(() => {

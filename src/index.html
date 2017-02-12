@@ -22,6 +22,7 @@
     html, body {
       background-color: black;
     }
+
     @-webkit-keyframes scaleUp {
       from {
         opacity: 0;
@@ -42,11 +43,13 @@
         transform: scale(.8);
       }
     }
+
     .pt-page-scaleUp {
       -webkit-animation: scaleUp .7s ease both;
       -moz-animation: scaleUp .7s ease both;
       animation: scaleUp .7s ease both;
     }
+
     /* Stroke Text Effect */
     @font-face {
       font-family: 'GraphicPixel';
@@ -155,7 +158,7 @@
   </div>
 </app>
 
-  <% if (htmlWebpackPlugin.options.metadata.isDevServer && htmlWebpackPlugin.options.metadata.HMR !== true) { %>
+<% if (htmlWebpackPlugin.options.metadata.isDevServer && htmlWebpackPlugin.options.metadata.HMR !== true) { %>
 <!-- Webpack Dev Server reload -->
 <script src="/webpack-dev-server.js"></script>
 <% } %>

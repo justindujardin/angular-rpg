@@ -18,15 +18,6 @@ export function itemReducer(state: ItemState = initialState, action: Action): It
       return Immutable.fromJS({inventory: items}).toJS();
     }
     case ItemActionTypes.REMOVE: {
-
-      //
-      //
-      //
-      // TODO: Selling items at store is busted.  Test this up.
-      //
-      //
-      //
-
       // Drop just the first matching item with the given id
       let found = false;
       const items = Immutable.List(state.inventory).filter((i: Item) => {

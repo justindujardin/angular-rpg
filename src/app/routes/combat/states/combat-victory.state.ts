@@ -20,7 +20,7 @@ import {HeroModel} from '../../../../game/rpg/models/heroModel';
 import {ItemModel} from '../../../../game/rpg/models/itemModel';
 import {CombatStateMachineComponent} from './combat.machine';
 import {Component} from '@angular/core';
-import {PartyMember} from '../../../models/party/party.model';
+import {PartyMember} from '../../../models/entity/entity.model';
 import {Item} from '../../../models/item/item.model';
 import {isDefeated} from '../../../models/combat/combat.api';
 
@@ -108,7 +108,7 @@ export class CombatVictoryStateComponent extends CombatMachineState {
     //
     // const summary: CombatVictorySummary = {
     //   state: this,
-    //   party: machine.party,
+    //   entity: machine.entity,
     //   enemies: machine.enemies,
     //   levels: leveledHeros,
     //   items: itemModels,

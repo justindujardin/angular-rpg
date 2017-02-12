@@ -1,5 +1,5 @@
 import * as _ from 'underscore';
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {TickedComponent} from '../../../../game/pow2/scene/components/tickedComponent';
 import {Headings} from '../../../../game/pow2/game/components/playerRenderComponent';
 import {AnimatedBehaviorComponent, IAnimationConfig} from '../../../behaviors/animated.behavior';
@@ -219,7 +219,7 @@ export class CombatPlayerRenderBehaviorComponent extends TickedComponent {
           frame = altFrame ? StateFrames.STRIKE : StateFrames.SWING;
           break;
         default:
-          // Do nothing
+        // Do nothing
       }
       this.host.frame = this._renderFrame = frame;
     }

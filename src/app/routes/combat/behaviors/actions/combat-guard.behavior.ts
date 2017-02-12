@@ -10,7 +10,7 @@
 // import {CombatActionBehavior} from '../combat-action.behavior';
 // import {Component, Input} from '@angular/core';
 // import {CombatComponent} from '../../combat.component';
-// import {PartyMember} from "../../../../models/party/party.model";
+// import {PartyMember} from "../../../../models/entity/entity.model";
 //
 // @Component({
 //   selector: 'combat-guard-behavior',

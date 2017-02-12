@@ -5,19 +5,21 @@ import {TileObject} from '../../game/pow2/tile/tileObject';
 import {Component} from '@angular/core';
 
 export interface IAnimationConfig {
-  // It may seem weird to require name, but it's to enforce
-  // a human-readable naming scheme for debugging win.
+  /**
+   * It may seem weird to require name, but it's to enforce
+   * a human-readable naming scheme for debugging win.
+   */
   name: string;
-  // The entire duration of this animation
+  /** The entire duration of this animation */
   duration: number;
-  // Optional number of times to the repeat frames during the duration of the animation.
+  /** Optional number of times to the repeat frames during the duration of the animation. */
   repeats?: number;
-  // Optional frames to interpolate between (will use all frames if none are specified)
+  /** Optional frames to interpolate between (will use all frames if none are specified) */
   frames?: any[];
-  // Move translation
+  /** Move translation */
   move?: Point;
 
-  // callback
+  /** callback */
   callback?: (config: IAnimationConfig) => void;
 }
 

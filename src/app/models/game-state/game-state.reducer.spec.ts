@@ -35,7 +35,7 @@ describe('GameState', () => {
     });
 
     describe('GameStateHealPartyAction', () => {
-      it('should restore all party members hp to maxhp', () => {
+      it('should restore all entity members hp to maxhp', () => {
         const state = defaultState({
           party: [
             {hp: 0, maxhp: 25},

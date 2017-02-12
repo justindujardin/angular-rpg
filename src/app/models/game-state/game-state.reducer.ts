@@ -9,7 +9,7 @@ import {GameState} from './game-state.model';
 import * as Immutable from 'immutable';
 import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
-import {PartyMember} from '../party/party.model';
+import {PartyMember} from '../entity/entity.model';
 
 const initialState: GameState = {
   party: [],

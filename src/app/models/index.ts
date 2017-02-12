@@ -36,5 +36,4 @@ export function rootReducer(state: any, action: any) {
   }
 }
 
-export const MODEL_PROVIDERS: any[] = [
-];
+export const MODEL_PROVIDERS: any[] = [];

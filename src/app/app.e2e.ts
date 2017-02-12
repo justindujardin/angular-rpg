@@ -8,7 +8,7 @@ describe('AppComponent', () => {
 
   it('should have a title', () => {
     let subject = browser.getTitle();
-    let result  = 'Pow2';
+    let result = 'Pow2';
     expect(subject).toEqual(result);
   });
 

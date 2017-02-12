@@ -32,7 +32,7 @@ export class SpriteComponent extends SceneComponent {
 
   // Game Sprite support.
   // ----------------------------------------------------------------------
-  // The sprite name, e.g. "party.png" or "knight.png"
+  // The sprite name, e.g. "entity.png" or "knight.png"
   icon: string;
   // The sprite sheet source information
   meta: any;

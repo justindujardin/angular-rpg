@@ -22,7 +22,8 @@ import {AppState} from './app.model';
 })
 export class AppModule {
   constructor(public appRef: ApplicationRef,
-              private _store: Store<AppState>) { }
+              private _store: Store<AppState>) {
+  }
 
   hmrOnInit(store) {
     if (!store || !store.rootState) {
@@ -37,10 +38,13 @@ export class AppModule {
       });
     }
 
-    if ('restoreInputValues' in store) { store.restoreInputValues(); }
+    if ('restoreInputValues' in store) {
+      store.restoreInputValues();
+    }
     this.appRef.tick();
     Object.keys(store).forEach((prop) => delete store[prop]);
   }
+
   hmrOnDestroy(store) {
     const cmpLocation = this.appRef.components.map((cmp) => cmp.location.nativeElement);
     this._store.take(1).subscribe((s) => store.rootState = s);
@@ -48,6 +52,7 @@ export class AppModule {
     store.restoreInputValues = createInputTransfer();
     removeNgStyles();
   }
+
   hmrAfterDestroy(store) {
     store.disposeOldHosts();
     delete store.disposeOldHosts;

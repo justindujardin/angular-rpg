@@ -1,6 +1,12 @@
 import * as _ from 'underscore';
 import {
-  Component, ElementRef, Input, AfterViewInit, ViewChild, ViewChildren, QueryList,
+  Component,
+  ElementRef,
+  Input,
+  AfterViewInit,
+  ViewChild,
+  ViewChildren,
+  QueryList,
   OnDestroy
 } from '@angular/core';
 import {IProcessObject} from '../../../game/pow-core/time';
@@ -38,7 +44,7 @@ import {CombatEnemyComponent} from './combat-enemy.entity';
 import {CombatPlayerComponent} from './combat-player.entity';
 import {getParty} from '../../models/game-state/game-state.reducer';
 import {Item} from '../../models/item/item.model';
-import {PartyMember} from '../../models/party/party.model';
+import {PartyMember} from '../../models/entity/entity.model';
 
 /**
  * Describe a selectable menu item for a user input in combat.
@@ -344,7 +350,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
     });
     this.machine.on('combat:defeat', (data: CombatDefeatSummary) => {
       const done = this.machine.notifyWait();
-      this.notify.show('Your party was defeated...', () => {
+      this.notify.show('Your entity was defeated...', () => {
         this.game.initGame().then(done);
       }, 0);
     });

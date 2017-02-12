@@ -18,7 +18,7 @@ import {CombatAttackBehaviorComponent} from './behaviors/actions/combat-attack.b
 // import {CombatRunBehavior} from './behaviors/actions/combat-run.behavior';
 // import {CombatGuardBehavior} from './behaviors/actions/combat-guard.behavior';
 import {CombatComponent} from './combat.component';
-import {PartyMember} from '../../models/party/party.model';
+import {PartyMember} from '../../models/entity/entity.model';
 
 @Component({
   selector: 'combat-player',

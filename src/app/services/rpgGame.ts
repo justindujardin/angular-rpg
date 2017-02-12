@@ -26,7 +26,7 @@ import {AppState} from '../app.model';
 import {Point} from '../../game/pow-core';
 import {GameState} from '../models/game-state/game-state.model';
 import * as _ from 'underscore';
-import {PartyMember} from '../models/party/party.model';
+import {PartyMember} from '../models/entity/entity.model';
 
 @Injectable()
 export class RPGGame {
@@ -56,9 +56,9 @@ export class RPGGame {
 
   saveGame() {
     throw new Error('to reimplement with redux store');
-    // const party = <PlayerComponent>this.world.scene.componentByType(PlayerComponent);
-    // if (party) {
-    //   this.world.model.setKeyData('playerPosition', party.host.point);
+    // const entity = <PlayerComponent>this.world.scene.componentByType(PlayerComponent);
+    // if (entity) {
+    //   this.world.model.setKeyData('playerPosition', entity.host.point);
     // }
     // this.world.model.setKeyData('playerMap', this.partyMapName);
     // const data = JSON.stringify(this.world.model.toJSON());
@@ -215,7 +215,7 @@ export class RPGGame {
         resolve(false);
       }
       else {
-        // const gameData = _.pick(this.world.model.toJSON(), ['party', 'gold']);
+        // const gameData = _.pick(this.world.model.toJSON(), ['entity', 'gold']);
         const initialState: GameState = _.extend({}, {
           party: [
             RPGGame.create('warrior', 'Warrior'),

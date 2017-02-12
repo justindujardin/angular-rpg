@@ -1,6 +1,5 @@
 @import './variables';
 
-
 @mixin extrude-stroke-text($width:2px,$lightColor:rgba(255, 255, 255, 0.2),$shadowColor:rgba(0, 0, 0, 0.1)) {
   text-shadow: $width $width 0 $shadowColor,
   -$width -$width 0 $lightColor,

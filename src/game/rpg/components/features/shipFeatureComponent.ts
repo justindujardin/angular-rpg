@@ -56,7 +56,7 @@ export class ShipFeatureComponent extends GameFeatureComponent {
   }
 
   enter(object: GameFeatureObject): boolean {
-    // Must have a party component to board a ship.  Don't want buildings
+    // Must have a entity component to board a ship.  Don't want buildings
     // and NPCs boarding ships... or do we?  [maniacal laugh]
     this.party = object.findBehavior(PlayerComponent) as PlayerComponent;
     if (!this.party) {
