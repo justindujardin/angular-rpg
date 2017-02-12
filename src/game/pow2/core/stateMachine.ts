@@ -13,8 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
-
 // State Machine Interfaces
 // -------------------------------------------------------------------------
 import * as _ from 'underscore';
@@ -46,8 +44,8 @@ export class StateMachine extends Events implements IStateMachine {
   static DEBUG_STATES: boolean = true;
 
   static Events: any = {
-    ENTER: "enter",
-    EXIT: "exit"
+    ENTER: 'enter',
+    EXIT: 'exit'
   };
 
   defaultState: string = null;
@@ -56,7 +54,6 @@ export class StateMachine extends Events implements IStateMachine {
   private _previousState: IState = null;
   private _newState: boolean = false;
   private _pendingState: IState = null;
-
 
   update(data?: any) {
     this._newState = false;
@@ -95,22 +92,22 @@ export class StateMachine extends Events implements IStateMachine {
   setCurrentState(state: IState): boolean;
   setCurrentState(state: string): boolean;
   setCurrentState(newState: any): boolean {
-    var state = typeof newState === 'string' ? this.getState(newState) : <IState>newState;
+    let state = typeof newState === 'string' ? this.getState(newState) : <IState> newState;
     if (!state) {
-      console.error("STATE NOT FOUND: " + newState);
+      console.error(`STATE NOT FOUND: ${newState}`);
       return false;
     }
     if (this._pendingState !== null && this._pendingState.name !== state.name) {
-      console.log("Overwriting pending state (" + this._pendingState.name + ") with (" + state.name + ")");
+      console.log(`Overwriting pending state (${this._pendingState.name}) with (${state.name})`);
       this._pendingState = state;
     }
     else if (!this._pendingState) {
       this._pendingState = state;
-      _.defer(()=> {
+      _.defer(() => {
         state = this._pendingState;
         this._pendingState = null;
         if (!this._setCurrentState(state)) {
-          console.error("Failed to set state: " + state.name);
+          console.error(`Failed to set state: ${state.name}`);
         }
       });
     }
@@ -121,10 +118,10 @@ export class StateMachine extends Events implements IStateMachine {
     if (!state) {
       return false;
     }
-    var oldState: IState = this._currentState;
+    const oldState: IState = this._currentState;
     // Already in the desired state.
     if (this._currentState && state.name === this._currentState.name) {
-      console.warn(this._currentState.name + ": Attempting to set current state to already active state");
+      console.warn(`${this._currentState.name}: Attempting to set current state to already active state`);
       return true;
     }
     this._newState = true;
@@ -132,7 +129,7 @@ export class StateMachine extends Events implements IStateMachine {
     this._currentState = state;
     // DEBUG:
     if (StateMachine.DEBUG_STATES) {
-      console.log("STATE: " + (oldState ? oldState.name : "NULL") + " -> " + this._currentState.name);
+      console.log(`STATE: ${oldState ? oldState.name : 'NULL'} -> ${this._currentState.name}`);
     }
     if (oldState) {
       this.trigger(StateMachine.Events.EXIT, oldState, state);
@@ -148,10 +145,9 @@ export class StateMachine extends Events implements IStateMachine {
   }
 
   getState(name: string): IState {
-    var state = _.find(this.states, (s: IState) => {
+    return _.find(this.states, (s: IState) => {
       return s.name === name;
     });
-    return state;
   }
 
   private _asyncProcessing: number = 0;
@@ -161,28 +157,32 @@ export class StateMachine extends Events implements IStateMachine {
    * Notify the game UI of an event, and wait for it to be handled,
    * if there is a handler.
    */
-  notify(msg: string, data: any, callback?: ()=>any) {
+  notify(msg: string, data: any, callback?: () => any) {
     if (this._asyncProcessing > 0) {
-      throw new Error("TODO: StateMachine cannot handle multiple async UI waits");
+      throw new Error('TODO: StateMachine cannot handle multiple async UI waits');
     }
 
     this._asyncCurrentCallback = () => {
       this._asyncProcessing--;
       if (this._asyncProcessing <= 0) {
-        callback && callback();
+        if (callback) {
+          callback();
+        }
         this._asyncProcessing = 0;
       }
     };
     this._asyncProcessing = 0;
     this.trigger(msg, data);
     if (this._asyncProcessing === 0) {
-      callback && callback();
+      if (callback) {
+        callback();
+      }
     }
   }
 
   notifyWait(): IResumeCallback {
     if (!this._asyncCurrentCallback) {
-      throw new Error("No valid async callback set!  Perhaps you called this outside of a notify event handler?");
+      throw new Error('No valid async callback set!  Perhaps you called this outside of a notify event handler?');
     }
     this._asyncProcessing++;
     return this._asyncCurrentCallback;

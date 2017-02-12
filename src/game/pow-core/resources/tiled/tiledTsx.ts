@@ -13,13 +13,10 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as tiled from './tiled';
 import {XMLResource} from '../xml';
 import {ImageResource} from '../image';
-
 import * as _ from 'underscore';
-
 
 export class TilesetTile {
   id: number;
@@ -48,30 +45,30 @@ export class TiledTSXResource extends XMLResource {
   load(data?: any): Promise<TiledTSXResource> {
     this.data = data || this.data;
     return new Promise<TiledTSXResource>((resolve, reject) => {
-      var tileSet = this.getRootNode('tileset');
+      const tileSet = this.getRootNode('tileset');
       this.name = this.getElAttribute(tileSet, 'name');
-      this.tilewidth = parseInt(this.getElAttribute(tileSet, 'tilewidth'));
-      this.tileheight = parseInt(this.getElAttribute(tileSet, 'tileheight'));
-      var relativePath: string = this.url ? this.url.substr(0, this.url.lastIndexOf('/') + 1) : "";
+      this.tilewidth = parseInt(this.getElAttribute(tileSet, 'tilewidth'), 10);
+      this.tileheight = parseInt(this.getElAttribute(tileSet, 'tileheight'), 10);
+      const relativePath: string = this.url ? this.url.substr(0, this.url.lastIndexOf('/') + 1) : '';
 
       // Load tiles and custom properties.
-      var tiles = this.getChildren(tileSet, 'tile');
+      const tiles = this.getChildren(tileSet, 'tile');
       _.each(tiles, (ts: any) => {
-        var id: number = parseInt(this.getElAttribute(ts, 'id'));
-        var tile: TilesetTile = new TilesetTile(id);
+        const id: number = parseInt(this.getElAttribute(ts, 'id'), 10);
+        const tile: TilesetTile = new TilesetTile(id);
         tile.properties = tiled.readTiledProperties(ts);
         this.tiles.push(tile);
       });
 
-      var image: any = this.getChild(tileSet, 'img');
+      const image: any = this.getChild(tileSet, 'img');
       if (!image || image.length === 0) {
         return resolve(this);
       }
-      var source = this.getElAttribute(image, 'source');
-      this.imageWidth = parseInt(this.getElAttribute(image, 'width') || "0");
-      this.imageHeight = parseInt(this.getElAttribute(image, 'height') || "0");
+      const source = this.getElAttribute(image, 'source');
+      this.imageWidth = parseInt(this.getElAttribute(image, 'width') || '0', 10);
+      this.imageHeight = parseInt(this.getElAttribute(image, 'height') || '0', 10);
       this.imageUrl = tiled.compactUrl(this.relativeTo ? this.relativeTo : relativePath, source);
-      console.log("Tileset source: " + this.imageUrl);
+      console.log(`Tileset source: ${this.imageUrl}`);
 
       new ImageResource(this.imageUrl)
         .fetch()
@@ -82,11 +79,11 @@ export class TiledTSXResource extends XMLResource {
 
           // Finally, build an expanded tileset from the known image w/h and the
           // tiles with properties that are specified in the form of <tile> objects.
-          var xUnits = this.imageWidth / this.tilewidth;
-          var yUnits = this.imageHeight / this.tileheight;
-          var tileCount = xUnits * yUnits;
-          var tileLookup = new Array(tileCount);
-          for (var i = 0; i < tileCount; i++) {
+          const xUnits = this.imageWidth / this.tilewidth;
+          const yUnits = this.imageHeight / this.tileheight;
+          const tileCount = xUnits * yUnits;
+          const tileLookup = new Array(tileCount);
+          for (let i = 0; i < tileCount; i++) {
             tileLookup[i] = false;
           }
           _.each(this.tiles, (tile) => {
@@ -97,7 +94,7 @@ export class TiledTSXResource extends XMLResource {
           resolve(this);
         })
         .catch((e) => {
-          reject("Failed to load required TileMap image: " + source + " - " + e);
+          reject(`Failed to load required TileMap image: ${source} - ${e}`);
         });
     });
   }
@@ -109,10 +106,10 @@ export class TiledTSXResource extends XMLResource {
   }
 
   getTileMeta(gidOrIndex: number): tiled.ITileInstanceMeta {
-    var index: number = this.firstgid !== -1 ? (gidOrIndex - (this.firstgid)) : gidOrIndex;
-    var tilesX = this.imageWidth / this.tilewidth;
-    var x = index % tilesX;
-    var y = Math.floor((index - x) / tilesX);
+    const index: number = this.firstgid !== -1 ? (gidOrIndex - (this.firstgid)) : gidOrIndex;
+    const tilesX = this.imageWidth / this.tilewidth;
+    const x = index % tilesX;
+    const y = Math.floor((index - x) / tilesX);
     return _.extend(this.tiles[index] || {}, {
       image: this.image,
       url: this.imageUrl,

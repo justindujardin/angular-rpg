@@ -13,14 +13,13 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {ElementRef} from "@angular/core";
-import {RPGGame} from "../services/rpgGame";
-import {GameTileMap} from "../../game/gameTileMap";
-import {TileMapView} from "../../game/pow2/tile/tileMapView";
-import {SoundComponent} from "../../game/pow2/scene/components/soundComponent";
-import {TiledTMXResource} from "../../game/pow-core/resources/tiled/tiledTmx";
-import {getMapUrl} from "../../game/pow2/core/api";
-
+import {ElementRef} from '@angular/core';
+import {RPGGame} from '../services/rpgGame';
+import {GameTileMap} from '../../game/gameTileMap';
+import {TileMapView} from '../../game/pow2/tile/tileMapView';
+import {SoundComponent} from '../../game/pow2/scene/components/soundComponent';
+import {TiledTMXResource} from '../../game/pow-core/resources/tiled/tiledTmx';
+import {getMapUrl} from '../../game/pow2/core/api';
 
 /**
  * Base implementation of a view for a GameTileMap.
@@ -36,7 +35,6 @@ export class Map extends TileMapView {
     this._loadMap(value);
   }
 
-
   get music(): boolean {
     return this._music;
   }
@@ -51,9 +49,7 @@ export class Map extends TileMapView {
 
   private _music: boolean = true;
 
-
   private _musicComponent: SoundComponent = null;
-
 
   constructor(elRef: ElementRef, public game: RPGGame) {
     super(elRef.nativeElement.querySelector('canvas'));
@@ -105,25 +101,25 @@ export class Map extends TileMapView {
    * @private
    */
   protected _onMapLoaded(map: GameTileMap) {
-
+    // Nothing
   }
-
 
   protected _onResize() {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
     this._bounds.set(this.canvas.width, this.canvas.height);
     this._bounds = this.screenToWorld(this._bounds);
-    var ctx: any = this.context;
-    ctx.webkitImageSmoothingEnabled = false;
-    ctx.mozImageSmoothingEnabled = false;
-    ctx.imageSmoothingEnabled = false;
+    const context: any = this.context;
+    context.webkitImageSmoothingEnabled = false;
+    context.mozImageSmoothingEnabled = false;
+    context.imageSmoothingEnabled = false;
   }
-
 
   protected _destroyMusic() {
     if (this._musicComponent) {
-      this.tileMap && this.tileMap.removeBehavior(this._musicComponent);
+      if (this.tileMap) {
+        this.tileMap.removeBehavior(this._musicComponent);
+      }
       this._musicComponent = null;
     }
   }
@@ -144,6 +140,5 @@ export class Map extends TileMapView {
       // this.tileMap.addBehavior(this._musicComponent);
     }
   }
-
 
 }

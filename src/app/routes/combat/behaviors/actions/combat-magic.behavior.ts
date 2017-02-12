@@ -2,14 +2,14 @@
 // import {CombatActionBehavior} from "../combat-action.behavior";
 // import {GameEntityObject} from "../../../../../game/rpg/objects/gameEntityObject";
 // import {HeroTypes} from "../../../../../game/rpg/models/heroModel";
-// import {CombatEndTurnState} from "../../states/combat-end-turn.state";
+// import {CombatEndTurnStateComponent} from "../../states/combat-end-turn.state";
 // import {getSoundEffectUrl} from "../../../../../game/pow2/core/api";
 // import {AnimatedSpriteComponent} from "../../../../../game/pow2/tile/components/animatedSpriteComponent";
 // import {SpriteComponent} from "../../../../../game/pow2/tile/components/spriteComponent";
 // import {SoundComponent} from "../../../../../game/pow2/scene/components/soundComponent";
 // import {DamageComponent} from "../../../../../game/rpg/components/damageComponent";
 // import {CreatureModel} from "../../../../../game/rpg/models/creatureModel";
-// import {CombatPlayerRenderBehavior} from "../combat-player-render.behavior";
+// import {CombatPlayerRenderBehaviorComponent} from "../combat-player-render.behavior";
 // import {Component, Input} from "@angular/core";
 // import {IPlayerActionCallback} from "../../states/combat.machine";
 // import {CombatComponent, CombatAttackSummary} from "../../combat.component";
@@ -42,7 +42,7 @@
 //     }
 //     const done = (error?: any) => {
 //       then && then(this, error);
-//       this.combat.machine.setCurrentState(CombatEndTurnState.NAME);
+//       this.combat.machine.setCurrentState(CombatEndTurnStateComponent.NAME);
 //     };
 //     if (!this.spell) {
 //       console.error("null spell to cast");
@@ -61,7 +61,8 @@
 //     //
 //     const caster: GameEntityObject = this.from;
 //     const target: GameEntityObject = this.to;
-//     const attackerPlayer = caster.findBehavior(CombatPlayerRenderBehavior) as CombatPlayerRenderBehavior;
+//     const attackerPlayer = caster.findBehavior(CombatPlayerRenderBehaviorComponent)
+//              as CombatPlayerRenderBehaviorComponent;
 //
 //     attackerPlayer.magic(() => {
 //       var level: number = target.model.level;
@@ -105,7 +106,8 @@
 //     const attacker: GameEntityObject = this.from;
 //     const defender: GameEntityObject = this.to;
 //
-//     const attackerPlayer = attacker.findBehavior(CombatPlayerRenderBehavior) as CombatPlayerRenderBehavior;
+//     const attackerPlayer = attacker.findBehavior(CombatPlayerRenderBehaviorComponent)
+//                  as CombatPlayerRenderBehaviorComponent;
 //     attackerPlayer.magic(() => {
 //       const attackModel = attacker.model;
 //       const magicAttack = attackModel.varyDamage(attackModel.getMagicStrength() + this.spell.value);

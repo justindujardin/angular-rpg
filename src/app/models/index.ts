@@ -6,7 +6,6 @@ import {itemReducer} from '../models/item/item.reducer';
 import {gameStateReducer} from './game-state/game-state.reducer';
 import {combatReducer} from './combat/combat.reducer';
 
-
 export const reducers = {
   router: routerReducer,
   items: itemReducer,
@@ -16,7 +15,7 @@ export const reducers = {
 
 // Generate a reducer to set the root state in dev mode for HMR
 function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
-  return function (state, action) {
+  return (state, action) => {
     if (action.type === 'SET_ROOT_STATE') {
       return action.payload;
     }

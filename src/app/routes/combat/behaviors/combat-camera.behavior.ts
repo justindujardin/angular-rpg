@@ -29,9 +29,10 @@ export class CombatCameraBehavior extends CameraComponent {
       super.process(view);
       return;
     }
-    var w: number = view.context.canvas.width;
+    const w: number = view.context.canvas.width;
+    const screenRect = new Rect(0, 0, view.context.canvas.width, view.context.canvas.height);
     view.cameraScale = w > 1024 ? 6 : (w > 768 ? 4 : (w > 480 ? 3 : 2));
-    view.camera = view.screenToWorld(new Rect(0, 0, view.context.canvas.width, view.context.canvas.height), view.cameraScale);
+    view.camera = view.screenToWorld(screenRect, view.cameraScale);
     view.camera.point.x = (this.host.bounds.extent.x / 2) - (view.camera.extent.x / 2);
   }
 }

@@ -15,7 +15,7 @@
  */
 import * as _ from 'underscore';
 import {errors} from './errors';
-import {Resource, IResource} from './resource';
+import {IResource} from './resource';
 import {ImageResource} from './resources/image';
 import {ScriptResource} from './resources/script';
 import {JSONResource} from './resources/json';
@@ -98,12 +98,12 @@ export class ResourceLoader {
     });
   }
 
-  load<T extends IResource|IResource[]>(sources: Array<string>): Promise<T[]>;
-  load<T extends IResource|IResource[]>(sources: Array<string>): Promise<T[]>;
+  load<T extends IResource|IResource[]>(sources: string[]): Promise<T[]>;
+  load<T extends IResource|IResource[]>(sources: string[]): Promise<T[]>;
   load<T extends IResource|IResource[]>(source: string): Promise<T[]>;
   load<T extends IResource|IResource[]>(sources: any): Promise<T[]> {
     return new Promise<T|T[]>((resolve, reject) => {
-      const results: Array<T> = [];
+      const results: T[] = [];
       let loadQueue: number = 0;
       let errors: number = 0;
       if (!_.isArray(sources)) {

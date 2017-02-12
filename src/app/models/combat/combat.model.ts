@@ -74,7 +74,6 @@ export interface CombatState {
   readonly encounter: CombatEncounterTypes;
 }
 
-
 // Combat Behaviors
 
 /** Description of a combat attackCombatant */

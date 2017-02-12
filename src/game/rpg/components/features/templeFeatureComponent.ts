@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {GameFeatureComponent} from '../gameFeatureComponent';
 import {TileObject} from '../../../pow2/tile/tileObject';
 
@@ -25,7 +24,7 @@ export class TempleFeatureComponent extends GameFeatureComponent {
     if (!super.syncBehavior() || !this.host.feature) {
       return false;
     }
-    this.name = "Temple";
+    this.name = 'Temple';
     this.cost = this.host.feature.cost;
     this.icon = this.host.feature.icon;
     return true;
@@ -42,4 +41,3 @@ export class TempleFeatureComponent extends GameFeatureComponent {
   }
 
 }
-

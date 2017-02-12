@@ -22,7 +22,6 @@ export * from './resources/tiled/tiled';
 export * from './resources/tiled/tiledTmx';
 export * from './resources/tiled/tiledTsx';
 
-
 export const POW_CORE_PROVIDERS = [
   ResourceLoader
 ];
@@ -42,6 +41,5 @@ export class PowCoreModule {
       providers: POW_CORE_PROVIDERS
     };
   }
-
 
 }

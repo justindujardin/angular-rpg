@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {SceneObject} from '../sceneObject';
 import {SceneComponent} from '../sceneComponent';
 import {Rect} from '../../../pow-core/rect';
@@ -38,7 +37,7 @@ export class CollisionComponent extends SceneComponent {
     this.collideBox.point.x = x;
     this.collideBox.point.y = y;
     this.resultsArray.length = 0;
-    var hit: boolean = this.host.scene.db.queryRect(this.collideBox, type, this.resultsArray);
+    const hit: boolean = this.host.scene.db.queryRect(this.collideBox, type, this.resultsArray);
     return hit ? this.resultsArray[0] : null;
   }
 }

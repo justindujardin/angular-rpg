@@ -10,16 +10,15 @@ import {
   ViewChild
 } from '@angular/core';
 import {GameEntityObject} from '../../../game/rpg/objects/gameEntityObject';
-import {CombatPlayerRenderBehavior} from './behaviors/combat-player-render.behavior';
+import {CombatPlayerRenderBehaviorComponent} from './behaviors/combat-player-render.behavior';
 import {SceneComponent} from '../../../game/pow2/scene/sceneComponent';
-import {CombatAttackBehavior} from './behaviors/actions/combat-attack.behavior';
+import {CombatAttackBehaviorComponent} from './behaviors/actions/combat-attack.behavior';
 // import {CombatMagicBehavior} from './behaviors/actions/combat-magic.behavior';
 // import {CombatItemBehavior} from './behaviors/actions/combat-item.behavior';
 // import {CombatRunBehavior} from './behaviors/actions/combat-run.behavior';
 // import {CombatGuardBehavior} from './behaviors/actions/combat-guard.behavior';
 import {CombatComponent} from './combat.component';
-import {PartyMember} from "../../models/party/party.model";
-
+import {PartyMember} from '../../models/party/party.model';
 
 @Component({
   selector: 'combat-player',
@@ -34,14 +33,14 @@ import {PartyMember} from "../../models/party/party.model";
   <ng-content></ng-content>
 `
 })
-export class CombatPlayer extends GameEntityObject implements AfterViewInit, OnDestroy {
+export class CombatPlayerComponent extends GameEntityObject implements AfterViewInit, OnDestroy {
   @ViewChildren('render,animation,attackCombatant,magic,guard,item,run') behaviors: QueryList<SceneComponent>;
 
-  @ViewChild(CombatPlayerRenderBehavior) render: CombatPlayerRenderBehavior;
+  @ViewChild(CombatPlayerRenderBehaviorComponent) render: CombatPlayerRenderBehaviorComponent;
 
   @Input() model: PartyMember;
 
-  constructor(@Inject(forwardRef(() => CombatComponent)) private combat: CombatComponent) {
+  constructor(@Inject(forwardRef(() => CombatComponent)) public combat: CombatComponent) {
     super();
   }
 
@@ -62,14 +61,13 @@ export class CombatPlayer extends GameEntityObject implements AfterViewInit, OnD
 
 }
 
-
 /** Components associated with combat player */
 export const COMBAT_PLAYER_COMPONENTS = [
-  CombatPlayerRenderBehavior,
-  CombatAttackBehavior,
+  CombatPlayerRenderBehaviorComponent,
+  CombatAttackBehaviorComponent,
   // CombatMagicBehavior,
   // CombatItemBehavior,
   // CombatRunBehavior,
   // CombatGuardBehavior,
-  CombatPlayer
+  CombatPlayerComponent
 ];

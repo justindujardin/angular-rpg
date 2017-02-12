@@ -16,7 +16,6 @@ export class Entity extends Events implements IBehaviorHost {
 
   protected _connectedBehaviors: IBehavior[] = [];
 
-
   destroy() {
     _.each(this._connectedBehaviors, (o: IBehavior) => {
       o.disconnectBehavior();

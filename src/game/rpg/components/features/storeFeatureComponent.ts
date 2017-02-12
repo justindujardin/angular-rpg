@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
 import {GameFeatureComponent} from '../gameFeatureComponent';
 import {data} from '../../../pow2/core/api';
@@ -28,13 +27,13 @@ export class StoreFeatureComponent extends GameFeatureComponent {
       return false;
     }
     this.name = this.host.feature.name;
-    var weapons: boolean = _.indexOf(this.host.groups, "weapon") !== -1;
+    const weapons: boolean = _.indexOf(this.host.groups, 'weapon') !== -1;
     if (weapons) {
       this.inventory = _.filter(data.weapons, (item: any) => {
         return item.level === this.host.feature.level;
       });
     }
-    else if (_.indexOf(this.host.groups, "armor") !== -1) {
+    else if (_.indexOf(this.host.groups, 'armor') !== -1) {
       this.inventory = _.filter(data.armor, (item: any) => {
         return item.level === this.host.feature.level;
       });
@@ -59,4 +58,3 @@ export class StoreFeatureComponent extends GameFeatureComponent {
   }
 
 }
-

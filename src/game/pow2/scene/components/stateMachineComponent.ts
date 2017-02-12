@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {TickedComponent} from './tickedComponent';
 import {IStateMachine} from '../../core/stateMachine';
 export class StateMachineComponent extends TickedComponent {

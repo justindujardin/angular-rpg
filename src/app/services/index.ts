@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {NotificationService} from '../components/notification/notification.service';
 import {Animate} from './animate';
 import {RPGGame} from './rpgGame';
 import {GameWorld} from './gameWorld';
@@ -50,6 +49,5 @@ export class ServicesModule {
       providers: SERVICE_PROVIDERS
     };
   }
-
 
 }

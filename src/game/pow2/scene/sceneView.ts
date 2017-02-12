@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
 import {SceneObject} from './sceneObject';
 import {ISceneView} from '../interfaces/IScene';
@@ -51,7 +50,7 @@ export class SceneView extends SceneObject implements ISceneView {
       this.context = this.canvas = null;
       return;
     }
-    this.context = value.getContext("2d");
+    this.context = value.getContext('2d');
     if (!this.context) {
       throw new Error('SceneView: could not retrieve 2d Canvas context');
     }
@@ -69,10 +68,10 @@ export class SceneView extends SceneObject implements ISceneView {
   // -----------------------------------------------------------------------------
 
   renderToCanvas(width, height, renderFunction) {
-    var buffer = document.createElement('canvas');
+    const buffer = document.createElement('canvas');
     buffer.width = width;
     buffer.height = height;
-    var context: any = buffer.getContext('2d');
+    const context: any = buffer.getContext('2d');
     // Disable smoothing for nearest neighbor scaling.
     context.webkitImageSmoothingEnabled = false;
     context.mozImageSmoothingEnabled = false;
@@ -83,12 +82,15 @@ export class SceneView extends SceneObject implements ISceneView {
   // Render a frame. Subclass this to do your specific rendering.
   renderFrame(elapsed: number) {
     _.each(this._connectedBehaviors, (o: any) => {
-      o instanceof SceneViewComponent && o.renderFrame(this, elapsed);
+      if (o instanceof SceneViewComponent) {
+        o.renderFrame(this, elapsed);
+      }
     });
   }
 
   // Render post effects
   renderPost() {
+    // nothing
   }
 
   // Set the render state for this scene view.
@@ -119,13 +121,17 @@ export class SceneView extends SceneObject implements ISceneView {
     this.processCamera();
     this.setRenderState();
     _.each(this._connectedBehaviors, (o: any) => {
-      o instanceof SceneViewComponent && o.beforeFrame(this, elapsed);
+      if (o instanceof SceneViewComponent) {
+        o.beforeFrame(this, elapsed);
+      }
     });
     this.renderFrame(elapsed);
     this.renderAnimations();
     this.renderPost();
     _.each(this._connectedBehaviors, (o: any) => {
-      o instanceof SceneViewComponent && o.afterFrame(this, elapsed);
+      if (o instanceof SceneViewComponent) {
+        o.afterFrame(this, elapsed);
+      }
     });
     this.restoreRenderState();
   }
@@ -142,8 +148,9 @@ export class SceneView extends SceneObject implements ISceneView {
   // -----------------------------------------------------------------------------
 
   clearRect() {
-    var renderPos, x, y;
-    x = y = 0;
+    let renderPos;
+    let x = 0;
+    let y = 0;
     if (this.camera) {
       renderPos = this.worldToScreen(this.camera.point);
       x = renderPos.x;
@@ -165,11 +172,12 @@ export class SceneView extends SceneObject implements ISceneView {
 
   worldToScreen(value: any, scale = 1): any {
     if (value instanceof Rect) {
-      var result: Rect = new Rect(value);
+      const result: Rect = new Rect(value);
       result.point.multiply(this.unitSize * scale);
       result.extent.multiply(this.unitSize * scale);
       return result;
-    } else if (value instanceof Point) {
+    }
+    else if (value instanceof Point) {
       return new Point(value).multiply(this.unitSize * scale);
     }
     return value * (this.unitSize * scale);
@@ -185,16 +193,16 @@ export class SceneView extends SceneObject implements ISceneView {
 
   screenToWorld(value: any, scale = 1): any {
     if (value instanceof Rect) {
-      var result: Rect = new Rect(value);
+      const result: Rect = new Rect(value);
       result.point.multiply(1 / (this.unitSize * scale));
       result.extent.multiply(1 / (this.unitSize * scale));
       return result;
-    } else if (value instanceof Point) {
+    }
+    else if (value instanceof Point) {
       return new Point(value).multiply(1 / (this.unitSize * scale));
     }
     return value * (1 / (this.unitSize * scale));
   }
-
 
   // Fast world to screen conversion, for high-volume usage situations.
   // avoid memory allocations.
@@ -237,8 +245,8 @@ export class SceneView extends SceneObject implements ISceneView {
   // Animations
   // -----------------------------------------------------------------------------
   renderAnimations() {
-    var len: number = this.animations.length;
-    for (var i = 0; i < len; i++) {
+    const len: number = this.animations.length;
+    for (let i = 0; i < len; i++) {
       let animation = this.animations[i];
       animation.done = animation.fn(animation.frame);
       if (this.scene.time >= animation.time) {

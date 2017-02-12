@@ -19,7 +19,6 @@ import {PlayerTouchComponent} from './rpg/components/playerTouchComponent';
 import {CombatCameraBehavior} from '../app/routes/combat/behaviors/combat-camera.behavior';
 import {CombatEncounterBehavior} from '../app/routes/world/behaviors/combat-encounter.behavior';
 
-
 /**
  * Array of composed game entity templates.
  *

@@ -1,12 +1,10 @@
-import * as _ from "underscore";
-import {Combatant} from "./combat.model";
-import {Being} from "../being";
-
+import * as _ from 'underscore';
+import {Combatant} from './combat.model';
+import {Being} from '../being';
 
 export function isDefeated(test: Being) {
   return test.hp <= 0;
 }
-
 
 // Chance to hit = (BASE_CHANCE_TO_HIT + PLAYER_HIT_PERCENT) - EVASION
 export function rollHit(attacker: Combatant, defender: Combatant): boolean {
@@ -44,7 +42,6 @@ export function attackCombatant(attacker: Combatant, defender: Combatant): numbe
   }
   return 0;
 }
-
 
 export function getDefense(member: Combatant, base: boolean = false): number {
   return member.defense;

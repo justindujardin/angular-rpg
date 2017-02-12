@@ -13,8 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
-
 // TODO: TileMap isn't getting added to Spatial DB properly.  Can't query for it!
 // Scene assuming something about the spatial properties on objects?
 import * as _ from 'underscore';
@@ -36,10 +34,10 @@ export class TileMap extends SceneObject {
   private _loaded: boolean = false;
 
   static Events: any = {
-    LOADED: "loaded",
-    UNLOADED: "unloaded",
-    MAP_LOADED: "map:loaded",
-    MAP_UNLOADED: "map:unloaded"
+    LOADED: 'loaded',
+    UNLOADED: 'unloaded',
+    MAP_LOADED: 'map:loaded',
+    MAP_UNLOADED: 'map:unloaded'
   };
 
   constructor(map: TiledTMXResource) {
@@ -77,7 +75,7 @@ export class TileMap extends SceneObject {
     }
     this.map = map;
     this.bounds = new Rect(0, 0, this.map.width, this.map.height);
-    var idSortedSets = _.sortBy(this.map.tilesets, (o: TiledTSXResource) => {
+    const idSortedSets = _.sortBy(this.map.tilesets, (o: TiledTSXResource) => {
       return o.firstgid;
     });
     this.tiles.length = 0;
@@ -87,8 +85,8 @@ export class TileMap extends SceneObject {
       }
       this.tiles = this.tiles.concat(tiles.tiles);
     });
-    this.features = _.where(this.map.layers, {name: "Features"})[0] || [];
-    this.zones = _.where(this.map.layers, {name: "Zones"})[0] || [];
+    this.features = _.where(this.map.layers, {name: 'Features'})[0] || [];
+    this.zones = _.where(this.map.layers, {name: 'Zones'})[0] || [];
     this.loaded();
     return true;
   }
@@ -98,7 +96,7 @@ export class TileMap extends SceneObject {
   }
 
   getLayer(name: string): ITiledLayer {
-    return <ITiledLayer>_.where(this.map.layers, {name: name})[0];
+    return _.where(this.map.layers, {name})[0] as ITiledLayer;
   }
 
   getTerrain(layer: string, x: number, y: number) {
@@ -109,17 +107,17 @@ export class TileMap extends SceneObject {
     if (!this.map || !layer || !layer.data || !this.bounds.pointInRect(x, y)) {
       return null;
     }
-    var terrainIndex = y * this.map.width + x;
-    var tileIndex = layer.data[terrainIndex];
+    const terrainIndex = y * this.map.width + x;
+    const tileIndex = layer.data[terrainIndex];
     return this.tiles[tileIndex];
   }
 
   getTileGid(layer: string, x: number, y: number): number {
-    var terrain: ITiledLayer = this.getLayer(layer);
+    const terrain: ITiledLayer = this.getLayer(layer);
     if (!this.map || !terrain || !terrain.data || !this.bounds.pointInRect(x, y)) {
       return null;
     }
-    var terrainIndex = y * this.map.width + x;
+    const terrainIndex = y * this.map.width + x;
     return terrain.data[terrainIndex];
   }
 
@@ -127,7 +125,7 @@ export class TileMap extends SceneObject {
     if (this.tiles.length <= gid) {
       return null;
     }
-    var source = _.find(this.map.tilesets, (t: TiledTSXResource) => {
+    const source = _.find(this.map.tilesets, (t: TiledTSXResource) => {
       return t.hasGid(gid);
     });
     if (!source) {

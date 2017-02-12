@@ -13,10 +13,8 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
 import {Injectable} from '@angular/core';
-
 
 export interface IProcessObject {
   _uid?: string;
@@ -24,7 +22,7 @@ export interface IProcessObject {
   processFrame?(elapsed?: number);
 }
 
-var _shared: Time = null;
+let _shared: Time = null;
 
 @Injectable()
 export class Time {
@@ -34,7 +32,7 @@ export class Time {
   lastTime: number = 0;
   time: number = 0;
   running: boolean = false;
-  objects: Array<IProcessObject> = [];
+  objects: IProcessObject[] = [];
 
   constructor() {
     this.polyFillAnimationFrames();
@@ -47,19 +45,18 @@ export class Time {
     return _shared;
   }
 
-
   start(): Time {
     if (this.running) {
       return;
     }
     this.running = true;
-    var _frameCallback: FrameRequestCallback = (time: number) => {
+    const _frameCallback: FrameRequestCallback = (time: number) => {
       if (!this.running) {
         return;
       }
       this.time = Math.floor(time);
-      var now: number = new Date().getMilliseconds();
-      var elapsed: number = Math.floor(time - this.lastTime);
+      const now: number = new Date().getMilliseconds();
+      const elapsed: number = Math.floor(time - this.lastTime);
       if (elapsed >= this.tickRateMS) {
         this.lastTime = time;
         this.tickObjects(elapsed);
@@ -78,15 +75,15 @@ export class Time {
   }
 
   removeObject(object: IProcessObject): Time {
-    this.objects = <IProcessObject[]>_.reject(this.objects, function (o: IProcessObject) {
+    this.objects = _.reject(this.objects, (o: IProcessObject) => {
       return o._uid === object._uid;
-    });
+    }) as IProcessObject[];
     return this;
   }
 
   addObject(object: IProcessObject): Time {
     if (!object._uid) {
-      object._uid = _.uniqueId("u");
+      object._uid = _.uniqueId('u');
     }
     if (_.where(this.objects, {_uid: object._uid}).length === 0) {
       this.objects.push(object);
@@ -95,38 +92,44 @@ export class Time {
   }
 
   tickObjects(elapsedMS: number): Time {
-    var values: any[] = this.objects;
-    for (var i: number = values.length - 1; i >= 0; --i) {
-      values[i].tick && values[i].tick(elapsedMS);
+    const values: any[] = this.objects;
+    for (let i: number = values.length - 1; i >= 0; --i) {
+      if (values[i].tick) {
+        values[i].tick(elapsedMS);
+      }
     }
     return this;
   }
 
   processFrame(elapsedMS: number): Time {
-    var values: any[] = this.objects;
-    for (var i: number = values.length - 1; i >= 0; --i) {
-      values[i].processFrame && values[i].processFrame(elapsedMS);
+    const values: any[] = this.objects;
+    for (let i: number = values.length - 1; i >= 0; --i) {
+      if (values[i].processFrame) {
+        values[i].processFrame(elapsedMS);
+      }
     }
     return this;
   }
 
   polyFillAnimationFrames() {
-    var lastTime: number = 0;
-    var vendors: Array<string> = ['ms', 'moz', 'webkit', 'o'];
-    for (var i: number = 0; i < vendors.length; i++) {
+    let lastTime: number = 0;
+    const vendors: string[] = ['ms', 'moz', 'webkit', 'o'];
+    for (let i: number = 0; i < vendors.length; i++) {
       if (window.requestAnimationFrame) {
         return;
       }
       window.requestAnimationFrame = window[vendors[i] + 'RequestAnimationFrame'];
     }
     if (!window.requestAnimationFrame) {
-      window.requestAnimationFrame = function (callback: FrameRequestCallback): number {
-        var currTime: number = new Date().getTime();
-        var timeToCall: number = Math.max(0, 16 - (currTime - lastTime));
-        var tickListener: Function = function powRAFTimeTick() {
+      window.requestAnimationFrame = (callback: FrameRequestCallback): number => {
+        const currTime: number = new Date().getTime();
+        const timeToCall: number = Math.max(0, 16 - (currTime - lastTime));
+        /* tslint:disable */
+        const tickListener: Function = function powRAFTimeTick() {
           callback(currTime + timeToCall);
         };
-        var id: number = window.setTimeout(tickListener, timeToCall);
+        /* tslint:enable */
+        const id: number = window.setTimeout(tickListener, timeToCall);
         lastTime = currTime + timeToCall;
         return id;
       };

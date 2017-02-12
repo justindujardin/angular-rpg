@@ -5,9 +5,8 @@ import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 import {PlayerComponent} from '../../../../game/rpg/components/playerComponent';
 import {Point} from '../../../../game/pow-core/point';
 import {IZoneMatch} from '../../../../game/rpg/game';
-import {getKeyData} from "../../../models/game-state/game-state.reducer";
-import {Subscription} from "rxjs";
-import {GameStateSetKeyDataAction} from "../../../models/game-state/game-state.actions";
+import {getKeyData} from '../../../models/game-state/game-state.reducer';
+import {GameStateSetKeyDataAction} from '../../../models/game-state/game-state.actions';
 
 /**
  * A component that when added to a GameTileMap listens
@@ -95,7 +94,7 @@ export class CombatEncounterBehavior extends SceneComponent {
     const zone: IZoneMatch = this.host.getCombatZones(at);
     zone.fixed = false;
     this.combatZone = zone.map || zone.target;
-    console.log("Combat in zone : " + this.combatZone);
+    console.log(`Combat in zone : ${this.combatZone}`);
     this.stopListening();
 
     console.warn('HACK in triggerCombat - static get GameWorld... need injection strategy');

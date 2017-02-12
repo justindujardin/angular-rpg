@@ -1,7 +1,7 @@
 // import * as _ from 'underscore';
 // import {CombatActionBehavior} from '../combat-action.behavior';
-// import {CombatRunSummary, CombatEscapeState} from '../../states/combat-escape.state';
-// import {CombatEndTurnState} from '../../states/combat-end-turn.state';
+// import {CombatRunSummary, CombatEscapeStateComponent} from '../../states/combat-escape.state';
+// import {CombatEndTurnStateComponent} from '../../states/combat-end-turn.state';
 // import {Component, Input} from '@angular/core';
 // import {IPlayerActionCallback} from '../../states/combat.machine';
 // import {CombatComponent} from '../../combat.component';
@@ -28,10 +28,10 @@
 //     };
 //     this.combat.machine.notify("combat:run", data, ()=> {
 //       if (success) {
-//         this.combat.machine.setCurrentState(CombatEscapeState.NAME);
+//         this.combat.machine.setCurrentState(CombatEscapeStateComponent.NAME);
 //       }
 //       else {
-//         this.combat.machine.setCurrentState(CombatEndTurnState.NAME);
+//         this.combat.machine.setCurrentState(CombatEndTurnStateComponent.NAME);
 //       }
 //       then && then(this);
 //     });

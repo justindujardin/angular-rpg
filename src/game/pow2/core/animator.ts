@@ -13,8 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
-
 import {getSpriteMeta} from './api';
 /**
  * Really Janky class to play animations associated with a pow2 sprite.
@@ -38,7 +36,7 @@ export class Animator {
   sourceAnims: any = null;
 
   setAnimationSource(spriteName: string) {
-    console.log("Sprite is " + spriteName);
+    console.log(`Sprite is ${spriteName}`);
     this.sourceMeta = getSpriteMeta(spriteName);
     if (this.sourceMeta) {
       this.sourceAnims = this.sourceMeta.animations;
@@ -48,11 +46,11 @@ export class Animator {
 
   setAnimation(name: string) {
     if (!this.sourceAnims) {
-      throw new Error("Invalid source animations");
+      throw new Error('Invalid source animations');
     }
-    var data: any = this.sourceAnims[name];
+    const data: any = this.sourceAnims[name];
     if (!data) {
-      throw new Error("Invalid animation name - " + name);
+      throw new Error(`Invalid animation name - ${name}`);
     }
     this.frames = data.frames;
     this.animDuration = data.duration;
@@ -60,8 +58,8 @@ export class Animator {
 
   updateTime(elapsedMs: number) {
     this.animElapsed += elapsedMs;
-    var factor: number = this.animElapsed / this.animDuration;
-    var index = Math.round(this.interpolate(0, this.frames.length - 1, factor));
+    const factor: number = this.animElapsed / this.animDuration;
+    const index = Math.round(this.interpolate(0, this.frames.length - 1, factor));
     this.interpFrame = this.frames[index];
     if (this.animElapsed > this.animDuration) {
       this.animElapsed = 0;

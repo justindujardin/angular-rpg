@@ -1,12 +1,11 @@
 import {Routes} from '@angular/router';
-import {NoContent} from './routes/no-content';
+import {NoContentComponent} from './routes/no-content';
 import {GameComponent} from './routes/game/game.component';
 import {GameResolver} from './routes/game/game.resolver';
 import {WorldComponent} from './routes/world/world.component';
 import {CanActivateWorld} from './routes/world/world.guards';
 import {CombatComponent} from './routes/combat';
 import {CanActivateCombat} from './routes/combat/combat.guards';
-
 
 export const ROUTES: Routes = [
   {
@@ -26,5 +25,5 @@ export const ROUTES: Routes = [
     component: WorldComponent,
     canActivate: [CanActivateWorld]
   },
-  {path: '**', component: NoContent}
+  {path: '**', component: NoContentComponent}
 ];

@@ -13,8 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
-
 import {Injectable} from '@angular/core';
 /**
  * Provide an API for animating elements with CSS transitions
@@ -28,28 +26,30 @@ export class Animate {
   eventName: string = this.whichTransitionEvent();
 
   enter(el: HTMLElement, cssClass: string): Promise<void> {
-    return new Promise<void>((resolve)=> {
+    return new Promise<void>((resolve) => {
       el.classList.add(cssClass);
-      var duration = this.getTransitionDuration(el, true);
-      var callTimeout = setTimeout(() => done(), duration);
-      var done = () => {
+      const duration = this.getTransitionDuration(el, true);
+      let callTimeout;
+      const done = () => {
         clearTimeout(callTimeout);
         el.removeEventListener(this.eventName, done);
         resolve();
       };
+      callTimeout = setTimeout(() => done(), duration);
       el.addEventListener(this.eventName, done);
     });
   }
 
   leave(el: HTMLElement, cssClass: string): Promise<void> {
-    return new Promise<void>((resolve)=> {
-      var duration = this.getTransitionDuration(el, true);
-      var callTimeout = setTimeout(() => done(), duration);
-      var done = () => {
+    return new Promise<void>((resolve) => {
+      const duration = this.getTransitionDuration(el, true);
+      let callTimeout;
+      const done = () => {
         clearTimeout(callTimeout);
         el.removeEventListener(this.eventName, done);
         resolve();
       };
+      callTimeout = setTimeout(() => done(), duration);
       el.addEventListener(this.eventName, done);
       el.classList.remove(cssClass);
     });
@@ -64,8 +64,8 @@ export class Animate {
    * @returns {number}
    */
   getTransitionDuration(element: HTMLElement, includeDelay: boolean = false) {
-    var prefixes = ['moz', 'webkit', 'ms', 'o', 'khtml'];
-    var style: any = window.getComputedStyle(element);
+    const prefixes = ['moz', 'webkit', 'ms', 'o', 'khtml'];
+    const style: any = window.getComputedStyle(element);
     for (let i = 0; i < prefixes.length; i++) {
       let duration = style['-' + prefixes[i] + '-transition-duration'];
       if (!duration) {
@@ -73,7 +73,7 @@ export class Animate {
       }
       duration = ( duration.indexOf('ms') > -1 ) ? parseFloat(duration) : parseFloat(duration) * 1000;
       if (includeDelay) {
-        var delay = style['-' + prefixes[i] + '-transition-delay'];
+        let delay = style['-' + prefixes[i] + '-transition-delay'];
         if (typeof delay !== 'undefined') {
           duration += ( delay.indexOf('ms') > -1 ) ? parseFloat(delay) : parseFloat(delay) * 1000;
         }
@@ -85,13 +85,13 @@ export class Animate {
 
   /* From Modernizr */
   whichTransitionEvent(): string {
-    var t: string;
-    var el: any = document.createElement('fakeelement');
-    var transitions: {[prefix: string]: string} = {
-      'transition': 'transitionend',
-      'OTransition': 'oTransitionEnd',
-      'MozTransition': 'transitionend',
-      'WebkitTransition': 'webkitTransitionEnd'
+    let t: string;
+    const el: any = document.createElement('fakeelement');
+    const transitions: {[prefix: string]: string} = {
+      transition: 'transitionend',
+      OTransition: 'oTransitionEnd',
+      MozTransition: 'transitionend',
+      WebkitTransition: 'webkitTransitionEnd'
     };
 
     for (t in transitions) {
@@ -100,6 +100,5 @@ export class Animate {
       }
     }
   }
-
 
 }

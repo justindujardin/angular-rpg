@@ -18,10 +18,10 @@ import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 import {IGameSpell} from '../../../../game/rpg/game';
 import {UsableModel} from '../../../../game/rpg/models/usableModel';
 import {IPlayerAction, IPlayerActionCallback} from '../states/combat.machine';
-import {Item} from "../../../models/item/item.model";
+import {Item} from '../../../models/item/item.model';
 
 export class CombatActionBehavior extends SceneComponent implements IPlayerAction {
-  name: string = "default";
+  name: string = 'default';
   from: GameEntityObject = null;
   to: GameEntityObject = null;
   spell: IGameSpell = null;
@@ -62,7 +62,9 @@ export class CombatActionBehavior extends SceneComponent implements IPlayerActio
    * @returns {boolean} Whether the act was successful or not.
    */
   act(then?: IPlayerActionCallback): boolean {
-    then && then(this, null);
+    if (then) {
+      then(this, null);
+    }
     return true;
   }
 
@@ -70,5 +72,6 @@ export class CombatActionBehavior extends SceneComponent implements IPlayerActio
    * The action has been selected for the current turn.
    */
   select() {
+    // nothing
   }
 }

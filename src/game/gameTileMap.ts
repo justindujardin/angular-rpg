@@ -52,15 +52,14 @@ export class GameTileMap extends TileMap {
   }
 
   getFeature(name: string) {
-    return _.find(<any>this.features.objects, (feature: any) => {
+    return _.find(this.features.objects, (feature: any) => {
       return feature.name === name;
     });
   }
 
-
   getEntryPoint(): Point {
     // If no point is specified, use the position of the first Portal on the current map
-    var portal: any = _.where(this.features.objects, {type: 'PortalFeatureComponent'})[0];
+    const portal: any = _.where(this.features.objects, {type: 'PortalFeatureComponent'})[0];
     if (portal) {
       return new Point(portal.x / portal.width, portal.y / portal.height);
     }
@@ -79,7 +78,7 @@ export class GameTileMap extends TileMap {
 
   removeFeaturesFromScene() {
     _.each(this.features.objects, (obj: any) => {
-      var featureObject: SceneObject = <SceneObject>obj._object;
+      const featureObject: SceneObject = <SceneObject> obj._object;
       delete obj._object;
       if (featureObject) {
         featureObject.destroy();
@@ -112,7 +111,7 @@ export class GameTileMap extends TileMap {
     if (tiledObject.type && componentType) {
       const component = new componentType() as SceneComponent;
       if (!object.addBehavior(component)) {
-        throw new Error("Component " + component.name + " failed to connect to host " + this.name);
+        throw new Error(`Component ${component.name} failed to connect to host ${this.name}`);
       }
     }
     return object;
@@ -124,7 +123,7 @@ export class GameTileMap extends TileMap {
    * @returns {IZoneMatch} The map and target zones that are null if they don't exist
    */
   getCombatZones(at: Point): rpg.IZoneMatch {
-    var result: rpg.IZoneMatch = {
+    const result: rpg.IZoneMatch = {
       map: null,
       target: null,
       targetPoint: at,
@@ -132,23 +131,23 @@ export class GameTileMap extends TileMap {
     };
     if (this.map && this.map.properties && this.map.properties) {
       if (typeof this.map.properties.combatZone !== 'undefined') {
-        result.map = this.map.properties.combatZone
+        result.map = this.map.properties.combatZone;
       }
     }
     // Determine which zone and combat type
-    var invTileSize = 1 / this.map.tilewidth;
-    var zones: any[] = _.map(this.zones.objects, (z: any) => {
-      var x = z.x * invTileSize;
-      var y = z.y * invTileSize;
-      var w = z.width * invTileSize;
-      var h = z.height * invTileSize;
+    const invTileSize = 1 / this.map.tilewidth;
+    const zones: any[] = _.map(this.zones.objects, (z: any) => {
+      const x = z.x * invTileSize;
+      const y = z.y * invTileSize;
+      const w = z.width * invTileSize;
+      const h = z.height * invTileSize;
       return {
         bounds: new Rect(x, y, w, h),
         name: z.name
-      }
+      };
     });
     // TODO: This will always get the first zone.  What about overlapping zones?
-    var zone = _.find(zones, (z: any) => {
+    const zone = _.find(zones, (z: any) => {
       return z.bounds.pointInRect(at) && z.name;
     });
     if (zone) {

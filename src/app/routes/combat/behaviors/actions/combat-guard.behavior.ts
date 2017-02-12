@@ -1,11 +1,11 @@
 // import * as _ from 'underscore';
-// import {CombatEndTurnState} from '../../states/combat-end-turn.state';
-// import {CombatStateMachine, IPlayerActionCallback} from '../../states/combat.machine';
+// import {CombatEndTurnStateComponent} from '../../states/combat-end-turn.state';
+// import {CombatStateMachineComponent, IPlayerActionCallback} from '../../states/combat.machine';
 // import {HeroModel} from '../../../../../game/rpg/models/heroModel';
-// import {CombatChooseActionState} from '../../states/combat-choose-action.state';
-// import {CombatVictoryState} from '../../states/combat-victory.state';
-// import {CombatDefeatState} from '../../states/combat-defeat.state';
-// import {CombatEscapeState} from '../../states/combat-escape.state';
+// import {CombatChooseActionStateComponent} from '../../states/combat-choose-action.state';
+// import {CombatVictoryStateComponent} from '../../states/combat-victory.state';
+// import {CombatDefeatStateComponent} from '../../states/combat-defeat.state';
+// import {CombatEscapeStateComponent} from '../../states/combat-escape.state';
 // import {CombatMachineState} from '../../states/combat-base.state';
 // import {CombatActionBehavior} from '../combat-action.behavior';
 // import {Component, Input} from '@angular/core';
@@ -25,7 +25,7 @@
 //   }
 //
 //   act(then?: IPlayerActionCallback): boolean {
-//     this.combat.machine.setCurrentState(CombatEndTurnState.NAME);
+//     this.combat.machine.setCurrentState(CombatEndTurnStateComponent.NAME);
 //     return super.act(then);
 //   }
 //
@@ -36,7 +36,7 @@
 //    */
 //   select() {
 //     console.warn('guard action is ignored in combat-attackCombatant behavior');
-//     this.combat.machine.on(CombatStateMachine.Events.ENTER, this.enterState, this);
+//     this.combat.machine.on(CombatStateMachineComponent.Events.ENTER, this.enterState, this);
 //     console.info("Adding guard defense buff to player: " + this.from.model.name);
 //     if (!(this.from.model instanceof HeroModel)) {
 //       throw new Error("This action is not currently applicable to non hero characters.");
@@ -49,14 +49,14 @@
 //
 //   enterState(newState: CombatMachineState, oldState: CombatMachineState) {
 //     var exitStates: string[] = [
-//       CombatChooseActionState.NAME,
-//       CombatVictoryState.NAME,
-//       CombatDefeatState.NAME,
-//       CombatEscapeState.NAME
+//       CombatChooseActionStateComponent.NAME,
+//       CombatVictoryStateComponent.NAME,
+//       CombatDefeatStateComponent.NAME,
+//       CombatEscapeStateComponent.NAME
 //     ];
 //     if (_.indexOf(exitStates, newState.name) !== -1) {
 //       console.info("Removing guard defense buff from player: " + this.from.model.name);
-//       this.combat.machine.off(CombatStateMachine.Events.ENTER, this.enterState, this);
+//       this.combat.machine.off(CombatStateMachineComponent.Events.ENTER, this.enterState, this);
 //       console.warn('todo: buff is busted');
 //       // var heroModel = <HeroModel>this.from.model;
 //       // heroModel.defenseBuff = 0;

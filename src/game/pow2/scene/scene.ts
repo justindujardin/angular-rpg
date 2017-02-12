@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
 import {ISceneObject, ISceneView, IScene} from '../interfaces/IScene';
 import {IWorld, IWorldObject} from '../../pow-core/world';
@@ -26,7 +25,7 @@ import {GameWorld} from '../../../app/services/gameWorld';
 export class Scene extends Events implements IScene, IProcessObject, IWorldObject {
   id: string = _.uniqueId('scene');
   name: string;
-  db: SceneSpatialDatabase = new SceneSpatialDatabase;
+  db: SceneSpatialDatabase = new SceneSpatialDatabase();
   options: any = {};
   private _objects: ISceneObject[] = [];
   private _views: ISceneView[] = [];
@@ -43,15 +42,16 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
   }
 
   destroy() {
+    let i;
     if (this.world) {
       this.world.erase(this);
     }
-    var l: number = this._objects.length;
-    for (var i = 0; i < l; i++) {
+    let l: number = this._objects.length;
+    for (i = 0; i < l; i++) {
       this.removeObject(this._objects[i], true);
     }
     l = this._views.length;
-    for (var i = 0; i < l; i++) {
+    for (i = 0; i < l; i++) {
       this.removeView(this._views[i]);
     }
     this.paused = true;
@@ -73,39 +73,42 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     if (this.paused) {
       return;
     }
-    var l: number = this._objects.length;
-    for (var i = 0; i < l; i++) {
-      this._objects[i] && this._objects[i].tick(elapsed);
+    let l: number = this._objects.length;
+    for (let i = 0; i < l; i++) {
+      if (this._objects[i]) {
+        this._objects[i].tick(elapsed);
+      }
     }
   }
 
   processFrame(elapsed: number) {
+    let i;
     if (this.paused) {
       return;
     }
     this.time = this.world.time.time;
     // Interpolate objects.
-    var l: number = this._objects.length;
-    for (var i = 0; i < l; i++) {
-      var o: any = this._objects[i];
+    let l: number = this._objects.length;
+    for (i = 0; i < l; i++) {
+      const o: any = this._objects[i];
       if (o.interpolateTick) {
         o.interpolateTick(elapsed);
       }
     }
     // Render frame.
     l = this._views.length;
-    for (var i = 0; i < l; i++) {
+    for (i = 0; i < l; i++) {
       this._views[i].render(elapsed);
     }
     // Update FPS
-    var currFPS: number = elapsed ? 1000 / elapsed : 0;
+    const currFPS: number = elapsed ? 1000 / elapsed : 0;
     this.fps += (currFPS - this.fps) / 10;
   }
 
   // Object add/remove helpers.
   // -----------------------------------------------------------------------------
   removeIt(property: string, object: any): boolean {
-    var removed: boolean = false;
+    let removed: boolean = false;
     this[property] = _.filter(this[property], (obj: any) => {
       if (object && obj && obj._uid === object._uid) {
         this.db.removeSpatialObject(obj);
@@ -137,7 +140,7 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     // Check that we're not adding this twice (though, I suspect the above
     // should make that pretty unlikely)
     if (_.where(this[property], {_uid: object._uid}).length > 0) {
-      throw new Error("Object added to scene twice");
+      throw new Error('Object added to scene twice');
     }
     this[property].push(object);
     // Mark it in the scene's world.
@@ -159,7 +162,6 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     return _.where(this[property], {_uid: object._uid});
   }
 
-
   // View management
   // -----------------------------------------------------------------------------
 
@@ -176,9 +178,9 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
   }
 
   getViewOfType<T>(type: any): T {
-    return <T>_.find(this._views, (v: any)=> {
+    return _.find(this._views, (v: any) => {
       return v instanceof type;
-    });
+    }) as T;
   }
 
   // SceneObject management
@@ -189,8 +191,8 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
 
   removeObject(object: ISceneObject, destroy?: boolean): boolean {
     destroy = typeof destroy === 'undefined' ? true : !!destroy;
-    var o: any = object;
-    var removed: boolean = this.removeIt('_objects', object);
+    const o: any = object;
+    const removed: boolean = this.removeIt('_objects', object);
     if (o && destroy && o.destroy) {
       o.destroy();
     }
@@ -202,11 +204,11 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
   }
 
   componentByType(type): IBehavior {
-    var values: any[] = this._objects;
-    var l: number = this._objects.length;
-    for (var i = 0; i < l; i++) {
-      var o: ISceneObject = values[i];
-      var c: IBehavior = o.findBehavior(type);
+    const values: any[] = this._objects;
+    let l: number = this._objects.length;
+    for (let i = 0; i < l; i++) {
+      const o: ISceneObject = values[i];
+      const c: IBehavior = o.findBehavior(type);
       if (c) {
         return c;
       }
@@ -215,12 +217,12 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
   }
 
   componentsByType(type): IBehavior[] {
-    var values: any[] = this._objects;
-    var l: number = this._objects.length;
-    var results: IBehavior[] = [];
-    for (var i = 0; i < l; i++) {
-      var o: ISceneObject = values[i];
-      var c: IBehavior[] = o.findBehaviors(type);
+    const values: any[] = this._objects;
+    let l: number = this._objects.length;
+    let results: IBehavior[] = [];
+    for (let i = 0; i < l; i++) {
+      const o: ISceneObject = values[i];
+      const c: IBehavior[] = o.findBehaviors(type);
       if (c) {
         results = results.concat(c);
       }
@@ -228,13 +230,12 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     return results;
   }
 
-
   objectsByName(name: string): ISceneObject[] {
-    var values: any[] = this._objects;
-    var l: number = this._objects.length;
-    var results: ISceneObject[] = [];
-    for (var i = 0; i < l; i++) {
-      var o: ISceneObject = values[i];
+    const values: any[] = this._objects;
+    let l: number = this._objects.length;
+    const results: ISceneObject[] = [];
+    for (let i = 0; i < l; i++) {
+      const o: ISceneObject = values[i];
       if (o.name === name) {
         results.push(o);
       }
@@ -243,10 +244,10 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
   }
 
   objectByName(name: string): ISceneObject {
-    var values: any[] = this._objects;
-    var l: number = this._objects.length;
-    for (var i = 0; i < l; i++) {
-      var o: ISceneObject = values[i];
+    const values: any[] = this._objects;
+    let l: number = this._objects.length;
+    for (let i = 0; i < l; i++) {
+      const o: ISceneObject = values[i];
       if (o.name === name) {
         return o;
       }
@@ -255,11 +256,11 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
   }
 
   objectsByType(type): ISceneObject[] {
-    var values: any[] = this._objects;
-    var l: number = this._objects.length;
-    var results: ISceneObject[] = [];
-    for (var i = 0; i < l; i++) {
-      var o: ISceneObject = values[i];
+    const values: any[] = this._objects;
+    let l: number = this._objects.length;
+    let results: ISceneObject[] = [];
+    for (let i = 0; i < l; i++) {
+      const o: ISceneObject = values[i];
       if (o instanceof type) {
         results.push(o);
       }
@@ -268,10 +269,10 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
   }
 
   objectByType(type): ISceneObject {
-    var values: any[] = this._objects;
-    var l: number = this._objects.length;
-    for (var i = 0; i < l; i++) {
-      var o: ISceneObject = values[i];
+    let values: any[] = this._objects;
+    let l: number = this._objects.length;
+    for (let i = 0; i < l; i++) {
+      const o: ISceneObject = values[i];
       if (o instanceof type) {
         return o;
       }
@@ -280,11 +281,11 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
   }
 
   objectsByComponent(type): ISceneObject[] {
-    var values: any[] = this._objects;
-    var l: number = this._objects.length;
-    var results: ISceneObject[] = [];
-    for (var i = 0; i < l; i++) {
-      var o: ISceneObject = values[i];
+    let values: any[] = this._objects;
+    let l: number = this._objects.length;
+    const results: ISceneObject[] = [];
+    for (let i = 0; i < l; i++) {
+      const o: ISceneObject = values[i];
       if (o.findBehavior(type)) {
         results.push(o);
       }
@@ -293,10 +294,10 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
   }
 
   objectByComponent(type): ISceneObject {
-    var values: any[] = this._objects;
-    var l: number = this._objects.length;
-    for (var i = 0; i < l; i++) {
-      var o: ISceneObject = values[i];
+    const values: any[] = this._objects;
+    const l: number = this._objects.length;
+    for (let i = 0; i < l; i++) {
+      const o: ISceneObject = values[i];
       if (o.findBehavior(type)) {
         return o;
       }

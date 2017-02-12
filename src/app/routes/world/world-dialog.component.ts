@@ -25,7 +25,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
   styleUrls: ['./world-dialog.component.scss'],
   templateUrl: './world-dialog.component.html'
 })
-export class WorldDialog {
+export class WorldDialogComponent {
 
   static DEFAULT_TEXT: string = 'Nothing to see here';
   static DEFAULT_TITLE: string = 'Untitled';
@@ -34,7 +34,7 @@ export class WorldDialog {
 
   @Input() scene: IScene;
 
-  private _text$ = new BehaviorSubject<string>(WorldDialog.DEFAULT_TEXT);
+  private _text$ = new BehaviorSubject<string>(WorldDialogComponent.DEFAULT_TEXT);
   text$: Observable<string> = this._text$;
 
   @Input()
@@ -42,7 +42,7 @@ export class WorldDialog {
     this._text$.next(value);
   }
 
-  private _title$ = new BehaviorSubject<string>(WorldDialog.DEFAULT_TITLE);
+  private _title$ = new BehaviorSubject<string>(WorldDialogComponent.DEFAULT_TITLE);
   title$: Observable<string> = this._title$;
 
   @Input()

@@ -19,9 +19,9 @@
     </ul>
     <ul *ngIf="selected$ | async">
       <li class="item selected" layout="row">
-        <rpg-sprite width="32" height="32" class="icon" [name]="(selected$ | async).icon"></rpg-sprite>
-        <span flex class="item-name" [innerText]="(selected$ | async).name"></span>
-        <span class="item-price" [innerText]="(selected$ | async).cost"></span>
+        <rpg-sprite width="32" height="32" class="icon" [name]="(selected$ | async)?.icon"></rpg-sprite>
+        <span flex class="item-name" [innerText]="(selected$ | async)?.name"></span>
+        <span class="item-price" [innerText]="(selected$ | async)?.cost"></span>
       </li>
     </ul>
 

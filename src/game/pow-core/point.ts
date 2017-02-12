@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {errors} from './errors';
 
 export interface IPoint {
@@ -36,7 +35,7 @@ export class Point implements IPoint {
     else if (typeof pointOrX === 'string' && typeof y === 'string') {
       this.set(parseFloat(pointOrX), parseFloat(y));
     }
-    else if (typeof pointOrX == 'number' && typeof y === 'number') {
+    else if (typeof pointOrX === 'number' && typeof y === 'number') {
       this.set(pointOrX, y);
     }
     else {

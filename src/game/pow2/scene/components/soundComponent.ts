@@ -24,7 +24,7 @@ export interface SoundComponentOptions {
   volume?: number;
 }
 
-var DEFAULTS: SoundComponentOptions = {
+const DEFAULTS: SoundComponentOptions = {
   url: null,
   volume: 1,
   loop: false
@@ -76,10 +76,10 @@ export class SoundComponent extends SceneComponent implements SoundComponentOpti
           if (this.audio.data.currentTime >= this.audio.data.duration) {
             if (!this.loop) {
               this.audio.data.pause();
-              this.trigger("audio:done", this);
+              this.trigger('audio:done', this);
             }
             else {
-              this.trigger("audio:loop", this);
+              this.trigger('audio:loop', this);
             }
           }
         });

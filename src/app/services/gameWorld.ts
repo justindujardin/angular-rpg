@@ -13,26 +13,26 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import * as _ from "underscore";
-import {GameStateModel} from "../../game/rpg/models/gameStateModel";
-import {ItemModel, WeaponModel, ArmorModel, UsableModel} from "../../game/rpg/models/all";
-import {Scene} from "../../game/pow2/scene/scene";
-import {EntityFactory} from "../../game/pow-core/resources/entities";
-import {GameDataResource} from "../../game/pow2/game/resources/gameData";
-import {registerSprites, SPREADSHEET_ID} from "../../game/pow2/core/api";
-import {RPG_GAME_ENTITIES} from "../../game/game.entities";
-import {Subject} from "rxjs/Subject";
-import {ReplaySubject, Observable} from "rxjs/Rx";
-import {JSONResource} from "../../game/pow-core/resources/json";
-import {Injectable} from "@angular/core";
-import {ResourceLoader} from "../../game/pow-core/resourceLoader";
-import {PowInput} from "../../game/pow2/core/input";
-import {World} from "../../game/pow-core/world";
-import {SpriteRender} from "./spriteRender";
-import {AppState} from "../app.model";
-import {Store} from "@ngrx/store";
-import {CombatFixedEncounter, Combatant} from "../models/combat/combat.model";
-import {CombatFixedEncounterAction} from "../models/combat/combat.actions";
+import * as _ from 'underscore';
+import {GameStateModel} from '../../game/rpg/models/gameStateModel';
+import {ItemModel, WeaponModel, ArmorModel, UsableModel} from '../../game/rpg/models/all';
+import {Scene} from '../../game/pow2/scene/scene';
+import {EntityFactory} from '../../game/pow-core/resources/entities';
+import {GameDataResource} from '../../game/pow2/game/resources/gameData';
+import {registerSprites, SPREADSHEET_ID} from '../../game/pow2/core/api';
+import {RPG_GAME_ENTITIES} from '../../game/game.entities';
+import {Subject} from 'rxjs/Subject';
+import {ReplaySubject, Observable} from 'rxjs/Rx';
+import {JSONResource} from '../../game/pow-core/resources/json';
+import {Injectable} from '@angular/core';
+import {ResourceLoader} from '../../game/pow-core/resourceLoader';
+import {PowInput} from '../../game/pow2/core/input';
+import {World} from '../../game/pow-core/world';
+import {SpriteRender} from './spriteRender';
+import {AppState} from '../app.model';
+import {Store} from '@ngrx/store';
+import {CombatFixedEncounter, Combatant} from '../models/combat/combat.model';
+import {CombatFixedEncounterAction} from '../models/combat/combat.actions';
 import {
   IGameEncounterCallback,
   IZoneMatch,
@@ -40,8 +40,7 @@ import {
   IGameFixedEncounter,
   IGameItem,
   IGameEncounter
-} from "../../game/rpg/game";
-
+} from '../../game/rpg/game';
 
 let _sharedGameWorld: GameWorld = null;
 
@@ -101,7 +100,9 @@ export class GameWorld extends World {
       return _.indexOf(enc.zones, zone.map) !== -1 || _.indexOf(enc.zones, zone.target) !== -1;
     });
     if (encounters.length === 0) {
-      then && then(true);
+      if (then) {
+        then(true);
+      }
       return;
     }
     const max = encounters.length - 1;
@@ -110,12 +111,11 @@ export class GameWorld extends World {
     this.doEncounter(zone, encounter, then);
   }
 
-
   fixedEncounter(zone: IZoneMatch, encounterId: string, then?: IGameEncounterCallback) {
     const gsr = this.spreadsheet;
-    const encounter = <IGameFixedEncounter>_.where(gsr.getSheetData('fixedencounters'), {
+    const encounter = _.where(gsr.getSheetData('fixedencounters'), {
       id: encounterId
-    })[0];
+    })[0] as IGameFixedEncounter;
     if (!encounter) {
       this.scene.trigger('error', `No encounter found with id: ${encounterId}`);
       return then(true);
@@ -151,19 +151,21 @@ export class GameWorld extends World {
           case 'items':
             item = itemData as any; // <any>new UsableModel(itemData);
             break;
+          default:
+            console.warn('unknown sheet name: ' + sheetName);
+            break;
         }
       }
     }
     return item;
   }
 
-
   private doEncounter(zoneInfo: IZoneMatch, encounter: IGameEncounter, then?: IGameEncounterCallback) {
 
     const enemyList: any[] = this.spreadsheet.getSheetData('enemies');
     const toCombatant = (id: string): Combatant => {
       const itemTemplate = _.where(enemyList, {
-        id: id
+        id
       })[0];
       itemTemplate.maxhp = itemTemplate.hp;
       itemTemplate.maxmp = itemTemplate.mp;
@@ -180,7 +182,6 @@ export class GameWorld extends World {
     this.store.dispatch(new CombatFixedEncounterAction(payload));
   }
 
-
   /** Load game data from google spreadsheet */
   private loadGameData(): Promise<void> {
     return this.loader.loadAsType(SPREADSHEET_ID, GameDataResource).then((resource: GameDataResource) => {
@@ -194,7 +195,7 @@ export class GameWorld extends World {
       .then((res: JSONResource[]) => {
         const jsonRes = res[0];
         const sources = _.map(jsonRes.data, (baseName: string) => {
-          return `${baseName}.json`
+          return `${baseName}.json`;
         });
         return Promise.all(_.map(sources, (fileName: string) => {
           return this.loader.load(fileName)

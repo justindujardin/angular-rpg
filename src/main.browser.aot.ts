@@ -4,7 +4,7 @@
 import { platformBrowser } from '@angular/platform-browser';
 import { decorateModuleRef } from './app/environment';
 /*
- * App Module
+ * AppComponent Module
  * our top level module that holds all of our components
  */
 import { AppModuleNgFactory } from '../compiled/src/app/app.module.ngfactory';

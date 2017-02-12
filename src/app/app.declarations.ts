@@ -1,9 +1,9 @@
 import {GameComponent} from './routes/game/game.component';
-import {NoContent} from './routes/no-content/no-content';
-import {App} from './app.component';
+import {NoContentComponent} from './routes/no-content/no-content';
+import {AppComponent} from './app.component';
 
 export const APP_DECLARATIONS: any[] = [
-  App,
-  NoContent,
+  AppComponent,
+  NoContentComponent,
   GameComponent
 ];

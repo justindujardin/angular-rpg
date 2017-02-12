@@ -13,8 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
-
 import * as _ from 'underscore';
 import {ISceneObject} from '../interfaces/IScene';
 import {Rect} from '../../pow-core/rect';
@@ -39,9 +37,9 @@ export class SceneSpatialDatabase {
   }
 
   removeSpatialObject(obj: ISceneObject) {
-    this._objects = <ISceneObject[]>_.reject(this._objects, function (o: ISceneObject) {
+    this._objects = _.reject(this._objects, (o: ISceneObject) => {
       return o._uid === obj._uid;
-    });
+    }) as ISceneObject[];
   }
 
   queryPoint(point: Point, type, results: ISceneObject[]): boolean {
@@ -50,13 +48,15 @@ export class SceneSpatialDatabase {
   }
 
   queryRect(rect: Rect, type, results: ISceneObject[]): boolean {
-    var foundAny: boolean;
+    let foundAny: boolean;
     if (!results) {
-      throw new Error("Results array must be provided to query scene spatial database");
+      throw new Error('Results array must be provided to query scene spatial database');
     }
     foundAny = false;
-    var list = this._objects;
-    var i: number, len: number, o;
+    const list = this._objects;
+    let i: number;
+    let len: number;
+    let o;
     for (i = 0, len = list.length; i < len; i++) {
       o = list[i];
       if (type && !(o instanceof type)) {

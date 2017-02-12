@@ -8,7 +8,7 @@ import {AppState} from './app.model';
   // styleUrls: ['./app.component.scss'],
   templateUrl: './app.component.html'
 })
-export class App {
+export class AppComponent {
 
   constructor(public store: Store<AppState>) {
   }

@@ -8,14 +8,14 @@ import {IGameSpell} from '../../../../game/rpg/game';
 import {UsableModel} from '../../../../game/rpg/models/usableModel';
 import {GameWorld} from '../../../services/gameWorld';
 import {State} from '../../../../game/pow2/core/state';
-import {CombatPlayerRenderBehavior} from '../behaviors/combat-player-render.behavior';
+import {CombatPlayerRenderBehaviorComponent} from '../behaviors/combat-player-render.behavior';
 // import {CombatItemBehavior} from '../behaviors/actions/combat-item.behavior';
 // import {CombatMagicBehavior} from '../behaviors/actions/combat-magic.behavior';
-import {IChooseActionEvent, CombatChooseActionState} from '../states/combat-choose-action.state';
+import {IChooseActionEvent, CombatChooseActionStateComponent} from '../states/combat-choose-action.state';
 import {IPlayerAction} from '../states/combat.machine';
 import {ElementRef} from '@angular/core';
-import {CombatPlayer} from '../combat-player.entity';
-import {Item} from "../../../models/item/item.model";
+import {CombatPlayerComponent} from '../combat-player.entity';
+import {Item} from '../../../models/item/item.model';
 
 /**
  * Attach an HTML element to the position of a game object.
@@ -25,7 +25,6 @@ export interface UIAttachment {
   offset: Point;
   element: ElementRef;
 }
-
 
 /**
  * A state machine to represent the various UI states involved in
@@ -47,16 +46,16 @@ export interface UIAttachment {
 export class ChooseActionStateMachine extends StateMachine {
   current: GameEntityObject = null;
   target: GameEntityObject = null;
-  player: CombatPlayerRenderBehavior = null;
+  player: CombatPlayerRenderBehaviorComponent = null;
   action: CombatActionBehavior = null;
   spell: IGameSpell = null;
   item: Item = null;
   world: GameWorld = GameWorld.get();
 
-  constructor(public parent: CombatChooseActionState,
+  constructor(public parent: CombatChooseActionStateComponent,
               public scene: Scene,
               public data: IChooseActionEvent,
-              submit: (action: CombatActionBehavior)=>any) {
+              submit: (action: CombatActionBehavior) => any) {
     super();
     this.states = [
       new ChooseActionTarget(),
@@ -73,7 +72,7 @@ export class ChooseActionStateMachine extends StateMachine {
  * Choose a specific action type to apply in combat.
  */
 export class ChooseActionType extends State {
-  static NAME: string = "choose-type";
+  static NAME: string = 'choose-type';
   name: string = ChooseActionType.NAME;
 
   enter(machine: ChooseActionStateMachine) {
@@ -83,12 +82,12 @@ export class ChooseActionType extends State {
       machine.parent.items[0].select();
     };
     if (!machine.current) {
-      throw new Error("Requires Current Player");
+      throw new Error('Requires Current Player');
     }
-    const p: CombatPlayer = machine.current as CombatPlayer;
+    const p: CombatPlayerComponent = machine.current as CombatPlayerComponent;
     machine.player = p.render;
     if (!machine.player) {
-      throw new Error("Requires player render component for combat animations.");
+      throw new Error('Requires player render component for combat animations.');
     }
     let pointerOffset: Point = new Point(-1, -0.25);
     machine.action = machine.target = machine.spell = machine.item = null;
@@ -121,7 +120,7 @@ export class ChooseActionType extends State {
 
     const items = _.filter(p.findBehaviors(CombatActionBehavior), (c: CombatActionBehavior) => c.canBeUsedBy(p));
     machine.parent.items = _.map(items, (a: CombatActionBehavior) => {
-      return <any>{
+      return {
         select: selectAction.bind(this, a),
         label: a.getActionName()
       };
@@ -132,7 +131,6 @@ export class ChooseActionType extends State {
       machine.parent.hidePointer();
       return;
     }
-
 
     machine.player.moveForward(() => {
       machine.parent.setPointerTarget(p, 'right', pointerOffset);
@@ -149,41 +147,41 @@ export class ChooseActionType extends State {
  * Choose a magic spell to cast in combat.
  */
 export class ChooseMagicSpell extends State {
-  static NAME: string = "choose-spell";
+  static NAME: string = 'choose-spell';
   name: string = ChooseMagicSpell.NAME;
 
   enter(machine: ChooseActionStateMachine) {
     if (!machine.current) {
-      throw new Error("Requires Current Player");
+      throw new Error('Requires Current Player');
     }
-    var selectSpell = (spell: IGameSpell) => {
+
+    const clickSelect = (mouse: any, hits: any) => {
+      machine.scene.off('click', clickSelect);
+      machine.target = hits[0];
+      machine.parent.items[0].select();
+    };
+    const selectSpell = (spell: IGameSpell) => {
       machine.scene.off('click', clickSelect);
       machine.spell = spell;
       if (spell.benefit) {
         machine.target = machine.current;
       }
       switch (spell.type) {
-        case "target":
+        case 'target':
           machine.setCurrentState(ChooseActionTarget.NAME);
           break;
         default:
-          console.info("Unknown spell type, submitting without target: " + spell.type);
+          console.info(`Unknown spell type, submitting without target: ${spell.type}`);
           machine.setCurrentState(ChooseActionSubmit.NAME);
       }
     };
-    var spells: any = machine.current.getSpells();
+    const spells: any = machine.current.getSpells();
     machine.parent.items = _.map(spells, (a: any) => {
-      return <any>{
+      return {
         select: selectSpell.bind(this, a),
         label: a.name
       };
     });
-
-    var clickSelect = (mouse: any, hits: any) => {
-      machine.scene.off('click', clickSelect);
-      machine.target = hits[0];
-      machine.parent.items[0].select();
-    };
     machine.scene.on('click', clickSelect);
   }
 
@@ -195,14 +193,14 @@ export class ChooseMagicSpell extends State {
  * Choose an item to use in combat.
  */
 export class ChooseUsableItem extends State {
-  static NAME: string = "choose-item";
+  static NAME: string = 'choose-item';
   name: string = ChooseUsableItem.NAME;
 
   enter(machine: ChooseActionStateMachine) {
     if (!machine.current) {
-      throw new Error("Requires Current Player");
+      throw new Error('Requires Current Player');
     }
-    var selectItem = (item: Item) => {
+    const selectItem = (item: Item) => {
       machine.item = item;
       machine.target = machine.current;
       machine.setCurrentState(ChooseActionTarget.NAME);
@@ -226,7 +224,7 @@ export class ChooseUsableItem extends State {
  * Choose a target to apply a combat action to
  */
 export class ChooseActionTarget extends State {
-  static NAME: string = "choose-target";
+  static NAME: string = 'choose-target';
   name: string = ChooseActionTarget.NAME;
 
   enter(machine: ChooseActionStateMachine) {
@@ -238,6 +236,8 @@ export class ChooseActionTarget extends State {
       machine.parent.hidePointer();
       return;
     }
+    let clickTarget;
+    const pointerOffset: Point = new Point(0.5, -0.25);
     const selectTarget = (target: GameEntityObject) => {
       if (machine.target && machine.target._uid === target._uid) {
         machine.target = target;
@@ -248,21 +248,20 @@ export class ChooseActionTarget extends State {
       machine.target = target;
       machine.parent.setPointerTarget(target, 'left', pointerOffset);
     };
+    clickTarget = (mouse: any, hits: GameEntityObject[]) => {
+      selectTarget(hits[0]);
+    };
 
     const beneficial: boolean = !!(machine && ((machine.spell && machine.spell.benefit) || machine.item));
     const targets: GameEntityObject[] = beneficial ? machine.data.players : machine.data.enemies;
     machine.parent.items = _.map(targets, (a: GameEntityObject) => {
-      return <any>{
+      return {
         select: selectTarget.bind(this, a),
         label: a.model.name
       };
     });
 
-    var pointerOffset: Point = new Point(0.5, -0.25);
-    var clickTarget = (mouse: any, hits: GameEntityObject[]) => {
-      selectTarget(hits[0]);
-    };
-    machine.parent.setPointerTarget(p, "left", pointerOffset);
+    machine.parent.setPointerTarget(p, 'left', pointerOffset);
     machine.scene.on('click', clickTarget);
   }
 
@@ -276,19 +275,19 @@ export class ChooseActionTarget extends State {
  * implementation.
  */
 export class ChooseActionSubmit extends State {
-  static NAME: string = "choose-submit";
+  static NAME: string = 'choose-submit';
   name: string = ChooseActionSubmit.NAME;
 
-  constructor(public submit: (action: CombatActionBehavior)=>any) {
+  constructor(public submit: (action: CombatActionBehavior) => any) {
     super();
   }
 
   enter(machine: ChooseActionStateMachine) {
     if (!machine.current || !machine.action || !this.submit) {
-      throw new Error("Invalid state");
+      throw new Error('Invalid state');
     }
     if (machine.action.canTarget() && !machine.target) {
-      throw new Error("Invalid target");
+      throw new Error('Invalid target');
     }
     machine.player.moveBackward(() => {
       machine.parent.hidePointer();

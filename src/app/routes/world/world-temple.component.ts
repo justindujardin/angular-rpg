@@ -35,7 +35,7 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../../app.model';
 import {GameState} from '../../models/game-state/game-state.model';
 import {GameStateHealPartyAction} from '../../models/game-state/game-state.actions';
-import {PartyMember} from "../../models/party/party.model";
+import {PartyMember} from '../../models/party/party.model';
 
 @Component({
   selector: 'world-temple',
@@ -44,7 +44,7 @@ import {PartyMember} from "../../models/party/party.model";
   encapsulation: ViewEncapsulation.None,
   templateUrl: './world-temple.component.html'
 })
-export class WorldTemple implements OnInit, OnDestroy {
+export class WorldTempleComponent implements OnInit, OnDestroy {
   @Output() onClose = new EventEmitter();
 
   @Input() scene: IScene;
@@ -75,12 +75,11 @@ export class WorldTemple implements OnInit, OnDestroy {
 
   @Input() party: PartyMember[];
 
-
   @Input()
   set feature(feature: TempleFeatureComponent) {
     this.name = feature.name;
     this.icon = feature.icon;
-    this.cost = parseInt(feature.cost);
+    this.cost = parseInt(feature.cost, 10);
   }
 
   constructor(public game: RPGGame,
@@ -88,7 +87,7 @@ export class WorldTemple implements OnInit, OnDestroy {
               public notify: NotificationService) {
   }
 
-  private _onRest$ = new Subject<void>();
+  public _onRest$ = new Subject<void>();
   private _onRestSubscription$: Subscription;
 
   ngOnInit(): void {
@@ -101,14 +100,15 @@ export class WorldTemple implements OnInit, OnDestroy {
           return p.hp !== p.maxhp;
         });
         if (cost > gameState.gold) {
-          this.notify.show("You don't have enough money");
+          this.notify.show('You don\'t have enough money');
         }
         else if (alreadyHealed) {
-          this.notify.show("Keep your money.\nYour party is already fully healed.");
+          this.notify.show('Keep your money.\nYour party is already fully healed.');
         }
         else {
           this.store.dispatch(new GameStateHealPartyAction(cost));
-          this.notify.show("Your party has been healed! \nYou have (" + (gameState.gold - cost) + ") monies.", null, 2500);
+          const msg = 'Your party has been healed! \nYou have (' + (gameState.gold - cost) + ') monies.';
+          this.notify.show(msg, null, 2500);
         }
         _.defer(() => {
           this.onClose.next({});
@@ -119,6 +119,5 @@ export class WorldTemple implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this._onRestSubscription$.unsubscribe();
   }
-
 
 }

@@ -20,15 +20,14 @@ import * as _ from 'underscore';
  * google spreadsheet key.
  * @type {string} The google spreadsheet ID
  */
-export var SPREADSHEET_ID: string = "1IAQbt_-Zq1BUwRNiJorvt4iPEYb5HmZrpyMOkb-OuJo";
+export const SPREADSHEET_ID: string = '1IAQbt_-Zq1BUwRNiJorvt4iPEYb5HmZrpyMOkb-OuJo';
 
-export var NAME: string = "core";
+export const NAME: string = 'core';
 
 /**
  * Specified root path.  Used when loading game asset files, to support cross-domain usage.
  */
-export var GAME_ROOT: string = 'assets/';
-
+export const GAME_ROOT: string = 'assets/';
 
 export function getMapUrl(name: string): string {
   return `${GAME_ROOT}maps/${name}.tmx`;
@@ -38,20 +37,18 @@ export function getSoundEffectUrl(name: string, extension: string = 'wav'): stri
   return `${GAME_ROOT}sounds/${name}.${extension}`;
 }
 
-
 export interface ISpriteMeta {
-  width: number;// Pixel width
-  height: number;// Pixel height
+  width: number; // Pixel width
+  height: number; // Pixel height
   cellWidth?: number; // Optional frame width (defaults to 16px)
   cellHeight?: number; // Optional frame height (defaults to 16px)
-  frames: number;// The number of frames the sprite has.
+  frames: number; // The number of frames the sprite has.
   source: string; // The spritesheet source map
   x: number; // Pixel offset x in the sprite sheet.
   y: number; // Pixel offset y in the sprite sheet.
 }
 
-
-export var data = {
+export const data = {
   maps: {},
   sprites: {},
   items: {},
@@ -81,13 +78,12 @@ export function registerMap(name: string, value: Object) {
  * Describe a dictionary of sprites.  This can be use to
  */
 export function describeSprites(value: Object) {
-  for (var prop in value) {
+  for (let prop in value) {
     if (value.hasOwnProperty(prop)) {
       data.sprites[prop] = _.extend(data.sprites[prop] || {}, value[prop]);
     }
   }
 }
-
 
 /**
  * Register a dictionary of sprite meta data.  This is for automatically
@@ -95,7 +91,7 @@ export function describeSprites(value: Object) {
  * it has not already been set by a call to describeSprites.
  */
 export function registerSprites(name: string, value: Object) {
-  for (var prop in value) {
+  for (let prop in value) {
     if (value.hasOwnProperty(prop)) {
       data.sprites[prop] = _.defaults(data.sprites[prop] || {}, value[prop]);
     }
@@ -103,12 +99,12 @@ export function registerSprites(name: string, value: Object) {
 }
 
 export function getSpriteMeta(name: string): ISpriteMeta {
-  return <ISpriteMeta>data.sprites[name];
+  return data.sprites[name] as ISpriteMeta;
 }
 
 export function registerCreatures(level, creatures) {
   _.each(creatures, (c) => {
-    data.creatures.push(_.extend(c, {level: level}));
+    data.creatures.push(_.extend(c, {level}));
   });
 }
 

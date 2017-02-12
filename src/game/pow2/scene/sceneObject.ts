@@ -46,13 +46,15 @@ export class SceneObject extends Entity {
     if (!this.enabled) {
       return;
     }
-    var values: any[] = this._connectedBehaviors;
-    var l: number = this._connectedBehaviors.length;
-    for (var i = 0; i < l; i++) {
+    const values: any[] = this._connectedBehaviors;
+    const l: number = this._connectedBehaviors.length;
+    for (let i = 0; i < l; i++) {
       if (!values[i]) {
-        throw new Error("Component deleted during tick, use _.defer to delay removal until the callstack unwinds");
+        throw new Error('Component deleted during tick, use _.defer to delay removal until the callstack unwinds');
       }
-      values[i].tick && values[i].tick(elapsed);
+      if (values[i].tick) {
+        values[i].tick(elapsed);
+      }
     }
   }
 
@@ -61,13 +63,15 @@ export class SceneObject extends Entity {
     if (!this.enabled) {
       return;
     }
-    var values: any[] = this._connectedBehaviors;
-    var l: number = this._connectedBehaviors.length;
-    for (var i = 0; i < l; i++) {
+    const values: any[] = this._connectedBehaviors;
+    const l: number = this._connectedBehaviors.length;
+    for (let i = 0; i < l; i++) {
       if (!values[i]) {
-        throw new Error("Component deleted during interpolateTick, use _.defer to delay removal until the callstack unwinds");
+        throw new Error('Component deleted during interpolateTick, delay removal until the callstack unwinds');
       }
-      values[i].interpolateTick && values[i].interpolateTick(elapsed);
+      if (values[i].interpolateTick) {
+        values[i].interpolateTick(elapsed);
+      }
     }
   }
 
@@ -86,7 +90,7 @@ export class SceneObject extends Entity {
   }
 
   addComponentDictionary(components: any, silent?: boolean): boolean {
-    var failed: SceneComponent = null;
+    let failed: SceneComponent = null;
     _.each(components, (comp: SceneComponent, key: string) => {
       if (failed) {
         return;
@@ -96,7 +100,7 @@ export class SceneObject extends Entity {
       }
     });
     if (failed) {
-      console.log("Failed to add component set to host. Component " + failed.toString() + " failed to connect to host.");
+      console.log(`Failed to add component set to host. Component ${failed.toString()} failed to connect to host.`);
     }
     else {
       this.syncBehaviors();
@@ -105,8 +109,8 @@ export class SceneObject extends Entity {
   }
 
   removeComponentDictionary(components: any, silent?: boolean): boolean {
-    var previousCount: number = this._connectedBehaviors.length;
-    var removeIds: string[] = _.map(components, (value: SceneComponent) => {
+    const previousCount: number = this._connectedBehaviors.length;
+    const removeIds: string[] = _.map(components, (value: SceneComponent) => {
       return value.id;
     });
     this._connectedBehaviors = _.filter(this._connectedBehaviors, (obj: SceneComponent) => {
@@ -119,7 +123,7 @@ export class SceneObject extends Entity {
       }
       return true;
     });
-    var change: boolean = this._connectedBehaviors.length === previousCount;
+    const change: boolean = this._connectedBehaviors.length === previousCount;
     if (change && silent !== true) {
       this.syncBehaviors();
     }
@@ -129,9 +133,9 @@ export class SceneObject extends Entity {
   // Debugging
   // -----------------------------------------------------------------------------
   toString(): string {
-    var ctor: any = this.constructor;
-    var name: string = this.name;
-    if (ctor && ctor.name != "Function") {
+    const ctor: any = this.constructor;
+    let name: string = this.name;
+    if (ctor && ctor.name !== 'Function') {
       name = ctor.name || (this.toString().match(/function (.+?)\(/) || [, ''])[1];
     }
     _.each(this._connectedBehaviors, (comp: SceneComponent) => {

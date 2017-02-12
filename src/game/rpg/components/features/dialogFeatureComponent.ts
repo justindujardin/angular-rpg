@@ -13,10 +13,8 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {GameFeatureComponent} from '../gameFeatureComponent';
 import {TileObject} from '../../../pow2/tile/tileObject';
-
 
 export class DialogFeatureComponent extends GameFeatureComponent {
   title: string;
@@ -48,4 +46,3 @@ export class DialogFeatureComponent extends GameFeatureComponent {
   }
 
 }
-

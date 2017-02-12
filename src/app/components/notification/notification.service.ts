@@ -13,12 +13,12 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {Injectable} from "@angular/core";
-import {RPGGame} from "../../services/rpgGame";
-import {Animate} from "../../services/animate";
-import {GameWorld} from "../../services/gameWorld";
-import {IWorldObject} from "../../../game/pow-core/world";
-import {IProcessObject} from "../../../game/pow-core/time";
+import {Injectable} from '@angular/core';
+import {RPGGame} from '../../services/rpgGame';
+import {Animate} from '../../services/animate';
+import {GameWorld} from '../../services/gameWorld';
+import {IWorldObject} from '../../../game/pow-core/world';
+import {IProcessObject} from '../../../game/pow-core/time';
 
 /**
  * Describe a notification that exists in the queue.
@@ -103,14 +103,13 @@ export class NotificationService implements IWorldObject, IProcessObject {
   }
 
   show(message: string, done?: () => void, duration?: number): INotifyItem {
-    var obj: INotifyItem = {
-      message: message,
-      duration: typeof duration === 'undefined' ? this.defaultTimeout : duration,
-      done: done
+    const obj: INotifyItem = {
+      message,
+      done,
+      duration: typeof duration === 'undefined' ? this.defaultTimeout : duration
     };
     return this.queue(obj);
   }
-
 
   dismiss() {
     if (!this._current || this.paused) {
@@ -121,10 +120,11 @@ export class NotificationService implements IWorldObject, IProcessObject {
       if (this._current) {
         // Don't let exceptions in callback mess up current = null;
         try {
-          this._current.done && this._current.done(this._current);
-        }
-        catch (e) {
-          console.log(e);
+          if (this._current.done) {
+            this._current.done(this._current);
+          }
+        } catch (e) {
+          console.warn(e);
         }
         this._current = null;
         this.message = null;
@@ -150,9 +150,9 @@ export class NotificationService implements IWorldObject, IProcessObject {
    */
   processFrame(elapsed: number) {
     if (this._current && this.paused !== true) {
-      var c = this._current;
-      var timeout: boolean = c.duration && c.elapsed > c.duration;
-      var dismissed: boolean = c.dismissed === true;
+      const c = this._current;
+      let timeout: boolean = c.duration && c.elapsed > c.duration;
+      let dismissed: boolean = c.dismissed === true;
       if (!timeout && !dismissed) {
         c.elapsed += elapsed;
         return;
@@ -171,4 +171,3 @@ export class NotificationService implements IWorldObject, IProcessObject {
   }
 
 }
-

@@ -19,11 +19,10 @@ import {GameStateModel} from '../../models/gameStateModel';
 import {PlayerComponent} from '../playerComponent';
 import {TileObject} from '../../../pow2/tile/tileObject';
 import {Point} from '../../../pow-core/point';
-import {GameWorld} from '../../../../app/services/gameWorld';
 import {Subscription} from 'rxjs';
 import {getKeyData} from '../../../../app/models/game-state/game-state.reducer';
 import {IPoint} from '../../../pow-core';
-import {GameStateSetKeyDataAction} from "../../../../app/models/game-state/game-state.actions";
+import {GameStateSetKeyDataAction} from '../../../../app/models/game-state/game-state.actions';
 
 export class ShipFeatureComponent extends GameFeatureComponent {
   party: PlayerComponent;
@@ -34,7 +33,7 @@ export class ShipFeatureComponent extends GameFeatureComponent {
   private _subscription: Subscription = null;
 
   disconnectBehavior(): boolean {
-    if(this._subscription) {
+    if (this._subscription) {
       this._subscription.unsubscribe();
       this._subscription = null;
     }

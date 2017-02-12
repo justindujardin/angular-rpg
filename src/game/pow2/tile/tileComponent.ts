@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {TileObject} from './tileObject';
 import {TileMap} from './tileMap';
 import {SceneComponent} from '../scene/sceneComponent';
@@ -26,8 +25,8 @@ export class TileComponent extends SceneComponent {
    * tiles.
    */
   static Events: any = {
-    ENTERED: "tile:entered",
-    EXITED: "tile:exited"
+    ENTERED: 'tile:entered',
+    EXITED: 'tile:exited'
   };
 
   syncBehavior(): boolean {

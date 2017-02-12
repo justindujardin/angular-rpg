@@ -22,16 +22,16 @@ export class Visibility {
   }
 
   onChange() {
-    switch (document.visibilityState) {
-      case 'visible':
-        break;
-      case 'hidden':
-        break;
-      case 'prerender':
-        break;
-      case 'unloaded':
-        break;
-
-    }
+    // switch (document.visibilityState) {
+    //   case 'visible':
+    //     break;
+    //   case 'hidden':
+    //     break;
+    //   case 'prerender':
+    //     break;
+    //   case 'unloaded':
+    //     break;
+    //
+    // }
   }
 }

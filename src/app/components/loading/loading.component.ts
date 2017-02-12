@@ -1,5 +1,5 @@
-import {Component, ChangeDetectionStrategy} from "@angular/core";
-import {LoadingService} from "./loading.service";
+import {Component, ChangeDetectionStrategy} from '@angular/core';
+import {LoadingService} from './loading.service';
 
 @Component({
   selector: 'loading',
@@ -16,7 +16,7 @@ import {LoadingService} from "./loading.service";
     </div>
   </div>`
 })
-export class Loading {
+export class LoadingComponent {
   constructor(public loadingService: LoadingService) {
   }
 }

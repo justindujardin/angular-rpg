@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {SceneComponent} from '../sceneComponent';
 import {SceneView} from '../sceneView';
 import {Point} from '../../../pow-core/point';
@@ -22,7 +21,8 @@ export class CameraComponent extends SceneComponent {
   process(view: SceneView) {
     view.camera.point.set(this.host.point);
     view.cameraScale = view.context.canvas.width > 768 ? 4 : 2;
-    var canvasSize = view.screenToWorld(new Point(view.context.canvas.width, view.context.canvas.height), view.cameraScale);
+    const screenPoint = new Point(view.context.canvas.width, view.context.canvas.height);
+    const canvasSize = view.screenToWorld(screenPoint, view.cameraScale);
     view.camera.extent.set(canvasSize);
   }
 }

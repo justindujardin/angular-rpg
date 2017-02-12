@@ -13,11 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {TileComponent} from '../../pow2/tile/tileComponent';
 import {TileObject} from '../../pow2/tile/tileObject';
 import {GameTileMap} from '../../gameTileMap';
-
 
 export class GameComponent extends TileComponent {
   host: TileObject = null;

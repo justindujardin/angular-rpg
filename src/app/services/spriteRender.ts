@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {data, ISpriteMeta} from '../../game/pow2/core/api';
 import {Rect} from '../../game/pow-core/rect';
 import {ImageResource} from '../../game/pow-core/resources/image';
@@ -39,11 +38,11 @@ export class SpriteRender {
   sizeCanvas(width: number, height: number) {
     this.canvas.width = width;
     this.canvas.height = height;
-    this.context = <CanvasRenderingContext2D>this.canvas.getContext('2d');
+    this.context = this.canvas.getContext('2d') as CanvasRenderingContext2D;
     this.context.msImageSmoothingEnabled = false;
-    (<any>this.context).imageSmoothingEnabled = false;
-    (<any>this.context).webkitImageSmoothingEnabled = false;
-    (<any>this.context).mozImageSmoothingEnabled = false;
+    (<any> this.context).imageSmoothingEnabled = false;
+    (<any> this.context).webkitImageSmoothingEnabled = false;
+    (<any> this.context).mozImageSmoothingEnabled = false;
   }
 
   getSpriteSheet(name: string): Promise<ImageResource[]> {
@@ -51,14 +50,14 @@ export class SpriteRender {
   }
 
   getSingleSprite(spriteName: string, frame: number = 0): Promise<HTMLImageElement> {
-    var coords: any = data.sprites[spriteName];
+    let coords: any = data.sprites[spriteName];
     if (!coords) {
-      return Promise.reject("Unable to find sprite by name: " + spriteName);
+      return Promise.reject(`Unable to find sprite by name: ${spriteName}`);
     }
     return new Promise<HTMLImageElement>((resolve, reject) => {
       this.getSpriteSheet(coords.source).then((images: ImageResource[]) => {
         const image = images[0];
-        var cell: Rect = this.getSpriteRect(spriteName, frame);
+        const cell: Rect = this.getSpriteRect(spriteName, frame);
 
         // Resize render target to match cell size
         this.sizeCanvas(cell.extent.x, cell.extent.y);
@@ -78,13 +77,13 @@ export class SpriteRender {
           this.canvas.width, this.canvas.height);
 
         // Serialize the canvas and return as an HTMLImageElement
-        var src: string = this.canvas.toDataURL();
-        var result: HTMLImageElement = new Image();
+        const src: string = this.canvas.toDataURL();
+        const result: HTMLImageElement = new Image();
         result.src = src;
-        result.onload = function () {
+        result.onload = () => {
           resolve(result);
         };
-        result.onerror = function (err) {
+        result.onerror = (err) => {
           reject(err);
         };
       });
@@ -92,19 +91,19 @@ export class SpriteRender {
   }
 
   getSpriteRect(name: string, frame: number = 0) {
-    var c: ISpriteMeta = this.getSpriteMeta(name);
-    var cx = c.x;
-    var cy = c.y;
+    const c: ISpriteMeta = this.getSpriteMeta(name);
+    let cx = c.x;
+    let sourceWidth: number = SpriteRender.SIZE;
+    let sourceHeight: number = SpriteRender.SIZE;
+    let cy = c.y;
     if (c.frames > 1) {
-      var sourceWidth: number = SpriteRender.SIZE;
-      var sourceHeight: number = SpriteRender.SIZE;
       if (c && typeof c.cellWidth !== 'undefined' && typeof c.cellHeight !== 'undefined') {
         sourceWidth = c.cellWidth;
         sourceHeight = c.cellHeight;
       }
-      var cwidth = c.width / sourceWidth;
-      var fx = (frame % (cwidth));
-      var fy = Math.floor((frame - fx) / cwidth);
+      const cwidth = c.width / sourceWidth;
+      const fx = (frame % (cwidth));
+      const fy = Math.floor((frame - fx) / cwidth);
       cx += fx * sourceWidth;
       cy += fy * sourceHeight;
     }
@@ -116,7 +115,7 @@ export class SpriteRender {
   }
 
   getSpriteMeta(name: string): ISpriteMeta {
-    var desc = data.sprites[name];
+    const desc = data.sprites[name];
     return desc;
   }
 }

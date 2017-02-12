@@ -19,14 +19,14 @@ import {Component, ViewEncapsulation, Input, Output, EventEmitter, OnDestroy} fr
 import {RPGGame, NotificationService} from '../../services';
 import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
-import {ItemRemoveAction, ItemAddAction} from '../../models/item/item.actions';
-import {StoreFeatureComponent} from '../../../game/rpg/components/features/storeFeatureComponent';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {IScene} from '../../../game/pow2/interfaces/IScene';
 import {Item} from '../../models/item/item.model';
 import {getGameState, getGold} from '../../models/game-state/game-state.reducer';
 import {GameState} from '../../models/game-state/game-state.model';
 import {GameStateAddGoldAction} from '../../models/game-state/game-state.actions';
+import {ItemRemoveAction, ItemAddAction} from '../../models/item/item.actions';
+import {StoreFeatureComponent} from '../../../game/rpg/components/features/storeFeatureComponent';
 
 @Component({
   selector: 'world-store',
@@ -34,7 +34,7 @@ import {GameStateAddGoldAction} from '../../models/game-state/game-state.actions
   styleUrls: ['./world-store.component.scss'],
   templateUrl: './world-store.component.html',
 })
-export class WorldStore implements OnDestroy {
+export class WorldStoreComponent implements OnDestroy {
   @Output() onClose = new EventEmitter();
 
   partyGold$: Observable<number> = getGold(this.store);
@@ -46,10 +46,10 @@ export class WorldStore implements OnDestroy {
   /** Determine if the UI is in a selling state. */
   selling$: Observable<boolean> = this._selling$;
 
-  private _selected$ = new BehaviorSubject<Item>(null);
+  /** @internal */
+  _selected$ = new BehaviorSubject<Item>(null);
   /** The selected item to purchase/sell. */
   selected$: Observable<Item> = this._selected$;
-
 
   isBuying$: Observable<boolean> = Observable
     .combineLatest(this.selected$, this.selling$, (selected: boolean, selling: boolean) => {
@@ -66,8 +66,10 @@ export class WorldStore implements OnDestroy {
     return selling ? 'Sell' : 'Buy';
   });
 
-  private _onAction$ = new Subject<void>();
-  private _onToggleAction$ = new Subject<Item>();
+  /** @internal */
+  _onAction$ = new Subject<void>();
+  /** @internal */
+  _onToggleAction$ = new Subject<Item>();
 
   private _doToggleActionSubscription$ = this._onToggleAction$
     .do(() => {
@@ -103,7 +105,7 @@ export class WorldStore implements OnDestroy {
           return;
         }
         this.store.dispatch(new GameStateAddGoldAction(-value));
-        this.notify.show("Purchased " + item.name + ".", null, 1500);
+        this.notify.show(`Purchased ${item.name}.`, null, 1500);
         this.store.dispatch(new ItemAddAction(item));
       }
 
@@ -151,9 +153,10 @@ export class WorldStore implements OnDestroy {
     });
 
     this._name$.next(feature.name);
-    this._inventory$.next(<rpg.IGameItem[]>_.map(_.where(items, {
+    const inventory = _.map(_.where(items, {
       level: feature.host.feature.level
-    }), (i: any) => _.extend({}, i)));
+    }), (i: any) => _.extend({}, i)) as rpg.IGameItem[];
+    this._inventory$.next(inventory);
   }
 
 }

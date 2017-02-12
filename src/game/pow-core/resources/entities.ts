@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {Entity} from '../entity';
 import {errors} from '../errors';
 import * as _ from 'underscore';
@@ -34,7 +33,7 @@ export enum EntityError {
  * composite entity objects.
  */
 export interface IEntityInputsMap {
-  [name: string]: Function
+  [name: string]: Function;
 }
 
 /**
@@ -92,7 +91,7 @@ export class EntityFactory {
    */
   createObject(templateName: string, inputs?: any): Promise<any> {
     // Valid template name.
-    var tpl: IEntityTemplate = this.getTemplate(templateName);
+    let tpl: IEntityTemplate = this.getTemplate(templateName);
     if (!tpl) {
       return Promise.reject('invalid template');
     }
@@ -105,22 +104,21 @@ export class EntityFactory {
         //
         // If inputs.params are specified use them explicitly, otherwise pass the inputs
         // dire
-        var inputValues: any[] = tpl.params ? _.map(tpl.params, (n: string) => {
+        const inputValues: any[] = tpl.params ? _.map(tpl.params, (n: string) => {
             return inputs[n];
           }) : [inputs];
 
-
-        var object: Entity = this.constructObject(type, inputValues);
+        const object: Entity = this.constructObject(type, inputValues);
 
         return Promise.all(_.map(tpl.components, (comp: IEntityObject) => {
           return new Promise<void>((resolve, reject) => {
-            var inputValues: any[] = _.map(comp.params || [], (n: string) => {
+            const compInputs: any[] = _.map(comp.params || [], (n: string) => {
               return inputs[n];
             });
             const ctor = comp.type;
             let compObject = null;
             try {
-              compObject = this.constructObject(ctor, inputValues);
+              compObject = this.constructObject(ctor, compInputs);
             }
             catch (e) {
               console.error(e);
@@ -161,7 +159,7 @@ export class EntityFactory {
         return;
       }
       if (typeof inputs === 'undefined') {
-        console.error("EntityContainer: missing inputs for template that requires: " + tplInputs.join(', '));
+        console.error(`EntityContainer: missing inputs for template that requires: ${tplInputs.join(', ')}`);
         return reject(EntityError.INPUT_NAME);
       }
 
@@ -169,12 +167,12 @@ export class EntityFactory {
       const verifyInput = (inputType: any, name: string): Promise<any> => {
         return new Promise<void>((resolveInput, rejectInput) => {
           if (typeof inputs[name] === 'undefined') {
-            console.error("EntityContainer: missing input with name: " + name);
+            console.error(`EntityContainer: missing input with name: ${name}`);
             rejectInput(EntityError.INPUT_NAME);
           }
           // Match using instanceof if the inputType was found
           else if (inputType && !(inputs[name] instanceof inputType)) {
-            console.error("EntityContainer: bad input type for input: " + name);
+            console.error(`EntityContainer: bad input type for input: ${name}`);
             rejectInput(EntityError.INPUT_TYPE);
           }
           else {
@@ -190,7 +188,7 @@ export class EntityFactory {
             });
             let unique: boolean = _.uniq(keys).length === keys.length;
             if (!unique) {
-              console.error("EntityContainer: duplicate name in template components: " + keys.join(', '));
+              console.error(`EntityContainer: duplicate name in template components: ${keys.join(', ')}`);
               return Promise.reject(EntityError.COMPONENT_NAME_DUPLICATE);
             }
           }
@@ -201,8 +199,8 @@ export class EntityFactory {
             if (comp.params) {
               _.each(comp.params, (i: string) => {
                 if (typeof inputs[i] === 'undefined') {
-                  console.error("EntityContainer: missing component param: " + i);
-                  unsatisfied |= EntityError.COMPONENT_INPUT;
+                  console.error(`EntityContainer: missing component param: ${i}`);
+                  unsatisfied = EntityError.COMPONENT_INPUT;
                 }
               });
             }
@@ -221,20 +219,18 @@ export class EntityFactory {
       return null;
     }
     // Valid template name.
-    var tpl: any = _.where(this.data, {name: templateName})[0];
+    let tpl: any = _.where(this.data, {name: templateName})[0];
     if (!tpl) {
       return null;
     }
     return tpl;
   }
 
-
   constructObject(constructor, argArray): any {
-    var args = [null].concat(argArray);
-    var factoryFunction = constructor.bind.apply(constructor, args);
+    const args = [null].concat(argArray);
+    const factoryFunction = constructor.bind.apply(constructor, args);
     return new factoryFunction();
   }
-
 
   /**
    * Do a case-insensitive typeof compare to allow generally simpler
@@ -244,9 +240,8 @@ export class EntityFactory {
    * @returns {boolean} True if the expected type matches the type
    */
   typeofCompare(type: any, expected: string): boolean {
-    var typeString: string = typeof type;
-    var expected: string = '' + expected;
-    return typeString.toUpperCase() === expected.toUpperCase();
+    const typeString: string = typeof type;
+    return typeString.toUpperCase() === ('' + expected).toUpperCase();
   }
 
 }

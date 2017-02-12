@@ -2,7 +2,6 @@ import {Action} from '@ngrx/store';
 import {type} from '../util';
 import {Item} from './item.model';
 
-
 export const ItemActionTypes = {
   ADD: type('rpg/item/add'),
   REMOVE: type('rpg/item/remove')
@@ -24,4 +23,4 @@ export class ItemRemoveAction implements Action {
 
 export type ItemActions
   = ItemAddAction
-  | ItemRemoveAction
+  | ItemRemoveAction;

@@ -50,38 +50,37 @@ export class PowInput implements IWorldObject {
   _mouseElements: NamedMouseElement[] = [];
 
   static mouseOnView(ev: MouseEvent, view: SceneView, coords?: CanvasMouseCoords) {
-    var relativeElement: any = ev.srcElement;
-    var touches: any = (<any>ev).touches;
+    const relativeElement: any = ev.srcElement;
+    const touches: any = (<any> ev).touches;
     if (touches && touches.length > 0) {
-      ev = <any>touches[0];
+      ev = <any> touches[0];
     }
-    var result: CanvasMouseCoords = coords || {
+    const result: CanvasMouseCoords = coords || {
         point: new Point(),
         world: new Point()
       };
-    var canoffset = $(relativeElement).offset();
-    var x = ev.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
-    var y = ev.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top);
+    const canoffset = $(relativeElement).offset();
+    const x = ev.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
+    const y = ev.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top);
     result.point.set(x, y);
     // Generate world mouse position
-    var worldMouse = view.screenToWorld(result.point, view.cameraScale).add(view.camera.point).round();
+    const worldMouse = view.screenToWorld(result.point, view.cameraScale).add(view.camera.point).round();
     result.world.set(worldMouse.x, worldMouse.y);
     return result;
   }
 
-
   constructor() {
-    window.addEventListener(<string>"keydown", (ev: KeyboardEvent) => {
+    window.addEventListener('keydown', (ev: KeyboardEvent) => {
       this._keysDown[ev.which] = true;
     });
-    window.addEventListener(<string>'keyup', (ev: KeyboardEvent) => {
+    window.addEventListener('keyup', (ev: KeyboardEvent) => {
       this._keysDown[ev.which] = false;
     });
-    var hooks = this._mouseElements;
-    window.addEventListener(<string>'mousemove touchmove', (ev: MouseEvent) => {
-      var l: number = hooks.length;
-      for (var i = 0; i < l; i++) {
-        var hook: NamedMouseElement = hooks[i];
+    const hooks = this._mouseElements;
+    window.addEventListener('mousemove touchmove', (ev: MouseEvent) => {
+      let l: number = hooks.length;
+      for (let i = 0; i < l; i++) {
+        const hook: NamedMouseElement = hooks[i];
         if (ev.srcElement === hook.view.canvas) {
           PowInput.mouseOnView(ev, hook.view, hook);
         }
@@ -94,13 +93,13 @@ export class PowInput implements IWorldObject {
   }
 
   mouseHook(view: SceneView, name: string): NamedMouseElement {
-    var hooks = <NamedMouseElement[]>_.where(this._mouseElements, {name: name});
+    const hooks = _.where(this._mouseElements, {name}) as NamedMouseElement[];
     if (hooks.length > 0) {
       return hooks[0];
     }
-    var result: NamedMouseElement = {
-      name: name,
-      view: view,
+    const result: NamedMouseElement = {
+      name,
+      view,
       point: new Point(-1, -1),
       world: new Point(-1, -1)
     };
@@ -119,9 +118,9 @@ export class PowInput implements IWorldObject {
   getMouseHook(name: string): NamedMouseElement;
   getMouseHook(view: SceneView): NamedMouseElement;
   getMouseHook(nameOrView: any): NamedMouseElement {
-    return <NamedMouseElement>_.find(this._mouseElements, (hook: NamedMouseElement) => {
+    return _.find(this._mouseElements, (hook: NamedMouseElement) => {
       return hook.name === nameOrView || hook.view._uid === nameOrView._uid;
-    });
+    }) as NamedMouseElement;
   }
 
   keyDown(key: number): boolean {

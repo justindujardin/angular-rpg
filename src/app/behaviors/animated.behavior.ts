@@ -38,7 +38,7 @@ export interface IAnimationTask extends IAnimationConfig {
   selector: 'animated-behavior',
   template: '<ng-content></ng-content>'
 })
-export class AnimatedBehavior extends TickedComponent {
+export class AnimatedBehaviorComponent extends TickedComponent {
   host: TileObject;
 
   static EVENTS = {
@@ -48,10 +48,10 @@ export class AnimatedBehavior extends TickedComponent {
   };
   private _tasks: IAnimationTask[] = [];
   private _animationKeys: any[] = [];
-  private _currentAnim: any = null;
+  private _currentAnimation: any = null;
 
   play(config: IAnimationConfig) {
-    var task: IAnimationTask = <any>config;
+    const task: IAnimationTask = config as any;
     task.elapsed = 0;
     if (task.move) {
       task.startFrame = this.host.frame;
@@ -66,8 +66,8 @@ export class AnimatedBehavior extends TickedComponent {
   }
 
   stop(config: IAnimationConfig) {
-    for (var i = 0; i < this._tasks.length; i++) {
-      var task: IAnimationTask = this._tasks[i];
+    for (let i = 0; i < this._tasks.length; i++) {
+      const task: IAnimationTask = this._tasks[i];
       if (task.name === config.name) {
         task.complete = true;
       }
@@ -75,15 +75,19 @@ export class AnimatedBehavior extends TickedComponent {
   }
 
   removeCompleteTasks() {
-    for (var i = 0; i < this._tasks.length; i++) {
-      var task: IAnimationTask = this._tasks[i];
+    for (let i = 0; i < this._tasks.length; i++) {
+      const task: IAnimationTask = this._tasks[i];
       if (task.complete === true) {
         this._tasks.splice(i, 1);
-        task.done && task.done(task);
-        task.callback && task.callback(task);
-        //this.host.frame = task.startFrame;
-        this.trigger(AnimatedBehavior.EVENTS.Stopped, {
-          task: task,
+        if (task.done) {
+          task.done(task);
+        }
+        if (task.callback) {
+          task.callback(task);
+        }
+        // this.host.frame = task.startFrame;
+        this.trigger(AnimatedBehaviorComponent.EVENTS.Stopped, {
+          task,
           component: this
         });
         i--;
@@ -108,16 +112,16 @@ export class AnimatedBehavior extends TickedComponent {
         task.elapsed = task.duration;
       }
       if (task.duration > 0) {
-        var factor: number = task.elapsed / task.duration;
+        const factor: number = task.elapsed / task.duration;
         // Interp point
-        //console.log("Interp from " + task.start + " to " + task.target );
+        // console.log("Interp from " + task.start + " to " + task.target );
         if (task.move && task.move instanceof Point) {
           this.host.point.set(task.value.interpolate(task.start, task.target, factor));
         }
         if (task.frames && task.frames.length) {
-          var index = Math.round(this.interpolate(0, task.frames.length - 1, factor));
-          var frame = task.frames[index];
-          //console.log("Interp frame = " + frame);
+          const index = Math.round(this.interpolate(0, task.frames.length - 1, factor));
+          const frame = task.frames[index];
+          // console.log("Interp frame = " + frame);
           this.host.frame = frame;
         }
       }
@@ -139,7 +143,7 @@ export class AnimatedBehavior extends TickedComponent {
     // own animation as a callback before invoking this.
     if (typeof cb !== 'undefined') {
       animations.push({
-        name: "Chain Callback",
+        name: 'Chain Callback',
         duration: 0,
         callback: cb
       });
@@ -154,13 +158,13 @@ export class AnimatedBehavior extends TickedComponent {
     if (this._animationKeys.length === 0) {
       return;
     }
-    this._currentAnim = this._animationKeys.shift();
-    this._currentAnim.done = () => {
+    this._currentAnimation = this._animationKeys.shift();
+    this._currentAnimation.done = () => {
       _.defer(() => {
         this._animateNext();
       });
     };
-    this.play(this._currentAnim);
+    this.play(this._currentAnimation);
   }
 
 }

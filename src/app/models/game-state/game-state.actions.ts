@@ -3,7 +3,6 @@ import {GameState, GamePositionFacing} from './game-state.model';
 import {type} from '../util';
 import {IPoint} from '../../../game/pow-core';
 
-
 export const GameStateActionTypes = {
   LOAD: type('rpg/state/load'),
   LOAD_SUCCESS: type('rpg/state/load-success'),
@@ -16,7 +15,6 @@ export const GameStateActionTypes = {
   ADD_GOLD: type('rpg/state/gold'),
   HEAL_PARTY: type('rpg/state/party/heal'),
 };
-
 
 //
 // Load state Actions
@@ -91,7 +89,6 @@ export class GameStateTravelFailAction implements Action {
   }
 }
 
-
 //
 // Move state actions
 //
@@ -109,7 +106,6 @@ export class GameStateMoveAction implements Action {
   }
 }
 
-
 //
 // Gold state actions
 //
@@ -119,7 +115,6 @@ export class GameStateAddGoldAction implements Action {
   constructor(public payload: number) {
   }
 }
-
 
 //
 // Party state actions
@@ -134,7 +129,6 @@ export class GameStateHealPartyAction implements Action {
   }
 }
 
-
 export type GameStateActions
   = GameStateLoadAction
   | GameStateLoadSuccessAction
@@ -144,4 +138,4 @@ export type GameStateActions
   | GameStateTravelFailAction
   | GameStateMoveAction
   | GameStateAddGoldAction
-  | GameStateHealPartyAction
+  | GameStateHealPartyAction;

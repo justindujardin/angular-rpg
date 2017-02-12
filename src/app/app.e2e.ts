@@ -1,11 +1,10 @@
-import { browser, by, element } from 'protractor';
+import {browser} from 'protractor';
 
-describe('App', () => {
+describe('AppComponent', () => {
 
   beforeEach(() => {
     browser.get('/');
   });
-
 
   it('should have a title', () => {
     let subject = browser.getTitle();

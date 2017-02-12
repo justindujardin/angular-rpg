@@ -13,8 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
-
 import {Resource} from '../resource';
 
 /**
@@ -26,7 +24,7 @@ export class ScriptResource extends Resource {
   fetch(url?: string): Promise<ScriptResource> {
     this.url = url || this.url;
     return new Promise<ScriptResource>((resolve, reject) => {
-      var request: any = $.getScript(this.url);
+      const request: any = $.getScript(this.url);
       request.done((script: HTMLScriptElement) => {
         this.data = script;
         resolve(this);

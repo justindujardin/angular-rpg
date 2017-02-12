@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
 import {GameEntityObject} from '../objects/gameEntityObject';
 import {GameFeatureObject} from '../objects/gameFeatureObject';
@@ -47,11 +46,12 @@ export class PlayerComponent extends BasePlayerComponent {
     if (this.host.scene && !this.map) {
       this.map = this.host.scene.objectByType(TileMap) as TileMap;
     }
+    let i = 0;
 
-    var collision: boolean = this.collider && this.collider.collide(x, y, GameFeatureObject, results);
+    const collision: boolean = this.collider && this.collider.collide(x, y, GameFeatureObject, results);
     if (collision) {
-      for (var i = 0; i < results.length; i++) {
-        var o = <GameFeatureObject>results[i];
+      for (i = 0; i < results.length; i++) {
+        const o = <GameFeatureObject> results[i];
         if (o.passable === true || !o.type) {
           return false;
         }
@@ -64,13 +64,13 @@ export class PlayerComponent extends BasePlayerComponent {
     // has any unpassable attributes set on it.  If any unpassable attributes are
     // found, there is a collision.
     if (this.map) {
-      var layers: ITiledLayer[] = this.map.getLayers();
-      for (var i = 0; i < layers.length; i++) {
-        var terrain = this.map.getTileData(layers[i], x, y);
+      const layers: ITiledLayer[] = this.map.getLayers();
+      for (i = 0; i < layers.length; i++) {
+        const terrain = this.map.getTileData(layers[i], x, y);
         if (!terrain) {
           continue;
         }
-        for (var j = 0; j < this.passableKeys.length; j++) {
+        for (let j = 0; j < this.passableKeys.length; j++) {
           if (terrain[this.passableKeys[j]] === false) {
             return true;
           }

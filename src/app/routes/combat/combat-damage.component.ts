@@ -29,7 +29,7 @@ import {Point} from '../../../game/pow-core/point';
   `,
   styleUrls: ['./combat-damage.component.scss']
 })
-export class CombatDamage implements AfterViewInit {
+export class CombatDamageComponent implements AfterViewInit {
   @Input() classes: string[] = [];
   @Input() value: number = 0;
   @Input() position: Point = new Point();

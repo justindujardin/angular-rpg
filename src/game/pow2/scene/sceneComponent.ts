@@ -5,4 +5,3 @@ import {Behavior} from '../../pow-core/behavior';
 export class SceneComponent extends Behavior {
   host: SceneObject;
 }
-

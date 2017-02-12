@@ -1,14 +1,15 @@
-import {Component} from "@angular/core";
-import {RPGGame, NotificationService} from "../../services/index";
+import {Component, Input} from '@angular/core';
+import {RPGGame, NotificationService} from '../../services/index';
 
 @Component({
   selector: 'party-menu',
-  inputs: ['game', 'page', 'open'],
   styleUrls: ['party-menu.component.scss'],
   templateUrl: 'party-menu.component.html'
 })
-export class PartyMenu {
+export class PartyMenuComponent {
+  @Input()
   page: string = 'party';
+  @Input()
   open: boolean = false;
 
   toggle() {

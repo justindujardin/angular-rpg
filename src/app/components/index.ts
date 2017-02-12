@@ -13,16 +13,16 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {NgModule, ModuleWithProviders} from "@angular/core";
-import {CommonModule} from "@angular/common";
-import {RPG_HEALTH_BAR_EXPORTS} from "./health-bar/index";
-import {RPG_LOADING_EXPORTS, RPG_LOADING_PROVIDERS} from "./loading/index";
-import {RPG_NOTIFICATION_EXPORTS, RPG_NOTIFICATION_PROVIDERS} from "./notification/index";
-import {RPG_PARTY_MENU_EXPORTS} from "./party-menu/index";
-import {RPG_PLAYER_CARD_EXPORTS} from "./player-card/index";
-import {RPG_PARTY_INVENTORY_EXPORTS} from "./party-inventory/index";
-import {RPG_SPRITE_EXPORTS} from "./sprite/index";
-import {RPG_TILE_MAP_EXPORTS} from "./tile-map/index";
+import {NgModule, ModuleWithProviders} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RPG_HEALTH_BAR_EXPORTS} from './health-bar/index';
+import {RPG_LOADING_EXPORTS, RPG_LOADING_PROVIDERS} from './loading/index';
+import {RPG_NOTIFICATION_EXPORTS, RPG_NOTIFICATION_PROVIDERS} from './notification/index';
+import {RPG_PARTY_MENU_EXPORTS} from './party-menu/index';
+import {RPG_PLAYER_CARD_EXPORTS} from './player-card/index';
+import {RPG_PARTY_INVENTORY_EXPORTS} from './party-inventory/index';
+import {RPG_SPRITE_EXPORTS} from './sprite/index';
+import {RPG_TILE_MAP_EXPORTS} from './tile-map/index';
 
 export * from './health-bar/index';
 export * from './loading/index';
@@ -32,7 +32,6 @@ export * from './party-menu/index';
 export * from './player-card/index';
 export * from './sprite/index';
 export * from './tile-map/index';
-
 
 /** Common game/application components */
 export const APP_COMPONENTS_EXPORTS = [

@@ -13,15 +13,15 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {Component, Input} from "@angular/core";
-import {Being} from "../../models/being";
+import {Component, Input} from '@angular/core';
+import {Being} from '../../models/being';
 
 @Component({
   selector: 'rpg-health-bar',
   styleUrls: ['./health-bar.component.scss'],
   template: `<div [ngClass]="getCSSClassMap()" [style.width]="getProgressBarWidth() + '%'"></div>`
 })
-export class RPGHealthBar {
+export class RPGHealthBarComponent {
   @Input()
   model: Being;
 
@@ -29,7 +29,7 @@ export class RPGHealthBar {
     if (!this.model) {
       return {};
     }
-    var pct: number = Math.round(this.model.hp / this.model.maxhp * 100);
+    const pct: number = Math.round(this.model.hp / this.model.maxhp * 100);
     return {
       dead: pct === 0,
       critical: pct < 33,
@@ -39,12 +39,11 @@ export class RPGHealthBar {
   }
 
   getProgressBarWidth(): number {
-    var width = 0;
+    let width = 0;
     if (this.model && this.model) {
       width = Math.ceil(this.model.hp / this.model.maxhp * 100);
     }
     return width;
   }
-
 
 }

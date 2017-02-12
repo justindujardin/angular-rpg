@@ -27,8 +27,8 @@ import {
 } from '@angular/core';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 import {CombatMachineState} from './combat-base.state';
-import {CombatStateMachine} from './combat.machine';
-import {CombatBeginTurnState} from './combat-begin-turn.state';
+import {CombatStateMachineComponent} from './combat.machine';
+import {CombatBeginTurnStateComponent} from './combat-begin-turn.state';
 import {CombatActionBehavior} from '../behaviors/combat-action.behavior';
 import {ChooseActionType, ChooseActionStateMachine} from '../behaviors/choose-action.machine';
 import {Point} from '../../../../game/pow-core/point';
@@ -44,7 +44,7 @@ export interface IChooseActionEvent {
 /**
  * Describe a selectable menu item for a user input in combat.
  */
-export interface ICombatMenuItem<T> {
+export interface ICombatMenuItem {
   select(): any;
   label: string;
 }
@@ -61,23 +61,23 @@ export interface ICombatMenuItem<T> {
 <span #combatPointer
       class="point-to-player"
       [class.hidden]="!pointAt"
-      [style.left]="(pointerPosition$ | async).x + 'px'"
-      [style.top]="(pointerPosition$ | async).y + 'px'"
+      [style.left]="(pointerPosition$ | async)?.x + 'px'"
+      [style.top]="(pointerPosition$ | async)?.y + 'px'"
 ></span>
 <ng-content></ng-content>`
 })
-export class CombatChooseActionState extends CombatMachineState implements AfterViewInit, OnDestroy {
-  static NAME: string = "Combat Choose Actions";
-  name: string = CombatChooseActionState.NAME;
+export class CombatChooseActionStateComponent extends CombatMachineState implements AfterViewInit, OnDestroy {
+  static NAME: string = 'Combat Choose Actions';
+  name: string = CombatChooseActionStateComponent.NAME;
   pending: GameEntityObject[] = [];
-  machine: CombatStateMachine = null;
+  machine: CombatStateMachineComponent = null;
 
   @ViewChild('combatPointer') pointerElementRef: ElementRef;
   /**
    * Available menu items for selection.
    */
   @Input()
-  items: ICombatMenuItem<any>[] = [];
+  items: ICombatMenuItem[] = [];
 
   pointAt: GameEntityObject = null;
 
@@ -88,7 +88,6 @@ export class CombatChooseActionState extends CombatMachineState implements After
   pointerPosition$: Observable<Point> = this._pointerPosition$.distinctUntilChanged();
 
   private _timerSubscription: Subscription;
-
 
   constructor(private renderer: Renderer,
               @Inject(forwardRef(() => CombatComponent)) private combat: CombatComponent) {
@@ -113,13 +112,12 @@ export class CombatChooseActionState extends CombatMachineState implements After
     this._timerSubscription.unsubscribe();
   }
 
-  enter(machine: CombatStateMachine) {
+  enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
     if (!machine.scene) {
-      throw new Error("Invalid Combat Scene");
+      throw new Error('Invalid Combat Scene');
     }
     this.machine = machine;
-
 
     const combatants: GameEntityObject[] = [...machine.getLiveParty(), ...machine.getLiveEnemies()];
     machine.turnList = _.shuffle<GameEntityObject>(combatants);
@@ -140,9 +138,9 @@ export class CombatChooseActionState extends CombatMachineState implements After
         this.pending = _.filter(this.pending, (p: GameEntityObject) => {
           return action.from._uid !== p._uid;
         });
-        console.log(action.from.model.name + " chose " + action.getActionName());
+        console.log(`${action.from.model.name} chose ${action.getActionName()}`);
         if (this.pending.length === 0) {
-          machine.setCurrentState(CombatBeginTurnState.NAME);
+          machine.setCurrentState(CombatBeginTurnStateComponent.NAME);
         }
       },
       players: this.pending,
@@ -150,6 +148,7 @@ export class CombatChooseActionState extends CombatMachineState implements After
     };
 
     const choices: GameEntityObject[] = chooseData.players.slice();
+    let inputState;
 
     const next = () => {
       const p: GameEntityObject = choices.shift();
@@ -163,16 +162,15 @@ export class CombatChooseActionState extends CombatMachineState implements After
       inputState.data.choose(action);
       next();
     };
-    const inputState = new ChooseActionStateMachine(this, machine.scene, chooseData, chooseSubmit);
+    inputState = new ChooseActionStateMachine(this, machine.scene, chooseData, chooseSubmit);
     next();
 
   }
 
-  exit(machine: CombatStateMachine) {
+  exit(machine: CombatStateMachineComponent) {
     this.machine = null;
     return super.exit(machine);
   }
-
 
   setPointerTarget(object: GameEntityObject, directionClass: string = 'right', offset: Point = new Point()) {
     const pointer: HTMLElement = this.pointerElementRef.nativeElement;

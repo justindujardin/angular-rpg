@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {SceneObjectRenderer} from '../../scene/sceneObjectRenderer';
 import {Point} from '../../../pow-core/point';
 import {SceneView} from '../../scene/sceneView';
@@ -28,32 +27,34 @@ export class TileObjectRenderer extends SceneObjectRenderer {
 
     // Build render data.
     this._renderPoint.set(object.renderPoint || object.point);
-    var point = this._renderPoint;
-    var c = data.meta; // TODO: interface this
-    var sourceWidth: number = view.unitSize;
-    var sourceHeight: number = view.unitSize;
+    const point = this._renderPoint;
+    const c = data.meta; // TODO: interface this
+    let sourceWidth: number = view.unitSize;
+    let sourceHeight: number = view.unitSize;
     if (c && typeof c.cellWidth !== 'undefined' && typeof c.cellHeight !== 'undefined') {
       sourceWidth = c.cellWidth;
       sourceHeight = c.cellHeight;
     }
-    var objWidth = view.fastScreenToWorldNumber(sourceWidth);
-    var objHeight = view.fastScreenToWorldNumber(sourceHeight);
+    const objWidth = view.fastScreenToWorldNumber(sourceWidth);
+    const objHeight = view.fastScreenToWorldNumber(sourceHeight);
     point.x -= objWidth * object.scale / 2;
     point.y -= objHeight * object.scale / 2;
     view.fastWorldToScreenPoint(point, point);
 
     if (data.icon && data.meta) {
-      var cx = c.x;
-      var cy = c.y;
+      let cx = c.x;
+      let cy = c.y;
       if (data.meta.frames > 1) {
-        var cwidth = c.width / sourceWidth;
-        var fx = (data.frame % (cwidth));
-        var fy = Math.floor((data.frame - fx) / cwidth);
+        const cwidth = c.width / sourceWidth;
+        const fx = (data.frame % (cwidth));
+        const fy = Math.floor((data.frame - fx) / cwidth);
         cx += fx * sourceWidth;
         cy += fy * sourceHeight;
       }
-      view.context.drawImage(data.image, cx, cy, sourceWidth, sourceHeight, point.x, point.y, sourceWidth * object.scale, sourceHeight * object.scale);
-    } else {
+      view.context.drawImage(data.image, cx, cy, sourceWidth, sourceHeight,
+        point.x, point.y, sourceWidth * object.scale, sourceHeight * object.scale);
+    }
+    else {
       view.context.drawImage(data.image, point.x, point.y, sourceWidth * object.scale, sourceHeight * object.scale);
     }
   }

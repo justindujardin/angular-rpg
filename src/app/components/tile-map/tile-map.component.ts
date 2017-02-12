@@ -1,5 +1,5 @@
-import {Component, AfterViewInit} from "@angular/core";
-import {Map} from "../map";
+import {Component, AfterViewInit} from '@angular/core';
+import {Map} from '../map';
 
 @Component({
   selector: 'tile-map',
@@ -10,8 +10,5 @@ import {Map} from "../map";
     '[style.color]': 'styleBackground'
   }
 })
-export class TileMapComponent extends Map implements AfterViewInit {
-  ngAfterViewInit(): void {
-  }
-
+export class TileMapComponent extends Map {
 }

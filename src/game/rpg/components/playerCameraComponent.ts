@@ -13,8 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
-
 import {GameEntityObject} from '../objects/all';
 import {CameraComponent} from '../../pow2/scene/components/cameraComponent';
 import {SceneView} from '../../pow2/scene/sceneView';
@@ -25,10 +23,11 @@ export class PlayerCameraComponent extends CameraComponent {
 
   process(view: SceneView) {
 
-    var w: number = view.context.canvas.width;
+    const w: number = view.context.canvas.width;
     view.camera.point.set(this.host.point);
     view.cameraScale = w > 1024 ? 6 : (w > 768 ? 4 : (w > 480 ? 3 : 2));
-    var canvasSize = view.screenToWorld(new Point(view.context.canvas.width, view.context.canvas.height), view.cameraScale);
+    const screenRect = new Point(view.context.canvas.width, view.context.canvas.height);
+    const canvasSize = view.screenToWorld(screenRect, view.cameraScale);
     view.camera.extent.set(canvasSize);
 
     // Center on player object

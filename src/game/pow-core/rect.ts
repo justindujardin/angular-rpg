@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {errors} from './errors';
 import {Point} from './point';
 export interface IRect {
@@ -50,7 +49,7 @@ export class Rect implements IRect {
   }
 
   toString(): string {
-    return this.point.toString() + "," + this.extent.toString();
+    return `${this.point.toString()},${this.extent.toString()}`;
   }
 
   set(rect: IRect): Rect;
@@ -80,8 +79,8 @@ export class Rect implements IRect {
   }
 
   clip(clipRect: IRect): Rect {
-    var right: number = this.point.x + this.extent.x;
-    var bottom: number = this.point.y + this.extent.y;
+    const right: number = this.point.x + this.extent.x;
+    const bottom: number = this.point.y + this.extent.y;
     this.point.x = Math.max(clipRect.point.x, this.point.x);
     this.extent.x = Math.min(clipRect.point.x + clipRect.extent.x, right) - this.point.x;
     this.point.y = Math.max(clipRect.point.y, this.point.y);
@@ -103,7 +102,7 @@ export class Rect implements IRect {
   pointInRect(point: Point): boolean;
   pointInRect(x: number, y: number): boolean;
   pointInRect(pointOrX: any, y?: number) {
-    var x: number = 0;
+    let x: number = 0;
     if (pointOrX instanceof Point) {
       x = pointOrX.x;
       y = pointOrX.y;
@@ -121,15 +120,15 @@ export class Rect implements IRect {
   }
 
   getCenter(): Point {
-    var x = parseFloat((this.point.x + this.extent.x * 0.5).toFixed(2));
-    var y = parseFloat((this.point.y + this.extent.y * 0.5).toFixed(2));
+    const x = parseFloat((this.point.x + this.extent.x * 0.5).toFixed(2));
+    const y = parseFloat((this.point.y + this.extent.y * 0.5).toFixed(2));
     return new Point(x, y);
   }
 
   setCenter(point: Point): Rect;
   setCenter(x: number, y: number): Rect;
   setCenter(pointOrX: any, y?: number): Rect {
-    var x: number;
+    let x: number;
     if (pointOrX instanceof Point) {
       x = pointOrX.x;
       y = pointOrX.y;

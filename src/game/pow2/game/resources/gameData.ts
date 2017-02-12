@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
 import {Resource} from '../../../pow-core/resource';
 declare var Tabletop: any;
@@ -37,6 +36,7 @@ export class GameDataResource extends Resource {
         }
       }
       catch (e) {
+        // Do nothing and fall-through to load from the published google spreadsheet
       }
       // TODO: ERROR Condition
       Tabletop.init({
@@ -67,32 +67,32 @@ export class GameDataResource extends Resource {
 
   // TODO: More sophisticated deserializing of types, removing hardcoded keys.
   transformTypes(data: any): any {
-    var results: any = {};
+    const results: any = {};
     _.each(data, (dataValue: any, dataKey: any) => {
-      var sheetElements = dataValue.elements.slice(0);
-      var length: number = sheetElements.length;
-      for (var i = 0; i < length; i++) {
-        var entry: any = sheetElements[i];
-        for (var key in entry) {
+      const sheetElements = dataValue.elements.slice(0);
+      const length: number = sheetElements.length;
+      for (let i = 0; i < length; i++) {
+        const entry: any = sheetElements[i];
+        for (let key in entry) {
           if (!entry.hasOwnProperty(key) || typeof entry[key] !== 'string') {
             continue;
           }
-          var value = entry[key];
+          const value = entry[key];
           // number values
           if (value.match(GameDataResource.NUMBER_MATCHER)) {
-            entry[key] = parseInt(value);
+            entry[key] = parseInt(value, 10);
           }
           // boolean values
           else if (key === 'benefit') {
             switch (value.toLowerCase()) {
-              case "true":
-              case "yes":
-              case "1":
+              case 'true':
+              case 'yes':
+              case '1':
                 entry[key] = true;
                 break;
-              case "false":
-              case "no":
-              case "0":
+              case 'false':
+              case 'no':
+              case '0':
               case null:
                 entry[key] = false;
                 break;

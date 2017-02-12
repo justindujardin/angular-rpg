@@ -2,7 +2,7 @@ import * as _ from 'underscore';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TickedComponent} from '../../../../game/pow2/scene/components/tickedComponent';
 import {Headings} from '../../../../game/pow2/game/components/playerRenderComponent';
-import {AnimatedBehavior, IAnimationConfig} from '../../../behaviors/animated.behavior';
+import {AnimatedBehaviorComponent, IAnimationConfig} from '../../../behaviors/animated.behavior';
 import {Point} from '../../../../game/pow-core/point';
 import {CombatService} from '../../../services/combat.service';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
@@ -16,17 +16,16 @@ export enum StateFrames {
   DEAD = 5
 }
 
-
 @Component({
   selector: 'combat-player-render-behavior',
   template: `<ng-content></ng-content>`
 })
-export class CombatPlayerRenderBehavior extends TickedComponent implements OnInit, OnDestroy {
+export class CombatPlayerRenderBehaviorComponent extends TickedComponent {
   _elapsed: number = 0;
   private _renderFrame: number = 3;
-  state: string = "";
+  state: string = '';
   animating: boolean = false;
-  animator: AnimatedBehavior = null;
+  animator: AnimatedBehaviorComponent = null;
   attackDirection: Headings = Headings.WEST;
   host: GameEntityObject;
 
@@ -34,24 +33,14 @@ export class CombatPlayerRenderBehavior extends TickedComponent implements OnIni
     super();
   }
 
-
-  ngOnInit(): void {
-    console.log("prender");
-    console.info(this.combatService);
-  }
-
-  ngOnDestroy(): void {
-  }
-
   syncBehavior(): boolean {
-    this.animator = this.host.findBehavior(AnimatedBehavior) as AnimatedBehavior;
+    this.animator = this.host.findBehavior(AnimatedBehaviorComponent) as AnimatedBehaviorComponent;
     return super.syncBehavior();
   }
 
-  setState(name: string = "Default") {
+  setState(name: string = 'Default') {
     this.state = name;
   }
-
 
   attack(attackCb: () => any, cb?: () => void) {
     this._attack(cb, this.getAttackAnimation(attackCb));
@@ -81,64 +70,67 @@ export class CombatPlayerRenderBehavior extends TickedComponent implements OnIni
     return this.attackDirection === Headings.WEST ? [12, 13, 14, 15, 14, 13, 12] : [4, 5, 6, 7, 6, 5, 4];
   }
 
-
-  getMagicAnimation(strikeCb: ()=>any) {
+  getMagicAnimation(strikeCb: () => any) {
     return [
       {
-        name: "Prep Animation",
+        name: 'Prep Animation',
         callback: () => {
-          this.host.setSprite(this.host.icon.replace(".png", "-magic.png"), 19);
+          this.host.setSprite(this.host.icon.replace('.png', '-magic.png'), 19);
         }
       },
       {
-        name: "Magic cast",
+        name: 'Magic cast',
         repeats: 0,
         duration: 1000,
         frames: [19, 18, 17, 16, 15],
         callback: () => {
-          strikeCb && strikeCb();
+          if (strikeCb) {
+            strikeCb();
+          }
         }
       },
       {
-        name: "Back to rest",
+        name: 'Back to rest',
         repeats: 0,
         duration: 1000,
         frames: [15, 16, 17, 18, 19],
         callback: () => {
-          this.host.setSprite(this.host.icon.replace("-magic.png", ".png"), 10);
+          this.host.setSprite(this.host.icon.replace('-magic.png', '.png'), 10);
         }
       }
 
     ];
   }
 
-  getAttackAnimation(strikeCb: ()=>any) {
+  getAttackAnimation(strikeCb: () => any) {
     return [
       {
-        name: "Move Forward for Attack",
+        name: 'Move Forward for Attack',
         repeats: 0,
         duration: 250,
         frames: this.getForwardFrames(),
         move: new Point(this.getForwardDirection(), 0),
         callback: () => {
-          var attackAnimationsSource = this.host.icon.replace(".png", "-attackCombatant.png");
+          const attackAnimationsSource = this.host.icon.replace('.png', '-attackCombatant.png');
           if (this.host.world.sprites.getSpriteMeta(attackAnimationsSource)) {
             this.host.setSprite(attackAnimationsSource, 12);
           }
         }
       },
       {
-        name: "Strike at Opponent",
+        name: 'Strike at Opponent',
         repeats: 1,
         duration: 100,
         frames: this.getAttackFrames(),
         callback: () => {
-          this.host.setSprite(this.host.icon.replace("-attackCombatant.png", ".png"), 10);
-          strikeCb && strikeCb();
+          this.host.setSprite(this.host.icon.replace('-attackCombatant.png', '.png'), 10);
+          if (strikeCb) {
+            strikeCb();
+          }
         }
       },
       {
-        name: "Return to Party",
+        name: 'Return to Party',
         duration: 250,
         repeats: 0,
         frames: this.getBackwardFrames(),
@@ -147,9 +139,9 @@ export class CombatPlayerRenderBehavior extends TickedComponent implements OnIni
     ];
   }
 
-  moveForward(then?: ()=>any) {
+  moveForward(then?: () => any) {
     this._playAnimation([{
-      name: "Move Forward",
+      name: 'Move Forward',
       repeats: 0,
       duration: 250,
       frames: this.getForwardFrames(),
@@ -157,9 +149,9 @@ export class CombatPlayerRenderBehavior extends TickedComponent implements OnIni
     }], then);
   }
 
-  moveBackward(then?: ()=>any) {
+  moveBackward(then?: () => any) {
     this._playAnimation([{
-      name: "Move Backward",
+      name: 'Move Backward',
       repeats: 0,
       duration: 250,
       frames: this.getBackwardFrames(),
@@ -167,12 +159,12 @@ export class CombatPlayerRenderBehavior extends TickedComponent implements OnIni
     }], then);
   }
 
-  _playAnimation(animation: IAnimationConfig[], then: ()=>any) {
+  _playAnimation(animation: IAnimationConfig[], then: () => any) {
     if (!this.animator || this.animating) {
       return;
     }
-    var animations: IAnimationConfig[] = _.map(animation, (anim: IAnimationConfig) => {
-      var result = _.extend({}, anim);
+    const animations: IAnimationConfig[] = _.map(animation, (anim: IAnimationConfig) => {
+      const result = _.extend({}, anim);
       if (typeof result.move !== 'undefined') {
         result.move = result.move.clone();
       }
@@ -181,7 +173,9 @@ export class CombatPlayerRenderBehavior extends TickedComponent implements OnIni
     this.animating = true;
     this.animator.playChain(animations, () => {
       this.animating = false;
-      then && then();
+      if (then) {
+        then();
+      }
     });
   }
 
@@ -189,8 +183,8 @@ export class CombatPlayerRenderBehavior extends TickedComponent implements OnIni
     if (!this.animator || this.animating) {
       return;
     }
-    var animations: IAnimationConfig[] = _.map(attackAnimation, (anim: IAnimationConfig) => {
-      var result = _.extend({}, anim);
+    const animations: IAnimationConfig[] = _.map(attackAnimation, (anim: IAnimationConfig) => {
+      const result = _.extend({}, anim);
       if (typeof result.move !== 'undefined') {
         result.move = result.move.clone();
       }
@@ -199,7 +193,9 @@ export class CombatPlayerRenderBehavior extends TickedComponent implements OnIni
     this.animating = true;
     this.animator.playChain(animations, () => {
       this.animating = false;
-      cb && cb();
+      if (cb) {
+        cb();
+      }
     });
   }
 
@@ -213,15 +209,17 @@ export class CombatPlayerRenderBehavior extends TickedComponent implements OnIni
       const altFrame = (factor > 0.0 && factor < 0.5);
       let frame = StateFrames.DEFAULT;
       switch (this.state) {
-        case "Injured":
+        case 'Injured':
           frame = StateFrames.DEFAULT;
           break;
-        case "Dead":
+        case 'Dead':
           frame = StateFrames.DEFAULT;
           break;
-        case "Attacking":
+        case 'Attacking':
           frame = altFrame ? StateFrames.STRIKE : StateFrames.SWING;
           break;
+        default:
+          console.warn('unsupported character state: ' + this.state);
       }
       this.host.frame = this._renderFrame = frame;
     }

@@ -13,9 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
-
 
 // -------------------------------------------------------------------------
 // Implement a subset of the Tiled editor format:
@@ -69,16 +67,15 @@ export interface ITileSetDependency {
   literal?: string; // The literal string representing the source as originally specified in xml
 }
 
-
 // Tiled object XML reading utilities.
 export function readITiledBase(el: any): ITiledBase {
   return {
     name: getElAttribute(el, 'name'),
-    x: parseInt(getElAttribute(el, 'x') || "0"),
-    y: parseInt(getElAttribute(el, 'y') || "0"),
-    width: parseInt(getElAttribute(el, 'width') || "0"),
-    height: parseInt(getElAttribute(el, 'height') || "0"),
-    visible: parseInt(getElAttribute(el, 'visible') || "1") === 1, // 0 or 1,
+    x: parseInt(getElAttribute(el, 'x') || '0', 10),
+    y: parseInt(getElAttribute(el, 'y') || '0', 10),
+    width: parseInt(getElAttribute(el, 'width') || '0', 10),
+    height: parseInt(getElAttribute(el, 'height') || '0', 10),
+    visible: parseInt(getElAttribute(el, 'visible') || '1', 10) === 1, // 0 or 1,
     _xml: el
   };
 }
@@ -110,8 +107,8 @@ export function writeITiledObjectBase(el: any, data: ITiledObject) {
 
 export function readITiledObject(el: any): ITiledObject {
   // Base layer properties
-  var result: ITiledObject = <ITiledObject>readITiledLayerBase(el);
-  var type: string = getElAttribute(el, 'type');
+  const result: ITiledObject = readITiledLayerBase(el);
+  const type: string = getElAttribute(el, 'type');
   if (type) {
     result.type = type;
   }
@@ -120,11 +117,11 @@ export function readITiledObject(el: any): ITiledObject {
 
 export function readITiledLayerBase(el: any): ITiledLayerBase {
   // Base layer properties
-  var result: ITiledLayerBase = <ITiledLayerBase>readITiledBase(el);
+  const result: ITiledLayerBase = readITiledBase(el) as ITiledLayerBase;
   // Layer opacity is 0-1
-  result.opacity = parseInt(getElAttribute(el, 'opacity') || "1");
+  result.opacity = parseInt(getElAttribute(el, 'opacity') || '1', 10);
   // Custom properties
-  var props = readTiledProperties(el);
+  const props = readTiledProperties(el);
   if (props) {
     result.properties = props;
   }
@@ -133,19 +130,22 @@ export function readITiledLayerBase(el: any): ITiledLayerBase {
 
 // StackOverflow: http://stackoverflow.com/questions/14780350/convert-relative-path-to-absolute-using-javascript
 export function compactUrl(base: string, relative: string) {
-  var stack = base.split("/");
-  var parts = relative.split("/");
+  const stack = base.split('/');
+  const parts = relative.split('/');
   stack.pop(); // remove current file name (or empty string)
   // (omit if "base" is the current folder without trailing slash)
-  for (var i = 0; i < parts.length; i++) {
-    if (parts[i] == ".")
+  for (let i = 0; i < parts.length; i++) {
+    if (parts[i] === '.') {
       continue;
-    if (parts[i] == "..")
+    }
+    if (parts[i] === '..') {
       stack.pop();
-    else
+    }
+    else {
       stack.push(parts[i]);
+    }
   }
-  return stack.join("/");
+  return stack.join('/');
 }
 
 export function xml2Str(xmlNode) {
@@ -160,12 +160,11 @@ export function xml2Str(xmlNode) {
       return xmlNode.xml;
     }
     catch (e) {
-      //Other browsers without XML Serializer
+      // Other browsers without XML Serializer
       throw new Error('Xmlserializer not supported');
     }
   }
 }
-
 
 export function writeITiledLayerBase(el: any, data: ITiledLayerBase) {
   writeITiledBase(el, data);
@@ -174,22 +173,23 @@ export function writeITiledLayerBase(el: any, data: ITiledLayerBase) {
 }
 
 export function readTiledProperties(el: any) {
-  var propsObject: any = getChild(el, 'properties');
+  const propsObject: any = getChild(el, 'properties');
   if (propsObject && propsObject.length > 0) {
-    var properties = {};
-    var props = getChildren(propsObject, 'property');
+    let properties = {};
+    let props = getChildren(propsObject, 'property');
     _.each(props, (p) => {
-      var key = getElAttribute(p, 'name');
-      var value: any = getElAttribute(p, 'value');
+      const key = getElAttribute(p, 'name');
+      let value: any = getElAttribute(p, 'value');
 
       // Do some horrible type guessing.
       if (typeof value === 'string') {
-        var checkValue: any = value.toLowerCase();
+        let checkValue: any = value.toLowerCase();
+        let checkNumber = parseFloat(value);
         if (checkValue === 'true' || checkValue === 'false') {
           value = checkValue === 'true';
         }
-        else if (!isNaN((checkValue = parseFloat(value)))) {
-          value = checkValue
+        else if (!isNaN((checkNumber))) {
+          value = checkNumber;
         }
       }
       properties[key] = value;
@@ -200,9 +200,9 @@ export function readTiledProperties(el: any) {
 }
 
 export function writeTiledProperties(el: any, data: any) {
-  var result: any = $('<properties/>');
-  _.each(data, (value: any, key: string)=> {
-    var prop: any = $('<property/>');
+  const result: any = $('<properties/>');
+  _.each(data, (value: any, key: string) => {
+    const prop: any = $('<property/>');
     setElAttribute(prop, 'name', key);
     setElAttribute(prop, 'value', value);
     result.append(prop);
@@ -215,9 +215,9 @@ export function writeTiledProperties(el: any, data: any) {
 // XML Utilities
 
 export function getChildren(el: any, tag: string): any[] {
-  var list = el.find(tag);
-  return _.compact(_.map(list, function (c) {
-    var child: any = $(c);
+  const list = el.find(tag);
+  return _.compact(_.map(list, (c) => {
+    const child: any = $(c);
     return child.parent()[0] !== el[0] ? null : child;
   }));
 }

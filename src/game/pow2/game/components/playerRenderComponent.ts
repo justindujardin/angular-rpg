@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {TickedComponent} from '../../scene/components/tickedComponent';
 import {TileObject} from '../../tile/tileObject';
 import {Animator} from '../../core/animator';
@@ -59,6 +58,9 @@ export class PlayerRenderComponent extends TickedComponent {
         break;
       case Headings.WEST:
         this._animator.setAnimation('left');
+        break;
+      default:
+        console.warn('unsupported heading direction: ' + this.heading);
         break;
     }
     this._animator.updateTime(0);

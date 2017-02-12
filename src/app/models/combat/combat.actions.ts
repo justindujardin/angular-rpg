@@ -62,7 +62,6 @@ export class CombatFixedEncounterVictoryAction implements Action {
   }
 }
 
-
 export class CombatFixedEncounterDefeatAction implements Action {
   type = CombatActionTypes.FIXED_ENCOUNTER_DEFEAT;
 
@@ -95,7 +94,6 @@ export class CombatRandomEncounterReadyAction implements Action {
   }
 }
 
-
 export class CombatRandomEncounterVictoryAction implements Action {
   type = CombatActionTypes.RANDOM_ENCOUNTER_VICTORY;
 
@@ -103,14 +101,12 @@ export class CombatRandomEncounterVictoryAction implements Action {
   }
 }
 
-
 export class CombatRandomEncounterDefeatAction implements Action {
   type = CombatActionTypes.RANDOM_ENCOUNTER_DEFEAT;
 
   constructor(public payload: CombatRandomEncounter) {
   }
 }
-
 
 //
 // Attack Actions
@@ -137,7 +133,6 @@ export class CombatAttackMissAction implements Action {
   }
 }
 
-
 export type CombatActions
   = CombatFixedEncounterAction
   | CombatFixedEncounterReadyAction
@@ -149,4 +144,4 @@ export type CombatActions
   | CombatRandomEncounterDefeatAction
   | CombatAttackAction
   | CombatAttackHitAction
-  | CombatAttackMissAction
+  | CombatAttackMissAction;

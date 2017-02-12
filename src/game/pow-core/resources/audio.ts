@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {Resource} from '../resource';
 import {errors} from '../errors';
 import {Time} from '../time';
@@ -49,7 +48,7 @@ export interface IAudioSource {
  */
 export class AudioResource extends Resource implements IAudioSource {
   data: HTMLAudioElement;
-  private static FORMATS: [string,string[]][] = [
+  private static FORMATS: any[] = [
     ['mp3', ['audio/mpeg;']],
     ['m4a', ['audio/x-m4a;']],
     ['aac', ['audio/mp4a;', 'audio/mp4;']],
@@ -63,14 +62,14 @@ export class AudioResource extends Resource implements IAudioSource {
    * Source: http://diveintohtml5.info/everything.html
    */
   static supportedFormats(): IAudioFormat[] {
-    var w: any = window;
-    var ac: any = w.AudioContext || w.webkitAudioContext;
+    const w: any = window;
+    const ac: any = w.AudioContext || w.webkitAudioContext;
     if (AudioResource._context === null && ac) {
       AudioResource._context = new ac();
     }
     if (AudioResource._types === null) {
       this._types = [];
-      var a = document.createElement('audio');
+      const a = document.createElement('audio');
       // The existence of canPlayType indicates support for audio elements.
       if (a.canPlayType) {
         try {
@@ -80,13 +79,13 @@ export class AudioResource extends Resource implements IAudioSource {
           a.canPlayType('audio/wav;');
 
           _.each(this.FORMATS, (desc) => {
-            var types = desc[1];
-            var extension = desc[0];
+            const types = desc[1];
+            const extension = desc[0];
             _.each(types, (type: string) => {
               if (!!a.canPlayType(type)) {
                 this._types.push({
-                  extension: extension,
-                  type: type
+                  extension,
+                  type
                 });
               }
             });
@@ -140,9 +139,6 @@ export class AudioResource extends Resource implements IAudioSource {
     if (this._source) {
       this._source.stop(0);
     }
-    else if (this._audio) {
-
-    }
     return this;
   }
 
@@ -168,13 +164,26 @@ export class AudioResource extends Resource implements IAudioSource {
   private _loadAudioElement(formats: IAudioFormat[]): Promise<AudioResource> {
 
     return new Promise<AudioResource>((resolve, reject) => {
-      var sources: number = formats.length;
-      var invalid: Array<string> = [];
-      var incrementFailure: Function = (path: string) => {
+      let sources: number = formats.length;
+      let completed;
+      const invalid: string[] = [];
+      const reference: HTMLAudioElement = document.createElement('audio');
+      let timer = new Time()
+        .start()
+        .addObject({
+          tick: () => reference.readyState > 3 ? completed() : null
+        });
+      completed = () => {
+        this.data = reference;
+        this._audio = reference;
+        timer.stop();
+        resolve(this);
+      };
+      const incrementFailure: Function = (path: string) => {
         sources--;
         invalid.push(path);
         if (sources <= 0) {
-          reject("No valid sources at the following URLs\n   " + invalid.join('\n   '));
+          reject('No valid sources at the following URLs\n' + invalid.join('\n   '));
         }
       };
 
@@ -182,24 +191,12 @@ export class AudioResource extends Resource implements IAudioSource {
         return reject('no supported media types');
       }
 
-      var reference: HTMLAudioElement = document.createElement('audio');
-      let timer = new Time()
-        .start()
-        .addObject({
-          tick: () => reference.readyState > 3 ? completed() : null
-        });
-      let completed = () => {
-        this.data = reference;
-        this._audio = reference;
-        timer.stop();
-        resolve(this);
-      };
       reference.addEventListener('canplaythrough', completed);
       // Try all supported types, and accept the first valid one.
       _.each(formats, (format: IAudioFormat) => {
-        let source = <HTMLSourceElement>document.createElement('source');
+        let source = document.createElement('source') as HTMLSourceElement;
         source.addEventListener('error', () => {
-          console.log("source failed: " + source.src);
+          console.log(`source failed: ${source.src}`);
           incrementFailure(source.src);
         });
 

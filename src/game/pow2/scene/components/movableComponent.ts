@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {Point} from '../../../pow-core/point';
 import {TickedComponent} from './tickedComponent';
 import {KeyCode} from '../../core/input';
@@ -59,6 +58,7 @@ export class MovableComponent extends TickedComponent {
    * @param move The move that is beginning
    */
   beginMove(move: IMoveDescription) {
+    // nothing
   }
 
   /**
@@ -66,6 +66,7 @@ export class MovableComponent extends TickedComponent {
    * @param move The move that is now completed.
    */
   completeMove(move: IMoveDescription) {
+    // nothing
   }
 
   collideMove(x: number, y: number, results: SceneObject[] = []) {
@@ -79,7 +80,7 @@ export class MovableComponent extends TickedComponent {
     if (!this.host.scene || !this.host.scene.world || !this.host.scene.world.input) {
       return;
     }
-    var worldInput = <any>this.host.scene.world.input;
+    const worldInput = <any> this.host.scene.world.input;
     // Keyboard input
     this.velocity.x = 0;
     if (worldInput.keyDown(KeyCode.LEFT)) {
@@ -99,8 +100,7 @@ export class MovableComponent extends TickedComponent {
 
   interpolateTick(elapsed: number) {
     // Interpolate position based on tickrate and elapsed time
-    var factor;
-    factor = this._elapsed / this.tickRateMS;
+    const factor = this._elapsed / this.tickRateMS;
     this.host.renderPoint.set(this.host.point.x, this.host.point.y);
     if (this.velocity.isZero()) {
       return;
@@ -139,14 +139,14 @@ export class MovableComponent extends TickedComponent {
 
     this.targetPoint.set(this.host.point);
 
-    var zero: boolean = this.velocity.isZero();
+    const zero: boolean = this.velocity.isZero();
     if (zero && this.path.length === 0) {
       return;
     }
 
     // Zero and have a path, shift the next tile and move there.
     if (zero) {
-      var next: Point = this.path.shift();
+      const next: Point = this.path.shift();
       this.velocity.set(next.x - this.host.point.x, next.y - this.host.point.y);
     }
     else {

@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
 import {TileComponent} from '../tileComponent';
 import {TileMap} from '../tileMap';
@@ -77,7 +76,7 @@ export class PathComponent extends TileComponent {
       this._updateGraph();
     }
     if (!this._graph || !this._graph.grid) {
-      throw new Error("Invalid AStar graph");
+      throw new Error('Invalid AStar graph');
     }
     this._graph.init();
     // Treat out of range errors as non-critical, and just

@@ -13,10 +13,8 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {Resource} from '../resource';
 import * as _ from 'underscore';
-
 
 /**
  * Use jQuery to load an XML file from a URL.
@@ -27,7 +25,7 @@ export class XMLResource extends Resource {
   fetch(url: string): Promise<XMLResource> {
     this.url = url || this.url;
     return new Promise<XMLResource>((resolve, reject) => {
-      var request: any = $.get(this.url); // JQueryXHR
+      const request: any = $.get(this.url); // JQueryXHR
       request.done((object: XMLDocument) => {
         this.data = $(object);
         this.load(this.data).then(resolve).catch(reject);
@@ -50,26 +48,26 @@ export class XMLResource extends Resource {
     if (!this.data) {
       return null;
     }
-    return $(_.find(this.data, function (d: any) {
+    return $(_.find(this.data, (d: any) => {
       return d.tagName && d.tagName.toLowerCase() === tag;
     }));
   }
 
   getChildren<T>(el: any, tag: string): T[] {
-    var list = el.find(tag);
-    return _.compact(_.map(list, function (c) {
-      var child: any = $(c);
-      return <T>(child.parent()[0] !== el[0] ? null : child);
+    const list = el.find(tag);
+    return _.compact(_.map(list, (c) => {
+      const child: any = $(c);
+      return (child.parent()[0] !== el[0] ? null : child) as T;
     }));
   }
 
   getChild<T>(el: any, tag: string): T {
-    return <T>this.getChildren(el, tag)[0];
+    return this.getChildren(el, tag)[0] as T;
   }
 
   getElAttribute(el: any, name: string) {
     if (el) {
-      var attr = el.attr(name);
+      const attr = el.attr(name);
       if (attr) {
         return attr;
       }

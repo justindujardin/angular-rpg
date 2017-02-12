@@ -1,15 +1,15 @@
-import {Component, Input, ChangeDetectionStrategy} from "@angular/core";
-import {RPGGame} from "../../services/index";
-import {SpriteRender} from "../../services/spriteRender";
-import {Observable, ReplaySubject, BehaviorSubject} from "rxjs";
-import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
+import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
+import {RPGGame} from '../../services/index';
+import {SpriteRender} from '../../services/spriteRender';
+import {Observable, ReplaySubject, BehaviorSubject} from 'rxjs';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'rpg-sprite',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<img [style.width]="width$ | async" [style.height]="height$ | async" [src]="dataUrl$ | async">`
 })
-export class RPGSprite {
+export class RPGSpriteComponent {
 
   static INVALID_IMAGE: string = 'assets/images/a/blank.gif';
 
@@ -19,7 +19,7 @@ export class RPGSprite {
   width$: Observable<string> = this._width$;
   private _height$ = new BehaviorSubject<string>('64');
   height$: Observable<string> = this._height$;
-  private _name$ = new BehaviorSubject<string>(RPGSprite.INVALID_IMAGE);
+  private _name$ = new BehaviorSubject<string>(RPGSpriteComponent.INVALID_IMAGE);
   name$: Observable<string> = this._name$;
   private _frame$ = new BehaviorSubject<number>(0);
   frame$: Observable<number> = this._frame$;
@@ -42,11 +42,10 @@ export class RPGSprite {
     }
   }
 
-
   @Input()
   set name(value: string) {
     if (!value) {
-      this._name$.next(RPGSprite.INVALID_IMAGE);
+      this._name$.next(RPGSpriteComponent.INVALID_IMAGE);
       return;
     }
     this._name$.next(value);
@@ -59,14 +58,14 @@ export class RPGSprite {
   }
 
   private _get(src: string) {
-    if (!src || src === RPGSprite.INVALID_IMAGE) {
-      this._dataUrl$.next(RPGSprite.INVALID_IMAGE);
+    if (!src || src === RPGSpriteComponent.INVALID_IMAGE) {
+      this._dataUrl$.next(RPGSpriteComponent.INVALID_IMAGE);
       return;
     }
     this.renderer.getSingleSprite(src, this._frame$.value).then((sprite: HTMLImageElement) => {
       // Get the context for drawing
-      const width: number = parseInt(this._width$.value);
-      const height: number = parseInt(this._height$.value);
+      const width: number = parseInt(this._width$.value, 10);
+      const height: number = parseInt(this._height$.value, 10);
 
       const renderContext: any = this.game.getRenderContext(width, height);
       renderContext.clearRect(0, 0, width, height);

@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Effect, Actions} from '@ngrx/effects';
 import {
-  GameStateActionTypes, GameStateTravelAction,
+  GameStateActionTypes,
+  GameStateTravelAction,
   GameStateTravelSuccessAction
-} from "../../models/game-state/game-state.actions";
-import {CombatAttack, CombatEncounter} from "../../models/combat/combat.model";
-import {CombatActionTypes, CombatActions} from "../../models/combat/combat.actions";
-import {replace} from "@ngrx/router-store";
-import {LoadingService} from "../../components/loading/loading.service";
+} from '../../models/game-state/game-state.actions';
+import {CombatEncounter} from '../../models/combat/combat.model';
+import {CombatActionTypes, CombatActions} from '../../models/combat/combat.actions';
+import {replace} from '@ngrx/router-store';
+import {LoadingService} from '../../components/loading/loading.service';
 
 @Injectable()
 export class CombatEffects {
@@ -31,7 +32,6 @@ export class CombatEffects {
       this.loadingService.loading = false;
     });
 
-
   /** route update to combat encounter */
   @Effect() navigateToCombatRoute$ = this.actions$
     .ofType(CombatActionTypes.FIXED_ENCOUNTER, CombatActionTypes.RANDOM_ENCOUNTER)
@@ -41,7 +41,6 @@ export class CombatEffects {
       const encounter = action.payload as CombatEncounter;
       return replace(['combat', encounter.id]);
     });
-
 
   /** route update to world map */
   @Effect() navigateToWorldRoute$ = this.actions$

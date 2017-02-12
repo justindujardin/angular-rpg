@@ -30,8 +30,11 @@ export class TileMapRenderer extends SceneObjectRenderer {
   // TODO: only render tiles that are in the clipRect.  This can be expensive at initial
   // load for expansive maps like the Browser Quest tmx.
   render(object: TileMap, view: TileMapView) {
-    var squareUnits = 8;
-    var squareSize = squareUnits * view.unitSize;
+    let row: number;
+    let col: number;
+    let rows;
+    const squareUnits = 8;
+    const squareSize = squareUnits * view.unitSize;
     if (!object.isLoaded()) {
       return;
     }
@@ -40,38 +43,46 @@ export class TileMapRenderer extends SceneObjectRenderer {
       this.buffer = null;
       this.bufferComplete = false;
     }
-    if (!this.bufferComplete || this.buffer === null || this.bufferMapName === null || this.bufferMapName !== object.map.url) {
-      var tileUnitSize = squareSize / view.unitSize;
+    if (!this.bufferComplete || this.buffer === null ||
+      this.bufferMapName === null || this.bufferMapName !== object.map.url) {
+      const tileUnitSize = squareSize / view.unitSize;
       // Unit size is 16px, so rows/columns should be 16*16 for 256px each.
-      var columns = Math.ceil(object.bounds.extent.x / squareUnits);
-      var rows = Math.ceil(object.bounds.extent.y / squareUnits);
+      const columns = Math.ceil(object.bounds.extent.x / squareUnits);
+      rows = Math.ceil(object.bounds.extent.y / squareUnits);
       this.buffer = new Array(columns);
-      for (var col: number = 0; col < columns; col++) {
+      for (col = 0; col < columns; col++) {
         this.buffer[col] = new Array(rows);
       }
       this.bufferComplete = true;
-      var layers: ITiledLayer[] = object.getLayers();
-      for (var col: number = 0; col < columns; col++) {
-        for (var row: number = 0; row < rows; row++) {
-          var xOffset = col * tileUnitSize;
-          var xEnd = xOffset + tileUnitSize;
-          var yOffset = row * tileUnitSize;
-          var yEnd = yOffset + tileUnitSize;
+      const layers: ITiledLayer[] = object.getLayers();
+      for (col = 0; col < columns; col++) {
+        for (row = 0; row < rows; row++) {
+          const xOffset = col * tileUnitSize;
+          const xEnd = xOffset + tileUnitSize;
+          const yOffset = row * tileUnitSize;
+          const yEnd = yOffset + tileUnitSize;
           this.buffer[col][row] = view.renderToCanvas(squareSize, squareSize, (ctx) => {
-            for (var x = xOffset; x < xEnd; x++) {
-              for (var y = yOffset; y < yEnd; y++) {
+            for (let x = xOffset; x < xEnd; x++) {
+              for (let y = yOffset; y < yEnd; y++) {
 
                 // Each layer
                 _.each(layers, (l: ITiledLayer) => {
                   if (!l.visible) {
                     return;
                   }
-                  var gid: number = object.getTileGid(l.name, x, y);
-                  var meta: ITileInstanceMeta = object.getTileMeta(gid);
+                  const gid: number = object.getTileGid(l.name, x, y);
+                  const meta: ITileInstanceMeta = object.getTileMeta(gid);
                   if (meta) {
-                    var image: HTMLImageElement = (<any>meta.image).data;
+                    const image: HTMLImageElement = (<any> meta.image).data;
                     // Keep this inline to avoid more function calls.
-                    var dstH, dstW, dstX, dstY, srcH, srcW, srcX, srcY;
+                    let dstH;
+                    let dstW;
+                    let dstX;
+                    let dstY;
+                    let srcH;
+                    let srcW;
+                    let srcX;
+                    let srcY;
                     if (!image || !image.complete) {
                       this.bufferComplete = false;
                       return;
@@ -98,20 +109,20 @@ export class TileMapRenderer extends SceneObjectRenderer {
       }
       this.bufferMapName = object.map.url;
     }
-    var squareScreen = view.fastWorldToScreenNumber(squareUnits);
+    const squareScreen = view.fastWorldToScreenNumber(squareUnits);
 
     view.fastWorldToScreenRect(view.getCameraClip(), this._clipRect);
-    var cols: number = this.buffer.length;
-    var rows: number = this.buffer[0].length;
+    const cols: number = this.buffer.length;
+    rows = this.buffer[0].length;
     // Unit size is 16px, so rows/columns should be 16*16 for 256px each.
-    for (var col: number = 0; col < cols; col++) {
-      for (var row: number = 0; row < rows; row++) {
+    for (col = 0; col < cols; col++) {
+      for (row = 0; row < rows; row++) {
         this._renderRect.set(col * squareUnits - 0.5, row * squareUnits - 0.5, squareUnits, squareUnits);
         view.fastWorldToScreenRect(this._renderRect, this._renderRect);
         if (!this._renderRect.intersect(this._clipRect)) {
           continue;
         }
-        //console.log("Tile " + renderRect.toString())
+        // console.log("Tile " + renderRect.toString())
         view.context.drawImage(this.buffer[col][row],
           // From source
           0,

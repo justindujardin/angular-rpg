@@ -15,9 +15,8 @@
  */
 import {CombatMachineState} from './combat-base.state';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
-import {CombatStateMachine} from './combat.machine';
+import {CombatStateMachineComponent} from './combat.machine';
 import {Component} from '@angular/core';
-
 
 export interface CombatDefeatSummary {
   party: GameEntityObject[];
@@ -27,19 +26,19 @@ export interface CombatDefeatSummary {
   selector: 'combat-defeat-state',
   template: `<ng-content></ng-content>`
 })
-export class CombatDefeatState extends CombatMachineState {
-  static NAME: string = "Combat Defeat";
-  name: string = CombatDefeatState.NAME;
+export class CombatDefeatStateComponent extends CombatMachineState {
+  static NAME: string = 'Combat Defeat';
+  name: string = CombatDefeatStateComponent.NAME;
 
-  enter(machine: CombatStateMachine) {
+  enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
-    var data: CombatDefeatSummary = {
+    const data: CombatDefeatSummary = {
       enemies: machine.enemies,
       party: machine.party
     };
-    machine.notify("combat:defeat", data, ()=> {
+    machine.notify('combat:defeat', data, () => {
       alert('defeat is not implemented');
-      //machine.parent.world.reportEncounterResult(false);
+      // machine.parent.world.reportEncounterResult(false);
       // TODO: This is a hack.  Need better game lifetime management.
       window.location.reload(true);
       // machine.parent.setCurrentState(PlayerDefaultState.NAME);

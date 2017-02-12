@@ -14,11 +14,11 @@
  limitations under the License.
  */
 import {CombatMachineState} from './combat-base.state';
-import {CombatStateMachine} from './combat.machine';
-import {CombatBeginTurnState} from './combat-begin-turn.state';
-import {CombatChooseActionState} from './combat-choose-action.state';
-import {CombatDefeatState} from './combat-defeat.state';
-import {CombatVictoryState} from './combat-victory.state';
+import {CombatStateMachineComponent} from './combat.machine';
+import {CombatBeginTurnStateComponent} from './combat-begin-turn.state';
+import {CombatChooseActionStateComponent} from './combat-choose-action.state';
+import {CombatDefeatStateComponent} from './combat-defeat.state';
+import {CombatVictoryStateComponent} from './combat-victory.state';
 import {Component} from '@angular/core';
 import {isDefeated} from '../../../models/combat/combat.api';
 
@@ -26,11 +26,11 @@ import {isDefeated} from '../../../models/combat/combat.api';
   selector: 'combat-end-turn-state',
   template: `<ng-content></ng-content>`
 })
-export class CombatEndTurnState extends CombatMachineState {
-  static NAME: string = "Combat End Turn";
-  name: string = CombatEndTurnState.NAME;
+export class CombatEndTurnStateComponent extends CombatMachineState {
+  static NAME: string = 'Combat End Turn';
+  name: string = CombatEndTurnStateComponent.NAME;
 
-  enter(machine: CombatStateMachine) {
+  enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
     machine.current = null;
     // Find the next turn.
@@ -42,17 +42,18 @@ export class CombatEndTurnState extends CombatMachineState {
       }
     }
 
-    let targetState: string = machine.current ? CombatBeginTurnState.NAME : CombatChooseActionState.NAME;
+    let targetState: string = machine.current ?
+      CombatBeginTurnStateComponent.NAME :
+      CombatChooseActionStateComponent.NAME;
     if (machine.partyDefeated()) {
-      targetState = CombatDefeatState.NAME;
+      targetState = CombatDefeatStateComponent.NAME;
     }
     else if (machine.enemiesDefeated()) {
-      targetState = CombatVictoryState.NAME;
+      targetState = CombatVictoryStateComponent.NAME;
     }
     if (!targetState) {
-      throw new Error("Invalid transition from end turn");
+      throw new Error('Invalid transition from end turn');
     }
     machine.setCurrentState(targetState);
   }
 }
-

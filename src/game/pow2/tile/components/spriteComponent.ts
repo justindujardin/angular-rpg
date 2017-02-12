@@ -13,8 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
-
 import * as _ from 'underscore';
 import {SceneComponent} from '../../scene/sceneComponent';
 import {TileObject} from '../tileObject';
@@ -59,7 +57,7 @@ export class SpriteComponent extends SceneComponent {
    * Set the current sprite name.  Returns the previous sprite name.
    */
   setSprite(name: string, frame: number = 0): string {
-    var oldSprite: string = this.icon;
+    const oldSprite: string = this.icon;
     if (!name) {
       this.meta = null;
     }

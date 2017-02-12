@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
 import {SpriteComponent} from './spriteComponent';
 import {TickedComponent} from '../../scene/components/tickedComponent';
@@ -51,8 +50,8 @@ export class AnimatedSpriteComponent extends TickedComponent {
     if (!super.syncBehavior()) {
       return false;
     }
-    var sprites = <SpriteComponent[]>this.host.findBehaviors(SpriteComponent);
-    this.spriteComponent = <SpriteComponent>_.where(sprites, {name: this.spriteName})[0];
+    const sprites = this.host.findBehaviors(SpriteComponent) as SpriteComponent[];
+    this.spriteComponent = _.where(sprites, {name: this.spriteName})[0] as SpriteComponent;
     return !!this.spriteComponent;
   }
 
@@ -68,8 +67,10 @@ export class AnimatedSpriteComponent extends TickedComponent {
   interpolateTick(elapsed: number) {
     if (this.spriteComponent) {
       // Choose frame for interpolated position
-      var factor = this._elapsed / this.lengthMS;
+      const factor = this._elapsed / this.lengthMS;
+      /* tslint:disable */
       this.spriteComponent.frame = (factor * this.spriteComponent.meta.frames) | 0;
+      /* tslint:enable */
     }
     super.interpolateTick(elapsed);
   }

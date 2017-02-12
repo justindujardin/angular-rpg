@@ -1,24 +1,24 @@
-import * as _ from "underscore";
-import {GameEntityObject} from "../../../../../game/rpg/objects/gameEntityObject";
-import {HeroTypes} from "../../../../../game/rpg/models/heroModel";
-import {CombatEndTurnState} from "../../states/combat-end-turn.state";
-import {getSoundEffectUrl} from "../../../../../game/pow2/core/api";
-import {AnimatedSpriteComponent} from "../../../../../game/pow2/tile/components/animatedSpriteComponent";
-import {SpriteComponent} from "../../../../../game/pow2/tile/components/spriteComponent";
-import {DamageComponent} from "../../../../../game/rpg/components/damageComponent";
-import {SoundComponent} from "../../../../../game/pow2/scene/components/soundComponent";
-import {CreatureModel} from "../../../../../game/rpg/models/creatureModel";
-import {CombatPlayerRenderBehavior} from "../combat-player-render.behavior";
-import {CombatActionBehavior} from "../combat-action.behavior";
-import {Component, Input} from "@angular/core";
-import {IPlayerActionCallback} from "../../states/combat.machine";
-import {CombatComponent} from "../../combat.component";
-import {AppState} from "../../../../app.model";
-import {Store} from "@ngrx/store";
-import {CombatAttackAction} from "../../../../models/combat/combat.actions";
-import {CombatAttack} from "../../../../models/combat/combat.model";
-import * as rules from "../../../../models/combat/combat.api";
-import {PartyMember} from "../../../../models/party/party.model";
+import * as _ from 'underscore';
+import {GameEntityObject} from '../../../../../game/rpg/objects/gameEntityObject';
+import {HeroTypes} from '../../../../../game/rpg/models/heroModel';
+import {CombatEndTurnStateComponent} from '../../states/combat-end-turn.state';
+import {getSoundEffectUrl} from '../../../../../game/pow2/core/api';
+import {AnimatedSpriteComponent} from '../../../../../game/pow2/tile/components/animatedSpriteComponent';
+import {SpriteComponent} from '../../../../../game/pow2/tile/components/spriteComponent';
+import {DamageComponent} from '../../../../../game/rpg/components/damageComponent';
+import {SoundComponent} from '../../../../../game/pow2/scene/components/soundComponent';
+import {CreatureModel} from '../../../../../game/rpg/models/creatureModel';
+import {CombatPlayerRenderBehaviorComponent} from '../combat-player-render.behavior';
+import {CombatActionBehavior} from '../combat-action.behavior';
+import {Component, Input} from '@angular/core';
+import {IPlayerActionCallback} from '../../states/combat.machine';
+import {CombatComponent} from '../../combat.component';
+import {AppState} from '../../../../app.model';
+import {Store} from '@ngrx/store';
+import {CombatAttackAction} from '../../../../models/combat/combat.actions';
+import {CombatAttack} from '../../../../models/combat/combat.model';
+import * as rules from '../../../../models/combat/combat.api';
+import {PartyMember} from '../../../../models/party/party.model';
 /**
  * Attack another entity in combat.
  */
@@ -26,7 +26,7 @@ import {PartyMember} from "../../../../models/party/party.model";
   selector: 'combat-attack-behavior',
   template: '<ng-content></ng-content>'
 })
-export class CombatAttackBehavior extends CombatActionBehavior {
+export class CombatAttackBehaviorComponent extends CombatActionBehavior {
   name: string = 'attackCombatant';
 
   @Input() combat: CombatComponent;
@@ -48,20 +48,22 @@ export class CombatAttackBehavior extends CombatActionBehavior {
     return super.canBeUsedBy(entity);
   }
 
-
   act(then?: IPlayerActionCallback): boolean {
     if (!this.isCurrentTurn()) {
       return false;
     }
     const done = (error?: any) => {
-      then && then(this, error);
-      this.combat.machine.setCurrentState(CombatEndTurnState.NAME);
+      if (then) {
+        then(this, error);
+      }
+      this.combat.machine.setCurrentState(CombatEndTurnStateComponent.NAME);
     };
 
     //
     const attacker: GameEntityObject = this.from;
     const defender: GameEntityObject = this.to;
-    let attackerPlayer = attacker.findBehavior(CombatPlayerRenderBehavior) as CombatPlayerRenderBehavior;
+    const playerRender =
+      attacker.findBehavior(CombatPlayerRenderBehaviorComponent) as CombatPlayerRenderBehaviorComponent;
     const attack = () => {
       const damage: number = rules.attackCombatant(attacker.model, defender.model);
       const didKill: boolean = defender.model.hp <= 0;
@@ -72,7 +74,7 @@ export class CombatAttackBehavior extends CombatActionBehavior {
       const attackData: CombatAttack = {
         attacker: attacker.model,
         defender: defender.model,
-        damage: damage
+        damage
       };
       this.store.dispatch(new CombatAttackAction(attackData));
 
@@ -91,13 +93,13 @@ export class CombatAttackBehavior extends CombatActionBehavior {
           volume: 0.3
         })
       };
-      if (!!attackerPlayer) {
-        attackerPlayer.setState('Moving');
+      if (playerRender) {
+        playerRender.setState('Moving');
       }
       defender.addComponentDictionary(components);
       components.damage.once('damage:done', () => {
-        if (!!attackerPlayer) {
-          attackerPlayer.setState();
+        if (playerRender) {
+          playerRender.setState();
         }
         if (didKill && defender.model instanceof CreatureModel) {
           _.defer(() => {
@@ -109,8 +111,8 @@ export class CombatAttackBehavior extends CombatActionBehavior {
       done();
     };
 
-    if (!!attackerPlayer) {
-      attackerPlayer.attack(attack);
+    if (playerRender) {
+      playerRender.attack(attack);
     }
     else {
       // TODO: Shouldn't be here.  This mess is currently to delay NPC attacks.

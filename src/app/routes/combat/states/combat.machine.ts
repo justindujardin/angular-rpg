@@ -17,18 +17,16 @@ import * as _ from 'underscore';
 import {GameWorld} from '../../../../app/services/gameWorld';
 import {StateMachine} from '../../../../game/pow2/core/stateMachine';
 import {IState} from '../../../../game/pow2/core/state';
-import {CombatStartState} from './combat-start.state';
-import {Being} from '../../../models/being';
+import {CombatStartStateComponent} from './combat-start.state';
 import {Component, AfterViewInit, ViewChildren, QueryList, Input} from '@angular/core';
 import {CombatEncounter} from '../../../models/combat/combat.model';
 import {CombatMachineState} from './combat-base.state';
 import {Scene} from '../../../../game/pow2/scene/scene';
 import {isDefeated} from '../../../models/combat/combat.api';
-import {CombatPlayer} from '../combat-player.entity';
-import {CombatEnemy} from '../combat-enemy.entity';
+import {CombatPlayerComponent} from '../combat-player.entity';
+import {CombatEnemyComponent} from '../combat-enemy.entity';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 import {TileMapView} from '../../../../game/pow2/tile/tileMapView';
-
 
 /**
  * Completion callback for a player action.
@@ -46,9 +44,7 @@ export interface IPlayerAction {
   act(then?: IPlayerActionCallback): boolean;
 }
 
-
 // Combat State Machine
-//--------------------------------------------------------------------------
 
 @Component({
   selector: 'combat-state-machine',
@@ -62,8 +58,8 @@ export interface IPlayerAction {
   <combat-escape-state #escape></combat-escape-state>
 `
 })
-export class CombatStateMachine extends StateMachine implements AfterViewInit {
-  defaultState: string = CombatStartState.NAME;
+export class CombatStateMachineComponent extends StateMachine implements AfterViewInit {
+  defaultState: string = CombatStartStateComponent.NAME;
   world: GameWorld;
   states: IState[] = [];
   turnList: GameEntityObject[] = [];
@@ -76,12 +72,13 @@ export class CombatStateMachine extends StateMachine implements AfterViewInit {
 
   @Input() scene: Scene;
   @Input() encounter: CombatEncounter;
-  @Input() party: CombatPlayer[] = [];
-  @Input() enemies: CombatEnemy[] = [];
+  @Input() party: CombatPlayerComponent[] = [];
+  @Input() enemies: CombatEnemyComponent[] = [];
 
   @Input() view: TileMapView;
 
-  @ViewChildren('start,beginTurn,chooseAction,endTurn,defeat,victory,escape') childStates: QueryList<CombatMachineState>;
+  @ViewChildren('start,beginTurn,chooseAction,endTurn,defeat,victory,escape')
+  childStates: QueryList<CombatMachineState>;
 
   ngAfterViewInit(): void {
     this.addStates(this.childStates.toArray());
@@ -92,20 +89,20 @@ export class CombatStateMachine extends StateMachine implements AfterViewInit {
     return this.current && !!_.find(this.party, (member) => member._uid === this.current._uid);
   }
 
-  getLiveParty(): CombatPlayer[] {
-    return _.reject(this.party, (obj: CombatPlayer) => {
+  getLiveParty(): CombatPlayerComponent[] {
+    return _.reject(this.party, (obj: CombatPlayerComponent) => {
       return isDefeated(obj.model);
     });
   }
 
-  getLiveEnemies(): CombatEnemy[] {
-    return _.reject(this.enemies, (obj: CombatEnemy) => {
+  getLiveEnemies(): CombatEnemyComponent[] {
+    return _.reject(this.enemies, (obj: CombatEnemyComponent) => {
       return isDefeated(obj.model);
     });
   }
 
   getRandomPartyMember(): GameEntityObject {
-    const players = <CombatPlayer[]>_.shuffle(this.party);
+    const players = <CombatPlayerComponent[]> _.shuffle(this.party);
     while (players.length > 0) {
       const p = players.shift();
       if (!isDefeated(p.model)) {
@@ -116,7 +113,7 @@ export class CombatStateMachine extends StateMachine implements AfterViewInit {
   }
 
   getRandomEnemy(): GameEntityObject {
-    const players = <CombatEnemy[]>_.shuffle(this.enemies);
+    const players = <CombatEnemyComponent[]> _.shuffle(this.enemies);
     while (players.length > 0) {
       const p = players.shift();
       if (!isDefeated(p.model)) {
@@ -127,14 +124,14 @@ export class CombatStateMachine extends StateMachine implements AfterViewInit {
   }
 
   partyDefeated(): boolean {
-    const deadList = _.reject(this.party, (obj: CombatPlayer) => {
+    const deadList = _.reject(this.party, (obj: CombatPlayerComponent) => {
       return isDefeated(obj.model);
     });
     return deadList.length === 0;
   }
 
   enemiesDefeated(): boolean {
-    return _.reject(this.enemies, (obj: CombatEnemy) => {
+    return _.reject(this.enemies, (obj: CombatEnemyComponent) => {
         return isDefeated(obj.model);
       }).length === 0;
   }

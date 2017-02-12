@@ -13,28 +13,31 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {Component} from "@angular/core";
-import {ItemModel} from "../../../game/rpg/models/itemModel";
-import {WeaponModel} from "../../../game/rpg/models/weaponModel";
-import {ArmorModel} from "../../../game/rpg/models/armorModel";
-import {HeroModel} from "../../../game/rpg/models/heroModel";
-import {UsableModel} from "../../../game/rpg/models/usableModel";
-import {GameStateModel} from "../../../game/rpg/models/gameStateModel";
-import {RPGGame} from "../../services/rpgGame";
-import {NotificationService} from "../notification/notification.service";
-import {GameState} from "../../models/game-state/game-state.model";
-import {PartyMember} from "../../models/party/party.model";
-import {Item} from "../../models/item/item.model";
+import {Component, Input} from '@angular/core';
+import {ItemModel} from '../../../game/rpg/models/itemModel';
+import {WeaponModel} from '../../../game/rpg/models/weaponModel';
+import {ArmorModel} from '../../../game/rpg/models/armorModel';
+import {HeroModel} from '../../../game/rpg/models/heroModel';
+import {UsableModel} from '../../../game/rpg/models/usableModel';
+import {GameStateModel} from '../../../game/rpg/models/gameStateModel';
+import {RPGGame} from '../../services/rpgGame';
+import {NotificationService} from '../notification/notification.service';
+import {GameState} from '../../models/game-state/game-state.model';
+import {PartyMember} from '../../models/party/party.model';
+import {Item} from '../../models/item/item.model';
 
 @Component({
   selector: 'party-inventory',
-  inputs: ['model', 'character', 'currentIndex', 'game', 'active'],
   templateUrl: 'party-inventory.component.html'
 })
-export class PartyInventory {
+export class PartyInventoryComponent {
+  @Input()
   currentIndex: number = 0;
+  @Input()
   character: PartyMember;
+  @Input()
   model: GameState = null; // TODO: remove this dep
+  @Input()
   active: boolean = false;
 
   constructor(public game: RPGGame, public notify: NotificationService) {
@@ -91,7 +94,7 @@ export class PartyInventory {
     //   });
     // }
     // this.model.removeInventory(item);
-    //powAlert.show("Equipped " + item.attributes.name + " to " + hero.attributes.name);
+    // powAlert.show("Equipped " + item.attributes.name + " to " + hero.attributes.name);
   }
 
   unequipItem(item: Item) {
@@ -111,7 +114,7 @@ export class PartyInventory {
     //   hero.weapon = null;
     // }
     // this.model.addInventory(item);
-    //powAlert.show("Unequipped " + item.attributes.name + " from " + hero.attributes.name);
+    // powAlert.show("Unequipped " + item.attributes.name + " from " + hero.attributes.name);
   }
 
 }

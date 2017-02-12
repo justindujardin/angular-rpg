@@ -15,7 +15,7 @@
  */
 import {CombatMachineState} from './combat-base.state';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
-import {CombatStateMachine} from './combat.machine';
+import {CombatStateMachineComponent} from './combat.machine';
 import {Component} from '@angular/core';
 
 /**
@@ -30,15 +30,15 @@ export interface CombatRunSummary {
   selector: 'combat-escape-state',
   template: `<ng-content></ng-content>`
 })
-export class CombatEscapeState extends CombatMachineState {
-  static NAME: string = "Combat Escaped";
-  name: string = CombatEscapeState.NAME;
+export class CombatEscapeStateComponent extends CombatMachineState {
+  static NAME: string = 'Combat Escaped';
+  name: string = CombatEscapeStateComponent.NAME;
 
-  enter(machine: CombatStateMachine) {
+  enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
-    machine.notify("combat:escape", {
+    machine.notify('combat:escape', {
       player: machine.current
-    }, ()=> {
+    }, () => {
       alert('combat escape needs fixin\'');
       // machine.parent.world.reportEncounterResult(false);
       // machine.parent.setCurrentState(PlayerMapState.NAME);

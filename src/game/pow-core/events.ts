@@ -14,6 +14,8 @@
  limitations under the License.
  */
 
+// This file will go away once existing classes are moved off of event emitters. Until then, ignore its lint.
+/* tslint:disable */
 
 export interface IEvents {
   on(name: any, callback?: Function, context?: any): IEvents;
@@ -21,18 +23,14 @@ export interface IEvents {
   once(events: string, callback: Function, context?: any): IEvents;
   trigger(name: string, ...args: any[]): IEvents;
 }
-
 // Events class based Backbone.js
-
 //     Backbone.js 1.1.2
 //     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 //     Backbone may be freely distributed under the MIT license.
 //     For all details and documentation:
 //     http://backbonejs.org
-
 // Backbone.Events
 // ---------------
-
 // A module that can be mixed in to *any object* in order to provide it with
 // custom events. You may bind with `on` or remove with `off` callback
 // functions to an event; `trigger`-ing an event fires all callbacks in
@@ -43,7 +41,6 @@ export interface IEvents {
 //     object.on('expand', function(){ alert('expanded'); });
 //     object.trigger('expand');
 //
-
 import * as _ from 'underscore';
 
 export class Events implements IEvents {

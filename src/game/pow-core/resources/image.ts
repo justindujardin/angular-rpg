@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {Resource} from '../resource';
 /**
  * Use html image element to load an image resource.
@@ -24,7 +23,7 @@ export class ImageResource extends Resource {
   fetch(url?: string): Promise<ImageResource> {
     this.url = url || this.url;
     return new Promise<ImageResource>((resolve, reject) => {
-      var reference: HTMLImageElement = new Image();
+      const reference: HTMLImageElement = new Image();
       reference.onload = () => {
         this.data = reference;
         resolve(this);

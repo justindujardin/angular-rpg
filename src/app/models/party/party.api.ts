@@ -16,7 +16,7 @@ export const PARTY_ARMOR_TYPES: string[] = [
 ];
 
 export function getXPForLevel(level: number): number {
-  if (level == 0) {
+  if (level === 0) {
     return 0;
   }
   return LEVEL_EXPERIENCE_REQUIREMENTS[level - 1];

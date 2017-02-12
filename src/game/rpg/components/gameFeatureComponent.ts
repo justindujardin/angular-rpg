@@ -1,5 +1,5 @@
-import {GameFeatureObject} from "../objects/gameFeatureObject";
-import {TileComponent} from "../../pow2/tile/tileComponent";
+import {GameFeatureObject} from '../objects/gameFeatureObject';
+import {TileComponent} from '../../pow2/tile/tileComponent';
 
 /**
  * A component that defines the functionality of a map feature.
@@ -12,7 +12,7 @@ export class GameFeatureComponent extends TileComponent {
       return false;
     }
     if (!this.host.feature) {
-      console.log("Feature host missing feature data.");
+      console.log('Feature host missing feature data.');
       return false;
     }
     // Inherit ID from the unique feature data's id.
@@ -27,7 +27,6 @@ export class GameFeatureComponent extends TileComponent {
     this.host.visible = this.host.enabled = !this.getDataHidden();
     return true;
   }
-
 
   /**
    * Hide and disable a feature object in a persistent manner.

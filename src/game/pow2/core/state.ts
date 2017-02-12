@@ -13,8 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
-
 // State Interfaces
 // -------------------------------------------------------------------------
 import {IStateMachine} from './stateMachine';
@@ -30,7 +28,6 @@ export interface IStateTransition {
   evaluate(machine: IStateMachine): boolean;
 }
 
-
 // Implementation
 // -------------------------------------------------------------------------
 export class State implements IState {
@@ -38,15 +35,17 @@ export class State implements IState {
   transitions: IStateTransition[] = [];
 
   enter(machine: IStateMachine) {
+    // nothing
   }
 
   exit(machine: IStateMachine) {
+    // nothing
   }
 
   update(machine: IStateMachine) {
-    var l: number = this.transitions.length;
-    for (var i: number = 0; i < l; i++) {
-      var t: IStateTransition = this.transitions[i];
+    const l: number = this.transitions.length;
+    for (let i: number = 0; i < l; i++) {
+      const t: IStateTransition = this.transitions[i];
       if (!t.evaluate(machine)) {
         continue;
       }

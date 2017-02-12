@@ -4,8 +4,7 @@ import {CombatComponent} from './combat.component';
 import {SpriteComponent} from '../../../game/pow2/tile/components/spriteComponent';
 import {Combatant} from '../../models/combat/combat.model';
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
-import {CombatAttackBehavior} from './behaviors/actions/combat-attack.behavior';
-
+import {CombatAttackBehaviorComponent} from './behaviors/actions/combat-attack.behavior';
 
 @Component({
   selector: 'combat-enemy',
@@ -14,10 +13,10 @@ import {CombatAttackBehavior} from './behaviors/actions/combat-attack.behavior';
   <ng-content></ng-content>
 `
 })
-export class CombatEnemy extends GameEntityObject implements AfterViewInit, OnDestroy {
+export class CombatEnemyComponent extends GameEntityObject implements AfterViewInit, OnDestroy {
   sprite = new SpriteComponent();
 
-  @ViewChild(CombatAttackBehavior) attack: CombatAttackBehavior;
+  @ViewChild(CombatAttackBehaviorComponent) attack: CombatAttackBehaviorComponent;
 
   private _model$ = new BehaviorSubject<Combatant>(null);
 
@@ -33,7 +32,7 @@ export class CombatEnemy extends GameEntityObject implements AfterViewInit, OnDe
 
   private _spriteSubscription: Subscription;
 
-  constructor(@Inject(forwardRef(() => CombatComponent)) private combat: CombatComponent) {
+  constructor(@Inject(forwardRef(() => CombatComponent)) public combat: CombatComponent) {
     super();
   }
 
@@ -56,8 +55,7 @@ export class CombatEnemy extends GameEntityObject implements AfterViewInit, OnDe
 
 }
 
-
 /** Components associated with combat enemy */
 export const COMBAT_ENEMY_COMPONENTS = [
-  CombatEnemy
+  CombatEnemyComponent
 ];

@@ -1,7 +1,6 @@
 import {Resolve, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 import {Injectable} from '@angular/core';
 import 'rxjs/add/observable/of';
-
 import {LoadingService} from '../../components/loading/loading.service';
 import {GameWorld} from '../../services/gameWorld';
 
@@ -19,11 +18,12 @@ export class GameResolver implements Resolve<any> {
       this.loadingService.title = 'RPG!';
       this.loadingService.message = 'Initializing the world...';
       const sub = this.world.ready$.subscribe(() => {
-        sub && sub.unsubscribe();
+        if (sub) {
+          sub.unsubscribe();
+        }
         resolve();
       });
     });
 
   }
 }
-

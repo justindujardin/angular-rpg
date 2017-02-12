@@ -1,5 +1,4 @@
-import {Observable, BehaviorSubject} from "rxjs/Rx";
-
+import {Observable, BehaviorSubject} from 'rxjs/Rx';
 
 export class LoadingService {
 
@@ -19,34 +18,20 @@ export class LoadingService {
     this._loading$.next(value);
   }
 
-
   /* @internal */
   private _title$: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
-  /**
-   *
-   */
   public title$: Observable<string> = this._title$;
 
-  /**
-   *
-   */
   set title(value: string) {
     this._title$.next(value);
   }
 
-
   /* @internal */
   private _message$: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
-  /**
-   *
-   */
   public message$: Observable<string> = this._message$;
 
-  /**
-   *
-   */
   set message(value: string) {
     this._message$.next(value);
   }

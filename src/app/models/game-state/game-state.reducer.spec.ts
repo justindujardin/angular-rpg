@@ -5,7 +5,8 @@ import {
   GameStateHealPartyAction,
   GameStateTravelAction,
   GameStateMoveAction,
-  GameStateAddGoldAction, GameStateSetKeyDataAction
+  GameStateAddGoldAction,
+  GameStateSetKeyDataAction
 } from './game-state.actions';
 
 function defaultState(overrides?: any): GameState {
@@ -81,7 +82,6 @@ describe('GameState', () => {
         expect(newState.keyData[keyName]).toBe(false);
       });
     });
-
 
     describe('GameStateTravelAction', () => {
       it('should update the current world map', () => {

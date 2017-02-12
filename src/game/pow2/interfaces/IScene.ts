@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {IObject, IBehaviorHost, IBehavior} from '../../pow-core/behavior';
 import {IProcessObject} from '../../pow-core/time';
 import {Point} from '../../pow-core/point';
@@ -71,7 +70,6 @@ export interface ISceneViewRenderer {
   renderFrame(view: ISceneView, elapsed: number);
   afterFrame(view: ISceneView, elapsed: number);
 }
-
 
 /**
  * Renders a scene to a Canvas object.

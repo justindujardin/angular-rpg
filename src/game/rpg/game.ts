@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {Point} from '../pow-core/point';
 
 /**
@@ -85,7 +84,6 @@ export interface IGameArmor extends IGameItem {
   defense: number; // Defensive value
   evade: number; // Value to add to evasion <= 0
 }
-
 
 /**
  * Describe a set of combat zones for a given point on a map.

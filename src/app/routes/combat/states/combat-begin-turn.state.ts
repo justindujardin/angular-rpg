@@ -17,23 +17,22 @@ import * as _ from 'underscore';
 import {Component} from '@angular/core';
 import {CombatMachineState} from './combat-base.state';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
-import {CombatStateMachine, IPlayerAction} from './combat.machine';
-import {CombatAttackBehavior} from '../behaviors/actions/combat-attack.behavior';
+import {CombatStateMachineComponent, IPlayerAction} from './combat.machine';
+import {CombatAttackBehaviorComponent} from '../behaviors/actions/combat-attack.behavior';
 import {isDefeated} from '../../../models/combat/combat.api';
 
 // Combat Begin
-//--------------------------------------------------------------------------
 @Component({
   selector: 'combat-begin-turn-state',
   template: `<ng-content></ng-content>`
 })
-export class CombatBeginTurnState extends CombatMachineState {
-  static NAME: string = "Combat Begin Turn";
-  name: string = CombatBeginTurnState.NAME;
+export class CombatBeginTurnStateComponent extends CombatMachineState {
+  static NAME: string = 'Combat Begin Turn';
+  name: string = CombatBeginTurnStateComponent.NAME;
   current: GameEntityObject; // Used to restore scale on exit.
-  machine: CombatStateMachine;
+  machine: CombatStateMachineComponent;
 
-  enter(machine: CombatStateMachine) {
+  enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
     this.machine = machine;
     machine.currentDone = false;
@@ -47,11 +46,11 @@ export class CombatBeginTurnState extends CombatMachineState {
     machine.trigger('combat:beginTurn', machine.current);
     let choice: IPlayerAction = null;
     if (machine.isFriendlyTurn()) {
-      console.log("TURN: " + machine.current.model.name);
+      console.log(`TURN: ${machine.current.model.name}`);
       choice = machine.playerChoices[machine.current._uid];
     }
     else {
-      choice = machine.current.findBehavior(CombatAttackBehavior) as CombatAttackBehavior;
+      choice = machine.current.findBehavior(CombatAttackBehaviorComponent) as CombatAttackBehaviorComponent;
       // TODO: This config should not be here.   Just pick a random person to attackCombatant.
       if (choice) {
         choice.to = machine.getRandomPartyMember();
@@ -59,13 +58,13 @@ export class CombatBeginTurnState extends CombatMachineState {
       }
     }
     if (!choice) {
-      throw new Error("Invalid Combat Action Choice. This should not happen.");
+      throw new Error('Invalid Combat Action Choice. This should not happen.');
     }
     if (choice.to && isDefeated(choice.to.model)) {
       choice.to = machine.getRandomEnemy();
     }
-    _.defer(()=> {
-      choice.act((act: IPlayerAction, error?: any)=> {
+    _.defer(() => {
+      choice.act((act: IPlayerAction, error?: any) => {
         if (error) {
           console.error(error);
         }
@@ -73,7 +72,7 @@ export class CombatBeginTurnState extends CombatMachineState {
     });
   }
 
-  exit(machine: CombatStateMachine) {
+  exit(machine: CombatStateMachineComponent) {
     this.current.scale = 1;
     super.exit(machine);
   }

@@ -13,8 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
-
 import {SceneComponent} from './sceneComponent';
 import {ISceneViewRenderer, ISceneView} from '../interfaces/IScene';
 /**
@@ -23,16 +21,15 @@ import {ISceneViewRenderer, ISceneView} from '../interfaces/IScene';
  */
 export class SceneViewComponent extends SceneComponent implements ISceneViewRenderer {
   beforeFrame(view: ISceneView, elapsed: number) {
-
+    // nothing
   }
 
   renderFrame(view: ISceneView, elapsed: number) {
-
+    // nothing
   }
 
   afterFrame(view: ISceneView, elapsed: number) {
-
+    // nothing
   }
 
 }
-

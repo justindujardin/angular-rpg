@@ -13,17 +13,15 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
 import {ImageResource} from '../../pow-core/resources/image';
 import {SpriteComponent} from './components/spriteComponent';
 import {Scene} from '../scene/scene';
-import {Point} from '../../pow-core';
+import {Point, IPoint} from '../../pow-core';
 import {MovableComponent} from '../scene/components/movableComponent';
 import {GameWorld} from '../../../app/services/gameWorld';
 import {TileMap} from './tileMap';
 import {SceneObject} from '../scene/sceneObject';
-import {IPoint} from '../../pow-core';
 export interface TileObjectOptions {
   point?: Point;
   renderPoint?: Point;
@@ -46,7 +44,7 @@ export interface TileObjectOptions {
 const DEFAULTS: TileObjectOptions = {
   visible: true,
   enabled: true,
-  icon: "",
+  icon: '',
   scale: 1,
   image: null,
   tileMap: null
@@ -93,7 +91,7 @@ export class TileObject extends SceneObject implements TileObjectOptions {
       this.setSprite(this.icon);
     }
     if (!this.tileMap) {
-      this.tileMap = <TileMap>this.scene.objectByType(TileMap);
+      this.tileMap = this.scene.objectByType(TileMap) as TileMap;
     }
   }
 
@@ -108,7 +106,7 @@ export class TileObject extends SceneObject implements TileObjectOptions {
     }
     else {
       const world = GameWorld.get();
-      if(!world) {
+      if (!world) {
         return oldSprite;
       }
       const meta = world.sprites.getSpriteMeta(name);

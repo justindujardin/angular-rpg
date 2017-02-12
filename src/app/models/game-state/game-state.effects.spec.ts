@@ -44,7 +44,7 @@ describe('GameState', () => {
       const fakeGameState: any = {};
       it('should dispatch load success after game state service loads the game', () => {
         runner.queue(new GameStateLoadAction(fakeGameState));
-        effects.initLoadedGame$.subscribe(result => {
+        effects.initLoadedGame$.subscribe((result) => {
           expect(result.type).toBe(GameStateActionTypes.LOAD_SUCCESS);
         });
       });
@@ -56,7 +56,7 @@ describe('GameState', () => {
       };
       it('should dispatch a travel action to the current location after game load success', () => {
         runner.queue(new GameStateLoadAction(fakeGameState));
-        effects.afterLoadTravelToCurrentLocation$.subscribe(result => {
+        effects.afterLoadTravelToCurrentLocation$.subscribe((result) => {
           expect(result.type).toBe(GameStateActionTypes.TRAVEL);
         });
       });
@@ -65,7 +65,7 @@ describe('GameState', () => {
       it('should dispatch a travel success action after loading the map', () => {
         expect(mockStateService.loadMapCalls).toBe(0);
         runner.queue(new GameStateTravelAction('map', {x: 0, y: 0}));
-        effects.travel$.subscribe(result => {
+        effects.travel$.subscribe((result) => {
           expect(mockStateService.loadMapCalls).toBe(1);
           expect(result.type).toBe(GameStateActionTypes.TRAVEL_SUCCESS);
         });

@@ -15,38 +15,37 @@
  */
 import * as _ from 'underscore';
 import {CombatMachineState} from './combat-base.state';
-import {CombatStateMachine} from './combat.machine';
-import {CombatChooseActionState} from './combat-choose-action.state';
+import {CombatStateMachineComponent} from './combat.machine';
+import {CombatChooseActionStateComponent} from './combat-choose-action.state';
 import {Component} from '@angular/core';
 import {NotificationService} from '../../../components/notification/notification.service';
 
 // Combat Begin
-//--------------------------------------------------------------------------
 @Component({
   selector: 'combat-start-state',
   template: `<ng-content></ng-content>`
 })
-export class CombatStartState extends CombatMachineState {
-  static NAME: string = "Combat Started";
-  name: string = CombatStartState.NAME;
+export class CombatStartStateComponent extends CombatMachineState {
+  static NAME: string = 'Combat Started';
+  name: string = CombatStartStateComponent.NAME;
 
   constructor(private notify: NotificationService) {
     super();
   }
 
-  enter(machine: CombatStateMachine) {
+  enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
     _.defer(() => {
       const encounter = machine.encounter;
       const _done = () => {
-        machine.setCurrentState(CombatChooseActionState.NAME);
+        machine.setCurrentState(CombatChooseActionStateComponent.NAME);
       };
       if (encounter && encounter.message) {
         // If the message contains pipe's, treat what is between each pipe as a separate
         // message to be displayed.
         let msgs = [encounter.message];
         if (encounter.message.indexOf('|') !== -1) {
-          msgs = encounter.message.split('|')
+          msgs = encounter.message.split('|');
         }
         const last = msgs.pop();
         msgs.forEach((m) => this.notify.show(m, null, 0));
@@ -58,4 +57,3 @@ export class CombatStartState extends CombatMachineState {
     });
   }
 }
-

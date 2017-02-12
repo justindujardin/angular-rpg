@@ -1,12 +1,15 @@
 import {
-  GameStateActions, GameStateActionTypes, GameStateTravelAction, GameStateMoveAction,
+  GameStateActions,
+  GameStateActionTypes,
+  GameStateTravelAction,
+  GameStateMoveAction,
   GameStateSetKeyDataAction
 } from './game-state.actions';
 import {GameState} from './game-state.model';
 import * as Immutable from 'immutable';
 import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
-import {PartyMember} from "../party/party.model";
+import {PartyMember} from '../party/party.model';
 
 const initialState: GameState = {
   party: [],
@@ -55,7 +58,7 @@ export function gameStateReducer(state: GameState = initialState, action: GameSt
       });
       return Immutable.fromJS(state).merge({
         gold: state.gold - cost,
-        party: party
+        party
       }).toJS();
     }
     default:
@@ -63,31 +66,30 @@ export function gameStateReducer(state: GameState = initialState, action: GameSt
   }
 }
 
-
 export function getGameState(state$: Store<AppState>) {
-  return state$.select(state => state.gameState);
+  return state$.select((state) => state.gameState);
 }
 
 export function getGold(state$: Store<AppState>) {
-  return state$.select(state => state.gameState.gold);
+  return state$.select((state) => state.gameState.gold);
 }
 
 export function getMap(state$: Store<AppState>) {
-  return state$.select(state => state.gameState.map);
+  return state$.select((state) => state.gameState.map);
 }
 
 export function getPosition(state$: Store<AppState>) {
-  return state$.select(state => state.gameState.position);
+  return state$.select((state) => state.gameState.position);
 }
 
 export function getAllKeyData(state$: Store<AppState>) {
-  return state$.select(state => state.gameState.keyData);
+  return state$.select((state) => state.gameState.keyData);
 }
 
 export function getKeyData(state$: Store<AppState>, key: string) {
-  return state$.select(state => state.gameState.keyData[key]);
+  return state$.select((state) => state.gameState.keyData[key]);
 }
 
 export function getParty(state$: Store<AppState>) {
-  return state$.select(state => state.gameState.party);
+  return state$.select((state) => state.gameState.party);
 }

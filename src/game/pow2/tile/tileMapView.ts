@@ -21,7 +21,7 @@ import {CameraComponent} from '../scene/components/cameraComponent';
 import {Point} from '../../pow-core';
 
 export class TileMapView extends SceneView {
-  mapRenderer: TileMapRenderer = new TileMapRenderer;
+  mapRenderer: TileMapRenderer = new TileMapRenderer();
   map: TileMap;
 
   /**
@@ -34,10 +34,10 @@ export class TileMapView extends SceneView {
     this.canvas.height = window.innerHeight;
     this._bounds.set(this.canvas.width, this.canvas.height);
     this._bounds = this.screenToWorld(this._bounds);
-    var ctx: any = this.context;
-    ctx.webkitImageSmoothingEnabled = false;
-    ctx.mozImageSmoothingEnabled = false;
-    ctx.imageSmoothingEnabled = false;
+    const context: any = this.context;
+    context.webkitImageSmoothingEnabled = false;
+    context.mozImageSmoothingEnabled = false;
+    context.imageSmoothingEnabled = false;
   }
 
   /*
@@ -48,12 +48,12 @@ export class TileMapView extends SceneView {
     if (!this.map) {
       return this.camera;
     }
-    var clipGrow = this.camera.clone();
+    const clipGrow = this.camera.clone();
     clipGrow.point.round();
     clipGrow.extent.round();
 
     // Clamp to tilemap bounds.
-    var rect: IRect = this.map.bounds;
+    const rect: IRect = this.map.bounds;
     if (clipGrow.point.x < rect.point.x) {
       clipGrow.point.x += rect.point.x - clipGrow.point.x;
     }
@@ -73,12 +73,12 @@ export class TileMapView extends SceneView {
    * Update the camera for this frame.
    */
   processCamera() {
-    this.cameraComponent = <CameraComponent>this.findBehavior(CameraComponent);
+    this.cameraComponent = this.findBehavior(CameraComponent) as CameraComponent;
     if (!this.cameraComponent && this.map) {
-      this.cameraComponent = <CameraComponent>this.map.findBehavior(CameraComponent);
+      this.cameraComponent = this.map.findBehavior(CameraComponent) as CameraComponent;
     }
     if (!this.cameraComponent) {
-      this.cameraComponent = <CameraComponent>this.scene.componentByType(CameraComponent);
+      this.cameraComponent = this.scene.componentByType(CameraComponent) as CameraComponent;
     }
     super.processCamera();
   }
@@ -87,15 +87,14 @@ export class TileMapView extends SceneView {
    * Set the pre-render canvas state.
    */
   setRenderState() {
-    var worldCameraPos, worldTilePos;
     super.setRenderState();
     if (!this.camera || !this.context || !this.map) {
       return;
     }
-    worldTilePos = this.worldToScreen(this.map.bounds.point);
+    let worldCameraPos = this.worldToScreen(this.camera.point);
+    let worldTilePos = this.worldToScreen(this.map.bounds.point);
     worldTilePos.x = parseFloat(worldTilePos.x.toFixed(2));
     worldTilePos.y = parseFloat(worldTilePos.y.toFixed(2));
-    worldCameraPos = this.worldToScreen(this.camera.point);
     worldCameraPos.x = parseFloat(worldCameraPos.x.toFixed(2));
     worldCameraPos.y = parseFloat(worldCameraPos.y.toFixed(2));
     this.context.translate(worldTilePos.x - worldCameraPos.x, worldTilePos.y - worldCameraPos.y);
@@ -113,9 +112,10 @@ export class TileMapView extends SceneView {
     return this;
   }
 
-  /*
-   * Draw any post-rendering effects.
+  /**
+   * Draw any post-frame rendering effects.
    */
   renderPost() {
+    // nothing
   }
 }

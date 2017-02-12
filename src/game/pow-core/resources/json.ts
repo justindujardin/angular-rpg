@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {Resource} from '../resource';
 /**
  * Use jQuery to load a JSON file from a URL.
@@ -24,7 +23,7 @@ export class JSONResource extends Resource {
   fetch(url?: string): Promise<JSONResource> {
     this.url = url || this.url;
     return new Promise<JSONResource>((resolve, reject) => {
-      var request: any = $.getJSON(this.url);
+      const request: any = $.getJSON(this.url);
       request.done((object: JSON) => {
         this.data = object;
         resolve(this);

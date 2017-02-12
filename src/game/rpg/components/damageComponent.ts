@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {GameEntityObject} from '../objects/gameEntityObject';
 import {SceneComponent} from '../../pow2/scene/sceneComponent';
 import {AnimatedSpriteComponent} from '../../pow2/tile/components/animatedSpriteComponent';
@@ -37,7 +36,7 @@ export class DamageComponent extends SceneComponent {
       this.host.findBehavior(SpriteComponent);
     this.sound = <SoundComponent>
       this.host.findBehavior(SoundComponent);
-    var ok = !!(this.animation && this.sprite);
+    const ok = !!(this.animation && this.sprite);
     if (!this.started && ok) {
       this.started = true;
       this.animation.once('animation:done', () => {

@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {SceneComponent} from '../sceneComponent';
 /**
  * A component that supports tick/interpolateTick
@@ -25,11 +24,13 @@ export class TickedComponent extends SceneComponent {
    * Update the component at a tick interval.
    */
   tick(elapsed: number) {
+    // nothing
   }
 
   /**
    * Interpolate component state between ticks.
    */
   interpolateTick(elapsed: number) {
+    // nothing
   }
 }

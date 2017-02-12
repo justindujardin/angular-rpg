@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
 import {GameFeatureObject} from '../objects/gameFeatureObject';
 import {TickedComponent} from '../../pow2/scene/components/tickedComponent';
@@ -30,7 +29,7 @@ export class GameFeatureInputComponent extends TickedComponent {
     if (!super.syncBehavior() || !this.host.scene || !this.host.scene.world || !this.host.scene.world.input) {
       return false;
     }
-    this.mouse = this.host.scene.world.input.getMouseHook("world");
+    this.mouse = this.host.scene.world.input.getMouseHook('world');
     return !!this.mouse;
   }
 

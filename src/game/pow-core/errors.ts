@@ -14,12 +14,11 @@
  limitations under the License.
  */
 
-
 /**
  * Constant strings for use in throwing Error with messages.  Used to
  * make checking thrown errors doable without an explosion of Error subclasses.
  */
-export var errors = {
+export const errors = {
   /**
    * An invalid combination of arguments was given to a function
    */

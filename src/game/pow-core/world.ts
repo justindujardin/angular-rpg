@@ -13,8 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
-
 import {Time} from './time';
 import {Injectable} from '@angular/core';
 
@@ -29,7 +27,6 @@ export interface IWorldObject {
   onAddToWorld?(world: IWorld);
   onRemoveFromWorld?(world: IWorld);
 }
-
 
 @Injectable()
 export class World implements IWorld {

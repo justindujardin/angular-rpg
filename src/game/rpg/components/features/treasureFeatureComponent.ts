@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {GameFeatureComponent} from '../gameFeatureComponent';
 import {TileObject} from '../../../pow2/tile/tileObject';
 
@@ -24,7 +23,7 @@ export class TreasureFeatureComponent extends GameFeatureComponent {
 
   connectBehavior(): boolean {
     if (typeof this.host.id === 'undefined') {
-      console.error("Treasure must have a given id so it may be hidden");
+      console.error('Treasure must have a given id so it may be hidden');
       return false;
     }
     return super.connectBehavior();
@@ -34,7 +33,7 @@ export class TreasureFeatureComponent extends GameFeatureComponent {
     if (!super.syncBehavior() || !this.host.feature) {
       return false;
     }
-    this.name = "Treasure Chest";
+    this.name = 'Treasure Chest';
     this.gold = this.host.feature.gold;
     this.item = this.host.feature.item;
     this.icon = this.host.feature.icon;

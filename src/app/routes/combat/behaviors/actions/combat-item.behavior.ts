@@ -2,7 +2,7 @@
 // import {CombatActionBehavior} from '../combat-action.behavior';
 // import {GameEntityObject} from '../../../../../game/rpg/objects/gameEntityObject';
 // import {UsableModel} from '../../../../../game/rpg/models/usableModel';
-// import {CombatEndTurnState} from '../../states/combat-end-turn.state';
+// import {CombatEndTurnStateComponent} from '../../states/combat-end-turn.state';
 // import {AnimatedSpriteComponent} from '../../../../../game/pow2/tile/components/animatedSpriteComponent';
 // import {SpriteComponent} from '../../../../../game/pow2/tile/components/spriteComponent';
 // import {SoundComponent} from '../../../../../game/pow2/scene/components/soundComponent';
@@ -38,7 +38,7 @@
 //     }
 //     var done = (error?: any): any => {
 //       then && then(this, error);
-//       this.combat.machine.setCurrentState(CombatEndTurnState.NAME);
+//       this.combat.machine.setCurrentState(CombatEndTurnStateComponent.NAME);
 //     };
 //     if (!this.item) {
 //       return done();
@@ -50,7 +50,7 @@
 //     //
 //     var user: GameEntityObject = this.from;
 //     var target: GameEntityObject = this.to;
-//     var userRender = user.findBehavior(CombatPlayerRenderBehavior) as CombatPlayerRenderBehavior;
+//     var userRender = user.findBehavior(CombatPlayerRenderBehaviorComponent) as CombatPlayerRenderBehaviorComponent;
 //
 //     userRender.magic(()=> {
 //       this.item.use(target.model).then(() => {

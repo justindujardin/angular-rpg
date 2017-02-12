@@ -13,10 +13,8 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {Entity} from './entity';
 import {Events} from './events';
-
 import * as _ from 'underscore';
 /**
  * Most basic object.  Has an id and a name.
@@ -69,7 +67,6 @@ export interface IBehaviorHost extends IObject {
 
   findBehaviorByName(name: string): IBehavior;
 }
-
 
 /**
  * Simplest ISceneBehavior implementation.  Because Typescript interfaces are compile

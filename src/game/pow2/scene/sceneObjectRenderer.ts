@@ -13,12 +13,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {SceneView} from './sceneView';
 import {SceneObject} from './sceneObject';
 
 export class SceneObjectRenderer {
   render(object: SceneObject, data: any, view: SceneView) {
-
+    // nothing
   }
 }

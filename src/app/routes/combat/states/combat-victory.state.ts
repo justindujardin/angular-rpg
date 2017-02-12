@@ -18,14 +18,11 @@ import {CombatMachineState} from './combat-base.state';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 import {HeroModel} from '../../../../game/rpg/models/heroModel';
 import {ItemModel} from '../../../../game/rpg/models/itemModel';
-import {CombatStateMachine} from './combat.machine';
-import {IGameFixedEncounter} from '../../../../game/rpg/game';
-import {Combatant} from '../../../models/combat/combat.model';
+import {CombatStateMachineComponent} from './combat.machine';
 import {Component} from '@angular/core';
-import {PartyMember} from "../../../models/party/party.model";
-import {Item} from "../../../models/item/item.model";
-import {isDefeated} from "../../../models/combat/combat.api";
-
+import {PartyMember} from '../../../models/party/party.model';
+import {Item} from '../../../models/item/item.model';
+import {isDefeated} from '../../../models/combat/combat.api';
 
 export interface CombatVictorySummary {
   party: GameEntityObject[];
@@ -34,25 +31,25 @@ export interface CombatVictorySummary {
   items?: Item[];
   gold: number;
   exp: number;
-  state: CombatVictoryState;
+  state: CombatVictoryStateComponent;
 }
 
 @Component({
   selector: 'combat-victory-state',
   template: `<ng-content></ng-content>`
 })
-export class CombatVictoryState extends CombatMachineState {
-  static NAME: string = "Combat Victory";
-  name: string = CombatVictoryState.NAME;
+export class CombatVictoryStateComponent extends CombatMachineState {
+  static NAME: string = 'Combat Victory';
+  name: string = CombatVictoryStateComponent.NAME;
 
-  enter(machine: CombatStateMachine) {
+  enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
 
-    var players: GameEntityObject[] = _.reject(machine.party, (p: GameEntityObject) => {
+    const players: GameEntityObject[] = _.reject(machine.party, (p: GameEntityObject) => {
       return isDefeated(p.model);
     });
     if (players.length === 0) {
-      throw new Error("Invalid state, cannot be in victory with no living player-card members");
+      throw new Error('Invalid state, cannot be in victory with no living player-card members');
     }
 
     console.warn('combat victory is unimplemented');

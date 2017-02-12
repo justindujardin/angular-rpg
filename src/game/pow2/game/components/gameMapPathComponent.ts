@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import * as _ from 'underscore';
 import {BasePlayerComponent} from './basePlayerComponent';
 import {PathComponent} from '../../tile/components/pathComponent';
@@ -23,16 +22,17 @@ import {ITiledLayer} from '../../../pow-core/resources/tiled/tiled';
  */
 export class GameMapPathComponent extends PathComponent {
   buildWeightedGraph(): number[][] {
-    var layers: ITiledLayer[] = this.tileMap.getLayers();
-    var l: number = layers.length;
+    let x: number;
+    const layers: ITiledLayer[] = this.tileMap.getLayers();
+    const l: number = layers.length;
 
-    var grid = new Array(this.tileMap.bounds.extent.x);
-    for (var x: number = 0; x < this.tileMap.bounds.extent.x; x++) {
+    const grid = new Array(this.tileMap.bounds.extent.x);
+    for (x = 0; x < this.tileMap.bounds.extent.x; x++) {
       grid[x] = new Array(this.tileMap.bounds.extent.y);
     }
 
-    for (var x: number = 0; x < this.tileMap.bounds.extent.x; x++) {
-      for (var y: number = 0; y < this.tileMap.bounds.extent.y; y++) {
+    for (x = 0; x < this.tileMap.bounds.extent.x; x++) {
+      for (let y: number = 0; y < this.tileMap.bounds.extent.y; y++) {
 
         // Tile Weights, the higher the value the more avoided the
         // tile will be in output paths.
@@ -40,11 +40,11 @@ export class GameMapPathComponent extends PathComponent {
         // 10   - neutral path, can walk, don't particularly care for it.
         // 1    - desired path, can walk and tend toward it over netural.
         // 1000 - blocked path, can't walk, avoid at all costs.
-        var weight: number = 10;
-        var blocked: boolean = false;
-        for (var i = 0; i < l; i++) {
+        let weight: number = 10;
+        let blocked: boolean = false;
+        for (let i = 0; i < l; i++) {
           // If there is no metadata continue
-          var terrain = this.tileMap.getTileData(layers[i], x, y);
+          const terrain = this.tileMap.getTileData(layers[i], x, y);
           if (!terrain) {
             continue;
           }
@@ -65,19 +65,21 @@ export class GameMapPathComponent extends PathComponent {
 
     // TOOD: Tiled Editor format is KILLIN' me.
     _.each(this.tileMap.features.objects, (o: any) => {
-      var obj: any = o.properties;
+      const obj: any = o.properties;
       if (!obj) {
         return;
       }
-      var collideTypes: string[] = BasePlayerComponent.COLLIDE_TYPES;
+      const collideTypes: string[] = BasePlayerComponent.COLLIDE_TYPES;
       if (obj.passable === true || !obj.type) {
         return;
       }
       if (_.indexOf(collideTypes, obj.type) !== -1) {
-        var x: number = o.x / o.width | 0;
-        var y: number = o.y / o.height | 0;
-        if (!obj.passable && this.tileMap.bounds.pointInRect(x, y)) {
-          grid[x][y] = 100;
+        /* tslint:disable */
+        const xPos: number = o.x / o.width | 0;
+        const yPos: number = o.y / o.height | 0;
+        /* tslint:enable */
+        if (!obj.passable && this.tileMap.bounds.pointInRect(xPos, yPos)) {
+          grid[xPos][yPos] = 100;
         }
       }
     });

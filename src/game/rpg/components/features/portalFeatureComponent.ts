@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {GameFeatureComponent} from '../gameFeatureComponent';
 import {Point} from '../../../pow-core/point';
 import {TileObject} from '../../../pow2/tile/tileObject';
@@ -43,4 +42,3 @@ export class PortalFeatureComponent extends GameFeatureComponent {
   }
 
 }
-

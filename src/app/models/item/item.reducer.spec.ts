@@ -1,6 +1,6 @@
-import {ItemState, itemReducer} from "./item.reducer";
-import {ItemRemoveAction, ItemAddAction} from "./item.actions";
-import {Item} from "./item.model";
+import {ItemState, itemReducer} from './item.reducer';
+import {ItemRemoveAction, ItemAddAction} from './item.actions';
+import {Item} from './item.model';
 function defaultState(overrides?: any): ItemState {
   return Object.assign({}, {
     inventory: []
@@ -13,6 +13,14 @@ describe('Item', () => {
     name: 'Test Item',
     cost: 1337,
     icon: 'test-icon.png',
+    usedby: []
+  };
+
+  const otherItem: Item = {
+    id: 'other-test-item',
+    name: 'Other Test Item',
+    cost: 7331,
+    icon: 'other-test-icon.png',
     usedby: []
   };
   describe('Actions', () => {
@@ -28,12 +36,12 @@ describe('Item', () => {
     });
 
     describe('ItemRemoveAction', () => {
-      it('should remove an item to the inventory', () => {
+      it('should remove an item from the inventory', () => {
         const state = defaultState({
-          inventory: [testItem]
+          inventory: [testItem, otherItem]
         });
         const expected = defaultState({
-          inventory: []
+          inventory: [otherItem]
         });
         const actual = itemReducer(state, new ItemRemoveAction(testItem));
         expect(actual).toEqual(expected);

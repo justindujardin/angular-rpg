@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
 import {CameraComponent} from '../../scene/components/cameraComponent';
 import {TileMap} from '../tileMap';
 import {SceneView} from '../../scene/sceneView';
