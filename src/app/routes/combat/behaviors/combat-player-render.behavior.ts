@@ -219,7 +219,7 @@ export class CombatPlayerRenderBehaviorComponent extends TickedComponent {
           frame = altFrame ? StateFrames.STRIKE : StateFrames.SWING;
           break;
         default:
-          console.warn('unsupported character state: ' + this.state);
+          // Do nothing
       }
       this.host.frame = this._renderFrame = frame;
     }

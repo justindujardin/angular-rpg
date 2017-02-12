@@ -1,13 +1,11 @@
 import * as _ from 'underscore';
 import {GameEntityObject} from '../../../../../game/rpg/objects/gameEntityObject';
-import {HeroTypes} from '../../../../../game/rpg/models/heroModel';
 import {CombatEndTurnStateComponent} from '../../states/combat-end-turn.state';
 import {getSoundEffectUrl} from '../../../../../game/pow2/core/api';
 import {AnimatedSpriteComponent} from '../../../../../game/pow2/tile/components/animatedSpriteComponent';
 import {SpriteComponent} from '../../../../../game/pow2/tile/components/spriteComponent';
 import {DamageComponent} from '../../../../../game/rpg/components/damageComponent';
 import {SoundComponent} from '../../../../../game/pow2/scene/components/soundComponent';
-import {CreatureModel} from '../../../../../game/rpg/models/creatureModel';
 import {CombatPlayerRenderBehaviorComponent} from '../combat-player-render.behavior';
 import {CombatActionBehavior} from '../combat-action.behavior';
 import {Component, Input} from '@angular/core';
@@ -38,8 +36,8 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
   canBeUsedBy(entity: GameEntityObject) {
     // Exclude magic casters from physical attacks
     const excludedTypes = [
-      HeroTypes.LifeMage,
-      HeroTypes.Necromancer
+      'lifemage',
+      'deathmage'
     ];
     const partyMember = entity.model as PartyMember;
     if (partyMember.type !== undefined && _.indexOf(excludedTypes, partyMember.type) !== -1) {
@@ -101,7 +99,7 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
         if (playerRender) {
           playerRender.setState();
         }
-        if (didKill && defender.model instanceof CreatureModel) {
+        if (didKill) {
           _.defer(() => {
             defender.destroy();
           });
