@@ -157,8 +157,8 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     setTimeout(() => this._onResize(), 1);
   }
 
-  protected _onResize() {
-    super._onResize();
+  public _onResize(event?: Event) {
+    super._onResize(event);
     // Camera (window bounds)
     if (this.map) {
       const tileOffset = this.map.bounds.getCenter();
@@ -220,7 +220,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     });
   }
 
-  private _onClick(e: MouseEvent) {
+  public _onClick(e: MouseEvent) {
 
     // Ignore clicks that did not originate on the canvas
     if (e.srcElement !== this.canvas) {

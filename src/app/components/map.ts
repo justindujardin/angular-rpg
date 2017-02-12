@@ -104,7 +104,7 @@ export class Map extends TileMapView {
     // Nothing
   }
 
-  protected _onResize() {
+  public _onResize(event?: Event) {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
     this._bounds.set(this.canvas.width, this.canvas.height);

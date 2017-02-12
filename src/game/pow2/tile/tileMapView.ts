@@ -29,7 +29,7 @@ export class TileMapView extends SceneView {
    */
   protected _bounds: Point = new Point();
 
-  protected _onResize() {
+  public _onResize(event?: Event) {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
     this._bounds.set(this.canvas.width, this.canvas.height);
