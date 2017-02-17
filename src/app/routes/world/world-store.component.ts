@@ -92,25 +92,26 @@ export class WorldStoreComponent implements OnDestroy {
         return;
       }
       const item = this._selected$.value;
+      const isSelling = this._selling$.value;
       const value: number = item.cost;
+      if (!isSelling && value > model.gold) {
+        this.notify.show("You don't have enough money");
+        return;
+      }
 
-      if (this._selling$.value) {
+      this._selected$.next(null);
+      this._selling$.next(false);
+
+      if (isSelling) {
         this.store.dispatch(new GameStateAddGoldAction(value));
         this.notify.show(`Sold ${item.name} for ${item.cost} gold.`, null, 1500);
         this.store.dispatch(new ItemRemoveAction(item));
       }
       else {
-        if (value > model.gold) {
-          this.notify.show("You don't have enough money");
-          return;
-        }
         this.store.dispatch(new GameStateAddGoldAction(-value));
         this.notify.show(`Purchased ${item.name}.`, null, 1500);
         this.store.dispatch(new ItemAddAction(item));
       }
-
-      this._selected$.next(null);
-      this._selling$.next(false);
 
     }).subscribe();
   /** Stream of clicks on the actionable button */
