@@ -21,7 +21,7 @@ import {ItemModel} from '../../../../game/rpg/models/itemModel';
 import {CombatStateMachineComponent} from './combat.machine';
 import {Component} from '@angular/core';
 import {Entity} from '../../../models/entity/entity.model';
-import {Item} from '../../../models/item/item.model';
+import {Item} from '../../../models/item';
 import {isDefeated} from '../../../models/combat/combat.api';
 
 export interface CombatVictorySummary {

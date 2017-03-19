@@ -1,4 +1,4 @@
-import {Item} from '../item/item.model';
+import {Item} from '../item';
 import {BaseEntity} from '../being';
 export type CombatType = 'none' | 'fixed' | 'random';
 

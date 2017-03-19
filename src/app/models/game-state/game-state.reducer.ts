@@ -14,7 +14,9 @@ const initialState: GameState = {
   battleCounter: 0,
   gold: 0,
   map: '',
-  position: {x: 0, y: 0}
+  combatZone: '',
+  position: {x: 0, y: 0},
+  shipPosition: {x: 0, y: 0}
 };
 
 export function gameStateReducer(state: GameState = initialState, action: GameStateActions): GameState {

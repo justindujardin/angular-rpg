@@ -30,13 +30,12 @@ import {GameStateModel} from '../../../game/rpg/models/gameStateModel';
 import {RPGGame, NotificationService} from '../../services/index';
 import {IScene} from '../../../game/pow2/interfaces/IScene';
 import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
-import {getGold, getGameState} from '../../models/game-state/game-state.reducer';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.model';
 import {GameState} from '../../models/game-state/game-state.model';
 import {GameStateHealPartyAction} from '../../models/game-state/game-state.actions';
 import {Entity} from '../../models/entity/entity.model';
-import {getParty} from '../../models/index';
+import {getParty, getGamePartyGold, getGameState} from '../../models/index';
 
 @Component({
   selector: 'world-temple',
@@ -50,7 +49,7 @@ export class WorldTempleComponent implements OnInit, OnDestroy {
 
   @Input() scene: IScene;
 
-  partyGold$: Observable<number> = this.store.select(getGold);
+  partyGold$: Observable<number> = this.store.select(getGamePartyGold);
   party$: Observable<Entity[]> = this.store.select(getParty);
 
   private _name$ = new BehaviorSubject<string>('Mystery Temple');

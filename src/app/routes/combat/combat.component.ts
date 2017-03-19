@@ -43,7 +43,7 @@ import {getEncounter, getEncounterEnemies} from '../../models/combat/combat.redu
 import {CombatEnemyComponent} from './combat-enemy.entity';
 import {CombatPlayerComponent} from './combat-player.entity';
 import {getParty} from '../../models/index';
-import {Item} from '../../models/item/item.model';
+import {Item} from '../../models/item';
 import {Entity} from '../../models/entity/entity.model';
 
 /**
@@ -119,7 +119,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
   enemies$ = getEncounterEnemies(this.store);
 
   /** Observable<Entity[]> of player-card members */
-  party$ = getParty(this.store);
+  party$ = this.store.select(getParty);
 
   /** Observable<CombatEncounter> */
   encounter$ = getEncounter(this.store);

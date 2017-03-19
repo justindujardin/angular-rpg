@@ -20,9 +20,9 @@ import {PlayerComponent} from '../playerComponent';
 import {TileObject} from '../../../pow2/tile/tileObject';
 import {Point} from '../../../pow-core/point';
 import {Subscription} from 'rxjs';
-import {getKeyData} from '../../../../app/models/game-state/game-state.reducer';
 import {IPoint} from '../../../pow-core';
 import {GameStateSetKeyDataAction} from '../../../../app/models/game-state/game-state.actions';
+import {getGameShipPosition} from '../../../../app/models/index';
 
 export class ShipFeatureComponent extends GameFeatureComponent {
   party: PlayerComponent;
@@ -46,7 +46,7 @@ export class ShipFeatureComponent extends GameFeatureComponent {
     }
     const gameWorld = this.host.world;
     if (gameWorld) {
-      this._subscription = this.host.world.store.select(getKeyData('shipPosition'))
+      this._subscription = this.host.world.store.select(getGameShipPosition)
         .distinctUntilChanged()
         .subscribe((p: IPoint) => {
           this.host.setPoint(p);

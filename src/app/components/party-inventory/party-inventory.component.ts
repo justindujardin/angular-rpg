@@ -24,7 +24,7 @@ import {RPGGame} from '../../services/rpgGame';
 import {NotificationService} from '../notification/notification.service';
 import {GameState} from '../../models/game-state/game-state.model';
 import {Entity} from '../../models/entity/entity.model';
-import {Item} from '../../models/item/item.model';
+import {Item} from '../../models/item';
 
 @Component({
   selector: 'party-inventory',

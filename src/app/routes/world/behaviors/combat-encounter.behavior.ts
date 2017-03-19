@@ -5,7 +5,6 @@ import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 import {PlayerComponent} from '../../../../game/rpg/components/playerComponent';
 import {Point} from '../../../../game/pow-core/point';
 import {IZoneMatch} from '../../../../game/rpg/game';
-import {getKeyData, getAllKeyData} from '../../../models/game-state/game-state.reducer';
 import {GameStateSetKeyDataAction} from '../../../models/game-state/game-state.actions';
 import {getGameBattleCounter} from '../../../models/index';
 

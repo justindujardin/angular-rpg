@@ -35,11 +35,11 @@ import {TileMapView} from '../../../game/pow2/tile/tileMapView';
 import {TileObjectRenderer} from '../../../game/pow2/tile/render/tileObjectRenderer';
 import {GameStateService} from '../../models/game-state/game-state.service';
 import {LoadingService} from '../../components/loading/loading.service';
-import {getParty} from '../../models/index';
+import {getParty, getGameShipPosition, getGamePartyPosition} from '../../models/index';
 import {Entity} from '../../models/entity/entity.model';
 import {TreasureFeatureComponent} from '../../../game/rpg/components/features/treasureFeatureComponent';
-import {ItemAddAction} from '../../models/item/item.actions';
-import {Item} from '../../models/item/item.model';
+import {Item} from '../../models/item';
+import {EntityAddItemAction} from '../../models/entity/entity.actions';
 
 @Component({
   selector: 'world',
@@ -88,7 +88,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
 
   /** Observable of the current player position in the world */
   position$: Observable<IPoint> = this.store
-    .select((s) => s.gameState.position)
+    .select(getGamePartyPosition)
     .distinctUntilChanged();
 
   /** Observable of Entity representing the player-card leader to be rendered in the world */
@@ -192,7 +192,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
         if (!item) {
           return;
         }
-        this.store.dispatch(new ItemAddAction(item));
+        this.store.dispatch(new EntityAddItemAction(item));
         this.notify.show(`You found ${item.name}!`, null, 0);
       }
     }, this);

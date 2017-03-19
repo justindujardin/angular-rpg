@@ -27,7 +27,7 @@ import {Point} from '../../game/pow-core';
 import {GameState} from '../models/game-state/game-state.model';
 import * as _ from 'underscore';
 import {Entity, EntityType} from '../models/entity/entity.model';
-import {EntityAddAction} from '../models/entity/entity.actions';
+import {EntityAddBeingAction} from '../models/entity/entity.actions';
 
 @Injectable()
 export class RPGGame {
@@ -125,7 +125,7 @@ export class RPGGame {
     switch (type) {
       case 'warrior':
         character = _.extend({}, HERO_DEFAULTS, {
-          eid: 'warrior',
+          eid: 'warrior-123',
           icon: 'warrior-male.png',
           baseAttack: 10,
           baseSpeed: 2,
@@ -135,7 +135,7 @@ export class RPGGame {
         break;
       case 'healer':
         character = _.extend({}, HERO_DEFAULTS, {
-          eid: 'lifemage',
+          eid: 'lifemage-123',
           icon: 'magician-female.png',
           baseAttack: 1,
           baseSpeed: 6,
@@ -145,7 +145,7 @@ export class RPGGame {
         break;
       case 'thief':
         character = _.extend({}, HERO_DEFAULTS, {
-          eid: 'ranger',
+          eid: 'ranger-123',
           icon: 'ranger-female.png',
           baseAttack: 3,
           baseSpeed: 10,
@@ -155,7 +155,7 @@ export class RPGGame {
         break;
       case 'mage':
         character = _.extend({}, HERO_DEFAULTS, {
-          eid: 'deathmage',
+          eid: 'deathmage-123',
           icon: 'magician-male.png',
           baseAttack: 2,
           baseSpeed: 10,
@@ -192,15 +192,16 @@ export class RPGGame {
         const initialState: GameState = _.extend({}, {
           party: [warrior.eid, ranger.eid, healer.eid],
           keyData: {},
-          gold: 0,
+          gold: 200,
           combatZone: '',
           map: 'town',
-          position: {x: 12, y: 8}
+          position: {x: 12, y: 8},
+          shipPosition: {x: 0, y: 0}
         });
         this.store.dispatch(new GameStateLoadAction(initialState));
-        this.store.dispatch(new EntityAddAction(warrior));
-        this.store.dispatch(new EntityAddAction(ranger));
-        this.store.dispatch(new EntityAddAction(healer));
+        this.store.dispatch(new EntityAddBeingAction(warrior));
+        this.store.dispatch(new EntityAddBeingAction(ranger));
+        this.store.dispatch(new EntityAddBeingAction(healer));
         resolve(true);
       }
     });

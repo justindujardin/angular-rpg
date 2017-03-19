@@ -18,7 +18,7 @@ import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 import {IGameSpell} from '../../../../game/rpg/game';
 import {UsableModel} from '../../../../game/rpg/models/usableModel';
 import {IPlayerAction, IPlayerActionCallback} from '../states/combat.machine';
-import {Item} from '../../../models/item/item.model';
+import {Item} from '../../../models/item';
 
 export class CombatActionBehavior extends SceneComponent implements IPlayerAction {
   name: string = 'default';

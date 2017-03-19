@@ -1,6 +1,7 @@
 import {type} from '../util';
 import {Action} from '@ngrx/store';
-import {Entity} from './entity.model';
+import {BaseEntity} from '../being';
+import {Item} from '../item';
 
 export const LEVEL_EXPERIENCE_REQUIREMENTS = [
   0,
@@ -27,34 +28,47 @@ export function getXPForLevel(level: number): number {
 //
 
 export const EntityActionTypes = {
-  ADD_ENTITY: type('rpg/entity/create'),
-  REMOVE_ENTITY: type('rpg/entity/remove')
+  ADD_BEING: type('rpg/entity/being/add'),
+  REMOVE_BEING: type('rpg/entity/being/remove'),
+  ADD_ITEM: type('rpg/entity/item/create'),
+  REMOVE_ITEM: type('rpg/entity/item/remove'),
+  ADD_OBJECTIVE: type('rpg/entity/objective/create'),
+  REMOVE_OBJECTIVE: type('rpg/entity/objective/remove'),
 };
+export class EntityAddBeingAction implements Action {
+  type: string = EntityActionTypes.ADD_BEING;
 
-export interface IEntityAddPayload {
-  entity: Entity;
-  collection: string;
+  constructor(public payload: BaseEntity) {
+
+  }
 }
+export class EntityRemoveBeingAction implements Action {
+  type: string = EntityActionTypes.REMOVE_BEING;
+  payload: string;
 
-export class EntityAddAction implements Action {
-  type: string = EntityActionTypes.ADD_ENTITY;
-  payload: IEntityAddPayload;
-
-  constructor(entity: Entity, collection: string) {
-    this.payload = {entity, collection};
+  constructor(entityId: string) {
+    this.payload = entityId;
   }
 }
 
-export interface IEntityRemovePayload {
-  entityId: string;
-  collection: string;
-}
+export class EntityAddItemAction implements Action {
+  type: string = EntityActionTypes.ADD_ITEM;
 
-export class EntityRemoveAction implements Action {
-  type: string = EntityActionTypes.REMOVE_ENTITY;
-  payload: IEntityRemovePayload;
+  constructor(public payload: Item) {
 
-  constructor(entityId: string, collection: string) {
-    this.payload = {entityId, collection};
   }
 }
+
+export class EntityRemoveItemAction implements Action {
+  type: string = EntityActionTypes.REMOVE_ITEM;
+  payload: string;
+
+  constructor(entityId: string) {
+    this.payload = entityId;
+  }
+}
+
+export type EntityActionUnionType = EntityAddBeingAction |
+  EntityRemoveBeingAction |
+  EntityAddItemAction |
+  EntityRemoveItemAction;

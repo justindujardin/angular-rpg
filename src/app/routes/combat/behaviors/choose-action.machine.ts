@@ -15,7 +15,7 @@ import {IChooseActionEvent, CombatChooseActionStateComponent} from '../states/co
 import {IPlayerAction} from '../states/combat.machine';
 import {ElementRef} from '@angular/core';
 import {CombatPlayerComponent} from '../combat-player.entity';
-import {Item} from '../../../models/item/item.model';
+import {Item} from '../../../models/item';
 
 /**
  * Attach an HTML element to the position of a game object.

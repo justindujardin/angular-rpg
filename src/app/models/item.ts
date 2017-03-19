@@ -1,4 +1,5 @@
-export interface Item {
+import {EntityObject} from './being';
+export interface Item extends EntityObject {
   readonly id?: string; // the `hyphen-case-named` item id
   readonly name: string; // The item name
   readonly cost: number; // The cost of this item

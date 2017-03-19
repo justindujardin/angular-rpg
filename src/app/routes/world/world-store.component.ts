@@ -21,12 +21,12 @@ import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {IScene} from '../../../game/pow2/interfaces/IScene';
-import {Item} from '../../models/item/item.model';
+import {Item} from '../../models/item';
 import {GameState} from '../../models/game-state/game-state.model';
 import {GameStateAddGoldAction} from '../../models/game-state/game-state.actions';
-import {ItemRemoveAction, ItemAddAction} from '../../models/item/item.actions';
 import {StoreFeatureComponent} from '../../../game/rpg/components/features/storeFeatureComponent';
 import {getGamePartyGold, getGameState} from '../../models/index';
+import {EntityRemoveItemAction, EntityAddItemAction} from '../../models/entity/entity.actions';
 
 @Component({
   selector: 'world-store',
@@ -105,12 +105,12 @@ export class WorldStoreComponent implements OnDestroy {
       if (isSelling) {
         this.store.dispatch(new GameStateAddGoldAction(value));
         this.notify.show(`Sold ${item.name} for ${item.cost} gold.`, null, 1500);
-        this.store.dispatch(new ItemRemoveAction(item));
+        this.store.dispatch(new EntityRemoveItemAction(item.eid));
       }
       else {
         this.store.dispatch(new GameStateAddGoldAction(-value));
         this.notify.show(`Purchased ${item.name}.`, null, 1500);
-        this.store.dispatch(new ItemAddAction(item));
+        this.store.dispatch(new EntityAddItemAction(item));
       }
 
     }).subscribe();

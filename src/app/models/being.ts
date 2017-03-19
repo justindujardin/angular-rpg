@@ -1,21 +1,26 @@
+/**
+ * Most basic entity only has an `eid` unique identifier for indexing.
+ */
+export interface EntityObject {
+  eid: string;
+}
+
 /** Basic model for a life form */
-export interface BaseEntity {
-  /** Generated unique ID for this being when created */
-  readonly eid?: string;
+export interface BaseEntity extends EntityObject {
   /** User readable name */
   readonly name?: string;
   /** Icon to render the entity with */
-  readonly icon?: string;
+  readonly icon: string;
   /** The entity level */
-  readonly level?: number;
+  readonly level: number;
   /** Current magic points */
-  readonly mp?: number;
+  readonly mp: number;
   /** Maximum magic points */
-  readonly maxmp?: number;
+  readonly maxmp: number;
   /** Current health points */
-  readonly hp?: number;
+  readonly hp: number;
   /** Maximum health points */
-  readonly maxhp?: number;
+  readonly maxhp: number;
   /** Attack strength */
   readonly attack: number;
   /** Defense effectiveness */

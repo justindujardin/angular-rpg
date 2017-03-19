@@ -3,7 +3,8 @@ import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.model';
 import {Observable} from 'rxjs/Rx';
-import {getMap} from '../../models/game-state/game-state.reducer';
+import {getGameMap} from '../../models/index';
+
 
 @Injectable()
 export class CanActivateWorld implements CanActivate {
@@ -13,7 +14,7 @@ export class CanActivateWorld implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     // TODO: This check is hosed if a reasonable default value is set for the initial state for
     // map. Investigate whether this is sane.
-    return this.store.select(getMap).take(1).map((mapName: string) => {
+    return this.store.select(getGameMap).take(1).map((mapName: string) => {
       // Verify that the map name is equal to the route id.
       // This is assuming that it will accomplish two things:
       // 1) If the user has no state, it will fail to activate (e.g. when refreshing the page)

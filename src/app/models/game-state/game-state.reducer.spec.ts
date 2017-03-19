@@ -16,6 +16,8 @@ function defaultState(overrides?: any): GameState {
     battleCounter: 0,
     gold: 0,
     map: '',
+    combatZone: '',
+    shipPosition: {x: 0, y: 0},
     position: {x: 0, y: 0},
     ts: -1
   };
@@ -36,7 +38,7 @@ describe('GameState', () => {
       });
     });
 
-    describe('GameStateHealPartyAction', () => {
+    xdescribe('GameStateHealPartyAction', () => {
       it('should restore all entity members hp to maxhp', () => {
         const state = defaultState({
           party: [
