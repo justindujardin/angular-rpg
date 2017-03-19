@@ -18,7 +18,7 @@ import {CombatAttackBehaviorComponent} from './behaviors/actions/combat-attack.b
 // import {CombatRunBehavior} from './behaviors/actions/combat-run.behavior';
 // import {CombatGuardBehavior} from './behaviors/actions/combat-guard.behavior';
 import {CombatComponent} from './combat.component';
-import {PartyMember} from '../../models/entity/entity.model';
+import {Entity} from '../../models/entity/entity.model';
 
 @Component({
   selector: 'combat-player',
@@ -38,7 +38,7 @@ export class CombatPlayerComponent extends GameEntityObject implements AfterView
 
   @ViewChild(CombatPlayerRenderBehaviorComponent) render: CombatPlayerRenderBehaviorComponent;
 
-  @Input() model: PartyMember;
+  @Input() model: Entity;
 
   constructor(@Inject(forwardRef(() => CombatComponent)) public combat: CombatComponent) {
     super();

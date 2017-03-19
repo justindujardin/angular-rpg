@@ -1,8 +1,8 @@
 import * as _ from 'underscore';
 import {Combatant} from './combat.model';
-import {Being} from '../being';
+import {BaseEntity} from '../being';
 
-export function isDefeated(test: Being) {
+export function isDefeated(test: BaseEntity) {
   return test.hp <= 0;
 }
 

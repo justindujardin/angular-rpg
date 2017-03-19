@@ -17,18 +17,18 @@ import * as _ from 'underscore';
 import * as rpg from '../game';
 import {GameWorld} from '../../../app/services/gameWorld';
 import {TileObject} from '../../pow2/tile/tileObject';
-import {Being} from '../../../app/models/being';
-import {PartyMember} from '../../../app/models/entity/entity.model';
+import {BaseEntity} from '../../../app/models/being';
+import {Entity} from '../../../app/models/entity/entity.model';
 
 export class GameEntityObject extends TileObject {
-  model: Being;
+  model: BaseEntity;
   type = 'player';
   groups: any;
   world: GameWorld;
 
   getSpells(): rpg.IGameSpell[] {
     const spells: any = this.world.spreadsheet.getSheetData('magic');
-    const caster = this.model as PartyMember;
+    const caster = this.model as Entity;
     const userLevel: number = caster.level;
     const userClass: string = caster.type;
     return _.filter(spells, (spell: rpg.IGameSpell) => {

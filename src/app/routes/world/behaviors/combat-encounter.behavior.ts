@@ -5,8 +5,9 @@ import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 import {PlayerComponent} from '../../../../game/rpg/components/playerComponent';
 import {Point} from '../../../../game/pow-core/point';
 import {IZoneMatch} from '../../../../game/rpg/game';
-import {getKeyData} from '../../../models/game-state/game-state.reducer';
+import {getKeyData, getAllKeyData} from '../../../models/game-state/game-state.reducer';
 import {GameStateSetKeyDataAction} from '../../../models/game-state/game-state.actions';
+import {getGameBattleCounter} from '../../../models/index';
 
 /**
  * A component that when added to a GameTileMap listens
@@ -28,7 +29,7 @@ export class CombatEncounterBehavior extends SceneComponent {
       return false;
     }
     // Get the initial battle counter value
-    getKeyData(world.store, 'battleCounter').take(1).subscribe((p: number) => {
+    world.store.select(getGameBattleCounter).take(1).subscribe((p: number) => {
       if (p === undefined) {
         this.resetBattleCounter();
       }

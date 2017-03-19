@@ -70,7 +70,6 @@ describe('GameState', () => {
           expect(result.type).toBe(GameStateActionTypes.TRAVEL_SUCCESS);
         });
       });
-
     });
   });
 });

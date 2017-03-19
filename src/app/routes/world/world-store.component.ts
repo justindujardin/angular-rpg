@@ -22,11 +22,11 @@ import {Store} from '@ngrx/store';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {IScene} from '../../../game/pow2/interfaces/IScene';
 import {Item} from '../../models/item/item.model';
-import {getGameState, getGold} from '../../models/game-state/game-state.reducer';
 import {GameState} from '../../models/game-state/game-state.model';
 import {GameStateAddGoldAction} from '../../models/game-state/game-state.actions';
 import {ItemRemoveAction, ItemAddAction} from '../../models/item/item.actions';
 import {StoreFeatureComponent} from '../../../game/rpg/components/features/storeFeatureComponent';
+import {getGamePartyGold, getGameState} from '../../models/index';
 
 @Component({
   selector: 'world-store',
@@ -37,7 +37,7 @@ import {StoreFeatureComponent} from '../../../game/rpg/components/features/store
 export class WorldStoreComponent implements OnDestroy {
   @Output() onClose = new EventEmitter();
 
-  partyGold$: Observable<number> = getGold(this.store);
+  partyGold$: Observable<number> = this.store.select(getGamePartyGold);
 
   private _name$ = new BehaviorSubject<string>('Invalid Store');
   name$: Observable<string> = this._name$;
@@ -86,7 +86,7 @@ export class WorldStoreComponent implements OnDestroy {
 
   /** Stream of clicks on the actionable button */
   private _doActionSubscription$ = this._onAction$
-    .switchMap(() => getGameState(this.store))
+    .switchMap(() => this.store.select(getGameState))
     .do((model: GameState) => {
       if (!this._selected$.value) {
         return;

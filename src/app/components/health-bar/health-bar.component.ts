@@ -14,7 +14,7 @@
  limitations under the License.
  */
 import {Component, Input} from '@angular/core';
-import {Being} from '../../models/being';
+import {BaseEntity} from '../../models/being';
 
 @Component({
   selector: 'rpg-health-bar',
@@ -23,7 +23,7 @@ import {Being} from '../../models/being';
 })
 export class RPGHealthBarComponent {
   @Input()
-  model: Being;
+  model: BaseEntity;
 
   getCSSClassMap(): {[className: string]: boolean} {
     if (!this.model) {

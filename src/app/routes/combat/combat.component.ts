@@ -42,9 +42,9 @@ import {GameTileMap} from '../../../game/gameTileMap';
 import {getEncounter, getEncounterEnemies} from '../../models/combat/combat.reducer';
 import {CombatEnemyComponent} from './combat-enemy.entity';
 import {CombatPlayerComponent} from './combat-player.entity';
-import {getParty} from '../../models/game-state/game-state.reducer';
+import {getParty} from '../../models/index';
 import {Item} from '../../models/item/item.model';
-import {PartyMember} from '../../models/entity/entity.model';
+import {Entity} from '../../models/entity/entity.model';
 
 /**
  * Describe a selectable menu item for a user input in combat.
@@ -118,7 +118,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
   /** Observable<Combatant[]> of enemies */
   enemies$ = getEncounterEnemies(this.store);
 
-  /** Observable<PartyMember[]> of player-card members */
+  /** Observable<Entity[]> of player-card members */
   party$ = getParty(this.store);
 
   /** Observable<CombatEncounter> */
@@ -343,7 +343,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
         });
       }
       this.notify.show(`Gained ${data.exp} experience!`, null, 0);
-      _.each(data.levels, (hero: PartyMember) => {
+      _.each(data.levels, (hero: Entity) => {
         this.notify.show(`${hero.name} reached level ${hero.level}!`, null, 0);
       });
       this.notify.show('Enemies Defeated!', _done);

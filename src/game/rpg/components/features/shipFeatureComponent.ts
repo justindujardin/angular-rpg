@@ -46,7 +46,7 @@ export class ShipFeatureComponent extends GameFeatureComponent {
     }
     const gameWorld = this.host.world;
     if (gameWorld) {
-      this._subscription = getKeyData(this.host.world.store, 'shipPosition')
+      this._subscription = this.host.world.store.select(getKeyData('shipPosition'))
         .distinctUntilChanged()
         .subscribe((p: IPoint) => {
           this.host.setPoint(p);

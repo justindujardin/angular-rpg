@@ -20,14 +20,14 @@ import {HeroModel} from '../../../../game/rpg/models/heroModel';
 import {ItemModel} from '../../../../game/rpg/models/itemModel';
 import {CombatStateMachineComponent} from './combat.machine';
 import {Component} from '@angular/core';
-import {PartyMember} from '../../../models/entity/entity.model';
+import {Entity} from '../../../models/entity/entity.model';
 import {Item} from '../../../models/item/item.model';
 import {isDefeated} from '../../../models/combat/combat.api';
 
 export interface CombatVictorySummary {
   party: GameEntityObject[];
   enemies: GameEntityObject[];
-  levels: PartyMember[];
+  levels: Entity[];
   items?: Item[];
   gold: number;
   exp: number;
@@ -97,9 +97,9 @@ export class CombatVictoryStateComponent extends CombatMachineState {
     // // Award experience
     // //
     // const expPerParty: number = Math.round(exp / players.length);
-    // const leveledHeros: PartyMember[] = [];
+    // const leveledHeros: Entity[] = [];
     // _.each(players, (p: GameEntityObject) => {
-    //   const heroModel = <PartyMember>p.model;
+    //   const heroModel = <Entity>p.model;
     //   const leveled: boolean = heroModel.awardExperience(expPerParty);
     //   if (leveled) {
     //     leveledHeros.push(heroModel);

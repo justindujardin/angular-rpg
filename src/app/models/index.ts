@@ -2,16 +2,20 @@ import {compose} from '@ngrx/core/compose';
 import {ActionReducer, combineReducers} from '@ngrx/store';
 import {storeFreeze} from 'ngrx-store-freeze';
 import {routerReducer} from '@ngrx/router-store';
-import {itemReducer} from '../models/item/item.reducer';
-import {gameStateReducer} from './game-state/game-state.reducer';
-import {combatReducer} from './combat/combat.reducer';
-
+import {createSelector} from 'reselect';
+import * as fromItem from './item/item.reducer';
+import * as fromGameState from './game-state/game-state.reducer';
+import * as fromCombat from './combat/combat.reducer';
+import * as fromEntity from './entity/entity.reducer';
 export const reducers = {
   router: routerReducer,
-  items: itemReducer,
-  gameState: gameStateReducer,
-  combat: combatReducer
+  items: fromItem.itemReducer,
+  gameState: fromGameState.gameStateReducer,
+  combat: fromCombat.combatReducer,
+  entities: fromEntity.entityReducer
 };
+
+export type EntityCollections = 'beings' | 'items';
 
 // Generate a reducer to set the root state in dev mode for HMR
 function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
@@ -37,3 +41,22 @@ export function rootReducer(state: any, action: any) {
 }
 
 export const MODEL_PROVIDERS: any[] = [];
+
+export const getEntitiesState = (state) => state.entities;
+export const getEntityCollection = (name: string) => {
+  return (state) => state.entities[name];
+};
+
+export const getGameState = (state) => state.gameState;
+
+export const getGamePartyIds = createSelector(getGameState, fromGameState.slicePartyIds);
+
+export const getGamePartyGold = createSelector(getGameState, fromGameState.sliceGold);
+export const getGameShipPosition = createSelector(getGameState, fromGameState.sliceShipPosition);
+export const getGameMap = createSelector(getGameState, fromGameState.sliceMap);
+export const getGameCombatZone = createSelector(getGameState, fromGameState.sliceCombatZone);
+export const getGameBattleCounter = createSelector(getGameState, fromGameState.sliceBattleCounter);
+
+export const getParty = createSelector(getEntitiesState, getGamePartyIds, (entities, ids) => {
+  return ids.map((id) => entities.byId[id]);
+});

@@ -10,7 +10,7 @@
 // import {CombatActionBehavior} from '../combat-action.behavior';
 // import {Component, Input} from '@angular/core';
 // import {CombatComponent} from '../../combat.component';
-// import {PartyMember} from "../../../../models/entity/entity.model";
+// import {Entity} from "../../../../models/entity/entity.model";
 //
 // @Component({
 //   selector: 'combat-guard-behavior',
@@ -41,7 +41,7 @@
 //     if (!(this.from.model instanceof HeroModel)) {
 //       throw new Error("This action is not currently applicable to non hero characters.");
 //     }
-//     const model = this.from.model as PartyMember;
+//     const model = this.from.model as Entity;
 //     const multiplier: number = model.level < 10 ? 2 : 0.5;
 //     console.warn('todo: buff is busted');
 //     // model.defenseBuff += (model.getDefense(true) * multiplier);

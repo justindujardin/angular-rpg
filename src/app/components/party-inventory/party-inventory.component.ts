@@ -23,7 +23,7 @@ import {GameStateModel} from '../../../game/rpg/models/gameStateModel';
 import {RPGGame} from '../../services/rpgGame';
 import {NotificationService} from '../notification/notification.service';
 import {GameState} from '../../models/game-state/game-state.model';
-import {PartyMember} from '../../models/entity/entity.model';
+import {Entity} from '../../models/entity/entity.model';
 import {Item} from '../../models/item/item.model';
 
 @Component({
@@ -34,7 +34,7 @@ export class PartyInventoryComponent {
   @Input()
   currentIndex: number = 0;
   @Input()
-  character: PartyMember;
+  character: Entity;
   @Input()
   model: GameState = null; // TODO: remove this dep
   @Input()
@@ -62,7 +62,7 @@ export class PartyInventoryComponent {
 
   equipItem(item: Item) {
     console.warn('entity-inventory: implement equip');
-    // var hero: PartyMember = this.character;
+    // var hero: Entity = this.character;
     // if (!this.model.inventory || !item || !hero) {
     //   return;
     // }

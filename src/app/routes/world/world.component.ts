@@ -35,8 +35,8 @@ import {TileMapView} from '../../../game/pow2/tile/tileMapView';
 import {TileObjectRenderer} from '../../../game/pow2/tile/render/tileObjectRenderer';
 import {GameStateService} from '../../models/game-state/game-state.service';
 import {LoadingService} from '../../components/loading/loading.service';
-import {getParty} from '../../models/game-state/game-state.reducer';
-import {PartyMember} from '../../models/entity/entity.model';
+import {getParty} from '../../models/index';
+import {Entity} from '../../models/entity/entity.model';
 import {TreasureFeatureComponent} from '../../../game/rpg/components/features/treasureFeatureComponent';
 import {ItemAddAction} from '../../models/item/item.actions';
 import {Item} from '../../models/item/item.model';
@@ -91,9 +91,9 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     .select((s) => s.gameState.position)
     .distinctUntilChanged();
 
-  /** Observable of PartyMember representing the player-card leader to be rendered in the world */
-  partyLeader$: Observable<PartyMember> = getParty(this.store)
-    .map((party: PartyMember[]) => {
+  /** Observable of Entity representing the player-card leader to be rendered in the world */
+  partyLeader$: Observable<Entity> = this.store.select(getParty)
+    .map((party: Entity[]) => {
       return Immutable.Map(party[0]).toJS();
     });
 
@@ -138,7 +138,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
       .distinctUntilChanged()
       .do((tuple: any) => {
         const map: GameTileMap = tuple[0];
-        const player: PartyMember = tuple[1];
+        const player: Entity = tuple[1];
         this.renderModel(map, player);
       }).subscribe());
   }
@@ -314,7 +314,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
    * Update the view based on changes to the underlying map and/or player.
    * @internal
    */
-  private renderModel(map: GameTileMap, player: PartyMember) {
+  private renderModel(map: GameTileMap, player: Entity) {
     const mapSet = !!(!this.map && map);
     const mapChanged = !!(this.map && map && this.map.map.url !== map.map.url);
     const removePlayer = () => {

@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {RPGGame} from '../../services/index';
 import {HeroModel} from '../../../game/rpg/models/all';
-import {PartyMember} from '../../models/entity/entity.model';
+import {Entity} from '../../models/entity/entity.model';
 
 @Component({
   selector: 'player-card',
@@ -9,7 +9,7 @@ import {PartyMember} from '../../models/entity/entity.model';
 })
 export class PlayerCardComponent {
   @Input()
-  model: PartyMember;
+  model: Entity;
 
   constructor(public game: RPGGame) {
   }

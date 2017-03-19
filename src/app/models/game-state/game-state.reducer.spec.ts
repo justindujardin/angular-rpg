@@ -10,14 +10,16 @@ import {
 } from './game-state.actions';
 
 function defaultState(overrides?: any): GameState {
-  return Object.assign({}, {
+  const baseState: GameState = {
     party: [],
     keyData: {},
+    battleCounter: 0,
     gold: 0,
     map: '',
     position: {x: 0, y: 0},
     ts: -1
-  }, overrides || {});
+  };
+  return Object.assign({}, baseState, overrides || {});
 }
 
 describe('GameState', () => {

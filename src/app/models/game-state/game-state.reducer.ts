@@ -7,13 +7,11 @@ import {
 } from './game-state.actions';
 import {GameState} from './game-state.model';
 import * as Immutable from 'immutable';
-import {AppState} from '../../app.model';
-import {Store} from '@ngrx/store';
-import {PartyMember} from '../entity/entity.model';
 
 const initialState: GameState = {
   party: [],
   keyData: {},
+  battleCounter: 0,
   gold: 0,
   map: '',
   position: {x: 0, y: 0}
@@ -50,46 +48,47 @@ export function gameStateReducer(state: GameState = initialState, action: GameSt
       }).toJS();
     }
     case GameStateActionTypes.HEAL_PARTY: {
-      const cost: number = action.payload;
-      const party = Immutable.List(state.party).map((p: PartyMember) => {
-        return Immutable.Map(p).merge({
-          hp: p.maxhp
-        });
-      });
-      return Immutable.fromJS(state).merge({
-        gold: state.gold - cost,
-        party
-      }).toJS();
+      // const cost: number = action.payload;
+      // const party = Immutable.List(state.party).map((p: string) => {
+      //   return Immutable.Map(p).merge({
+      //     hp: p.maxhp
+      //   });
+      // });
+      // return Immutable.fromJS(state).merge({
+      //   gold: state.gold - cost,
+      //   party
+      // }).toJS();
+      console.warn('TODO: HEAL_PARTY with only partyIds--where should this happen? Maybe an effect?');
     }
     default:
       return state;
   }
 }
 
-export function getGameState(state$: Store<AppState>) {
-  return state$.select((state) => state.gameState);
+export function sliceGold(state: GameState) {
+  return state.gold;
 }
 
-export function getGold(state$: Store<AppState>) {
-  return state$.select((state) => state.gameState.gold);
+export function sliceMap(state: GameState) {
+  return state.map;
 }
 
-export function getMap(state$: Store<AppState>) {
-  return state$.select((state) => state.gameState.map);
+export function slicePosition(state: GameState) {
+  return state.position;
 }
 
-export function getPosition(state$: Store<AppState>) {
-  return state$.select((state) => state.gameState.position);
+export function sliceShipPosition(state: GameState) {
+  return state.shipPosition;
 }
 
-export function getAllKeyData(state$: Store<AppState>) {
-  return state$.select((state) => state.gameState.keyData);
+export function sliceBattleCounter(state: GameState) {
+  return state.battleCounter;
 }
 
-export function getKeyData(state$: Store<AppState>, key: string) {
-  return state$.select((state) => state.gameState.keyData[key]);
+export function sliceCombatZone(state: GameState) {
+  return state.combatZone;
 }
 
-export function getParty(state$: Store<AppState>) {
-  return state$.select((state) => state.gameState.party);
+export function slicePartyIds(state: GameState) {
+  return state.party;
 }

@@ -30,12 +30,13 @@ import {GameStateModel} from '../../../game/rpg/models/gameStateModel';
 import {RPGGame, NotificationService} from '../../services/index';
 import {IScene} from '../../../game/pow2/interfaces/IScene';
 import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
-import {getGold, getParty, getGameState} from '../../models/game-state/game-state.reducer';
+import {getGold, getGameState} from '../../models/game-state/game-state.reducer';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.model';
 import {GameState} from '../../models/game-state/game-state.model';
 import {GameStateHealPartyAction} from '../../models/game-state/game-state.actions';
-import {PartyMember} from '../../models/entity/entity.model';
+import {Entity} from '../../models/entity/entity.model';
+import {getParty} from '../../models/index';
 
 @Component({
   selector: 'world-temple',
@@ -49,8 +50,8 @@ export class WorldTempleComponent implements OnInit, OnDestroy {
 
   @Input() scene: IScene;
 
-  partyGold$: Observable<number> = getGold(this.store);
-  party$: Observable<PartyMember[]> = getParty(this.store);
+  partyGold$: Observable<number> = this.store.select(getGold);
+  party$: Observable<Entity[]> = this.store.select(getParty);
 
   private _name$ = new BehaviorSubject<string>('Mystery Temple');
   name$: Observable<string> = this._name$;
@@ -73,7 +74,7 @@ export class WorldTempleComponent implements OnInit, OnDestroy {
     this._cost$.next(value);
   }
 
-  @Input() party: PartyMember[];
+  @Input() party: Entity[];
 
   @Input()
   set feature(feature: TempleFeatureComponent) {
@@ -92,11 +93,11 @@ export class WorldTempleComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this._onRestSubscription$ = this._onRest$
-      .switchMap(() => getGameState(this.store).withLatestFrom(this.cost$))
+      .switchMap(() => this.store.select(getGameState).withLatestFrom(this.cost$))
       .do((tuple: any) => {
         const gameState: GameState = tuple[0];
         const cost: number = tuple[1];
-        const alreadyHealed: boolean = !_.find(gameState.party, (p: PartyMember) => {
+        const alreadyHealed: boolean = !_.find(gameState.party, (p: Entity) => {
           return p.hp !== p.maxhp;
         });
         if (cost > gameState.gold) {

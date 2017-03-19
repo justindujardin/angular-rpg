@@ -1,9 +1,9 @@
 import {Item} from '../item/item.model';
-import {Being} from '../being';
+import {BaseEntity} from '../being';
 export type CombatType = 'none' | 'fixed' | 'random';
 
 /** A combatant in a combat encounter */
-export interface Combatant extends Being {
+export interface Combatant extends BaseEntity {
   /** The hyphenated-lower-case-unique-id of the combatant */
   readonly id?: string;
   /** The name of the combatant */
@@ -79,6 +79,6 @@ export interface CombatState {
 /** Description of a combat attackCombatant */
 export interface CombatAttack {
   damage: number;
-  attacker: Being;
-  defender: Being;
+  attacker: BaseEntity;
+  defender: BaseEntity;
 }

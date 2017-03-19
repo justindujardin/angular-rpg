@@ -26,7 +26,8 @@ import {AppState} from '../app.model';
 import {Point} from '../../game/pow-core';
 import {GameState} from '../models/game-state/game-state.model';
 import * as _ from 'underscore';
-import {PartyMember} from '../models/entity/entity.model';
+import {Entity, EntityType} from '../models/entity/entity.model';
+import {EntityAddAction} from '../models/entity/entity.actions';
 
 @Injectable()
 export class RPGGame {
@@ -66,7 +67,7 @@ export class RPGGame {
   }
 
   /** Create a detached player entity that can be added to an arbitrary scene. */
-  createPlayer(from: PartyMember, tileMap: GameTileMap, at?: Point): Promise<GameEntityObject> {
+  createPlayer(from: Entity, tileMap: GameTileMap, at?: Point): Promise<GameEntityObject> {
     if (!from) {
       return Promise.reject('Cannot create player without valid model');
     }
@@ -97,10 +98,10 @@ export class RPGGame {
   //     maxhp: newHP,
   //     // REMOVE auto-heal when you level up.  I think I'd rather people die from time-to-time.
   //     //hp: newHP,
-  //     strength: this.getStrengthForLevel(nextLevel),
-  //     agility: this.getAgilityForLevel(nextLevel),
-  //     vitality: this.getVitalityForLevel(nextLevel),
-  //     intelligence: this.getIntelligenceForLevel(nextLevel),
+  //     attack: this.getStrengthForLevel(nextLevel),
+  //     speed: this.getAgilityForLevel(nextLevel),
+  //     defense: this.getVitalityForLevel(nextLevel),
+  //     magic: this.getIntelligenceForLevel(nextLevel),
   //
   //     nextLevelExp: this.getXPForLevel(nextLevel + 1),
   //     prevLevelExp: this.getXPForLevel(nextLevel)
@@ -108,89 +109,58 @@ export class RPGGame {
   //   this.trigger('levelUp', this);
   // }
 
-  static create(type: string, name: string) {
-    const HERO_DEFAULTS = {
-      id: 'invalid-hero',
-      name: 'Hero',
-      icon: '',
-      combatSprite: '',
-      // type: HeroTypes.Warrior,
-      level: 1,
+  static create(type: EntityType, name: string) {
+    const HERO_DEFAULTS: Partial<Entity> = {
+      eid: 'invalid-hero',
+      type,
+      name,
+      level: 0,
       exp: 0,
-      nextLevelExp: 0,
-      prevLevelExp: 0,
-      hp: 0,
-      maxhp: 6,
-      description: '',
-      // Hidden attributes.
-      baseStrength: 0,
-      baseAgility: 0,
-      baseIntelligence: 0,
-      baseVitality: 0,
-      hitpercent: 5,
-      hitPercentPerLevel: 1,
-      evade: 0,
-      strength: 5,
-      vitality: 4,
-      intelligence: 1,
-      agility: 1,
+      baseAttack: 0,
+      baseSpeed: 0,
+      baseMagic: 0,
+      baseDefense: 0,
     };
-    let character: PartyMember = null;
+    let character: Entity = null;
     switch (type) {
       case 'warrior':
         character = _.extend({}, HERO_DEFAULTS, {
-          type,
-          level: 0,
-          name,
+          eid: 'warrior',
           icon: 'warrior-male.png',
-          baseStrength: 10,
-          baseAgility: 2,
-          baseIntelligence: 1,
-          baseVitality: 7,
-          hitpercent: 10,
-          hitPercentPerLevel: 3
+          baseAttack: 10,
+          baseSpeed: 2,
+          baseMagic: 1,
+          baseDefense: 7
         });
         break;
-      case 'lifemage':
+      case 'healer':
         character = _.extend({}, HERO_DEFAULTS, {
-          type,
-          name,
-          level: 0,
+          eid: 'lifemage',
           icon: 'magician-female.png',
-          baseStrength: 1,
-          baseAgility: 6,
-          baseIntelligence: 9,
-          baseVitality: 4,
-          hitpercent: 5,
-          hitPercentPerLevel: 1
+          baseAttack: 1,
+          baseSpeed: 6,
+          baseMagic: 9,
+          baseDefense: 4
         });
         break;
-      case 'ranger':
+      case 'thief':
         character = _.extend({}, HERO_DEFAULTS, {
-          type,
-          name,
-          level: 0,
+          eid: 'ranger',
           icon: 'ranger-female.png',
-          baseStrength: 3,
-          baseAgility: 10,
-          baseIntelligence: 2,
-          baseVitality: 5,
-          hitpercent: 7,
-          hitPercentPerLevel: 2
+          baseAttack: 3,
+          baseSpeed: 10,
+          baseMagic: 2,
+          baseDefense: 5,
         });
         break;
-      case 'deathmage':
+      case 'mage':
         character = _.extend({}, HERO_DEFAULTS, {
-          type,
-          name,
-          level: 0,
+          eid: 'deathmage',
           icon: 'magician-male.png',
-          baseStrength: 2,
-          baseAgility: 10,
-          baseIntelligence: 4,
-          baseVitality: 4,
-          hitpercent: 5,
-          hitPercentPerLevel: 2
+          baseAttack: 2,
+          baseSpeed: 10,
+          baseMagic: 4,
+          baseDefense: 4,
         });
         break;
       default:
@@ -216,19 +186,21 @@ export class RPGGame {
       }
       else {
         // const gameData = _.pick(this.world.model.toJSON(), ['entity', 'gold']);
+        const warrior = RPGGame.create('warrior', 'Warrior');
+        const ranger = RPGGame.create('thief', 'Ranger');
+        const healer = RPGGame.create('healer', 'Mage');
         const initialState: GameState = _.extend({}, {
-          party: [
-            RPGGame.create('warrior', 'Warrior'),
-            RPGGame.create('ranger', 'Ranger'),
-            RPGGame.create('lifemage', 'Mage'),
-          ],
+          party: [warrior.eid, ranger.eid, healer.eid],
           keyData: {},
           gold: 0,
           combatZone: '',
           map: 'town',
-          position: {x: 12, y: 5}
+          position: {x: 12, y: 8}
         });
         this.store.dispatch(new GameStateLoadAction(initialState));
+        this.store.dispatch(new EntityAddAction(warrior));
+        this.store.dispatch(new EntityAddAction(ranger));
+        this.store.dispatch(new EntityAddAction(healer));
         resolve(true);
       }
     });
