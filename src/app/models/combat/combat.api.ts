@@ -46,14 +46,14 @@ export function attackCombatant(attacker: Combatant, defender: Combatant): numbe
 export function getDefense(member: Combatant, base: boolean = false): number {
   return member.defense;
   // var obj: any = this;
-  // var baseDefense: number = _.reduce(PARTY_ARMOR_TYPES, (val: number, type: string) => {
+  // var basedefense: number = _.reduce(PARTY_ARMOR_TYPES, (val: number, type: string) => {
   //   var item: any = obj[type];
   //   if (!item) {
   //     return val;
   //   }
   //   return val + item.attributes.defense;
   // }, 0);
-  // return baseDefense + (base ? 0 : defenseBuff);
+  // return basedefense + (base ? 0 : defenseBuff);
 }
 
 export function getAttackStrength(combatant: Combatant): number {

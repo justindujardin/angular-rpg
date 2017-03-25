@@ -15,16 +15,16 @@
  */
 import {SceneComponent} from '../../../../game/pow2/scene/sceneComponent';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
-import {IGameSpell} from '../../../../game/rpg/game';
 import {UsableModel} from '../../../../game/rpg/models/usableModel';
 import {IPlayerAction, IPlayerActionCallback} from '../states/combat.machine';
 import {Item} from '../../../models/item';
+import {ITemplateMagic} from '../../../models/game-data/game-data.model';
 
 export class CombatActionBehavior extends SceneComponent implements IPlayerAction {
   name: string = 'default';
   from: GameEntityObject = null;
   to: GameEntityObject = null;
-  spell: IGameSpell = null;
+  spell: ITemplateMagic = null;
   item: Item = null;
 
   getActionName(): string {

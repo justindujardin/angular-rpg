@@ -28,7 +28,7 @@ export interface CombatEncounter {
    */
   readonly party: Combatant[];
   /** message to display when combat begins */
-  readonly message?: string;
+  readonly message?: string[];
   /** The type of combat */
   readonly type?: CombatType;
   /** The combat zone name, e.g. 'world-plains', 'sewer', ... */

@@ -14,11 +14,11 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import * as rpg from '../game';
 import {GameWorld} from '../../../app/services/gameWorld';
 import {TileObject} from '../../pow2/tile/tileObject';
 import {BaseEntity} from '../../../app/models/being';
 import {Entity} from '../../../app/models/entity/entity.model';
+import {ITemplateMagic} from '../../../app/models/game-data/game-data.model';
 
 export class GameEntityObject extends TileObject {
   model: BaseEntity;
@@ -26,12 +26,12 @@ export class GameEntityObject extends TileObject {
   groups: any;
   world: GameWorld;
 
-  getSpells(): rpg.IGameSpell[] {
+  getSpells(): ITemplateMagic[] {
     const spells: any = this.world.spreadsheet.getSheetData('magic');
     const caster = this.model as Entity;
     const userLevel: number = caster.level;
     const userClass: string = caster.type;
-    return _.filter(spells, (spell: rpg.IGameSpell) => {
+    return _.filter(spells, (spell: ITemplateMagic) => {
       return spell.level <= userLevel && _.indexOf(spell.usedby, userClass) !== -1;
     });
   }

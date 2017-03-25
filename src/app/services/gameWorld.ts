@@ -19,7 +19,7 @@ import {ItemModel, WeaponModel, ArmorModel, UsableModel} from '../../game/rpg/mo
 import {Scene} from '../../game/pow2/scene/scene';
 import {EntityFactory} from '../../game/pow-core/resources/entities';
 import {GameDataResource} from '../../game/pow2/game/resources/gameData';
-import {registerSprites, SPREADSHEET_ID} from '../../game/pow2/core/api';
+import {registerSprites} from '../../game/pow2/core/api';
 import {RPG_GAME_ENTITIES} from '../../game/game.entities';
 import {Subject} from 'rxjs/Subject';
 import {ReplaySubject, Observable} from 'rxjs/Rx';
@@ -34,13 +34,13 @@ import {Store} from '@ngrx/store';
 import {CombatFixedEncounter, Combatant} from '../models/combat/combat.model';
 import {CombatFixedEncounterAction} from '../models/combat/combat.actions';
 import {
-  IGameEncounterCallback,
   IZoneMatch,
-  IGameRandomEncounter,
-  IGameFixedEncounter,
-  IGameItem,
-  IGameEncounter
 } from '../../game/rpg/game';
+import {
+  SPREADSHEET_ID, IGameEncounterCallback, ITemplateFixedEncounter,
+  ITemplateItem, ITemplateEncounter
+} from '../models/game-data/game-data.model';
+import {GameDataAddSheetAction} from '../models/game-data/game-data.actions';
 
 let _sharedGameWorld: GameWorld = null;
 
@@ -96,7 +96,7 @@ export class GameWorld extends World {
   randomEncounter(zone: IZoneMatch, then?: IGameEncounterCallback) {
     const gsr = this.spreadsheet;
     const encountersData = gsr.getSheetData('randomencounters');
-    const encounters: IGameRandomEncounter[] = _.filter(encountersData, (enc: any) => {
+    const encounters: ITemplateFixedEncounter[] = _.filter(encountersData, (enc: any) => {
       return _.indexOf(enc.zones, zone.map) !== -1 || _.indexOf(enc.zones, zone.target) !== -1;
     });
     if (encounters.length === 0) {
@@ -115,7 +115,7 @@ export class GameWorld extends World {
     const gsr = this.spreadsheet;
     const encounter = _.where(gsr.getSheetData('fixedencounters'), {
       id: encounterId
-    })[0] as IGameFixedEncounter;
+    })[0] as ITemplateFixedEncounter;
     if (!encounter) {
       this.scene.trigger('error', `No encounter found with id: ${encounterId}`);
       return then(true);
@@ -137,7 +137,7 @@ export class GameWorld extends World {
     let item: T = null;
     while (!item && sheets.length > 0) {
       const sheetName = sheets.shift();
-      const itemData: IGameItem = _.find(data.getSheetData(sheetName), (w: IGameItem) => w.id === modelId);
+      const itemData: ITemplateItem = _.find(data.getSheetData(sheetName), (w: ITemplateItem) => w.id === modelId);
       if (itemData) {
         // TODO: How to deal with item creation?
         console.warn('revisit GameWorld.itemModelFromId - todo');
@@ -160,7 +160,7 @@ export class GameWorld extends World {
     return item;
   }
 
-  private doEncounter(zoneInfo: IZoneMatch, encounter: IGameEncounter, then?: IGameEncounterCallback) {
+  private doEncounter(zoneInfo: IZoneMatch, encounter: ITemplateEncounter, then?: IGameEncounterCallback) {
 
     const enemyList: any[] = this.spreadsheet.getSheetData('enemies');
     const toCombatant = (id: string): Combatant => {
@@ -185,6 +185,14 @@ export class GameWorld extends World {
   /** Load game data from google spreadsheet */
   private loadGameData(): Promise<void> {
     return this.loader.loadAsType(SPREADSHEET_ID, GameDataResource).then((resource: GameDataResource) => {
+      console.log(resource.data);
+      this.store.dispatch(new GameDataAddSheetAction('weapons', resource.data.weapons));
+      this.store.dispatch(new GameDataAddSheetAction('armor', resource.data.armor));
+      this.store.dispatch(new GameDataAddSheetAction('items', resource.data.items));
+      this.store.dispatch(new GameDataAddSheetAction('magic', resource.data.magic));
+      this.store.dispatch(new GameDataAddSheetAction('classes', resource.data.classes));
+      this.store.dispatch(new GameDataAddSheetAction('randomEncounters', resource.data.randomencounters));
+      this.store.dispatch(new GameDataAddSheetAction('fixedEncounters', resource.data.fixedencounters));
       this.spreadsheet = resource;
     });
   }

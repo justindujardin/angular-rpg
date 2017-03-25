@@ -35,7 +35,7 @@ import {AppState} from '../../app.model';
 import {GameState} from '../../models/game-state/game-state.model';
 import {GameStateHealPartyAction} from '../../models/game-state/game-state.actions';
 import {Entity} from '../../models/entity/entity.model';
-import {getParty, getGamePartyGold, getGameState} from '../../models/index';
+import {getParty, getGamePartyGold, sliceGameState} from '../../models/selectors';
 
 @Component({
   selector: 'world-temple',
@@ -92,7 +92,7 @@ export class WorldTempleComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this._onRestSubscription$ = this._onRest$
-      .switchMap(() => this.store.select(getGameState).withLatestFrom(this.cost$))
+      .switchMap(() => this.store.select(sliceGameState).withLatestFrom(this.cost$))
       .do((tuple: any) => {
         const gameState: GameState = tuple[0];
         const cost: number = tuple[1];

@@ -42,7 +42,7 @@ import {GameTileMap} from '../../../game/gameTileMap';
 import {getEncounter, getEncounterEnemies} from '../../models/combat/combat.reducer';
 import {CombatEnemyComponent} from './combat-enemy.entity';
 import {CombatPlayerComponent} from './combat-player.entity';
-import {getParty} from '../../models/index';
+import {getParty} from '../../models/selectors';
 import {Item} from '../../models/item';
 import {Entity} from '../../models/entity/entity.model';
 

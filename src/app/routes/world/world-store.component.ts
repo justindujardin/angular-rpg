@@ -25,8 +25,9 @@ import {Item} from '../../models/item';
 import {GameState} from '../../models/game-state/game-state.model';
 import {GameStateAddGoldAction} from '../../models/game-state/game-state.actions';
 import {StoreFeatureComponent} from '../../../game/rpg/components/features/storeFeatureComponent';
-import {getGamePartyGold, getGameState} from '../../models/index';
+import {getGamePartyGold, sliceGameState} from '../../models/selectors';
 import {EntityRemoveItemAction, EntityAddItemAction} from '../../models/entity/entity.actions';
+import {ITemplateItem} from '../../models/game-data/game-data.model';
 
 @Component({
   selector: 'world-store',
@@ -86,14 +87,14 @@ export class WorldStoreComponent implements OnDestroy {
 
   /** Stream of clicks on the actionable button */
   private _doActionSubscription$ = this._onAction$
-    .switchMap(() => this.store.select(getGameState))
+    .switchMap(() => this.store.select(sliceGameState))
     .do((model: GameState) => {
       if (!this._selected$.value) {
         return;
       }
       const item = this._selected$.value;
       const isSelling = this._selling$.value;
-      const value: number = item.cost;
+      const value: number = item.value;
       if (!isSelling && value > model.gold) {
         this.notify.show("You don't have enough money");
         return;
@@ -104,7 +105,7 @@ export class WorldStoreComponent implements OnDestroy {
 
       if (isSelling) {
         this.store.dispatch(new GameStateAddGoldAction(value));
-        this.notify.show(`Sold ${item.name} for ${item.cost} gold.`, null, 1500);
+        this.notify.show(`Sold ${item.name} for ${item.value} gold.`, null, 1500);
         this.store.dispatch(new EntityRemoveItemAction(item.eid));
       }
       else {
@@ -120,8 +121,8 @@ export class WorldStoreComponent implements OnDestroy {
   // Have to add @Input() here because decorators are not inherited with extends
   @Input() scene: IScene;
 
-  private _inventory$ = new BehaviorSubject<rpg.IGameItem[]>([]);
-  inventory$: Observable<rpg.IGameItem[]> = this._inventory$;
+  private _inventory$ = new BehaviorSubject<ITemplateItem[]>([]);
+  inventory$: Observable<ITemplateItem[]> = this._inventory$;
 
   constructor(public game: RPGGame,
               public notify: NotificationService,
@@ -145,7 +146,7 @@ export class WorldStoreComponent implements OnDestroy {
         theChoices = theChoices.concat(data.getSheetData(category));
       }
     });
-    let items: rpg.IGameItem[] = [];
+    let items: ITemplateItem[] = [];
     _.each(feature.host.groups, (group: string) => {
       items = items.concat(_.filter(theChoices, (c: any) => {
         // Include items with no "groups" value or items with matching groups.
@@ -156,7 +157,7 @@ export class WorldStoreComponent implements OnDestroy {
     this._name$.next(feature.name);
     const inventory = _.map(_.where(items, {
       level: feature.host.feature.level
-    }), (i: any) => _.extend({}, i)) as rpg.IGameItem[];
+    }), (i: any) => _.extend({}, i)) as ITemplateItem[];
     this._inventory$.next(inventory);
   }
 

@@ -43,10 +43,7 @@ export class CombatStartStateComponent extends CombatMachineState {
       if (encounter && encounter.message) {
         // If the message contains pipe's, treat what is between each pipe as a separate
         // message to be displayed.
-        let msgs = [encounter.message];
-        if (encounter.message.indexOf('|') !== -1) {
-          msgs = encounter.message.split('|');
-        }
+        let msgs = encounter.message.slice();
         const last = msgs.pop();
         msgs.forEach((m) => this.notify.show(m, null, 0));
         this.notify.show(last, _done, 0);

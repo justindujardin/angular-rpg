@@ -22,7 +22,7 @@ import {Point} from '../../../pow-core/point';
 import {Subscription} from 'rxjs';
 import {IPoint} from '../../../pow-core';
 import {GameStateSetKeyDataAction} from '../../../../app/models/game-state/game-state.actions';
-import {getGameShipPosition} from '../../../../app/models/index';
+import {getGameShipPosition} from '../../../../app/models/selectors';
 
 export class ShipFeatureComponent extends GameFeatureComponent {
   party: PlayerComponent;

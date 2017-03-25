@@ -1,7 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {RPGGame} from '../../services/index';
 import {HeroModel} from '../../../game/rpg/models/all';
-import {Entity} from '../../models/entity/entity.model';
 
 @Component({
   selector: 'player-card',
@@ -9,7 +8,7 @@ import {Entity} from '../../models/entity/entity.model';
 })
 export class PlayerCardComponent {
   @Input()
-  model: Entity;
+  model: any; // TODO: Revisit this with Entity type when model refactor is finishing up
 
   constructor(public game: RPGGame) {
   }

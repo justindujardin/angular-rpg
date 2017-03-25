@@ -101,7 +101,7 @@ export class GameDataResource extends Resource {
             }
           }
           // pipe delimited array values
-          else if (key === 'usedby' || key === 'groups' || key === 'zones' || key === 'enemies') {
+          else if (key === 'usedby' || key === 'groups' || key === 'message' || key === 'zones' || key === 'enemies') {
             if (/^\s*$/.test(value)) {
               entry[key] = null;
             }

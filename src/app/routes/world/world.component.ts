@@ -35,7 +35,7 @@ import {TileMapView} from '../../../game/pow2/tile/tileMapView';
 import {TileObjectRenderer} from '../../../game/pow2/tile/render/tileObjectRenderer';
 import {GameStateService} from '../../models/game-state/game-state.service';
 import {LoadingService} from '../../components/loading/loading.service';
-import {getParty, getGameShipPosition, getGamePartyPosition} from '../../models/index';
+import {getParty, getGamePartyPosition} from '../../models/selectors';
 import {Entity} from '../../models/entity/entity.model';
 import {TreasureFeatureComponent} from '../../../game/rpg/components/features/treasureFeatureComponent';
 import {Item} from '../../models/item';

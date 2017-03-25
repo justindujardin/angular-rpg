@@ -116,10 +116,10 @@ export class RPGGame {
       name,
       level: 0,
       exp: 0,
-      baseAttack: 0,
-      baseSpeed: 0,
-      baseMagic: 0,
-      baseDefense: 0,
+      baseattack: 0,
+      basespeed: 0,
+      basemagic: 0,
+      basedefense: 0,
     };
     let character: Entity = null;
     switch (type) {
@@ -127,40 +127,40 @@ export class RPGGame {
         character = _.extend({}, HERO_DEFAULTS, {
           eid: 'warrior-123',
           icon: 'warrior-male.png',
-          baseAttack: 10,
-          baseSpeed: 2,
-          baseMagic: 1,
-          baseDefense: 7
+          baseattack: 10,
+          basespeed: 2,
+          basemagic: 1,
+          basedefense: 7
         });
         break;
       case 'healer':
         character = _.extend({}, HERO_DEFAULTS, {
           eid: 'lifemage-123',
           icon: 'magician-female.png',
-          baseAttack: 1,
-          baseSpeed: 6,
-          baseMagic: 9,
-          baseDefense: 4
+          baseattack: 1,
+          basespeed: 6,
+          basemagic: 9,
+          basedefense: 4
         });
         break;
-      case 'thief':
+      case 'ranger':
         character = _.extend({}, HERO_DEFAULTS, {
           eid: 'ranger-123',
           icon: 'ranger-female.png',
-          baseAttack: 3,
-          baseSpeed: 10,
-          baseMagic: 2,
-          baseDefense: 5,
+          baseattack: 3,
+          basespeed: 10,
+          basemagic: 2,
+          basedefense: 5,
         });
         break;
       case 'mage':
         character = _.extend({}, HERO_DEFAULTS, {
           eid: 'deathmage-123',
           icon: 'magician-male.png',
-          baseAttack: 2,
-          baseSpeed: 10,
-          baseMagic: 4,
-          baseDefense: 4,
+          baseattack: 2,
+          basespeed: 10,
+          basemagic: 4,
+          basedefense: 4,
         });
         break;
       default:
@@ -187,7 +187,7 @@ export class RPGGame {
       else {
         // const gameData = _.pick(this.world.model.toJSON(), ['entity', 'gold']);
         const warrior = RPGGame.create('warrior', 'Warrior');
-        const ranger = RPGGame.create('thief', 'Ranger');
+        const ranger = RPGGame.create('ranger', 'Ranger');
         const healer = RPGGame.create('healer', 'Mage');
         const initialState: GameState = _.extend({}, {
           party: [warrior.eid, ranger.eid, healer.eid],

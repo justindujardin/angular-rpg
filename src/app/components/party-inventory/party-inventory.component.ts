@@ -23,7 +23,6 @@ import {GameStateModel} from '../../../game/rpg/models/gameStateModel';
 import {RPGGame} from '../../services/rpgGame';
 import {NotificationService} from '../notification/notification.service';
 import {GameState} from '../../models/game-state/game-state.model';
-import {Entity} from '../../models/entity/entity.model';
 import {Item} from '../../models/item';
 
 @Component({
@@ -34,7 +33,7 @@ export class PartyInventoryComponent {
   @Input()
   currentIndex: number = 0;
   @Input()
-  character: Entity;
+  character: any; // TODO: Revisit this with Entity type when model refactor is finishing up
   @Input()
   model: GameState = null; // TODO: remove this dep
   @Input()

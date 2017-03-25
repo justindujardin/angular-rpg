@@ -19,9 +19,7 @@ export class GameComponent implements OnInit {
     this.game.initGame().then((newGame: boolean) => {
       if (newGame) {
         const msgs: string[] = [
-          'Urrrrrgh.', 'What is this?',
-          'Oh well, it\'s probably not important.',
-          'I better take a look around'
+          'Click, Touch, or use the Arrow Keys.'
         ];
         msgs.forEach((m: string) => this.notify.show(m, null, 0));
       }

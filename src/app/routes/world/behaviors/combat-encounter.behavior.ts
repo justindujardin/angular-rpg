@@ -6,7 +6,7 @@ import {PlayerComponent} from '../../../../game/rpg/components/playerComponent';
 import {Point} from '../../../../game/pow-core/point';
 import {IZoneMatch} from '../../../../game/rpg/game';
 import {GameStateSetKeyDataAction} from '../../../models/game-state/game-state.actions';
-import {getGameBattleCounter} from '../../../models/index';
+import {getGameBattleCounter} from '../../../models/selectors';
 
 /**
  * A component that when added to a GameTileMap listens

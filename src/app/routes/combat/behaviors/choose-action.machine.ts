@@ -4,7 +4,6 @@ import {Point} from '../../../../game/pow-core/point';
 import {StateMachine} from '../../../../game/pow2/core/stateMachine';
 import {Scene} from '../../../../game/pow2/scene/scene';
 import {CombatActionBehavior} from '../behaviors/combat-action.behavior';
-import {IGameSpell} from '../../../../game/rpg/game';
 import {UsableModel} from '../../../../game/rpg/models/usableModel';
 import {GameWorld} from '../../../services/gameWorld';
 import {State} from '../../../../game/pow2/core/state';
@@ -16,6 +15,7 @@ import {IPlayerAction} from '../states/combat.machine';
 import {ElementRef} from '@angular/core';
 import {CombatPlayerComponent} from '../combat-player.entity';
 import {Item} from '../../../models/item';
+import {ITemplateMagic} from '../../../models/game-data/game-data.model';
 
 /**
  * Attach an HTML element to the position of a game object.
@@ -48,7 +48,7 @@ export class ChooseActionStateMachine extends StateMachine {
   target: GameEntityObject = null;
   player: CombatPlayerRenderBehaviorComponent = null;
   action: CombatActionBehavior = null;
-  spell: IGameSpell = null;
+  spell: ITemplateMagic = null;
   item: Item = null;
   world: GameWorld = GameWorld.get();
 
@@ -160,7 +160,7 @@ export class ChooseMagicSpell extends State {
       machine.target = hits[0];
       machine.parent.items[0].select();
     };
-    const selectSpell = (spell: IGameSpell) => {
+    const selectSpell = (spell: ITemplateMagic) => {
       machine.scene.off('click', clickSelect);
       machine.spell = spell;
       if (spell.benefit) {

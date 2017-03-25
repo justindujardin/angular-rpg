@@ -3,8 +3,7 @@ import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.model';
 import {Observable} from 'rxjs/Rx';
-import {getGameMap} from '../../models/index';
-
+import {getGameMap} from '../../models/selectors';
 
 @Injectable()
 export class CanActivateWorld implements CanActivate {

@@ -15,13 +15,6 @@
  */
 import * as _ from 'underscore';
 
-/**
- * The Google Spreadsheet ID to load game data from.  This must be a published
- * google spreadsheet key.
- * @type {string} The google spreadsheet ID
- */
-export const SPREADSHEET_ID: string = '1IAQbt_-Zq1BUwRNiJorvt4iPEYb5HmZrpyMOkb-OuJo';
-
 export const NAME: string = 'core';
 
 /**
