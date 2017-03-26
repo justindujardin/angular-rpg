@@ -56,10 +56,10 @@ export function entityReducer(state: EntityState = initialState, action: EntityA
 }
 
 /** @internal {@see sliceEntitiesState} */
-export const sliceBeingIds = (state: EntityState) => state.beings.allIds;
+export const sliceEntityBeingIds = (state: EntityState) => state.beings.allIds;
 /** @internal {@see sliceEntitiesState} */
-export const sliceBeings = (state: EntityState) => state.beings.byId;
+export const sliceEntityBeings = (state: EntityState) => state.beings.byId;
 /** @internal {@see sliceEntitiesState} */
-export const sliceItemIds = (state: EntityState) => state.items.allIds;
+export const sliceEntityItemIds = (state: EntityState) => state.items.allIds;
 /** @internal {@see sliceEntitiesState} */
-export const sliceItems = (state: EntityState) => state.items.byId;
+export const sliceEntityItems = (state: EntityState) => state.items.byId;

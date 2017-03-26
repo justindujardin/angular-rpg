@@ -35,7 +35,7 @@ import {AppState} from '../../app.model';
 import {GameState} from '../../models/game-state/game-state.model';
 import {GameStateHealPartyAction} from '../../models/game-state/game-state.actions';
 import {Entity} from '../../models/entity/entity.model';
-import {getParty, getGamePartyGold, sliceGameState} from '../../models/selectors';
+import {getGameParty, getGamePartyGold, sliceGameState} from '../../models/selectors';
 
 @Component({
   selector: 'world-temple',
@@ -50,7 +50,7 @@ export class WorldTempleComponent implements OnInit, OnDestroy {
   @Input() scene: IScene;
 
   partyGold$: Observable<number> = this.store.select(getGamePartyGold);
-  party$: Observable<Entity[]> = this.store.select(getParty);
+  party$: Observable<Entity[]> = this.store.select(getGameParty);
 
   private _name$ = new BehaviorSubject<string>('Mystery Temple');
   name$: Observable<string> = this._name$;

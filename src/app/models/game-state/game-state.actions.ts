@@ -2,6 +2,7 @@ import {Action} from '@ngrx/store';
 import {GameState, GamePositionFacing} from './game-state.model';
 import {type} from '../util';
 import {IPoint} from '../../../game/pow-core';
+import {Item} from '../item';
 
 export const GameStateActionTypes = {
   LOAD: type('rpg/state/load'),
@@ -13,6 +14,8 @@ export const GameStateActionTypes = {
   TRAVEL_FAIL: type('rpg/state/travel-fail'),
   MOVE: type('rpg/state/move'),
   ADD_GOLD: type('rpg/state/gold'),
+  ADD_INVENTORY: type('rpg/state/inventory/add'),
+  REMOVE_INVENTORY: type('rpg/state/inventory/remove'),
   HEAL_PARTY: type('rpg/state/entity/heal'),
 };
 
@@ -129,6 +132,22 @@ export class GameStateHealPartyAction implements Action {
   }
 }
 
+//
+// Inventory actions
+//
+export class GameStateAddInventoryAction implements Action {
+  type = GameStateActionTypes.ADD_INVENTORY;
+
+  constructor(public payload: Item) {
+  }
+}
+export class GameStateRemoveInventoryAction implements Action {
+  type = GameStateActionTypes.REMOVE_INVENTORY;
+
+  constructor(public payload: Item) {
+  }
+}
+
 export type GameStateActions
   = GameStateLoadAction
   | GameStateLoadSuccessAction
@@ -138,4 +157,6 @@ export type GameStateActions
   | GameStateTravelFailAction
   | GameStateMoveAction
   | GameStateAddGoldAction
-  | GameStateHealPartyAction;
+  | GameStateHealPartyAction
+  | GameStateAddInventoryAction
+  | GameStateRemoveInventoryAction;

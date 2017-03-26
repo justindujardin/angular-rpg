@@ -7,9 +7,11 @@ import {
 } from './game-state.actions';
 import {GameState} from './game-state.model';
 import * as Immutable from 'immutable';
+import {Item} from '../item';
 
 const initialState: GameState = {
   party: [],
+  inventory: [],
   keyData: {},
   battleCounter: 0,
   gold: 0,
@@ -62,6 +64,18 @@ export function gameStateReducer(state: GameState = initialState, action: GameSt
       // }).toJS();
       console.warn('TODO: HEAL_PARTY with only partyIds--where should this happen? Maybe an effect?');
     }
+    case GameStateActionTypes.ADD_INVENTORY: {
+      const item: Item = action.payload;
+      return Immutable.fromJS(state).merge({
+        inventory: [...state.inventory, item.eid]
+      }).toJS();
+    }
+    case GameStateActionTypes.REMOVE_INVENTORY: {
+      const item: Item = action.payload;
+      return Immutable.fromJS(state).merge({
+        inventory: state.inventory.filter((i: string) => i !== item.eid)
+      }).toJS();
+    }
     default:
       return state;
   }
@@ -93,4 +107,8 @@ export function sliceCombatZone(state: GameState) {
 
 export function slicePartyIds(state: GameState) {
   return state.party;
+}
+
+export function sliceInventoryIds(state: GameState) {
+  return state.inventory;
 }

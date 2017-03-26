@@ -13,37 +13,169 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import * as _ from 'underscore';
-import * as rpg from '../../../game/rpg/game';
-import {Component, ViewEncapsulation, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
+import {
+  Component,
+  ViewEncapsulation,
+  Input,
+  Output,
+  EventEmitter,
+  OnDestroy,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import {RPGGame, NotificationService} from '../../services';
 import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, Subject, ReplaySubject} from 'rxjs';
 import {IScene} from '../../../game/pow2/interfaces/IScene';
 import {Item} from '../../models/item';
 import {GameState} from '../../models/game-state/game-state.model';
-import {GameStateAddGoldAction} from '../../models/game-state/game-state.actions';
+import {
+  GameStateAddGoldAction,
+  GameStateAddInventoryAction,
+  GameStateRemoveInventoryAction
+} from '../../models/game-state/game-state.actions';
 import {StoreFeatureComponent} from '../../../game/rpg/components/features/storeFeatureComponent';
-import {getGamePartyGold, sliceGameState} from '../../models/selectors';
+import * as Immutable from 'immutable';
+import {
+  getGamePartyGold,
+  sliceGameState,
+  getGameDataWeapons,
+  getGameDataArmors,
+  getGameDataItems,
+  getGameInventory
+} from '../../models/selectors';
 import {EntityRemoveItemAction, EntityAddItemAction} from '../../models/entity/entity.actions';
-import {ITemplateItem} from '../../models/game-data/game-data.model';
+import {ITemplateItem, ITemplateWeapon} from '../../models/game-data/game-data.model';
+import {newGuid} from '../../models/being';
+
+/**
+ * Given a list of potential items, filter it to only ones that can be bartered in this store.
+ * @param items The list of items to filter
+ * @param groups The item groups that are supported by this store
+ * @param level The level of items that are sold in this store
+ * @returns {ITemplateItem[]} The filtered item list
+ */
+export function storeItemsFilter(items: ITemplateItem[], groups: string[], level: number): ITemplateItem[] {
+  return items.filter((i: ITemplateItem) => {
+    const levelMatch: boolean = (typeof i.level === 'undefined' || i.level === level);
+    return levelMatch && itemInGroups(i, groups);
+  });
+}
+
+/**
+ * Given a list of potential items to sell, filter to only ones that can be bartered in this store.
+ * @param items The list of items to filter
+ * @param groups The item groups that are supported by this store
+ * @returns {ITemplateItem[]} The filtered item list
+ */
+export function sellItemsFilter(items: ITemplateItem[], groups: string[]): ITemplateItem[] {
+  return (items || []).filter((i: ITemplateItem) => {
+    return itemInGroups(i, groups);
+  });
+}
+
+/**
+ * return true if the given item belongs to at least one of the given groups
+ */
+export function itemInGroups(item: ITemplateItem, groups: string[]): boolean {
+  if (!item) {
+    return false;
+  }
+  // If there are no groups, the item is OK
+  let groupsMatch: boolean = !item.groups || groups.length === 0;
+  // If there are groups, make sure it matches at least one of them
+  (item.groups || []).forEach((group: string) => {
+    groupsMatch = groupsMatch || groups.indexOf(group) !== -1;
+  });
+  return groupsMatch;
+
+}
+
+/**
+ * The categories of store (tied to definition of feature in TMX map
+ */
+export type StoreInventoryCategories = 'weapons' | 'armor' | 'items';
 
 @Component({
   selector: 'world-store',
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./world-store.component.scss'],
   templateUrl: './world-store.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WorldStoreComponent implements OnDestroy {
   @Output() onClose = new EventEmitter();
 
+  /** @internal */
+  private _groups$: ReplaySubject<string[]> = new ReplaySubject<string[]>(1);
+  /** @internal */
+  private _level$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
+  /** @internal */
+  private _category$: BehaviorSubject<StoreInventoryCategories> =
+    new BehaviorSubject<StoreInventoryCategories>('items');
+  /** @internal */
+  private _weapons$: Observable<ITemplateWeapon[]> = this.store.select(getGameDataWeapons);
+  /** @internal */
+  private _armors$: Observable<ITemplateWeapon[]> = this.store.select(getGameDataArmors);
+  /** @internal */
+  private _items$: Observable<ITemplateWeapon[]> = this.store.select(getGameDataItems);
+  /** @internal */
+  private _name$ = new BehaviorSubject<string>('Invalid Store');
+  /** @internal */
+  private _selling$ = new BehaviorSubject<boolean>(false);
+
+  /**
+   * The item groups that this vendor sells
+   */
+  groups$: Observable<string[]> = this._groups$;
+
+  /**
+   * The amount of gold the party has to spend
+   */
   partyGold$: Observable<number> = this.store.select(getGamePartyGold);
 
-  private _name$ = new BehaviorSubject<string>('Invalid Store');
+  /** The level of items available at this store */
+  level$: Observable<number> = this._level$;
+
+  /**
+   * The category of store as determined by its map feature.
+   * @type {ReplaySubject<StoreInventoryCategories>}
+   */
+  category$: Observable<StoreInventoryCategories> = this._category$;
+
+  /**
+   * The items available for sale at this store.
+   */
+  partyInventory$: Observable<Item[]> = this.store.select(getGameInventory)
+    .combineLatest(this.category$, (inventory, category) => {
+      return inventory.filter((i) => i.category === category);
+    })
+    .combineLatest(this.groups$, sellItemsFilter);
+
+  /**
+   * Calculate the inventory for the store. Filter by category, item grouping, and player level.
+   */
+  inventory$: Observable<ITemplateItem[]> = this._weapons$
+    .combineLatest(this._armors$, this._items$, this.category$, (weapons, armors, items, cat) => {
+      switch (cat) {
+        case 'items':
+          return items;
+        case 'weapons':
+          return weapons;
+        case 'armor':
+          return armors;
+        default:
+          console.error('world-store: unknown items category -> ' + cat);
+          return [];
+      }
+    })
+    .combineLatest(this.groups$, this.level$, storeItemsFilter);
+
+  /**
+   * The name of this (fine) establishment.
+   */
   name$: Observable<string> = this._name$;
 
-  private _selling$ = new BehaviorSubject<boolean>(false);
   /** Determine if the UI is in a selling state. */
   selling$: Observable<boolean> = this._selling$;
 
@@ -73,20 +205,23 @@ export class WorldStoreComponent implements OnDestroy {
   _onToggleAction$ = new Subject<Item>();
 
   private _doToggleActionSubscription$ = this._onToggleAction$
-    .do(() => {
+    .throttleTime(500)
+    .withLatestFrom(this.partyInventory$, (evt, inventory: Item[]) => {
       let selling = this._selling$.value;
       if (!selling) {
-        if (this._inventory$.value.length === 0) {
-          this.notify.show("You don't have any unequipped inventory to sell.", null, 1500);
+        if (inventory.length === 0) {
+          this.notify.show("You don't have any inventory of this type to sell.", null, 1500);
           this._selling$.next(false);
           return;
         }
       }
       this._selling$.next(!selling);
-    }).subscribe();
+    })
+    .subscribe();
 
   /** Stream of clicks on the actionable button */
   private _doActionSubscription$ = this._onAction$
+    .throttleTime(500)
     .switchMap(() => this.store.select(sliceGameState))
     .do((model: GameState) => {
       if (!this._selected$.value) {
@@ -104,14 +239,20 @@ export class WorldStoreComponent implements OnDestroy {
       this._selling$.next(false);
 
       if (isSelling) {
-        this.store.dispatch(new GameStateAddGoldAction(value));
         this.notify.show(`Sold ${item.name} for ${item.value} gold.`, null, 1500);
         this.store.dispatch(new EntityRemoveItemAction(item.eid));
+        this.store.dispatch(new GameStateRemoveInventoryAction(item));
+        this.store.dispatch(new GameStateAddGoldAction(value));
       }
       else {
-        this.store.dispatch(new GameStateAddGoldAction(-value));
+        const itemInstance = Immutable.fromJS(item).merge({
+          eid: `${item.id}-${newGuid()}`,
+          category: this._category$.value
+        }).toJS();
         this.notify.show(`Purchased ${item.name}.`, null, 1500);
-        this.store.dispatch(new EntityAddItemAction(item));
+        this.store.dispatch(new GameStateAddGoldAction(-value));
+        this.store.dispatch(new EntityAddItemAction(itemInstance));
+        this.store.dispatch(new GameStateAddInventoryAction(itemInstance));
       }
 
     }).subscribe();
@@ -120,9 +261,6 @@ export class WorldStoreComponent implements OnDestroy {
 
   // Have to add @Input() here because decorators are not inherited with extends
   @Input() scene: IScene;
-
-  private _inventory$ = new BehaviorSubject<ITemplateItem[]>([]);
-  inventory$: Observable<ITemplateItem[]> = this._inventory$;
 
   constructor(public game: RPGGame,
               public notify: NotificationService,
@@ -136,29 +274,9 @@ export class WorldStoreComponent implements OnDestroy {
 
   @Input()
   set feature(feature: StoreFeatureComponent) {
-    // Get enemies data from spreadsheet
-    const data = this.game.world.spreadsheet;
-
-    let hasCategory: boolean = typeof feature.host.category !== 'undefined';
-    let theChoices: any[] = [];
-    ['weapons', 'armor', 'items'].forEach((category: string) => {
-      if (!hasCategory || feature.host.category === category) {
-        theChoices = theChoices.concat(data.getSheetData(category));
-      }
-    });
-    let items: ITemplateItem[] = [];
-    _.each(feature.host.groups, (group: string) => {
-      items = items.concat(_.filter(theChoices, (c: any) => {
-        // Include items with no "groups" value or items with matching groups.
-        return !c.groups || _.indexOf(c.groups, group) !== -1;
-      }));
-    });
-
     this._name$.next(feature.name);
-    const inventory = _.map(_.where(items, {
-      level: feature.host.feature.level
-    }), (i: any) => _.extend({}, i)) as ITemplateItem[];
-    this._inventory$.next(inventory);
+    this._groups$.next(feature.host.groups);
+    this._category$.next(feature.host.category);
   }
 
 }

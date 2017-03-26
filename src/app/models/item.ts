@@ -1,8 +1,17 @@
 import {EntityObject} from './being';
-import {ITemplateItem} from './game-data/game-data.model';
+import {ITemplateItem, ItemCategories} from './game-data/game-data.model';
 
 /**
- * The item object directly from the spreadsheet.
+ * An instance of a template item that has been created.
  */
 export interface Item extends ITemplateItem, EntityObject {
+  /**
+   * The ID of the entity that this item is equipped by (if any)
+   */
+  readonly equippedBy?: string | undefined;
+
+  /**
+   * The category of the item. Useful for filtering by item type.
+   */
+  readonly category: ItemCategories;
 }

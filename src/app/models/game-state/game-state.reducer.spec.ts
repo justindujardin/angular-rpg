@@ -6,12 +6,22 @@ import {
   GameStateTravelAction,
   GameStateMoveAction,
   GameStateAddGoldAction,
-  GameStateSetKeyDataAction
+  GameStateSetKeyDataAction,
+  GameStateAddInventoryAction, GameStateRemoveInventoryAction
 } from './game-state.actions';
+import {Item} from '../item';
+const itemId: string = 'test-item-fake';
 
+function fakeItem(uniqueId: string = itemId): Item {
+  const testItem: Partial<Item> = {
+    id: 'test-item-' + uniqueId
+  };
+  return Object.assign({}, testItem as Item);
+}
 function defaultState(overrides?: any): GameState {
   const baseState: GameState = {
     party: [],
+    inventory: [],
     keyData: {},
     battleCounter: 0,
     gold: 0,
@@ -24,7 +34,7 @@ function defaultState(overrides?: any): GameState {
   return Object.assign({}, baseState, overrides || {});
 }
 
-describe('GameState', () => {
+fdescribe('GameState', () => {
   describe('Actions', () => {
     describe('GameStateLoadAction', () => {
       it('should overwrite entire gameState with payload', () => {
@@ -128,5 +138,24 @@ describe('GameState', () => {
         expect(actual.position).toEqual(expected);
       });
     });
+    describe('GameStateAddInventoryAction', () => {
+      it('should store the id of the given item in the inventory array', () => {
+        const state = defaultState();
+        const item = fakeItem();
+        const actual = gameStateReducer(state, new GameStateAddInventoryAction(item));
+        expect(actual.inventory.indexOf(item.eid)).toBeGreaterThan(-1);
+      });
+    });
+    describe('GameStateRemoveInventoryAction', () => {
+      it('should remove the given item by id from the inventory array', () => {
+        const item = fakeItem();
+        const state = defaultState({
+          inventory: [item.eid]
+        });
+        const actual = gameStateReducer(state, new GameStateRemoveInventoryAction(item));
+        expect(actual.inventory.length).toBe(0);
+      });
+    });
+
   });
 });

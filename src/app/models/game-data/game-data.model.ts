@@ -7,6 +7,8 @@
  */
 import {EntityType} from '../entity/entity.model';
 
+export type ItemCategories = 'item' | 'weapon' | 'armor';
+
 export type ItemGroups = 'default' | 'rare' | 'magic';
 
 export type ItemElements = 'holy' | 'water' | 'wind' | 'heal';
@@ -80,17 +82,17 @@ export interface ITemplateArmor extends ITemplateItem {
 export type MagicType = 'target' | 'all';
 
 export interface ITemplateMagic extends ITemplateItem {
-  type: MagicType;
+  readonly type: MagicType;
 
   /**
    * True if the magic benefits the target.
    */
-  benefit: boolean;
+  readonly benefit: boolean;
 
   /**
    * How much the magic benefits or harms the target.
    */
-  magnitude: number;
+  readonly magnitude: number;
 }
 
 export interface ITemplateClass extends ITemplateId {
@@ -139,11 +141,9 @@ export interface ITemplateEnemy extends ITemplateId {
   readonly speed: number;
 }
 
-
 //
 // Combat
 //
-
 
 /**
  * A Combat encounter descriptor.  Used to describe the configuration of combat.
@@ -161,9 +161,9 @@ export interface ITemplateEncounter extends ITemplateId {
  * of the game map.
  */
 export interface ITemplateFixedEncounter extends ITemplateEncounter {
-  gold?: number;
-  experience?: number;
-  items?: string[];
+  readonly gold?: number;
+  readonly experience?: number;
+  readonly items?: string[];
 }
 /**
  * A Random combat encounter.
@@ -175,7 +175,7 @@ export interface ITemplateRandomEncounter extends ITemplateEncounter {
   /**
    * array of zones this encounter can happen in
    */
-  zones: string[];
+  readonly zones: string[];
 }
 
 /**

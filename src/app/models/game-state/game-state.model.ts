@@ -8,8 +8,11 @@ export enum GamePositionFacing {
 }
 
 export interface GameState {
-  readonly party: string[]; // The player's party
-  readonly battleCounter: number; // The player's party
+  /** Unique IDs of all the members of the party */
+  readonly party: string[];
+  /** Unique IDs of all the items that the party has */
+  readonly inventory: string[];
+  readonly battleCounter: number;
   readonly gold: number;
   readonly keyData: {
     [key: string]: any

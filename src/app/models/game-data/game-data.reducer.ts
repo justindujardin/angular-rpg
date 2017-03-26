@@ -89,3 +89,47 @@ export function gameDataReducer(state: GameDataState = initialState, action: Gam
       return state;
   }
 }
+
+/** @internal {@see sliceGameDataState} */
+export const sliceGameDataType = (type: string) => {
+  return (state: GameDataState) => state[type].byId;
+};
+/** @internal {@see sliceGameDataState} */
+export const sliceGameDataTypeIds = (type: string) => {
+  return (state: GameDataState) => state[type].allIds;
+};
+
+/** @internal {@see sliceGameDataState} */
+export const sliceWeaponIds = (state: GameDataState) => state.weapons.allIds;
+/** @internal {@see sliceGameDataState} */
+export const sliceWeapons = (state: GameDataState) => state.weapons.byId;
+
+/** @internal {@see sliceGameDataState} */
+export const sliceArmorIds = (state: GameDataState) => state.armor.allIds;
+/** @internal {@see sliceGameDataState} */
+export const sliceArmors = (state: GameDataState) => state.armor.byId;
+
+/** @internal {@see sliceGameDataState} */
+export const sliceItemIds = (state: GameDataState) => state.items.allIds;
+/** @internal {@see sliceGameDataState} */
+export const sliceItems = (state: GameDataState) => state.items.byId;
+
+/** @internal {@see sliceGameDataState} */
+export const sliceMagicIds = (state: GameDataState) => state.magic.allIds;
+/** @internal {@see sliceGameDataState} */
+export const sliceMagics = (state: GameDataState) => state.magic.byId;
+
+/** @internal {@see sliceGameDataState} */
+export const sliceClassesIds = (state: GameDataState) => state.classes.allIds;
+/** @internal {@see sliceGameDataState} */
+export const sliceClasses = (state: GameDataState) => state.classes.byId;
+
+/** @internal {@see sliceGameDataState} */
+export const sliceRandomEncounterIds = (state: GameDataState) => state.randomEncounters.allIds;
+/** @internal {@see sliceGameDataState} */
+export const sliceRandomEncounters = (state: GameDataState) => state.randomEncounters.byId;
+
+/** @internal {@see sliceGameDataState} */
+export const sliceFixedEncounterIds = (state: GameDataState) => state.fixedEncounters.allIds;
+/** @internal {@see sliceGameDataState} */
+export const sliceFixedEncounters = (state: GameDataState) => state.fixedEncounters.byId;

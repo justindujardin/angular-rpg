@@ -189,15 +189,17 @@ export class RPGGame {
         const warrior = RPGGame.create('warrior', 'Warrior');
         const ranger = RPGGame.create('ranger', 'Ranger');
         const healer = RPGGame.create('healer', 'Mage');
-        const initialState: GameState = _.extend({}, {
+        const initialState: GameState = {
           party: [warrior.eid, ranger.eid, healer.eid],
+          inventory: [],
+          battleCounter: 0,
           keyData: {},
           gold: 200,
           combatZone: '',
           map: 'town',
           position: {x: 12, y: 8},
           shipPosition: {x: 0, y: 0}
-        });
+        };
         this.store.dispatch(new GameStateLoadAction(initialState));
         this.store.dispatch(new EntityAddBeingAction(warrior));
         this.store.dispatch(new EntityAddBeingAction(ranger));

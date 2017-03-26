@@ -35,7 +35,7 @@ import {TileMapView} from '../../../game/pow2/tile/tileMapView';
 import {TileObjectRenderer} from '../../../game/pow2/tile/render/tileObjectRenderer';
 import {GameStateService} from '../../models/game-state/game-state.service';
 import {LoadingService} from '../../components/loading/loading.service';
-import {getParty, getGamePartyPosition} from '../../models/selectors';
+import {getGameParty, getGamePartyPosition} from '../../models/selectors';
 import {Entity} from '../../models/entity/entity.model';
 import {TreasureFeatureComponent} from '../../../game/rpg/components/features/treasureFeatureComponent';
 import {Item} from '../../models/item';
@@ -92,7 +92,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     .distinctUntilChanged();
 
   /** Observable of Entity representing the player-card leader to be rendered in the world */
-  partyLeader$: Observable<Entity> = this.store.select(getParty)
+  partyLeader$: Observable<Entity> = this.store.select(getGameParty)
     .map((party: Entity[]) => {
       return Immutable.Map(party[0]).toJS();
     });
