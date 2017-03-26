@@ -222,6 +222,8 @@ export class RPGGame {
     const context: any = this._renderCanvas.getContext('2d');
     context.webkitImageSmoothingEnabled = false;
     context.mozImageSmoothingEnabled = false;
+    context.msImageSmoothingEnabled = false;
+    (<any> context).imageSmoothingEnabled = false;
     return context;
   }
 
