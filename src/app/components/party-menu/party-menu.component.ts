@@ -1,5 +1,12 @@
 import {Component, Input} from '@angular/core';
 import {RPGGame, NotificationService} from '../../services/index';
+import {AppState} from '../../app.model';
+import {Store} from '@ngrx/store';
+import {Observable} from 'rxjs';
+import {getGamePartyGold, getGameParty} from '../../models/selectors';
+import {BaseEntity} from '../../models/base-entity';
+import {Entity} from '../../models/entity/entity.model';
+import {GameStateSaveAction} from '../../models/game-state/game-state.actions';
 
 @Component({
   selector: 'party-menu',
@@ -12,22 +19,15 @@ export class PartyMenuComponent {
   @Input()
   open: boolean = false;
 
+  partyGold$: Observable<number> = this.store.select(getGamePartyGold);
+  party$: Observable<Entity[]> = this.store.select(getGameParty);
+
   toggle() {
     this.open = !this.open;
   }
 
-  getActiveClass(type: string): any {
-    return {
-      active: type === this.page
-    };
-  }
-
   showParty() {
     this.page = 'party';
-  }
-
-  showSave() {
-    this.page = 'save';
   }
 
   showInventory() {
@@ -35,16 +35,17 @@ export class PartyMenuComponent {
   }
 
   menuResetGame() {
-    this.game.resetGame();
+    // this.game.resetGame();
     this.notify.show('Game data deleted.  Next time you refresh you will begin a new game.');
   }
 
   menuSaveGame() {
-    this.game.saveGame();
-    this.notify.show('Game state saved!  Nice.');
+    this.store.dispatch(new GameStateSaveAction());
   }
 
-  constructor(public game: RPGGame, public notify: NotificationService) {
+  constructor(public game: RPGGame,
+              public store: Store<AppState>,
+              public notify: NotificationService) {
 
   }
 

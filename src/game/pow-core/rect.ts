@@ -14,7 +14,7 @@
  limitations under the License.
  */
 import {errors} from './errors';
-import {Point} from './point';
+import {Point, IPoint} from './point';
 export interface IRect {
   point: Point;
   extent: Point;
@@ -125,11 +125,11 @@ export class Rect implements IRect {
     return new Point(x, y);
   }
 
-  setCenter(point: Point): Rect;
+  setCenter(point: Point|IPoint): Rect;
   setCenter(x: number, y: number): Rect;
   setCenter(pointOrX: any, y?: number): Rect {
     let x: number;
-    if (pointOrX instanceof Point) {
+    if (pointOrX instanceof Point || (pointOrX && pointOrX.x !== undefined && pointOrX.y !== undefined)) {
       x = pointOrX.x;
       y = pointOrX.y;
     }

@@ -1,4 +1,4 @@
-import {BaseEntity} from '../being';
+import {BaseEntity} from '../base-entity';
 export type EntityType = 'warrior' | 'ranger' | 'mage' | 'healer' | 'npc';
 
 export interface Entity extends BaseEntity {

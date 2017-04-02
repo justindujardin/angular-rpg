@@ -7,17 +7,17 @@ import {ShipFeatureComponent} from './rpg/components/features/shipFeatureCompone
 import {StoreFeatureComponent} from './rpg/components/features/storeFeatureComponent';
 import {TempleFeatureComponent} from './rpg/components/features/templeFeatureComponent';
 import {TreasureFeatureComponent} from './rpg/components/features/treasureFeatureComponent';
-import {GameFeatureInputComponent} from './rpg/components/gameFeatureInputComponent';
+import {MapFeatureInputBehaviorComponent} from '../app/routes/world/behaviors/map-feature-input.behavior';
 import {GameEntityObject} from './rpg/objects/gameEntityObject';
 import {TiledTMXResource} from './pow-core/resources/tiled/tiledTmx';
-import {PlayerRenderComponent} from './pow2/game/components/playerRenderComponent';
-import {CollisionComponent} from './pow2/scene/components/collisionComponent';
-import {GameMapPathComponent} from './pow2/game/components/gameMapPathComponent';
-import {PlayerComponent} from './rpg/components/playerComponent';
-import {PlayerCameraComponent} from './rpg/components/playerCameraComponent';
-import {PlayerTouchComponent} from './rpg/components/playerTouchComponent';
+import {PlayerRenderBehaviorComponent} from '../app/routes/world/behaviors/player-render.behavior';
+import {CollisionBehaviorComponent} from '../app/behaviors/collision.behavior';
+import {PlayerMapPathBehaviorComponent} from '../app/routes/world/behaviors/player-map-path.behavior';
+import {PlayerBehaviorComponent} from '../app/routes/world/behaviors/player-behavior';
+import {PlayerCameraBehaviorComponent} from '../app/routes/world/behaviors/playerCameraComponent';
+import {PlayerTouchBehaviorComponent} from '../app/routes/world/behaviors/player-touch.behavior';
 import {CombatCameraBehavior} from '../app/routes/combat/behaviors/combat-camera.behavior';
-import {CombatEncounterBehavior} from '../app/routes/world/behaviors/combat-encounter.behavior';
+import {CombatEncounterBehaviorComponent} from '../app/routes/world/behaviors/combat-encounter.behavior';
 
 /**
  * Array of composed game entity templates.
@@ -44,11 +44,11 @@ export const RPG_GAME_ENTITIES: IEntityTemplate[] = [
     components: [
       {
         name: 'encounters',
-        type: CombatEncounterBehavior
+        type: CombatEncounterBehaviorComponent
       },
       {
         name: 'input',
-        type: GameFeatureInputComponent
+        type: MapFeatureInputBehaviorComponent
       }
     ]
   },
@@ -60,12 +60,12 @@ export const RPG_GAME_ENTITIES: IEntityTemplate[] = [
       map: GameTileMap
     },
     components: [
-      {name: 'render', type: PlayerRenderComponent},
-      {name: 'collision', type: CollisionComponent},
-      {name: 'paths', type: GameMapPathComponent, params: ['map']},
-      {name: 'player', type: PlayerComponent},
-      {name: 'camera', type: PlayerCameraComponent},
-      {name: 'touch', type: PlayerTouchComponent}
+      {name: 'render', type: PlayerRenderBehaviorComponent},
+      {name: 'collision', type: CollisionBehaviorComponent},
+      {name: 'paths', type: PlayerMapPathBehaviorComponent, params: ['map']},
+      {name: 'player', type: PlayerBehaviorComponent},
+      {name: 'camera', type: PlayerCameraBehaviorComponent},
+      {name: 'touch', type: PlayerTouchBehaviorComponent}
     ]
   },
   {

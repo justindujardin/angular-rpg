@@ -6,6 +6,7 @@ import * as fromGameState from './game-state/game-state.reducer';
 import * as fromGameData from './game-data/game-data.reducer';
 import * as fromCombat from './combat/combat.reducer';
 import * as fromEntity from './entity/entity.reducer';
+import {GameStateActionTypes} from './game-state/game-state.actions';
 export const reducers = {
   router: routerReducer,
   gameData: fromGameData.gameDataReducer,
@@ -17,10 +18,13 @@ export const reducers = {
 // Generate a reducer to set the root state in dev mode for HMR
 function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
   return (state, action) => {
-    if (action.type === 'SET_ROOT_STATE') {
-      return action.payload;
+    switch (action.type) {
+      case 'SET_ROOT_STATE':
+      case GameStateActionTypes.LOAD_SUCCESS:
+        return action.payload;
+      default:
+        return reducer(state, action);
     }
-    return reducer(state, action);
   };
 }
 

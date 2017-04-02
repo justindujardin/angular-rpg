@@ -4,7 +4,10 @@ import {GameStateEffects} from './game-state.effects';
 import {GameState} from './game-state.model';
 import {Observable} from 'rxjs';
 import {GameStateService} from './game-state.service';
-import {GameStateLoadAction, GameStateActionTypes, GameStateTravelAction} from './game-state.actions';
+import {
+  GameStateLoadAction, GameStateActionTypes, GameStateTravelAction,
+  GameStateNewAction
+} from './game-state.actions';
 
 describe('GameState', () => {
 
@@ -43,7 +46,7 @@ describe('GameState', () => {
     describe('initLoadedGame$', () => {
       const fakeGameState: any = {};
       it('should dispatch load success after game state service loads the game', () => {
-        runner.queue(new GameStateLoadAction(fakeGameState));
+        runner.queue(new GameStateNewAction(fakeGameState));
         effects.initLoadedGame$.subscribe((result) => {
           expect(result.type).toBe(GameStateActionTypes.LOAD_SUCCESS);
         });
@@ -55,7 +58,7 @@ describe('GameState', () => {
         position: {x: 0, y: 0}
       };
       it('should dispatch a travel action to the current location after game load success', () => {
-        runner.queue(new GameStateLoadAction(fakeGameState));
+        runner.queue(new GameStateNewAction(fakeGameState));
         effects.afterLoadTravelToCurrentLocation$.subscribe((result) => {
           expect(result.type).toBe(GameStateActionTypes.TRAVEL);
         });

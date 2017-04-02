@@ -13,11 +13,16 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {SceneObject} from '../sceneObject';
-import {SceneComponent} from '../sceneComponent';
-import {Rect} from '../../../pow-core/rect';
+import {SceneObject} from '../../game/pow2/scene/sceneObject';
+import {SceneComponent} from '../../game/pow2/scene/sceneComponent';
+import {Rect} from '../../game/pow-core/rect';
+import {Component} from '@angular/core';
 
-export class CollisionComponent extends SceneComponent {
+@Component({
+  selector: 'collision-behavior',
+  template: `<ng-content></ng-content>`
+})
+export class CollisionBehaviorComponent extends SceneComponent {
   collideBox: Rect = new Rect(0, 0, 1, 1);
   resultsArray: any[] = [];
 

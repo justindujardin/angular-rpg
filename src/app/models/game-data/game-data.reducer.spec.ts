@@ -1,4 +1,4 @@
-import {EntityCollection} from '../being';
+import {EntityCollection} from '../base-entity';
 import {GameDataState, gameDataReducer} from './game-data.reducer';
 import {GameDataAddSheetAction, GameDataRemoveSheetAction} from './game-data.actions';
 import {ITemplateId} from './game-data.model';

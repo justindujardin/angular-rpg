@@ -15,7 +15,7 @@
  */
 import {IObject, IBehaviorHost, IBehavior} from '../../pow-core/behavior';
 import {IProcessObject} from '../../pow-core/time';
-import {Point} from '../../pow-core/point';
+import {Point, IPoint} from '../../pow-core/point';
 import {IEvents} from '../../pow-core/events';
 import {IWorld} from '../../pow-core/world';
 import {Rect} from '../../pow-core/rect';
@@ -25,8 +25,8 @@ import {Rect} from '../../pow-core/rect';
 export interface ISceneObject extends IObject, IProcessObject, IBehaviorHost {
   scene: IScene;
   enabled: boolean;
-  point: Point;
-  size: Point;
+  point: IPoint;
+  size: IPoint;
   onAddToScene?(scene: IScene);
 }
 

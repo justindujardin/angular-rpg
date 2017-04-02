@@ -7,7 +7,7 @@ import {
   GameStateMoveAction,
   GameStateAddGoldAction,
   GameStateSetKeyDataAction,
-  GameStateAddInventoryAction, GameStateRemoveInventoryAction
+  GameStateAddInventoryAction, GameStateRemoveInventoryAction, GameStateNewAction
 } from './game-state.actions';
 import {Item} from '../item';
 const itemId: string = 'test-item-fake';
@@ -36,14 +36,14 @@ function defaultState(overrides?: any): GameState {
 
 fdescribe('GameState', () => {
   describe('Actions', () => {
-    describe('GameStateLoadAction', () => {
+    describe('GameStateNewAction', () => {
       it('should overwrite entire gameState with payload', () => {
         const state = defaultState();
         const expected = defaultState({
           party: [1, 2, 3],
           gold: 1337
         });
-        const actual = gameStateReducer(state, new GameStateLoadAction(expected));
+        const actual = gameStateReducer(state, new GameStateNewAction(expected));
         expect(actual).toEqual(expected);
       });
     });

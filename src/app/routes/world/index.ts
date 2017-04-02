@@ -6,6 +6,9 @@ import {CommonModule} from '@angular/common';
 import {CanActivateWorld} from './world.guards';
 import {WorldComponent} from './';
 import {AppComponentsModule} from '../../components/index';
+import {WORLD_PLAYER_COMPONENTS} from './world-player.entity';
+import {BehaviorsModule} from '../../behaviors/index';
+import {WORLD_MAP_COMPONENTS} from './world-map.entity';
 
 export * from './world.component';
 export * from './world-dialog.component';
@@ -20,7 +23,9 @@ export const WORLD_EXPORTS = [
   WorldComponent,
   WorldDialogComponent,
   WorldStoreComponent,
-  WorldTempleComponent
+  WorldTempleComponent,
+  ...WORLD_PLAYER_COMPONENTS,
+  ...WORLD_MAP_COMPONENTS
 ];
 
 @NgModule({
@@ -28,6 +33,7 @@ export const WORLD_EXPORTS = [
   exports: WORLD_EXPORTS,
   imports: [
     CommonModule,
+    BehaviorsModule,
     AppComponentsModule
   ]
 })

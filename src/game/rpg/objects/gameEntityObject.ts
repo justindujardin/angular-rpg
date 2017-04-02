@@ -16,7 +16,7 @@
 import * as _ from 'underscore';
 import {GameWorld} from '../../../app/services/gameWorld';
 import {TileObject} from '../../pow2/tile/tileObject';
-import {BaseEntity} from '../../../app/models/being';
+import {BaseEntity} from '../../../app/models/base-entity';
 import {Entity} from '../../../app/models/entity/entity.model';
 import {ITemplateMagic} from '../../../app/models/game-data/game-data.model';
 

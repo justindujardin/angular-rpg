@@ -46,7 +46,7 @@ import {
 } from '../../models/selectors';
 import {EntityRemoveItemAction, EntityAddItemAction} from '../../models/entity/entity.actions';
 import {ITemplateItem, ITemplateWeapon} from '../../models/game-data/game-data.model';
-import {newGuid} from '../../models/being';
+import {newGuid} from '../../models/base-entity';
 
 /**
  * Given a list of potential items, filter it to only ones that can be bartered in this store.

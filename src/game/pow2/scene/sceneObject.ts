@@ -17,7 +17,7 @@ import * as _ from 'underscore';
 import {SceneComponent} from './sceneComponent';
 import {Entity} from '../../pow-core/entity';
 import {Scene} from './scene';
-import {Point} from '../../pow-core/point';
+import {Point, IPoint} from '../../pow-core/point';
 /**
  * An object that may exist in a `Scene` and receives time updates.
  */
@@ -27,10 +27,10 @@ export class SceneObject extends Entity {
   scene: Scene;
   enabled: boolean;
   // The object point
-  point: Point;
-  size: Point;
+  point: IPoint;
+  size: IPoint;
   // The render point that is interpolated between ticks.
-  renderPoint: Point;
+  renderPoint: IPoint;
 
   constructor(options?: any) {
     super();

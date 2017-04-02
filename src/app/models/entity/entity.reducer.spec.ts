@@ -7,7 +7,7 @@ import {
   EntityRemoveItemAction
 } from './entity.actions';
 import {Item} from '../item';
-import {EntityCollection} from '../being';
+import {EntityCollection} from '../base-entity';
 
 describe('Entity', () => {
 
@@ -58,6 +58,7 @@ describe('Entity', () => {
   function fakeItem(): Item {
     const testItem: Item = {
       eid: 'unique-item-id',
+      category: 'item',
       id: 'test-item',
       name: 'Test Item',
       level: 1,

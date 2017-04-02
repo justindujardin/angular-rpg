@@ -6,7 +6,7 @@ import {GameTileMap} from '../../game/gameTileMap';
 import {CombatEncounter} from '../models/combat/combat.model';
 import {getMapUrl} from '../../game/pow2/core/api';
 import {TiledTMXResource} from '../../game/pow-core/resources/tiled/tiledTmx';
-import {BaseEntity} from '../models/being';
+import {BaseEntity} from '../models/base-entity';
 
 @Injectable()
 export class CombatService {

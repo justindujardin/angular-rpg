@@ -14,7 +14,7 @@
  limitations under the License.
  */
 import * as rpg from '../../game';
-import {PlayerComponent} from '../playerComponent';
+import {PlayerBehaviorComponent} from '../../../../app/routes/world/behaviors/player-behavior';
 import {GameFeatureComponent} from '../gameFeatureComponent';
 import {GameEntityObject} from '../../objects/gameEntityObject';
 
@@ -26,7 +26,7 @@ import {GameEntityObject} from '../../objects/gameEntityObject';
  * the tile may be passed.
  */
 export class CombatFeatureComponent extends GameFeatureComponent {
-  party: PlayerComponent = null;
+  party: PlayerBehaviorComponent = null;
 
   connectBehavior(): boolean {
     if (typeof this.host.id === 'undefined') {
@@ -37,8 +37,8 @@ export class CombatFeatureComponent extends GameFeatureComponent {
   }
 
   enter(object: GameEntityObject): boolean {
-    this.party = <PlayerComponent>
-      object.findBehavior(PlayerComponent);
+    this.party = <PlayerBehaviorComponent>
+      object.findBehavior(PlayerBehaviorComponent);
     if (!this.party) {
       return false;
     }

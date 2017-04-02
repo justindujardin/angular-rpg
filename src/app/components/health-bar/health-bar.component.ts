@@ -14,7 +14,7 @@
  limitations under the License.
  */
 import {Component, Input} from '@angular/core';
-import {BaseEntity} from '../../models/being';
+import {BaseEntity} from '../../models/base-entity';
 
 @Component({
   selector: 'rpg-health-bar',

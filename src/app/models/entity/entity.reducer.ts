@@ -2,7 +2,7 @@ import {Entity} from './entity.model';
 import {EntityActionTypes, EntityActionClasses} from './entity.actions';
 import * as Immutable from 'immutable';
 import {Item} from '../item';
-import {EntityObject, EntityCollection, removeEntityFromCollection, addEntityToCollection} from '../being';
+import {EntityObject, EntityCollection, removeEntityFromCollection, addEntityToCollection} from '../base-entity';
 
 /** Collection of Entity objects */
 export type EntityState = {

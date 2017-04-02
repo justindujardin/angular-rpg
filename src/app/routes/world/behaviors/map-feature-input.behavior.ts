@@ -14,13 +14,18 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {GameFeatureObject} from '../objects/gameFeatureObject';
-import {TickedComponent} from '../../pow2/scene/components/tickedComponent';
-import {Rect} from '../../pow-core/rect';
-import {TileObject} from '../../pow2/tile/tileObject';
-import {NamedMouseElement} from '../../pow2/core/input';
+import {GameFeatureObject} from '../../../../game/rpg/objects/gameFeatureObject';
+import {TickedComponent} from '../../../../game/pow2/scene/components/tickedComponent';
+import {Rect} from '../../../../game/pow-core/rect';
+import {TileObject} from '../../../../game/pow2/tile/tileObject';
+import {NamedMouseElement} from '../../../../game/pow2/core/input';
+import {Component} from '@angular/core';
 
-export class GameFeatureInputComponent extends TickedComponent {
+@Component({
+  selector: 'map-feature-input-behavior',
+  template: `<ng-content></ng-content>`
+})
+export class MapFeatureInputBehaviorComponent extends TickedComponent {
   hitBox: Rect = new Rect(0, 0, 1, 1);
   hits: TileObject[] = [];
   mouse: NamedMouseElement = null;

@@ -13,14 +13,29 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {CameraComponent} from '../../scene/components/cameraComponent';
-import {SceneView} from '../../scene/sceneView';
-import {TileObject} from '../../tile/tileObject';
-export class PlayerCameraComponent extends CameraComponent {
-  host: TileObject;
+import {CameraComponent} from '../../../../game/pow2/scene/components/cameraComponent';
+import {SceneView} from '../../../../game/pow2/scene/sceneView';
+import {TileObject} from '../../../../game/pow2/tile/tileObject';
+import {Component} from '@angular/core';
+import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
+import {Point} from '../../../../game/pow-core/point';
+
+@Component({
+  selector: 'player-camera-behavior',
+  template: `<ng-content></ng-content>`
+})
+export class PlayerCameraBehaviorComponent extends CameraComponent {
+  host: GameEntityObject;
 
   process(view: SceneView) {
-    super.process(view);
+
+    const w: number = view.context.canvas.width;
+    view.camera.point.set(this.host.point);
+    view.cameraScale = w > 1024 ? 6 : (w > 768 ? 4 : (w > 480 ? 3 : 2));
+    const screenRect = new Point(view.context.canvas.width, view.context.canvas.height);
+    const canvasSize = view.screenToWorld(screenRect, view.cameraScale);
+    view.camera.extent.set(canvasSize);
+
     // Center on player object
     view.camera.setCenter(this.host.renderPoint || this.host.point);
 

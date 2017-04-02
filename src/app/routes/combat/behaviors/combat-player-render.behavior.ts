@@ -1,7 +1,7 @@
 import * as _ from 'underscore';
 import {Component} from '@angular/core';
 import {TickedComponent} from '../../../../game/pow2/scene/components/tickedComponent';
-import {Headings} from '../../../../game/pow2/game/components/playerRenderComponent';
+import {Headings} from '../../world/behaviors/player-render.behavior';
 import {AnimatedBehaviorComponent, IAnimationConfig} from '../../../behaviors/animated.behavior';
 import {Point} from '../../../../game/pow-core/point';
 import {CombatService} from '../../../services/combat.service';

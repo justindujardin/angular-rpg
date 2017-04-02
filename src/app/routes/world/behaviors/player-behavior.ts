@@ -14,20 +14,25 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {GameEntityObject} from '../objects/gameEntityObject';
-import {GameFeatureObject} from '../objects/gameFeatureObject';
-import {BasePlayerComponent} from '../../pow2/game/components/basePlayerComponent';
-import {TileMap} from '../../pow2/tile/tileMap';
-import {SceneObject} from '../../pow2/scene/sceneObject';
-import {ITiledLayer} from '../../pow-core/resources/tiled/tiled';
-import {IMoveDescription} from '../../pow2/scene/components/movableComponent';
-import {GameStateMoveAction} from '../../../app/models/game-state/game-state.actions';
+import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
+import {GameFeatureObject} from '../../../../game/rpg/objects/gameFeatureObject';
+import {BasePlayerComponent} from '../../../../game/pow2/game/components/basePlayerComponent';
+import {TileMap} from '../../../../game/pow2/tile/tileMap';
+import {SceneObject} from '../../../../game/pow2/scene/sceneObject';
+import {ITiledLayer} from '../../../../game/pow-core/resources/tiled/tiled';
+import {IMoveDescription} from '../../../../game/pow2/scene/components/movableComponent';
+import {GameStateMoveAction} from '../../../models/game-state/game-state.actions';
+import {Component} from '@angular/core';
 
 /**
  * Basic Dorkapon player that can navigate around the map
  * using the paths defined within.
  */
-export class PlayerComponent extends BasePlayerComponent {
+@Component({
+  selector: 'player-behavior',
+  template: `<ng-content></ng-content>`
+})
+export class PlayerBehaviorComponent extends BasePlayerComponent {
   host: GameEntityObject;
   map: TileMap = null;
 
@@ -55,7 +60,7 @@ export class PlayerComponent extends BasePlayerComponent {
         if (o.passable === true || !o.type) {
           return false;
         }
-        if (_.indexOf(PlayerComponent.COLLIDE_TYPES, o.type) !== -1) {
+        if (_.indexOf(PlayerBehaviorComponent.COLLIDE_TYPES, o.type) !== -1) {
           return true;
         }
       }

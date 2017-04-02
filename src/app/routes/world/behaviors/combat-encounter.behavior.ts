@@ -2,11 +2,12 @@ import {GameWorld} from '../../../../app/services/gameWorld';
 import {SceneComponent} from '../../../../game/pow2/scene/sceneComponent';
 import {GameTileMap} from '../../../../game/gameTileMap';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
-import {PlayerComponent} from '../../../../game/rpg/components/playerComponent';
+import {PlayerBehaviorComponent} from './player-behavior';
 import {Point} from '../../../../game/pow-core/point';
 import {IZoneMatch} from '../../../../game/rpg/game';
 import {GameStateSetKeyDataAction} from '../../../models/game-state/game-state.actions';
 import {getGameBattleCounter} from '../../../models/selectors';
+import {Component} from '@angular/core';
 
 /**
  * A component that when added to a GameTileMap listens
@@ -14,7 +15,11 @@ import {getGameBattleCounter} from '../../../models/selectors';
  * an encounter with a group of creatures from the current combat
  * zone.
  */
-export class CombatEncounterBehavior extends SceneComponent {
+@Component({
+  selector: 'combat-encounter-behavior',
+  template: `<ng-content></ng-content>`
+})
+export class CombatEncounterBehaviorComponent extends SceneComponent {
   host: GameTileMap;
   battleCounter: number;
   combatFlag: boolean = false;
@@ -53,7 +58,7 @@ export class CombatEncounterBehavior extends SceneComponent {
     this.stopListening();
     this.player = null;
     if (this.host.scene) {
-      this.player = this.host.scene.objectByComponent(PlayerComponent) as GameEntityObject;
+      this.player = this.host.scene.objectByComponent(PlayerBehaviorComponent) as GameEntityObject;
     }
     this.listenMoves();
     return !!this.player;
@@ -62,7 +67,7 @@ export class CombatEncounterBehavior extends SceneComponent {
   listenMoves() {
     this.stopListening();
     if (this.player && this.enabled) {
-      this.player.on(PlayerComponent.Events.MOVE_BEGIN, this.moveProcess, this);
+      this.player.on(PlayerBehaviorComponent.Events.MOVE_BEGIN, this.moveProcess, this);
     }
   }
 
@@ -72,7 +77,7 @@ export class CombatEncounterBehavior extends SceneComponent {
     }
   }
 
-  moveProcess(player: PlayerComponent, from: Point, to: Point) {
+  moveProcess(player: PlayerBehaviorComponent, from: Point, to: Point) {
     const terrain = this.host.getTerrain('Terrain', to.x, to.y);
     this.isDangerous = terrain && terrain.isDangerous;
     const dangerValue = this.isDangerous ? 10 : 6;

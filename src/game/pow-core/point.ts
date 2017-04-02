@@ -47,10 +47,11 @@ export class Point implements IPoint {
     return `${this.x},${this.y}`;
   }
 
-  set(point: Point): Point;
+  set(point: Point|IPoint): Point;
   set(x: number, y: number): Point;
   set(pointOrX: any, y?: any): Point {
-    if (pointOrX instanceof Point) {
+    // Instance of point, or set from plain object with x/y properties
+    if (pointOrX instanceof Point || (pointOrX && pointOrX.x !== undefined && pointOrX.y !== undefined)) {
       this.x = pointOrX.x;
       this.y = pointOrX.y;
     }
@@ -176,6 +177,11 @@ export class Point implements IPoint {
     return this.x === point.x && this.y === point.y;
   }
 
+  static equal(point: IPoint, pointTwo: IPoint) {
+    // TODO epsilon.
+    return pointTwo.x === point.x && pointTwo.y === point.y;
+  }
+
   isZero(): boolean {
     return this.x === 0 && this.y === 0;
   }
@@ -185,10 +191,14 @@ export class Point implements IPoint {
     return this;
   }
 
-  interpolate(from: Point, to: Point, factor: number): Point {
+  static interpolate(result: IPoint, from: IPoint, to: IPoint, factor: number): IPoint {
     factor = Math.min(Math.max(factor, 0), 1);
-    this.x = (from.x * (1.0 - factor)) + (to.x * factor);
-    this.y = (from.y * (1.0 - factor)) + (to.y * factor);
-    return this;
+    result.x = (from.x * (1.0 - factor)) + (to.x * factor);
+    result.y = (from.y * (1.0 - factor)) + (to.y * factor);
+    return result;
+  }
+
+  interpolate(from: Point, to: Point, factor: number): IPoint {
+    return Point.interpolate(this, from, to, factor);
   }
 }

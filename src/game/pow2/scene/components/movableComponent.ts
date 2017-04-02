@@ -17,7 +17,7 @@ import {Point} from '../../../pow-core/point';
 import {TickedComponent} from './tickedComponent';
 import {KeyCode} from '../../core/input';
 import {SceneObject} from '../sceneObject';
-import {CollisionComponent} from './collisionComponent';
+import {CollisionBehaviorComponent} from '../../../../app/behaviors/collision.behavior';
 /**
  * Describe a move from one point to another.
  */
@@ -38,18 +38,18 @@ export class MovableComponent extends TickedComponent {
   velocity: Point = new Point(0, 0);
   workPoint: Point = new Point(0, 0);
   host: SceneObject;
-  collider: CollisionComponent;
+  collider: CollisionBehaviorComponent;
   currentMove: IMoveDescription = null;
 
   connectBehavior(): boolean {
-    this.host.point.round();
-    this.targetPoint = this.host.point.clone();
+    this.host.point = new Point(this.host.point).round();
+    this.targetPoint = new Point(this.host.point);
     this.host.renderPoint = this.targetPoint.clone();
     return super.connectBehavior();
   }
 
   syncBehavior(): boolean {
-    this.collider = this.host.findBehavior(CollisionComponent) as CollisionComponent;
+    this.collider = this.host.findBehavior(CollisionBehaviorComponent) as CollisionBehaviorComponent;
     return super.syncBehavior();
   }
 
@@ -101,11 +101,12 @@ export class MovableComponent extends TickedComponent {
   interpolateTick(elapsed: number) {
     // Interpolate position based on tickrate and elapsed time
     const factor = this._elapsed / this.tickRateMS;
-    this.host.renderPoint.set(this.host.point.x, this.host.point.y);
+    this.host.renderPoint.x = this.host.point.x;
+    this.host.renderPoint.y = this.host.point.y;
     if (this.velocity.isZero()) {
       return;
     }
-    this.host.renderPoint.interpolate(this.host.point, this.targetPoint, factor);
+    Point.interpolate(this.host.renderPoint, this.host.point, this.targetPoint, factor);
     this.host.renderPoint.x = parseFloat(this.host.renderPoint.x.toFixed(2));
     this.host.renderPoint.y = parseFloat(this.host.renderPoint.y.toFixed(2));
   }
@@ -128,7 +129,8 @@ export class MovableComponent extends TickedComponent {
 
       // Target point is not the current point and there is no collision.
       this.workPoint.set(this.host.point);
-      this.host.point.set(this.targetPoint);
+      this.host.point.x = this.targetPoint.x;
+      this.host.point.y = this.targetPoint.y;
 
       //
       this.completeMove(this.currentMove);
@@ -174,8 +176,8 @@ export class MovableComponent extends TickedComponent {
     }
 
     this.currentMove = {
-      from: this.host.point.clone(),
-      to: this.targetPoint.clone()
+      from: new Point(this.host.point),
+      to: new Point(this.targetPoint)
     };
     this.beginMove(this.currentMove);
   }

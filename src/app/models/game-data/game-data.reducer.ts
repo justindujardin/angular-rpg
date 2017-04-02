@@ -1,5 +1,5 @@
 import * as Immutable from 'immutable';
-import {EntityCollection, addEntityToCollection} from '../being';
+import {EntityCollection, addEntityToCollection} from '../base-entity';
 import {
   ITemplateWeapon,
   ITemplateArmor,

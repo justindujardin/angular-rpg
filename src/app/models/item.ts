@@ -1,4 +1,4 @@
-import {EntityObject} from './being';
+import {EntityObject} from './base-entity';
 import {ITemplateItem, ItemCategories} from './game-data/game-data.model';
 
 /**

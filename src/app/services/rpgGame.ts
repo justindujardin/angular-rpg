@@ -21,20 +21,20 @@ import {GameStateMachine} from '../../game/rpg/states/gameStateMachine';
 import {ResourceLoader} from '../../game/pow-core/resourceLoader';
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {GameStateLoadAction} from '../models/game-state/game-state.actions';
+import {GameStateLoadAction, GameStateNewAction} from '../models/game-state/game-state.actions';
 import {AppState} from '../app.model';
 import {Point} from '../../game/pow-core';
 import {GameState} from '../models/game-state/game-state.model';
 import * as _ from 'underscore';
 import {Entity, EntityType} from '../models/entity/entity.model';
 import {EntityAddBeingAction} from '../models/entity/entity.actions';
+import {GameStateService} from '../models/game-state/game-state.service';
 
 @Injectable()
 export class RPGGame {
   styleBackground: string = 'rgba(0,0,0,1)';
   private _renderCanvas: HTMLCanvasElement;
   private _canvasAcquired: boolean = false;
-  private _stateKey: string = '_angular2PowRPGState';
 
   constructor(public loader: ResourceLoader,
               public world: GameWorld,
@@ -47,27 +47,8 @@ export class RPGGame {
     this.store.subscribe();
   }
 
-  getSaveData(): any {
-    return localStorage.getItem(this._stateKey);
-  }
-
-  resetGame() {
-    localStorage.removeItem(this._stateKey);
-  }
-
-  saveGame() {
-    throw new Error('to reimplement with redux store');
-    // const entity = <PlayerComponent>this.world.scene.componentByType(PlayerComponent);
-    // if (entity) {
-    //   this.world.model.setKeyData('playerPosition', entity.host.point);
-    // }
-    // this.world.model.setKeyData('playerMap', this.partyMapName);
-    // const data = JSON.stringify(this.world.model.toJSON());
-    // localStorage.setItem(this._stateKey, data);
-  }
-
   /** Create a detached player entity that can be added to an arbitrary scene. */
-  createPlayer(from: Entity, tileMap: GameTileMap, at?: Point): Promise<GameEntityObject> {
+  createPlayer(from: Entity, tileMap: GameTileMap): Promise<GameEntityObject> {
     if (!from) {
       return Promise.reject('Cannot create player without valid model');
     }
@@ -175,13 +156,11 @@ export class RPGGame {
    * Initialize the game and resolve a promise that indicates whether the game
    * is new or was loaded from save data.  Resolves with true if the game is new.
    */
-  initGame(data: any = this.getSaveData()): Promise<boolean> {
+  initGame(load: boolean = !!localStorage.getItem(GameStateService.STATE_KEY)): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      if (data) {
-        const json = JSON.parse(data);
+      if (load) {
         // Set the root game state
-        this.store.dispatch(new GameStateLoadAction(json));
-        const at = json.position;
+        this.store.dispatch(new GameStateLoadAction());
         resolve(false);
       }
       else {
@@ -200,7 +179,7 @@ export class RPGGame {
           position: {x: 12, y: 8},
           shipPosition: {x: 0, y: 0}
         };
-        this.store.dispatch(new GameStateLoadAction(initialState));
+        this.store.dispatch(new GameStateNewAction(initialState));
         this.store.dispatch(new EntityAddBeingAction(warrior));
         this.store.dispatch(new EntityAddBeingAction(ranger));
         this.store.dispatch(new EntityAddBeingAction(healer));

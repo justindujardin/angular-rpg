@@ -1,5 +1,5 @@
 import {Item} from '../item';
-import {BaseEntity} from '../being';
+import {BaseEntity} from '../base-entity';
 export type CombatType = 'none' | 'fixed' | 'random';
 
 /** A combatant in a combat encounter */

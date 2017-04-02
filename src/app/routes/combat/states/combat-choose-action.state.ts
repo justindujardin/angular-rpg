@@ -100,7 +100,7 @@ export class CombatChooseActionStateComponent extends CombatMachineState impleme
       if (!this.pointAt || !this.combat) {
         return;
       }
-      const targetPos: Point = this.pointAt.point.clone();
+      const targetPos: Point = new Point(this.pointAt.point);
       targetPos.y = (targetPos.y - this.combat.camera.point.y) + this.pointOffset.y;
       targetPos.x = (targetPos.x - this.combat.camera.point.x) + this.pointOffset.x;
       const screenPos: Point = this.combat.worldToScreen(targetPos, this.combat.cameraScale);

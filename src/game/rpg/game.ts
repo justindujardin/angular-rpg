@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {Point} from '../pow-core/point';
+import {IPoint} from '../pow-core/point';
 
 /**
  * Describe a set of combat zones for a given point on a map.
@@ -30,7 +30,7 @@ export interface IZoneMatch {
   /**
    * The point that target refers to.
    */
-  targetPoint: Point;
+  targetPoint: IPoint;
 
   /**
    * Fixed or random?

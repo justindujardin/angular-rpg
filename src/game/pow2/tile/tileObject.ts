@@ -23,8 +23,8 @@ import {GameWorld} from '../../../app/services/gameWorld';
 import {TileMap} from './tileMap';
 import {SceneObject} from '../scene/sceneObject';
 export interface TileObjectOptions {
-  point?: Point;
-  renderPoint?: Point;
+  point?: IPoint;
+  renderPoint?: IPoint;
   image?: HTMLImageElement;
   scale?: number;
   visible?: boolean;
@@ -51,7 +51,7 @@ const DEFAULTS: TileObjectOptions = {
 };
 
 export class TileObject extends SceneObject implements TileObjectOptions {
-  point: Point;
+  point: IPoint;
   renderPoint: Point;
   image: HTMLImageElement;
   visible: boolean;

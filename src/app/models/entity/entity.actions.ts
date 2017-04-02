@@ -1,6 +1,6 @@
 import {type} from '../util';
 import {Action} from '@ngrx/store';
-import {BaseEntity} from '../being';
+import {BaseEntity} from '../base-entity';
 import {Item} from '../item';
 
 export const LEVEL_EXPERIENCE_REQUIREMENTS = [

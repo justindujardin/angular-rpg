@@ -19,7 +19,7 @@ import * as rpg from './rpg/game';
 import {TileMap} from './pow2/tile/tileMap';
 import {TileObject} from './pow2/tile/tileObject';
 import {ITiledObject} from './pow-core/resources/tiled/tiled';
-import {Point} from './pow-core/point';
+import {Point, IPoint} from './pow-core/point';
 import {Rect} from './pow-core/rect';
 import {SceneComponent} from './pow2/scene/sceneComponent';
 import {SceneObject} from './pow2/scene/sceneObject';
@@ -122,7 +122,7 @@ export class GameTileMap extends TileMap {
    * @param at The position to check for a sub-zone in the map
    * @returns {IZoneMatch} The map and target zones that are null if they don't exist
    */
-  getCombatZones(at: Point): rpg.IZoneMatch {
+  getCombatZones(at: IPoint): rpg.IZoneMatch {
     const result: rpg.IZoneMatch = {
       map: null,
       target: null,

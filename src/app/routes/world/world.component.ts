@@ -5,14 +5,15 @@ import {
   AfterViewInit,
   ElementRef,
   OnDestroy,
-  ViewChild
+  ViewChild,
+  HostListener
 } from '@angular/core';
 import {NotificationService} from '../../components/notification/notification.service';
 import {RPGGame} from '../../services/rpgGame';
 import {GameWorld} from '../../services/gameWorld';
 import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
-import {Observable, ReplaySubject, Subscription, BehaviorSubject} from 'rxjs/Rx';
+import {Observable, Subscription, BehaviorSubject} from 'rxjs/Rx';
 import {GameTileMap} from '../../../game/gameTileMap';
 import {IPoint, Point, Rect} from '../../../game/pow-core';
 import * as Immutable from 'immutable';
@@ -20,8 +21,8 @@ import {GameResources} from '../../services/game-resources.service';
 import {GameFeatureComponent} from '../../../game/rpg/components/gameFeatureComponent';
 import {MovableComponent} from '../../../game/pow2/scene/components/movableComponent';
 import {SpriteComponent} from '../../../game/pow2/tile/components/spriteComponent';
-import {PlayerComponent} from '../../../game/rpg/components/playerComponent';
-import {PlayerRenderComponent} from '../../../game/pow2/game/components/playerRenderComponent';
+import {PlayerBehaviorComponent} from './behaviors/player-behavior';
+import {PlayerRenderBehaviorComponent} from './behaviors/player-render.behavior';
 import {GameFeatureObject} from '../../../game/rpg/objects/gameFeatureObject';
 import {SceneObject} from '../../../game/pow2/scene/sceneObject';
 import {Scene} from '../../../game/pow2/scene/scene';
@@ -40,6 +41,7 @@ import {Entity} from '../../models/entity/entity.model';
 import {TreasureFeatureComponent} from '../../../game/rpg/components/features/treasureFeatureComponent';
 import {Item} from '../../models/item';
 import {EntityAddItemAction} from '../../models/entity/entity.actions';
+import {PartyMenuComponent} from '../../components/party-menu/party-menu.component';
 
 @Component({
   selector: 'world',
@@ -63,7 +65,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     'ShipFeatureComponent'
   ];
 
-  private _featureComponent$ = new ReplaySubject<GameFeatureComponent>(null);
+  private _featureComponent$ = new BehaviorSubject<GameFeatureComponent>(null);
 
   featureComponent$: Observable<GameFeatureComponent> = this._featureComponent$;
 
@@ -72,6 +74,24 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
   playerEntity$: Observable<GameEntityObject> = this._playerEntity$;
 
   @ViewChild('worldCanvas') canvasElementRef: ElementRef;
+  @ViewChild(PartyMenuComponent) partyMenu: PartyMenuComponent;
+
+  /**
+   * Escape action handler. Escape out of any active feature or menu
+   */
+  @HostListener('document:keyup', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.key === 'Escape') {
+      // Escape out of any feature the player is currently in
+      if (this._featureComponent$.value) {
+        this._featureComponent$.next(null);
+      }
+      else if (this.partyMenu) {
+        // Otherwise toggle the party menu
+        this.partyMenu.toggle();
+      }
+    }
+  }
 
   /**
    * The feature type (if any) that is active.
@@ -89,7 +109,10 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
   /** Observable of the current player position in the world */
   position$: Observable<IPoint> = this.store
     .select(getGamePartyPosition)
-    .distinctUntilChanged();
+    .distinctUntilChanged()
+    .do((position: IPoint) => {
+      this.renderPoint = new Point(position);
+    });
 
   /** Observable of Entity representing the player-card leader to be rendered in the world */
   partyLeader$: Observable<Entity> = this.store.select(getGameParty)
@@ -97,7 +120,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
       return Immutable.Map(party[0]).toJS();
     });
 
-  map: GameTileMap;
+  @ViewChild('map') map: GameTileMap;
 
   /** The fill color to use when rendering a path target. */
   targetFill: string = 'rgba(10,255,10,0.3)';
@@ -122,13 +145,15 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     super();
     this.world.mark(this.scene);
 
+    // To update renderPoint when party point changes
+    this._subscriptions.push(this.position$.subscribe());
     // Whenever the player is created, or the position changes
     this._subscriptions.push(this.position$.combineLatest(this.playerEntity$)
       .distinctUntilChanged()
       .do((tuple: any) => {
         const position: IPoint = tuple[0];
         const player: GameEntityObject = tuple[1];
-        if (player && !player.point.equal(position)) {
+        if (player && !Point.equal(player.point, position)) {
           player.setPoint(position);
         }
       }).subscribe());
@@ -139,7 +164,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
       .do((tuple: any) => {
         const map: GameTileMap = tuple[0];
         const player: Entity = tuple[1];
-        this.renderModel(map, player);
+        // this.renderModel(map, player);
       }).subscribe());
   }
 
@@ -175,6 +200,10 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     super.onAddToScene(scene);
     this.clearCache();
     this.mouse = this.world.input.mouseHook(<SceneView> this, 'world');
+
+    //
+    // TODO: Consider how to remove these event listeners and replace with strongly typed observables
+    //
     scene.on(TileMap.Events.MAP_LOADED, this.syncBehaviors, this);
 
     // When a portal is entered, update the map view to reflect the change.
@@ -228,7 +257,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     }
 
     const pathComponent = this.scene.componentByType(PathComponent) as PathComponent;
-    const playerComponent = this.scene.componentByType(PlayerComponent) as PlayerComponent;
+    const playerComponent = this.scene.componentByType(PlayerBehaviorComponent) as PlayerBehaviorComponent;
     if (pathComponent && playerComponent) {
       PowInput.mouseOnView(e, this.mouse.view, this.mouse);
       playerComponent.path = pathComponent.calculatePath(playerComponent.targetPoint, this.mouse.world);
@@ -269,11 +298,11 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
       this._renderables = this._renderables.concat(this._features);
     }
     if (!this._playerRenders) {
-      this._playerRenders = <SceneObject[]> this.scene.objectsByComponent(PlayerRenderComponent);
+      this._playerRenders = <SceneObject[]> this.scene.objectsByComponent(PlayerRenderBehaviorComponent);
       this._renderables = this._renderables.concat(this._playerRenders);
     }
     if (!this._players) {
-      this._players = <SceneObject[]> this.scene.objectsByComponent(PlayerComponent);
+      this._players = <SceneObject[]> this.scene.objectsByComponent(PlayerBehaviorComponent);
       this._renderables = this._renderables.concat(this._players);
     }
     if (!this._sprites) {

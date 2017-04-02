@@ -57,9 +57,9 @@ export class AnimatedBehaviorComponent extends TickedComponent {
     task.elapsed = 0;
     if (task.move) {
       task.startFrame = this.host.frame;
-      task.start = this.host.point.clone();
-      task.target = this.host.point.clone().add(task.move);
-      task.value = this.host.point.clone();
+      task.start = new Point(this.host.point);
+      task.target = new Point(this.host.point).clone().add(task.move);
+      task.value = new Point(this.host.point);
     }
     if (typeof task.duration === 'undefined') {
       task.duration = 0;
@@ -118,7 +118,9 @@ export class AnimatedBehaviorComponent extends TickedComponent {
         // Interp point
         // console.log("Interp from " + task.start + " to " + task.target );
         if (task.move && task.move instanceof Point) {
-          this.host.point.set(task.value.interpolate(task.start, task.target, factor));
+          const interpolated: Point = task.value.interpolate(task.start, task.target, factor);
+          this.host.point.x = interpolated.x;
+          this.host.point.y = interpolated.y;
         }
         if (task.frames && task.frames.length) {
           const index = Math.round(this.interpolate(0, task.frames.length - 1, factor));

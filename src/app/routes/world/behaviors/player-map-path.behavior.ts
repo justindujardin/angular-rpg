@@ -14,13 +14,22 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {BasePlayerComponent} from './basePlayerComponent';
-import {PathComponent} from '../../tile/components/pathComponent';
-import {ITiledLayer} from '../../../pow-core/resources/tiled/tiled';
+import {BasePlayerComponent} from '../../../../game/pow2/game/components/basePlayerComponent';
+import {PathComponent} from '../../../../game/pow2/tile/components/pathComponent';
+import {ITiledLayer} from '../../../../game/pow-core/resources/tiled/tiled';
+import {Component, Input} from '@angular/core';
+import {GameTileMap} from '../../../../game/gameTileMap';
 /**
  * Build Astar paths with GameFeatureObject tilemaps.
  */
-export class GameMapPathComponent extends PathComponent {
+@Component({
+  selector: 'player-map-path-behavior',
+  template: `<ng-content></ng-content>`
+})
+export class PlayerMapPathBehaviorComponent extends PathComponent {
+
+  @Input('map') tileMap: GameTileMap;
+
   buildWeightedGraph(): number[][] {
     let x: number;
     const layers: ITiledLayer[] = this.tileMap.getLayers();

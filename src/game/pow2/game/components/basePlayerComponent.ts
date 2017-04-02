@@ -17,7 +17,7 @@ import * as _ from 'underscore';
 import {MovableComponent, IMoveDescription} from '../../scene/components/movableComponent';
 import {TileObject} from '../../tile/tileObject';
 import {Point} from '../../../pow-core/point';
-import {PlayerRenderComponent, Headings} from './playerRenderComponent';
+import {PlayerRenderBehaviorComponent, Headings} from '../../../../app/routes/world/behaviors/player-render.behavior';
 import {TileComponent} from '../../tile/tileComponent';
 import {TileMap} from '../../tile/tileMap';
 import {ITiledLayer} from '../../../pow-core/resources/tiled/tiled';
@@ -36,7 +36,7 @@ export class BasePlayerComponent extends MovableComponent {
   private _lastFrame: number = 3;
   private _renderFrame: number = 3;
   heading: Point = new Point(0, -1);
-  sprite: PlayerRenderComponent = null;
+  sprite: PlayerRenderBehaviorComponent = null;
   collideComponentType: any = TileComponent;
 
   static Events: any = {
@@ -45,8 +45,8 @@ export class BasePlayerComponent extends MovableComponent {
   };
 
   syncBehavior(): boolean {
-    this.sprite = <PlayerRenderComponent>
-      this.host.findBehavior(PlayerRenderComponent);
+    this.sprite = <PlayerRenderBehaviorComponent>
+      this.host.findBehavior(PlayerRenderBehaviorComponent);
     return super.syncBehavior();
   }
 

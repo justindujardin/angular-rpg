@@ -16,7 +16,7 @@
 import {GameFeatureComponent} from '../gameFeatureComponent';
 import {GameFeatureObject} from '../../objects/gameFeatureObject';
 import {GameStateModel} from '../../models/gameStateModel';
-import {PlayerComponent} from '../playerComponent';
+import {PlayerBehaviorComponent} from '../../../../app/routes/world/behaviors/player-behavior';
 import {TileObject} from '../../../pow2/tile/tileObject';
 import {Point} from '../../../pow-core/point';
 import {Subscription} from 'rxjs';
@@ -25,7 +25,7 @@ import {GameStateSetKeyDataAction} from '../../../../app/models/game-state/game-
 import {getGameShipPosition} from '../../../../app/models/selectors';
 
 export class ShipFeatureComponent extends GameFeatureComponent {
-  party: PlayerComponent;
+  party: PlayerBehaviorComponent;
   partyObject: TileObject;
   partySprite: string;
   private _tickInterval: any = -1;
@@ -58,7 +58,7 @@ export class ShipFeatureComponent extends GameFeatureComponent {
   enter(object: GameFeatureObject): boolean {
     // Must have a entity component to board a ship.  Don't want buildings
     // and NPCs boarding ships... or do we?  [maniacal laugh]
-    this.party = object.findBehavior(PlayerComponent) as PlayerComponent;
+    this.party = object.findBehavior(PlayerBehaviorComponent) as PlayerBehaviorComponent;
     if (!this.party) {
       return false;
     }
@@ -85,8 +85,8 @@ export class ShipFeatureComponent extends GameFeatureComponent {
     this.host.enabled = false;
 
     this._tickInterval = setInterval(() => {
-      if (this.partyObject.point.equal(this.party.targetPoint) && !this.party.heading.isZero()) {
-        const from: Point = this.partyObject.point;
+      if (Point.equal(this.partyObject.point, this.party.targetPoint) && !this.party.heading.isZero()) {
+        const from: Point = new Point(this.partyObject.point);
         const to: Point = from.clone().add(this.party.heading);
         if (!this.party.collideWithMap(from, 'shipPassable') && !this.party.collideWithMap(to, 'passable')) {
           this.disembark(from, to, this.party.heading.clone());
@@ -102,7 +102,8 @@ export class ShipFeatureComponent extends GameFeatureComponent {
     this.party.targetPoint.set(to);
     this.party.velocity.set(heading);
     this.party.passableKeys = ['passable'];
-    this.host.point.set(from);
+    this.host.point.x = from.x;
+    this.host.point.y = from.y;
     this.host.visible = true;
     this.host.enabled = true;
     this.partyObject = null;

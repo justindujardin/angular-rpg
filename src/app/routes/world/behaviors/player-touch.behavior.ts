@@ -14,28 +14,33 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {GameFeatureComponent} from './gameFeatureComponent';
-import {GameFeatureObject} from '../objects/gameFeatureObject';
-import {TickedComponent} from '../../pow2/scene/components/tickedComponent';
-import {TileObject} from '../../pow2/tile/tileObject';
-import {CollisionComponent} from '../../pow2/scene/components/collisionComponent';
-import {PlayerComponent} from './playerComponent';
+import {GameFeatureComponent} from '../../../../game/rpg/components/gameFeatureComponent';
+import {GameFeatureObject} from '../../../../game/rpg/objects/gameFeatureObject';
+import {TickedComponent} from '../../../../game/pow2/scene/components/tickedComponent';
+import {TileObject} from '../../../../game/pow2/tile/tileObject';
+import {CollisionBehaviorComponent} from '../../../behaviors/collision.behavior';
+import {PlayerBehaviorComponent} from './player-behavior';
+import {Component} from '@angular/core';
 
 /**
  * A Component that collides with features that are directly in front
  * of a player, that the player is 'touching' by facing them.
  */
-export class PlayerTouchComponent extends TickedComponent {
+@Component({
+  selector: 'player-touch-behavior',
+  template: `<ng-content></ng-content>`
+})
+export class PlayerTouchBehaviorComponent extends TickedComponent {
   host: TileObject;
-  collider: CollisionComponent = null;
-  player: PlayerComponent = null;
+  collider: CollisionBehaviorComponent = null;
+  player: PlayerBehaviorComponent = null;
   touch: GameFeatureObject = null;
   touchedComponent: GameFeatureComponent = null;
 
   syncBehavior(): boolean {
     super.syncBehavior();
-    this.player = this.host.findBehavior(PlayerComponent) as PlayerComponent;
-    this.collider = this.host.findBehavior(CollisionComponent) as CollisionComponent;
+    this.player = this.host.findBehavior(PlayerBehaviorComponent) as PlayerBehaviorComponent;
+    this.collider = this.host.findBehavior(CollisionBehaviorComponent) as CollisionBehaviorComponent;
     return !!(this.player && this.collider);
   }
 

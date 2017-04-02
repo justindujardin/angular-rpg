@@ -13,9 +13,10 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {TickedComponent} from '../../scene/components/tickedComponent';
-import {TileObject} from '../../tile/tileObject';
-import {Animator} from '../../core/animator';
+import {TickedComponent} from '../../../../game/pow2/scene/components/tickedComponent';
+import {TileObject} from '../../../../game/pow2/tile/tileObject';
+import {Animator} from '../../../../game/pow2/core/animator';
+import {Component} from '@angular/core';
 export enum MoveFrames {
   LEFT = 10,
   RIGHT = 4,
@@ -35,7 +36,12 @@ export enum Headings {
   SOUTH = 2,
   NORTH = 3
 }
-export class PlayerRenderComponent extends TickedComponent {
+
+@Component({
+  selector: 'player-render-behavior',
+  template: `<ng-content></ng-content>`
+})
+export class PlayerRenderBehaviorComponent extends TickedComponent {
   host: TileObject;
   private _animator: Animator = new Animator();
   heading: Headings = Headings.WEST;

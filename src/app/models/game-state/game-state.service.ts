@@ -4,8 +4,8 @@ import {ResourceLoader} from '../../../game/pow-core/resourceLoader';
 import {TiledTMXResource} from '../../../game/pow-core/resources/tiled/tiledTmx';
 import {getMapUrl} from '../../../game/pow2/core/api';
 import {GameWorld} from '../../services/gameWorld';
-import {GameTileMap} from '../../../game/gameTileMap';
 import {GameState} from './game-state.model';
+import {AppState} from '../../app.model';
 
 @Injectable()
 export class GameStateService {
@@ -13,32 +13,42 @@ export class GameStateService {
   constructor(private gameWorld: GameWorld, private loader: ResourceLoader) {
   }
 
-  private _worldMap$ = new ReplaySubject<GameTileMap>(1);
-  worldMap$: Observable<GameTileMap> = this._worldMap$;
+  private _worldMap$ = new ReplaySubject<TiledTMXResource>(1);
+  worldMap$: Observable<TiledTMXResource> = this._worldMap$;
 
   loadGame(from: GameState): Observable<GameState> {
     return Observable.of(from).debounceTime(100);
   }
 
-  loadMap(name: string): Observable<GameTileMap> {
+  loadMap(name: string): Observable<TiledTMXResource> {
     const mapUrl = getMapUrl(name);
     return Observable.fromPromise(this.loader.load(mapUrl)
       .then((maps: TiledTMXResource[]) => {
-        if (!maps[0] || !maps[0].data) {
-          return Promise.reject('invalid resource: ' + mapUrl);
-        }
-        const inputs = {
-          resource: maps[0]
-        };
-        return this.gameWorld.entities.createObject('GameMapObject', inputs);
-      })
-      .then((g: any) => {
-        if (!g) {
-          return Promise.reject('failed to load map: ' + mapUrl);
-        }
-        this._worldMap$.next(g);
-        return g;
+        this._worldMap$.next(maps[0]);
+        return maps[0];
       }));
+  }
+
+  static STATE_KEY: string = '_angular2PowRPGState';
+
+  resetGame() {
+    localStorage.removeItem(GameStateService.STATE_KEY);
+  }
+
+  load(): Observable<AppState> {
+    return Observable.interval(10).take(1).map(() => {
+      const data = JSON.parse(localStorage.getItem(GameStateService.STATE_KEY)) as AppState;
+      return data;
+    });
+  }
+
+  /**
+   * Serialize the application state for later loading
+   */
+  save(data: AppState): Observable<AppState> {
+    const jsonData: string = JSON.stringify(data);
+    localStorage.setItem(GameStateService.STATE_KEY, jsonData);
+    return Observable.interval(10).take(1).map(() => data);
   }
 
 }

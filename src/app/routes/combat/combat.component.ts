@@ -220,7 +220,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
     if (!this || !this.pointer || !this.pointer.object) {
       return;
     }
-    const targetPos: Point = this.pointer.object.point.clone();
+    const targetPos: Point = new Point(this.pointer.object.point);
     targetPos.y = (targetPos.y - this.camera.point.y) + this.pointer.offset.y;
     targetPos.x = (targetPos.x - this.camera.point.x) + this.pointer.offset.x;
     const screenPos: Point = this.worldToScreen(targetPos, this.cameraScale);
@@ -271,7 +271,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
    * @param value The damage value (negative is considered healing, 0 is miss)
    */
   applyDamage(to: SceneObject, value: number) {
-    const targetPos: Point = to.point.clone();
+    const targetPos: Point = new Point(to.point);
     targetPos.y -= (this.camera.point.y + 1.25);
     targetPos.x -= this.camera.point.x;
     const screenPos: Point = this.worldToScreen(targetPos, this.cameraScale);

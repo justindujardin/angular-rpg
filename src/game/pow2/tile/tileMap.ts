@@ -29,7 +29,7 @@ export class TileMap extends SceneObject {
   scene: Scene;
   features: any;
   zones: any;
-  bounds: Rect;
+  bounds: Rect = new Rect(0, 0, 10, 10);
   dirtyLayers: boolean = false;
   private _loaded: boolean = false;
 
@@ -39,12 +39,6 @@ export class TileMap extends SceneObject {
     MAP_LOADED: 'map:loaded',
     MAP_UNLOADED: 'map:unloaded'
   };
-
-  constructor(map: TiledTMXResource) {
-    super();
-    this.bounds = new Rect(0, 0, 10, 10);
-    this.setMap(map);
-  }
 
   isLoaded(): boolean {
     return this._loaded;

@@ -23,9 +23,6 @@ const initialState: GameState = {
 
 export function gameStateReducer(state: GameState = initialState, action: GameStateActions): GameState {
   switch (action.type) {
-    case GameStateActionTypes.LOAD: {
-      return Immutable.fromJS(action.payload).toJS();
-    }
     case GameStateActionTypes.TRAVEL: {
       const travel = action as GameStateTravelAction;
       return Immutable.fromJS(state).merge({

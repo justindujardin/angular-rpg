@@ -13,12 +13,13 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {GameEntityObject} from '../objects/all';
-import {CameraComponent} from '../../pow2/scene/components/cameraComponent';
-import {SceneView} from '../../pow2/scene/sceneView';
-import {Point} from '../../pow-core/point';
+import {GameEntityObject} from '../../../../game/rpg/objects/all';
+import {CameraComponent} from '../../../../game/pow2/scene/components/cameraComponent';
+import {SceneView} from '../../../../game/pow2/scene/sceneView';
+import {Point} from '../../../../game/pow-core/point';
+import {Component} from '@angular/core';
 
-export class PlayerCameraComponent extends CameraComponent {
+export class PlayerCameraBehaviorComponent extends CameraComponent {
   host: GameEntityObject;
 
   process(view: SceneView) {
