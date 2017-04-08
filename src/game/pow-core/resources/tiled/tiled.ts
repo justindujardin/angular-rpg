@@ -14,11 +14,7 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-
-// -------------------------------------------------------------------------
-// Implement a subset of the Tiled editor format:
-//
-// https://github.com/bjorn/tiled/wiki/TMX-Map-Format
+import {ITiledBase, ITiledObject, ITiledLayerBase} from './tiled.model';
 
 export interface ITileInstanceMeta {
   image: HTMLImageElement;
@@ -28,43 +24,6 @@ export interface ITileInstanceMeta {
   width: number;
   height: number;
   data?: any;
-}
-
-export interface ITiledBase {
-  name: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  visible: boolean;
-  _xml: any;
-}
-
-// <layer>, <objectgroup>
-export interface ITiledLayerBase extends ITiledBase {
-  opacity: number; // 0-1
-  properties?: any;
-}
-export interface ITiledLayer extends ITiledLayerBase {
-  data?: any;
-  color?: string;
-  objects?: ITiledObject[];
-}
-
-// <object>
-export interface ITiledObject extends ITiledBase {
-  properties?: any;
-  rotation?: number;
-  type?: string;
-  gid?: number;
-  color?: string;
-}
-
-export interface ITileSetDependency {
-  source?: string; // Path to URL source from which to load data.
-  data?: any; // Data instead of source.
-  firstgid: number; // First global id.
-  literal?: string; // The literal string representing the source as originally specified in xml
 }
 
 // Tiled object XML reading utilities.
@@ -175,7 +134,7 @@ export function writeITiledLayerBase(el: any, data: ITiledLayerBase) {
 export function readTiledProperties(el: any) {
   const propsObject: any = getChild(el, 'properties');
   if (propsObject && propsObject.length > 0) {
-    let properties = {};
+    const properties = {};
     let props = getChildren(propsObject, 'property');
     _.each(props, (p) => {
       const key = getElAttribute(p, 'name');

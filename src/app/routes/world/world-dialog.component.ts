@@ -69,8 +69,8 @@ export class WorldDialogComponent {
   @Input()
   set feature(feature: DialogFeatureComponent) {
     this.active = true;
-    this.icon = feature.icon;
-    this.text = feature.text;
-    this.title = feature.title;
+    this.icon = feature.properties.icon;
+    this.text = feature.properties.text;
+    this.title = feature.properties.title;
   }
 }

@@ -13,10 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {TiledFeatureComponent} from '../map-feature.component';
-import {Point} from '../../../../../game/pow-core/point';
+import {TiledFeatureComponent, TiledMapFeatureData} from '../map-feature.component';
 import {TileObject} from '../../../../../game/pow2/tile/tileObject';
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {AppState} from '../../../../app.model';
 import {Store} from '@ngrx/store';
 import {GameStateTravelAction} from '../../../../models/game-state/game-state.actions';
@@ -25,31 +24,22 @@ import {GameStateTravelAction} from '../../../../models/game-state/game-state.ac
   template: `<ng-content></ng-content>`
 })
 export class PortalFeatureComponent extends TiledFeatureComponent {
-  map: string;
-  target: Point;
+  @Input() feature: TiledMapFeatureData;
 
   constructor(private store: Store<AppState>) {
     super();
   }
 
-  syncBehavior(): boolean {
-    if (!super.syncBehavior()) {
-      return false;
-    }
-    this.map = this.host.feature.target;
-    this.target = new Point(this.host.feature.targetX, this.host.feature.targetY);
-    return !!this.map;
-  }
-
   entered(object: TileObject): boolean {
-    if (!this.target || !this.host.tileMap) {
+    this.assertFeature();
+
+    if (!this.properties.target || !this.host.tileMap) {
       return false;
     }
-    const data = {
-      map: this.map,
-      target: this.target,
-    };
-    this.store.dispatch(new GameStateTravelAction(data.map, data.target));
+    this.store.dispatch(new GameStateTravelAction(this.properties.target, {
+      x: this.properties.targetX,
+      y: this.properties.targetY
+    }));
     return true;
   }
 

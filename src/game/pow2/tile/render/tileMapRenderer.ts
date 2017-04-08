@@ -18,7 +18,8 @@ import {SceneObjectRenderer} from '../../scene/sceneObjectRenderer';
 import {Rect} from '../../../pow-core/rect';
 import {TileMap} from '../tileMap';
 import {TileMapView} from '../tileMapView';
-import {ITiledLayer, ITileInstanceMeta} from '../../../pow-core/resources/tiled/tiled';
+import {ITiledLayer} from '../../../pow-core/resources/tiled/tiled.model';
+import {ITileInstanceMeta} from '../../../pow-core/resources/tiled/tiled';
 export class TileMapRenderer extends SceneObjectRenderer {
   buffer: HTMLCanvasElement[][] = null; // A 2d grid of rendered canvas textures.
   bufferMapName: string = null; // The name of the rendered map.  If the map name changes, the buffer is re-rendered.
@@ -74,26 +75,18 @@ export class TileMapRenderer extends SceneObjectRenderer {
                   const meta: ITileInstanceMeta = object.getTileMeta(gid);
                   if (meta) {
                     const image: HTMLImageElement = (<any> meta.image).data;
-                    // Keep this inline to avoid more function calls.
-                    let dstH;
-                    let dstW;
-                    let dstX;
-                    let dstY;
-                    let srcH;
-                    let srcW;
-                    let srcX;
-                    let srcY;
                     if (!image || !image.complete) {
                       this.bufferComplete = false;
                       return;
                     }
-                    srcX = meta.x;
-                    srcY = meta.y;
-                    srcW = meta.width;
-                    srcH = meta.height;
-                    dstX = (x - xOffset) * view.unitSize;
-                    dstY = (y - yOffset) * view.unitSize;
-                    dstW = dstH = view.unitSize;
+                    const srcX: number = meta.x;
+                    const srcY: number = meta.y;
+                    const srcW: number = meta.width;
+                    const srcH: number = meta.height;
+                    const dstX: number = (x - xOffset) * view.unitSize;
+                    const dstY: number = (y - yOffset) * view.unitSize;
+                    const dstW: number = view.unitSize;
+                    const dstH: number = view.unitSize;
                     ctx.drawImage(image, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
                   }
                 });

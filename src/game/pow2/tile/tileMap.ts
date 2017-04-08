@@ -17,7 +17,8 @@
 // Scene assuming something about the spatial properties on objects?
 import * as _ from 'underscore';
 import {TiledTSXResource} from '../../pow-core/resources/tiled/tiledTsx';
-import {ITileInstanceMeta, ITiledLayer} from '../../pow-core/resources/tiled/tiled';
+import {ITileInstanceMeta} from '../../pow-core/resources/tiled/tiled';
+import {ITiledLayer} from '../../pow-core/resources/tiled/tiled.model';
 import {SceneObject} from '../scene/sceneObject';
 import {TiledTMXResource} from '../../pow-core/resources/tiled/tiledTmx';
 import {Rect} from '../../pow-core/rect';

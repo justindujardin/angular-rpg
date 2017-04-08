@@ -17,11 +17,11 @@ import {TileObject} from '../../../../../game/pow2/tile/tileObject';
 import {Subscription} from 'rxjs';
 import {getGameShipPosition} from '../../../../models/selectors';
 import {IPoint, Point} from '../../../../../game/pow-core/point';
-import {TiledFeatureComponent} from '../map-feature.component';
+import {TiledFeatureComponent, TiledMapFeatureData} from '../map-feature.component';
 import {GameFeatureObject} from '../../../../../game/rpg/objects/gameFeatureObject';
 import {PlayerBehaviorComponent} from '../../behaviors/player-behavior';
 import {GameStateSetKeyDataAction} from '../../../../models/game-state/game-state.actions';
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 @Component({
   selector: 'ship-feature',
   template: `<ng-content></ng-content>`
@@ -31,6 +31,7 @@ export class ShipFeatureComponent extends TiledFeatureComponent {
   partyObject: TileObject;
   partySprite: string;
   private _tickInterval: any = -1;
+  @Input() feature: TiledMapFeatureData;
 
   private _subscription: Subscription = null;
 

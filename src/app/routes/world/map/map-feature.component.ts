@@ -9,6 +9,7 @@ import {Observable, BehaviorSubject, Subscription, Subject, ReplaySubject} from 
 import {GameWorld} from '../../../services/gameWorld';
 import {Scene} from '../../../../game/pow2/scene/scene';
 import {TiledTMXResource} from '../../../../game/pow-core/resources/tiled/tiledTmx';
+import {ITiledObject} from '../../../../game/pow-core/resources/tiled/tiled.model';
 
 /**
  * An enumeration of the serialized names used to refer to map feature map from within a TMX file
@@ -21,10 +22,34 @@ export type TiledMapFeatureTypes = 'PortalFeatureComponent'
   | 'StoreFeatureComponent'
   | 'TempleFeatureComponent';
 
-export type TiledMapFeatureData = any; // TODO: Match the feature data from tiled
+export type TiledMapFeatureData = ITiledObject;
 
 export class TiledFeatureComponent extends TileComponent {
   host: GameFeatureObject;
+
+  /**
+   * Write only feature input.
+   */
+  set feature(value: TiledMapFeatureData) {
+    this._feature$.next(value);
+  }
+
+  protected _feature$: BehaviorSubject<TiledMapFeatureData> = new BehaviorSubject(null);
+
+  /**
+   * Observable of feature data.
+   */
+  feature$: Observable<TiledMapFeatureData> = this._feature$;
+
+  get properties(): any {
+    return this._feature$.value ? (this._feature$.value.properties || {}) : {};
+  }
+
+  protected assertFeature() {
+    if (!this._feature$.value || !this.properties) {
+      throw new Error('feature lacks valid data or properties');
+    }
+  }
 }
 
 /**
@@ -32,14 +57,28 @@ export class TiledFeatureComponent extends TileComponent {
  */
 @Component({
   selector: 'map-feature',
-  template: `
-  <portal-feature #comp *ngIf="(type$ | async) ==='PortalFeatureComponent'"></portal-feature>
-  <dialog-feature #comp *ngIf="(type$ | async) ==='DialogFeatureComponent'"></dialog-feature>
-  <temple-feature #comp *ngIf="(type$ | async) ==='TempleFeatureComponent'"></temple-feature>
-  <store-feature #comp *ngIf="(type$ | async) ==='StoreFeatureComponent'"></store-feature>
-  <ship-feature #comp *ngIf="(type$ | async) ==='ShipFeatureComponent'"></ship-feature>
-  <treasure-feature #comp *ngIf="(type$ | async) ==='TreasureFeatureComponent'"></treasure-feature>
-  <combat-feature #comp *ngIf="(type$ | async) ==='CombatFeatureComponent'"></combat-feature>
+  template: `<!-- TODO: Replace this mess with Material Portal components -->
+<portal-feature
+  [feature]="feature$ | async"
+  #comp *ngIf="(type$ | async) ==='PortalFeatureComponent'"></portal-feature>
+<dialog-feature
+  [feature]="feature$ | async"
+  #comp *ngIf="(type$ | async) ==='DialogFeatureComponent'"></dialog-feature>
+<temple-feature
+  [feature]="feature$ | async"
+  #comp *ngIf="(type$ | async) ==='TempleFeatureComponent'"></temple-feature>
+<store-feature
+  [feature]="feature$ | async"
+  #comp *ngIf="(type$ | async) ==='StoreFeatureComponent'"></store-feature>
+<ship-feature
+  [feature]="feature$ | async"
+  #comp *ngIf="(type$ | async) ==='ShipFeatureComponent'"></ship-feature>
+<treasure-feature
+  [feature]="feature$ | async"
+  #comp *ngIf="(type$ | async) ==='TreasureFeatureComponent'"></treasure-feature>
+<combat-feature
+  [feature]="feature$ | async"
+  #comp *ngIf="(type$ | async) ==='CombatFeatureComponent'"></combat-feature>
 `
 })
 export class MapFeatureComponent extends TileComponent implements AfterViewInit, OnDestroy {
@@ -85,7 +124,7 @@ export class MapFeatureComponent extends TileComponent implements AfterViewInit,
   toString() {
     const featureData = this._feature$.value;
     if (featureData) {
-      return `[TiledTMXFeature] (name:${featureData.name}) (id:${featureData.id})`;
+      return `[TiledTMXFeature] (name:${featureData.name}) (id:${featureData.properties.id})`;
     }
     return super.toString();
   }
@@ -100,7 +139,6 @@ export class MapFeatureComponent extends TileComponent implements AfterViewInit,
       this.disconnectHost();
       this.host = featureObject;
       GameWorld.get().mark(this.host);
-      console.log(this.host);
       this.scene.addObject(this.host);
     }).subscribe();
   }

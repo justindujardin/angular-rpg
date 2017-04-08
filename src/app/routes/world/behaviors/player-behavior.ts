@@ -19,10 +19,10 @@ import {GameFeatureObject} from '../../../../game/rpg/objects/gameFeatureObject'
 import {BasePlayerComponent} from '../../../../game/pow2/game/components/basePlayerComponent';
 import {TileMap} from '../../../../game/pow2/tile/tileMap';
 import {SceneObject} from '../../../../game/pow2/scene/sceneObject';
-import {ITiledLayer} from '../../../../game/pow-core/resources/tiled/tiled';
 import {IMoveDescription} from '../../../../game/pow2/scene/components/movableComponent';
 import {GameStateMoveAction} from '../../../models/game-state/game-state.actions';
 import {Component} from '@angular/core';
+import {ITiledLayer} from '../../../../game/pow-core/resources/tiled/tiled.model';
 
 /**
  * Basic Dorkapon player that can navigate around the map

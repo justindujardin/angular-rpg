@@ -22,30 +22,20 @@ import {Component, Input} from '@angular/core';
   template: `<ng-content></ng-content>`
 })
 export class DialogFeatureComponent extends TiledFeatureComponent {
-  title: string;
-  text: string;
-  icon: string;
+
   @Input() feature: TiledMapFeatureData;
 
-  syncBehavior(): boolean {
-    if (!super.syncBehavior() || !this.feature) {
-      return false;
-    }
-    this.title = this.feature.title;
-    this.text = this.feature.text;
-    this.icon = this.feature.icon;
-    return true;
-  }
-
   enter(object: TileObject): boolean {
-    if (this.title && this.text) {
+    this.assertFeature();
+    if (this.properties.text) {
       object.scene.trigger('DialogFeatureComponent:entered', this);
     }
     return true;
   }
 
   exit(object: TileObject): boolean {
-    if (this.title && this.text) {
+    this.assertFeature();
+    if (this.properties.text) {
       object.scene.trigger('DialogFeatureComponent:exited', this);
     }
     return true;

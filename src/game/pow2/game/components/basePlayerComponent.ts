@@ -20,7 +20,7 @@ import {Point} from '../../../pow-core/point';
 import {PlayerRenderBehaviorComponent, Headings} from '../../../../app/routes/world/behaviors/player-render.behavior';
 import {TileComponent} from '../../tile/tileComponent';
 import {TileMap} from '../../tile/tileMap';
-import {ITiledLayer} from '../../../pow-core/resources/tiled/tiled';
+import {ITiledLayer} from '../../../pow-core/resources/tiled/tiled.model';
 import {SceneObject} from '../../scene/sceneObject';
 
 export class BasePlayerComponent extends MovableComponent {
@@ -167,6 +167,8 @@ export class BasePlayerComponent extends MovableComponent {
     }
   }
 
+  // TODO: Refactor this to have a set of outputs for moving, and delegate the entered/exit logic
+  //       to the world-map entity.
   completeMove(move: IMoveDescription) {
     let comp;
     this.host.trigger(BasePlayerComponent.Events.MOVE_END, this, move.from, move.to);

@@ -1,7 +1,4 @@
-<
-  ? xml version = "1.0"
-encoding = "UTF-8" ?
->
+<?xml version="1.0" encoding="UTF-8"?>
 <tileset name="Environment" tilewidth="16" tileheight="16">
   <image source="../../images/environment.png" width="144" height="128"/>
   <tile id="2">

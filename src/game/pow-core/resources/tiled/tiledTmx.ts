@@ -14,12 +14,23 @@
  limitations under the License.
  */
 import {errors} from '../../errors';
-import * as tiled from './tiled';
+import {
+  writeITiledObjectBase,
+  xml2Str,
+  writeITiledLayerBase,
+  readTiledProperties,
+  compactUrl,
+  readITiledLayerBase,
+  readITiledObject,
+  setElAttribute,
+  writeTiledProperties
+} from './tiled';
 import {XMLResource} from '../xml';
 import {Resource} from '../../resource';
 import {TiledTSXResource} from './tiledTsx';
 import * as _ from 'underscore';
 import 'jquery';
+import {ITiledObject, ITileSetDependency, ITiledLayer} from './tiled.model';
 
 /**
  * Use jQuery to load a TMX $map file from a URL.
@@ -34,18 +45,18 @@ export class TiledTMXResource extends XMLResource {
   version: number = 1;
   properties: any = {};
   tilesets: any = {};
-  layers: tiled.ITiledLayer[] = [];
+  layers: ITiledLayer[] = [];
   xmlHeader: string = '<?xml version="1.0" encoding="UTF-8"?>';
 
   write(): any {
     let root: any = $('<map/>');
-    tiled.setElAttribute(root, 'version', this.version);
-    tiled.setElAttribute(root, 'orientation', this.orientation);
-    tiled.setElAttribute(root, 'width', this.width);
-    tiled.setElAttribute(root, 'height', this.height);
-    tiled.setElAttribute(root, 'tilewidth', this.tilewidth);
-    tiled.setElAttribute(root, 'tileheight', this.tileheight);
-    tiled.writeTiledProperties(root, this.properties);
+    setElAttribute(root, 'version', this.version);
+    setElAttribute(root, 'orientation', this.orientation);
+    setElAttribute(root, 'width', this.width);
+    setElAttribute(root, 'height', this.height);
+    setElAttribute(root, 'tilewidth', this.tilewidth);
+    setElAttribute(root, 'tileheight', this.tileheight);
+    writeTiledProperties(root, this.properties);
 
     _.each(this.tilesets, (tileSet: any) => {
       if (!tileSet.literal) {
@@ -60,11 +71,11 @@ export class TiledTMXResource extends XMLResource {
       root.append(tilesetElement);
     });
 
-    _.each(this.layers, (layer: tiled.ITiledLayer) => {
+    _.each(this.layers, (layer: ITiledLayer) => {
       let layerElement: any = null;
       if (typeof layer.data !== 'undefined') {
         layerElement = $('<layer/>');
-        tiled.writeITiledObjectBase(layerElement, layer);
+        writeITiledObjectBase(layerElement, layer);
         const dataElement: any = $('<data/>');
 
         // Validate data length
@@ -80,20 +91,20 @@ export class TiledTMXResource extends XMLResource {
       }
       else if (typeof layer.objects !== 'undefined') {
         layerElement = $('<objectgroup/>');
-        _.each(layer.objects, (obj: tiled.ITiledObject) => {
+        _.each(layer.objects, (obj: ITiledObject) => {
           const objectElement = $('<object/>');
-          tiled.writeITiledObjectBase(objectElement, obj);
-          tiled.writeTiledProperties(objectElement, obj.properties);
+          writeITiledObjectBase(objectElement, obj);
+          writeTiledProperties(objectElement, obj.properties);
           layerElement.append(objectElement);
         });
       }
       else {
         throw new Error(errors.INVALID_ITEM);
       }
-      tiled.writeITiledLayerBase(layerElement, layer);
+      writeITiledLayerBase(layerElement, layer);
       root.append(layerElement);
     });
-    return this.xmlHeader + tiled.xml2Str(root[0]);
+    return this.xmlHeader + xml2Str(root[0]);
   }
 
   load(data?: any): Promise<Resource> {
@@ -106,8 +117,8 @@ export class TiledTMXResource extends XMLResource {
       this.orientation = this.getElAttribute(this.$map, 'orientation');
       this.tileheight = parseInt(this.getElAttribute(this.$map, 'tileheight'), 10);
       this.tilewidth = parseInt(this.getElAttribute(this.$map, 'tilewidth'), 10);
-      this.properties = tiled.readTiledProperties(this.$map);
-      const tileSetDeps: tiled.ITileSetDependency[] = [];
+      this.properties = readTiledProperties(this.$map);
+      const tileSetDeps: ITileSetDependency[] = [];
       const tileSets = this.getChildren(this.$map, 'tileset');
       const relativePath: string = this.url.substr(0, this.url.lastIndexOf('/') + 1);
       _.each(tileSets, (ts) => {
@@ -115,7 +126,7 @@ export class TiledTMXResource extends XMLResource {
         const firstGid: number = parseInt(this.getElAttribute(ts, 'firstgid') || '-1', 10);
         if (source) {
           tileSetDeps.push({
-            source: tiled.compactUrl(relativePath, source),
+            source: compactUrl(relativePath, source),
             literal: source,
             firstgid: firstGid
           });
@@ -139,7 +150,7 @@ export class TiledTMXResource extends XMLResource {
         if (failed) {
           return;
         }
-        let tileLayer: tiled.ITiledLayer = tiled.readITiledLayerBase(layer);
+        const tileLayer: ITiledLayer = readITiledLayerBase(layer);
         this.layers.push(tileLayer);
 
         // Take CSV and convert it to JSON array, then parse.
@@ -164,7 +175,7 @@ export class TiledTMXResource extends XMLResource {
         if (objects) {
           tileLayer.objects = [];
           _.each(objects, (object) => {
-            tileLayer.objects.push(tiled.readITiledObject(object));
+            tileLayer.objects.push(readITiledObject(object));
           });
         }
       });

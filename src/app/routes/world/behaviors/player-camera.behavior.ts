@@ -15,7 +15,6 @@
  */
 import {CameraComponent} from '../../../../game/pow2/scene/components/cameraComponent';
 import {SceneView} from '../../../../game/pow2/scene/sceneView';
-import {TileObject} from '../../../../game/pow2/tile/tileObject';
 import {Component} from '@angular/core';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 import {Point} from '../../../../game/pow-core/point';

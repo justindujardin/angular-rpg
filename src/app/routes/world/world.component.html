@@ -1,12 +1,15 @@
-<world-player
-  *ngIf="notTraveling$ | async"
-  [map]="map"
-  [scene]="scene"
-  [point]="renderPoint"
-  [model]="partyLeader$ | async"></world-player>
 <party-menu></party-menu>
 
-<world-map #map [scene]="scene"></world-map>
+<world-map #map [scene]="scene">
+  <world-player
+    *ngIf="notTraveling$ | async"
+    [map]="map"
+    [scene]="scene"
+    [point]="renderPoint"
+    (onFeatureEnter)="map.featureEnter($event)"
+    (onFeatureLeave)="map.featureLeave($event)"
+    [model]="partyLeader$ | async"></world-player>
+</world-map>
 
 <canvas #worldCanvas [hidden]="loadingService.loading$ | async">
   Your browser doesn't support this.

@@ -13,29 +13,37 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import * as _ from 'underscore';
-import {MapFeatureComponent} from '../map/map-feature.component';
 import {GameFeatureObject} from '../../../../game/rpg/objects/gameFeatureObject';
 import {TickedComponent} from '../../../../game/pow2/scene/components/tickedComponent';
 import {TileObject} from '../../../../game/pow2/tile/tileObject';
 import {CollisionBehaviorComponent} from '../../../behaviors/collision.behavior';
 import {PlayerBehaviorComponent} from './player-behavior';
-import {Component} from '@angular/core';
+import {Component, Output, EventEmitter} from '@angular/core';
 
 /**
  * A Component that collides with features that are directly in front
- * of a player, that the player is 'touching' by facing them.
+ * of a player, and fires enter/leave events for them.
  */
 @Component({
-  selector: 'player-touch-behavior',
+  selector: 'player-trigger-behavior',
   template: `<ng-content></ng-content>`
 })
-export class PlayerTouchBehaviorComponent extends TickedComponent {
+export class PlayerTriggerBehaviorComponent extends TickedComponent {
   host: TileObject;
   collider: CollisionBehaviorComponent = null;
   player: PlayerBehaviorComponent = null;
-  touch: GameFeatureObject = null;
-  touchedComponent: MapFeatureComponent = null;
+
+  private featureObject: GameFeatureObject = null;
+
+  /**
+   * The player has touched a game feature.
+   */
+  @Output() onEnter: EventEmitter<GameFeatureObject> = new EventEmitter();
+
+  /**
+   * The player was touching a game feature, and is now leaving.
+   */
+  @Output() onLeave: EventEmitter<GameFeatureObject> = new EventEmitter();
 
   syncBehavior(): boolean {
     super.syncBehavior();
@@ -50,30 +58,28 @@ export class PlayerTouchBehaviorComponent extends TickedComponent {
       return;
     }
     const results: GameFeatureObject[] = [];
-    const headingX = this.host.point.x + this.player.heading.x;
-    const headingY = this.host.point.y + this.player.heading.y;
-    const newTouch: boolean = this.collider.collide(headingX, headingY, GameFeatureObject, results);
-    const touched = _.find(results, (r: GameFeatureObject) => !!r.findBehavior(MapFeatureComponent));
-    if (!newTouch || !touched) {
-      if (this.touchedComponent) {
-        this.touchedComponent.exit(this.host);
-        this.touchedComponent = null;
+    const headingX: number = this.host.point.x + this.player.heading.x;
+    const headingY: number = this.host.point.y + this.player.heading.y;
+    const isTouching: boolean = this.collider.collide(headingX, headingY, GameFeatureObject, results);
+    const touched: GameFeatureObject = results[0];
+    const currentTouchId: string = this.featureObject ? this.featureObject.id : null;
+    const touchChanged: boolean = !!(touched && touched.id !== currentTouchId);
+    // No collisions for this tick
+    if (!isTouching || !touched || touchChanged) {
+      // If we were previously colliding with a feature, trigger the leave output.
+      if (this.featureObject) {
+        this.onLeave.emit(this.featureObject);
+        // And clean up the reference so we don't fire the event more than once
+        this.featureObject = null;
       }
-      this.touch = null;
     }
-    else {
-      const touchComponent = touched.findBehavior(MapFeatureComponent) as MapFeatureComponent;
-      const previousTouch = this.touchedComponent ? this.touchedComponent.id : null;
-      if (this.touchedComponent && this.touchedComponent.id !== touchComponent.id) {
-        this.touchedComponent.exit(this.host);
-        this.touchedComponent = null;
-      }
 
-      this.touchedComponent = touchComponent;
-      if (touchComponent.id !== previousTouch) {
-        this.touchedComponent.enter(this.host);
+    // Colliding with a feature
+    if (touched && isTouching) {
+      this.featureObject = touched;
+      if (touchChanged) {
+        this.onEnter.emit(this.featureObject);
       }
-      this.touch = touched;
     }
   }
 }

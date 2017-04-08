@@ -13,10 +13,10 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import * as tiled from './tiled';
 import {XMLResource} from '../xml';
 import {ImageResource} from '../image';
 import * as _ from 'underscore';
+import {ITileInstanceMeta, compactUrl, readTiledProperties} from './tiled';
 
 export class TilesetTile {
   id: number;
@@ -56,7 +56,7 @@ export class TiledTSXResource extends XMLResource {
       _.each(tiles, (ts: any) => {
         const id: number = parseInt(this.getElAttribute(ts, 'id'), 10);
         const tile: TilesetTile = new TilesetTile(id);
-        tile.properties = tiled.readTiledProperties(ts);
+        tile.properties = readTiledProperties(ts);
         this.tiles.push(tile);
       });
 
@@ -67,7 +67,7 @@ export class TiledTSXResource extends XMLResource {
       const source = this.getElAttribute(image, 'source');
       this.imageWidth = parseInt(this.getElAttribute(image, 'width') || '0', 10);
       this.imageHeight = parseInt(this.getElAttribute(image, 'height') || '0', 10);
-      this.imageUrl = tiled.compactUrl(this.relativeTo ? this.relativeTo : relativePath, source);
+      this.imageUrl = compactUrl(this.relativeTo ? this.relativeTo : relativePath, source);
       console.log(`Tileset source: ${this.imageUrl}`);
 
       new ImageResource(this.imageUrl)
@@ -105,7 +105,7 @@ export class TiledTSXResource extends XMLResource {
       && gid < this.firstgid + this.tiles.length;
   }
 
-  getTileMeta(gidOrIndex: number): tiled.ITileInstanceMeta {
+  getTileMeta(gidOrIndex: number): ITileInstanceMeta {
     const index: number = this.firstgid !== -1 ? (gidOrIndex - (this.firstgid)) : gidOrIndex;
     const tilesX = this.imageWidth / this.tilewidth;
     const x = index % tilesX;

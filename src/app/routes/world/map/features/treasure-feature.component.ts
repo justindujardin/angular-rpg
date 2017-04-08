@@ -13,15 +13,16 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {TiledFeatureComponent} from '../map-feature.component';
+import {TiledFeatureComponent, TiledMapFeatureData} from '../map-feature.component';
 import {TileObject} from '../../../../../game/pow2/tile/tileObject';
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'treasure-feature',
   template: `<ng-content></ng-content>`
 })
 export class TreasureFeatureComponent extends TiledFeatureComponent {
+  @Input() feature: TiledMapFeatureData;
   gold: number;
   item: string;
   icon: string;

@@ -16,7 +16,7 @@
 import * as _ from 'underscore';
 import {BasePlayerComponent} from '../../../../game/pow2/game/components/basePlayerComponent';
 import {PathComponent} from '../../../../game/pow2/tile/components/pathComponent';
-import {ITiledLayer} from '../../../../game/pow-core/resources/tiled/tiled';
+import {ITiledLayer} from '../../../../game/pow-core/resources/tiled/tiled.model';
 import {Component, Input} from '@angular/core';
 import {GameTileMap} from '../../../../game/gameTileMap';
 /**

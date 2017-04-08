@@ -18,7 +18,7 @@ import {GameFeatureObject} from './rpg/objects/gameFeatureObject';
 import * as rpg from './rpg/game';
 import {TileMap} from './pow2/tile/tileMap';
 import {TileObject} from './pow2/tile/tileObject';
-import {ITiledObject} from './pow-core/resources/tiled/tiled';
+import {ITiledObject} from './pow-core/resources/tiled/tiled.model';
 import {Point, IPoint} from './pow-core/point';
 import {Rect} from './pow-core/rect';
 import {SceneComponent} from './pow2/scene/sceneComponent';
