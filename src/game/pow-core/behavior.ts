@@ -26,7 +26,7 @@ export interface IObject {
 
 /**
  * Basic component interface.  Supports component host lifetime implementations, and
- * hot-swapping components.
+ * hot-swapping map.
  */
 export interface IBehavior extends IObject {
 
@@ -46,7 +46,7 @@ export interface IBehavior extends IObject {
 
   /**
    * Behaviors on the host have changed.  If this component depends on other
-   * host object components, the references to them should be looked up and
+   * host object map, the references to them should be looked up and
    * stored here.
    */
   syncBehavior(): boolean;
@@ -54,7 +54,7 @@ export interface IBehavior extends IObject {
 
 /**
  * Basic component host object interface.  Exposes methods for adding/removing/searching
- * components that a host owns.
+ * map that a host owns.
  */
 export interface IBehaviorHost extends IObject {
   addBehavior(component: IBehavior, silent?: boolean): boolean;

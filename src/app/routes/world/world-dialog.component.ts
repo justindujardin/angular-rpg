@@ -14,7 +14,7 @@
  limitations under the License.
  */
 import {Component, Input, ChangeDetectionStrategy, ViewEncapsulation, Output, EventEmitter} from '@angular/core';
-import {DialogFeatureComponent} from '../../../game/rpg/components/features/dialogFeatureComponent';
+import {DialogFeatureComponent} from './map/features/dialog-feature.component';
 import {IScene} from '../../../game/pow2/interfaces/IScene';
 import {BehaviorSubject, Observable} from 'rxjs';
 

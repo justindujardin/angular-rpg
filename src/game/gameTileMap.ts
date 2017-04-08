@@ -23,10 +23,10 @@ import {Point, IPoint} from './pow-core/point';
 import {Rect} from './pow-core/rect';
 import {SceneComponent} from './pow2/scene/sceneComponent';
 import {SceneObject} from './pow2/scene/sceneObject';
-import {ALL_FEATURES} from './rpg/components/features/index';
+import {WORLD_MAP_FEATURES} from '../app/routes/world/map/features/index';
 
 /**
- * A tile map that supports game feature objects and components.
+ * A tile map that supports game feature objects and map.
  */
 export class GameTileMap extends TileMap {
 
@@ -68,12 +68,12 @@ export class GameTileMap extends TileMap {
 
   // Construct
   addFeaturesToScene() {
-    _.each(this.features.objects, (obj: any) => {
-      obj._object = this.createFeatureObject(obj);
-      if (obj._object) {
-        this.scene.addObject(obj._object);
-      }
-    });
+    // _.each(this.features.objects, (obj: any) => {
+    //   obj._object = this.createFeatureObject(obj);
+    //   if (obj._object) {
+    //     this.scene.addObject(obj._object);
+    //   }
+    // });
   }
 
   removeFeaturesFromScene() {
@@ -87,10 +87,10 @@ export class GameTileMap extends TileMap {
   }
 
   buildFeatures(): boolean {
-    this.removeFeaturesFromScene();
-    if (this.scene) {
-      this.addFeaturesToScene();
-    }
+    // this.removeFeaturesFromScene();
+    // if (this.scene) {
+    //   this.addFeaturesToScene();
+    // }
     return true;
   }
 
@@ -105,7 +105,7 @@ export class GameTileMap extends TileMap {
     if (this.scene && this.scene.world) {
       this.scene.world.mark(object);
     }
-    const componentType = _.find(ALL_FEATURES, (constructor: any) => {
+    const componentType = _.find(WORLD_MAP_FEATURES, (constructor: any) => {
       return constructor.name === tiledObject.type;
     });
     if (tiledObject.type && componentType) {
@@ -154,6 +154,10 @@ export class GameTileMap extends TileMap {
       result.target = zone.name;
     }
     return result;
+  }
+
+  toString() {
+    return this.map ? this.map.url : 'no-data';
   }
 
 }

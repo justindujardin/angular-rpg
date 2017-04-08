@@ -7,7 +7,8 @@ import {Point} from '../../../../game/pow-core/point';
 import {IZoneMatch} from '../../../../game/rpg/game';
 import {GameStateSetKeyDataAction} from '../../../models/game-state/game-state.actions';
 import {getGameBattleCounter} from '../../../models/selectors';
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {Scene} from '../../../../game/pow2/scene/scene';
 
 /**
  * A component that when added to a GameTileMap listens
@@ -26,6 +27,7 @@ export class CombatEncounterBehaviorComponent extends SceneComponent {
   combatZone: string = 'default';
   isDangerous: boolean = false;
   enabled: boolean = false;
+  @Input() scene: Scene;
 
   connectBehavior(): boolean {
     const world = GameWorld.get();

@@ -13,12 +13,14 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import * as _ from 'underscore';
-import {GameFeatureComponent} from '../gameFeatureComponent';
-import {data} from '../../../pow2/core/api';
-import {TileObject} from '../../../pow2/tile/tileObject';
-
-export class StoreFeatureComponent extends GameFeatureComponent {
+import {TiledFeatureComponent} from '../map-feature.component';
+import {TileObject} from '../../../../../game/pow2/tile/tileObject';
+import {Component} from '@angular/core';
+@Component({
+  selector: 'store-feature',
+  template: `<ng-content></ng-content>`
+})
+export class StoreFeatureComponent extends TiledFeatureComponent {
   name: string;
   inventory: any[];
 
@@ -27,18 +29,6 @@ export class StoreFeatureComponent extends GameFeatureComponent {
       return false;
     }
     this.name = this.host.feature.name;
-    const weapons: boolean = _.indexOf(this.host.groups, 'weapon') !== -1;
-    if (weapons) {
-      this.inventory = _.filter(data.weapons, (item: any) => {
-        return item.level === this.host.feature.level;
-      });
-    }
-    else if (_.indexOf(this.host.groups, 'armor') !== -1) {
-      this.inventory = _.filter(data.armor, (item: any) => {
-        return item.level === this.host.feature.level;
-      });
-
-    }
     return true;
   }
 

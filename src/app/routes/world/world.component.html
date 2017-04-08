@@ -1,4 +1,5 @@
 <world-player
+  *ngIf="notTraveling$ | async"
   [map]="map"
   [scene]="scene"
   [point]="renderPoint"

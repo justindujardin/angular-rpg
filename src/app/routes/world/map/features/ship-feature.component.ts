@@ -13,18 +13,20 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {GameFeatureComponent} from '../gameFeatureComponent';
-import {GameFeatureObject} from '../../objects/gameFeatureObject';
-import {GameStateModel} from '../../models/gameStateModel';
-import {PlayerBehaviorComponent} from '../../../../app/routes/world/behaviors/player-behavior';
-import {TileObject} from '../../../pow2/tile/tileObject';
-import {Point} from '../../../pow-core/point';
+import {TileObject} from '../../../../../game/pow2/tile/tileObject';
 import {Subscription} from 'rxjs';
-import {IPoint} from '../../../pow-core';
-import {GameStateSetKeyDataAction} from '../../../../app/models/game-state/game-state.actions';
-import {getGameShipPosition} from '../../../../app/models/selectors';
-
-export class ShipFeatureComponent extends GameFeatureComponent {
+import {getGameShipPosition} from '../../../../models/selectors';
+import {IPoint, Point} from '../../../../../game/pow-core/point';
+import {TiledFeatureComponent} from '../map-feature.component';
+import {GameFeatureObject} from '../../../../../game/rpg/objects/gameFeatureObject';
+import {PlayerBehaviorComponent} from '../../behaviors/player-behavior';
+import {GameStateSetKeyDataAction} from '../../../../models/game-state/game-state.actions';
+import {Component} from '@angular/core';
+@Component({
+  selector: 'ship-feature',
+  template: `<ng-content></ng-content>`
+})
+export class ShipFeatureComponent extends TiledFeatureComponent {
   party: PlayerBehaviorComponent;
   partyObject: TileObject;
   partySprite: string;

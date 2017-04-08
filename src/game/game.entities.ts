@@ -1,12 +1,12 @@
 import {IEntityTemplate} from './pow-core/resources/entities';
 import {GameTileMap} from './gameTileMap';
-import {PortalFeatureComponent} from './rpg/components/features/portalFeatureComponent';
-import {CombatFeatureComponent} from './rpg/components/features/combatFeatureComponent';
-import {DialogFeatureComponent} from './rpg/components/features/dialogFeatureComponent';
-import {ShipFeatureComponent} from './rpg/components/features/shipFeatureComponent';
-import {StoreFeatureComponent} from './rpg/components/features/storeFeatureComponent';
-import {TempleFeatureComponent} from './rpg/components/features/templeFeatureComponent';
-import {TreasureFeatureComponent} from './rpg/components/features/treasureFeatureComponent';
+import {PortalFeatureComponent} from '../app/routes/world/map/features/portal-feature.component';
+import {CombatFeatureComponent} from '../app/routes/world/map/features/combat-feature.component';
+import {DialogFeatureComponent} from '../app/routes/world/map/features/dialog-feature.component';
+import {ShipFeatureComponent} from '../app/routes/world/map/features/ship-feature.component';
+import {StoreFeatureComponent} from '../app/routes/world/map/features/store-feature.component';
+import {TempleFeatureComponent} from '../app/routes/world/map/features/temple-feature.component';
+import {TreasureFeatureComponent} from '../app/routes/world/map/features/treasure-feature.component';
 import {MapFeatureInputBehaviorComponent} from '../app/routes/world/behaviors/map-feature-input.behavior';
 import {GameEntityObject} from './rpg/objects/gameEntityObject';
 import {TiledTMXResource} from './pow-core/resources/tiled/tiledTmx';
@@ -22,7 +22,7 @@ import {CombatEncounterBehaviorComponent} from '../app/routes/world/behaviors/co
 /**
  * Array of composed game entity templates.
  *
- * TODO: This was written before Angular2, consider how to disambiguate from or combine with ng2 components.
+ * TODO: This was written before Angular2, consider how to disambiguate from or combine with ng2 map.
  */
 export const RPG_GAME_ENTITIES: IEntityTemplate[] = [
   {

@@ -19,7 +19,8 @@ import {TickedComponent} from '../../../../game/pow2/scene/components/tickedComp
 import {Rect} from '../../../../game/pow-core/rect';
 import {TileObject} from '../../../../game/pow2/tile/tileObject';
 import {NamedMouseElement} from '../../../../game/pow2/core/input';
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {Scene} from '../../../../game/pow2/scene/scene';
 
 @Component({
   selector: 'map-feature-input-behavior',
@@ -29,6 +30,8 @@ export class MapFeatureInputBehaviorComponent extends TickedComponent {
   hitBox: Rect = new Rect(0, 0, 1, 1);
   hits: TileObject[] = [];
   mouse: NamedMouseElement = null;
+
+  @Input() scene: Scene;
 
   syncBehavior(): boolean {
     if (!super.syncBehavior() || !this.host.scene || !this.host.scene.world || !this.host.scene.world.input) {

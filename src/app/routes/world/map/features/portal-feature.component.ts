@@ -13,13 +13,24 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {GameFeatureComponent} from '../gameFeatureComponent';
-import {Point} from '../../../pow-core/point';
-import {TileObject} from '../../../pow2/tile/tileObject';
-
-export class PortalFeatureComponent extends GameFeatureComponent {
+import {TiledFeatureComponent} from '../map-feature.component';
+import {Point} from '../../../../../game/pow-core/point';
+import {TileObject} from '../../../../../game/pow2/tile/tileObject';
+import {Component} from '@angular/core';
+import {AppState} from '../../../../app.model';
+import {Store} from '@ngrx/store';
+import {GameStateTravelAction} from '../../../../models/game-state/game-state.actions';
+@Component({
+  selector: 'portal-feature',
+  template: `<ng-content></ng-content>`
+})
+export class PortalFeatureComponent extends TiledFeatureComponent {
   map: string;
   target: Point;
+
+  constructor(private store: Store<AppState>) {
+    super();
+  }
 
   syncBehavior(): boolean {
     if (!super.syncBehavior()) {
@@ -34,10 +45,11 @@ export class PortalFeatureComponent extends GameFeatureComponent {
     if (!this.target || !this.host.tileMap) {
       return false;
     }
-    object.scene.trigger('PortalFeatureComponent:entered', {
+    const data = {
       map: this.map,
       target: this.target,
-    });
+    };
+    this.store.dispatch(new GameStateTravelAction(data.map, data.target));
     return true;
   }
 

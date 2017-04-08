@@ -7,7 +7,7 @@ import {decorateModuleRef} from './app/environment';
 import {bootloader} from '@angularclass/hmr';
 /*
  * AppComponent Module
- * our top level module that holds all of our components
+ * our top level module that holds all of our map
  */
 import {AppModule} from './app';
 

@@ -14,34 +14,29 @@ import {GameWorld} from '../../services/gameWorld';
 import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
 import {Observable, Subscription, BehaviorSubject} from 'rxjs/Rx';
-import {GameTileMap} from '../../../game/gameTileMap';
-import {IPoint, Point, Rect} from '../../../game/pow-core';
+import {IPoint, Point} from '../../../game/pow-core';
 import * as Immutable from 'immutable';
 import {GameResources} from '../../services/game-resources.service';
-import {GameFeatureComponent} from '../../../game/rpg/components/gameFeatureComponent';
-import {MovableComponent} from '../../../game/pow2/scene/components/movableComponent';
-import {SpriteComponent} from '../../../game/pow2/tile/components/spriteComponent';
+import {MapFeatureComponent} from './map/map-feature.component';
 import {PlayerBehaviorComponent} from './behaviors/player-behavior';
-import {PlayerRenderBehaviorComponent} from './behaviors/player-render.behavior';
-import {GameFeatureObject} from '../../../game/rpg/objects/gameFeatureObject';
-import {SceneObject} from '../../../game/pow2/scene/sceneObject';
 import {Scene} from '../../../game/pow2/scene/scene';
 import {SceneView} from '../../../game/pow2/scene/sceneView';
 import {TileMap} from '../../../game/pow2/tile/tileMap';
 import {PathComponent} from '../../../game/pow2/tile/components/pathComponent';
 import {PowInput, NamedMouseElement} from '../../../game/pow2/core/input';
 import {GameEntityObject} from '../../../game/rpg/objects/gameEntityObject';
-import {GameStateTravelAction, GameStateAddGoldAction} from '../../models/game-state/game-state.actions';
+import {GameStateAddGoldAction} from '../../models/game-state/game-state.actions';
 import {TileMapView} from '../../../game/pow2/tile/tileMapView';
-import {TileObjectRenderer} from '../../../game/pow2/tile/render/tileObjectRenderer';
 import {GameStateService} from '../../models/game-state/game-state.service';
 import {LoadingService} from '../../components/loading/loading.service';
 import {getGameParty, getGamePartyPosition} from '../../models/selectors';
 import {Entity} from '../../models/entity/entity.model';
-import {TreasureFeatureComponent} from '../../../game/rpg/components/features/treasureFeatureComponent';
+import {TreasureFeatureComponent} from './map/features/treasure-feature.component';
 import {Item} from '../../models/item';
 import {EntityAddItemAction} from '../../models/entity/entity.actions';
 import {PartyMenuComponent} from '../../components/party-menu/party-menu.component';
+import {WorldMapComponent} from './map/world-map.entity';
+import {WorldPlayerComponent} from './map/world-player.entity';
 
 @Component({
   selector: 'world',
@@ -65,9 +60,9 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     'ShipFeatureComponent'
   ];
 
-  private _featureComponent$ = new BehaviorSubject<GameFeatureComponent>(null);
+  private _featureComponent$ = new BehaviorSubject<MapFeatureComponent>(null);
 
-  featureComponent$: Observable<GameFeatureComponent> = this._featureComponent$;
+  featureComponent$: Observable<MapFeatureComponent> = this._featureComponent$;
 
   private _playerEntity$ = new BehaviorSubject<GameEntityObject>(null);
 
@@ -93,13 +88,15 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     }
   }
 
+  notTraveling$: Observable<boolean> = this.loadingService.loading$.map((loading: boolean) => !loading);
+
   /**
    * The feature type (if any) that is active.
    * relevant piece of UI to interact with the feature.
    */
   featureType$: Observable<string> = this.featureComponent$
   // return host type name
-    .map((f: GameFeatureComponent) => {
+    .map((f: MapFeatureComponent) => {
       if (f && f.host) {
         return f.host.type;
       }
@@ -120,17 +117,10 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
       return Immutable.Map(party[0]).toJS();
     });
 
-  @ViewChild('map') map: GameTileMap;
+  @ViewChild(WorldMapComponent) map: WorldMapComponent;
+  @ViewChild(WorldPlayerComponent) player: WorldPlayerComponent;
 
-  /** The fill color to use when rendering a path target. */
-  targetFill: string = 'rgba(10,255,10,0.3)';
-  /** The stroke to use when outlining path target. */
-  targetStroke: string = 'rgba(10,255,10,0.3)';
-  /** Line width for the path target stroke. */
-  targetStrokeWidth: number = 1.5;
   styleBackground: string = 'rgba(0,0,0,1)';
-
-  objectRenderer: TileObjectRenderer = new TileObjectRenderer();
   mouse: NamedMouseElement = null;
   scene: Scene = new Scene();
 
@@ -159,13 +149,13 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
       }).subscribe());
 
     // When the state position doesn't match where the user is
-    this._subscriptions.push(this.gameStateService.worldMap$.combineLatest(this.partyLeader$)
-      .distinctUntilChanged()
-      .do((tuple: any) => {
-        const map: GameTileMap = tuple[0];
-        const player: Entity = tuple[1];
-        // this.renderModel(map, player);
-      }).subscribe());
+    // this._subscriptions.push(this.gameStateService.worldMap$.combineLatest(this.partyLeader$)
+    //   .distinctUntilChanged()
+    //   .do((tuple: any) => {
+    //     const map: GameTileMap = tuple[0];
+    //     const player: Entity = tuple[1];
+    //     // this.renderModel(map, player);
+    //   }).subscribe());
   }
 
   ngOnDestroy(): void {
@@ -198,7 +188,6 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
   //
   onAddToScene(scene: Scene) {
     super.onAddToScene(scene);
-    this.clearCache();
     this.mouse = this.world.input.mouseHook(<SceneView> this, 'world');
 
     //
@@ -207,9 +196,9 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     scene.on(TileMap.Events.MAP_LOADED, this.syncBehaviors, this);
 
     // When a portal is entered, update the map view to reflect the change.
-    scene.on('PortalFeatureComponent:entered', (data: any) => {
-      this.store.dispatch(new GameStateTravelAction(data.map, data.target));
-    }, this);
+    // scene.on('PortalFeatureComponent:entered', (data: any) => {
+    //   this.store.dispatch(new GameStateTravelAction(data.map, data.target));
+    // }, this);
 
     scene.on('TreasureFeatureComponent:entered', (feature: TreasureFeatureComponent) => {
       if (typeof feature.gold !== 'undefined') {
@@ -227,17 +216,16 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     }, this);
 
     this._featureTypes.forEach((eventName: string) => {
-      scene.on(eventName + ':entered', (c: GameFeatureComponent) => {
+      scene.on(eventName + ':entered', (c: MapFeatureComponent) => {
         this._featureComponent$.next(c);
       }, this);
-      scene.on(eventName + ':exited', (c: GameFeatureComponent) => {
+      scene.on(eventName + ':exited', (c: MapFeatureComponent) => {
         this._featureComponent$.next(null);
       }, this);
     });
   }
 
   onRemoveFromScene(scene: Scene) {
-    this.clearCache();
     this.world.input.mouseUnhook('world');
     scene.off(TileMap.Events.MAP_LOADED, this.syncBehaviors, this);
     scene.off('PortalFeatureComponent:entered', null, this);
@@ -266,115 +254,19 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     }
   }
 
-  private _players: SceneObject[] = null;
-  private _playerRenders: SceneObject[] = null;
-  private _sprites: SpriteComponent[] = null;
-  private _movers: MovableComponent[] = null;
-  private _features: GameFeatureObject[] = null;
-
-  syncComponents() {
-    super.syncBehaviors();
-    this.clearCache();
-  }
-
-  protected _renderables: any[] = [];
-
-  protected clearCache() {
-    this._players = null;
-    this._playerRenders = null;
-    this._sprites = null;
-    this._movers = null;
-    this._renderables = [];
-    this._features = null;
-  }
-
   /**
    * Render the tile map and any features it has.
    */
   renderFrame(elapsed: number) {
     super.renderFrame(elapsed);
-    if (!this._features) {
-      this._features = <GameFeatureObject[]> this.scene.objectsByType(GameFeatureObject);
-      this._renderables = this._renderables.concat(this._features);
+    // Map renders features
+    if (this.map) {
+      this.map.renderFrame(this, elapsed);
     }
-    if (!this._playerRenders) {
-      this._playerRenders = <SceneObject[]> this.scene.objectsByComponent(PlayerRenderBehaviorComponent);
-      this._renderables = this._renderables.concat(this._playerRenders);
-    }
-    if (!this._players) {
-      this._players = <SceneObject[]> this.scene.objectsByComponent(PlayerBehaviorComponent);
-      this._renderables = this._renderables.concat(this._players);
-    }
-    if (!this._sprites) {
-      this._sprites = <SpriteComponent[]> this.scene.componentsByType(SpriteComponent);
-      this._renderables = this._renderables.concat(this._sprites);
-    }
-    let iterableLen: number = this._renderables.length;
-    for (let i = 0; i < iterableLen; i++) {
-      const renderObj: any = this._renderables[i];
-      this.objectRenderer.render(renderObj, renderObj, this);
-    }
-    if (!this._movers) {
-      this._movers = <MovableComponent[]> this.scene.componentsByType(MovableComponent);
-    }
-    iterableLen = this._movers.length;
-    for (let j = 0; j < iterableLen; j++) {
-      const target: MovableComponent = this._movers[j];
-      if (target.path.length > 0) {
-        this.context.save();
-        const destination: Point = target.path[target.path.length - 1].clone();
-        destination.x -= 0.5;
-        destination.y -= 0.5;
-
-        const screenTile: Rect = this.worldToScreen(new Rect(destination, new Point(1, 1)));
-        this.context.fillStyle = this.targetFill;
-        this.context.fillRect(screenTile.point.x, screenTile.point.y, screenTile.extent.x, screenTile.extent.y);
-        this.context.strokeStyle = this.targetStroke;
-        this.context.lineWidth = this.targetStrokeWidth;
-        this.context.strokeRect(screenTile.point.x, screenTile.point.y, screenTile.extent.x, screenTile.extent.y);
-
-        this.context.restore();
-      }
+    // Player renders self and target paths
+    if (this.player) {
+      this.player.renderFrame(this, elapsed);
     }
     return this;
-  }
-
-  /**
-   * Update the view based on changes to the underlying map and/or player.
-   * @internal
-   */
-  private renderModel(map: GameTileMap, player: Entity) {
-    const mapSet = !!(!this.map && map);
-    const mapChanged = !!(this.map && map && this.map.map.url !== map.map.url);
-    const removePlayer = () => {
-      if (this._playerEntity$.value && this.scene) {
-        this.scene.removeObject(this._playerEntity$.value);
-      }
-      this._playerEntity$.next(null);
-    };
-    if (mapChanged) {
-      this.map.removeFeaturesFromScene();
-      this.scene.removeObject(this.map);
-      removePlayer();
-      this.clearCache();
-    }
-    this.map = map;
-    if (!map) {
-      return;
-    }
-    if (mapChanged || mapSet) {
-      this.scene.addObject(map);
-      map.addFeaturesToScene();
-      map.syncBehaviors();
-    }
-    if (player && !this._playerEntity$.value) {
-      this.game.createPlayer(player, map).then((gamePlayer: GameEntityObject) => {
-        this.scene.addObject(gamePlayer);
-        this._playerEntity$.next(gamePlayer);
-      });
-    }
-    else if (!player) {
-      removePlayer();
-    }
   }
 }

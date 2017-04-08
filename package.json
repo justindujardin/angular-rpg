@@ -68,11 +68,13 @@
     "webpack": "webpack"
   },
   "dependencies": {
+    "@angular/animations": "^4.0.1",
     "@angular/common": "~2.4.3",
     "@angular/compiler": "~2.4.3",
     "@angular/core": "~2.4.3",
     "@angular/forms": "~2.4.3",
     "@angular/http": "~2.4.3",
+    "@angular/material": "^2.0.0-beta.3",
     "@angular/platform-browser": "~2.4.3",
     "@angular/platform-browser-dynamic": "~2.4.3",
     "@angular/platform-server": "~2.4.3",

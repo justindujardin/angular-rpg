@@ -34,7 +34,7 @@ import {
   GameStateAddInventoryAction,
   GameStateRemoveInventoryAction
 } from '../../models/game-state/game-state.actions';
-import {StoreFeatureComponent} from '../../../game/rpg/components/features/storeFeatureComponent';
+import {StoreFeatureComponent} from './map/features/store-feature.component';
 import * as Immutable from 'immutable';
 import {
   getGamePartyGold,

@@ -1,0 +1,175 @@
+import {GameFeatureObject} from '../../../../game/rpg/objects/gameFeatureObject';
+import {TileComponent} from '../../../../game/pow2/tile/tileComponent';
+import {Component, Input, AfterViewInit, OnDestroy, ViewChildren, QueryList} from '@angular/core';
+import {PortalFeatureComponent} from './features/portal-feature.component';
+import {DialogFeatureComponent} from './features/dialog-feature.component';
+import {StoreFeatureComponent} from './features/store-feature.component';
+import {TempleFeatureComponent} from './features/temple-feature.component';
+import {Observable, BehaviorSubject, Subscription, Subject, ReplaySubject} from 'rxjs';
+import {GameWorld} from '../../../services/gameWorld';
+import {Scene} from '../../../../game/pow2/scene/scene';
+import {TiledTMXResource} from '../../../../game/pow-core/resources/tiled/tiledTmx';
+
+/**
+ * An enumeration of the serialized names used to refer to map feature map from within a TMX file
+ */
+export type TiledMapFeatureTypes = 'PortalFeatureComponent'
+  | 'CombatFeatureComponent'
+  | 'ShipFeatureComponent'
+  | 'TreasureFeatureComponent'
+  | 'DialogFeatureComponent'
+  | 'StoreFeatureComponent'
+  | 'TempleFeatureComponent';
+
+export type TiledMapFeatureData = any; // TODO: Match the feature data from tiled
+
+export class TiledFeatureComponent extends TileComponent {
+  host: GameFeatureObject;
+}
+
+/**
+ * A component that defines the functionality of a map feature.
+ */
+@Component({
+  selector: 'map-feature',
+  template: `
+  <portal-feature #comp *ngIf="(type$ | async) ==='PortalFeatureComponent'"></portal-feature>
+  <dialog-feature #comp *ngIf="(type$ | async) ==='DialogFeatureComponent'"></dialog-feature>
+  <temple-feature #comp *ngIf="(type$ | async) ==='TempleFeatureComponent'"></temple-feature>
+  <store-feature #comp *ngIf="(type$ | async) ==='StoreFeatureComponent'"></store-feature>
+  <ship-feature #comp *ngIf="(type$ | async) ==='ShipFeatureComponent'"></ship-feature>
+  <treasure-feature #comp *ngIf="(type$ | async) ==='TreasureFeatureComponent'"></treasure-feature>
+  <combat-feature #comp *ngIf="(type$ | async) ==='CombatFeatureComponent'"></combat-feature>
+`
+})
+export class MapFeatureComponent extends TileComponent implements AfterViewInit, OnDestroy {
+  @Input() set feature(value: TiledMapFeatureData) {
+    this._feature$.next(value);
+  }
+
+  @Input() tiledMap: TiledTMXResource;
+
+  get feature(): TiledMapFeatureData {
+    return this._feature$.value;
+  }
+
+  @Input() scene: Scene;
+
+  @ViewChildren('comp') featureQuery: QueryList<TempleFeatureComponent>;
+
+  private _featureComponent$: Subject<TempleFeatureComponent> = new ReplaySubject<TempleFeatureComponent>(1);
+
+  private _feature$: BehaviorSubject<TiledMapFeatureData> = new BehaviorSubject<TiledMapFeatureData>(null);
+
+  feature$: Observable<TiledMapFeatureData> = this._feature$;
+
+  type$: Observable<TiledMapFeatureTypes> = this.feature$.map((f) => f.type);
+
+  gameFeatureObject$: Observable<GameFeatureObject> = this.feature$
+    .combineLatest(this._featureComponent$, (data: TiledMapFeatureData, component: TempleFeatureComponent) => {
+      if (!data || !this.tiledMap) {
+        return null;
+      }
+      const options = Object.assign({}, data.properties || {}, {
+        type: data.type,
+        x: Math.round(data.x / this.tiledMap.tilewidth),
+        y: Math.round(data.y / this.tiledMap.tileheight)
+      });
+      const result = new GameFeatureObject(options);
+      result.addBehavior(component);
+      return result;
+    });
+
+  host: GameFeatureObject;
+
+  toString() {
+    const featureData = this._feature$.value;
+    if (featureData) {
+      return `[TiledTMXFeature] (name:${featureData.name}) (id:${featureData.id})`;
+    }
+    return super.toString();
+  }
+
+  private _hostSubscription: Subscription;
+
+  ngAfterViewInit(): void {
+    if (this.featureQuery.length > 0) {
+      this._featureComponent$.next(this.featureQuery.first);
+    }
+    this._hostSubscription = this.gameFeatureObject$.do((featureObject: GameFeatureObject) => {
+      this.disconnectHost();
+      this.host = featureObject;
+      GameWorld.get().mark(this.host);
+      console.log(this.host);
+      this.scene.addObject(this.host);
+    }).subscribe();
+  }
+
+  private disconnectHost() {
+    if (this.host) {
+      if (this.scene) {
+        this.scene.removeObject(this.host);
+      }
+      GameWorld.get().erase(this.host);
+      this.host.destroy();
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this._hostSubscription) {
+      this._hostSubscription.unsubscribe();
+      this._hostSubscription = null;
+    }
+    this.disconnectHost();
+  }
+
+  connectBehavior(): boolean {
+    if (!super.connectBehavior()) {
+      return false;
+    }
+    if (!this.host.feature) {
+      console.log('Feature host missing feature data.');
+      return false;
+    }
+    // Inherit ID from the unique feature data's id.
+    this.id = this.host.feature.id;
+    return true;
+  }
+
+  syncBehavior(): boolean {
+    if (!super.syncBehavior()) {
+      return false;
+    }
+    this.host.visible = this.host.enabled = !this.getDataHidden();
+    return true;
+  }
+
+  /**
+   * Hide and disable a feature object in a persistent manner.
+   * @param hidden Whether to hide or unhide the object.
+   */
+  setDataHidden(hidden: boolean = true) {
+    console.warn('fix setDataHidden for hiding map features once they\'ve been destroyed');
+    // if (this.host && this.host.world && this.host.world.model && this.host.id) {
+    //   this.host.world.model.setKeyData('' + this.host.id, {
+    //     hidden: hidden
+    //   });
+    //   this.syncBehavior();
+    // }
+  }
+
+  /**
+   * Determine if a feature has been persistently hidden by a call
+   * to `hideFeature`.
+   */
+  getDataHidden(): boolean {
+    console.warn('fix getDataHidden for hiding map features once they\'ve been destroyed');
+    // if (this.host && this.host.world && this.host.world.model && this.host.id) {
+    //   var data: any = this.host.world.model.getKeyData('' + this.host.id);
+    //   if (data && data.hidden) {
+    //     return true;
+    //   }
+    // }
+    return false;
+  }
+}

@@ -41,7 +41,7 @@ export class SceneObject extends Entity {
     });
   }
 
-  // Tick components.
+  // Tick map.
   tick(elapsed: number) {
     if (!this.enabled) {
       return;
@@ -58,7 +58,7 @@ export class SceneObject extends Entity {
     }
   }
 
-  // Interpolate components.
+  // Interpolate map.
   interpolateTick(elapsed: number) {
     if (!this.enabled) {
       return;

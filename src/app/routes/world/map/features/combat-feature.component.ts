@@ -13,11 +13,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import * as rpg from '../../game';
-import {PlayerBehaviorComponent} from '../../../../app/routes/world/behaviors/player-behavior';
-import {GameFeatureComponent} from '../gameFeatureComponent';
-import {GameEntityObject} from '../../objects/gameEntityObject';
-
+import {TiledMapFeatureData, TiledFeatureComponent} from '../map-feature.component';
+import {GameEntityObject} from '../../../../../game/rpg/objects/gameEntityObject';
+import {IZoneMatch} from '../../../../../game/rpg/game';
+import {PlayerBehaviorComponent} from '../../behaviors/player-behavior';
+import {Component, Input} from '@angular/core';
 /**
  * A map feature that represents a fixed combat encounter.
  *
@@ -25,8 +25,14 @@ import {GameEntityObject} from '../../objects/gameEntityObject';
  * it will trigger a combat encounter that must be defeated before
  * the tile may be passed.
  */
-export class CombatFeatureComponent extends GameFeatureComponent {
+@Component({
+  selector: 'combat-feature',
+  template: `<ng-content></ng-content>`
+})
+export class CombatFeatureComponent extends TiledFeatureComponent {
   party: PlayerBehaviorComponent = null;
+
+  @Input() feature: TiledMapFeatureData;
 
   connectBehavior(): boolean {
     if (typeof this.host.id === 'undefined') {
@@ -48,11 +54,12 @@ export class CombatFeatureComponent extends GameFeatureComponent {
     object.setPoint(object.point);
 
     // Find the combat zone and launch a fixed encounter.
-    const zone: rpg.IZoneMatch = this.host.tileMap.getCombatZones(this.party.host.point);
+    const zone: IZoneMatch = this.host.tileMap.getCombatZones(this.party.host.point);
     zone.fixed = true;
     this.host.world.fixedEncounter(zone, this.host.id, (victory: boolean) => {
       if (victory) {
-        this.setDataHidden(true);
+        console.warn('set data hidden combat feature');
+        // this.setDataHidden(true);
       }
     });
     return true;

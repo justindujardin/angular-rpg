@@ -14,7 +14,7 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {GameFeatureComponent} from '../../../../game/rpg/components/gameFeatureComponent';
+import {MapFeatureComponent} from '../map/map-feature.component';
 import {GameFeatureObject} from '../../../../game/rpg/objects/gameFeatureObject';
 import {TickedComponent} from '../../../../game/pow2/scene/components/tickedComponent';
 import {TileObject} from '../../../../game/pow2/tile/tileObject';
@@ -35,7 +35,7 @@ export class PlayerTouchBehaviorComponent extends TickedComponent {
   collider: CollisionBehaviorComponent = null;
   player: PlayerBehaviorComponent = null;
   touch: GameFeatureObject = null;
-  touchedComponent: GameFeatureComponent = null;
+  touchedComponent: MapFeatureComponent = null;
 
   syncBehavior(): boolean {
     super.syncBehavior();
@@ -53,7 +53,7 @@ export class PlayerTouchBehaviorComponent extends TickedComponent {
     const headingX = this.host.point.x + this.player.heading.x;
     const headingY = this.host.point.y + this.player.heading.y;
     const newTouch: boolean = this.collider.collide(headingX, headingY, GameFeatureObject, results);
-    const touched = _.find(results, (r: GameFeatureObject) => !!r.findBehavior(GameFeatureComponent));
+    const touched = _.find(results, (r: GameFeatureObject) => !!r.findBehavior(MapFeatureComponent));
     if (!newTouch || !touched) {
       if (this.touchedComponent) {
         this.touchedComponent.exit(this.host);
@@ -62,7 +62,7 @@ export class PlayerTouchBehaviorComponent extends TickedComponent {
       this.touch = null;
     }
     else {
-      const touchComponent = touched.findBehavior(GameFeatureComponent) as GameFeatureComponent;
+      const touchComponent = touched.findBehavior(MapFeatureComponent) as MapFeatureComponent;
       const previousTouch = this.touchedComponent ? this.touchedComponent.id : null;
       if (this.touchedComponent && this.touchedComponent.id !== touchComponent.id) {
         this.touchedComponent.exit(this.host);

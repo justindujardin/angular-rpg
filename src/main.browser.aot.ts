@@ -5,7 +5,7 @@ import {platformBrowser} from '@angular/platform-browser';
 import {decorateModuleRef} from './app/environment';
 /*
  * AppComponent Module
- * our top level module that holds all of our components
+ * our top level module that holds all of our map
  */
 import {AppModuleNgFactory} from '../compiled/src/app/app.module.ngfactory';
 

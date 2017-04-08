@@ -13,10 +13,14 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {GameFeatureComponent} from '../gameFeatureComponent';
-import {TileObject} from '../../../pow2/tile/tileObject';
-
-export class TempleFeatureComponent extends GameFeatureComponent {
+import {TiledFeatureComponent} from '../map-feature.component';
+import {TileObject} from '../../../../../game/pow2/tile/tileObject';
+import {Component} from '@angular/core';
+@Component({
+  selector: 'temple-feature',
+  template: `<ng-content></ng-content>`
+})
+export class TempleFeatureComponent extends TiledFeatureComponent {
   cost: string;
   icon: string;
 

@@ -304,4 +304,8 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     }
     return null;
   }
+
+  toString() {
+    return this.constructor.name ? `${this.constructor.name} (${this.id})` : this.id;
+  }
 }

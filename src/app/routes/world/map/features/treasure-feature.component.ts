@@ -13,10 +13,15 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {GameFeatureComponent} from '../gameFeatureComponent';
-import {TileObject} from '../../../pow2/tile/tileObject';
+import {TiledFeatureComponent} from '../map-feature.component';
+import {TileObject} from '../../../../../game/pow2/tile/tileObject';
+import {Component} from '@angular/core';
 
-export class TreasureFeatureComponent extends GameFeatureComponent {
+@Component({
+  selector: 'treasure-feature',
+  template: `<ng-content></ng-content>`
+})
+export class TreasureFeatureComponent extends TiledFeatureComponent {
   gold: number;
   item: string;
   icon: string;
@@ -42,7 +47,8 @@ export class TreasureFeatureComponent extends GameFeatureComponent {
 
   enter(object: TileObject): boolean {
     object.scene.trigger('TreasureFeatureComponent:entered', this);
-    this.setDataHidden(true);
+    console.warn('set data hidden treasure feature');
+    // this.setDataHidden(true);
     return true;
   }
 }

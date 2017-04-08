@@ -24,7 +24,7 @@ import {
   OnDestroy,
   OnInit
 } from '@angular/core';
-import {TempleFeatureComponent} from '../../../game/rpg/components/features/templeFeatureComponent';
+import {TempleFeatureComponent} from './map/features/temple-feature.component';
 import {HeroModel} from '../../../game/rpg/models/all';
 import {GameStateModel} from '../../../game/rpg/models/gameStateModel';
 import {RPGGame, NotificationService} from '../../services/index';

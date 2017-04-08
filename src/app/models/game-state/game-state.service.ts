@@ -20,6 +20,9 @@ export class GameStateService {
     return Observable.of(from).debounceTime(100);
   }
 
+  /**
+   * Load a Tiled TMX Map from a url
+   */
   loadMap(name: string): Observable<TiledTMXResource> {
     const mapUrl = getMapUrl(name);
     return Observable.fromPromise(this.loader.load(mapUrl)

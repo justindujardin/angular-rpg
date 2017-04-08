@@ -115,7 +115,7 @@
 //       const didKill: boolean = defender.model.hp <= 0;
 //       const hit: boolean = damage > 0;
 //       const hitSound: string = getSoundEffectUrl((didKill ? "killed" : (hit ? "spell" : "miss")));
-//       const components = {
+//       const map = {
 //         animation: new AnimatedSpriteComponent({
 //           spriteName: "attackCombatant",
 //           lengthMS: 550
@@ -130,14 +130,14 @@
 //           volume: 0.3
 //         })
 //       };
-//       defender.addComponentDictionary(components);
-//       components.damage.once('damage:done', () => {
+//       defender.addComponentDictionary(map);
+//       map.damage.once('damage:done', () => {
 //         if (didKill && defender.model instanceof CreatureModel) {
 //           _.defer(() => {
 //             defender.destroy();
 //           });
 //         }
-//         defender.removeComponentDictionary(components);
+//         defender.removeComponentDictionary(map);
 //       });
 //       const data: CombatAttackSummary = {
 //         damage: damage,

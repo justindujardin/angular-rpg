@@ -72,7 +72,7 @@ export interface IEntityTemplate extends IEntityObject {
   depends?: Function[];
 
   /**
-   * An array of components to instantiate and add to the output container.
+   * An array of map to instantiate and add to the output container.
    */
   components: IEntityObject[];
 }
@@ -84,9 +84,9 @@ export class EntityFactory {
   }
 
   /**
-   * Instantiate an object and set of components from a given template.
+   * Instantiate an object and set of map from a given template.
    * @param templateName The name of the template in the resource.
-   * @param inputs An object of input values to use when instantiating objects and components.
+   * @param inputs An object of input values to use when instantiating objects and map.
    * @returns {*} The resulting object or null
    */
   createObject(templateName: string, inputs?: any): Promise<any> {

@@ -13,21 +13,27 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {GameFeatureComponent} from '../gameFeatureComponent';
-import {TileObject} from '../../../pow2/tile/tileObject';
+import {TiledFeatureComponent, TiledMapFeatureData} from '../map-feature.component';
+import {TileObject} from '../../../../../game/pow2/tile/tileObject';
+import {Component, Input} from '@angular/core';
 
-export class DialogFeatureComponent extends GameFeatureComponent {
+@Component({
+  selector: 'dialog-feature',
+  template: `<ng-content></ng-content>`
+})
+export class DialogFeatureComponent extends TiledFeatureComponent {
   title: string;
   text: string;
   icon: string;
+  @Input() feature: TiledMapFeatureData;
 
   syncBehavior(): boolean {
-    if (!super.syncBehavior() || !this.host.feature) {
+    if (!super.syncBehavior() || !this.feature) {
       return false;
     }
-    this.title = this.host.feature.title;
-    this.text = this.host.feature.text;
-    this.icon = this.host.feature.icon;
+    this.title = this.feature.title;
+    this.text = this.feature.text;
+    this.icon = this.feature.icon;
     return true;
   }
 
