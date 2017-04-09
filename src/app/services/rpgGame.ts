@@ -13,17 +13,13 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {GameWorld} from './gameWorld';
-import {GameTileMap} from '../../game/gameTileMap';
 import {ItemModel} from '../../game/rpg/models/itemModel';
-import {GameEntityObject} from '../../game/rpg/objects/gameEntityObject';
 import {GameStateMachine} from '../../game/rpg/states/gameStateMachine';
 import {ResourceLoader} from '../../game/pow-core/resourceLoader';
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {GameStateLoadAction, GameStateNewAction} from '../models/game-state/game-state.actions';
 import {AppState} from '../app.model';
-import {Point} from '../../game/pow-core';
 import {GameState} from '../models/game-state/game-state.model';
 import * as _ from 'underscore';
 import {Entity, EntityType} from '../models/entity/entity.model';
@@ -37,38 +33,12 @@ export class RPGGame {
   private _canvasAcquired: boolean = false;
 
   constructor(public loader: ResourceLoader,
-              public world: GameWorld,
               private store: Store<AppState>) {
     this._renderCanvas = document.createElement('canvas') as HTMLCanvasElement;
     this._renderCanvas.width = this._renderCanvas.height = 64;
     this._renderCanvas.style.position = 'absolute';
     this._renderCanvas.style.left = this._renderCanvas.style.top = '-9000px';
-    this.world.time.start();
     this.store.subscribe();
-  }
-
-  /** Create a detached player entity that can be added to an arbitrary scene. */
-  createPlayer(from: Entity, tileMap: GameTileMap): Promise<GameEntityObject> {
-    if (!from) {
-      return Promise.reject('Cannot create player without valid model');
-    }
-    const heroModel = Object.assign({}, from);
-    if (!this.world.entities.data) {
-      return Promise.reject('Cannot create player before entities container is loaded');
-    }
-    return this.world.entities
-      .createObject('GameMapPlayer', {
-        model: heroModel,
-        map: tileMap
-      })
-      .then((sprite: GameEntityObject): GameEntityObject|Promise<GameEntityObject> => {
-        if (!sprite) {
-          return Promise.reject('Failed to create map player');
-        }
-        sprite.name = from.name;
-        sprite.icon = from.icon;
-        return sprite;
-      });
   }
 
   // awardLevelUp() {
@@ -164,7 +134,6 @@ export class RPGGame {
         resolve(false);
       }
       else {
-        // const gameData = _.pick(this.world.model.toJSON(), ['entity', 'gold']);
         const warrior = RPGGame.create('warrior', 'Warrior');
         const ranger = RPGGame.create('ranger', 'Ranger');
         const healer = RPGGame.create('healer', 'Mage');

@@ -25,15 +25,10 @@ import {TileMap} from '../../../game/pow2/tile/tileMap';
 import {PathComponent} from '../../../game/pow2/tile/components/pathComponent';
 import {PowInput, NamedMouseElement} from '../../../game/pow2/core/input';
 import {GameEntityObject} from '../../../game/rpg/objects/gameEntityObject';
-import {GameStateAddGoldAction} from '../../models/game-state/game-state.actions';
 import {TileMapView} from '../../../game/pow2/tile/tileMapView';
-import {GameStateService} from '../../models/game-state/game-state.service';
 import {LoadingService} from '../../components/loading/loading.service';
 import {getGameParty, getGamePartyPosition} from '../../models/selectors';
 import {Entity} from '../../models/entity/entity.model';
-import {TreasureFeatureComponent} from './map/features/treasure-feature.component';
-import {Item} from '../../models/item';
-import {EntityAddItemAction} from '../../models/entity/entity.actions';
 import {PartyMenuComponent} from '../../components/party-menu/party-menu.component';
 import {WorldMapComponent} from './map/world-map.entity';
 import {WorldPlayerComponent} from './map/world-player.entity';
@@ -130,10 +125,10 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
               public notify: NotificationService,
               public loadingService: LoadingService,
               public store: Store<AppState>,
-              public gameStateService: GameStateService,
               public world: GameWorld) {
     super();
     this.world.mark(this.scene);
+    this.world.time.start();
 
     // To update renderPoint when party point changes
     this._subscriptions.push(this.position$.subscribe());
@@ -194,26 +189,6 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     // TODO: Consider how to remove these event listeners and replace with strongly typed observables
     //
     scene.on(TileMap.Events.MAP_LOADED, this.syncBehaviors, this);
-
-    // When a portal is entered, update the map view to reflect the change.
-    // scene.on('PortalFeatureComponent:entered', (data: any) => {
-    //   this.store.dispatch(new GameStateTravelAction(data.map, data.target));
-    // }, this);
-
-    scene.on('TreasureFeatureComponent:entered', (feature: TreasureFeatureComponent) => {
-      if (typeof feature.gold !== 'undefined') {
-        this.store.dispatch(new GameStateAddGoldAction(feature.gold));
-        this.notify.show(`You found ${feature.gold} gold!`, null, 0);
-      }
-      if (typeof feature.item === 'string') {
-        const item = this.game.world.itemModelFromId<Item>(feature.item);
-        if (!item) {
-          return;
-        }
-        this.store.dispatch(new EntityAddItemAction(item));
-        this.notify.show(`You found ${item.name}!`, null, 0);
-      }
-    }, this);
 
     this._featureTypes.forEach((eventName: string) => {
       scene.on(eventName + ':entered', (c: MapFeatureComponent) => {

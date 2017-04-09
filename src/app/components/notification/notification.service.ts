@@ -87,19 +87,9 @@ export class NotificationService implements IWorldObject, IProcessObject {
   private _dismissBinding: (e: any) => any = null;
 
   constructor(public game: RPGGame, public animate: Animate) {
-    this.game.world.mark(this);
-    this.game.world.time.addObject(this);
     this._dismissBinding = (e) => {
       this.dismiss();
     };
-  }
-
-  destroy() {
-    this.game.world.time.removeObject(this);
-    this.game.world.erase(this);
-    if (this.container) {
-      this.container.removeEventListener('click', this._dismissBinding);
-    }
   }
 
   show(message: string, done?: () => void, duration?: number): INotifyItem {

@@ -66,6 +66,8 @@ src/**/*.js*
 # IDE #
 .idea/
 *.swp
+src/app/**/*.js
+src/game/**/*.js
 
 
 # Angular #

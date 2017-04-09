@@ -33,12 +33,13 @@ import {AppState} from '../app.model';
 import {Store} from '@ngrx/store';
 import {CombatFixedEncounter, Combatant} from '../models/combat/combat.model';
 import {CombatFixedEncounterAction} from '../models/combat/combat.actions';
+import {IZoneMatch} from '../../game/rpg/game';
 import {
-  IZoneMatch,
-} from '../../game/rpg/game';
-import {
-  SPREADSHEET_ID, IGameEncounterCallback, ITemplateFixedEncounter,
-  ITemplateItem, ITemplateEncounter
+  SPREADSHEET_ID,
+  IGameEncounterCallback,
+  ITemplateFixedEncounter,
+  ITemplateItem,
+  ITemplateEncounter
 } from '../models/game-data/game-data.model';
 import {GameDataAddSheetAction} from '../models/game-data/game-data.actions';
 

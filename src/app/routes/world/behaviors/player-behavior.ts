@@ -24,10 +24,6 @@ import {GameStateMoveAction} from '../../../models/game-state/game-state.actions
 import {Component} from '@angular/core';
 import {ITiledLayer} from '../../../../game/pow-core/resources/tiled/tiled.model';
 
-/**
- * Basic Dorkapon player that can navigate around the map
- * using the paths defined within.
- */
 @Component({
   selector: 'player-behavior',
   template: `<ng-content></ng-content>`

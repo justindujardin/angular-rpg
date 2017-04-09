@@ -3,14 +3,13 @@ import {Observable, ReplaySubject} from 'rxjs/Rx';
 import {ResourceLoader} from '../../../game/pow-core/resourceLoader';
 import {TiledTMXResource} from '../../../game/pow-core/resources/tiled/tiledTmx';
 import {getMapUrl} from '../../../game/pow2/core/api';
-import {GameWorld} from '../../services/gameWorld';
 import {GameState} from './game-state.model';
 import {AppState} from '../../app.model';
 
 @Injectable()
 export class GameStateService {
 
-  constructor(private gameWorld: GameWorld, private loader: ResourceLoader) {
+  constructor(private loader: ResourceLoader) {
   }
 
   private _worldMap$ = new ReplaySubject<TiledTMXResource>(1);

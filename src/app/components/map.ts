@@ -14,12 +14,13 @@
  limitations under the License.
  */
 import {ElementRef} from '@angular/core';
-import {RPGGame} from '../services/rpgGame';
 import {GameTileMap} from '../../game/gameTileMap';
 import {TileMapView} from '../../game/pow2/tile/tileMapView';
 import {SoundComponent} from '../../game/pow2/scene/components/soundComponent';
 import {TiledTMXResource} from '../../game/pow-core/resources/tiled/tiledTmx';
 import {getMapUrl} from '../../game/pow2/core/api';
+import {GameWorld} from '../services/gameWorld';
+import {ResourceLoader} from '../../game/pow-core/resourceLoader';
 
 /**
  * Base implementation of a view for a GameTileMap.
@@ -51,7 +52,9 @@ export class Map extends TileMapView {
 
   private _musicComponent: SoundComponent = null;
 
-  constructor(elRef: ElementRef, public game: RPGGame) {
+  constructor(elRef: ElementRef,
+              public loader: ResourceLoader,
+              public world: GameWorld) {
     super(elRef.nativeElement.querySelector('canvas'));
   }
 
@@ -64,7 +67,7 @@ export class Map extends TileMapView {
 
     // TODO: Check if value is already set map (set binding of mapName is calling this multiple times.)
     return new Promise<GameTileMap>((resolve, reject) => {
-      this.game.loader.load(getMapUrl(value))
+      this.loader.load(getMapUrl(value))
         .then((maps: TiledTMXResource[]) => {
           const map = maps[0];
           if (!map || !map.data) {
@@ -75,7 +78,7 @@ export class Map extends TileMapView {
             this.tileMap.destroy();
             this.tileMap = null;
           }
-          return this.game.world.entities.createObject('GameMapObject', {
+          return this.world.entities.createObject('GameMapObject', {
             resource: map
           });
         })
@@ -84,7 +87,7 @@ export class Map extends TileMapView {
           if (this._music) {
             this._playMusic();
           }
-          this.game.world.scene.addObject(this.tileMap);
+          this.world.scene.addObject(this.tileMap);
           this._onMapLoaded(this.tileMap);
           resolve(this.tileMap);
         })
