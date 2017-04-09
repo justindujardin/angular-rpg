@@ -16,6 +16,12 @@
 import {TiledFeatureComponent, TiledMapFeatureData} from '../map-feature.component';
 import {TileObject} from '../../../../../game/pow2/tile/tileObject';
 import {Component, Input} from '@angular/core';
+import {GameStateAddGoldAction} from '../../../../models/game-state/game-state.actions';
+import {EntityAddItemAction} from '../../../../models/entity/entity.actions';
+import {Item} from '../../../../models/item';
+import {AppState} from '../../../../app.model';
+import {Store} from '@ngrx/store';
+import {NotificationService} from '../../../../components/notification/notification.service';
 
 @Component({
   selector: 'treasure-feature',
@@ -23,9 +29,11 @@ import {Component, Input} from '@angular/core';
 })
 export class TreasureFeatureComponent extends TiledFeatureComponent {
   @Input() feature: TiledMapFeatureData;
-  gold: number;
-  item: string;
-  icon: string;
+
+  constructor(public store: Store<AppState>,
+              public notify: NotificationService) {
+    super();
+  }
 
   connectBehavior(): boolean {
     if (typeof this.host.id === 'undefined') {
@@ -40,14 +48,24 @@ export class TreasureFeatureComponent extends TiledFeatureComponent {
       return false;
     }
     this.name = 'Treasure Chest';
-    this.gold = this.host.feature.gold;
-    this.item = this.host.feature.item;
-    this.icon = this.host.feature.icon;
     return true;
   }
 
   enter(object: TileObject): boolean {
-    object.scene.trigger('TreasureFeatureComponent:entered', this);
+
+    if (typeof this.properties.gold !== 'undefined') {
+      this.store.dispatch(new GameStateAddGoldAction(this.properties.gold));
+      this.notify.show(`You found ${this.properties.gold} gold!`, null, 0);
+    }
+    if (typeof this.properties.item === 'string') {
+      const item = this.host.world.itemModelFromId<Item>(this.properties.item);
+      if (!item) {
+        return;
+      }
+      this.store.dispatch(new EntityAddItemAction(item));
+      this.notify.show(`You found ${item.name}!`, null, 0);
+    }
+
     console.warn('set data hidden treasure feature');
     // this.setDataHidden(true);
     return true;

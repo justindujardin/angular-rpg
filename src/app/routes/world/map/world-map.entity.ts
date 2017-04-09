@@ -20,11 +20,11 @@ import {ResourceLoader} from '../../../../game/pow-core/resourceLoader';
 import {Behavior} from '../../../../game/pow-core/behavior';
 import {MapFeatureInputBehaviorComponent} from '../behaviors/map-feature-input.behavior';
 import {Scene} from '../../../../game/pow2/scene/scene';
-import {MapFeatureComponent, TiledFeatureComponent} from './map-feature.component';
+import {MapFeatureComponent} from './map-feature.component';
 import {ISceneViewRenderer} from '../../../../game/pow2/interfaces/IScene';
 import {TileObjectRenderer} from '../../../../game/pow2/tile/render/tileObjectRenderer';
 import {SceneView} from '../../../../game/pow2/scene/sceneView';
-import {WorldPlayerComponent, WorldPlayerFeatureEvent} from './world-player.entity';
+import {WorldPlayerComponent} from './world-player.entity';
 
 @Component({
   selector: 'world-map',
@@ -68,26 +68,6 @@ export class WorldMapComponent extends GameTileMap implements AfterViewInit, OnD
       this.removeBehavior(c);
     });
     this.destroy();
-  }
-
-  featureEnter(event: WorldPlayerFeatureEvent) {
-    if (!event.feature || !event.player) {
-      throw new Error('invalid arguments');
-    }
-    const feature = event.feature.findBehavior(TiledFeatureComponent) as TiledFeatureComponent;
-    if (feature) {
-      feature.enter(event.player);
-    }
-  }
-
-  featureLeave(event: WorldPlayerFeatureEvent) {
-    if (!event.feature || !event.player) {
-      throw new Error('invalid arguments');
-    }
-    const feature = event.feature.findBehavior(TiledFeatureComponent) as TiledFeatureComponent;
-    if (feature) {
-      feature.exit(event.player);
-    }
   }
 
   //

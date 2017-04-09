@@ -25,7 +25,7 @@ import {Component, Output, EventEmitter} from '@angular/core';
  * of a player, and fires enter/leave events for them.
  */
 @Component({
-  selector: 'player-trigger-behavior',
+  selector: 'player-look-behavior',
   template: `<ng-content></ng-content>`
 })
 export class PlayerTriggerBehaviorComponent extends TickedComponent {
@@ -38,12 +38,12 @@ export class PlayerTriggerBehaviorComponent extends TickedComponent {
   /**
    * The player has touched a game feature.
    */
-  @Output() onEnter: EventEmitter<GameFeatureObject> = new EventEmitter();
+  @Output() onLook: EventEmitter<GameFeatureObject> = new EventEmitter();
 
   /**
    * The player was touching a game feature, and is now leaving.
    */
-  @Output() onLeave: EventEmitter<GameFeatureObject> = new EventEmitter();
+  @Output() onLookAway: EventEmitter<GameFeatureObject> = new EventEmitter();
 
   syncBehavior(): boolean {
     super.syncBehavior();
@@ -68,7 +68,7 @@ export class PlayerTriggerBehaviorComponent extends TickedComponent {
     if (!isTouching || !touched || touchChanged) {
       // If we were previously colliding with a feature, trigger the leave output.
       if (this.featureObject) {
-        this.onLeave.emit(this.featureObject);
+        this.onLookAway.emit(this.featureObject);
         // And clean up the reference so we don't fire the event more than once
         this.featureObject = null;
       }
@@ -78,7 +78,7 @@ export class PlayerTriggerBehaviorComponent extends TickedComponent {
     if (touched && isTouching) {
       this.featureObject = touched;
       if (touchChanged) {
-        this.onEnter.emit(this.featureObject);
+        this.onLook.emit(this.featureObject);
       }
     }
   }

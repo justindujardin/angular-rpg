@@ -1,6 +1,9 @@
 import {GameFeatureObject} from '../../../../game/rpg/objects/gameFeatureObject';
 import {TileComponent} from '../../../../game/pow2/tile/tileComponent';
-import {Component, Input, AfterViewInit, OnDestroy, ViewChildren, QueryList} from '@angular/core';
+import {
+  Component, Input, AfterViewInit, OnDestroy, ViewChildren, QueryList,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import {PortalFeatureComponent} from './features/portal-feature.component';
 import {DialogFeatureComponent} from './features/dialog-feature.component';
 import {StoreFeatureComponent} from './features/store-feature.component';
@@ -57,6 +60,7 @@ export class TiledFeatureComponent extends TileComponent {
  */
 @Component({
   selector: 'map-feature',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<!-- TODO: Replace this mess with Material Portal components -->
 <portal-feature
   [feature]="feature$ | async"

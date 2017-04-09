@@ -6,8 +6,7 @@ import {
   OnDestroy,
   Input,
   ViewChild,
-  EventEmitter,
-  Output
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
 import {CombatPlayerRenderBehaviorComponent} from './behaviors/combat-player-render.behavior';
@@ -21,7 +20,7 @@ import {PlayerBehaviorComponent} from '../behaviors/player-behavior';
 import {PlayerCameraBehaviorComponent} from '../behaviors/player-camera.behavior';
 import {PlayerMapPathBehaviorComponent} from '../behaviors/player-map-path.behavior';
 import {PlayerRenderBehaviorComponent} from '../behaviors/player-render.behavior';
-import {PlayerTriggerBehaviorComponent} from '../behaviors/player-trigger.behavior';
+import {PlayerTriggerBehaviorComponent} from '../behaviors/player-look.behavior';
 import {Scene} from '../../../../game/pow2/scene/scene';
 import {Point} from '../../../../game/pow-core/point';
 import {ISceneViewRenderer} from '../../../../game/pow2/interfaces/IScene';
@@ -29,50 +28,31 @@ import {SceneView} from '../../../../game/pow2/scene/sceneView';
 import {TileObjectRenderer} from '../../../../game/pow2/tile/render/tileObjectRenderer';
 import {Rect} from '../../../../game/pow-core/rect';
 import {GameFeatureObject} from '../../../../game/rpg/objects/gameFeatureObject';
-
-/**
- * Data object for {@see onFeatureEnter} and {@see onFeatureLeave} emitters.
- */
-export interface WorldPlayerFeatureEvent {
-  player: WorldPlayerComponent;
-  feature: GameFeatureObject;
-}
+import {TiledFeatureComponent} from './map-feature.component';
 
 @Component({
   selector: 'world-player',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
   <player-render-behavior #render></player-render-behavior>
   <collision-behavior #collision></collision-behavior>
   <player-map-path-behavior [map]="map" #path></player-map-path-behavior>
   <player-behavior #player></player-behavior>
   <player-camera-behavior #camera></player-camera-behavior>
-  <player-trigger-behavior
-    (onEnter)="onFeatureEnter.emit({player:self, feature: $event})"
-    (onLeave)="onFeatureLeave.emit({player:self, feature: $event})"
-    #trigger></player-trigger-behavior>
+  <player-look-behavior
+    (onLook)="onFeatureLook($event)"
+    (onLookAway)="onFeatureLookAway($event)"
+    #trigger></player-look-behavior>
   <ng-content></ng-content>
 `
 })
 export class WorldPlayerComponent extends GameEntityObject implements AfterViewInit, OnDestroy, ISceneViewRenderer {
   @ViewChildren('render,collision,path,player,trigger,camera') behaviors: QueryList<SceneComponent>;
 
-  /** @internal reference this player in template */
-  self: WorldPlayerComponent = this;
   @Input() model: Entity;
   @Input() scene: Scene;
   @Input() map: GameTileMap;
   @Input() point: Point;
-
-  /**
-   * The player has touched a game feature.
-   */
-  @Output() onFeatureEnter: EventEmitter<WorldPlayerFeatureEvent> = new EventEmitter();
-
-  /**
-   * The player was touching a game feature, and is now leaving.
-   */
-  @Output() onFeatureLeave: EventEmitter<WorldPlayerFeatureEvent> = new EventEmitter();
-
 
   /** The fill color to use when rendering a path target. */
   targetFill: string = 'rgba(10,255,10,0.3)';
@@ -97,6 +77,22 @@ export class WorldPlayerComponent extends GameEntityObject implements AfterViewI
       this.removeBehavior(c);
     });
     this.destroy();
+  }
+
+  /** The player has touched a game feature. */
+  onFeatureLook(event: GameFeatureObject) {
+    const feature = event.findBehavior(TiledFeatureComponent) as TiledFeatureComponent;
+    if (feature) {
+      feature.enter(this);
+    }
+  }
+
+  /** The player was touching a game feature, and is now leaving. */
+  onFeatureLookAway(event: GameFeatureObject) {
+    const feature = event.findBehavior(TiledFeatureComponent) as TiledFeatureComponent;
+    if (feature) {
+      feature.exit(this);
+    }
   }
 
   //
