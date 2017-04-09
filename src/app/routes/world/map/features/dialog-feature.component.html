@@ -1,4 +1,4 @@
-<div layout="row" layout-padding class="dialog">
+<div layout="row" layout-padding class="dialog" *ngIf="active$ | async">
   <rpg-sprite class="character" [name]="icon$ | async"></rpg-sprite>
   <div flex class="body-text">
     <p [innerText]="title$ | async"></p>

@@ -1,8 +1,8 @@
-@import '../../style/variables';
-@import '../../style/mixins';
+@import '../../../../style/variables';
+@import '../../../../style/mixins';
 // Dialog
 // --------------------------------------------------------------------------
-world-dialog {
+dialog-feature {
   .dialog {
     @include pow-dialog();
     z-index: $zCanvasGui;

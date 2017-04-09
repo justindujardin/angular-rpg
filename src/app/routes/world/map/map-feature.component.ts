@@ -1,12 +1,16 @@
 import {GameFeatureObject} from '../../../../game/rpg/objects/gameFeatureObject';
 import {TileComponent} from '../../../../game/pow2/tile/tileComponent';
 import {
-  Component, Input, AfterViewInit, OnDestroy, ViewChildren, QueryList,
-  ChangeDetectionStrategy
+  Component,
+  Input,
+  AfterViewInit,
+  OnDestroy,
+  ViewChildren,
+  QueryList,
+  ChangeDetectionStrategy,
+  Output,
+  EventEmitter
 } from '@angular/core';
-import {PortalFeatureComponent} from './features/portal-feature.component';
-import {DialogFeatureComponent} from './features/dialog-feature.component';
-import {StoreFeatureComponent} from './features/store-feature.component';
 import {TempleFeatureComponent} from './features/temple-feature.component';
 import {Observable, BehaviorSubject, Subscription, Subject, ReplaySubject} from 'rxjs';
 import {GameWorld} from '../../../services/gameWorld';
@@ -61,29 +65,7 @@ export class TiledFeatureComponent extends TileComponent {
 @Component({
   selector: 'map-feature',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<!-- TODO: Replace this mess with Material Portal components -->
-<portal-feature
-  [feature]="feature$ | async"
-  #comp *ngIf="(type$ | async) ==='PortalFeatureComponent'"></portal-feature>
-<dialog-feature
-  [feature]="feature$ | async"
-  #comp *ngIf="(type$ | async) ==='DialogFeatureComponent'"></dialog-feature>
-<temple-feature
-  [feature]="feature$ | async"
-  #comp *ngIf="(type$ | async) ==='TempleFeatureComponent'"></temple-feature>
-<store-feature
-  [feature]="feature$ | async"
-  #comp *ngIf="(type$ | async) ==='StoreFeatureComponent'"></store-feature>
-<ship-feature
-  [feature]="feature$ | async"
-  #comp *ngIf="(type$ | async) ==='ShipFeatureComponent'"></ship-feature>
-<treasure-feature
-  [feature]="feature$ | async"
-  #comp *ngIf="(type$ | async) ==='TreasureFeatureComponent'"></treasure-feature>
-<combat-feature
-  [feature]="feature$ | async"
-  #comp *ngIf="(type$ | async) ==='CombatFeatureComponent'"></combat-feature>
-`
+  templateUrl: './map-feature.component.html'
 })
 export class MapFeatureComponent extends TileComponent implements AfterViewInit, OnDestroy {
   @Input() set feature(value: TiledMapFeatureData) {
@@ -98,9 +80,11 @@ export class MapFeatureComponent extends TileComponent implements AfterViewInit,
 
   @Input() scene: Scene;
 
-  @ViewChildren('comp') featureQuery: QueryList<TempleFeatureComponent>;
+  @ViewChildren('comp') featureQuery: QueryList<TiledFeatureComponent>;
 
-  private _featureComponent$: Subject<TempleFeatureComponent> = new ReplaySubject<TempleFeatureComponent>(1);
+  @Output() onClose: EventEmitter<TiledFeatureComponent> = new EventEmitter();
+
+  private _featureComponent$: Subject<TiledFeatureComponent> = new ReplaySubject<TiledFeatureComponent>(1);
 
   private _feature$: BehaviorSubject<TiledMapFeatureData> = new BehaviorSubject<TiledMapFeatureData>(null);
 
@@ -154,6 +138,7 @@ export class MapFeatureComponent extends TileComponent implements AfterViewInit,
       }
       GameWorld.get().erase(this.host);
       this.host.destroy();
+      this.host = null;
     }
   }
 

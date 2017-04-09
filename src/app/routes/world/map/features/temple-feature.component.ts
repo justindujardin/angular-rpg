@@ -1,48 +1,123 @@
-/*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
+import * as _ from 'underscore';
 import {TiledFeatureComponent, TiledMapFeatureData} from '../map-feature.component';
 import {TileObject} from '../../../../../game/pow2/tile/tileObject';
-import {Component, Input} from '@angular/core';
+import {
+  Component,
+  Input,
+  ViewEncapsulation,
+  ChangeDetectionStrategy,
+  OnDestroy,
+  OnInit,
+  Output,
+  EventEmitter
+} from '@angular/core';
+import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
+import {RPGGame} from '../../../../services/rpgGame';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../../app.model';
+import {NotificationService} from '../../../../components/notification/notification.service';
+import {sliceGameState, getGamePartyGold, getGameParty} from '../../../../models/selectors';
+import {GameState} from '../../../../models/game-state/game-state.model';
+import {Entity} from '../../../../models/entity/entity.model';
+import {GameStateHealPartyAction} from '../../../../models/game-state/game-state.actions';
+import {IScene} from '../../../../../game/pow2/interfaces/IScene';
 @Component({
   selector: 'temple-feature',
-  template: `<ng-content></ng-content>`
+  styleUrls: ['./temple-feature.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  templateUrl: './temple-feature.component.html'
 })
-export class TempleFeatureComponent extends TiledFeatureComponent {
+export class TempleFeatureComponent extends TiledFeatureComponent implements OnInit, OnDestroy {
+  @Output() onClose = new EventEmitter();
+
+  @Input() scene: IScene;
+
+  private _active$ = new BehaviorSubject<boolean>(false);
+  active$: Observable<boolean> = this._active$;
+
+  @Input()
+  set active(value: boolean) {
+    this._active$.next(value);
+  }
+
+  partyGold$: Observable<number> = this.store.select(getGamePartyGold);
+  party$: Observable<Entity[]> = this.store.select(getGameParty);
+
+  private _name$ = new BehaviorSubject<string>('Mystery Temple');
+  name$: Observable<string> = this._name$;
+
+  @Input() set name(value: string) {
+    this._name$.next(value);
+  }
+
+  private _icon$ = new BehaviorSubject<string>(null);
+  icon$: Observable<string> = this._icon$;
+
+  @Input() set icon(value: string) {
+    this._icon$.next(value);
+  }
+
+  private _cost$ = new BehaviorSubject<number>(200);
+  cost$: Observable<number> = this._cost$;
+
+  @Input() party: Entity[];
+
   @Input() feature: TiledMapFeatureData;
+  //
+  // @Input()
+  // set feature(feature: TempleFeatureComponent) {
+  //   this.name = feature.name;
+  //   this.icon = feature.icon;
+  //   this.cost = parseInt(feature.cost, 10);
+  // }
 
-  cost: string;
-  icon: string;
+  constructor(public game: RPGGame,
+              public store: Store<AppState>,
+              public notify: NotificationService) {
+    super();
+  }
 
-  syncBehavior(): boolean {
-    if (!super.syncBehavior() || !this.host.feature) {
-      return false;
-    }
-    this.name = 'Temple';
-    this.cost = this.host.feature.cost;
-    this.icon = this.host.feature.icon;
-    return true;
+  public _onRest$ = new Subject<void>();
+  private _onRestSubscription$: Subscription;
+
+  ngOnInit(): void {
+    this._onRestSubscription$ = this._onRest$
+      .switchMap(() => this.store.select(sliceGameState).withLatestFrom(this.cost$))
+      .do((tuple: any) => {
+        const gameState: GameState = tuple[0];
+        const cost: number = tuple[1];
+        const alreadyHealed: boolean = !_.find(gameState.party, (p: Entity) => {
+          return p.hp !== p.maxhp;
+        });
+        if (cost > gameState.gold) {
+          this.notify.show('You don\'t have enough money');
+        }
+        else if (alreadyHealed) {
+          this.notify.show('Keep your money.\nYour entity is already fully healed.');
+        }
+        else {
+          this.store.dispatch(new GameStateHealPartyAction(cost));
+          const msg = 'Your entity has been healed! \nYou have (' + (gameState.gold - cost) + ') monies.';
+          this.notify.show(msg, null, 2500);
+        }
+        _.defer(() => {
+          this.onClose.next({});
+        });
+      }).subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this._onRestSubscription$.unsubscribe();
   }
 
   enter(object: TileObject): boolean {
-    object.scene.trigger('TempleFeatureComponent:entered', this);
+    this.active = true;
     return true;
   }
 
   exit(object: TileObject): boolean {
-    object.scene.trigger('TempleFeatureComponent:exited', this);
+    this.active = false;
     return true;
   }
 

@@ -1,7 +1,7 @@
-@import '../../style/variables';
-@import '../../style/mixins';
+@import '../../../../style/variables';
+@import '../../../../style/mixins';
 
-world-temple {
+temple-feature {
   .temple-view {
     @include pow-dialog();
     z-index: $zCanvasGui;

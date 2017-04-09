@@ -4,6 +4,14 @@
   <map-feature *ngFor="let feature of features$ | async"
                [tiledMap]="resource$ | async"
                [scene]="scene"
+               (onClose)="player.escapeFeature()"
                [feature]="feature"></map-feature>
 </section>
+<world-player
+  #player
+  *ngIf="notTraveling$ | async"
+  [map]="self"
+  [scene]="scene"
+  [point]="renderPoint"
+  [model]="partyLeader$ | async"></world-player>
 <ng-content></ng-content>

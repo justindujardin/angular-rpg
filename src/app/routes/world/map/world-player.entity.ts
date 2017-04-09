@@ -29,6 +29,7 @@ import {TileObjectRenderer} from '../../../../game/pow2/tile/render/tileObjectRe
 import {Rect} from '../../../../game/pow-core/rect';
 import {GameFeatureObject} from '../../../../game/rpg/objects/gameFeatureObject';
 import {TiledFeatureComponent} from './map-feature.component';
+import {Observable, BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'world-player',
@@ -84,6 +85,7 @@ export class WorldPlayerComponent extends GameEntityObject implements AfterViewI
     const feature = event.findBehavior(TiledFeatureComponent) as TiledFeatureComponent;
     if (feature) {
       feature.enter(this);
+      this.feature = feature;
     }
   }
 
@@ -92,6 +94,25 @@ export class WorldPlayerComponent extends GameEntityObject implements AfterViewI
     const feature = event.findBehavior(TiledFeatureComponent) as TiledFeatureComponent;
     if (feature) {
       feature.exit(this);
+      this.feature = null;
+    }
+  }
+
+  private _featureComponent$ = new BehaviorSubject<TiledFeatureComponent>(null);
+
+  featureComponent$: Observable<TiledFeatureComponent> = this._featureComponent$;
+
+  get feature(): TiledFeatureComponent {
+    return this._featureComponent$.value;
+  }
+
+  set feature(value: TiledFeatureComponent) {
+    this._featureComponent$.next(value);
+  }
+
+  escapeFeature() {
+    if (this.feature) {
+      this.onFeatureLookAway(this.feature.host);
     }
   }
 
