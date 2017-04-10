@@ -17,6 +17,7 @@ import {GameWorld} from '../../../services/gameWorld';
 import {Scene} from '../../../../game/pow2/scene/scene';
 import {TiledTMXResource} from '../../../../game/pow-core/resources/tiled/tiledTmx';
 import {ITiledObject} from '../../../../game/pow-core/resources/tiled/tiled.model';
+import {TileObject} from '../../../../game/pow2/tile/tileObject';
 
 /**
  * An enumeration of the serialized names used to refer to map feature map from within a TMX file
@@ -35,7 +36,7 @@ export class TiledFeatureComponent extends TileComponent {
   host: GameFeatureObject;
 
   /**
-   * Write only feature input.
+   * Write-only feature input.
    */
   set feature(value: TiledMapFeatureData) {
     this._feature$.next(value);
@@ -56,6 +57,26 @@ export class TiledFeatureComponent extends TileComponent {
     if (!this._feature$.value || !this.properties) {
       throw new Error('feature lacks valid data or properties');
     }
+  }
+
+  private _active$ = new BehaviorSubject<boolean>(false);
+  active$: Observable<boolean> = this._active$;
+
+  @Input()
+  set active(value: boolean) {
+    this._active$.next(value);
+  }
+
+  enter(object: TileObject): boolean {
+    this.assertFeature();
+    this.active = true;
+    return true;
+  }
+
+  exit(object: TileObject): boolean {
+    this.assertFeature();
+    this.active = false;
+    return true;
   }
 }
 

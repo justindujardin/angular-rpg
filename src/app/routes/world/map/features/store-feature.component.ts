@@ -1,5 +1,4 @@
 import {TiledFeatureComponent, TiledMapFeatureData} from '../map-feature.component';
-import {TileObject} from '../../../../../game/pow2/tile/tileObject';
 import {
   Component,
   Input,
@@ -97,24 +96,32 @@ export type StoreInventoryCategories = 'weapons' | 'armor' | 'items';
   templateUrl: './store-feature.component.html'
 })
 export class StoreFeatureComponent extends TiledFeatureComponent implements OnDestroy {
-
   @Input() feature: TiledMapFeatureData;
-
-  enter(object: TileObject): boolean {
-    this.assertFeature();
-    this.active = true;
-    return true;
-  }
-
-  exit(object: TileObject): boolean {
-    this.assertFeature();
-    this.active = false;
-    return true;
-  }
-
+  @Input() scene: IScene;
+  @Input() active: boolean;
   @Output() onClose = new EventEmitter();
 
-  @Input() scene: IScene;
+  constructor(public game: RPGGame,
+              public notify: NotificationService,
+              public store: Store<AppState>) {
+    super();
+  }
+
+  ngOnDestroy(): void {
+    this._doActionSubscription$.unsubscribe();
+    this._doToggleActionSubscription$.unsubscribe();
+  }
+
+  /** @internal */
+  private _level$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
+  /** @internal */
+  private _weapons$: Observable<ITemplateWeapon[]> = this.store.select(getGameDataWeapons);
+  /** @internal */
+  private _armors$: Observable<ITemplateWeapon[]> = this.store.select(getGameDataArmors);
+  /** @internal */
+  private _items$: Observable<ITemplateWeapon[]> = this.store.select(getGameDataItems);
+  /** @internal */
+  private _selling$ = new BehaviorSubject<boolean>(false);
 
   /**
    * The name of this (fine) establishment.
@@ -128,38 +135,21 @@ export class StoreFeatureComponent extends TiledFeatureComponent implements OnDe
 
   /**
    * The category of store as determined by its map feature.
-   * @type {ReplaySubject<StoreInventoryCategories>}
    */
   category$: Observable<StoreInventoryCategories> = this.feature$.map(getFeatureProperty('category'));
-
-  private _active$ = new BehaviorSubject<boolean>(false);
-  active$: Observable<boolean> = this._active$;
-
-  @Input()
-  set active(value: boolean) {
-    this._active$.next(value);
-  }
-  /** @internal */
-  private _level$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
-  /** @internal */
-  private _weapons$: Observable<ITemplateWeapon[]> = this.store.select(getGameDataWeapons);
-  /** @internal */
-  private _armors$: Observable<ITemplateWeapon[]> = this.store.select(getGameDataArmors);
-  /** @internal */
-  private _items$: Observable<ITemplateWeapon[]> = this.store.select(getGameDataItems);
-  /** @internal */
-  private _selling$ = new BehaviorSubject<boolean>(false);
 
   /**
    * The amount of gold the party has to spend
    */
   partyGold$: Observable<number> = this.store.select(getGamePartyGold);
 
-  /** The level of items available at this store */
+  /**
+   * The level of items available at this store
+   */
   level$: Observable<number> = this._level$;
 
   /**
-   * The items available for sale at this store.
+   * The items that the party has available to sell to the merchant
    */
   partyInventory$: Observable<Item[]> = this.store.select(getGameInventory)
     .combineLatest(this.category$, (inventory, category) => {
@@ -180,6 +170,7 @@ export class StoreFeatureComponent extends TiledFeatureComponent implements OnDe
         case 'armor':
           return armors;
         default:
+          // If there is no category, the vendor can sell all types.
           return [...items, ...weapons, ...armors];
       }
     })
@@ -214,7 +205,6 @@ export class StoreFeatureComponent extends TiledFeatureComponent implements OnDe
   _onToggleAction$ = new Subject<Item>();
 
   private _doToggleActionSubscription$ = this._onToggleAction$
-    .throttleTime(500)
     .withLatestFrom(this.partyInventory$, (evt, inventory: Item[]) => {
       let selling = this._selling$.value;
       if (!selling) {
@@ -230,9 +220,7 @@ export class StoreFeatureComponent extends TiledFeatureComponent implements OnDe
 
   /** Stream of clicks on the actionable button */
   private _doActionSubscription$ = this._onAction$
-    .throttleTime(500)
-    .switchMap(() => this.store.select(sliceGameState))
-    .combineLatest(this.category$, (model: GameState, category: string) => {
+    .withLatestFrom(this.store.select(sliceGameState), this.category$, (evt, model: GameState, category: string) => {
       if (!this._selected$.value) {
         return;
       }
@@ -265,17 +253,4 @@ export class StoreFeatureComponent extends TiledFeatureComponent implements OnDe
       }
 
     }).subscribe();
-  /** Stream of clicks on the actionable button */
-  actionClick$: Observable<MouseEvent> = new Subject<MouseEvent>();
-
-  constructor(public game: RPGGame,
-              public notify: NotificationService,
-              public store: Store<AppState>) {
-    super();
-  }
-
-  ngOnDestroy(): void {
-    this._doActionSubscription$.unsubscribe();
-    this._doToggleActionSubscription$.unsubscribe();
-  }
 }
