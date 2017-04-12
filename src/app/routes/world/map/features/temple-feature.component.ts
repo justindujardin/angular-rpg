@@ -34,6 +34,7 @@ export class TempleFeatureComponent extends TiledFeatureComponent implements OnI
   @Input() active: boolean;
   @Input() party: Entity[];
   @Input() feature: TiledMapFeatureData;
+  active$: Observable<boolean>;
 
   partyGold$: Observable<number> = this.store.select(getGamePartyGold);
   party$: Observable<Entity[]> = this.store.select(getGameParty);
@@ -73,7 +74,11 @@ export class TempleFeatureComponent extends TiledFeatureComponent implements OnI
           this.notify.show('Keep your money.\nYour entity is already fully healed.');
         }
         else {
-          this.store.dispatch(new GameStateHealPartyAction(cost));
+          const partyIds: string[] = _.map(party, (p) => p.eid);
+          this.store.dispatch(new GameStateHealPartyAction({
+            cost,
+            partyIds
+          }));
           const msg = 'Your entity has been healed! \nYou have (' + (partyGold - cost) + ') monies.';
           this.notify.show(msg, null, 2500);
         }

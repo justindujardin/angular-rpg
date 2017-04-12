@@ -175,10 +175,10 @@ export class GameStateAddGoldAction implements Action {
 export class GameStateHealPartyAction implements Action {
   type = GameStateActionTypes.HEAL_PARTY;
 
-  payload: number;
-
-  constructor(healingCost: number) {
-    this.payload = healingCost;
+  constructor(public payload: {
+    cost: number;
+    partyIds: string[]
+  }) {
   }
 }
 

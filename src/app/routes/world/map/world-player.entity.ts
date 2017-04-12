@@ -37,7 +37,7 @@ import {Observable, BehaviorSubject} from 'rxjs';
   template: `
   <player-render-behavior #render></player-render-behavior>
   <collision-behavior #collision></collision-behavior>
-  <player-map-path-behavior [map]="map" #path></player-map-path-behavior>
+  <player-map-path-behavior [tileMap]="map" #path></player-map-path-behavior>
   <player-behavior #player></player-behavior>
   <player-camera-behavior #camera></player-camera-behavior>
   <player-look-behavior

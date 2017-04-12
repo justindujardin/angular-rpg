@@ -8,6 +8,7 @@ import {
 } from './entity.actions';
 import {Item} from '../item';
 import {EntityCollection} from '../base-entity';
+import {GameStateHealPartyAction} from '../game-state/game-state.actions';
 
 describe('Entity', () => {
 
@@ -32,7 +33,7 @@ describe('Entity', () => {
     return Object.assign({}, resultState);
   }
 
-  function fakeEntity(): Entity {
+  function fakeEntity(values?: Partial<Entity>): Entity {
     const baseEntity: Entity = {
       exp: 0,
       level: 0,
@@ -52,12 +53,12 @@ describe('Entity', () => {
       hp: 0,
       maxhp: 0
     };
-    return Object.assign({}, baseEntity);
+    return Object.assign({}, baseEntity, values || {});
   }
 
   function fakeItem(): Item {
     const testItem: Item = {
-      eid: 'unique-item-id',
+      eid: testId,
       category: 'item',
       id: 'test-item',
       name: 'Test Item',
@@ -79,8 +80,8 @@ describe('Entity', () => {
         const initial: EntityState = defaultState();
         const entity = fakeEntity();
         const desired: EntityState = defaultState('beings', {
-          allIds: [testId],
-          byId: {testId: entity}
+          byId: {[testId]: entity},
+          allIds: [testId]
         });
         const out = entityReducer(initial, new EntityAddBeingAction(entity));
         expect(out).toEqual(desired);
@@ -89,16 +90,16 @@ describe('Entity', () => {
     describe('EntityRemoveBeingAction', () => {
       it('should remove an entity from the collection if it exists', () => {
         const initial: EntityState = defaultState('beings', {
+          byId: {[testId]: fakeEntity()},
           allIds: [testId],
-          byId: {testId: fakeEntity()}
         });
         const out = entityReducer(initial, new EntityRemoveBeingAction(testId));
         expect(out).toEqual(defaultState());
       });
       it('should do nothing if an entity is not found by the given id', () => {
         const initial: EntityState = defaultState('beings', {
-          allIds: [testId],
-          byId: {testId: fakeEntity()}
+          byId: {[testId]: fakeEntity()},
+          allIds: [testId]
         });
         const out = entityReducer(initial, new EntityRemoveBeingAction('invalid-id'));
         expect(out).toEqual(initial);
@@ -113,8 +114,8 @@ describe('Entity', () => {
         const initial: EntityState = defaultState();
         const item: Item = fakeItem();
         const desired: EntityState = defaultState('items', {
+          byId: {[testId]: item},
           allIds: [testId],
-          byId: {testId: item}
         });
         const out = entityReducer(initial, new EntityAddItemAction(item));
         expect(out).toEqual(desired);
@@ -123,20 +124,49 @@ describe('Entity', () => {
     describe('EntityRemoveItemAction', () => {
       it('should remove an entity from the collection if it exists', () => {
         const initial: EntityState = defaultState('items', {
+          byId: {[testId]: fakeItem()},
           allIds: [testId],
-          byId: {testId: fakeItem()}
         });
         const out = entityReducer(initial, new EntityRemoveItemAction(testId));
         expect(out).toEqual(defaultState());
       });
       it('should do nothing if an entity is not found by the given id', () => {
         const initial: EntityState = defaultState('items', {
+          byId: {[testId]: fakeItem()},
           allIds: [testId],
-          byId: {testId: fakeItem()}
         });
         const out = entityReducer(initial, new EntityRemoveItemAction('invalid-id'));
         expect(out).toEqual(initial);
       });
     });
+
+    //
+    // Entity specific mutations
+    //
+
+    describe('GameStateHealPartyAction', () => {
+      it('should restore all entities in partyIds hp and mp to their maximum', () => {
+        const initial: EntityState = defaultState('beings', {
+          byId: {[testId]: fakeEntity({
+            hp: 10, maxhp: 25,
+            mp:  0, maxmp: 25
+          })},
+          allIds: [testId]
+        });
+        const expected: EntityState = defaultState('beings', {
+          byId: {[testId]: fakeEntity({
+            hp: 25, maxhp: 25,
+            mp: 25, maxmp: 25
+          })},
+          allIds: [testId]
+        });
+        const actual = entityReducer(initial, new GameStateHealPartyAction({
+          cost: 0,
+          partyIds: [testId]
+        }));
+        expect(actual).toEqual(expected);
+      });
+    });
+
   });
 });

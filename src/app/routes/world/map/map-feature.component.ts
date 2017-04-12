@@ -11,7 +11,6 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import {TempleFeatureComponent} from './features/temple-feature.component';
 import {Observable, BehaviorSubject, Subscription, Subject, ReplaySubject} from 'rxjs';
 import {GameWorld} from '../../../services/gameWorld';
 import {Scene} from '../../../../game/pow2/scene/scene';
@@ -114,7 +113,7 @@ export class MapFeatureComponent extends TileComponent implements AfterViewInit,
   type$: Observable<TiledMapFeatureTypes> = this.feature$.map((f) => f.type);
 
   gameFeatureObject$: Observable<GameFeatureObject> = this.feature$
-    .combineLatest(this._featureComponent$, (data: TiledMapFeatureData, component: TempleFeatureComponent) => {
+    .combineLatest(this._featureComponent$, (data: TiledMapFeatureData, component: TiledFeatureComponent) => {
       if (!data || !this.tiledMap) {
         return null;
       }

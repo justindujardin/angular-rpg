@@ -1,8 +1,10 @@
 import {Entity} from './entity.model';
-import {EntityActionTypes, EntityActionClasses} from './entity.actions';
+import {EntityActionTypes, EntityActions} from './entity.actions';
 import * as Immutable from 'immutable';
+import {Map} from 'immutable';
 import {Item} from '../item';
 import {EntityObject, EntityCollection, removeEntityFromCollection, addEntityToCollection} from '../base-entity';
+import {GameStateActionTypes, GameStateHealPartyAction, GameStateActions} from '../game-state/game-state.actions';
 
 /** Collection of Entity objects */
 export type EntityState = {
@@ -23,7 +25,9 @@ const initialState: EntityState = {
   }
 };
 
-export function entityReducer(state: EntityState = initialState, action: EntityActionClasses): EntityState {
+type EntityReducerTypes = EntityActions | GameStateActions;
+
+export function entityReducer(state: EntityState = initialState, action: EntityReducerTypes): EntityState {
   const id: string = action.payload as string;
   const entity: EntityObject = action.payload as EntityObject;
   switch (action.type) {
@@ -49,7 +53,23 @@ export function entityReducer(state: EntityState = initialState, action: EntityA
         items: removeEntityFromCollection<Item>(state.items, id)
       }).toJS();
     }
-
+    case GameStateActionTypes.HEAL_PARTY: {
+      const partyAction = action as GameStateHealPartyAction;
+      let updateBeings: Map<string, Entity> = Immutable.fromJS(state.beings.byId);
+      partyAction.payload.partyIds.forEach((partyMemberId: string) => {
+        const newHp = updateBeings.getIn([partyMemberId, 'maxhp']);
+        const newMp = updateBeings.getIn([partyMemberId, 'maxmp']);
+        updateBeings = updateBeings.setIn([partyMemberId, 'hp'], newHp);
+        updateBeings = updateBeings.setIn([partyMemberId, 'mp'], newMp);
+      });
+      return {
+        ...state,
+        beings: {
+          byId: updateBeings.toJS(),
+          allIds: state.beings.allIds
+        }
+      };
+    }
     default:
       return state;
   }

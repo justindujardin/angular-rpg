@@ -59,6 +59,23 @@ export function addEntityToCollection<T>(collection: EntityCollection<T>,
 }
 
 /**
+ * @internal Update an entity in the given collection, and return a new collection. If there
+ * is no object with the given ID, throw.
+ */
+export function updateEntityInCollection<T>(collection: EntityCollection<T>,
+                                            entity: T, id: string): EntityCollection<T> {
+  if (collection.allIds.indexOf(id) === -1) {
+    throw new Error('entity not found');
+  }
+  return Immutable.fromJS(collection).merge({
+    allIds: [...collection.allIds, id],
+    byId: Object.assign({}, collection.byId, {
+      [id]: entity
+    })
+  }).toJS();
+}
+
+/**
  * @internal Remove an entity from a collection. IF the entity does not exist, return the
  * input collection, otherwise return a copy of the new collection.
  */

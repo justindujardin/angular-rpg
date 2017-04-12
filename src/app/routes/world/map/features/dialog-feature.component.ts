@@ -15,6 +15,7 @@ export class DialogFeatureComponent extends TiledFeatureComponent {
   @Input() scene: IScene;
   @Input() active: boolean;
   @Output() onClose = new EventEmitter();
+  active$: Observable<boolean>;
 
   /** The dialog text */
   text$: Observable<string> = this.feature$.map((f: TiledMapFeatureData) => {

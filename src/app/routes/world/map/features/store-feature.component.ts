@@ -100,6 +100,7 @@ export class StoreFeatureComponent extends TiledFeatureComponent implements OnDe
   @Input() scene: IScene;
   @Input() active: boolean;
   @Output() onClose = new EventEmitter();
+  active$: Observable<boolean>;
 
   constructor(public game: RPGGame,
               public notify: NotificationService,

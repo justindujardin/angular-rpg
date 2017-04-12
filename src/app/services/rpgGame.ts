@@ -129,7 +129,7 @@ export class RPGGame {
       speed: character.basespeed,
       attack: character.baseattack,
       magic: character.basemagic,
-    };
+    });
     return character;
   }
 

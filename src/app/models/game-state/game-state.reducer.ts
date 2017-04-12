@@ -49,18 +49,10 @@ export function gameStateReducer(state: GameState = initialState, action: GameSt
       }).toJS();
     }
     case GameStateActionTypes.HEAL_PARTY: {
-      // const cost: number = action.payload;
-      // const party = Immutable.List(state.party).map((p: string) => {
-      //   return Immutable.Map(p).merge({
-      //     hp: p.maxhp
-      //   });
-      // });
-      // return Immutable.fromJS(state).merge({
-      //   gold: state.gold - cost,
-      //   party
-      // }).toJS();
-      console.warn('TODO: HEAL_PARTY with only partyIds--where should this happen? Maybe an effect?');
-      return state;
+      // Subtract cost and return.
+      return Immutable.fromJS(state).merge({
+        gold: state.gold - action.payload.cost
+      }).toJS();
     }
     case GameStateActionTypes.ADD_INVENTORY: {
       const item: Item = action.payload;

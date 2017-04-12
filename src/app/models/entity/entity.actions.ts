@@ -68,7 +68,7 @@ export class EntityRemoveItemAction implements Action {
   }
 }
 
-export type EntityActionClasses = EntityAddBeingAction |
+export type EntityActions = EntityAddBeingAction |
   EntityRemoveBeingAction |
   EntityAddItemAction |
   EntityRemoveItemAction;

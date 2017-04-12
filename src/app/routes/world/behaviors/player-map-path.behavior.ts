@@ -28,7 +28,7 @@ import {GameTileMap} from '../../../../game/gameTileMap';
 })
 export class PlayerMapPathBehaviorComponent extends PathComponent {
 
-  @Input('map') tileMap: GameTileMap;
+  @Input() tileMap: GameTileMap;
 
   buildWeightedGraph(): number[][] {
     let x: number;
