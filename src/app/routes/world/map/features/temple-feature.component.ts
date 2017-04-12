@@ -20,6 +20,7 @@ import {Entity} from '../../../../models/entity/entity.model';
 import {IScene} from '../../../../../game/pow2/interfaces/IScene';
 import {GameStateHealPartyAction} from '../../../../models/game-state/game-state.actions';
 import {BaseEntity} from '../../../../models/base-entity';
+
 @Component({
   selector: 'temple-feature',
   styleUrls: ['./temple-feature.component.scss'],

@@ -60,6 +60,7 @@ export function gameStateReducer(state: GameState = initialState, action: GameSt
       //   party
       // }).toJS();
       console.warn('TODO: HEAL_PARTY with only partyIds--where should this happen? Maybe an effect?');
+      return state;
     }
     case GameStateActionTypes.ADD_INVENTORY: {
       const item: Item = action.payload;
