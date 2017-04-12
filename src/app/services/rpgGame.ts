@@ -41,6 +41,10 @@ export class RPGGame {
     this.store.subscribe();
   }
 
+  static getHPForLevel(level: number, model: Entity): number {
+    return Math.floor(model.basedefense * Math.pow(level, 1.1)) + (model.basedefense * 2);
+  }
+
   // awardLevelUp() {
   //   var nextLevel: number = this.attributes.level + 1;
   //   var newHP = this.getHPForLevel(nextLevel);
@@ -65,12 +69,12 @@ export class RPGGame {
       eid: 'invalid-hero',
       type,
       name,
-      level: 0,
+      level: 1,
       exp: 0,
       baseattack: 0,
       basespeed: 0,
       basemagic: 0,
-      basedefense: 0,
+      basedefense: 0
     };
     let character: Entity = null;
     switch (type) {
@@ -117,8 +121,15 @@ export class RPGGame {
       default:
         throw new Error('Unknown character class: ' + type);
     }
-    // character.awardLevelUp();
-    // character.hp = character.maxhp;
+    const hp = RPGGame.getHPForLevel(1, character);
+    character = _.extend(character, {
+      maxhp: hp,
+      hp,
+      defense: character.basedefense,
+      speed: character.basespeed,
+      attack: character.baseattack,
+      magic: character.basemagic,
+    };
     return character;
   }
 
