@@ -1,0 +1,53 @@
+@import '../../../../style/variables';
+@import '../../../../style/mixins';
+
+store-feature {
+  .store {
+    max-width: 600px;
+    min-width: 320px;
+    z-index: $zCanvasGui;
+    @include pow-dialog();
+    text-align: center;
+    color: white;
+    display: block;
+    .inventory {
+      min-height: 200px;
+      overflow-y: auto;
+      text-align: center;
+      .item-price {
+        color: $gameGold;
+      }
+    }
+
+    .btn-group {
+      text-align: center;
+      button {
+        @include btn-flat();
+      }
+    }
+    ul {
+      padding: 0;
+      margin: 0;
+      text-align: center;
+      list-style-type: none;
+      max-width: 100%;
+      li.item {
+        margin: rem(1);
+        cursor: pointer;
+        border: 1px solid transparent;
+        * {
+          pointer-events: none;
+        }
+        .item-name {
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        &:hover {
+          * {
+            color: #0FF !important;
+          }
+        }
+      }
+    }
+  }
+}

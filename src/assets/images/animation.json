@@ -1,0 +1,211 @@
+{
+  "animArrow.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "animation",
+    "index": null,
+    "x": 0,
+    "y": 0,
+    "cellWidth": 16,
+    "cellHeight": 16
+  },
+  "animColdBallSmall.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "animation",
+    "index": null,
+    "x": 16,
+    "y": 0,
+    "cellWidth": 16,
+    "cellHeight": 16
+  },
+  "animSlimeBall.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "animation",
+    "index": null,
+    "x": 0,
+    "y": 16,
+    "cellWidth": 16,
+    "cellHeight": 16
+  },
+  "animRockSmall1.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "animation",
+    "index": null,
+    "x": 16,
+    "y": 16,
+    "cellWidth": 16,
+    "cellHeight": 16
+  },
+  "animHotBallSmall.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "animation",
+    "index": null,
+    "x": 32,
+    "y": 0,
+    "cellWidth": 16,
+    "cellHeight": 16
+  },
+  "animLightning.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "animation",
+    "index": null,
+    "x": 32,
+    "y": 16,
+    "cellWidth": 16,
+    "cellHeight": 16
+  },
+  "animBlackBallSmall.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "animation",
+    "index": null,
+    "x": 0,
+    "y": 32,
+    "cellWidth": 16,
+    "cellHeight": 16
+  },
+  "animMiss.png": {
+    "width": 32,
+    "height": 16,
+    "frames": 2,
+    "source": "animation",
+    "index": null,
+    "x": 16,
+    "y": 32,
+    "cellWidth": 16,
+    "cellHeight": 16
+  },
+  "animFireBall.png": {
+    "width": 32,
+    "height": 16,
+    "frames": 2,
+    "source": "animation",
+    "index": null,
+    "x": 48,
+    "y": 0,
+    "cellWidth": 16,
+    "cellHeight": 16
+  },
+  "animHotBall.png": {
+    "width": 32,
+    "height": 16,
+    "frames": 2,
+    "source": "animation",
+    "index": null,
+    "x": 48,
+    "y": 16,
+    "cellWidth": 16,
+    "cellHeight": 16
+  },
+  "animResist.png": {
+    "width": 32,
+    "height": 16,
+    "frames": 2,
+    "source": "animation",
+    "index": null,
+    "x": 48,
+    "y": 32,
+    "cellWidth": 16,
+    "cellHeight": 16
+  },
+  "animSmoke.png": {
+    "width": 48,
+    "height": 16,
+    "frames": 3,
+    "source": "animation",
+    "index": null,
+    "x": 0,
+    "y": 48,
+    "cellWidth": 16,
+    "cellHeight": 16
+  },
+  "animSpellCast.png": {
+    "width": 48,
+    "height": 16,
+    "frames": 3,
+    "source": "animation",
+    "index": null,
+    "x": 0,
+    "y": 64,
+    "cellWidth": 16,
+    "cellHeight": 16
+  },
+  "animPowSlash2.png": {
+    "width": 64,
+    "height": 16,
+    "frames": 4,
+    "source": "animation",
+    "index": null,
+    "x": 80,
+    "y": 0,
+    "cellWidth": 16,
+    "cellHeight": 16
+  },
+  "animPoison.png": {
+    "width": 64,
+    "height": 16,
+    "frames": 4,
+    "source": "animation",
+    "index": null,
+    "x": 80,
+    "y": 16,
+    "cellWidth": 16,
+    "cellHeight": 16
+  },
+  "animHitSpell.png": {
+    "width": 64,
+    "height": 16,
+    "frames": 4,
+    "source": "animation",
+    "index": null,
+    "x": 80,
+    "y": 32,
+    "cellWidth": 16,
+    "cellHeight": 16
+  },
+  "animSlash.png": {
+    "width": 64,
+    "height": 16,
+    "frames": 4,
+    "source": "animation",
+    "index": null,
+    "x": 80,
+    "y": 48,
+    "cellWidth": 16,
+    "cellHeight": 16
+  },
+  "animHit.png": {
+    "width": 64,
+    "height": 16,
+    "frames": 4,
+    "source": "animation",
+    "index": null,
+    "x": 80,
+    "y": 64,
+    "cellWidth": 16,
+    "cellHeight": 16
+  },
+  "animThrowingBone.png": {
+    "width": 64,
+    "height": 16,
+    "frames": 4,
+    "source": "animation",
+    "index": null,
+    "x": 0,
+    "y": 80,
+    "cellWidth": 16,
+    "cellHeight": 16
+  }
+}

@@ -1,0 +1,23 @@
+<div class="temple-view" layout="column" layout-padding *ngIf="active$ | async">
+  <div class="header" layout="row" layout-align="center center">
+    <rpg-sprite [name]="icon$ | async"></rpg-sprite>
+    <h1>{{name$ | async}}</h1>
+  </div>
+
+  <div class="prompt" flex>
+    <h2>It will cost you {{cost$ | async}} of your {{partyGold$ | async}} gold to recover here.</h2>
+
+    <p>Would you like to heal your party members?</p>
+  </div>
+  <div layout="row" layout-padding>
+    <button flex="50" (click)="_onRest$.next()">Yes</button>
+    <button flex="50" (click)="onClose.next($event)">No</button>
+  </div>
+
+  <ul class="party">
+    <li *ngFor="let hero of party$ | async">
+      <rpg-sprite class="image" frame="7" width="96" height="96" [name]="hero.icon"></rpg-sprite>
+      <rpg-health-bar [model]="hero"></rpg-health-bar>
+    </li>
+  </ul>
+</div>

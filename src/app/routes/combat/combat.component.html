@@ -1,0 +1,29 @@
+<canvas #combatCanvas>
+  Your browser doesn't support this.
+</canvas>
+
+<combat-state-machine [scene]="scene"
+                      [party]="combatPlayers$ | async"
+                      [enemies]="combatEnemies$ | async"
+                      [encounter]="encounter$ | async"></combat-state-machine>
+
+<combat-damage *ngFor="let d of damages"
+               [value]="d.value"
+               [position]="d.position"
+               [classes]="d.classes"></combat-damage>
+
+<combat-player *ngFor="let p of party$ | async"
+               [model]="p"></combat-player>
+
+<combat-enemy *ngFor="let e of enemies$ | async"
+              [model]="e"></combat-enemy>
+
+<div class="combat-view">
+  <div class="status" *ngFor="let member of party$ | async" [class]="getMemberClass(member,combat?.focus)">
+    <div class="text">
+      <span class="name">{{member.name}}</span>
+      <span class="hp">HP {{member.hp}} / {{member.maxhp}}</span>
+    </div>
+    <rpg-health-bar [model]="member"></rpg-health-bar>
+  </div>
+</div>

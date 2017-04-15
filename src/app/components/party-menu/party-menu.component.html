@@ -1,0 +1,16 @@
+<div class="navigation" *ngIf="open">
+  <nav class="options">
+    <button (click)="toggle()" class="btn-close">Close</button>
+    <button (click)="showParty()" class="btn-party">Party</button>
+    <button (click)="showInventory()" class="btn-inventory">Inventory</button>
+    <button (click)="menuSaveGame()">Save Game</button>
+    <button (click)="menuResetGame()">Reset Game</button>
+  </nav>
+</div>
+<div class="views" *ngIf="open">
+  <div class="party" *ngIf="page == 'party'">
+    <h1>Party Gold: {{partyGold$ | async}}</h1>
+    <player-card *ngFor="let member of party$ | async" [model]="member"></player-card>
+  </div>
+  <party-inventory *ngIf="page == 'inventory'"></party-inventory>
+</div>

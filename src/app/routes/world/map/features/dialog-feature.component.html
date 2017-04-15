@@ -1,0 +1,8 @@
+<div layout="row" layout-padding class="dialog" *ngIf="active$ | async">
+  <rpg-sprite class="character" [name]="icon$ | async"></rpg-sprite>
+  <div flex class="body-text">
+    <p [innerText]="title$ | async"></p>
+    <span class="text" [innerText]="text$ | async"></span>
+  </div>
+  <button class="btn-close" (click)="onClose.next($event)">x</button>
+</div>

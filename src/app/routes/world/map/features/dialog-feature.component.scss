@@ -1,0 +1,49 @@
+@import '../../../../style/variables';
+@import '../../../../style/mixins';
+// Dialog
+// --------------------------------------------------------------------------
+dialog-feature {
+  .dialog {
+    @include pow-dialog();
+    z-index: $zCanvasGui;
+    max-width: 800px;
+    text-align: center;
+    .body-text {
+      pointer-events: none;
+    }
+    button {
+      @include btn-flap();
+      position: absolute;
+      font-size: 1.5em;
+      padding: 10px 20px 5px;
+      right: 0.5em;
+      top: 0;
+      > i {
+        pointer-events: none;
+      }
+      &:hover {
+        top: 0;
+        padding-top: 12px;
+        outline: none;
+      }
+      &:active {
+        top: 0;
+        padding-top: 16px;
+        outline: none;
+      }
+    }
+    .character {
+      padding: 0;
+      p {
+        margin: 0;
+      }
+    }
+    .text {
+      text-align: center;
+      vertical-align: middle;
+      line-height: normal;
+      color: #fff;
+      @include stroke-text(1px, #000);
+    }
+  }
+}

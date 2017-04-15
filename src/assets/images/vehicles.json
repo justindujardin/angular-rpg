@@ -1,0 +1,11 @@
+{
+  "ship.png": {
+    "width": 64,
+    "height": 32,
+    "frames": 1,
+    "source": "vehicles",
+    "index": null,
+    "x": 0,
+    "y": 0
+  }
+}

@@ -1,0 +1,83 @@
+@import './style/variables.scss';
+@import 'style/page-transitions';
+@import './style/animation.scss';
+@import './style/mixins.scss';
+@import './style/loading.scss';
+
+@font-face {
+  font-family: 'GraphicPixel';
+  src: url('../assets/fonts/graphicpixel-webfont.eot');
+  src: url('../assets/fonts/graphicpixel-webfont.eot?#iefix') format('embedded-opentype'),
+  url('../assets/fonts/graphicpixel-webfont.woff') format('woff'),
+  url('../assets/fonts/graphicpixel-webfont.ttf') format('truetype'),
+  url('../assets/fonts/graphicpixel-webfont.svg#GraphicPixelRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'AdvoCut';
+  src: url('../assets/fonts/advocut-webfont.eot');
+  src: url('../assets/fonts/advocut-webfont.eot?#iefix') format('embedded-opentype'),
+  url('../assets/fonts/advocut-webfont.woff') format('woff'),
+  url('../assets/fonts/advocut-webfont.ttf') format('truetype'),
+  url('../assets/fonts/advocut-webfont.svg#AndinaRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('../assets/fonts/glyphicons-halflings-regular.eot');
+  src: url('../assets/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
+  url('../assets/fonts/glyphicons-halflings-regular.woff') format('woff'),
+  url('../assets/fonts/glyphicons-halflings-regular.ttf') format('truetype'),
+  url('../assets/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+@font-face {
+  font-family: "pow2";
+  src: url("../assets/fonts/pow2.eot");
+  src: url("../assets/fonts/pow2.eot?#iefix") format("embedded-opentype"),
+  url("../assets/fonts/pow2.woff") format("woff"),
+  url("../assets/fonts/pow2.ttf") format("truetype"),
+  url("../assets/fonts/pow2.svg#pow2") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+html,
+body {
+  background-color: #222222;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+canvas {
+  image-rendering: -moz-crisp-edges; /* Firefox */
+  image-rendering: -o-crisp-edges; /* Opera */
+  image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard naming) */
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
+}
+
+.ebp {
+  font-family: 'GraphicPixel', sans-serif;
+  @include eight-bit-panel(6px);
+}
+
+.select-map {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  margin: 1rem;
+  padding: 0.5rem;
+  opacity: 0.3;
+  pointer-events: none;
+  &:hover {
+    opacity: 1;
+  }
+  select {
+    pointer-events: all;
+  }
+}
