@@ -25,7 +25,7 @@ import {
   Inject,
   forwardRef
 } from '@angular/core';
-import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
+import {GameEntityObject} from '../../../scene/game-entity-object';
 import {CombatMachineState} from './combat-base.state';
 import {CombatStateMachineComponent} from './combat.machine';
 import {CombatBeginTurnStateComponent} from './combat-begin-turn.state';

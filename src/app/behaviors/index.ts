@@ -5,7 +5,7 @@ import {CollisionBehaviorComponent} from './collision.behavior';
 
 export * from './animated.behavior';
 
-/** Common behavior components */
+/** Common behavior behaviors */
 export const BEHAVIOR_COMPONENTS = [
   AnimatedBehaviorComponent,
   CollisionBehaviorComponent

@@ -13,14 +13,14 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {SceneComponent} from '../../../../game/pow2/scene/sceneComponent';
-import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
+import {SceneObjectBehavior} from '../../../../game/pow2/scene/scene-object-behavior';
+import {GameEntityObject} from '../../../scene/game-entity-object';
 import {UsableModel} from '../../../../game/rpg/models/usableModel';
 import {IPlayerAction, IPlayerActionCallback} from '../states/combat.machine';
 import {Item} from '../../../models/item';
 import {ITemplateMagic} from '../../../models/game-data/game-data.model';
 
-export class CombatActionBehavior extends SceneComponent implements IPlayerAction {
+export class CombatActionBehavior extends SceneObjectBehavior implements IPlayerAction {
   name: string = 'default';
   from: GameEntityObject = null;
   to: GameEntityObject = null;

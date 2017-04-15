@@ -13,12 +13,12 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {TileObject} from '../../../../../game/pow2/tile/tileObject';
+import {TileObject} from '../../../../../game/pow2/tile/tile-object';
 import {Subscription} from 'rxjs';
 import {getGameShipPosition} from '../../../../models/selectors';
 import {IPoint, Point} from '../../../../../game/pow-core/point';
 import {TiledFeatureComponent, TiledMapFeatureData} from '../map-feature.component';
-import {GameFeatureObject} from '../../../../../game/rpg/objects/gameFeatureObject';
+import {GameFeatureObject} from '../../../../scene/game-feature-object';
 import {PlayerBehaviorComponent} from '../../behaviors/player-behavior';
 import {GameStateSetKeyDataAction} from '../../../../models/game-state/game-state.actions';
 import {Component, Input} from '@angular/core';

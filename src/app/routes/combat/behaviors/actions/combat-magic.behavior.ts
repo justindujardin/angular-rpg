@@ -4,10 +4,10 @@
 // import {HeroTypes} from "../../../../../game/rpg/models/heroModel";
 // import {CombatEndTurnStateComponent} from "../../states/combat-end-turn.state";
 // import {getSoundEffectUrl} from "../../../../../game/pow2/core/api";
-// import {AnimatedSpriteComponent} from "../../../../../game/pow2/tile/components/animatedSpriteComponent";
-// import {SpriteComponent} from "../../../../../game/pow2/tile/components/spriteComponent";
-// import {SoundComponent} from "../../../../../game/pow2/scene/components/soundComponent";
-// import {DamageComponent} from "../../../../../game/rpg/components/damageComponent";
+// import {AnimatedSpriteBehavior} from "../../../../../game/pow2/tile/behaviors/animatedSpriteComponent";
+// import {SpriteComponent} from "../../../../../game/pow2/tile/behaviors/spriteComponent";
+// import {SoundBehavior} from "../../../../../game/pow2/scene/behaviors/soundComponent";
+// import {DamageComponent} from "../../../../../game/rpg/behaviors/damageComponent";
 // import {CreatureModel} from "../../../../../game/rpg/models/creatureModel";
 // import {CombatPlayerRenderBehaviorComponent} from "../combat-player-render.behavior";
 // import {Component, Input} from "@angular/core";
@@ -71,8 +71,8 @@
 //
 //
 //       var hitSound: string = getSoundEffectUrl('heal');
-//       var components = {
-//         animation: new AnimatedSpriteComponent({
+//       var behaviors = {
+//         animation: new AnimatedSpriteBehavior({
 //           spriteName: 'heal',
 //           lengthMS: 550
 //         }),
@@ -80,14 +80,14 @@
 //           name: 'heal',
 //           icon: "animSpellCast.png"
 //         }),
-//         sound: new SoundComponent({
+//         sound: new SoundBehavior({
 //           url: hitSound,
 //           volume: 0.3
 //         })
 //       };
-//       target.addComponentDictionary(components);
-//       components.animation.once('animation:done', () => {
-//         target.removeComponentDictionary(components);
+//       target.addComponentDictionary(behaviors);
+//       behaviors.animation.once('animation:done', () => {
+//         target.removeComponentDictionary(behaviors);
 //         const data: CombatAttackSummary = {
 //           damage: healAmount,
 //           attacker: caster,
@@ -116,7 +116,7 @@
 //       const hit: boolean = damage > 0;
 //       const hitSound: string = getSoundEffectUrl((didKill ? "killed" : (hit ? "spell" : "miss")));
 //       const map = {
-//         animation: new AnimatedSpriteComponent({
+//         animation: new AnimatedSpriteBehavior({
 //           spriteName: "attackCombatant",
 //           lengthMS: 550
 //         }),
@@ -125,7 +125,7 @@
 //           icon: hit ? "animHitSpell.png" : "animMiss.png"
 //         }),
 //         damage: new DamageComponent(),
-//         sound: new SoundComponent({
+//         sound: new SoundBehavior({
 //           url: hitSound,
 //           volume: 0.3
 //         })

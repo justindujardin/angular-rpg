@@ -1,7 +1,7 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {AppState} from './app.model';
-import {GameWorld} from './services/gameWorld';
+import {GameWorld} from './services/game-world';
 import {NotificationService} from './components/notification/notification.service';
 
 @Component({

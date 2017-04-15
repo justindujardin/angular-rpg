@@ -1,7 +1,7 @@
 import {Component, AfterViewInit, OnDestroy, Inject, Input, forwardRef, ViewChild} from '@angular/core';
-import {GameEntityObject} from '../../../game/rpg/objects/gameEntityObject';
+import {GameEntityObject} from '../../scene/game-entity-object';
 import {CombatComponent} from './combat.component';
-import {SpriteComponent} from '../../../game/pow2/tile/components/spriteComponent';
+import {SpriteComponent} from '../../../game/pow2/tile/behaviors/sprite.behavior';
 import {Combatant} from '../../models/combat/combat.model';
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {CombatAttackBehaviorComponent} from './behaviors/actions/combat-attack.behavior';

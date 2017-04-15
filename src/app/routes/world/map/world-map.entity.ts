@@ -9,20 +9,20 @@ import {
   ViewChild
 } from '@angular/core';
 import {CombatPlayerRenderBehaviorComponent} from './behaviors/combat-player-render.behavior';
-import {SceneComponent} from '../../../../game/pow2/scene/sceneComponent';
+import {SceneObjectBehavior} from '../../../../game/pow2/scene/scene-object-behavior';
 import {CombatAttackBehaviorComponent} from './behaviors/actions/combat-attack.behavior';
 import {CombatComponent} from './combat.component';
 import {Observable, Subscription} from 'rxjs';
 import {GameStateService} from '../../../models/game-state/game-state.service';
-import {TiledTMXResource} from '../../../../game/pow-core/resources/tiled/tiledTmx';
-import {ResourceLoader} from '../../../../game/pow-core/resourceLoader';
+import {TiledTMXResource} from '../../../../game/pow-core/resources/tiled/tiled-tmx.resource';
+import {ResourceManager} from '../../../../game/pow-core/resource-manager';
 import {Behavior} from '../../../../game/pow-core/behavior';
 import {MapFeatureInputBehaviorComponent} from '../behaviors/map-feature-input.behavior';
 import {Scene} from '../../../../game/pow2/scene/scene';
 import {MapFeatureComponent} from './map-feature.component';
-import {ISceneViewRenderer} from '../../../../game/pow2/interfaces/IScene';
-import {TileObjectRenderer} from '../../../../game/pow2/tile/render/tileObjectRenderer';
-import {SceneView} from '../../../../game/pow2/scene/sceneView';
+import {ISceneViewRenderer} from '../../../../game/pow2/scene/scene.model';
+import {TileObjectRenderer} from '../../../../game/pow2/tile/render/tile-object-renderer';
+import {SceneView} from '../../../../game/pow2/scene/scene-view';
 import {WorldPlayerComponent} from './world-player.entity';
 import {Entity} from '../../../models/entity/entity.model';
 import {getGameParty, getGamePartyPosition} from '../../../models/selectors';
@@ -30,7 +30,7 @@ import {Point, IPoint} from '../../../../game/pow-core/point';
 import {LoadingService} from '../../../components/loading/loading.service';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../app.model';
-import {GameTileMap} from '../../../../game/gameTileMap';
+import {GameTileMap} from '../../../scene/game-tile-map';
 
 @Component({
   selector: 'world-map',
@@ -68,13 +68,13 @@ export class WorldMapComponent extends GameTileMap implements AfterViewInit, OnD
   constructor(public gameStateService: GameStateService,
               public store: Store<AppState>,
               public loadingService: LoadingService,
-              public loader: ResourceLoader) {
+              public loader: ResourceManager) {
     super();
   }
 
   ngAfterViewInit(): void {
     this.scene.addObject(this);
-    this.behaviors.forEach((c: SceneComponent) => {
+    this.behaviors.forEach((c: SceneObjectBehavior) => {
       this.addBehavior(c);
     });
     // To update renderPoint when party point changes
@@ -83,7 +83,7 @@ export class WorldMapComponent extends GameTileMap implements AfterViewInit, OnD
 
   ngOnDestroy(): void {
     this.scene.removeObject(this);
-    this.behaviors.forEach((c: SceneComponent) => {
+    this.behaviors.forEach((c: SceneObjectBehavior) => {
       this.removeBehavior(c);
     });
     this._subscriptions.forEach((s) => s.unsubscribe());

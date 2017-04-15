@@ -15,7 +15,7 @@
  */
 // State Interfaces
 // -------------------------------------------------------------------------
-import {IStateMachine} from './stateMachine';
+import {IStateMachine} from './state-machine';
 
 export interface IState {
   name: string;

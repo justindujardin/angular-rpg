@@ -1,5 +1,5 @@
-import {GameFeatureObject} from '../../../../game/rpg/objects/gameFeatureObject';
-import {TileComponent} from '../../../../game/pow2/tile/tileComponent';
+import {GameFeatureObject} from '../../../scene/game-feature-object';
+import {TileObjectBehavior} from '../../../../game/pow2/tile/tile-object-behavior';
 import {
   Component,
   Input,
@@ -12,11 +12,11 @@ import {
   EventEmitter
 } from '@angular/core';
 import {Observable, BehaviorSubject, Subscription, Subject, ReplaySubject} from 'rxjs';
-import {GameWorld} from '../../../services/gameWorld';
+import {GameWorld} from '../../../services/game-world';
 import {Scene} from '../../../../game/pow2/scene/scene';
-import {TiledTMXResource} from '../../../../game/pow-core/resources/tiled/tiledTmx';
+import {TiledTMXResource} from '../../../../game/pow-core/resources/tiled/tiled-tmx.resource';
 import {ITiledObject} from '../../../../game/pow-core/resources/tiled/tiled.model';
-import {TileObject} from '../../../../game/pow2/tile/tileObject';
+import {TileObject} from '../../../../game/pow2/tile/tile-object';
 
 /**
  * An enumeration of the serialized names used to refer to map feature map from within a TMX file
@@ -31,7 +31,7 @@ export type TiledMapFeatureTypes = 'PortalFeatureComponent'
 
 export type TiledMapFeatureData = ITiledObject;
 
-export class TiledFeatureComponent extends TileComponent {
+export class TiledFeatureComponent extends TileObjectBehavior {
   host: GameFeatureObject;
 
   /**
@@ -87,7 +87,7 @@ export class TiledFeatureComponent extends TileComponent {
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './map-feature.component.html'
 })
-export class MapFeatureComponent extends TileComponent implements AfterViewInit, OnDestroy {
+export class MapFeatureComponent extends TileObjectBehavior implements AfterViewInit, OnDestroy {
   @Input() set feature(value: TiledMapFeatureData) {
     this._feature$.next(value);
   }

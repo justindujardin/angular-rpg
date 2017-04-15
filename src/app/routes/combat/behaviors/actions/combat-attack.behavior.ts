@@ -1,11 +1,11 @@
 import * as _ from 'underscore';
-import {GameEntityObject} from '../../../../../game/rpg/objects/gameEntityObject';
+import {GameEntityObject} from '../../../../scene/game-entity-object';
 import {CombatEndTurnStateComponent} from '../../states/combat-end-turn.state';
 import {getSoundEffectUrl} from '../../../../../game/pow2/core/api';
-import {AnimatedSpriteComponent} from '../../../../../game/pow2/tile/components/animatedSpriteComponent';
-import {SpriteComponent} from '../../../../../game/pow2/tile/components/spriteComponent';
-import {DamageComponent} from '../../../../../game/rpg/components/damageComponent';
-import {SoundComponent} from '../../../../../game/pow2/scene/components/soundComponent';
+import {AnimatedSpriteBehavior} from '../../../../../game/pow2/tile/behaviors/animated-sprite.behavior';
+import {SpriteComponent} from '../../../../../game/pow2/tile/behaviors/sprite.behavior';
+import {DamageComponent} from '../../../../behaviors/damage.behavior';
+import {SoundBehavior} from '../../../../../game/pow2/scene/behaviors/sound-behavior';
 import {CombatPlayerRenderBehaviorComponent} from '../combat-player-render.behavior';
 import {CombatActionBehavior} from '../combat-action.behavior';
 import {Component, Input} from '@angular/core';
@@ -77,7 +77,7 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
       this.store.dispatch(new CombatAttackAction(attackData));
 
       const components = {
-        animation: new AnimatedSpriteComponent({
+        animation: new AnimatedSpriteBehavior({
           spriteName: 'attack',
           lengthMS: 350
         }),
@@ -86,7 +86,7 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
           icon: hit ? (defending ? 'animSmoke.png' : 'animHit.png') : 'animMiss.png'
         }),
         damage: new DamageComponent(),
-        sound: new SoundComponent({
+        sound: new SoundBehavior({
           url: hitSound,
           volume: 0.3
         })

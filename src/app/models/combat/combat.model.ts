@@ -1,6 +1,30 @@
 import {Item} from '../item';
 import {BaseEntity} from '../base-entity';
+import {IPoint} from '../../../game/pow-core/point';
 export type CombatType = 'none' | 'fixed' | 'random';
+
+/**
+ * Describe a set of combat zones for a given point on a map.
+ */
+export interface IZoneMatch {
+  /**
+   * The zone name for the current map
+   */
+  map: string;
+  /**
+   * The zone name for the target location on the map
+   */
+  target: string;
+  /**
+   * The point that target refers to.
+   */
+  targetPoint: IPoint;
+
+  /**
+   * Fixed or random?
+   */
+  fixed: boolean;
+}
 
 /** A combatant in a combat encounter */
 export interface Combatant extends BaseEntity {

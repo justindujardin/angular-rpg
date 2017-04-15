@@ -14,9 +14,9 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {SceneView} from '../scene/sceneView';
+import {SceneView} from '../scene/scene-view';
 import {Point} from '../../pow-core/point';
-import {IWorldObject, IWorld} from '../../pow-core/world';
+import {IWorld, IWorldObject} from '../../pow-core/world';
 
 export enum KeyCode {
   UP = 38,
@@ -107,19 +107,15 @@ export class PowInput implements IWorldObject {
     return result;
   }
 
-  mouseUnhook(name: string);
-  mouseUnhook(view: SceneView);
-  mouseUnhook(nameOrView: any) {
+  mouseUnhook(nameOrView: string | SceneView) {
     this._mouseElements = _.filter(this._mouseElements, (hook: NamedMouseElement) => {
-      return hook.name === nameOrView || hook.view._uid === nameOrView._uid;
+      return nameOrView instanceof SceneView ? hook.view._uid === nameOrView._uid : hook.name === nameOrView;
     });
   }
 
-  getMouseHook(name: string): NamedMouseElement;
-  getMouseHook(view: SceneView): NamedMouseElement;
-  getMouseHook(nameOrView: any): NamedMouseElement {
+  getMouseHook(nameOrView: string | SceneView): NamedMouseElement {
     return _.find(this._mouseElements, (hook: NamedMouseElement) => {
-      return hook.name === nameOrView || hook.view._uid === nameOrView._uid;
+      return nameOrView instanceof SceneView ? hook.view._uid === nameOrView._uid : hook.name === nameOrView;
     }) as NamedMouseElement;
   }
 

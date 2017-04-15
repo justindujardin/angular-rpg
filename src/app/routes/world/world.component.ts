@@ -9,18 +9,18 @@ import {
   HostListener
 } from '@angular/core';
 import {NotificationService} from '../../components/notification/notification.service';
-import {RPGGame} from '../../services/rpgGame';
-import {GameWorld} from '../../services/gameWorld';
+import {RPGGame} from '../../services/rpg-game';
+import {GameWorld} from '../../services/game-world';
 import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
 import {GameResources} from '../../services/game-resources.service';
 import {PlayerBehaviorComponent} from './behaviors/player-behavior';
 import {Scene} from '../../../game/pow2/scene/scene';
-import {SceneView} from '../../../game/pow2/scene/sceneView';
-import {TileMap} from '../../../game/pow2/tile/tileMap';
-import {PathComponent} from '../../../game/pow2/tile/components/pathComponent';
+import {SceneView} from '../../../game/pow2/scene/scene-view';
+import {TileMap} from '../../../game/pow2/tile/tile-map';
+import {TileMapPathBehavior} from '../../../game/pow2/tile/behaviors/tile-map-path.behavior';
 import {PowInput, NamedMouseElement} from '../../../game/pow2/core/input';
-import {TileMapView} from '../../../game/pow2/tile/tileMapView';
+import {TileMapView} from '../../../game/pow2/tile/tile-map-view';
 import {LoadingService} from '../../components/loading/loading.service';
 import {PartyMenuComponent} from '../../components/party-menu/party-menu.component';
 import {WorldMapComponent} from './map/world-map.entity';
@@ -123,7 +123,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     }
 
     // TODO: Skip this scene lookup and use the player component and its path behavior.
-    const pathComponent = this.scene.componentByType(PathComponent) as PathComponent;
+    const pathComponent = this.scene.componentByType(TileMapPathBehavior) as TileMapPathBehavior;
     const playerComponent = this.scene.componentByType(PlayerBehaviorComponent) as PlayerBehaviorComponent;
     if (pathComponent && playerComponent) {
       PowInput.mouseOnView(e, this.mouse.view, this.mouse);

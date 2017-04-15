@@ -1,6 +1,6 @@
 import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
 import {RPGGame} from '../../services/index';
-import {SpriteRender} from '../../services/spriteRender';
+import {SpriteRender} from '../../services/sprite-render';
 import {Observable, ReplaySubject, BehaviorSubject} from 'rxjs';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 

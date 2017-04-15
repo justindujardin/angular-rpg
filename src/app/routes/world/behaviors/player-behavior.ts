@@ -14,12 +14,12 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
-import {GameFeatureObject} from '../../../../game/rpg/objects/gameFeatureObject';
-import {BasePlayerComponent} from '../../../../game/pow2/game/components/basePlayerComponent';
-import {TileMap} from '../../../../game/pow2/tile/tileMap';
-import {SceneObject} from '../../../../game/pow2/scene/sceneObject';
-import {IMoveDescription} from '../../../../game/pow2/scene/components/movableComponent';
+import {GameEntityObject} from '../../../scene/game-entity-object';
+import {GameFeatureObject} from '../../../scene/game-feature-object';
+import {BasePlayerComponent} from '../../../behaviors/base-player.behavior';
+import {TileMap} from '../../../../game/pow2/tile/tile-map';
+import {SceneObject} from '../../../../game/pow2/scene/scene-object';
+import {IMoveDescription} from '../../../../game/pow2/scene/behaviors/movable-behavior';
 import {GameStateMoveAction} from '../../../models/game-state/game-state.actions';
 import {Component} from '@angular/core';
 import {ITiledLayer} from '../../../../game/pow-core/resources/tiled/tiled.model';

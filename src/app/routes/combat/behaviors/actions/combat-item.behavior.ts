@@ -3,9 +3,9 @@
 // import {GameEntityObject} from '../../../../../game/rpg/objects/gameEntityObject';
 // import {UsableModel} from '../../../../../game/rpg/models/usableModel';
 // import {CombatEndTurnStateComponent} from '../../states/combat-end-turn.state';
-// import {AnimatedSpriteComponent} from '../../../../../game/pow2/tile/components/animatedSpriteComponent';
-// import {SpriteComponent} from '../../../../../game/pow2/tile/components/spriteComponent';
-// import {SoundComponent} from '../../../../../game/pow2/scene/components/soundComponent';
+// import {AnimatedSpriteBehavior} from '../../../../../game/pow2/tile/behaviors/animatedSpriteComponent';
+// import {SpriteComponent} from '../../../../../game/pow2/tile/behaviors/spriteComponent';
+// import {SoundBehavior} from '../../../../../game/pow2/scene/behaviors/soundComponent';
 // import {CombatPlayerRenderBehavior} from '../combat-player-render.behavior';
 // import {Component, Input} from '@angular/core';
 // import {IPlayerActionCallback} from '../../states/combat.machine';
@@ -57,8 +57,8 @@
 //         user.world.model.removeInventory(this.item);
 //       });
 //       var hitSound: string = "sounds/heal";
-//       var components = {
-//         animation: new AnimatedSpriteComponent({
+//       var behaviors = {
+//         animation: new AnimatedSpriteBehavior({
 //           spriteName: "heal",
 //           lengthMS: 550
 //         }),
@@ -66,14 +66,14 @@
 //           name: "heal",
 //           icon: "animSpellCast.png"
 //         }),
-//         sound: new SoundComponent({
+//         sound: new SoundBehavior({
 //           url: hitSound,
 //           volume: 0.3
 //         })
 //       };
-//       target.addComponentDictionary(components);
-//       components.animation.once('animation:done', () => {
-//         target.removeComponentDictionary(components);
+//       target.addComponentDictionary(behaviors);
+//       behaviors.animation.once('animation:done', () => {
+//         target.removeComponentDictionary(behaviors);
 //         done();
 //       });
 //     });

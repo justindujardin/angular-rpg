@@ -1,7 +1,7 @@
 import * as _ from 'underscore';
 import {Point} from '../../game/pow-core/point';
-import {TickedComponent} from '../../game/pow2/scene/components/tickedComponent';
-import {TileObject} from '../../game/pow2/tile/tileObject';
+import {TickedBehavior} from '../../game/pow2/scene/behaviors/ticked-behavior';
+import {TileObject} from '../../game/pow2/tile/tile-object';
 import {Component} from '@angular/core';
 
 export interface IAnimationConfig {
@@ -40,7 +40,7 @@ export interface IAnimationTask extends IAnimationConfig {
   selector: 'animated-behavior',
   template: '<ng-content></ng-content>'
 })
-export class AnimatedBehaviorComponent extends TickedComponent {
+export class AnimatedBehaviorComponent extends TickedBehavior {
   host: TileObject;
 
   static EVENTS = {

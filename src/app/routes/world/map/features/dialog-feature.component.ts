@@ -1,7 +1,7 @@
 import {TiledFeatureComponent, TiledMapFeatureData} from '../map-feature.component';
 import {Component, Input, ViewEncapsulation, ChangeDetectionStrategy, EventEmitter, Output} from '@angular/core';
 import {Observable} from 'rxjs';
-import {IScene} from '../../../../../game/pow2/interfaces/IScene';
+import {IScene} from '../../../../../game/pow2/scene/scene.model';
 
 @Component({
   selector: 'dialog-feature',

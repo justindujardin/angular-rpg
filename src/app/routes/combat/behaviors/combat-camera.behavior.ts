@@ -13,11 +13,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {CameraComponent} from '../../../../game/pow2/scene/components/cameraComponent';
-import {GameTileMap} from '../../../../game/gameTileMap';
-import {SceneView} from '../../../../game/pow2/scene/sceneView';
+import {CameraBehavior} from '../../../../game/pow2/scene/behaviors/camera-behavior';
+import {GameTileMap} from '../../../scene/game-tile-map';
+import {SceneView} from '../../../../game/pow2/scene/scene-view';
 import {Rect} from '../../../../game/pow-core/rect';
-export class CombatCameraBehavior extends CameraComponent {
+export class CombatCameraBehavior extends CameraBehavior {
   host: GameTileMap;
 
   connectBehavior(): boolean {

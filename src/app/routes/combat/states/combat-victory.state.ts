@@ -15,7 +15,7 @@
  */
 import * as _ from 'underscore';
 import {CombatMachineState} from './combat-base.state';
-import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
+import {GameEntityObject} from '../../../scene/game-entity-object';
 import {HeroModel} from '../../../../game/rpg/models/heroModel';
 import {ItemModel} from '../../../../game/rpg/models/itemModel';
 import {CombatStateMachineComponent} from './combat.machine';

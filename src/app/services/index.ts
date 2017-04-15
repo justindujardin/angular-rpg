@@ -14,11 +14,11 @@
  limitations under the License.
  */
 import {Animate} from './animate';
-import {RPGGame} from './rpgGame';
-import {GameWorld} from './gameWorld';
+import {RPGGame} from './rpg-game';
+import {GameWorld} from './game-world';
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {PowCoreModule} from '../../game/pow-core/index';
-import {SpriteRender} from './spriteRender';
+import {SpriteRender} from './sprite-render';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {Visibility} from './visibility';
@@ -27,7 +27,7 @@ import {CombatService} from './combat.service';
 import {NotificationService} from '../components/notification/notification.service';
 export * from './animate';
 export * from '../components/notification/notification.service';
-export * from './rpgGame';
+export * from './rpg-game';
 
 export const SERVICE_PROVIDERS = [
   Animate,

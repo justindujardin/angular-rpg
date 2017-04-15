@@ -14,13 +14,13 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {ISceneObject, ISceneView, IScene} from '../interfaces/IScene';
+import {ISceneObject, ISceneView, IScene} from './scene.model';
 import {IWorld, IWorldObject} from '../../pow-core/world';
-import {SceneSpatialDatabase} from './sceneSpatialDatabase';
+import {SceneSpatialDatabase} from './scene-spatial-database';
 import {IProcessObject} from '../../pow-core/time';
 import {Events} from '../../pow-core/events';
 import {IBehavior} from '../../pow-core/behavior';
-import {GameWorld} from '../../../app/services/gameWorld';
+import {GameWorld} from '../../../app/services/game-world';
 
 export class Scene extends Events implements IScene, IProcessObject, IWorldObject {
   id: string = _.uniqueId('scene');

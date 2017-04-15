@@ -14,10 +14,10 @@
  limitations under the License.
  */
 import {TiledMapFeatureData, TiledFeatureComponent} from '../map-feature.component';
-import {GameEntityObject} from '../../../../../game/rpg/objects/gameEntityObject';
-import {IZoneMatch} from '../../../../../game/rpg/game';
+import {GameEntityObject} from '../../../../scene/game-entity-object';
 import {PlayerBehaviorComponent} from '../../behaviors/player-behavior';
 import {Component, Input} from '@angular/core';
+import {IZoneMatch} from '../../../../models/combat/combat.model';
 /**
  * A map feature that represents a fixed combat encounter.
  *

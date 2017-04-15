@@ -9,7 +9,7 @@ import {LoadingService} from './loading.service';
     <div class="loading-wrapper">
       <div class="loading-wrapper-inner hero-container">
         <h1>
-          <a target="_blank" href="https://github.com/justindujardin/angular2-rpg">{{loadingService.title$ | async}}</a>
+          <a target="_blank" href="https://github.com/justindujardin/angular-rpg">{{loadingService.title$ | async}}</a>
         </h1>
         <p>{{loadingService.message$ | async}}</p>
       </div>

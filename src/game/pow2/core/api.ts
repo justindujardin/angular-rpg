@@ -42,41 +42,8 @@ export interface ISpriteMeta {
 }
 
 export const data = {
-  maps: {},
-  sprites: {},
-  items: {},
-  creatures: [],
-  weapons: [],
-  armor: []
+  sprites: {}
 };
-
-/**
- * Register data on the pow2 module.
- * @param {String} key The key to store the value under
- * @param {*} value The value
- */
-export function registerData(key: string, value: any) {
-  data[key] = value;
-}
-
-export function getData(key: string): any {
-  return data[key];
-}
-
-export function registerMap(name: string, value: Object) {
-  data.maps[name] = value;
-}
-
-/**
- * Describe a dictionary of sprites.  This can be use to
- */
-export function describeSprites(value: Object) {
-  for (let prop in value) {
-    if (value.hasOwnProperty(prop)) {
-      data.sprites[prop] = _.extend(data.sprites[prop] || {}, value[prop]);
-    }
-  }
-}
 
 /**
  * Register a dictionary of sprite meta data.  This is for automatically
@@ -93,18 +60,4 @@ export function registerSprites(name: string, value: Object) {
 
 export function getSpriteMeta(name: string): ISpriteMeta {
   return data.sprites[name] as ISpriteMeta;
-}
-
-export function registerCreatures(level, creatures) {
-  _.each(creatures, (c) => {
-    data.creatures.push(_.extend(c, {level}));
-  });
-}
-
-export function getMap(name: string) {
-  return data.maps[name];
-}
-
-export function getMaps() {
-  return data.maps;
 }

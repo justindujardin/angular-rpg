@@ -14,10 +14,10 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {GameFeatureObject} from '../../../../game/rpg/objects/gameFeatureObject';
-import {TickedComponent} from '../../../../game/pow2/scene/components/tickedComponent';
+import {GameFeatureObject} from '../../../scene/game-feature-object';
+import {TickedBehavior} from '../../../../game/pow2/scene/behaviors/ticked-behavior';
 import {Rect} from '../../../../game/pow-core/rect';
-import {TileObject} from '../../../../game/pow2/tile/tileObject';
+import {TileObject} from '../../../../game/pow2/tile/tile-object';
 import {NamedMouseElement} from '../../../../game/pow2/core/input';
 import {Component, Input} from '@angular/core';
 import {Scene} from '../../../../game/pow2/scene/scene';
@@ -26,7 +26,7 @@ import {Scene} from '../../../../game/pow2/scene/scene';
   selector: 'map-feature-input-behavior',
   template: `<ng-content></ng-content>`
 })
-export class MapFeatureInputBehaviorComponent extends TickedComponent {
+export class MapFeatureInputBehaviorComponent extends TickedBehavior {
   hitBox: Rect = new Rect(0, 0, 1, 1);
   hits: TileObject[] = [];
   mouse: NamedMouseElement = null;

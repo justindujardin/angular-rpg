@@ -8,13 +8,13 @@ import {
   ViewChild,
   ChangeDetectionStrategy
 } from '@angular/core';
-import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
+import {GameEntityObject} from '../../../scene/game-entity-object';
 import {CombatPlayerRenderBehaviorComponent} from './behaviors/combat-player-render.behavior';
-import {SceneComponent} from '../../../../game/pow2/scene/sceneComponent';
+import {SceneObjectBehavior} from '../../../../game/pow2/scene/scene-object-behavior';
 import {CombatAttackBehaviorComponent} from './behaviors/actions/combat-attack.behavior';
 import {CombatComponent} from './combat.component';
 import {Entity} from '../../../models/entity/entity.model';
-import {GameTileMap} from '../../../../game/gameTileMap';
+import {GameTileMap} from '../../../scene/game-tile-map';
 import {CombatEncounterBehaviorComponent} from '../behaviors/combat-encounter.behavior';
 import {PlayerBehaviorComponent} from '../behaviors/player-behavior';
 import {PlayerCameraBehaviorComponent} from '../behaviors/player-camera.behavior';
@@ -23,11 +23,11 @@ import {PlayerRenderBehaviorComponent} from '../behaviors/player-render.behavior
 import {PlayerTriggerBehaviorComponent} from '../behaviors/player-look.behavior';
 import {Scene} from '../../../../game/pow2/scene/scene';
 import {Point} from '../../../../game/pow-core/point';
-import {ISceneViewRenderer} from '../../../../game/pow2/interfaces/IScene';
-import {SceneView} from '../../../../game/pow2/scene/sceneView';
-import {TileObjectRenderer} from '../../../../game/pow2/tile/render/tileObjectRenderer';
+import {ISceneViewRenderer} from '../../../../game/pow2/scene/scene.model';
+import {SceneView} from '../../../../game/pow2/scene/scene-view';
+import {TileObjectRenderer} from '../../../../game/pow2/tile/render/tile-object-renderer';
 import {Rect} from '../../../../game/pow-core/rect';
-import {GameFeatureObject} from '../../../../game/rpg/objects/gameFeatureObject';
+import {GameFeatureObject} from '../../../scene/game-feature-object';
 import {TiledFeatureComponent} from './map-feature.component';
 import {Observable, BehaviorSubject} from 'rxjs';
 
@@ -48,7 +48,7 @@ import {Observable, BehaviorSubject} from 'rxjs';
 `
 })
 export class WorldPlayerComponent extends GameEntityObject implements AfterViewInit, OnDestroy, ISceneViewRenderer {
-  @ViewChildren('render,collision,path,player,trigger,camera') behaviors: QueryList<SceneComponent>;
+  @ViewChildren('render,collision,path,player,trigger,camera') behaviors: QueryList<SceneObjectBehavior>;
 
   @Input() model: Entity;
   @Input() scene: Scene;
@@ -67,14 +67,14 @@ export class WorldPlayerComponent extends GameEntityObject implements AfterViewI
   ngAfterViewInit(): void {
     this.setSprite(this.model.icon);
     this.scene.addObject(this);
-    this.behaviors.forEach((c: SceneComponent) => {
+    this.behaviors.forEach((c: SceneObjectBehavior) => {
       this.addBehavior(c);
     });
   }
 
   ngOnDestroy(): void {
     this.scene.removeObject(this);
-    this.behaviors.forEach((c: SceneComponent) => {
+    this.behaviors.forEach((c: SceneObjectBehavior) => {
       this.removeBehavior(c);
     });
     this.destroy();

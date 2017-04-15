@@ -6,7 +6,6 @@ import {CommonModule} from '@angular/common';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpModule} from '@angular/http';
 import {PowCoreModule} from '../game/pow-core/index';
-import {GameModule} from '../game/game.module';
 import {ROUTES} from './app.routes';
 import {rootReducer} from './models/index';
 import {CombatModule} from './routes/combat/index';
@@ -33,7 +32,6 @@ export const APP_IMPORTS = [
   CombatModule.forRoot(),
   WorldModule.forRoot(),
   PowCoreModule.forRoot(),
-  GameModule.forRoot(),
 
   ReactiveFormsModule,
   RouterModule.forRoot(ROUTES, {useHash: true}),

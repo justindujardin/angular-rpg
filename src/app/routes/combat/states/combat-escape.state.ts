@@ -14,7 +14,7 @@
  limitations under the License.
  */
 import {CombatMachineState} from './combat-base.state';
-import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
+import {GameEntityObject} from '../../../scene/game-entity-object';
 import {CombatStateMachineComponent} from './combat.machine';
 import {Component} from '@angular/core';
 

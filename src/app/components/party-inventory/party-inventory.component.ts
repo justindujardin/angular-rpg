@@ -20,7 +20,7 @@ import {ArmorModel} from '../../../game/rpg/models/armorModel';
 import {HeroModel} from '../../../game/rpg/models/heroModel';
 import {UsableModel} from '../../../game/rpg/models/usableModel';
 import {GameStateModel} from '../../../game/rpg/models/gameStateModel';
-import {RPGGame} from '../../services/rpgGame';
+import {RPGGame} from '../../services/rpg-game';
 import {NotificationService} from '../notification/notification.service';
 import {GameState} from '../../models/game-state/game-state.model';
 import {Item} from '../../models/item';

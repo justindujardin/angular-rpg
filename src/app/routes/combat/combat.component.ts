@@ -10,21 +10,21 @@ import {
   OnDestroy
 } from '@angular/core';
 import {IProcessObject} from '../../../game/pow-core/time';
-import {TileObjectRenderer} from '../../../game/pow2/tile/render/tileObjectRenderer';
+import {TileObjectRenderer} from '../../../game/pow2/tile/render/tile-object-renderer';
 import {NamedMouseElement, PowInput} from '../../../game/pow2/core/input';
-import {RPGGame} from '../../services/rpgGame';
-import {GameWorld} from '../../services/gameWorld';
+import {RPGGame} from '../../services/rpg-game';
+import {GameWorld} from '../../services/game-world';
 import {NotificationService} from '../../components/notification/notification.service';
 import {Point, IPoint} from '../../../game/pow-core/point';
 import {Scene} from '../../../game/pow2/scene/scene';
-import {CameraComponent} from '../../../game/pow2/scene/components/cameraComponent';
-import {SpriteComponent} from '../../../game/pow2/tile/components/spriteComponent';
-import {SceneComponent} from '../../../game/pow2/scene/sceneComponent';
-import {GameEntityObject} from '../../../game/rpg/objects/gameEntityObject';
-import {SceneObject} from '../../../game/pow2/scene/sceneObject';
+import {CameraBehavior} from '../../../game/pow2/scene/behaviors/camera-behavior';
+import {SpriteComponent} from '../../../game/pow2/tile/behaviors/sprite.behavior';
+import {SceneObjectBehavior} from '../../../game/pow2/scene/scene-object-behavior';
+import {GameEntityObject} from '../../scene/game-entity-object';
+import {SceneObject} from '../../../game/pow2/scene/scene-object';
 import {ItemModel} from '../../../game/rpg/models/itemModel';
 import {HeroModel} from '../../../game/rpg/models/heroModel';
-import {TileMapView} from '../../../game/pow2/tile/tileMapView';
+import {TileMapView} from '../../../game/pow2/tile/tile-map-view';
 import {UIAttachment} from './behaviors/choose-action.machine';
 import {CombatRunSummary} from './states/combat-escape.state';
 import {CombatVictorySummary} from './states/combat-victory.state';
@@ -38,7 +38,7 @@ import {Store} from '@ngrx/store';
 import {CombatService} from '../../services/combat.service';
 import {Subscription, ReplaySubject, Observable} from 'rxjs/Rx';
 import {CombatStateMachineComponent} from './states/combat.machine';
-import {GameTileMap} from '../../../game/gameTileMap';
+import {GameTileMap} from '../../scene/game-tile-map';
 import {getEncounter, getEncounterEnemies} from '../../models/combat/combat.reducer';
 import {CombatEnemyComponent} from './combat-enemy.entity';
 import {CombatPlayerComponent} from './combat-player.entity';
@@ -233,7 +233,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
    * Update the camera for this frame.
    */
   processCamera() {
-    this.cameraComponent = this.scene.componentByType(CombatCameraBehavior) as CameraComponent;
+    this.cameraComponent = this.scene.componentByType(CombatCameraBehavior) as CameraBehavior;
     super.processCamera();
   }
 
@@ -248,7 +248,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
       this.objectRenderer.render(player, player, this);
     });
 
-    const sprites = this.scene.componentsByType(SpriteComponent) as SceneComponent[];
+    const sprites = this.scene.componentsByType(SpriteComponent) as SceneObjectBehavior[];
     _.each(sprites, (sprite: any) => {
       this.objectRenderer.render(sprite.host, sprite, this);
     });

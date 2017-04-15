@@ -2,7 +2,7 @@ import {Resolve, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/rou
 import {Injectable} from '@angular/core';
 import 'rxjs/add/observable/of';
 import {LoadingService} from '../../components/loading/loading.service';
-import {GameWorld} from '../../services/gameWorld';
+import {GameWorld} from '../../services/game-world';
 
 @Injectable()
 export class GameResolver implements Resolve<any> {

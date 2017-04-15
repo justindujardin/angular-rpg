@@ -9,7 +9,7 @@ import {
   OnDestroy
 } from '@angular/core';
 import {Observable, BehaviorSubject, Subject} from 'rxjs';
-import {IScene} from '../../../../../game/pow2/interfaces/IScene';
+import {IScene} from '../../../../../game/pow2/scene/scene.model';
 import {ITemplateItem, ITemplateWeapon} from '../../../../models/game-data/game-data.model';
 import {
   GameStateAddInventoryAction,
@@ -29,7 +29,7 @@ import {
 } from '../../../../models/selectors';
 import {Item} from '../../../../models/item';
 import {AppState} from '../../../../app.model';
-import {RPGGame} from '../../../../services/rpgGame';
+import {RPGGame} from '../../../../services/rpg-game';
 import {NotificationService} from '../../../../components/notification/notification.service';
 import {Store} from '@ngrx/store';
 import Immutable from 'immutable';

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable, ReplaySubject} from 'rxjs/Rx';
-import {ResourceLoader} from '../../../game/pow-core/resourceLoader';
-import {TiledTMXResource} from '../../../game/pow-core/resources/tiled/tiledTmx';
+import {ResourceManager} from '../../../game/pow-core/resource-manager';
+import {TiledTMXResource} from '../../../game/pow-core/resources/tiled/tiled-tmx.resource';
 import {getMapUrl} from '../../../game/pow2/core/api';
 import {GameState} from './game-state.model';
 import {AppState} from '../../app.model';
@@ -9,7 +9,7 @@ import {AppState} from '../../app.model';
 @Injectable()
 export class GameStateService {
 
-  constructor(private loader: ResourceLoader) {
+  constructor(private loader: ResourceManager) {
   }
 
   private _worldMap$ = new ReplaySubject<TiledTMXResource>(1);

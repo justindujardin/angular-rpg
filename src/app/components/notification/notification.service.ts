@@ -14,9 +14,9 @@
  limitations under the License.
  */
 import {Injectable} from '@angular/core';
-import {RPGGame} from '../../services/rpgGame';
+import {RPGGame} from '../../services/rpg-game';
 import {Animate} from '../../services/animate';
-import {GameWorld} from '../../services/gameWorld';
+import {GameWorld} from '../../services/game-world';
 import {IWorldObject} from '../../../game/pow-core/world';
 import {IProcessObject} from '../../../game/pow-core/time';
 

@@ -14,8 +14,8 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {GameWorld} from '../../../../app/services/gameWorld';
-import {StateMachine} from '../../../../game/pow2/core/stateMachine';
+import {GameWorld} from '../../../services/game-world';
+import {StateMachine} from '../../../../game/pow2/core/state-machine';
 import {IState} from '../../../../game/pow2/core/state';
 import {CombatStartStateComponent} from './combat-start.state';
 import {Component, AfterViewInit, ViewChildren, QueryList, Input} from '@angular/core';
@@ -25,8 +25,8 @@ import {Scene} from '../../../../game/pow2/scene/scene';
 import {isDefeated} from '../../../models/combat/combat.api';
 import {CombatPlayerComponent} from '../combat-player.entity';
 import {CombatEnemyComponent} from '../combat-enemy.entity';
-import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
-import {TileMapView} from '../../../../game/pow2/tile/tileMapView';
+import {GameEntityObject} from '../../../scene/game-entity-object';
+import {TileMapView} from '../../../../game/pow2/tile/tile-map-view';
 
 /**
  * Completion callback for a player action.

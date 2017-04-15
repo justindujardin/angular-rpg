@@ -1,7 +1,7 @@
 import {Component, ViewEncapsulation, OnInit} from '@angular/core';
 import {NotificationService} from '../../components/notification/notification.service';
-import {RPGGame} from '../../services/rpgGame';
-import {GameWorld} from '../../services/gameWorld';
+import {RPGGame} from '../../services/rpg-game';
+import {GameWorld} from '../../services/game-world';
 
 @Component({
   selector: 'game',

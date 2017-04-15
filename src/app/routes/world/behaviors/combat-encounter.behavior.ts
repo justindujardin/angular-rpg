@@ -1,14 +1,14 @@
-import {GameWorld} from '../../../../app/services/gameWorld';
-import {SceneComponent} from '../../../../game/pow2/scene/sceneComponent';
-import {GameTileMap} from '../../../../game/gameTileMap';
-import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
+import {GameWorld} from '../../../services/game-world';
+import {SceneObjectBehavior} from '../../../../game/pow2/scene/scene-object-behavior';
+import {GameTileMap} from '../../../scene/game-tile-map';
+import {GameEntityObject} from '../../../scene/game-entity-object';
 import {PlayerBehaviorComponent} from './player-behavior';
 import {Point} from '../../../../game/pow-core/point';
-import {IZoneMatch} from '../../../../game/rpg/game';
 import {GameStateSetKeyDataAction} from '../../../models/game-state/game-state.actions';
 import {getGameBattleCounter} from '../../../models/selectors';
 import {Component, Input} from '@angular/core';
 import {Scene} from '../../../../game/pow2/scene/scene';
+import {IZoneMatch} from '../../../models/combat/combat.model';
 
 /**
  * A component that when added to a GameTileMap listens
@@ -20,7 +20,7 @@ import {Scene} from '../../../../game/pow2/scene/scene';
   selector: 'combat-encounter-behavior',
   template: `<ng-content></ng-content>`
 })
-export class CombatEncounterBehaviorComponent extends SceneComponent {
+export class CombatEncounterBehaviorComponent extends SceneObjectBehavior {
   host: GameTileMap;
   battleCounter: number;
   combatFlag: boolean = false;

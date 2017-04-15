@@ -11,13 +11,13 @@ import {
   EventEmitter
 } from '@angular/core';
 import {Observable, Subject, Subscription} from 'rxjs';
-import {RPGGame} from '../../../../services/rpgGame';
+import {RPGGame} from '../../../../services/rpg-game';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../../app.model';
 import {NotificationService} from '../../../../components/notification/notification.service';
 import {getGamePartyGold, getGameParty} from '../../../../models/selectors';
 import {Entity} from '../../../../models/entity/entity.model';
-import {IScene} from '../../../../../game/pow2/interfaces/IScene';
+import {IScene} from '../../../../../game/pow2/scene/scene.model';
 import {GameStateHealPartyAction} from '../../../../models/game-state/game-state.actions';
 import {BaseEntity} from '../../../../models/base-entity';
 
@@ -71,7 +71,7 @@ export class TempleFeatureComponent extends TiledFeatureComponent implements OnI
           this.notify.show('You don\'t have enough money');
         }
         else if (alreadyHealed) {
-          this.notify.show('Keep your money.\nYour entity is already fully healed.');
+          this.notify.show('Keep your money.\nYour party is already fully healed.');
         }
         else {
           const partyIds: string[] = _.map(party, (p) => p.eid);
@@ -79,8 +79,8 @@ export class TempleFeatureComponent extends TiledFeatureComponent implements OnI
             cost,
             partyIds
           }));
-          const msg = 'Your entity has been healed! \nYou have (' + (partyGold - cost) + ') monies.';
-          this.notify.show(msg, null, 2500);
+          const msg = 'Your party has been healed! \nYou have (' + (partyGold - cost) + ') monies.';
+          this.notify.show(msg, null, 5000);
         }
         _.defer(() => {
           this.onClose.next({});

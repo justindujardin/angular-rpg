@@ -9,9 +9,9 @@ import {
   forwardRef,
   ViewChild
 } from '@angular/core';
-import {GameEntityObject} from '../../../game/rpg/objects/gameEntityObject';
+import {GameEntityObject} from '../../scene/game-entity-object';
 import {CombatPlayerRenderBehaviorComponent} from './behaviors/combat-player-render.behavior';
-import {SceneComponent} from '../../../game/pow2/scene/sceneComponent';
+import {SceneObjectBehavior} from '../../../game/pow2/scene/scene-object-behavior';
 import {CombatAttackBehaviorComponent} from './behaviors/actions/combat-attack.behavior';
 // import {CombatMagicBehavior} from './behaviors/actions/combat-magic.behavior';
 // import {CombatItemBehavior} from './behaviors/actions/combat-item.behavior';
@@ -34,7 +34,7 @@ import {Entity} from '../../models/entity/entity.model';
 `
 })
 export class CombatPlayerComponent extends GameEntityObject implements AfterViewInit, OnDestroy {
-  @ViewChildren('render,animation,attackCombatant,magic,guard,item,run') behaviors: QueryList<SceneComponent>;
+  @ViewChildren('render,animation,attackCombatant,magic,guard,item,run') behaviors: QueryList<SceneObjectBehavior>;
 
   @ViewChild(CombatPlayerRenderBehaviorComponent) render: CombatPlayerRenderBehaviorComponent;
 
@@ -46,14 +46,14 @@ export class CombatPlayerComponent extends GameEntityObject implements AfterView
 
   ngAfterViewInit(): void {
     this.combat.scene.addObject(this);
-    this.behaviors.forEach((c: SceneComponent) => {
+    this.behaviors.forEach((c: SceneObjectBehavior) => {
       this.addBehavior(c);
     });
   }
 
   ngOnDestroy(): void {
     this.combat.scene.removeObject(this);
-    this.behaviors.forEach((c: SceneComponent) => {
+    this.behaviors.forEach((c: SceneObjectBehavior) => {
       this.removeBehavior(c);
     });
     this.destroy();

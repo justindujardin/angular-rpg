@@ -13,9 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {GameFeatureObject} from '../../../../game/rpg/objects/gameFeatureObject';
-import {TickedComponent} from '../../../../game/pow2/scene/components/tickedComponent';
-import {TileObject} from '../../../../game/pow2/tile/tileObject';
+import {GameFeatureObject} from '../../../scene/game-feature-object';
+import {TickedBehavior} from '../../../../game/pow2/scene/behaviors/ticked-behavior';
+import {TileObject} from '../../../../game/pow2/tile/tile-object';
 import {CollisionBehaviorComponent} from '../../../behaviors/collision.behavior';
 import {PlayerBehaviorComponent} from './player-behavior';
 import {Component, Output, EventEmitter} from '@angular/core';
@@ -28,7 +28,7 @@ import {Component, Output, EventEmitter} from '@angular/core';
   selector: 'player-look-behavior',
   template: `<ng-content></ng-content>`
 })
-export class PlayerTriggerBehaviorComponent extends TickedComponent {
+export class PlayerTriggerBehaviorComponent extends TickedBehavior {
   host: TileObject;
   collider: CollisionBehaviorComponent = null;
   player: PlayerBehaviorComponent = null;

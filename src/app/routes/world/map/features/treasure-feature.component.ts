@@ -14,7 +14,7 @@
  limitations under the License.
  */
 import {TiledFeatureComponent, TiledMapFeatureData} from '../map-feature.component';
-import {TileObject} from '../../../../../game/pow2/tile/tileObject';
+import {TileObject} from '../../../../../game/pow2/tile/tile-object';
 import {Component, Input} from '@angular/core';
 import {GameStateAddGoldAction} from '../../../../models/game-state/game-state.actions';
 import {EntityAddItemAction} from '../../../../models/entity/entity.actions';

@@ -16,7 +16,7 @@
 import * as _ from 'underscore';
 import {Component} from '@angular/core';
 import {CombatMachineState} from './combat-base.state';
-import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
+import {GameEntityObject} from '../../../scene/game-entity-object';
 import {CombatStateMachineComponent, IPlayerAction} from './combat.machine';
 import {CombatAttackBehaviorComponent} from '../behaviors/actions/combat-attack.behavior';
 import {isDefeated} from '../../../models/combat/combat.api';

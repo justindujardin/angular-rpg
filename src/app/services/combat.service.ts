@@ -1,18 +1,18 @@
 import {Injectable, Inject, forwardRef} from '@angular/core';
 import {Observable, ReplaySubject} from 'rxjs/Rx';
-import {ResourceLoader} from '../../game/pow-core/resourceLoader';
-import {GameWorld} from './gameWorld';
-import {GameTileMap} from '../../game/gameTileMap';
+import {ResourceManager} from '../../game/pow-core/resource-manager';
+import {GameWorld} from './game-world';
+import {GameTileMap} from '../scene/game-tile-map';
 import {CombatEncounter} from '../models/combat/combat.model';
 import {getMapUrl} from '../../game/pow2/core/api';
-import {TiledTMXResource} from '../../game/pow-core/resources/tiled/tiledTmx';
+import {TiledTMXResource} from '../../game/pow-core/resources/tiled/tiled-tmx.resource';
 import {BaseEntity} from '../models/base-entity';
 
 @Injectable()
 export class CombatService {
 
   constructor(@Inject(forwardRef(() => GameWorld)) private gameWorld: GameWorld,
-              private resourceLoader: ResourceLoader) {
+              private resourceLoader: ResourceManager) {
   }
 
   private _combatMap$ = new ReplaySubject<GameTileMap>(1);

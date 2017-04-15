@@ -1,11 +1,11 @@
 import * as _ from 'underscore';
 import {Component} from '@angular/core';
-import {TickedComponent} from '../../../../game/pow2/scene/components/tickedComponent';
+import {TickedBehavior} from '../../../../game/pow2/scene/behaviors/ticked-behavior';
 import {Headings} from '../../world/behaviors/player-render.behavior';
 import {AnimatedBehaviorComponent, IAnimationConfig} from '../../../behaviors/animated.behavior';
 import {Point} from '../../../../game/pow-core/point';
 import {CombatService} from '../../../services/combat.service';
-import {GameEntityObject} from '../../../../game/rpg/objects/gameEntityObject';
+import {GameEntityObject} from '../../../scene/game-entity-object';
 export enum StateFrames {
   DEFAULT = 10,
   SWING = 1,
@@ -20,7 +20,7 @@ export enum StateFrames {
   selector: 'combat-player-render-behavior',
   template: `<ng-content></ng-content>`
 })
-export class CombatPlayerRenderBehaviorComponent extends TickedComponent {
+export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
   _elapsed: number = 0;
   private _renderFrame: number = 3;
   state: string = '';
