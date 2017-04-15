@@ -25,7 +25,8 @@ import {NotificationService} from '../../../../components/notification/notificat
 
 @Component({
   selector: 'treasure-feature',
-  template: `<ng-content></ng-content>`
+  template: `
+    <ng-content></ng-content>`
 })
 export class TreasureFeatureComponent extends TiledFeatureComponent {
   @Input() feature: TiledMapFeatureData;
@@ -36,7 +37,7 @@ export class TreasureFeatureComponent extends TiledFeatureComponent {
   }
 
   connectBehavior(): boolean {
-    if(!this.properties || !this.properties.id) {
+    if (!this.properties || !this.properties.id) {
       console.error('Treasure must have a given id so it may be hidden');
       return false;
     }

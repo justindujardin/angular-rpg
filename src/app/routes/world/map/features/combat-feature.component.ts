@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {TiledMapFeatureData, TiledFeatureComponent} from '../map-feature.component';
+import {TiledFeatureComponent, TiledMapFeatureData} from '../map-feature.component';
 import {GameEntityObject} from '../../../../scene/game-entity-object';
 import {PlayerBehaviorComponent} from '../../behaviors/player-behavior';
 import {Component, Input} from '@angular/core';
@@ -35,7 +35,7 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
   @Input() feature: TiledMapFeatureData;
 
   connectBehavior(): boolean {
-    if(!this.properties || !this.properties.id) {
+    if (!this.properties || !this.properties.id) {
       console.error('Fixed encounters must have a given id so they may be hidden');
       return false;
     }
