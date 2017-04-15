@@ -7,9 +7,10 @@ describe('AppComponent', () => {
   });
 
   it('should have a title', () => {
-    let subject = browser.getTitle();
-    let result = 'Pow2';
-    expect(subject).toEqual(result);
+    browser.getTitle().then((title: string) => {
+      const result = 'Angular RPG';
+      expect(title).toEqual(result);
+    });
   });
 
   // it('should have header', () => {

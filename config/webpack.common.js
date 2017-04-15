@@ -27,7 +27,7 @@ const SpriteSheetPlugin = require('./sprite-sheet-plugin');
 const HMR = helpers.hasProcessFlag('hot');
 const AOT = helpers.hasNpmFlag('aot');
 const METADATA = {
-  title: 'Pow2',
+  title: 'Angular RPG',
   baseUrl: '/',
   isDevServer: helpers.isWebpackDevServer()
 };
