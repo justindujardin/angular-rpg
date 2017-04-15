@@ -1,13 +1,13 @@
-* **What kind of change does this PR introduce?** (Bug fix, feature, docs update, ...)
+# What is changed?
 
+1. Tell us about your changes
+2. In bullet list form
 
+# What is the current behavior?
 
-* **What is the current behavior?** (You can also link to an open issue here)
+# What is the new behavior?
 
+# Implementation Details
 
-
-* **What is the new behavior (if this is a feature change)?**
-
-
-
-* **Other information**:
+- [x] Some important thing that is finished
+- [ ] Some other important thing that is still TODO
