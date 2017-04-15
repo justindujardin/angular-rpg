@@ -26,9 +26,7 @@ export class TileMapPathBehavior extends TileObjectBehavior {
 
   _graph: any = null; // Astar graph object
 
-  constructor(public tileMap: TileMap) {
-    super();
-  }
+  public tileMap: TileMap;
 
   connectBehavior(): boolean {
     return super.connectBehavior() && !!this.tileMap;

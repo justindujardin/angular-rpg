@@ -64,9 +64,9 @@ export class TileObject extends SceneObject implements TileObjectOptions {
   meta: any;
   frame: number;
 
-  constructor(options: TileObjectOptions = DEFAULTS) {
-    super(options);
-    _.extend(this, _.defaults(options || {}, DEFAULTS));
+  constructor() {
+    super({});
+    _.extend(this, _.defaults({}, DEFAULTS));
     return this;
   }
 

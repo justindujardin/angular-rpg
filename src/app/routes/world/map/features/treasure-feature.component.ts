@@ -36,7 +36,7 @@ export class TreasureFeatureComponent extends TiledFeatureComponent {
   }
 
   connectBehavior(): boolean {
-    if (typeof this.host.id === 'undefined') {
+    if(!this.properties || !this.properties.id) {
       console.error('Treasure must have a given id so it may be hidden');
       return false;
     }

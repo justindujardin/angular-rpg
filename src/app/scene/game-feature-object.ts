@@ -29,7 +29,8 @@ export class GameFeatureObject extends TileObject {
   frame: number;
 
   constructor(options: any) {
-    super(_.omit(options || {}, ['x', 'y']));
+    super();
+    _.extend(this, _.defaults({}, options));
     this.feature = options;
     this.point.x = options.x;
     this.point.y = options.y;

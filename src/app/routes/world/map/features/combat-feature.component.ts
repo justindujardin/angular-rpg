@@ -35,7 +35,7 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
   @Input() feature: TiledMapFeatureData;
 
   connectBehavior(): boolean {
-    if (typeof this.host.id === 'undefined') {
+    if(!this.properties || !this.properties.id) {
       console.error('Fixed encounters must have a given id so they may be hidden');
       return false;
     }
@@ -43,8 +43,7 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
   }
 
   enter(object: GameEntityObject): boolean {
-    this.party = <PlayerBehaviorComponent>
-      object.findBehavior(PlayerBehaviorComponent);
+    this.party = object.findBehavior(PlayerBehaviorComponent) as PlayerBehaviorComponent;
     if (!this.party) {
       return false;
     }
