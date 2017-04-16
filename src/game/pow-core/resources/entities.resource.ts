@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {Entity} from '../entity';
+import {BehaviorHost} from '../behavior-host';
 import {errors} from '../errors';
 import * as _ from 'underscore';
 
@@ -108,7 +108,7 @@ export class EntityFactory {
             return inputs[n];
           }) : [inputs];
 
-        const object: Entity = this.constructObject(type, inputValues);
+        const object: BehaviorHost = this.constructObject(type, inputValues);
 
         return Promise.all(_.map(tpl.components, (comp: IEntityObject) => {
           return new Promise<void>((resolve, reject) => {

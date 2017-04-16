@@ -4,13 +4,13 @@ import {IBehavior, IBehaviorHost} from './behavior';
 import {Events} from './events';
 
 /**
- * An Entity object is a container for groups of map.
+ * A BehaviorHost is a container for groups of components.
  *
  * Basic composite object that has a set of dynamic behaviors added to it through the
  * addition and removal of component objects.  Components may be looked up by type, and
- * may depend on siblings map for parts of their own behavior.
+ * may depend on siblings components for parts of their own behavior.
  */
-export class Entity extends Events implements IBehaviorHost {
+export class BehaviorHost extends Events implements IBehaviorHost {
   id: string;
   name: string;
 

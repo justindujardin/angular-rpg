@@ -15,13 +15,13 @@
  */
 import * as _ from 'underscore';
 import {SceneObjectBehavior} from './scene-object-behavior';
-import {Entity} from '../../pow-core/entity';
+import {BehaviorHost} from '../../pow-core/behavior-host';
 import {Scene} from './scene';
 import {Point, IPoint} from '../../pow-core/point';
 /**
  * An object that may exist in a `Scene` and receives time updates.
  */
-export class SceneObject extends Entity {
+export class SceneObject extends BehaviorHost {
   id: string;
   _uid: string = _.uniqueId('so');
   scene: Scene;

@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {Entity} from './entity';
+import {BehaviorHost} from './behavior-host';
 import {Events} from './events';
 import * as _ from 'underscore';
 /**
@@ -75,7 +75,7 @@ export interface IBehaviorHost extends IObject {
  */
 export class Behavior extends Events implements IBehavior {
   id: string = _.uniqueId('sc');
-  host: Entity;
+  host: BehaviorHost;
   name: string;
 
   connectBehavior(): boolean {

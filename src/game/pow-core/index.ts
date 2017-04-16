@@ -4,7 +4,7 @@ import {HttpModule} from '@angular/http';
 import {CommonModule} from '@angular/common';
 
 export * from './behavior';
-export * from './entity';
+export * from './behavior-host';
 export * from './errors';
 export * from './point';
 export * from './rect';
