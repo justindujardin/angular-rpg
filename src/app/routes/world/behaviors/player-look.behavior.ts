@@ -62,8 +62,8 @@ export class PlayerTriggerBehaviorComponent extends TickedBehavior {
     const headingY: number = this.host.point.y + this.player.heading.y;
     const isTouching: boolean = this.collider.collide(headingX, headingY, GameFeatureObject, results);
     const touched: GameFeatureObject = results[0];
-    const currentTouchId: string = this.featureObject ? this.featureObject.id : null;
-    const touchChanged: boolean = !!(touched && touched.id !== currentTouchId);
+    const currentTouchId: string = this.featureObject ? this.featureObject._uid : null;
+    const touchChanged: boolean = !!(touched && touched._uid !== currentTouchId);
     // No collisions for this tick
     if (!isTouching || !touched || touchChanged) {
       // If we were previously colliding with a feature, trigger the leave output.
