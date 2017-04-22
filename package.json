@@ -1,15 +1,31 @@
 {
-  "name": "angular2-webpack-starter",
-  "version": "5.4.1",
-  "description": "An Angular 2 Webpack Starter kit featuring Angular 2 (Router, Http, Forms, Services, Tests, E2E, Coverage), Karma, Protractor, Jasmine, Istanbul, TypeScript, and Webpack by AngularClass",
+  "name": "angular-rpg",
+  "version": "0.0.1",
+  "description": "Angular RPG game inspired by Final Fantasy--built with Typescript, Angular, rxjs, ngrx/store, and .",
+  "homepage": "https://github.com/justindujardin/angular-rpg",
+  "license": "MIT",
   "keywords": [
-    "angular2",
-    "webpack",
+    "angular",
+    "game",
+    "rpg",
+    "fantasy",
+    "sprites",
+    "2d",
+    "components",
+    "composition",
+    "ngrx",
+    "redux",
+    "rxjs",
     "typescript"
   ],
-  "author": "Patrick Stapleton <patrick@angularclass.com>",
-  "homepage": "https://github.com/angularclass/angular2-webpack-starter",
-  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/justindujardin/angular-rpg/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/justindujardin/angular-rpg.git"
+  },
+  "author": "Justin DuJardin <justin@dujardinconsulting.com>",
   "scripts": {
     "build:aot:prod": "npm run clean:dist && npm run clean:aot && webpack --config config/webpack.prod.js  --progress --profile --bail",
     "build:aot": "npm run build:aot:prod",
@@ -176,13 +192,6 @@
     "webpack-dll-bundles-plugin": "^1.0.0-beta.5",
     "webpack-md5-hash": "^0.0.5",
     "webpack-merge": "~2.4.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/angularclass/angular2-webpack-starter.git"
-  },
-  "bugs": {
-    "url": "https://github.com/angularclass/angular2-webpack-starter/issues"
   },
   "engines": {
     "node": ">= 4.2.1",
