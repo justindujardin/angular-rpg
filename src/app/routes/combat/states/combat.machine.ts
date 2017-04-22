@@ -72,8 +72,8 @@ export class CombatStateMachineComponent extends StateMachine implements AfterVi
 
   @Input() scene: Scene;
   @Input() encounter: CombatEncounter;
-  @Input() party: CombatPlayerComponent[] = [];
-  @Input() enemies: CombatEnemyComponent[] = [];
+  @Input() party: QueryList<CombatPlayerComponent>;
+  @Input() enemies: QueryList<CombatEnemyComponent>;
 
   @Input() view: TileMapView;
 
@@ -86,23 +86,23 @@ export class CombatStateMachineComponent extends StateMachine implements AfterVi
   }
 
   isFriendlyTurn(): boolean {
-    return this.current && !!_.find(this.party, (member) => member._uid === this.current._uid);
+    return !!(this.current && this.party.find((member) => member._uid === this.current._uid));
   }
 
   getLiveParty(): CombatPlayerComponent[] {
-    return _.reject(this.party, (obj: CombatPlayerComponent) => {
-      return isDefeated(obj.model);
+    return this.party.filter((obj: CombatPlayerComponent) => {
+      return !isDefeated(obj.model);
     });
   }
 
   getLiveEnemies(): CombatEnemyComponent[] {
-    return _.reject(this.enemies, (obj: CombatEnemyComponent) => {
-      return isDefeated(obj.model);
+    return this.enemies.filter((obj: CombatEnemyComponent) => {
+      return !isDefeated(obj.model);
     });
   }
 
   getRandomPartyMember(): GameEntityObject {
-    const players = <CombatPlayerComponent[]> _.shuffle(this.party);
+    const players = <CombatPlayerComponent[]> _.shuffle(this.party.toArray());
     while (players.length > 0) {
       const p = players.shift();
       if (!isDefeated(p.model)) {
@@ -113,7 +113,7 @@ export class CombatStateMachineComponent extends StateMachine implements AfterVi
   }
 
   getRandomEnemy(): GameEntityObject {
-    const players = <CombatEnemyComponent[]> _.shuffle(this.enemies);
+    const players = <CombatEnemyComponent[]> _.shuffle(this.enemies.toArray());
     while (players.length > 0) {
       const p = players.shift();
       if (!isDefeated(p.model)) {
@@ -124,16 +124,11 @@ export class CombatStateMachineComponent extends StateMachine implements AfterVi
   }
 
   partyDefeated(): boolean {
-    const deadList = _.reject(this.party, (obj: CombatPlayerComponent) => {
-      return isDefeated(obj.model);
-    });
-    return deadList.length === 0;
+    return this.getLiveParty().length === 0;
   }
 
   enemiesDefeated(): boolean {
-    return _.reject(this.enemies, (obj: CombatEnemyComponent) => {
-        return isDefeated(obj.model);
-      }).length === 0;
+    return this.getLiveEnemies().length === 0;
   }
 
 }

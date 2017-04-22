@@ -18,7 +18,7 @@ import {GameStateMachine} from '../../game/rpg/states/gameStateMachine';
 import {ResourceManager} from '../../game/pow-core/resource-manager';
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {GameStateLoadAction, GameStateNewAction} from '../models/game-state/game-state.actions';
+import {GameStateLoadAction, GameStateNewAction, GameStateTravelAction} from '../models/game-state/game-state.actions';
 import {AppState} from '../app.model';
 import {GameState} from '../models/game-state/game-state.model';
 import * as _ from 'underscore';
@@ -163,6 +163,7 @@ export class RPGGame {
         this.store.dispatch(new EntityAddBeingAction(warrior));
         this.store.dispatch(new EntityAddBeingAction(ranger));
         this.store.dispatch(new EntityAddBeingAction(healer));
+        this.store.dispatch(new GameStateTravelAction(initialState.map, initialState.position));
         resolve(true);
       }
     });

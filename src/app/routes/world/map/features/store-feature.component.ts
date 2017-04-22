@@ -10,14 +10,13 @@ import {
 } from '@angular/core';
 import {Observable, BehaviorSubject, Subject} from 'rxjs';
 import {IScene} from '../../../../../game/pow2/scene/scene.model';
-import {ITemplateItem, ITemplateWeapon} from '../../../../models/game-data/game-data.model';
+import {instantiateEntity, ITemplateItem, ITemplateWeapon} from '../../../../models/game-data/game-data.model';
 import {
   GameStateAddInventoryAction,
   GameStateAddGoldAction,
   GameStateRemoveInventoryAction
 } from '../../../../models/game-state/game-state.actions';
 import {EntityAddItemAction, EntityRemoveItemAction} from '../../../../models/entity/entity.actions';
-import {newGuid} from '../../../../models/base-entity';
 import {GameState} from '../../../../models/game-state/game-state.model';
 import {
   sliceGameState,
@@ -243,10 +242,7 @@ export class StoreFeatureComponent extends TiledFeatureComponent implements OnDe
         this.store.dispatch(new GameStateAddGoldAction(value));
       }
       else {
-        const itemInstance = Immutable.fromJS(item).merge({
-          eid: `${item.id}-${newGuid()}`,
-          category
-        }).toJS();
+        const itemInstance = instantiateEntity<Item>(item);
         this.notify.show(`Purchased ${item.name}.`, null, 1500);
         this.store.dispatch(new GameStateAddGoldAction(-value));
         this.store.dispatch(new EntityAddItemAction(itemInstance));

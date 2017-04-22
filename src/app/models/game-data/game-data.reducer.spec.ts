@@ -15,6 +15,10 @@ describe('GameData', () => {
         byId: {},
         allIds: []
       },
+      enemies: {
+        byId: {},
+        allIds: []
+      },
       items: {
         byId: {},
         allIds: []

@@ -13,27 +13,35 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {SceneObjectRenderer} from '../../scene/scene-object-renderer';
-import {Point} from '../../../pow-core/point';
-import {SceneView} from '../../scene/scene-view';
-export class TileObjectRenderer extends SceneObjectRenderer {
+import {IPoint, Point} from "../../../pow-core/point";
+import {SceneView} from "../../scene/scene-view";
+import {ISpriteMeta} from "../../core/api";
+
+export interface TileRenderable {
+  icon: string;
+  image: HTMLImageElement;
+  visible: boolean;
+  scale: number;
+  frame: number;
+}
+
+export class TileObjectRenderer {
   private _renderPoint: Point = new Point();
 
-  render(object: any, data: any, view: SceneView) { // TODO: typedef
+  render(object: TileRenderable, at: IPoint, view: SceneView, spriteMeta?: ISpriteMeta) {
 
-    if (!data.image || !object.visible) {
+    if (!object || !object.visible || !object.image) {
       return;
     }
 
     // Build render data.
-    this._renderPoint.set(object.renderPoint || object.point);
+    this._renderPoint.set(at);
     const point = this._renderPoint;
-    const c = data.meta; // TODO: interface this
     let sourceWidth: number = view.unitSize;
     let sourceHeight: number = view.unitSize;
-    if (c && typeof c.cellWidth !== 'undefined' && typeof c.cellHeight !== 'undefined') {
-      sourceWidth = c.cellWidth;
-      sourceHeight = c.cellHeight;
+    if (spriteMeta && typeof spriteMeta.cellWidth !== 'undefined' && typeof spriteMeta.cellHeight !== 'undefined') {
+      sourceWidth = spriteMeta.cellWidth;
+      sourceHeight = spriteMeta.cellHeight;
     }
     const objWidth = view.fastScreenToWorldNumber(sourceWidth);
     const objHeight = view.fastScreenToWorldNumber(sourceHeight);
@@ -41,21 +49,21 @@ export class TileObjectRenderer extends SceneObjectRenderer {
     point.y -= objHeight * object.scale / 2;
     view.fastWorldToScreenPoint(point, point);
 
-    if (data.icon && data.meta) {
-      let cx = c.x;
-      let cy = c.y;
-      if (data.meta.frames > 1) {
-        const cwidth = c.width / sourceWidth;
-        const fx = (data.frame % (cwidth));
-        const fy = Math.floor((data.frame - fx) / cwidth);
+    if (object.icon && spriteMeta) {
+      let cx = spriteMeta.x;
+      let cy = spriteMeta.y;
+      if (spriteMeta.frames > 1) {
+        const cwidth = spriteMeta.width / sourceWidth;
+        const fx = (object.frame % (cwidth));
+        const fy = Math.floor((object.frame - fx) / cwidth);
         cx += fx * sourceWidth;
         cy += fy * sourceHeight;
       }
-      view.context.drawImage(data.image, cx, cy, sourceWidth, sourceHeight,
+      view.context.drawImage(object.image, cx, cy, sourceWidth, sourceHeight,
         point.x, point.y, sourceWidth * object.scale, sourceHeight * object.scale);
     }
     else {
-      view.context.drawImage(data.image, point.x, point.y, sourceWidth * object.scale, sourceHeight * object.scale);
+      view.context.drawImage(object.image, point.x, point.y, sourceWidth * object.scale, sourceHeight * object.scale);
     }
   }
 }

@@ -33,7 +33,7 @@ export class PortalFeatureComponent extends TiledFeatureComponent {
   entered(object: TileObject): boolean {
     this.assertFeature();
 
-    if (!this.properties.target || !this.host.tileMap) {
+    if (!this.properties.target) {
       return false;
     }
     this.store.dispatch(new GameStateTravelAction(this.properties.target, {

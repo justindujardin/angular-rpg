@@ -17,11 +17,12 @@ import * as _ from 'underscore';
 import {ImageResource} from '../../pow-core/resources/image.resource';
 import {SpriteComponent} from './behaviors/sprite.behavior';
 import {Scene} from '../scene/scene';
-import {Point, IPoint} from '../../pow-core';
+import {IPoint, Point} from '../../pow-core';
 import {MovableBehavior} from '../scene/behaviors/movable-behavior';
 import {GameWorld} from '../../../app/services/game-world';
 import {TileMap} from './tile-map';
 import {SceneObject} from '../scene/scene-object';
+import {ISpriteMeta} from '../core/api';
 
 export interface TileObjectOptions {
   point?: IPoint;
@@ -60,9 +61,19 @@ export class TileObject extends SceneObject implements TileObjectOptions {
   tileMap: TileMap;
   world: GameWorld;
   scale: number;
-  icon: string;
-  meta: any;
-  frame: number;
+
+  private _icon: string;
+  set icon(value: string) {
+    this._updateIcon(value);
+    this._icon = value;
+  }
+
+  get icon(): string {
+    return this._icon;
+  }
+
+  meta: ISpriteMeta;
+  frame: number = 0;
 
   constructor() {
     super({});
@@ -115,10 +126,26 @@ export class TileObject extends SceneObject implements TileObjectOptions {
         const image = images[0];
         this.meta = meta;
         this.image = image.data;
+        this.frame = frame;
       });
     }
     this.icon = name;
     return oldSprite;
+  }
+
+  _updateIcon(icon: string) {
+    const world = GameWorld.get();
+    if (!world || this._icon === icon) {
+      return;
+    }
+    const meta = world.sprites.getSpriteMeta(name);
+    if (meta) {
+      world.sprites.getSpriteSheet(meta.source).then((images: ImageResource[]) => {
+        const image = images[0];
+        this.meta = meta;
+        this.image = image.data;
+      });
+    }
   }
 
   getIcon() {

@@ -33,8 +33,8 @@ export class CombatDefeatStateComponent extends CombatMachineState {
   enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
     const data: CombatDefeatSummary = {
-      enemies: machine.enemies,
-      party: machine.party
+      enemies: machine.enemies.toArray(),
+      party: machine.party.toArray()
     };
     machine.notify('combat:defeat', data, () => {
       alert('defeat is not implemented');

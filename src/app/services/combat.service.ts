@@ -1,49 +1,40 @@
-import {Injectable, Inject, forwardRef} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable, ReplaySubject} from 'rxjs/Rx';
 import {ResourceManager} from '../../game/pow-core/resource-manager';
-import {GameWorld} from './game-world';
-import {GameTileMap} from '../scene/game-tile-map';
 import {CombatEncounter} from '../models/combat/combat.model';
 import {getMapUrl} from '../../game/pow2/core/api';
 import {TiledTMXResource} from '../../game/pow-core/resources/tiled/tiled-tmx.resource';
 import {BaseEntity} from '../models/base-entity';
+import {ITiledLayer} from '../../game/pow-core/resources/tiled/tiled.model';
 
 @Injectable()
 export class CombatService {
 
-  constructor(@Inject(forwardRef(() => GameWorld)) private gameWorld: GameWorld,
-              private resourceLoader: ResourceManager) {
+  constructor(private resourceLoader: ResourceManager) {
   }
 
-  private _combatMap$ = new ReplaySubject<GameTileMap>(1);
-  combatMap$: Observable<GameTileMap> = this._combatMap$;
+  private _combatMap$ = new ReplaySubject<TiledTMXResource>(1);
+  combatMap$: Observable<TiledTMXResource> = this._combatMap$;
 
-  loadCombatMap(combatZone: string): Observable<GameTileMap> {
+  loadMap(combatZone: string): Observable<TiledTMXResource> {
     const mapUrl = getMapUrl('combat');
     return Observable.fromPromise(this.resourceLoader.load(mapUrl)
       .then((maps: TiledTMXResource[]) => {
         if (!maps[0] || !maps[0].data) {
-          return Promise.reject('invalid resource: ' + mapUrl);
+          return null;
         }
-        const inputs = {
-          resource: maps[0]
-        };
-        return this.gameWorld.entities.createObject('GameCombatMap', inputs);
-      })
-      .then((g: any) => {
-        const map: GameTileMap = g;
+        const result: TiledTMXResource = maps[0];
         // Hide all layers that don't correspond to the current combat zone
-        map.getLayers().forEach((l) => {
+        result.layers.forEach((l: ITiledLayer) => {
           l.visible = (l.name === combatZone);
         });
-        map.dirtyLayers = true;
-        this._combatMap$.next(map);
-        return map;
+        this._combatMap$.next(result);
+        return result;
       }));
   }
 
   loadEncounter(encounter: CombatEncounter): Observable<CombatEncounter> {
-    return this.loadCombatMap(encounter.zone).map(() => encounter);
+    return this.loadMap(encounter.zone).map(() => encounter);
   }
 
   attack(from: BaseEntity, to: BaseEntity) {

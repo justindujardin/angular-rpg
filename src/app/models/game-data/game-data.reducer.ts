@@ -8,7 +8,8 @@ import {
   ITemplateRandomEncounter,
   ITemplateFixedEncounter,
   ITemplateClass,
-  ITemplateMagic
+  ITemplateMagic,
+  ITemplateEnemy
 } from './game-data.model';
 import {GameDataActionClasses, GameDataActionTypes, IGameDataAddPayload} from './game-data.actions';
 
@@ -17,6 +18,7 @@ export type GameDataState = {
   weapons: EntityCollection<ITemplateWeapon>;
   items: EntityCollection<ITemplateItem>;
   armor: EntityCollection<ITemplateArmor>;
+  enemies: EntityCollection<ITemplateEnemy>;
   magic: EntityCollection<ITemplateMagic>;
   classes: EntityCollection<ITemplateClass>;
   fixedEncounters: EntityCollection<ITemplateFixedEncounter>;
@@ -33,6 +35,10 @@ const initialState: GameDataState = {
     allIds: []
   },
   armor: {
+    byId: {},
+    allIds: []
+  },
+  enemies: {
     byId: {},
     allIds: []
   },
@@ -113,6 +119,11 @@ export const sliceArmors = (state: GameDataState) => state.armor.byId;
 export const sliceItemIds = (state: GameDataState) => state.items.allIds;
 /** @internal {@see sliceGameDataState} */
 export const sliceItems = (state: GameDataState) => state.items.byId;
+
+/** @internal {@see sliceGameDataState} */
+export const sliceEnemiesIds = (state: GameDataState) => state.enemies.allIds;
+/** @internal {@see sliceGameDataState} */
+export const sliceEnemies = (state: GameDataState) => state.enemies.byId;
 
 /** @internal {@see sliceGameDataState} */
 export const sliceMagicIds = (state: GameDataState) => state.magic.allIds;

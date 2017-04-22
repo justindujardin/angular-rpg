@@ -1,7 +1,7 @@
 import {IEntityTemplate} from '../../game/pow-core/resources/entities.resource';
 import {GameTileMap} from './game-tile-map';
 import {TiledTMXResource} from '../../game/pow-core/resources/tiled/tiled-tmx.resource';
-import {CombatCameraBehavior} from '../routes/combat/behaviors/combat-camera.behavior';
+import {CombatCameraBehaviorComponent} from '../routes/combat/behaviors/combat-camera.behavior';
 
 /**
  * Array of composed game entity templates.
@@ -18,7 +18,7 @@ export const RPG_GAME_ENTITIES: IEntityTemplate[] = [
     params: ['resource'],
     components: [
       {
-        type: CombatCameraBehavior
+        type: CombatCameraBehaviorComponent
       }
     ]
   }

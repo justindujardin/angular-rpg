@@ -23,6 +23,7 @@ import {BehaviorsModule} from '../../behaviors/index';
 import {COMBAT_ENEMY_COMPONENTS} from './combat-enemy.entity';
 import {COMBAT_STATE_COMPONENTS} from './states/index';
 import {AppComponentsModule} from '../../components/index';
+import {COMBAT_MAP_COMPONENTS} from './combat-map.entity';
 
 export * from './combat-damage.component';
 export * from './combat.component';
@@ -33,7 +34,8 @@ export const COMBAT_EXPORTS = [
   CombatComponent,
   ...COMBAT_PLAYER_COMPONENTS,
   ...COMBAT_ENEMY_COMPONENTS,
-  ...COMBAT_STATE_COMPONENTS
+  ...COMBAT_STATE_COMPONENTS,
+  ...COMBAT_MAP_COMPONENTS
 ];
 
 export const COMBAT_PROVIDERS = [

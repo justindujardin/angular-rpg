@@ -17,7 +17,13 @@ import {CameraBehavior} from '../../../../game/pow2/scene/behaviors/camera-behav
 import {GameTileMap} from '../../../scene/game-tile-map';
 import {SceneView} from '../../../../game/pow2/scene/scene-view';
 import {Rect} from '../../../../game/pow-core/rect';
-export class CombatCameraBehavior extends CameraBehavior {
+import {Component} from '@angular/core';
+
+@Component({
+  selector: 'combat-camera-behavior',
+  template: `<ng-content></ng-content>`
+})
+export class CombatCameraBehaviorComponent extends CameraBehavior {
   host: GameTileMap;
 
   connectBehavior(): boolean {

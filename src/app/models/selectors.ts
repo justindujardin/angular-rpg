@@ -24,8 +24,12 @@ import {
   sliceFixedEncounterIds,
   sliceItems,
   sliceItemIds,
-  sliceGameDataType
+  sliceGameDataType, sliceEnemies, sliceEnemiesIds
 } from './game-data/game-data.reducer';
+import {
+  sliceCombatEncounter, sliceCombatEncounterEnemies, sliceCombatEncounterParty,
+  sliceCombatLoading
+} from './combat/combat.reducer';
 
 /**
  * This file contains the application level data selectors that can be used with @ngrx/store to
@@ -40,6 +44,20 @@ import {
  *
  * @fileOverview
  */
+
+//
+// Combat
+//
+
+/**
+ * Slice off the "combat" branch of the main application state.
+ */
+export const sliceCombatState = (state) => state.combat;
+
+export const getCombatEncounter = createSelector(sliceCombatState, sliceCombatEncounter);
+export const getCombatLoading = createSelector(sliceCombatState, sliceCombatLoading);
+export const getCombatEncounterParty = createSelector(sliceCombatState, sliceCombatEncounterParty);
+export const getCombatEncounterEnemies = createSelector(sliceCombatState, sliceCombatEncounterEnemies);
 
 //
 // Entity collections
@@ -121,6 +139,11 @@ export const getGameDataItemsById = createSelector(sliceGameDataState, sliceItem
 export const getGameDataItemIds = createSelector(sliceGameDataState, sliceItemIds);
 /** Select an array of items */
 export const getGameDataItems = createSelector(getGameDataItemsById, getGameDataItemIds, entitiesToArray);
+
+export const getGameDataEnemiesById = createSelector(sliceGameDataState, sliceEnemies);
+export const getGameDataEnemiesIds = createSelector(sliceGameDataState, sliceEnemiesIds);
+/** Select an array of items */
+export const getGameDataEnemies = createSelector(getGameDataEnemiesById, getGameDataEnemiesIds, entitiesToArray);
 
 export const getGameDataMagicsById = createSelector(sliceGameDataState, sliceMagics);
 export const getGameDataMagicIds = createSelector(sliceGameDataState, sliceMagicIds);

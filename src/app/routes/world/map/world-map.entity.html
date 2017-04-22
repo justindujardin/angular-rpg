@@ -12,6 +12,6 @@
   *ngIf="notTraveling$ | async"
   [map]="self"
   [scene]="scene"
-  [point]="renderPoint"
+  [point]="renderPoint$ | async"
   [model]="partyLeader$ | async"></world-player>
 <ng-content></ng-content>

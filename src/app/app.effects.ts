@@ -38,7 +38,7 @@ export class AppEffects {
 
   /** route update to combat encounter */
   @Effect() navigateToCombatRoute$ = this.actions$
-    .ofType(CombatActionTypes.FIXED_ENCOUNTER, CombatActionTypes.RANDOM_ENCOUNTER)
+    .ofType(CombatActionTypes.FIXED_ENCOUNTER_READY, CombatActionTypes.RANDOM_ENCOUNTER_READY)
     .debounceTime(100)
     .distinctUntilChanged()
     .map((action: CombatActions) => {

@@ -1,6 +1,6 @@
-Angular RPG :heart: [![Build Status](https://travis-ci.org/justindujardin/angular2-rpg.svg?branch=master)](https://travis-ci.org/justindujardin/angular2-rpg)
+Angular RPG [![Build Status](https://travis-ci.org/justindujardin/angular2-rpg.svg?branch=master)](https://travis-ci.org/justindujardin/angular2-rpg)
 ---
-Project tooling based on **Angular2 Webpack Starter**
+Project tooling based on **[Angular2 Webpack Starter](https://github.com/AngularClass/angular2-webpack-starter)** :heart:
 
 ### Quick start
 **Make sure you have Node version >= 5.0 and NPM >= 3**

@@ -1,9 +1,6 @@
-import {CombatActionTypes, CombatActions} from './combat.actions';
-import {CombatState, CombatCurrentType, Combatant} from './combat.model';
+import {CombatActions, CombatActionTypes} from './combat.actions';
+import {CombatState} from './combat.model';
 import * as Immutable from 'immutable';
-import {AppState} from '../../app.model';
-import {Store} from '@ngrx/store';
-import {Observable} from 'rxjs/Rx';
 
 const initialState: CombatState = {
   loading: false,
@@ -36,19 +33,12 @@ export function combatReducer(state: CombatState = initialState, action: CombatA
   }
 }
 
-/** Observable of the current encounter */
-export function getEncounter(state$: Store<AppState>): Observable<CombatCurrentType> {
-  return state$.select((state) => state.combat.encounter);
-}
 
-/** Observable of the current encounters' enemies */
-export function getEncounterEnemies(state$: Store<AppState>): Observable<Combatant[]> {
-  return state$
-    .select((state) => state.combat.encounter)
-    .map((e) => e ? e.enemies : []);
-}
-
-/** Observable of the combat loading boolean */
-export function getLoading(state$: Store<AppState>): Observable<CombatCurrentType> {
-  return state$.select((state) => state.combat.loading);
-}
+/** @internal {@see sliceCombatState} */
+export const sliceCombatLoading = (state: CombatState) => state.loading;
+/** @internal {@see sliceCombatState} */
+export const sliceCombatEncounter = (state: CombatState) => state.encounter;
+/** @internal {@see sliceCombatState} */
+export const sliceCombatEncounterEnemies = (state: CombatState) => state.encounter ? state.encounter.enemies : [];
+/** @internal {@see sliceCombatState} */
+export const sliceCombatEncounterParty = (state: CombatState) => state.encounter ? state.encounter.party : [];

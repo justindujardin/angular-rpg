@@ -1,12 +1,12 @@
 import {
-  Component,
   AfterViewInit,
-  OnDestroy,
-  ViewChildren,
-  QueryList,
-  Input,
   ChangeDetectionStrategy,
-  ViewChild
+  Component,
+  Input,
+  OnDestroy,
+  QueryList,
+  ViewChild,
+  ViewChildren
 } from '@angular/core';
 import {CombatPlayerRenderBehaviorComponent} from './behaviors/combat-player-render.behavior';
 import {SceneObjectBehavior} from '../../../../game/pow2/scene/scene-object-behavior';
@@ -26,11 +26,18 @@ import {SceneView} from '../../../../game/pow2/scene/scene-view';
 import {WorldPlayerComponent} from './world-player.entity';
 import {Entity} from '../../../models/entity/entity.model';
 import {getGameParty, getGamePartyPosition} from '../../../models/selectors';
-import {Point, IPoint} from '../../../../game/pow-core/point';
+import {IPoint, Point} from '../../../../game/pow-core/point';
 import {LoadingService} from '../../../components/loading/loading.service';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../app.model';
 import {GameTileMap} from '../../../scene/game-tile-map';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+
+
+//
+// TODO: Player position is not sync'd to store!
+//
+//
 
 @Component({
   selector: 'world-map',
@@ -44,7 +51,7 @@ export class WorldMapComponent extends GameTileMap implements AfterViewInit, OnD
 
   @Input() scene: Scene;
 
-  renderPoint: IPoint;
+  renderPoint: Point = new Point();
 
   @ViewChild(WorldPlayerComponent) player: WorldPlayerComponent;
   @ViewChildren('input,encounter') behaviors: QueryList<Behavior>;
@@ -64,6 +71,14 @@ export class WorldMapComponent extends GameTileMap implements AfterViewInit, OnD
   features$: Observable<any> = this.resource$.map(() => {
     return this.features.objects;
   });
+
+  private _renderPoint$: BehaviorSubject<IPoint> = new BehaviorSubject(this.renderPoint);
+
+  /** Observable of the current player position in the world */
+  renderPoint$: Observable<Point> = this.store.select(getGamePartyPosition)
+    .combineLatest(this._renderPoint$, (point: IPoint, renderPoint: IPoint) => {
+      return this.renderPoint.set(point || renderPoint);
+    });
 
   constructor(public gameStateService: GameStateService,
               public store: Store<AppState>,
@@ -107,7 +122,7 @@ export class WorldMapComponent extends GameTileMap implements AfterViewInit, OnD
     this.mapFeatures.forEach((mapFeatureComponent: MapFeatureComponent) => {
       if (mapFeatureComponent.host) {
         const data = mapFeatureComponent.host;
-        this.objectRenderer.render(data, data, view);
+        this.objectRenderer.render(data, data.renderPoint || data.point, view, data.meta);
       }
     });
   }

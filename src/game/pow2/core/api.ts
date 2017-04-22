@@ -30,15 +30,28 @@ export function getSoundEffectUrl(name: string, extension: string = 'wav'): stri
   return `${GAME_ROOT}sounds/${name}.${extension}`;
 }
 
+/**
+ * Metadata about a sprite in a given sprite sheet.
+ */
 export interface ISpriteMeta {
-  width: number; // Pixel width
-  height: number; // Pixel height
-  cellWidth?: number; // Optional frame width (defaults to 16px)
-  cellHeight?: number; // Optional frame height (defaults to 16px)
-  frames: number; // The number of frames the sprite has.
-  source: string; // The spritesheet source map
-  x: number; // Pixel offset x in the sprite sheet.
-  y: number; // Pixel offset y in the sprite sheet.
+  /** Pixel width */
+  readonly width: number;
+  /** Pixel height */
+  readonly height: number;
+  /** The number of frames the sprite has. */
+  readonly frames: number;
+  /** The spritesheet source map */
+  readonly source: string;
+  /** */
+  readonly index: number | null;
+  /** Pixel offset x in the sprite sheet. */
+  readonly x: number;
+  /** Pixel offset y in the sprite sheet. */
+  readonly y: number;
+  /** Optional frame width (defaults to 16px) */
+  readonly cellWidth: number;
+  /** Optional frame height (defaults to 16px) */
+  readonly cellHeight: number;
 }
 
 export const data = {

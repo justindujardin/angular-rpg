@@ -3,7 +3,7 @@ import {
   GameStateActionTypes,
   GameStateTravelAction,
   GameStateMoveAction,
-  GameStateSetKeyDataAction
+  GameStateSetKeyDataAction, GameStateNewAction
 } from './game-state.actions';
 import {GameState} from './game-state.model';
 import * as Immutable from 'immutable';
@@ -23,6 +23,10 @@ const initialState: GameState = {
 
 export function gameStateReducer(state: GameState = initialState, action: GameStateActions): GameState {
   switch (action.type) {
+    case GameStateActionTypes.NEW: {
+      const newGameAction = action as GameStateNewAction;
+      return newGameAction.payload;
+    }
     case GameStateActionTypes.TRAVEL: {
       const travel = action as GameStateTravelAction;
       return Immutable.fromJS(state).merge({

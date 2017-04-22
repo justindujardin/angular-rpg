@@ -1,0 +1,3 @@
+<combat-camera-behavior></combat-camera-behavior>
+<combat-player *ngFor="let p of party$ | async" [icon]="p.icon" [model]="p"></combat-player>
+<combat-enemy *ngFor="let e of enemies$ | async" [icon]="e.icon" [model]="e"></combat-enemy>

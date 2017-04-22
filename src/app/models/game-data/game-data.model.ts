@@ -6,6 +6,7 @@
  * @fileOverview
  */
 import {EntityType} from '../entity/entity.model';
+import {newGuid} from '../base-entity';
 
 export type ItemCategories = 'item' | 'weapon' | 'armor';
 
@@ -71,7 +72,7 @@ export interface ITemplateArmor extends ITemplateItem {
   /**
    * What part of the body does the armor apply to?
    */
-    type: ItemArmorType;
+  type: ItemArmorType;
 
   /**
    * The defensive rating of this piece of armor.
@@ -183,4 +184,14 @@ export interface ITemplateRandomEncounter extends ITemplateEncounter {
  */
 export interface IGameEncounterCallback {
   (victory: boolean): void;
+}
+
+/**
+ * Instantiate an item from its template and assign it a unique eid value.
+ * @param from The ITemplateId to stamp out a copy of
+ */
+export function instantiateEntity<T extends ITemplateId>(from: T): T {
+  return Object.assign({
+    eid: `${from.id}-${newGuid()}`,
+  }, from);
 }

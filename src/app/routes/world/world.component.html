@@ -5,21 +5,3 @@
 <canvas #worldCanvas [hidden]="loadingService.loading$ | async">
   Your browser doesn't support this.
 </canvas>
-
-<!--<world-dialog-->
-  <!--*ngIf="(featureType$ | async) == 'DialogFeatureComponent'"-->
-  <!--(onClose)="featureComponent$.next(null)"-->
-  <!--[feature]="featureComponent$ | async"-->
-  <!--[scene]="scene"></world-dialog>-->
-
-<!--<world-store-->
-  <!--*ngIf="(featureType$ | async) == 'StoreFeatureComponent'"-->
-  <!--(onClose)="featureComponent$.next(null)"-->
-  <!--[feature]="featureComponent$ | async"-->
-  <!--[scene]="scene"></world-store>-->
-
-<!--<world-temple-->
-  <!--*ngIf="(featureType$ | async) == 'TempleFeatureComponent'"-->
-  <!--(onClose)="featureComponent$.next(null)"-->
-  <!--[feature]="featureComponent$ | async"-->
-  <!--[scene]="scene"></world-temple>-->

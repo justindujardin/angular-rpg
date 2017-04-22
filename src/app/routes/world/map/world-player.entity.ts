@@ -1,12 +1,12 @@
 import {
-  Component,
   AfterViewInit,
-  ViewChildren,
-  QueryList,
-  OnDestroy,
+  ChangeDetectionStrategy,
+  Component,
   Input,
+  OnDestroy,
+  QueryList,
   ViewChild,
-  ChangeDetectionStrategy
+  ViewChildren
 } from '@angular/core';
 import {GameEntityObject} from '../../../scene/game-entity-object';
 import {CombatPlayerRenderBehaviorComponent} from './behaviors/combat-player-render.behavior';
@@ -29,26 +29,29 @@ import {TileObjectRenderer} from '../../../../game/pow2/tile/render/tile-object-
 import {Rect} from '../../../../game/pow-core/rect';
 import {GameFeatureObject} from '../../../scene/game-feature-object';
 import {TiledFeatureComponent} from './map-feature.component';
-import {Observable, BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 @Component({
   selector: 'world-player',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-  <player-render-behavior #render></player-render-behavior>
-  <collision-behavior #collision></collision-behavior>
-  <player-map-path-behavior [tileMap]="map" #path></player-map-path-behavior>
-  <player-behavior #player></player-behavior>
-  <player-camera-behavior #camera></player-camera-behavior>
-  <player-look-behavior
-    (onLook)="onFeatureLook($event)"
-    (onLookAway)="onFeatureLookAway($event)"
-    #trigger></player-look-behavior>
-  <ng-content></ng-content>
-`
+    <player-render-behavior #render></player-render-behavior>
+    <collision-behavior #collision></collision-behavior>
+    <player-map-path-behavior [tileMap]="map" #path></player-map-path-behavior>
+    <player-behavior #player></player-behavior>
+    <player-camera-behavior #camera></player-camera-behavior>
+    <player-look-behavior
+      (onLook)="onFeatureLook($event)"
+      (onLookAway)="onFeatureLookAway($event)"
+      #trigger></player-look-behavior>
+    <ng-content></ng-content>
+  `
 })
 export class WorldPlayerComponent extends GameEntityObject implements AfterViewInit, OnDestroy, ISceneViewRenderer {
   @ViewChildren('render,collision,path,player,trigger,camera') behaviors: QueryList<SceneObjectBehavior>;
+
+
+  @Input() icon: string;
 
   @Input() model: Entity;
   @Input() scene: Scene;
@@ -130,7 +133,7 @@ export class WorldPlayerComponent extends GameEntityObject implements AfterViewI
    */
   renderFrame(view: SceneView, elapsed: number) {
     // Render self
-    this.objectRenderer.render(this, this, view);
+    this.objectRenderer.render(this, this.renderPoint || this.point, view, this.meta);
 
     // Any path target
     if (this.movable) {

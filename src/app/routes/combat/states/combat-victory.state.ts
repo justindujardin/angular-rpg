@@ -45,9 +45,7 @@ export class CombatVictoryStateComponent extends CombatMachineState {
   enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
 
-    const players: GameEntityObject[] = _.reject(machine.party, (p: GameEntityObject) => {
-      return isDefeated(p.model);
-    });
+    const players: GameEntityObject[] = machine.getLiveParty();
     if (players.length === 0) {
       throw new Error('Invalid state, cannot be in victory with no living player-card members');
     }

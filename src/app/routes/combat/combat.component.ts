@@ -1,13 +1,13 @@
 import * as _ from 'underscore';
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   Input,
-  AfterViewInit,
-  ViewChild,
-  ViewChildren,
+  OnDestroy,
   QueryList,
-  OnDestroy
+  ViewChild,
+  ViewChildren
 } from '@angular/core';
 import {IProcessObject} from '../../../game/pow-core/time';
 import {TileObjectRenderer} from '../../../game/pow2/tile/render/tile-object-renderer';
@@ -15,11 +15,8 @@ import {NamedMouseElement, PowInput} from '../../../game/pow2/core/input';
 import {RPGGame} from '../../services/rpg-game';
 import {GameWorld} from '../../services/game-world';
 import {NotificationService} from '../../components/notification/notification.service';
-import {Point, IPoint} from '../../../game/pow-core/point';
+import {Point} from '../../../game/pow-core/point';
 import {Scene} from '../../../game/pow2/scene/scene';
-import {CameraBehavior} from '../../../game/pow2/scene/behaviors/camera-behavior';
-import {SpriteComponent} from '../../../game/pow2/tile/behaviors/sprite.behavior';
-import {SceneObjectBehavior} from '../../../game/pow2/scene/scene-object-behavior';
 import {GameEntityObject} from '../../scene/game-entity-object';
 import {SceneObject} from '../../../game/pow2/scene/scene-object';
 import {ItemModel} from '../../../game/rpg/models/itemModel';
@@ -29,22 +26,17 @@ import {UIAttachment} from './behaviors/choose-action.machine';
 import {CombatRunSummary} from './states/combat-escape.state';
 import {CombatVictorySummary} from './states/combat-victory.state';
 import {CombatDefeatSummary} from './states/combat-defeat.state';
-import {CombatCameraBehavior} from './behaviors/combat-camera.behavior';
-import {CombatPlayerRenderBehaviorComponent} from './behaviors/combat-player-render.behavior';
 import {Actions} from '@ngrx/effects';
 import {LoadingService} from '../../components/loading/loading.service';
 import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
 import {CombatService} from '../../services/combat.service';
-import {Subscription, ReplaySubject, Observable} from 'rxjs/Rx';
 import {CombatStateMachineComponent} from './states/combat.machine';
-import {GameTileMap} from '../../scene/game-tile-map';
-import {getEncounter, getEncounterEnemies} from '../../models/combat/combat.reducer';
 import {CombatEnemyComponent} from './combat-enemy.entity';
 import {CombatPlayerComponent} from './combat-player.entity';
-import {getGameParty} from '../../models/selectors';
 import {Item} from '../../models/item';
 import {Entity} from '../../models/entity/entity.model';
+import {CombatMapComponent} from './combat-map.entity';
 
 /**
  * Describe a selectable menu item for a user input in combat.
@@ -62,7 +54,7 @@ export interface CombatAttackSummary {
 }
 
 @Component({
-  selector: 'combat-map',
+  selector: 'rpg-combat',
   styleUrls: ['./combat.component.scss'],
   templateUrl: './combat.component.html',
   host: {
@@ -100,48 +92,20 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
   @Input() damages: any[] = [];
 
   /**
-   * For rendering `TileObject`s
-   * @type {TileObjectRenderer}
-   */
-  objectRenderer: TileObjectRenderer = new TileObjectRenderer();
-
-  /**
    * Mouse hook for capturing input with world and screen coordinates.
    */
   mouse: NamedMouseElement = null;
 
   @ViewChild('combatCanvas') canvasElementRef: ElementRef;
+  @ViewChild(CombatMapComponent) map: CombatMapComponent;
 
   @ViewChildren(CombatEnemyComponent) enemies: QueryList<CombatEnemyComponent>;
   @ViewChildren(CombatPlayerComponent) party: QueryList<CombatPlayerComponent>;
 
-  /** Observable<Combatant[]> of enemies */
-  enemies$ = getEncounterEnemies(this.store);
-
-  /** Observable<Entity[]> of player-card members */
-  party$ = this.store.select(getGameParty);
-
-  /** Observable<CombatEncounter> */
-  encounter$ = getEncounter(this.store);
-
-  private _combatEnemies$ = new ReplaySubject<CombatEnemyComponent[]>(1);
-
-  /** Observable<CombatEnemyComponent[]> of enemies */
-  combatEnemies$: Observable<CombatEnemyComponent[]> = this._combatEnemies$;
-
-  private _combatPlayers$ = new ReplaySubject<CombatPlayerComponent[]>(1);
-
-  /** Observable<CombatPlayerComponent[]> of player-card members */
-  combatPlayers$: Observable<CombatPlayerComponent[]> = this._combatPlayers$;
-
-  private _subscriptions: Subscription[] = [];
-
   constructor(public game: RPGGame,
-              public actions$: Actions,
               public notify: NotificationService,
               public loadingService: LoadingService,
               public store: Store<AppState>,
-              public combatService: CombatService,
               public world: GameWorld) {
     super();
     this.world.mark(this.scene);
@@ -150,17 +114,12 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
   ngOnDestroy(): void {
     this.world.erase(this.scene);
     this.world.time.removeObject(this);
-    this._subscriptions.forEach((s) => s.unsubscribe());
-    this._subscriptions.length = 0;
     this.scene.removeView(this);
     this.pointer = null;
     this.damages = [];
-
   }
 
   ngAfterViewInit(): void {
-    this._combatEnemies$.next(this.enemies.toArray());
-    this._combatPlayers$.next(this.party.toArray());
     this.canvas = this.canvasElementRef.nativeElement;
     if (this.camera) {
       this.camera.point.zero();
@@ -170,30 +129,6 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
     setTimeout(() => this._onResize(), 1);
     // this._bindRenderCombat();
     this.world.time.addObject(this);
-
-    // Because the base class looks for instance.map before rendering the tilemap.  TODO: Remove this.
-    this._subscriptions.push(this.combatService.combatMap$
-      .do((map: GameTileMap) => {
-        this.map = map;
-      })
-      .subscribe());
-
-    this._subscriptions.push(this.combatService.combatMap$
-      .distinctUntilChanged()
-      .do((map: GameTileMap) => {
-        this.party.forEach((p: CombatPlayerComponent, index: number) => {
-          p.setSprite(p.model.icon);
-          const battleSpawn = map.getFeature('p' + (index + 1)) as IPoint;
-          p.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
-        });
-        this.enemies.forEach((e: CombatEnemyComponent, index: number) => {
-          const battleSpawn = map.getFeature('e' + (index + 1)) as IPoint;
-          if (battleSpawn) {
-            e.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
-          }
-        });
-      })
-      .subscribe());
   }
 
   //
@@ -233,7 +168,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
    * Update the camera for this frame.
    */
   processCamera() {
-    this.cameraComponent = this.scene.componentByType(CombatCameraBehavior) as CameraBehavior;
+    this.cameraComponent = this.map.camera;
     super.processCamera();
   }
 
@@ -241,17 +176,8 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
    * Render the tile map, and any features it has.
    */
   renderFrame(elapsed: number) {
-    super.renderFrame(elapsed);
-
-    const players = this.scene.objectsByComponent(CombatPlayerRenderBehaviorComponent);
-    _.each(players, (player) => {
-      this.objectRenderer.render(player, player, this);
-    });
-
-    const sprites = this.scene.componentsByType(SpriteComponent) as SceneObjectBehavior[];
-    _.each(sprites, (sprite: any) => {
-      this.objectRenderer.render(sprite.host, sprite, this);
-    });
+    this.clearRect();
+    this.map.renderFrame(this, elapsed);
     return this;
   }
 
@@ -261,7 +187,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
 
   getMemberClass(member: GameEntityObject, focused?: GameEntityObject): any {
     return {
-      focused: focused && focused.model && member.model.name === focused.model.name
+      focused: focused && focused.model && member && member.model && member.model.name === focused.model.name
     };
   }
 

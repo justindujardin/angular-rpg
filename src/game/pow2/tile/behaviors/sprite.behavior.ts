@@ -39,6 +39,10 @@ export class SpriteComponent extends SceneObjectBehavior {
   // The sprite frame (if applicable)
   frame: number = 0;
 
+  get scale():number {
+    return this.host ? this.host.scale : 1;
+  }
+
   constructor(options?: SpriteComponentOptions) {
     super();
     if (typeof options !== 'undefined') {
@@ -65,6 +69,7 @@ export class SpriteComponent extends SceneObjectBehavior {
       this.meta = this.host.world.sprites.getSpriteMeta(name);
       this.host.world.sprites.getSpriteSheet(this.meta.source).then((images: ImageResource[]) => {
         this.image = images[0].data;
+        this.frame = frame;
       });
     }
     this.icon = name;

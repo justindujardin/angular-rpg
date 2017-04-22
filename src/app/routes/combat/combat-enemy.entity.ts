@@ -1,26 +1,29 @@
-import {Component, AfterViewInit, OnDestroy, Inject, Input, forwardRef, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, forwardRef, Inject, Input, OnDestroy, ViewChild} from '@angular/core';
 import {GameEntityObject} from '../../scene/game-entity-object';
 import {CombatComponent} from './combat.component';
-import {SpriteComponent} from '../../../game/pow2/tile/behaviors/sprite.behavior';
 import {Combatant} from '../../models/combat/combat.model';
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {CombatAttackBehaviorComponent} from './behaviors/actions/combat-attack.behavior';
+import {SpriteRenderBehaviorComponent} from '../../behaviors/sprite-render.behavior';
 
 @Component({
   selector: 'combat-enemy',
   template: `
-  <combat-attack-behavior [combat]="combat" #attack></combat-attack-behavior>
-  <ng-content></ng-content>
-`
+    <sprite-render-behavior [icon]="(model$ | async)?.icon"></sprite-render-behavior>
+    <combat-attack-behavior [combat]="combat" #attack></combat-attack-behavior>
+    <ng-content></ng-content>
+  `
 })
 export class CombatEnemyComponent extends GameEntityObject implements AfterViewInit, OnDestroy {
-  sprite = new SpriteComponent();
 
   @ViewChild(CombatAttackBehaviorComponent) attack: CombatAttackBehaviorComponent;
 
+  @ViewChild(SpriteRenderBehaviorComponent) render: SpriteRenderBehaviorComponent;
   private _model$ = new BehaviorSubject<Combatant>(null);
 
   model$: Observable<Combatant> = this._model$;
+
+  @Input() icon: string;
 
   @Input() set model(value: Combatant) {
     this._model$.next(value);
@@ -38,15 +41,15 @@ export class CombatEnemyComponent extends GameEntityObject implements AfterViewI
 
   ngAfterViewInit(): void {
     this.combat.scene.addObject(this);
-    this.addBehavior(this.sprite);
+    this.addBehavior(this.render);
     this.addBehavior(this.attack);
     this._spriteSubscription = this.model$.distinctUntilChanged().do((m: Combatant) => {
-      this.sprite.setSprite(m ? m.icon : null);
+      this.setSprite(m ? m.icon : null);
     }).subscribe();
   }
 
   ngOnDestroy(): void {
-    this.removeBehavior(this.sprite);
+    this.removeBehavior(this.render);
     this.removeBehavior(this.attack);
     this.combat.scene.removeObject(this);
     this._spriteSubscription.unsubscribe();

@@ -15,7 +15,6 @@
  */
 import * as _ from 'underscore';
 import {GameStateModel} from '../../game/rpg/models/gameStateModel';
-import {ItemModel, WeaponModel, ArmorModel, UsableModel} from '../../game/rpg/models/all';
 import {Scene} from '../../game/pow2/scene/scene';
 import {EntityFactory} from '../../game/pow-core/resources/entities.resource';
 import {GameDataResource} from '../models/game-data/game-data.resource';
@@ -34,11 +33,10 @@ import {Store} from '@ngrx/store';
 import {CombatFixedEncounter, Combatant, IZoneMatch} from '../models/combat/combat.model';
 import {CombatFixedEncounterAction} from '../models/combat/combat.actions';
 import {
-  SPREADSHEET_ID,
   IGameEncounterCallback,
-  ITemplateFixedEncounter,
-  ITemplateItem,
-  ITemplateEncounter
+  ITemplateEncounter,
+  ITemplateFixedEncounter, ITemplateItem,
+  SPREADSHEET_ID
 } from '../models/game-data/game-data.model';
 import {GameDataAddSheetAction} from '../models/game-data/game-data.actions';
 
@@ -83,6 +81,8 @@ export class GameWorld extends World {
   static get(): GameWorld {
     return _sharedGameWorld;
   }
+
+  // TODO: Remove this encounter code from here. Handled in combat feature and random encounter compoennts
 
   private _encounterCallback: IGameEncounterCallback = null;
 
@@ -185,10 +185,10 @@ export class GameWorld extends World {
   /** Load game data from google spreadsheet */
   private loadGameData(): Promise<void> {
     return this.loader.loadAsType(SPREADSHEET_ID, GameDataResource).then((resource: GameDataResource) => {
-      console.log(resource.data);
       this.store.dispatch(new GameDataAddSheetAction('weapons', resource.data.weapons));
       this.store.dispatch(new GameDataAddSheetAction('armor', resource.data.armor));
       this.store.dispatch(new GameDataAddSheetAction('items', resource.data.items));
+      this.store.dispatch(new GameDataAddSheetAction('enemies', resource.data.enemies));
       this.store.dispatch(new GameDataAddSheetAction('magic', resource.data.magic));
       this.store.dispatch(new GameDataAddSheetAction('classes', resource.data.classes));
       this.store.dispatch(new GameDataAddSheetAction('randomEncounters', resource.data.randomencounters));
