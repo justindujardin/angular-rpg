@@ -1,7 +1,7 @@
 import * as _ from 'underscore';
 import {GameEntityObject} from '../../../../scene/game-entity-object';
 import {CombatEndTurnStateComponent} from '../../states/combat-end-turn.state';
-import {getSoundEffectUrl} from '../../../../../game/pow2/core/api';
+import {getSoundEffectUrl, ISpriteMeta} from '../../../../../game/pow2/core/api';
 import {AnimatedSpriteBehavior} from '../../../../../game/pow2/tile/behaviors/animated-sprite.behavior';
 import {SpriteComponent} from '../../../../../game/pow2/tile/behaviors/sprite.behavior';
 import {DamageComponent} from '../../../../behaviors/damage.behavior';
@@ -17,6 +17,8 @@ import {CombatAttackAction} from '../../../../models/combat/combat.actions';
 import {CombatAttack} from '../../../../models/combat/combat.model';
 import * as rules from '../../../../models/combat/combat.api';
 import {Entity} from '../../../../models/entity/entity.model';
+import {GameWorld} from '../../../../services/game-world';
+import {ImageResource} from '../../../../../game/pow-core/resources/image.resource';
 /**
  * Attack another entity in combat.
  */
@@ -25,11 +27,11 @@ import {Entity} from '../../../../models/entity/entity.model';
   template: '<ng-content></ng-content>'
 })
 export class CombatAttackBehaviorComponent extends CombatActionBehavior {
-  name: string = 'attackCombatant';
+  name: string = 'attack';
 
   @Input() combat: CombatComponent;
 
-  constructor(private store: Store<AppState>) {
+  constructor(private store: Store<AppState>, public gameWorld: GameWorld) {
     super();
   }
 
@@ -76,37 +78,48 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
       };
       this.store.dispatch(new CombatAttackAction(attackData));
 
-      const components = {
-        animation: new AnimatedSpriteBehavior({
-          spriteName: 'attack',
-          lengthMS: 350
-        }),
-        sprite: new SpriteComponent({
-          name: 'attack',
-          icon: hit ? (defending ? 'animSmoke.png' : 'animHit.png') : 'animMiss.png'
-        }),
-        damage: new DamageComponent(),
-        sound: new SoundBehavior({
-          url: hitSound,
-          volume: 0.3
-        })
-      };
-      if (playerRender) {
-        playerRender.setState('Moving');
+      const damageAnimation: string = hit ? (defending ? 'animSmoke.png' : 'animHit.png') : 'animMiss.png';
+      const meta: ISpriteMeta = this.gameWorld.sprites.getSpriteMeta(damageAnimation);
+      if (!meta) {
+        console.warn('could not find damage animation in sprites metadata: ' + damageAnimation);
+        return done();
       }
-      defender.addComponentDictionary(components);
-      components.damage.once('damage:done', () => {
+      this.gameWorld.sprites.getSpriteSheet(meta.source).then((damageImages: ImageResource[]) => {
+        const damageImage: HTMLImageElement = damageImages[0].data;
+        const components = {
+          animation: new AnimatedSpriteBehavior({
+            spriteName: 'attack',
+            lengthMS: 350
+          }),
+          sprite: new SpriteComponent({
+            name: 'attack',
+            icon: damageAnimation,
+            meta,
+            image: damageImage
+          }),
+          damage: new DamageComponent(),
+          sound: new SoundBehavior({
+            url: hitSound,
+            volume: 0.3
+          })
+        };
         if (playerRender) {
-          playerRender.setState();
+          playerRender.setState('Moving');
         }
-        if (didKill) {
-          _.defer(() => {
-            defender.destroy();
-          });
-        }
-        defender.removeComponentDictionary(components);
+        defender.addComponentDictionary(components);
+        components.damage.once('damage:done', () => {
+          if (playerRender) {
+            playerRender.setState();
+          }
+          if (didKill) {
+            _.defer(() => {
+              defender.destroy();
+            });
+          }
+          defender.removeComponentDictionary(components);
+          done();
+        });
       });
-      done();
     };
 
     if (playerRender) {

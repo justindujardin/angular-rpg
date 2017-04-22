@@ -19,7 +19,10 @@ import {BaseEntity} from '../../models/base-entity';
 @Component({
   selector: 'rpg-health-bar',
   styleUrls: ['./health-bar.component.scss'],
-  template: `<div [ngClass]="getCSSClassMap()" [style.width]="getProgressBarWidth() + '%'"></div>`
+  template: `
+  <div [ngClass]="getCSSClassMap()" [style.width]="getProgressBarWidth() + '%'">
+    <ng-content></ng-content>
+  </div>`
 })
 export class RPGHealthBarComponent {
   @Input()

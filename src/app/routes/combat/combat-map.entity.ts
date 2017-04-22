@@ -30,8 +30,8 @@ import {TileMapRenderer} from '../../../game/pow2/tile/render/tile-map-renderer'
 import {TileMapView} from '../../../game/pow2/tile/tile-map-view';
 import {Subscription} from 'rxjs/Subscription';
 import {IPoint, Point} from '../../../game/pow-core/point';
-import {SpriteComponent} from "../../../game/pow2/tile/behaviors/sprite.behavior";
-
+import {SpriteComponent} from '../../../game/pow2/tile/behaviors/sprite.behavior';
+import {CombatHUDComponent} from './combat-hud.component';
 
 @Component({
   selector: 'combat-map',
@@ -127,7 +127,7 @@ export class CombatMapComponent extends GameTileMap implements AfterViewInit, On
       this.objectRenderer.render(component, component.renderPoint || component.point, view, component.meta);
       const sprites = component.findBehaviors(SpriteComponent) as SpriteComponent[];
       sprites.forEach((sprite: SpriteComponent) => {
-        this.objectRenderer.render(sprite.host, sprite.host.point, view, sprite.meta);
+        this.objectRenderer.render(sprite, sprite.host.point, view, sprite.meta);
       });
     });
     this.enemies.forEach((component: CombatEnemyComponent) => {
@@ -147,5 +147,6 @@ export class CombatMapComponent extends GameTileMap implements AfterViewInit, On
 /** Components associated with combat map */
 export const COMBAT_MAP_COMPONENTS = [
   CombatMapComponent,
+  CombatHUDComponent,
   CombatCameraBehaviorComponent
 ];

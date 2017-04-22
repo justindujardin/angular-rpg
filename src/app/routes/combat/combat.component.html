@@ -14,13 +14,4 @@
                         [encounter]="map.encounter$ | async"></combat-state-machine>
 
 </combat-map>
-
-<div class="combat-view">
-  <div class="status" *ngFor="let member of party$ | async" [class]="getMemberClass(member,combat?.focus)">
-    <div class="text">
-      <span class="name">{{member.name}}</span>
-      <span class="hp">HP {{member.hp}} / {{member.maxhp}}</span>
-    </div>
-    <rpg-health-bar [model]="member"></rpg-health-bar>
-  </div>
-</div>
+<combat-hud [scene]="scene"></combat-hud>

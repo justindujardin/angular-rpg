@@ -76,9 +76,9 @@ export class CombatChooseActionStateComponent extends CombatMachineState impleme
   /**
    * Available menu items for selection.
    */
-  @Input()
-  items: ICombatMenuItem[] = [];
+  @Input() items: ICombatMenuItem[] = [];
 
+  @Input()
   pointAt: GameEntityObject = null;
 
   pointOffset: Point = new Point();

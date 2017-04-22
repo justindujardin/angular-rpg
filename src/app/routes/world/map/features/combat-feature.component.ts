@@ -88,8 +88,6 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
             party: party.slice()
           };
           this.store.dispatch(new CombatFixedEncounterAction(payload));
-
-          console.log("ENCOUNTER!", party, encounters, enemies);
         })
       .take(1)
       .subscribe();
@@ -125,6 +123,5 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
   //   };
   //   this.store.dispatch(new CombatFixedEncounterAction(payload));
   // }
-
 
 }

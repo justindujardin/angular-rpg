@@ -49,10 +49,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 })
 export class WorldPlayerComponent extends GameEntityObject implements AfterViewInit, OnDestroy, ISceneViewRenderer {
   @ViewChildren('render,collision,path,player,trigger,camera') behaviors: QueryList<SceneObjectBehavior>;
-
-
   @Input() icon: string;
-
   @Input() model: Entity;
   @Input() scene: Scene;
   @Input() map: GameTileMap;

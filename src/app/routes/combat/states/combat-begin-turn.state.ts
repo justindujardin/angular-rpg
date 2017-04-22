@@ -51,7 +51,7 @@ export class CombatBeginTurnStateComponent extends CombatMachineState {
     }
     else {
       choice = machine.current.findBehavior(CombatAttackBehaviorComponent) as CombatAttackBehaviorComponent;
-      // TODO: This config should not be here.   Just pick a random person to attackCombatant.
+      // TODO: This config should not be here.   Just pick a random person to attack.
       if (choice) {
         choice.to = machine.getRandomPartyMember();
         choice.from = machine.current;

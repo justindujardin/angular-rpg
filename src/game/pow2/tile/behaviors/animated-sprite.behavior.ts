@@ -65,7 +65,7 @@ export class AnimatedSpriteBehavior extends TickedBehavior {
   }
 
   interpolateTick(elapsed: number) {
-    if (this.spriteComponent) {
+    if (this.spriteComponent && this.spriteComponent.meta) {
       // Choose frame for interpolated position
       const factor = this._elapsed / this.lengthMS;
       /* tslint:disable */

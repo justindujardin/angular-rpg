@@ -33,7 +33,6 @@ export function combatReducer(state: CombatState = initialState, action: CombatA
   }
 }
 
-
 /** @internal {@see sliceCombatState} */
 export const sliceCombatLoading = (state: CombatState) => state.loading;
 /** @internal {@see sliceCombatState} */

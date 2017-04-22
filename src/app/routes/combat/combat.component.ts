@@ -1,16 +1,6 @@
 import * as _ from 'underscore';
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Input,
-  OnDestroy,
-  QueryList,
-  ViewChild,
-  ViewChildren
-} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild} from '@angular/core';
 import {IProcessObject} from '../../../game/pow-core/time';
-import {TileObjectRenderer} from '../../../game/pow2/tile/render/tile-object-renderer';
 import {NamedMouseElement, PowInput} from '../../../game/pow2/core/input';
 import {RPGGame} from '../../services/rpg-game';
 import {GameWorld} from '../../services/game-world';
@@ -26,14 +16,10 @@ import {UIAttachment} from './behaviors/choose-action.machine';
 import {CombatRunSummary} from './states/combat-escape.state';
 import {CombatVictorySummary} from './states/combat-victory.state';
 import {CombatDefeatSummary} from './states/combat-defeat.state';
-import {Actions} from '@ngrx/effects';
 import {LoadingService} from '../../components/loading/loading.service';
 import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
-import {CombatService} from '../../services/combat.service';
 import {CombatStateMachineComponent} from './states/combat.machine';
-import {CombatEnemyComponent} from './combat-enemy.entity';
-import {CombatPlayerComponent} from './combat-player.entity';
 import {Item} from '../../models/item';
 import {Entity} from '../../models/entity/entity.model';
 import {CombatMapComponent} from './combat-map.entity';
@@ -46,7 +32,7 @@ export interface ICombatMenuItem {
   label: string;
 }
 
-/** Description of a combat entity attackCombatant */
+/** Description of a combat entity attack */
 export interface CombatAttackSummary {
   damage: number;
   attacker: GameEntityObject;
@@ -98,9 +84,6 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
 
   @ViewChild('combatCanvas') canvasElementRef: ElementRef;
   @ViewChild(CombatMapComponent) map: CombatMapComponent;
-
-  @ViewChildren(CombatEnemyComponent) enemies: QueryList<CombatEnemyComponent>;
-  @ViewChildren(CombatPlayerComponent) party: QueryList<CombatPlayerComponent>;
 
   constructor(public game: RPGGame,
               public notify: NotificationService,
@@ -184,12 +167,6 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
   //
   // API
   //
-
-  getMemberClass(member: GameEntityObject, focused?: GameEntityObject): any {
-    return {
-      focused: focused && focused.model && member && member.model && member.model.name === focused.model.name
-    };
-  }
 
   /**
    * Apply damage visual effect to a SceneObject with a given value

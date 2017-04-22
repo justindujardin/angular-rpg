@@ -17,11 +17,14 @@ import * as _ from 'underscore';
 import {SceneObjectBehavior} from '../../scene/scene-object-behavior';
 import {TileObject} from '../tile-object';
 import {ImageResource} from '../../../pow-core/resources/image.resource';
+import {ISpriteMeta} from '../../core/api';
 
 export interface SpriteComponentOptions {
   icon: string;
+  image?: HTMLImageElement;
   name?: string;
   frame?: number;
+  meta?: ISpriteMeta;
 }
 
 export class SpriteComponent extends SceneObjectBehavior {
@@ -35,11 +38,11 @@ export class SpriteComponent extends SceneObjectBehavior {
   // The sprite name, e.g. "entity.png" or "knight.png"
   icon: string;
   // The sprite sheet source information
-  meta: any;
+  meta: ISpriteMeta;
   // The sprite frame (if applicable)
   frame: number = 0;
 
-  get scale():number {
+  get scale(): number {
     return this.host ? this.host.scale : 1;
   }
 
@@ -60,19 +63,24 @@ export class SpriteComponent extends SceneObjectBehavior {
   /**
    * Set the current sprite name.  Returns the previous sprite name.
    */
-  setSprite(name: string, frame: number = 0): string {
-    const oldSprite: string = this.icon;
-    if (!name) {
-      this.meta = null;
-    }
-    else {
+  setSprite(name: string, frame: number = 0): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      if (name === this.icon && this.image && this.meta) {
+        return resolve(this.icon);
+      }
+      this.icon = name;
+      if (!name) {
+        this.meta = null;
+        return resolve(null);
+      }
       this.meta = this.host.world.sprites.getSpriteMeta(name);
-      this.host.world.sprites.getSpriteSheet(this.meta.source).then((images: ImageResource[]) => {
-        this.image = images[0].data;
-        this.frame = frame;
-      });
-    }
-    this.icon = name;
-    return oldSprite;
+      this.host.world.sprites.getSpriteSheet(this.meta.source)
+        .then((images: ImageResource[]) => {
+          this.image = images[0].data;
+          this.frame = frame;
+          resolve(this.icon);
+        })
+        .catch(reject);
+    });
   }
 }

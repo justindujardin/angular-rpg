@@ -33,7 +33,6 @@ import {AppState} from '../../../app.model';
 import {GameTileMap} from '../../../scene/game-tile-map';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
-
 //
 // TODO: Player position is not sync'd to store!
 //

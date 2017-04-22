@@ -51,7 +51,9 @@ export interface IPlayerAction {
   template: `
   <combat-start-state #start></combat-start-state>
   <combat-begin-turn-state #beginTurn></combat-begin-turn-state>
-  <combat-choose-action-state #chooseAction></combat-choose-action-state>
+  <combat-choose-action-state
+    [pointAt]="current"
+    #chooseAction></combat-choose-action-state>
   <combat-end-turn-state #endTurn></combat-end-turn-state>
   <combat-defeat-state #defeat></combat-defeat-state>
   <combat-victory-state #victory></combat-victory-state>

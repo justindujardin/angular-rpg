@@ -1,0 +1,69 @@
+@import '../../style/variables';
+@import '../../style/mixins';
+@import '../../style/icons';
+
+:host {
+  font-family: $pixelFont;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: $menuOverlayBackground;
+  font-size: rem(2);
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  z-index: $zCanvasGui;
+  display: block;
+
+  .progress {
+    margin-bottom: 0;
+  }
+  .status {
+    border-radius: 0;
+    text-align: right;
+    color: #fff;
+    position: relative;
+    min-height: $app-bar-height / 2;
+    @media (min-width: $layout-breakpoint-sm) {
+      min-height: $app-bar-height;
+    }
+    rpg-health-bar, .text {
+      height: 100%;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+    .text {
+      padding: 0 15px;
+      z-index: $z-index-bottom-sheet;
+    }
+    &.focused {
+      color: $gameGold;
+    }
+    &.choosing {
+      background-color: $gameBlue;
+    }
+    .name {
+      float: left;
+      text-align: left;
+      width: 25%;
+      @include stroke-text(1px, #000);
+    }
+
+    .hp {
+      text-align: right;
+      @include stroke-text(1px, #000);
+    }
+    rpg-health-bar {
+      opacity: 0.5;
+      min-width: 25%;
+    }
+    @media (min-width: $layout-breakpoint-sm) {
+      font-size: 2.2em;
+    }
+  }
+}
+

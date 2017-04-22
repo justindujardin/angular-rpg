@@ -111,7 +111,7 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
         frames: this.getForwardFrames(),
         move: new Point(this.getForwardDirection(), 0),
         callback: () => {
-          const attackAnimationsSource = this.host.icon.replace('.png', '-attackCombatant.png');
+          const attackAnimationsSource = this.host.icon.replace('.png', '-attack.png');
           if (this.host.world.sprites.getSpriteMeta(attackAnimationsSource)) {
             this.host.setSprite(attackAnimationsSource, 12);
           }
@@ -123,7 +123,7 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
         duration: 100,
         frames: this.getAttackFrames(),
         callback: () => {
-          this.host.setSprite(this.host.icon.replace('-attackCombatant.png', '.png'), 10);
+          this.host.setSprite(this.host.icon.replace('-attack.png', '.png'), 10);
           if (strikeCb) {
             strikeCb();
           }

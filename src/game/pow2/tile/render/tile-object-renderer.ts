@@ -13,9 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {IPoint, Point} from "../../../pow-core/point";
-import {SceneView} from "../../scene/scene-view";
-import {ISpriteMeta} from "../../core/api";
+import {IPoint, Point} from '../../../pow-core/point';
+import {SceneView} from '../../scene/scene-view';
+import {ISpriteMeta} from '../../core/api';
 
 export interface TileRenderable {
   icon: string;
@@ -30,7 +30,7 @@ export class TileObjectRenderer {
 
   render(object: TileRenderable, at: IPoint, view: SceneView, spriteMeta?: ISpriteMeta) {
 
-    if (!object || !object.visible || !object.image) {
+    if (!object || object.visible === false || !object.image) {
       return;
     }
 
