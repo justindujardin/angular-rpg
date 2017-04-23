@@ -112,6 +112,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
     setTimeout(() => this._onResize(), 1);
     // this._bindRenderCombat();
     this.world.time.addObject(this);
+    this._bindRenderCombat();
   }
 
   //
@@ -212,8 +213,8 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
     this.machine.on('combat:attack', (data: CombatAttackSummary) => {
       const _done = this.machine.notifyWait();
       let msg: string = '';
-      const a = data.attacker.name;
-      const b = data.defender.name;
+      const a = data.attacker.model.name;
+      const b = data.defender.model.name;
       if (data.damage > 0) {
         msg = `${a} attacked ${b} for ${data.damage} damage!`;
       }

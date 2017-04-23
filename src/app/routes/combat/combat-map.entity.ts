@@ -13,14 +13,14 @@ import {ISceneViewRenderer} from '../../../game/pow2/scene/scene.model';
 import {Scene} from '../../../game/pow2/scene/scene';
 import {TiledTMXResource} from '../../../game/pow-core/resources/tiled/tiled-tmx.resource';
 import {Observable} from 'rxjs/Observable';
-import {getCombatEncounter, getCombatEncounterEnemies, getCombatEncounterParty} from '../../models/selectors';
+import {getCombatEncounterEnemies, getCombatEncounterParty, sliceCombatState} from '../../models/selectors';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.model';
 import {LoadingService} from '../../components/loading/loading.service';
 import {ResourceManager} from '../../../game/pow-core/resource-manager';
 import {TileObjectRenderer} from '../../../game/pow2/tile/render/tile-object-renderer';
 import {SceneView} from '../../../game/pow2/scene/scene-view';
-import {Combatant, CombatEncounterTypes} from '../../models/combat/combat.model';
+import {Combatant, CombatStateRecord} from '../../models/combat/combat.model';
 import {Entity} from '../../models/entity/entity.model';
 import {CombatCameraBehaviorComponent} from './behaviors/combat-camera.behavior';
 import {CombatService} from '../../services/combat.service';
@@ -32,6 +32,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {IPoint, Point} from '../../../game/pow-core/point';
 import {SpriteComponent} from '../../../game/pow2/tile/behaviors/sprite.behavior';
 import {CombatHUDComponent} from './combat-hud.component';
+import {List} from 'immutable';
 
 @Component({
   selector: 'combat-map',
@@ -47,13 +48,13 @@ export class CombatMapComponent extends GameTileMap implements AfterViewInit, On
   @ViewChild(CombatCameraBehaviorComponent) camera: CombatCameraBehaviorComponent;
 
   /** Observable<Combatant[]> of enemies */
-  enemies$: Observable<Combatant[]> = this.store.select(getCombatEncounterEnemies);
+  enemies$: Observable<List<Combatant>> = this.store.select(getCombatEncounterEnemies);
 
   /** Observable<Entity[]> of player-card members */
-  party$: Observable<Entity[]> = this.store.select(getCombatEncounterParty);
+  party$: Observable<List<Combatant>> = this.store.select(getCombatEncounterParty);
 
   /** Observable<CombatEncounter> */
-  encounter$: Observable<CombatEncounterTypes> = this.store.select(getCombatEncounter);
+  encounter$: Observable<CombatStateRecord> = this.store.select(sliceCombatState);
 
   @ViewChildren(CombatPlayerComponent) party: QueryList<CombatPlayerComponent>;
   @ViewChildren(CombatEnemyComponent) enemies: QueryList<CombatEnemyComponent>;

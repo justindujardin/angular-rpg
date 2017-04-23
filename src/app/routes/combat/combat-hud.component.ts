@@ -8,6 +8,7 @@ import {LoadingService} from '../../components/loading/loading.service';
 import {ResourceManager} from '../../../game/pow-core/resource-manager';
 import {Entity} from '../../models/entity/entity.model';
 import {GameEntityObject} from '../../scene/game-entity-object';
+import {List} from 'immutable';
 
 @Component({
   selector: 'combat-hud',
@@ -20,7 +21,7 @@ export class CombatHUDComponent {
   @Input() scene: Scene;
 
   /** Observable<Entity[]> of player-card members */
-  party$: Observable<Entity[]> = this.store.select(getCombatEncounterParty);
+  party$: Observable<List<Entity>> = this.store.select(getCombatEncounterParty);
 
   constructor(public store: Store<AppState>,
               public loadingService: LoadingService,

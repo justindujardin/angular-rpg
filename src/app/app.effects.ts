@@ -8,8 +8,9 @@ import {
 } from './models/game-state/game-state.actions';
 import {LoadingService} from './components/loading';
 import {CombatActionTypes, CombatActions} from './models/combat/combat.actions';
-import {CombatEncounter} from './models/combat/combat.model';
 import {replace} from '@ngrx/router-store';
+import {CombatEncounter} from './models/combat/combat.model';
+import {assertTrue} from './models/util';
 
 /**
  * AppComponent effects describe the navigation side-effects of various game actions.
@@ -32,18 +33,19 @@ export class AppEffects {
   @Effect({dispatch: false}) loadingDoneIndicator$ = this.actions$
     .ofType(GameStateActionTypes.TRAVEL_SUCCESS, GameStateActionTypes.TRAVEL_FAIL)
     .distinctUntilChanged()
-    .do((action: GameStateTravelSuccessAction|GameStateTravelFailAction) => {
+    .do((action: GameStateTravelSuccessAction | GameStateTravelFailAction) => {
       this.loadingService.loading = false;
     });
 
   /** route update to combat encounter */
   @Effect() navigateToCombatRoute$ = this.actions$
-    .ofType(CombatActionTypes.FIXED_ENCOUNTER_READY, CombatActionTypes.RANDOM_ENCOUNTER_READY)
+    .ofType(CombatActionTypes.ENCOUNTER_READY)
     .debounceTime(100)
     .distinctUntilChanged()
     .map((action: CombatActions) => {
       const encounter = action.payload as CombatEncounter;
-      return replace(['combat', encounter.id]);
+      assertTrue(encounter.id || encounter.zone, 'combat must either be in a zone or have an id');
+      return replace(['combat', encounter.id || encounter.zone]);
     });
 
   /** route update to world map */

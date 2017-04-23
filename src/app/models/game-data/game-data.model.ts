@@ -6,7 +6,7 @@
  * @fileOverview
  */
 import {EntityType} from '../entity/entity.model';
-import {newGuid} from '../base-entity';
+import {BaseEntity, newGuid} from '../base-entity';
 
 export type ItemCategories = 'item' | 'weapon' | 'armor';
 
@@ -127,7 +127,7 @@ export interface ITemplateClass extends ITemplateId {
   readonly basespeed: number;
 }
 
-export interface ITemplateEnemy extends ITemplateId {
+export interface ITemplateEnemy extends ITemplateId, BaseEntity {
   /** Current magic points */
   readonly mp: number;
   /** Current health points */
@@ -189,9 +189,15 @@ export interface IGameEncounterCallback {
 /**
  * Instantiate an item from its template and assign it a unique eid value.
  * @param from The ITemplateId to stamp out a copy of
+ * @param values Any optional values to assign to the instance during creation
  */
-export function instantiateEntity<T extends ITemplateId>(from: T): T {
+export function instantiateEntity<T extends ITemplateId>(from: T, values?: Partial<T>): T {
   return Object.assign({
-    eid: `${from.id}-${newGuid()}`,
-  }, from);
+    eid: entityId(from.id),
+  }, from, values || {});
+}
+
+/** Generate a UUID for a given input template ID that is unique across all instances of the same template base */
+export function entityId(id: string): string {
+  return `${id}-${newGuid()}`;
 }

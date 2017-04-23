@@ -7,8 +7,12 @@ export interface EntityObject {
   eid: string;
 }
 
-/** Basic model for a life form */
-export interface BaseEntity extends EntityObject {
+/**
+ * The most basic form of an entity is the template used to create an instance. It differs
+ * from a {@see BaseEntity} in that it does not have `maxmp` or `maxhp` properties. When an
+ * instance is created from a template, `maxmp` and `maxhp` are assigned from the `hp` and `mp` properties.
+ */
+export interface TemplateEntity extends EntityObject {
   /** User readable name */
   readonly name?: string;
   /** Icon to render the entity with */
@@ -17,12 +21,8 @@ export interface BaseEntity extends EntityObject {
   readonly level: number;
   /** Current magic points */
   readonly mp: number;
-  /** Maximum magic points */
-  readonly maxmp: number;
   /** Current health points */
   readonly hp: number;
-  /** Maximum health points */
-  readonly maxhp: number;
   /** Attack strength */
   readonly attack: number;
   /** Defense effectiveness */
@@ -31,6 +31,15 @@ export interface BaseEntity extends EntityObject {
   readonly magic: number;
   /** Agility/Dexterity */
   readonly speed: number;
+
+}
+
+/** Basic model for a life form */
+export interface BaseEntity extends TemplateEntity {
+  /** Maximum magic points */
+  readonly maxmp: number;
+  /** Maximum health points */
+  readonly maxhp: number;
 }
 
 /** Describe a collection of entities of a single type */

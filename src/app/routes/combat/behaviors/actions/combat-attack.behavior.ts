@@ -10,7 +10,7 @@ import {CombatPlayerRenderBehaviorComponent} from '../combat-player-render.behav
 import {CombatActionBehavior} from '../combat-action.behavior';
 import {Component, Input} from '@angular/core';
 import {IPlayerActionCallback} from '../../states/combat.machine';
-import {CombatComponent} from '../../combat.component';
+import {CombatAttackSummary, CombatComponent} from '../../combat.component';
 import {AppState} from '../../../../app.model';
 import {Store} from '@ngrx/store';
 import {CombatAttackAction} from '../../../../models/combat/combat.actions';
@@ -71,12 +71,13 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
       const defending: boolean = false; // TODO: Maps to guard action
       const hitSound: string = getSoundEffectUrl(didKill ? 'killed' : (hit ? (defending ? 'miss' : 'hit') : 'miss'));
 
-      const attackData: CombatAttack = {
-        attacker: attacker.model,
-        defender: defender.model,
-        damage
-      };
-      this.store.dispatch(new CombatAttackAction(attackData));
+      // TODO: This causes the attacked team to disappear.
+      // const attackData: CombatAttack = {
+      //   attacker: attacker.model,
+      //   defender: defender.model,
+      //   damage
+      // };
+      // this.store.dispatch(new CombatAttackAction(attackData));
 
       const damageAnimation: string = hit ? (defending ? 'animSmoke.png' : 'animHit.png') : 'animMiss.png';
       const meta: ISpriteMeta = this.gameWorld.sprites.getSpriteMeta(damageAnimation);
@@ -84,6 +85,7 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
         console.warn('could not find damage animation in sprites metadata: ' + damageAnimation);
         return done();
       }
+
       this.gameWorld.sprites.getSpriteSheet(meta.source).then((damageImages: ImageResource[]) => {
         const damageImage: HTMLImageElement = damageImages[0].data;
         const components = {
@@ -117,8 +119,13 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
             });
           }
           defender.removeComponentDictionary(components);
-          done();
         });
+        const data: CombatAttackSummary = {
+          damage,
+          attacker,
+          defender
+        };
+        this.combat.machine.notify('combat:attack', data, done);
       });
     };
 

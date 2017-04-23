@@ -3,9 +3,9 @@ import {Observable} from 'rxjs/Rx';
 import {Effect, Actions} from '@ngrx/effects';
 import {
   CombatActionTypes,
-  CombatFixedEncounterReadyAction,
-  CombatFixedEncounterAction,
-  CombatFixedEncounterErrorAction
+  CombatEncounterReadyAction,
+  CombatEncounterErrorAction,
+  CombatEncounterAction
 } from './combat.actions';
 import {CombatService} from '../../services/combat.service';
 import {CombatEncounter} from './combat.model';
@@ -16,15 +16,15 @@ export class CombatEffects {
   constructor(private actions$: Actions, private combatService: CombatService) {
   }
 
-  @Effect() beginFixedCombat$ = this.actions$.ofType(CombatActionTypes.FIXED_ENCOUNTER)
-    .switchMap((action: CombatFixedEncounterAction) => {
+  @Effect() beginCombat$ = this.actions$.ofType(CombatActionTypes.ENCOUNTER)
+    .switchMap((action: CombatEncounterAction) => {
       return this.combatService.loadEncounter(action.payload);
     })
     .map((encounter: CombatEncounter) => {
-      return new CombatFixedEncounterReadyAction(encounter);
+      return new CombatEncounterReadyAction(encounter);
     })
     .catch((e) => {
-      return Observable.of(new CombatFixedEncounterErrorAction(e.toString()));
+      return Observable.of(new CombatEncounterErrorAction(e.toString()));
     });
 
 }

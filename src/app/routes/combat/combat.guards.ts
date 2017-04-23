@@ -1,9 +1,9 @@
-import {RouterStateSnapshot, ActivatedRouteSnapshot, CanActivate, Router} from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.model';
-import {CombatCurrentType, CombatEncounter} from '../../models/combat/combat.model';
-import {getCombatEncounter} from '../../models/selectors';
+import {sliceCombatState} from '../../models/selectors';
+import {CombatStateRecord} from '../../models/combat/combat.model';
 
 @Injectable()
 export class CanActivateCombat implements CanActivate {
@@ -11,12 +11,12 @@ export class CanActivateCombat implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.store.select(getCombatEncounter).take(1).map((encounter: CombatCurrentType) => {
-      if (!encounter) {
+    return this.store.select(sliceCombatState).take(1).map((combatState: CombatStateRecord) => {
+      if (!combatState || combatState.type === 'none') {
         this.router.navigate(['/']);
         return false;
       }
-      return (encounter as CombatEncounter).id === route.params['id'];
+      return combatState.id === route.params['id'];
     });
   }
 }

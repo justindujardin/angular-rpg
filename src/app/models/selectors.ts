@@ -27,7 +27,7 @@ import {
   sliceGameDataType, sliceEnemies, sliceEnemiesIds
 } from './game-data/game-data.reducer';
 import {
-  sliceCombatEncounter, sliceCombatEncounterEnemies, sliceCombatEncounterParty,
+  sliceCombatEncounterEnemies, sliceCombatEncounterParty,
   sliceCombatLoading
 } from './combat/combat.reducer';
 
@@ -54,7 +54,6 @@ import {
  */
 export const sliceCombatState = (state) => state.combat;
 
-export const getCombatEncounter = createSelector(sliceCombatState, sliceCombatEncounter);
 export const getCombatLoading = createSelector(sliceCombatState, sliceCombatLoading);
 export const getCombatEncounterParty = createSelector(sliceCombatState, sliceCombatEncounterParty);
 export const getCombatEncounterEnemies = createSelector(sliceCombatState, sliceCombatEncounterEnemies);

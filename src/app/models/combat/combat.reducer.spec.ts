@@ -1,50 +1,99 @@
-import {CombatState, CombatFixedEncounter} from './combat.model';
+import {Combatant, CombatAttack, CombatEncounter, combatStateFactory} from './combat.model';
 import {combatReducer} from './combat.reducer';
-import {CombatFixedEncounterAction} from './combat.actions';
+import {CombatAttackAction, CombatEncounterAction} from './combat.actions';
+import {entityId} from '../game-data/game-data.model';
+import * as Immutable from 'immutable';
 
-function defaultState(overrides?: any): CombatState {
-  const base: CombatState = {
-    loading: false,
-    encounter: null
+function attack(from: Combatant, to: Combatant, value: number): CombatAttack {
+  const result: CombatAttack = {
+    attacker: from,
+    defender: to,
+    damage: value
   };
-  return Object.assign({}, base, overrides || {});
+  return Object.assign({}, result);
 }
 
-function fixedEncounter(overrides?: any): CombatFixedEncounter {
-  const base: CombatFixedEncounter = {
-    id: 'fake-encounter',
-    enemies: [],
+function encounter(values?: Partial<CombatEncounter>): CombatEncounter {
+  return Object.assign({}, {
+    type: 'fixed',
     party: [],
-    gold: 1,
-    experience: 1,
-    items: []
-  };
-  return Object.assign({}, base, overrides || {});
+    enemies: []
+  }, values || {});
 }
 
-function randomEncounter(overrides?: any): CombatFixedEncounter {
-  const base: CombatFixedEncounter = {
-    id: 'fake-encounter',
-    enemies: [],
-    party: []
-  };
-  return Object.assign({}, base, overrides || {});
+function combatant(values?: Partial<Combatant>): Combatant {
+  return Object.assign({
+    eid: entityId('test-entity'),
+    mp: 0,
+    maxmp: 0,
+    hp: 0,
+    maxhp: 0
+  }, values || {}) as Combatant;
 }
 
-describe('Combat', () => {
+fdescribe('Combat', () => {
   describe('Actions', () => {
-    describe('CombatFixedEncounterAction', () => {
-      it('should set current encounter and tag the encounter with type "fixed"', () => {
-        const state = fixedEncounter();
-        const expected = fixedEncounter({type: 'fixed'});
-        const actual = combatReducer(defaultState(), new CombatFixedEncounterAction(state));
-        expect(actual.encounter).toEqual(expected);
-      });
+    describe('CombatEncounterAction', () => {
       it('should set loading to true', () => {
-        const state = defaultState();
+        const state = combatStateFactory();
         expect(state.loading).toBe(false);
-        const actual = combatReducer(state, new CombatFixedEncounterAction(fixedEncounter()));
+        const actual = combatReducer(state, new CombatEncounterAction(encounter()));
         expect(actual.loading).toBe(true);
+      });
+    });
+    describe('CombatAttackAction', () => {
+      it('should throw when dispatched with no active encounter', () => {
+        expect(() => {
+          combatReducer(combatStateFactory(), new CombatAttackAction(attack(combatant(), combatant(), 0)));
+        }).toThrow();
+      });
+      it('should deduct damage value from target hp', () => {
+        const attacker = combatant();
+        const defender = combatant({hp: 5});
+        const state = combatStateFactory({
+          type: 'fixed',
+          loading: false,
+          enemies: Immutable.List([attacker]),
+          party: Immutable.List([defender])
+        });
+        const actual = combatReducer(state, new CombatAttackAction(attack(attacker, defender, 3)));
+        expect(actual.party.get(0).hp).toBe(2);
+      });
+      it('should add hp when given a negative damage value from target hp', () => {
+        const attacker = combatant();
+        const defender = combatant({hp: 1});
+        const state = combatStateFactory({
+          type: 'fixed',
+          loading: false,
+          enemies: Immutable.List([attacker]),
+          party: Immutable.List([defender])
+        });
+        const actual = combatReducer(state, new CombatAttackAction(attack(attacker, defender, -4)));
+        expect(actual.party.get(0).hp).toBe(5);
+      });
+      it('should attack combatants in enemies list', () => {
+        const attacker = combatant();
+        const defender = combatant({hp: 5});
+        const state = combatStateFactory({
+          type: 'fixed',
+          loading: false,
+          enemies: Immutable.List([defender]),
+          party: Immutable.List([attacker])
+        });
+        const actual = combatReducer(state, new CombatAttackAction(attack(attacker, defender, 3)));
+        expect(actual.enemies.get(0).hp).toBe(2);
+      });
+      it('should never set hp to values less than 0', () => {
+        const attacker = combatant();
+        const defender = combatant({hp: 5});
+        const state = combatStateFactory({
+          type: 'fixed',
+          loading: false,
+          enemies: Immutable.List([defender]),
+          party: Immutable.List([attacker])
+        });
+        const actual = combatReducer(state, new CombatAttackAction(attack(attacker, defender, 10)));
+        expect(actual.enemies.get(0).hp).toBe(0);
       });
     });
   });

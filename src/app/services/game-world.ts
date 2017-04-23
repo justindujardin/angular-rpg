@@ -30,8 +30,7 @@ import {World} from '../../game/pow-core/world';
 import {SpriteRender} from './sprite-render';
 import {AppState} from '../app.model';
 import {Store} from '@ngrx/store';
-import {CombatFixedEncounter, Combatant, IZoneMatch} from '../models/combat/combat.model';
-import {CombatFixedEncounterAction} from '../models/combat/combat.actions';
+import {Combatant, CombatEncounter, IZoneMatch} from '../models/combat/combat.model';
 import {
   IGameEncounterCallback,
   ITemplateEncounter,
@@ -39,6 +38,8 @@ import {
   SPREADSHEET_ID
 } from '../models/game-data/game-data.model';
 import {GameDataAddSheetAction} from '../models/game-data/game-data.actions';
+import {CombatEncounterAction} from '../models/combat/combat.actions';
+import {List} from 'immutable';
 
 let _sharedGameWorld: GameWorld = null;
 
@@ -172,14 +173,15 @@ export class GameWorld extends World {
       return Object.assign({}, itemTemplate) as Combatant;
     };
 
-    const payload: CombatFixedEncounter = {
+    const payload: CombatEncounter = {
+      type: 'fixed',
       id: encounter.id,
-      enemies: encounter.enemies.map(toCombatant),
+      enemies: List<Combatant>(encounter.enemies.map(toCombatant)),
       zone: zoneInfo.target,
       message: encounter.message,
-      party: [] // TODO: entity
+      party: List<Combatant>([]) // TODO: entity
     };
-    this.store.dispatch(new CombatFixedEncounterAction(payload));
+    this.store.dispatch(new CombatEncounterAction(payload));
   }
 
   /** Load game data from google spreadsheet */

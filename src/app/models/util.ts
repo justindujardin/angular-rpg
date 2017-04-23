@@ -12,7 +12,7 @@
  * are unique.
  */
 
-let typeCache: {[label: string]: boolean} = {};
+let typeCache: { [label: string]: boolean } = {};
 export function type<T>(label: T | ''): T {
   if (typeCache[<string> label]) {
     throw new Error(`Action type "${label}" is not unique"`);
@@ -21,4 +21,13 @@ export function type<T>(label: T | ''): T {
   typeCache[<string> label] = true;
 
   return label as T;
+}
+
+/**
+ * Throw errors if the given expression is falsy
+ */
+export function assertTrue(expression: any, message: string) {
+  if (!expression) {
+    throw new Error(`Assertion Failed: ${message}`);
+  }
 }

@@ -116,6 +116,7 @@
     "reflect-metadata": "^0.1.9",
     "reselect": "^2.5.4",
     "rxjs": "~5.0.2",
+    "typed-immutable-record": "0.0.6",
     "underscore": "^1.8.3",
     "zone.js": "~0.7.4"
   },
@@ -187,6 +188,7 @@
     "url-loader": "^0.5.7",
     "v8-lazy-parse-webpack-plugin": "^0.3.0",
     "webpack": "2.2.0",
+    "webpack-dashboard": "^0.3.0",
     "webpack-dev-middleware": "^1.9.0",
     "webpack-dev-server": "2.2.0",
     "webpack-dll-bundles-plugin": "^1.0.0-beta.5",

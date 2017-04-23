@@ -7,6 +7,7 @@ import * as fromGameData from './game-data/game-data.reducer';
 import * as fromCombat from './combat/combat.reducer';
 import * as fromEntity from './entity/entity.reducer';
 import {GameStateActionTypes} from './game-state/game-state.actions';
+import {combatStateFactory} from './combat/combat.model';
 export const reducers = {
   router: routerReducer,
   gameData: fromGameData.gameDataReducer,
@@ -21,7 +22,11 @@ function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
     switch (action.type) {
       case 'SET_ROOT_STATE':
       case GameStateActionTypes.LOAD_SUCCESS:
-        return action.payload;
+        // TODO: This happens because only the combat state subtree is immutable currently
+        return {
+          ...action.payload,
+          combat: combatStateFactory(action.payload.combat)
+        };
       default:
         return reducer(state, action);
     }

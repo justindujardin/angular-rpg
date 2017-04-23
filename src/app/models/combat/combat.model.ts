@@ -1,6 +1,9 @@
-import {Item} from '../item';
 import {BaseEntity} from '../base-entity';
 import {IPoint} from '../../../game/pow-core/point';
+import * as Immutable from 'immutable';
+import {makeTypedFactory, TypedRecord} from 'typed-immutable-record';
+
+/** Valid combat types */
 export type CombatType = 'none' | 'fixed' | 'random';
 
 /**
@@ -40,62 +43,38 @@ export interface Combatant extends BaseEntity {
  * A Combat encounter descriptor.  Used to describe the configuration of combat.
  */
 export interface CombatEncounter {
-  /** unique id in spreadsheet https://goo.gl/JUPn00 */
-  readonly id: string;
+  /** The type of combat */
+  readonly type: CombatType;
   /** array of enemies in this encounter */
-  readonly enemies: Combatant[];
+  readonly enemies: Immutable.List<Combatant>;
   /**
    * Working copy of entity members in the combat simulation. When the combat
    * encounter is complete, the state of entity members will be transferred back
-   * to the main game state entity. This allows us to encapsulate combat encounters
-   * and potentially abort them without having to undo any actions on the game entity.
+   * to the main game state. This allows us to encapsulate combat encounters
+   * and potentially abort them without having to undo any actions on the game state.
    */
-  readonly party: Combatant[];
+  readonly party: Immutable.List<Combatant>;
   /** message to display when combat begins */
   readonly message?: string[];
-  /** The type of combat */
-  readonly type?: CombatType;
-  /** The combat zone name, e.g. 'world-plains', 'sewer', ... */
-  readonly zone?: string;
-}
-
-/**
- * A Fixed combat encounter.
- *
- * Fixed encounters are ones that happen when you interact with some fixed part
- * of the game world.
- */
-export interface CombatFixedEncounter extends CombatEncounter {
   /** The amount of gold to award the player after a victory */
   readonly gold?: number;
-  /** The experience to divide amongst the entity after a victory */
+  /** The experience to divide amongst the party after a victory */
   readonly experience?: number;
-  /** Any items to award the entity after a victory */
-  readonly items?: Item[];
+  /** Any items (by template id) to award the party after a victory */
+  readonly items?: string[];
+  /** The combat zone name, e.g. 'world-plains', 'sewer', ... */
+  readonly zone?: string;
+  /** unique id in spreadsheet https://goo.gl/JUPn00 */
+  readonly id?: string;
 }
 
 /**
- * A Random combat encounter.
- *
- * Random encounters happen during movement about a map that has a `CombatEncounterComponent`
- * added to it.
+ * The combat state tree JS object
+ * @internal Use {@see CombatStateRecord} instead
  */
-export interface CombatRandomEncounter extends CombatEncounter {
-  /** array of zones this encounter can happen in */
-  readonly zones: string[];
-}
-
-/** Union of valid CombatEncounter class types */
-export type CombatEncounterTypes = CombatEncounter | CombatFixedEncounter | CombatRandomEncounter;
-
-/** Union of either a CombatEncounter instance or false */
-export type CombatCurrentType = CombatEncounterTypes | boolean;
-
-export interface CombatState {
+interface _CombatState extends CombatEncounter {
   /** Is the current encounter loading */
   readonly loading: boolean;
-  /** The current encounter or null */
-  readonly encounter: CombatEncounterTypes;
 }
 
 // Combat Behaviors
@@ -106,3 +85,23 @@ export interface CombatAttack {
   attacker: BaseEntity;
   defender: BaseEntity;
 }
+
+export interface CombatStateRecord extends TypedRecord<CombatStateRecord>, _CombatState {
+}
+
+/**
+ * Factory for creating combat state records
+ * @internal
+ */
+export const combatStateFactory = makeTypedFactory<_CombatState, CombatStateRecord>({
+  loading: false,
+  enemies: Immutable.List<Combatant>(),
+  party: Immutable.List<Combatant>(),
+  type: 'none',
+  message: [],
+  gold: 0,
+  experience: 0,
+  items: [],
+  zone: '',
+  id: '',
+});

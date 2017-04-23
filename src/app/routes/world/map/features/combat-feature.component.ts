@@ -17,13 +17,15 @@ import {TiledFeatureComponent, TiledMapFeatureData} from '../map-feature.compone
 import {GameEntityObject} from '../../../../scene/game-entity-object';
 import {PlayerBehaviorComponent} from '../../behaviors/player-behavior';
 import {Component, Input} from '@angular/core';
-import {Combatant, CombatFixedEncounter, IZoneMatch} from '../../../../models/combat/combat.model';
-import {ITemplateEnemy, ITemplateFixedEncounter} from '../../../../models/game-data/game-data.model';
+import {Combatant, CombatEncounter, IZoneMatch} from '../../../../models/combat/combat.model';
+import {instantiateEntity, ITemplateEnemy, ITemplateFixedEncounter} from '../../../../models/game-data/game-data.model';
 import {AppState} from '../../../../app.model';
 import {Store} from '@ngrx/store';
 import {getGameDataEnemies, getGameDataFixedEncounters, getGameParty} from '../../../../models/selectors';
 import {Entity} from '../../../../models/entity/entity.model';
-import {CombatFixedEncounterAction} from '../../../../models/combat/combat.actions';
+import {CombatEncounterAction} from '../../../../models/combat/combat.actions';
+import {List} from 'immutable';
+
 /**
  * A map feature that represents a fixed combat encounter.
  *
@@ -75,19 +77,20 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
           const encounter: ITemplateFixedEncounter = encounters.find((e) => e.id === this.properties.id);
           const toCombatant = (id: string): Combatant => {
             const itemTemplate = enemies.find((e) => e.id === id);
-            return Object.assign({
+            return instantiateEntity(itemTemplate, {
               maxhp: itemTemplate.hp,
               maxmp: itemTemplate.mp
-            }, itemTemplate) as Combatant;
+            }) as Combatant;
           };
-          const payload: CombatFixedEncounter = {
+          const payload: CombatEncounter = {
+            type: 'fixed',
             id: encounter.id,
-            enemies: encounter.enemies.map(toCombatant),
+            enemies: List<Combatant>(encounter.enemies.map(toCombatant)),
             zone: zone.target,
             message: encounter.message,
-            party: party.slice()
+            party: List<Combatant>(party.map((p) => Object.assign({}, p)))
           };
-          this.store.dispatch(new CombatFixedEncounterAction(payload));
+          this.store.dispatch(new CombatEncounterAction(payload));
         })
       .take(1)
       .subscribe();
