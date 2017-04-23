@@ -7,7 +7,8 @@ import * as fromGameData from './game-data/game-data.reducer';
 import * as fromCombat from './combat/combat.reducer';
 import * as fromEntity from './entity/entity.reducer';
 import {GameStateActionTypes} from './game-state/game-state.actions';
-import {combatStateFactory} from './combat/combat.model';
+import {combatStateFactory} from './combat/combat.reducer';
+
 export const reducers = {
   router: routerReducer,
   gameData: fromGameData.gameDataReducer,

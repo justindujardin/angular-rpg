@@ -46,6 +46,10 @@ export class CombatPlayerComponent extends GameEntityObject implements AfterView
     super();
   }
 
+  get visible(): boolean {
+    return this.model && this.model.hp > 0;
+  }
+
   ngAfterViewInit(): void {
     this.combat.scene.addObject(this);
     this.behaviors.forEach((c: SceneObjectBehavior) => {

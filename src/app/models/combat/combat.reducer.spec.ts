@@ -1,5 +1,5 @@
-import {Combatant, CombatAttack, CombatEncounter, combatStateFactory} from './combat.model';
-import {combatReducer} from './combat.reducer';
+import {Combatant, CombatAttack, CombatEncounter} from './combat.model';
+import {combatReducer, combatStateFactory} from './combat.reducer';
 import {CombatAttackAction, CombatEncounterAction} from './combat.actions';
 import {entityId} from '../game-data/game-data.model';
 import * as Immutable from 'immutable';

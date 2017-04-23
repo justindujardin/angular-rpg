@@ -70,9 +70,8 @@ export interface CombatEncounter {
 
 /**
  * The combat state tree JS object
- * @internal Use {@see CombatStateRecord} instead
  */
-interface _CombatState extends CombatEncounter {
+export interface CombatState extends CombatEncounter {
   /** Is the current encounter loading */
   readonly loading: boolean;
 }
@@ -85,23 +84,3 @@ export interface CombatAttack {
   attacker: BaseEntity;
   defender: BaseEntity;
 }
-
-export interface CombatStateRecord extends TypedRecord<CombatStateRecord>, _CombatState {
-}
-
-/**
- * Factory for creating combat state records
- * @internal
- */
-export const combatStateFactory = makeTypedFactory<_CombatState, CombatStateRecord>({
-  loading: false,
-  enemies: Immutable.List<Combatant>(),
-  party: Immutable.List<Combatant>(),
-  type: 'none',
-  message: [],
-  gold: 0,
-  experience: 0,
-  items: [],
-  zone: '',
-  id: '',
-});

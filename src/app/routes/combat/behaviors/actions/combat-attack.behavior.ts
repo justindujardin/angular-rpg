@@ -66,12 +66,11 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
       attacker.findBehavior(CombatPlayerRenderBehaviorComponent) as CombatPlayerRenderBehaviorComponent;
     const attack = () => {
       const damage: number = rules.attackCombatant(attacker.model, defender.model);
-      const didKill: boolean = defender.model.hp <= 0;
+      const didKill: boolean = (defender.model.hp - damage) <= 0;
       const hit: boolean = damage > 0;
       const defending: boolean = false; // TODO: Maps to guard action
       const hitSound: string = getSoundEffectUrl(didKill ? 'killed' : (hit ? (defending ? 'miss' : 'hit') : 'miss'));
 
-      // TODO: This causes the attacked team to disappear.
       const attackData: CombatAttack = {
         attacker: attacker.model,
         defender: defender.model,

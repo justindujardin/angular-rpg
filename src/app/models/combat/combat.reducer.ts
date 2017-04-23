@@ -1,7 +1,37 @@
 import {CombatActions, CombatActionTypes} from './combat.actions';
-import {Combatant, CombatAttack, combatStateFactory, CombatStateRecord} from './combat.model';
+import {Combatant, CombatAttack, CombatState} from './combat.model';
 import {List} from 'immutable';
 import {assertTrue} from '../util';
+import {makeTypedFactory, TypedRecord} from 'typed-immutable-record';
+import * as Immutable from 'immutable';
+
+/**
+ * Combat state record.
+ * @private
+ * @internal
+ */
+interface CombatStateRecord extends TypedRecord<CombatStateRecord>, CombatState {
+}
+
+/**
+ * Factory for creating combat state records. Useful for instantiating combat subtree
+ * with a set of configured values on top of defaults. Helpful for deserialization and
+ * testing.
+ * @internal
+ */
+export const combatStateFactory = makeTypedFactory<CombatState, CombatStateRecord>({
+  loading: false,
+  enemies: Immutable.List<Combatant>(),
+  party: Immutable.List<Combatant>(),
+  type: 'none',
+  message: [],
+  gold: 0,
+  experience: 0,
+  items: [],
+  zone: '',
+  id: '',
+});
+
 
 export function combatReducer(state: CombatStateRecord = combatStateFactory(), action: CombatActions): CombatStateRecord {
   switch (action.type) {
@@ -12,7 +42,7 @@ export function combatReducer(state: CombatStateRecord = combatStateFactory(), a
       });
     }
     case CombatActionTypes.ENCOUNTER_READY: {
-      return state.set('loading', false);
+      return state.merge({loading: true});
     }
     case CombatActionTypes.ACTION_ATTACK: {
       const data = action.payload as CombatAttack;

@@ -20,8 +20,7 @@ import {LoadingService} from '../../components/loading/loading.service';
 import {ResourceManager} from '../../../game/pow-core/resource-manager';
 import {TileObjectRenderer} from '../../../game/pow2/tile/render/tile-object-renderer';
 import {SceneView} from '../../../game/pow2/scene/scene-view';
-import {Combatant, CombatStateRecord} from '../../models/combat/combat.model';
-import {Entity} from '../../models/entity/entity.model';
+import {Combatant, CombatState} from '../../models/combat/combat.model';
 import {CombatCameraBehaviorComponent} from './behaviors/combat-camera.behavior';
 import {CombatService} from '../../services/combat.service';
 import {CombatPlayerComponent} from './combat-player.entity';
@@ -54,7 +53,7 @@ export class CombatMapComponent extends GameTileMap implements AfterViewInit, On
   party$: Observable<List<Combatant>> = this.store.select(getCombatEncounterParty);
 
   /** Observable<CombatEncounter> */
-  encounter$: Observable<CombatStateRecord> = this.store.select(sliceCombatState);
+  encounter$: Observable<CombatState> = this.store.select(sliceCombatState);
 
   @ViewChildren(CombatPlayerComponent) party: QueryList<CombatPlayerComponent>;
   @ViewChildren(CombatEnemyComponent) enemies: QueryList<CombatEnemyComponent>;
