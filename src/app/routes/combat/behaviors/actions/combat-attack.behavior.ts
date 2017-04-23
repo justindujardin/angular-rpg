@@ -72,12 +72,12 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
       const hitSound: string = getSoundEffectUrl(didKill ? 'killed' : (hit ? (defending ? 'miss' : 'hit') : 'miss'));
 
       // TODO: This causes the attacked team to disappear.
-      // const attackData: CombatAttack = {
-      //   attacker: attacker.model,
-      //   defender: defender.model,
-      //   damage
-      // };
-      // this.store.dispatch(new CombatAttackAction(attackData));
+      const attackData: CombatAttack = {
+        attacker: attacker.model,
+        defender: defender.model,
+        damage
+      };
+      this.store.dispatch(new CombatAttackAction(attackData));
 
       const damageAnimation: string = hit ? (defending ? 'animSmoke.png' : 'animHit.png') : 'animMiss.png';
       const meta: ISpriteMeta = this.gameWorld.sprites.getSpriteMeta(damageAnimation);

@@ -143,6 +143,16 @@ export class CombatMapComponent extends GameTileMap implements AfterViewInit, On
   afterFrame(view: SceneView, elapsed: number) {
     // Nope
   }
+
+  /**
+   * Custom track by function for combatants. We need to keep them around by their
+   * entity instance id so that the components are not created/destroyed as their
+   * underlying model changes. This is important because these components instances
+   * are passed through the combat state machine and their references must remain valid.
+   */
+  combatTrackBy(index: number, item: Combatant): any {
+    return item.eid;
+  }
 }
 
 /** Components associated with combat map */
