@@ -8,6 +8,7 @@ import {
 import {GameState} from './game-state.model';
 import * as Immutable from 'immutable';
 import {Item} from '../item';
+import {assertTrue} from '../util';
 
 const initialState: GameState = {
   party: [],
@@ -60,15 +61,20 @@ export function gameStateReducer(state: GameState = initialState, action: GameSt
     }
     case GameStateActionTypes.ADD_INVENTORY: {
       const item: Item = action.payload;
+      assertTrue(item, 'cannot add invalid item to inventory');
+      assertTrue(item.eid, 'item must have an eid. consider using "entityId" or "instantiateEntity" during creation');
+      assertTrue(item.id, 'item must have a template id. see game-data models for more information');
+      const exists: boolean = !!state.inventory.find((i: string) => i === item.eid);
+      assertTrue(!exists, 'item already exists in inventory');
       return Immutable.fromJS(state).merge({
         inventory: [...state.inventory, item.eid]
       }).toJS();
     }
     case GameStateActionTypes.REMOVE_INVENTORY: {
       const item: Item = action.payload;
-      return Immutable.fromJS(state).merge({
-        inventory: state.inventory.filter((i: string) => i !== item.eid)
-      }).toJS();
+      const inventory: string[] = state.inventory.filter((i: string) => i !== item.eid);
+      assertTrue(inventory.length === state.inventory.length - 1, 'item does not exist in party inventory to remove');
+      return Immutable.fromJS(state).merge({inventory}).toJS();
     }
     default:
       return state;

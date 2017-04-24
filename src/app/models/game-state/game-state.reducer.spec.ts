@@ -10,11 +10,14 @@ import {
   GameStateAddInventoryAction, GameStateRemoveInventoryAction, GameStateNewAction
 } from './game-state.actions';
 import {Item} from '../item';
+import {entityId} from '../game-data/game-data.model';
 const itemId: string = 'test-item-fake';
 
 function fakeItem(uniqueId: string = itemId): Item {
+  const id: string = 'test-item-' + uniqueId;
   const testItem: Partial<Item> = {
-    id: 'test-item-' + uniqueId
+    id,
+    eid: entityId(id)
   };
   return Object.assign({}, testItem as Item);
 }
@@ -131,6 +134,37 @@ describe('GameState', () => {
         const actual = gameStateReducer(state, new GameStateAddInventoryAction(item));
         expect(actual.inventory.indexOf(item.eid)).toBeGreaterThan(-1);
       });
+      it('should throw if item already exists in inventory', () => {
+        const item = fakeItem();
+        const state = defaultState({
+          inventory: [item.eid]
+        });
+        expect(() => {
+          gameStateReducer(state, new GameStateAddInventoryAction(item));
+        }).toThrow();
+      });
+      it('should throw if item is invalid', () => {
+        const state = defaultState();
+        expect(() => {
+          gameStateReducer(state, new GameStateAddInventoryAction(null));
+        }).toThrow();
+      });
+      it('should throw if item is missing "id" template identifier', () => {
+        const state = defaultState();
+        expect(() => {
+          const item = fakeItem();
+          delete item.id;
+          gameStateReducer(state, new GameStateAddInventoryAction(item));
+        }).toThrow();
+      });
+      it('should throw if item is missing "eid" instance identifier', () => {
+        const state = defaultState();
+        expect(() => {
+          const item = fakeItem();
+          delete item.eid;
+          gameStateReducer(state, new GameStateAddInventoryAction(item));
+        }).toThrow();
+      });
     });
     describe('GameStateRemoveInventoryAction', () => {
       it('should remove the given item by id from the inventory array', () => {
@@ -140,6 +174,13 @@ describe('GameState', () => {
         });
         const actual = gameStateReducer(state, new GameStateRemoveInventoryAction(item));
         expect(actual.inventory.length).toBe(0);
+      });
+      it('should throw if asked to remove an item that is not in the inventory', () => {
+        const item = fakeItem();
+        const state = defaultState({inventory: []});
+        expect(() => {
+          gameStateReducer(state, new GameStateRemoveInventoryAction(item));
+        }).toThrow();
       });
     });
 
