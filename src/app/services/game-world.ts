@@ -40,6 +40,7 @@ import {
 import {GameDataAddSheetAction} from '../models/game-data/game-data.actions';
 import {CombatEncounterAction} from '../models/combat/combat.actions';
 import {List} from 'immutable';
+import {Entity} from '../models/entity/entity.model';
 
 let _sharedGameWorld: GameWorld = null;
 
@@ -179,7 +180,7 @@ export class GameWorld extends World {
       enemies: List<Combatant>(encounter.enemies.map(toCombatant)),
       zone: zoneInfo.target,
       message: encounter.message,
-      party: List<Combatant>([]) // TODO: entity
+      party: List<Entity>([])
     };
     this.store.dispatch(new CombatEncounterAction(payload));
   }

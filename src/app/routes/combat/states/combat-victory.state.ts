@@ -1,121 +1,147 @@
-/*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
-import * as _ from 'underscore';
 import {CombatMachineState} from './combat-base.state';
-import {GameEntityObject} from '../../../scene/game-entity-object';
 import {HeroModel} from '../../../../game/rpg/models/heroModel';
 import {ItemModel} from '../../../../game/rpg/models/itemModel';
 import {CombatStateMachineComponent} from './combat.machine';
 import {Component} from '@angular/core';
 import {Entity} from '../../../models/entity/entity.model';
 import {Item} from '../../../models/item';
-import {isDefeated} from '../../../models/combat/combat.api';
-
-export interface CombatVictorySummary {
-  party: GameEntityObject[];
-  enemies: GameEntityObject[];
-  levels: Entity[];
-  items?: Item[];
-  gold: number;
-  exp: number;
-  state: CombatVictoryStateComponent;
-}
+import {Combatant, CombatState} from '../../../models/combat/combat.model';
+import {AppState} from '../../../app.model';
+import {Store} from '@ngrx/store';
+import {getGameDataArmors, getGameDataItems, getGameDataWeapons, sliceCombatState} from '../../../models/selectors';
+import {assertTrue} from '../../../models/util';
+import {GameStateAddGoldAction, GameStateAddInventoryAction} from '../../../models/game-state/game-state.actions';
+import {instantiateEntity, ITemplateItem} from '../../../models/game-data/game-data.model';
+import {Observable} from 'rxjs/Observable';
+import {
+  getAgilityForLevel,
+  getHPForLevel,
+  getIntelligenceForLevel,
+  getStrengthForLevel,
+  getVitalityForLevel,
+  getXPForLevel
+} from '../../../models/levels';
+import {EntityLevelUpAction} from '../../../models/entity/entity.actions';
+import {CombatVictoryAction, CombatVictorySummary} from '../../../models/combat/combat.actions';
+import * as Immutable from 'immutable';
 
 @Component({
   selector: 'combat-victory-state',
-  template: `<ng-content></ng-content>`
+  template: `
+    <ng-content></ng-content>`
 })
 export class CombatVictoryStateComponent extends CombatMachineState {
   static NAME: string = 'Combat Victory';
   name: string = CombatVictoryStateComponent.NAME;
+  /**
+   * Item templates to instantiate any combat victory reward items
+   */
+  private items$: Observable<ITemplateItem[]> = this.store.select(getGameDataWeapons)
+    .combineLatest(
+      this.store.select(getGameDataArmors),
+      this.store.select(getGameDataItems),
+      (weapons, armors, items) => {
+        return [...items, ...weapons, ...armors];
+      });
+
+  constructor(public store: Store<AppState>) {
+    super();
+  }
+
+  awardExperience(exp: number, model: Entity): boolean {
+    const newExp: number = model.exp + exp;
+    const nextLevel: number = getXPForLevel(model.level + 1);
+    if (newExp >= nextLevel) {
+      this.awardLevelUp(model);
+      return true;
+    }
+    return false;
+  }
+
+  awardLevelUp(model: Entity) {
+    const nextLevel: number = model.level + 1;
+    const newHP = getHPForLevel(nextLevel, model);
+    const changes: Partial<Entity> = {
+      level: nextLevel,
+      maxhp: newHP,
+      hp: newHP,
+      attack: getStrengthForLevel(nextLevel, model),
+      speed: getAgilityForLevel(nextLevel, model),
+      defense: getVitalityForLevel(nextLevel, model),
+      magic: getIntelligenceForLevel(nextLevel, model)
+    };
+    this.store.dispatch(new EntityLevelUpAction(model.eid, changes));
+  }
 
   enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
 
-    const players: GameEntityObject[] = machine.getLiveParty();
-    if (players.length === 0) {
-      throw new Error('Invalid state, cannot be in victory with no living player-card members');
-    }
+    this.store.select(sliceCombatState)
+      .take(1)
+      .combineLatest(this.items$, (state: CombatState, items: ITemplateItem[]) => {
+        const players: Immutable.List<Entity> = state.party;
+        assertTrue(players.count() > 0, 'no living players during combat victory state');
+        let gold: number = 0;
+        let exp: number = 0;
+        let itemTemplateIds: string[] = [];
 
-    console.warn('combat victory is unimplemented');
-    // let gold: number = 0;
-    // let exp: number = 0;
-    // let items: string[] = [];
-    // _.each(machine.enemies, (nme: GameEntityObject) => {
-    //   const combatant = nme.model as Combatant;
-    //   gold += combatant.gold || 0;
-    //   exp += combatant.exp || 0;
-    // });
-    //
-    //
-    // // Apply Fixed encounter bonus awards
-    // //
-    // if (machine.parent.encounterInfo.fixed) {
-    //   const encounter = <IGameFixedEncounter>machine.parent.encounter;
-    //   if (encounter.gold > 0) {
-    //     gold += encounter.gold;
-    //   }
-    //   if (encounter.experience > 0) {
-    //     exp += encounter.experience;
-    //   }
-    //   if (encounter.items && encounter.items.length > 0) {
-    //     items = items.concat(encounter.items);
-    //   }
-    // }
-    //
-    // // Award gold
-    // //
-    // machine.world.model.addGold(gold);
-    //
-    // // Award items
-    // //
-    // const itemModels: Item[] = [];
-    // items.forEach((i: string) => {
-    //   const model = machine.parent.world.itemModelFromId(i);
-    //   if (model) {
-    //     itemModels.push(model);
-    //     machine.world.model.inventory.push(model);
-    //   }
-    // });
-    //
-    //
-    // // Award experience
-    // //
-    // const expPerParty: number = Math.round(exp / players.length);
-    // const leveledHeros: Entity[] = [];
-    // _.each(players, (p: GameEntityObject) => {
-    //   const heroModel = <Entity>p.model;
-    //   const leveled: boolean = heroModel.awardExperience(expPerParty);
-    //   if (leveled) {
-    //     leveledHeros.push(heroModel);
-    //   }
-    // });
-    //
-    // const summary: CombatVictorySummary = {
-    //   state: this,
-    //   entity: machine.entity,
-    //   enemies: machine.enemies,
-    //   levels: leveledHeros,
-    //   items: itemModels,
-    //   gold: gold,
-    //   exp: exp
-    // };
-    // machine.notify("combat:victory", summary, () => {
-    //   machine.parent.world.reportEncounterResult(true);
-    //   // machine.parent.setCurrentState(PlayerMapState.NAME);
-    // });
+        // Sum experience and gold for each enemy that was defeated
+        state.enemies.forEach((combatant: Combatant) => {
+          gold += combatant.gold || 0;
+          exp += combatant.exp || 0;
+        });
+
+        // Apply Fixed encounter bonus awards
+        //
+        if (state.type === 'fixed') {
+          if (state.gold > 0) {
+            gold += state.gold;
+          }
+          if (state.experience > 0) {
+            exp += state.experience;
+          }
+          if (state.items && state.items.length > 0) {
+            itemTemplateIds = itemTemplateIds.concat(state.items);
+          }
+        }
+
+        // Award gold
+        //
+        this.store.dispatch(new GameStateAddGoldAction(gold));
+
+        // Award items
+        //
+        const itemInstances: Item[] = [];
+        itemTemplateIds.forEach((itemId: string) => {
+          const item: ITemplateItem = items.find((i: ITemplateItem) => i.id === itemId);
+          assertTrue(!!item, 'cannot award unknown item ' + itemId);
+          const model = instantiateEntity<Item>(item);
+          this.store.dispatch(new GameStateAddInventoryAction(model));
+        });
+
+        // Award experience
+        //
+        const expPerParty: number = Math.round(exp / players.count());
+        const levelUps: Entity[] = [];
+        players.forEach((player: Entity) => {
+          const leveled: boolean = this.awardExperience(expPerParty, player);
+          if (leveled) {
+            levelUps.push(player);
+          }
+        });
+
+        const summary: CombatVictorySummary = {
+          party: state.party
+          enemies: state.enemies
+          levels: levelUps,
+          items: itemInstances,
+          gold,
+          exp
+        };
+
+        machine.notify('combat:victory', summary, () => {
+          this.store.dispatch(new CombatVictoryAction(summary));
+        });
+      }).subscribe();
   }
 }

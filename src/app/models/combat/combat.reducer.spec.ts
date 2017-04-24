@@ -3,6 +3,7 @@ import {combatReducer, combatStateFactory} from './combat.reducer';
 import {CombatAttackAction, CombatEncounterAction} from './combat.actions';
 import {entityId} from '../game-data/game-data.model';
 import * as Immutable from 'immutable';
+import {Entity} from '../entity/entity.model';
 
 function attack(from: Combatant, to: Combatant, value: number): CombatAttack {
   const result: CombatAttack = {
@@ -21,17 +22,17 @@ function encounter(values?: Partial<CombatEncounter>): CombatEncounter {
   }, values || {});
 }
 
-function combatant(values?: Partial<Combatant>): Combatant {
+function combatant(values?: Partial<Combatant>): Combatant | Entity {
   return Object.assign({
     eid: entityId('test-entity'),
     mp: 0,
     maxmp: 0,
     hp: 0,
     maxhp: 0
-  }, values || {}) as Combatant;
+  }, values || {}) as any;
 }
 
-fdescribe('Combat', () => {
+describe('Combat', () => {
   describe('Actions', () => {
     describe('CombatEncounterAction', () => {
       it('should set loading to true', () => {
@@ -54,7 +55,7 @@ fdescribe('Combat', () => {
           type: 'fixed',
           loading: false,
           enemies: Immutable.List([attacker]),
-          party: Immutable.List([defender])
+          party: Immutable.List<Entity>([defender])
         });
         const actual = combatReducer(state, new CombatAttackAction(attack(attacker, defender, 3)));
         expect(actual.party.get(0).hp).toBe(2);
@@ -66,7 +67,7 @@ fdescribe('Combat', () => {
           type: 'fixed',
           loading: false,
           enemies: Immutable.List([attacker]),
-          party: Immutable.List([defender])
+          party: Immutable.List<Entity>([defender])
         });
         const actual = combatReducer(state, new CombatAttackAction(attack(attacker, defender, -4)));
         expect(actual.party.get(0).hp).toBe(5);
@@ -78,7 +79,7 @@ fdescribe('Combat', () => {
           type: 'fixed',
           loading: false,
           enemies: Immutable.List([defender]),
-          party: Immutable.List([attacker])
+          party: Immutable.List<Entity>([attacker])
         });
         const actual = combatReducer(state, new CombatAttackAction(attack(attacker, defender, 3)));
         expect(actual.enemies.get(0).hp).toBe(2);
@@ -90,7 +91,7 @@ fdescribe('Combat', () => {
           type: 'fixed',
           loading: false,
           enemies: Immutable.List([defender]),
-          party: Immutable.List([attacker])
+          party: Immutable.List<Entity>([attacker])
         });
         const actual = combatReducer(state, new CombatAttackAction(attack(attacker, defender, 10)));
         expect(actual.enemies.get(0).hp).toBe(0);

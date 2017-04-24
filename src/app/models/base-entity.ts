@@ -8,6 +8,33 @@ export interface EntityObject {
 }
 
 /**
+ * Hidden attributes that are used to differentiate base level of competency for
+ * a character in a given category. If a player has a high baseattack, they will
+ * in general do more damage than others.
+ *
+ * TODO: How to balance this? I've been generally trying allocating (n) points total for hidden attributes.
+ * Needs further thought and documentation.
+ */
+export interface IHiddenAttributes {
+  /**
+   * Base attack value
+   */
+  readonly baseattack: number;
+  /**
+   * Base defense value
+   */
+  readonly basedefense: number;
+  /**
+   * Base magic value
+   */
+  readonly basemagic: number;
+  /**
+   * Base speed value
+   */
+  readonly basespeed: number;
+}
+
+/**
  * The most basic form of an entity is the template used to create an instance. It differs
  * from a {@see BaseEntity} in that it does not have `maxmp` or `maxhp` properties. When an
  * instance is created from a template, `maxmp` and `maxhp` are assigned from the `hp` and `mp` properties.

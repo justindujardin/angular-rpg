@@ -13,5 +13,5 @@ export interface Item extends ITemplateItem, EntityObject {
   /**
    * The category of the item. Useful for filtering by item type.
    */
-  readonly category: ItemCategories;
+  readonly category?: ItemCategories;
 }

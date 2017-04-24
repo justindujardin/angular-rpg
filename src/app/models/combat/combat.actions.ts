@@ -1,6 +1,17 @@
 import {Action} from '@ngrx/store';
 import {type} from '../util';
-import {CombatAttack, CombatEncounter} from './combat.model';
+import {Combatant, CombatAttack, CombatEncounter} from './combat.model';
+import {Entity} from '../entity/entity.model';
+import {Item} from '../item';
+
+export interface CombatVictorySummary {
+  party: Entity[];
+  enemies: Combatant[];
+  levels: Entity[];
+  items?: Item[];
+  gold: number;
+  exp: number;
+}
 
 export const CombatActionTypes = {
   ENCOUNTER: type('rpg/combat/fixed'),
@@ -42,6 +53,13 @@ export class CombatAttackAction implements Action {
   type = CombatActionTypes.ACTION_ATTACK;
 
   constructor(public payload: CombatAttack) {
+  }
+}
+
+export class CombatVictoryAction implements Action {
+  type = CombatActionTypes.ACTION_ATTACK;
+
+  constructor(public payload: CombatVictorySummary) {
   }
 }
 

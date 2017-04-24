@@ -18,7 +18,7 @@ import {GameEntityObject} from '../../../../scene/game-entity-object';
 import {PlayerBehaviorComponent} from '../../behaviors/player-behavior';
 import {Component, Input} from '@angular/core';
 import {Combatant, CombatEncounter, IZoneMatch} from '../../../../models/combat/combat.model';
-import {instantiateEntity, ITemplateEnemy, ITemplateFixedEncounter} from '../../../../models/game-data/game-data.model';
+import {entityId, ITemplateEnemy, ITemplateFixedEncounter} from '../../../../models/game-data/game-data.model';
 import {AppState} from '../../../../app.model';
 import {Store} from '@ngrx/store';
 import {getGameDataEnemies, getGameDataFixedEncounters, getGameParty} from '../../../../models/selectors';
@@ -77,7 +77,8 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
           const encounter: ITemplateFixedEncounter = encounters.find((e) => e.id === this.properties.id);
           const toCombatant = (id: string): Combatant => {
             const itemTemplate = enemies.find((e) => e.id === id);
-            return instantiateEntity(itemTemplate, {
+            return Object.assign({}, itemTemplate, {
+              eid: entityId(itemTemplate.id),
               maxhp: itemTemplate.hp,
               maxmp: itemTemplate.mp
             }) as Combatant;
@@ -88,7 +89,7 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
             enemies: List<Combatant>(encounter.enemies.map(toCombatant)),
             zone: zone.target,
             message: encounter.message,
-            party: List<Combatant>(party.map((p) => Object.assign({}, p)))
+            party: List<Entity>(party)
           };
           this.store.dispatch(new CombatEncounterAction(payload));
         })

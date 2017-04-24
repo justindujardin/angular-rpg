@@ -14,7 +14,6 @@ import {HeroModel} from '../../../game/rpg/models/heroModel';
 import {TileMapView} from '../../../game/pow2/tile/tile-map-view';
 import {UIAttachment} from './behaviors/choose-action.machine';
 import {CombatRunSummary} from './states/combat-escape.state';
-import {CombatVictorySummary} from './states/combat-victory.state';
 import {CombatDefeatSummary} from './states/combat-defeat.state';
 import {LoadingService} from '../../components/loading/loading.service';
 import {AppState} from '../../app.model';
@@ -23,6 +22,7 @@ import {CombatStateMachineComponent} from './states/combat.machine';
 import {Item} from '../../models/item';
 import {Entity} from '../../models/entity/entity.model';
 import {CombatMapComponent} from './combat-map.entity';
+import {CombatVictorySummary} from '../../models/combat/combat.actions';
 
 /**
  * Describe a selectable menu item for a user input in combat.

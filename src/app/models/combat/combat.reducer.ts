@@ -4,6 +4,7 @@ import {List} from 'immutable';
 import {assertTrue} from '../util';
 import {makeTypedFactory, TypedRecord} from 'typed-immutable-record';
 import * as Immutable from 'immutable';
+import {Entity} from '../entity/entity.model';
 
 /**
  * Combat state record.
@@ -22,7 +23,7 @@ interface CombatStateRecord extends TypedRecord<CombatStateRecord>, CombatState 
 export const combatStateFactory = makeTypedFactory<CombatState, CombatStateRecord>({
   loading: false,
   enemies: Immutable.List<Combatant>(),
-  party: Immutable.List<Combatant>(),
+  party: Immutable.List<Entity>(),
   type: 'none',
   message: [],
   gold: 0,
@@ -32,8 +33,8 @@ export const combatStateFactory = makeTypedFactory<CombatState, CombatStateRecor
   id: '',
 });
 
-
-export function combatReducer(state: CombatStateRecord = combatStateFactory(), action: CombatActions): CombatStateRecord {
+export function combatReducer(state: CombatStateRecord = combatStateFactory(),
+                              action: CombatActions): CombatStateRecord {
   switch (action.type) {
     case CombatActionTypes.ENCOUNTER: {
       return state.merge({
@@ -60,7 +61,7 @@ export function combatReducer(state: CombatStateRecord = combatStateFactory(), a
           return items.set(index, {
             ...current,
             hp: newHp
-          })
+          });
         });
       }
 
@@ -75,7 +76,7 @@ export function combatReducer(state: CombatStateRecord = combatStateFactory(), a
           return items.set(index, {
             ...current,
             hp: newHp
-          })
+          });
         });
       }
       assertTrue(index !== -1, 'attack target found in neither enemies nor party lists');

@@ -10,7 +10,10 @@ import {
 } from '@angular/core';
 import {Observable, BehaviorSubject, Subject} from 'rxjs';
 import {IScene} from '../../../../../game/pow2/scene/scene.model';
-import {instantiateEntity, ITemplateItem, ITemplateWeapon} from '../../../../models/game-data/game-data.model';
+import {
+  instantiateEntity, ITemplateArmor, ITemplateItem,
+  ITemplateWeapon
+} from '../../../../models/game-data/game-data.model';
 import {
   GameStateAddInventoryAction,
   GameStateAddGoldAction,
@@ -117,9 +120,9 @@ export class StoreFeatureComponent extends TiledFeatureComponent implements OnDe
   /** @internal */
   private _weapons$: Observable<ITemplateWeapon[]> = this.store.select(getGameDataWeapons);
   /** @internal */
-  private _armors$: Observable<ITemplateWeapon[]> = this.store.select(getGameDataArmors);
+  private _armors$: Observable<ITemplateArmor[]> = this.store.select(getGameDataArmors);
   /** @internal */
-  private _items$: Observable<ITemplateWeapon[]> = this.store.select(getGameDataItems);
+  private _items$: Observable<ITemplateItem[]> = this.store.select(getGameDataItems);
   /** @internal */
   private _selling$ = new BehaviorSubject<boolean>(false);
 

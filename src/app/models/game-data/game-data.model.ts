@@ -6,7 +6,7 @@
  * @fileOverview
  */
 import {EntityType} from '../entity/entity.model';
-import {BaseEntity, newGuid} from '../base-entity';
+import {BaseEntity, IHiddenAttributes, newGuid} from '../base-entity';
 
 export type ItemCategories = 'item' | 'weapon' | 'armor';
 
@@ -96,7 +96,7 @@ export interface ITemplateMagic extends ITemplateItem {
   readonly magnitude: number;
 }
 
-export interface ITemplateClass extends ITemplateId {
+export interface ITemplateClass extends ITemplateId, IHiddenAttributes {
   /**
    * Human readable class name, e.g. "Warrior" or "Mage"
    */
@@ -108,23 +108,6 @@ export interface ITemplateClass extends ITemplateId {
    * with "female" or "male".
    */
   readonly icon: string;
-
-  /**
-   * Base attack value
-   */
-  readonly baseattack: number;
-  /**
-   * Base defense value
-   */
-  readonly basedefense: number;
-  /**
-   * Base magic value
-   */
-  readonly basemagic: number;
-  /**
-   * Base speed value
-   */
-  readonly basespeed: number;
 }
 
 export interface ITemplateEnemy extends ITemplateId, BaseEntity {
@@ -191,10 +174,10 @@ export interface IGameEncounterCallback {
  * @param from The ITemplateId to stamp out a copy of
  * @param values Any optional values to assign to the instance during creation
  */
-export function instantiateEntity<T extends ITemplateId>(from: T, values?: Partial<T>): T {
+export function instantiateEntity<T extends ITemplateId>(from: any, values?: Partial<T>): T {
   return Object.assign({
     eid: entityId(from.id),
-  }, from, values || {});
+  }, from, values || {}) as T;
 }
 
 /** Generate a UUID for a given input template ID that is unique across all instances of the same template base */

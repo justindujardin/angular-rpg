@@ -1,7 +1,7 @@
 import {BaseEntity} from '../base-entity';
 import {IPoint} from '../../../game/pow-core/point';
 import * as Immutable from 'immutable';
-import {makeTypedFactory, TypedRecord} from 'typed-immutable-record';
+import {Entity} from '../entity/entity.model';
 
 /** Valid combat types */
 export type CombatType = 'none' | 'fixed' | 'random';
@@ -37,6 +37,8 @@ export interface Combatant extends BaseEntity {
   readonly name?: string;
   /** The experience awarded for defeating this combatant */
   readonly exp?: number;
+  /** The gold that can be looted aftefor defeating this combatant */
+  readonly gold?: number;
 }
 
 /**
@@ -53,7 +55,7 @@ export interface CombatEncounter {
    * to the main game state. This allows us to encapsulate combat encounters
    * and potentially abort them without having to undo any actions on the game state.
    */
-  readonly party: Immutable.List<Combatant>;
+  readonly party: Immutable.List<Entity>;
   /** message to display when combat begins */
   readonly message?: string[];
   /** The amount of gold to award the player after a victory */

@@ -2,30 +2,7 @@ import {type} from '../util';
 import {Action} from '@ngrx/store';
 import {BaseEntity} from '../base-entity';
 import {Item} from '../item';
-
-export const LEVEL_EXPERIENCE_REQUIREMENTS = [
-  0,
-  32,
-  96,
-  208,
-  400,
-  672,
-  1056,
-  1552,
-  2184,
-  2976
-];
-export const PARTY_ARMOR_TYPES: string[] = [
-  'head', 'body', 'arms', 'feet', 'accessory'
-];
-export function getXPForLevel(level: number): number {
-  if (level === 0) {
-    return 0;
-  }
-  return LEVEL_EXPERIENCE_REQUIREMENTS[level - 1];
-}
-
-//
+import {Entity} from './entity.model';
 
 export const EntityActionTypes = {
   ADD_BEING: type('rpg/entity/being/add'),
@@ -34,6 +11,7 @@ export const EntityActionTypes = {
   REMOVE_ITEM: type('rpg/entity/item/remove'),
   ADD_OBJECTIVE: type('rpg/entity/objective/create'),
   REMOVE_OBJECTIVE: type('rpg/entity/objective/remove'),
+  LEVEL_UP: type('rpg/entity/levelup')
 };
 export class EntityAddBeingAction implements Action {
   type: string = EntityActionTypes.ADD_BEING;
@@ -65,6 +43,21 @@ export class EntityRemoveItemAction implements Action {
 
   constructor(entityId: string) {
     this.payload = entityId;
+  }
+}
+
+export class EntityLevelUpAction implements Action {
+  type: string = EntityActionTypes.LEVEL_UP;
+  payload: {
+    eid: string;
+    changes: Partial<Entity>
+  };
+
+  constructor(entityId: string, changes: Partial<Entity>) {
+    this.payload = {
+      eid: entityId,
+      changes
+    };
   }
 }
 
