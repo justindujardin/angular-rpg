@@ -21,45 +21,16 @@ declare var Tabletop: any;
  */
 export class GameDataResource extends Resource {
 
-  static DATA_KEY: string = '__db';
-
   fetch(url?: string): Promise<GameDataResource> {
     return new Promise<GameDataResource>((resolve, reject) => {
-      // Attempt to load db from save game cache to avoid hitting
-      // google spreadsheets API on ever page load.
-      try {
-        this.data = JSON.parse(this.getCache(url));
-        if (this.data) {
-          _.defer(() => {
-            resolve(this);
-          });
-        }
-      }
-      catch (e) {
-        // Do nothing and fall-through to load from the published google spreadsheet
-      }
-      // TODO: ERROR Condition
       Tabletop.init({
         key: url,
         callback: (data, tabletop) => {
           data = this.data = this.transformTypes(data);
-          this.setCache(url, JSON.stringify(data));
           resolve(this);
         }
       });
     });
-  }
-
-  getCache(key: string): any {
-    return localStorage.getItem(GameDataResource.DATA_KEY + key);
-  }
-
-  static clearCache(key: string) {
-    localStorage.removeItem(GameDataResource.DATA_KEY + key);
-  }
-
-  setCache(key: string, data: any) {
-    localStorage.setItem(GameDataResource.DATA_KEY + key, data);
   }
 
   // TODO: Do we need to match - and floating point?
@@ -115,13 +86,4 @@ export class GameDataResource extends Resource {
     });
     return results;
   }
-
-  getSheetData(name: string): any {
-    name = ('' + name).toLocaleLowerCase();
-    if (!this.data[name]) {
-      return [];
-    }
-    return this.data[name];
-  }
-
 }

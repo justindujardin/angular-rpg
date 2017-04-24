@@ -22,11 +22,11 @@ import {Component, AfterViewInit, ViewChildren, QueryList, Input} from '@angular
 import {CombatEncounter} from '../../../models/combat/combat.model';
 import {CombatMachineState} from './combat-base.state';
 import {Scene} from '../../../../game/pow2/scene/scene';
-import {isDefeated} from '../../../models/combat/combat.api';
 import {CombatPlayerComponent} from '../combat-player.entity';
 import {CombatEnemyComponent} from '../combat-enemy.entity';
 import {GameEntityObject} from '../../../scene/game-entity-object';
 import {TileMapView} from '../../../../game/pow2/tile/tile-map-view';
+import {CombatService} from '../../../models/combat/combat.service';
 
 /**
  * Completion callback for a player action.
@@ -49,16 +49,16 @@ export interface IPlayerAction {
 @Component({
   selector: 'combat-state-machine',
   template: `
-  <combat-start-state #start></combat-start-state>
-  <combat-begin-turn-state #beginTurn></combat-begin-turn-state>
-  <combat-choose-action-state
-    [pointAt]="current"
-    #chooseAction></combat-choose-action-state>
-  <combat-end-turn-state #endTurn></combat-end-turn-state>
-  <combat-defeat-state #defeat></combat-defeat-state>
-  <combat-victory-state #victory></combat-victory-state>
-  <combat-escape-state #escape></combat-escape-state>
-`
+    <combat-start-state #start></combat-start-state>
+    <combat-begin-turn-state #beginTurn></combat-begin-turn-state>
+    <combat-choose-action-state
+      [pointAt]="current"
+      #chooseAction></combat-choose-action-state>
+    <combat-end-turn-state #endTurn></combat-end-turn-state>
+    <combat-defeat-state #defeat></combat-defeat-state>
+    <combat-victory-state #victory></combat-victory-state>
+    <combat-escape-state #escape></combat-escape-state>
+  `
 })
 export class CombatStateMachineComponent extends StateMachine implements AfterViewInit {
   defaultState: string = CombatStartStateComponent.NAME;
@@ -71,6 +71,10 @@ export class CombatStateMachineComponent extends StateMachine implements AfterVi
   focus: GameEntityObject;
   current: GameEntityObject;
   currentDone: boolean = false;
+
+  constructor(private combatService: CombatService) {
+    super();
+  }
 
   @Input() scene: Scene;
   @Input() encounter: CombatEncounter;
@@ -93,13 +97,13 @@ export class CombatStateMachineComponent extends StateMachine implements AfterVi
 
   getLiveParty(): CombatPlayerComponent[] {
     return this.party.filter((obj: CombatPlayerComponent) => {
-      return !isDefeated(obj.model);
+      return !this.combatService.isDefeated(obj.model);
     });
   }
 
   getLiveEnemies(): CombatEnemyComponent[] {
     return this.enemies.filter((obj: CombatEnemyComponent) => {
-      return !isDefeated(obj.model);
+      return !this.combatService.isDefeated(obj.model);
     });
   }
 
@@ -107,7 +111,7 @@ export class CombatStateMachineComponent extends StateMachine implements AfterVi
     const players = <CombatPlayerComponent[]> _.shuffle(this.party.toArray());
     while (players.length > 0) {
       const p = players.shift();
-      if (!isDefeated(p.model)) {
+      if (!this.combatService.isDefeated(p.model)) {
         return p;
       }
     }
@@ -118,7 +122,7 @@ export class CombatStateMachineComponent extends StateMachine implements AfterVi
     const players = <CombatEnemyComponent[]> _.shuffle(this.enemies.toArray());
     while (players.length > 0) {
       const p = players.shift();
-      if (!isDefeated(p.model)) {
+      if (!this.combatService.isDefeated(p.model)) {
         return p;
       }
     }

@@ -75,7 +75,6 @@ export class CombatVictoryStateComponent extends CombatMachineState {
 
   enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
-
     this.store.select(sliceCombatState)
       .take(1)
       .combineLatest(this.items$, (state: CombatState, items: ITemplateItem[]) => {
@@ -130,18 +129,16 @@ export class CombatVictoryStateComponent extends CombatMachineState {
           }
         });
 
+        // Dispatch victory action
         const summary: CombatVictorySummary = {
-          party: state.party
-          enemies: state.enemies
+          party: state.party.toArray(),
+          enemies: state.enemies.toArray(),
           levels: levelUps,
           items: itemInstances,
           gold,
           exp
         };
-
-        machine.notify('combat:victory', summary, () => {
-          this.store.dispatch(new CombatVictoryAction(summary));
-        });
+        this.store.dispatch(new CombatVictoryAction(summary));
       }).subscribe();
   }
 }

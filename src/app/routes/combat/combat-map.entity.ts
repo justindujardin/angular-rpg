@@ -22,7 +22,7 @@ import {TileObjectRenderer} from '../../../game/pow2/tile/render/tile-object-ren
 import {SceneView} from '../../../game/pow2/scene/scene-view';
 import {Combatant, CombatState} from '../../models/combat/combat.model';
 import {CombatCameraBehaviorComponent} from './behaviors/combat-camera.behavior';
-import {CombatService} from '../../services/combat.service';
+import {CombatService} from '../../models/combat/combat.service';
 import {CombatPlayerComponent} from './combat-player.entity';
 import {CombatEnemyComponent} from './combat-enemy.entity';
 import {TileMapRenderer} from '../../../game/pow2/tile/render/tile-map-renderer';

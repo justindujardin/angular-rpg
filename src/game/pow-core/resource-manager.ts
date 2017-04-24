@@ -1,26 +1,10 @@
-/*
- Copyright (C) 2013-2015 by Justin DuJardin
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
 import * as _ from 'underscore';
 import {errors} from './errors';
-import {IResource, Resource} from './resource';
+import {IResource} from './resource';
 import {ImageResource} from './resources/image.resource';
 import {ScriptResource} from './resources/script.resource';
 import {JSONResource} from './resources/json.resource';
 import {XMLResource} from './resources/xml.resource';
-import {EntityFactory} from './resources/entities.resource';
 import {TiledTMXResource} from './resources/tiled/tiled-tmx.resource';
 import {TiledTSXResource} from './resources/tiled/tiled-tsx.resource';
 import {AudioResource} from './resources/audio.resource';
@@ -40,7 +24,6 @@ export class ResourceManager {
     'js': ScriptResource,
     'json': JSONResource,
     'xml': XMLResource,
-    'entities': EntityFactory,
     'tmx': TiledTMXResource,
     'tsx': TiledTSXResource,
     '': AudioResource,

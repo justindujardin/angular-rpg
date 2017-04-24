@@ -20,15 +20,20 @@ import {CombatChooseActionStateComponent} from './combat-choose-action.state';
 import {CombatDefeatStateComponent} from './combat-defeat.state';
 import {CombatVictoryStateComponent} from './combat-victory.state';
 import {Component} from '@angular/core';
-import {isDefeated} from '../../../models/combat/combat.api';
+import {CombatService} from '../../../models/combat/combat.service';
 
 @Component({
   selector: 'combat-end-turn-state',
-  template: `<ng-content></ng-content>`
+  template: `
+    <ng-content></ng-content>`
 })
 export class CombatEndTurnStateComponent extends CombatMachineState {
   static NAME: string = 'Combat End Turn';
   name: string = CombatEndTurnStateComponent.NAME;
+
+  constructor(private combatService: CombatService) {
+    super();
+  }
 
   enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
@@ -37,7 +42,7 @@ export class CombatEndTurnStateComponent extends CombatMachineState {
     while (machine.turnList.length > 0 && !machine.current) {
       machine.current = machine.turnList.shift();
       // Strip out defeated players.
-      if (machine.current && isDefeated(machine.current.model)) {
+      if (machine.current && this.combatService.isDefeated(machine.current.model)) {
         machine.current = null;
       }
     }

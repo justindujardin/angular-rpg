@@ -14,9 +14,11 @@ export interface CombatVictorySummary {
 }
 
 export const CombatActionTypes = {
-  ENCOUNTER: type('rpg/combat/fixed'),
-  ENCOUNTER_READY: type('rpg/combat/fixed/ready'),
-  ENCOUNTER_ERROR: type('rpg/combat/fixed/error'),
+  ENCOUNTER: type('rpg/combat/encounter'),
+  ENCOUNTER_READY: type('rpg/combat/ready'),
+  ENCOUNTER_ERROR: type('rpg/combat/error'),
+  VICTORY: type('rpg/combat/victory/async'),
+  VICTORY_COMPLETE: type('rpg/combat/victory/done'),
   ACTION_ATTACK: type('rpg/combat/attack')
 };
 
@@ -56,8 +58,17 @@ export class CombatAttackAction implements Action {
   }
 }
 
+/** Async event that notifies the user of combat victory and updates the game-state party tree. */
 export class CombatVictoryAction implements Action {
-  type = CombatActionTypes.ACTION_ATTACK;
+  type = CombatActionTypes.VICTORY;
+
+  constructor(public payload: CombatVictorySummary) {
+  }
+}
+
+/** Dispatched after UI animation side-effects are complete */
+export class CombatVictoryCompleteAction implements Action {
+  type = CombatActionTypes.VICTORY_COMPLETE;
 
   constructor(public payload: CombatVictorySummary) {
   }

@@ -95,6 +95,7 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
   }
 
   ngOnDestroy(): void {
+    // TODO: Got everything here?
     this.world.erase(this.scene);
     this.world.time.removeObject(this);
     this.scene.removeView(this);
@@ -237,20 +238,6 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
         msg += ' failed to escape!';
       }
       this.notify.show(msg, _done);
-    });
-    this.machine.on('combat:victory', (data: CombatVictorySummary) => {
-      const _done = this.machine.notifyWait();
-      this.notify.show(`Found ${data.gold} gold!`, null, 0);
-      if (data.items) {
-        _.each(data.items, (item: Item) => {
-          this.notify.show(`Found ${item.name}`, null, 0);
-        });
-      }
-      this.notify.show(`Gained ${data.exp} experience!`, null, 0);
-      _.each(data.levels, (hero: Entity) => {
-        this.notify.show(`${hero.name} reached level ${hero.level}!`, null, 0);
-      });
-      this.notify.show('Enemies Defeated!', _done);
     });
     this.machine.on('combat:defeat', (data: CombatDefeatSummary) => {
       const done = this.machine.notifyWait();

@@ -19,18 +19,23 @@ import {CombatMachineState} from './combat-base.state';
 import {GameEntityObject} from '../../../scene/game-entity-object';
 import {CombatStateMachineComponent, IPlayerAction} from './combat.machine';
 import {CombatAttackBehaviorComponent} from '../behaviors/actions/combat-attack.behavior';
-import {isDefeated} from '../../../models/combat/combat.api';
+import {CombatService} from '../../../models/combat/combat.service';
 
 // Combat Begin
 @Component({
   selector: 'combat-begin-turn-state',
-  template: `<ng-content></ng-content>`
+  template: `
+    <ng-content></ng-content>`
 })
 export class CombatBeginTurnStateComponent extends CombatMachineState {
   static NAME: string = 'Combat Begin Turn';
   name: string = CombatBeginTurnStateComponent.NAME;
   current: GameEntityObject; // Used to restore scale on exit.
   machine: CombatStateMachineComponent;
+
+  constructor(private combatService: CombatService) {
+    super();
+  }
 
   enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
@@ -60,7 +65,7 @@ export class CombatBeginTurnStateComponent extends CombatMachineState {
     if (!choice) {
       throw new Error('Invalid Combat Action Choice. This should not happen.');
     }
-    if (choice.to && isDefeated(choice.to.model)) {
+    if (choice.to && this.combatService.isDefeated(choice.to.model)) {
       choice.to = machine.getRandomEnemy();
     }
     _.defer(() => {

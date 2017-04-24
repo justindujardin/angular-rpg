@@ -37,17 +37,6 @@ export class AppEffects {
       this.loadingService.loading = false;
     });
 
-  /** route update to combat encounter */
-  @Effect() navigateToCombatRoute$ = this.actions$
-    .ofType(CombatActionTypes.ENCOUNTER_READY)
-    .debounceTime(100)
-    .distinctUntilChanged()
-    .map((action: CombatActions) => {
-      const encounter = action.payload as CombatEncounter;
-      assertTrue(encounter.id || encounter.zone, 'combat must either be in a zone or have an id');
-      return replace(['combat', encounter.id || encounter.zone]);
-    });
-
   /** route update to world map */
   @Effect() navigateToWorldRoute$ = this.actions$
     .ofType(GameStateActionTypes.TRAVEL_SUCCESS)

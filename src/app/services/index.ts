@@ -23,8 +23,9 @@ import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {Visibility} from './visibility';
 import {GameStateService} from '../models/game-state/game-state.service';
-import {CombatService} from './combat.service';
+import {CombatService} from '../models/combat/combat.service';
 import {NotificationService} from '../components/notification/notification.service';
+import {GameDataService} from '../models/game-data/game-data.service';
 export * from './animate';
 export * from '../components/notification/notification.service';
 export * from './rpg-game';
@@ -37,6 +38,7 @@ export const SERVICE_PROVIDERS = [
   Visibility,
   NotificationService,
   CombatService,
+  GameDataService,
   GameStateService
 ];
 
