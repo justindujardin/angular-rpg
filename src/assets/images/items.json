@@ -1,0 +1,191 @@
+{
+  "ancientKey.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "items",
+    "index": null,
+    "x": 0,
+    "y": 0
+  },
+  "blueGem.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "items",
+    "index": null,
+    "x": 16,
+    "y": 0
+  },
+  "bluePotion2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "items",
+    "index": null,
+    "x": 0,
+    "y": 16
+  },
+  "blueSalve.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "items",
+    "index": null,
+    "x": 16,
+    "y": 16
+  },
+  "dragonStone.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "items",
+    "index": null,
+    "x": 32,
+    "y": 0
+  },
+  "explosiveVial.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "items",
+    "index": null,
+    "x": 32,
+    "y": 16
+  },
+  "flute.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "items",
+    "index": null,
+    "x": 0,
+    "y": 32
+  },
+  "goldKey.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "items",
+    "index": null,
+    "x": 16,
+    "y": 32
+  },
+  "leatherBoots2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "items",
+    "index": null,
+    "x": 32,
+    "y": 32
+  },
+  "ragePotion.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "items",
+    "index": null,
+    "x": 48,
+    "y": 0
+  },
+  "redGem.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "items",
+    "index": null,
+    "x": 48,
+    "y": 16
+  },
+  "redPotion.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "items",
+    "index": null,
+    "x": 48,
+    "y": 32
+  },
+  "redSalve.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "items",
+    "index": null,
+    "x": 0,
+    "y": 48
+  },
+  "rolledScroll.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "items",
+    "index": null,
+    "x": 16,
+    "y": 48
+  },
+  "silverKey.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "items",
+    "index": null,
+    "x": 32,
+    "y": 48
+  },
+  "strengthPotion.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "items",
+    "index": null,
+    "x": 48,
+    "y": 48
+  },
+  "turqoiseGem.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "items",
+    "index": null,
+    "x": 64,
+    "y": 0
+  },
+  "vialOfEnergy.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "items",
+    "index": null,
+    "x": 64,
+    "y": 16
+  },
+  "vialOfHealth.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "items",
+    "index": null,
+    "x": 64,
+    "y": 32
+  },
+  "yellowPotion.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "items",
+    "index": null,
+    "x": 64,
+    "y": 48
+  },
+  "yellowSalve.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "items",
+    "index": null,
+    "x": 0,
+    "y": 64
+  }
+}

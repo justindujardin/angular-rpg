@@ -1,0 +1,17 @@
+<canvas #combatCanvas>
+  Your browser doesn't support this.
+</canvas>
+
+<combat-damage *ngFor="let d of damages"
+               [value]="d.value"
+               [position]="d.position"
+               [classes]="d.classes"></combat-damage>
+
+<combat-map #map [scene]="scene">
+  <combat-state-machine [scene]="scene"
+                        [party]="map.party"
+                        [enemies]="map.enemies"
+                        [encounter]="map.encounter$ | async"></combat-state-machine>
+
+</combat-map>
+<combat-hud [scene]="scene"></combat-hud>

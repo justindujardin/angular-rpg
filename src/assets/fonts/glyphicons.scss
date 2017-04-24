@@ -1,0 +1,1225 @@
+//
+// Glyphicons for Bootstrap
+//
+// Since icons are fonts, they can be placed anywhere text is placed and are
+// thus automatically sized to match the surrounding child. To use, create an
+// inline element with the appropriate classes, like so:
+//
+// <a href="#"><span class="glyphicon glyphicon-star"></span> Star</a>
+//-- Iconography
+//
+//## Specify custom locations of the include Glyphicons icon font. Useful for those including Bootstrap via Bower.
+
+// Catchall baseclass
+@mixin glyphicon() {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Individual icons
+@mixin glyphicon-asterisk() {
+  &:before {
+    content: "\2a";
+  }
+}
+
+@mixin glyphicon-plus() {
+  &:before {
+    content: "\2b";
+  }
+}
+
+@mixin glyphicon-euro() {
+  &:before {
+    content: "\20ac";
+  }
+}
+
+@mixin glyphicon-minus() {
+  &:before {
+    content: "\2212";
+  }
+}
+
+@mixin glyphicon-cloud() {
+  &:before {
+    content: "\2601";
+  }
+}
+
+@mixin glyphicon-envelope() {
+  &:before {
+    content: "\2709";
+  }
+}
+
+@mixin glyphicon-pencil() {
+  &:before {
+    content: "\270f";
+  }
+}
+
+@mixin glyphicon-glass() {
+  &:before {
+    content: "\e001";
+  }
+}
+
+@mixin glyphicon-music() {
+  &:before {
+    content: "\e002";
+  }
+}
+
+@mixin glyphicon-search() {
+  &:before {
+    content: "\e003";
+  }
+}
+
+@mixin glyphicon-heart() {
+  &:before {
+    content: "\e005";
+  }
+}
+
+@mixin glyphicon-star() {
+  &:before {
+    content: "\e006";
+  }
+}
+
+@mixin glyphicon-star-empty() {
+  &:before {
+    content: "\e007";
+  }
+}
+
+@mixin glyphicon-user() {
+  &:before {
+    content: "\e008";
+  }
+}
+
+@mixin glyphicon-film() {
+  &:before {
+    content: "\e009";
+  }
+}
+
+@mixin glyphicon-th-large() {
+  &:before {
+    content: "\e010";
+  }
+}
+
+@mixin glyphicon-th() {
+  &:before {
+    content: "\e011";
+  }
+}
+
+@mixin glyphicon-th-list() {
+  &:before {
+    content: "\e012";
+  }
+}
+
+@mixin glyphicon-ok() {
+  &:before {
+    content: "\e013";
+  }
+}
+
+@mixin glyphicon-remove() {
+  &:before {
+    content: "\e014";
+  }
+}
+
+@mixin glyphicon-zoom-in() {
+  &:before {
+    content: "\e015";
+  }
+}
+
+@mixin glyphicon-zoom-out() {
+  &:before {
+    content: "\e016";
+  }
+}
+
+@mixin glyphicon-off() {
+  &:before {
+    content: "\e017";
+  }
+}
+
+@mixin glyphicon-signal() {
+  &:before {
+    content: "\e018";
+  }
+}
+
+@mixin glyphicon-cog() {
+  &:before {
+    content: "\e019";
+  }
+}
+
+@mixin glyphicon-trash() {
+  &:before {
+    content: "\e020";
+  }
+}
+
+@mixin glyphicon-home() {
+  &:before {
+    content: "\e021";
+  }
+}
+
+@mixin glyphicon-file() {
+  &:before {
+    content: "\e022";
+  }
+}
+
+@mixin glyphicon-time() {
+  &:before {
+    content: "\e023";
+  }
+}
+
+@mixin glyphicon-road() {
+  &:before {
+    content: "\e024";
+  }
+}
+
+@mixin glyphicon-download-alt() {
+  &:before {
+    content: "\e025";
+  }
+}
+
+@mixin glyphicon-download() {
+  &:before {
+    content: "\e026";
+  }
+}
+
+@mixin glyphicon-upload() {
+  &:before {
+    content: "\e027";
+  }
+}
+
+@mixin glyphicon-inbox() {
+  &:before {
+    content: "\e028";
+  }
+}
+
+@mixin glyphicon-play-circle() {
+  &:before {
+    content: "\e029";
+  }
+}
+
+@mixin glyphicon-repeat() {
+  &:before {
+    content: "\e030";
+  }
+}
+
+@mixin glyphicon-refresh() {
+  &:before {
+    content: "\e031";
+  }
+}
+
+@mixin glyphicon-list-alt() {
+  &:before {
+    content: "\e032";
+  }
+}
+
+@mixin glyphicon-lock() {
+  &:before {
+    content: "\e033";
+  }
+}
+
+@mixin glyphicon-flag() {
+  &:before {
+    content: "\e034";
+  }
+}
+
+@mixin glyphicon-headphones() {
+  &:before {
+    content: "\e035";
+  }
+}
+
+@mixin glyphicon-volume-off() {
+  &:before {
+    content: "\e036";
+  }
+}
+
+@mixin glyphicon-volume-down() {
+  &:before {
+    content: "\e037";
+  }
+}
+
+@mixin glyphicon-volume-up() {
+  &:before {
+    content: "\e038";
+  }
+}
+
+@mixin glyphicon-qrcode() {
+  &:before {
+    content: "\e039";
+  }
+}
+
+@mixin glyphicon-barcode() {
+  &:before {
+    content: "\e040";
+  }
+}
+
+@mixin glyphicon-tag() {
+  &:before {
+    content: "\e041";
+  }
+}
+
+@mixin glyphicon-tags() {
+  &:before {
+    content: "\e042";
+  }
+}
+
+@mixin glyphicon-book() {
+  &:before {
+    content: "\e043";
+  }
+}
+
+@mixin glyphicon-bookmark() {
+  &:before {
+    content: "\e044";
+  }
+}
+
+@mixin glyphicon-print() {
+  &:before {
+    content: "\e045";
+  }
+}
+
+@mixin glyphicon-camera() {
+  &:before {
+    content: "\e046";
+  }
+}
+
+@mixin glyphicon-font() {
+  &:before {
+    content: "\e047";
+  }
+}
+
+@mixin glyphicon-bold() {
+  &:before {
+    content: "\e048";
+  }
+}
+
+@mixin glyphicon-italic() {
+  &:before {
+    content: "\e049";
+  }
+}
+
+@mixin glyphicon-text-height() {
+  &:before {
+    content: "\e050";
+  }
+}
+
+@mixin glyphicon-text-width() {
+  &:before {
+    content: "\e051";
+  }
+}
+
+@mixin glyphicon-align-left() {
+  &:before {
+    content: "\e052";
+  }
+}
+
+@mixin glyphicon-align-center() {
+  &:before {
+    content: "\e053";
+  }
+}
+
+@mixin glyphicon-align-right() {
+  &:before {
+    content: "\e054";
+  }
+}
+
+@mixin glyphicon-align-justify() {
+  &:before {
+    content: "\e055";
+  }
+}
+
+@mixin glyphicon-list() {
+  &:before {
+    content: "\e056";
+  }
+}
+
+@mixin glyphicon-indent-left() {
+  &:before {
+    content: "\e057";
+  }
+}
+
+@mixin glyphicon-indent-right() {
+  &:before {
+    content: "\e058";
+  }
+}
+
+@mixin glyphicon-facetime-video() {
+  &:before {
+    content: "\e059";
+  }
+}
+
+@mixin glyphicon-picture() {
+  &:before {
+    content: "\e060";
+  }
+}
+
+@mixin glyphicon-map-marker() {
+  &:before {
+    content: "\e062";
+  }
+}
+
+@mixin glyphicon-adjust() {
+  &:before {
+    content: "\e063";
+  }
+}
+
+@mixin glyphicon-tint() {
+  &:before {
+    content: "\e064";
+  }
+}
+
+@mixin glyphicon-edit() {
+  &:before {
+    content: "\e065";
+  }
+}
+
+@mixin glyphicon-share() {
+  &:before {
+    content: "\e066";
+  }
+}
+
+@mixin glyphicon-check() {
+  &:before {
+    content: "\e067";
+  }
+}
+
+@mixin glyphicon-move() {
+  &:before {
+    content: "\e068";
+  }
+}
+
+@mixin glyphicon-step-backward() {
+  &:before {
+    content: "\e069";
+  }
+}
+
+@mixin glyphicon-fast-backward() {
+  &:before {
+    content: "\e070";
+  }
+}
+
+@mixin glyphicon-backward() {
+  &:before {
+    content: "\e071";
+  }
+}
+
+@mixin glyphicon-play() {
+  &:before {
+    content: "\e072";
+  }
+}
+
+@mixin glyphicon-pause() {
+  &:before {
+    content: "\e073";
+  }
+}
+
+@mixin glyphicon-stop() {
+  &:before {
+    content: "\e074";
+  }
+}
+
+@mixin glyphicon-forward() {
+  &:before {
+    content: "\e075";
+  }
+}
+
+@mixin glyphicon-fast-forward() {
+  &:before {
+    content: "\e076";
+  }
+}
+
+@mixin glyphicon-step-forward() {
+  &:before {
+    content: "\e077";
+  }
+}
+
+@mixin glyphicon-eject() {
+  &:before {
+    content: "\e078";
+  }
+}
+
+@mixin glyphicon-chevron-left() {
+  &:before {
+    content: "\e079";
+  }
+}
+
+@mixin glyphicon-chevron-right() {
+  &:before {
+    content: "\e080";
+  }
+}
+
+@mixin glyphicon-plus-sign() {
+  &:before {
+    content: "\e081";
+  }
+}
+
+@mixin glyphicon-minus-sign() {
+  &:before {
+    content: "\e082";
+  }
+}
+
+@mixin glyphicon-remove-sign() {
+  &:before {
+    content: "\e083";
+  }
+}
+
+@mixin glyphicon-ok-sign() {
+  &:before {
+    content: "\e084";
+  }
+}
+
+@mixin glyphicon-question-sign() {
+  &:before {
+    content: "\e085";
+  }
+}
+
+@mixin glyphicon-info-sign() {
+  &:before {
+    content: "\e086";
+  }
+}
+
+@mixin glyphicon-screenshot() {
+  &:before {
+    content: "\e087";
+  }
+}
+
+@mixin glyphicon-remove-circle() {
+  &:before {
+    content: "\e088";
+  }
+}
+
+@mixin glyphicon-ok-circle() {
+  &:before {
+    content: "\e089";
+  }
+}
+
+@mixin glyphicon-ban-circle() {
+  &:before {
+    content: "\e090";
+  }
+}
+
+@mixin glyphicon-arrow-left() {
+  &:before {
+    content: "\e091";
+  }
+}
+
+@mixin glyphicon-arrow-right() {
+  &:before {
+    content: "\e092";
+  }
+}
+
+@mixin glyphicon-arrow-up() {
+  &:before {
+    content: "\e093";
+  }
+}
+
+@mixin glyphicon-arrow-down() {
+  &:before {
+    content: "\e094";
+  }
+}
+
+@mixin glyphicon-share-alt() {
+  &:before {
+    content: "\e095";
+  }
+}
+
+@mixin glyphicon-resize-full() {
+  &:before {
+    content: "\e096";
+  }
+}
+
+@mixin glyphicon-resize-small() {
+  &:before {
+    content: "\e097";
+  }
+}
+
+@mixin glyphicon-exclamation-sign() {
+  &:before {
+    content: "\e101";
+  }
+}
+
+@mixin glyphicon-gift() {
+  &:before {
+    content: "\e102";
+  }
+}
+
+@mixin glyphicon-leaf() {
+  &:before {
+    content: "\e103";
+  }
+}
+
+@mixin glyphicon-fire() {
+  &:before {
+    content: "\e104";
+  }
+}
+
+@mixin glyphicon-eye-open() {
+  &:before {
+    content: "\e105";
+  }
+}
+
+@mixin glyphicon-eye-close() {
+  &:before {
+    content: "\e106";
+  }
+}
+
+@mixin glyphicon-warning-sign() {
+  &:before {
+    content: "\e107";
+  }
+}
+
+@mixin glyphicon-plane() {
+  &:before {
+    content: "\e108";
+  }
+}
+
+@mixin glyphicon-calendar() {
+  &:before {
+    content: "\e109";
+  }
+}
+
+@mixin glyphicon-random() {
+  &:before {
+    content: "\e110";
+  }
+}
+
+@mixin glyphicon-comment() {
+  &:before {
+    content: "\e111";
+  }
+}
+
+@mixin glyphicon-magnet() {
+  &:before {
+    content: "\e112";
+  }
+}
+
+@mixin glyphicon-chevron-up() {
+  &:before {
+    content: "\e113";
+  }
+}
+
+@mixin glyphicon-chevron-down() {
+  &:before {
+    content: "\e114";
+  }
+}
+
+@mixin glyphicon-retweet() {
+  &:before {
+    content: "\e115";
+  }
+}
+
+@mixin glyphicon-shopping-cart() {
+  &:before {
+    content: "\e116";
+  }
+}
+
+@mixin glyphicon-folder-close() {
+  &:before {
+    content: "\e117";
+  }
+}
+
+@mixin glyphicon-folder-open() {
+  &:before {
+    content: "\e118";
+  }
+}
+
+@mixin glyphicon-resize-vertical() {
+  &:before {
+    content: "\e119";
+  }
+}
+
+@mixin glyphicon-resize-horizontal() {
+  &:before {
+    content: "\e120";
+  }
+}
+
+@mixin glyphicon-hdd() {
+  &:before {
+    content: "\e121";
+  }
+}
+
+@mixin glyphicon-bullhorn() {
+  &:before {
+    content: "\e122";
+  }
+}
+
+@mixin glyphicon-bell() {
+  &:before {
+    content: "\e123";
+  }
+}
+
+@mixin glyphicon-certificate() {
+  &:before {
+    content: "\e124";
+  }
+}
+
+@mixin glyphicon-thumbs-up() {
+  &:before {
+    content: "\e125";
+  }
+}
+
+@mixin glyphicon-thumbs-down() {
+  &:before {
+    content: "\e126";
+  }
+}
+
+@mixin glyphicon-hand-right() {
+  &:before {
+    content: "\e127";
+  }
+}
+
+@mixin glyphicon-hand-left() {
+  &:before {
+    content: "\e128";
+  }
+}
+
+@mixin glyphicon-hand-up() {
+  &:before {
+    content: "\e129";
+  }
+}
+
+@mixin glyphicon-hand-down() {
+  &:before {
+    content: "\e130";
+  }
+}
+
+@mixin glyphicon-circle-arrow-right() {
+  &:before {
+    content: "\e131";
+  }
+}
+
+@mixin glyphicon-circle-arrow-left() {
+  &:before {
+    content: "\e132";
+  }
+}
+
+@mixin glyphicon-circle-arrow-up() {
+  &:before {
+    content: "\e133";
+  }
+}
+
+@mixin glyphicon-circle-arrow-down() {
+  &:before {
+    content: "\e134";
+  }
+}
+
+@mixin glyphicon-globe() {
+  &:before {
+    content: "\e135";
+  }
+}
+
+@mixin glyphicon-wrench() {
+  &:before {
+    content: "\e136";
+  }
+}
+
+@mixin glyphicon-tasks() {
+  &:before {
+    content: "\e137";
+  }
+}
+
+@mixin glyphicon-filter() {
+  &:before {
+    content: "\e138";
+  }
+}
+
+@mixin glyphicon-briefcase() {
+  &:before {
+    content: "\e139";
+  }
+}
+
+@mixin glyphicon-fullscreen() {
+  &:before {
+    content: "\e140";
+  }
+}
+
+@mixin glyphicon-dashboard() {
+  &:before {
+    content: "\e141";
+  }
+}
+
+@mixin glyphicon-paperclip() {
+  &:before {
+    content: "\e142";
+  }
+}
+
+@mixin glyphicon-heart-empty() {
+  &:before {
+    content: "\e143";
+  }
+}
+
+@mixin glyphicon-link() {
+  &:before {
+    content: "\e144";
+  }
+}
+
+@mixin glyphicon-phone() {
+  &:before {
+    content: "\e145";
+  }
+}
+
+@mixin glyphicon-pushpin() {
+  &:before {
+    content: "\e146";
+  }
+}
+
+@mixin glyphicon-usd() {
+  &:before {
+    content: "\e148";
+  }
+}
+
+@mixin glyphicon-gbp() {
+  &:before {
+    content: "\e149";
+  }
+}
+
+@mixin glyphicon-sort() {
+  &:before {
+    content: "\e150";
+  }
+}
+
+@mixin glyphicon-sort-by-alphabet() {
+  &:before {
+    content: "\e151";
+  }
+}
+
+@mixin glyphicon-sort-by-alphabet-alt() {
+  &:before {
+    content: "\e152";
+  }
+}
+
+@mixin glyphicon-sort-by-order() {
+  &:before {
+    content: "\e153";
+  }
+}
+
+@mixin glyphicon-sort-by-order-alt() {
+  &:before {
+    content: "\e154";
+  }
+}
+
+@mixin glyphicon-sort-by-attributes() {
+  &:before {
+    content: "\e155";
+  }
+}
+
+@mixin glyphicon-sort-by-attributes-alt() {
+  &:before {
+    content: "\e156";
+  }
+}
+
+@mixin glyphicon-unchecked() {
+  &:before {
+    content: "\e157";
+  }
+}
+
+@mixin glyphicon-expand() {
+  &:before {
+    content: "\e158";
+  }
+}
+
+@mixin glyphicon-collapse-down() {
+  &:before {
+    content: "\e159";
+  }
+}
+
+@mixin glyphicon-collapse-up() {
+  &:before {
+    content: "\e160";
+  }
+}
+
+@mixin glyphicon-log-in() {
+  &:before {
+    content: "\e161";
+  }
+}
+
+@mixin glyphicon-flash() {
+  &:before {
+    content: "\e162";
+  }
+}
+
+@mixin glyphicon-log-out() {
+  &:before {
+    content: "\e163";
+  }
+}
+
+@mixin glyphicon-new-window() {
+  &:before {
+    content: "\e164";
+  }
+}
+
+@mixin glyphicon-record() {
+  &:before {
+    content: "\e165";
+  }
+}
+
+@mixin glyphicon-save() {
+  &:before {
+    content: "\e166";
+  }
+}
+
+@mixin glyphicon-open() {
+  &:before {
+    content: "\e167";
+  }
+}
+
+@mixin glyphicon-saved() {
+  &:before {
+    content: "\e168";
+  }
+}
+
+@mixin glyphicon-import() {
+  &:before {
+    content: "\e169";
+  }
+}
+
+@mixin glyphicon-export() {
+  &:before {
+    content: "\e170";
+  }
+}
+
+@mixin glyphicon-send() {
+  &:before {
+    content: "\e171";
+  }
+}
+
+@mixin glyphicon-floppy-disk() {
+  &:before {
+    content: "\e172";
+  }
+}
+
+@mixin glyphicon-floppy-saved() {
+  &:before {
+    content: "\e173";
+  }
+}
+
+@mixin glyphicon-floppy-remove() {
+  &:before {
+    content: "\e174";
+  }
+}
+
+@mixin glyphicon-floppy-save() {
+  &:before {
+    content: "\e175";
+  }
+}
+
+@mixin glyphicon-floppy-open() {
+  &:before {
+    content: "\e176";
+  }
+}
+
+@mixin glyphicon-credit-card() {
+  &:before {
+    content: "\e177";
+  }
+}
+
+@mixin glyphicon-transfer() {
+  &:before {
+    content: "\e178";
+  }
+}
+
+@mixin glyphicon-cutlery() {
+  &:before {
+    content: "\e179";
+  }
+}
+
+@mixin glyphicon-header() {
+  &:before {
+    content: "\e180";
+  }
+}
+
+@mixin glyphicon-compressed() {
+  &:before {
+    content: "\e181";
+  }
+}
+
+@mixin glyphicon-earphone() {
+  &:before {
+    content: "\e182";
+  }
+}
+
+@mixin glyphicon-phone-alt() {
+  &:before {
+    content: "\e183";
+  }
+}
+
+@mixin glyphicon-tower() {
+  &:before {
+    content: "\e184";
+  }
+}
+
+@mixin glyphicon-stats() {
+  &:before {
+    content: "\e185";
+  }
+}
+
+@mixin glyphicon-sd-video() {
+  &:before {
+    content: "\e186";
+  }
+}
+
+@mixin glyphicon-hd-video() {
+  &:before {
+    content: "\e187";
+  }
+}
+
+@mixin glyphicon-subtitles() {
+  &:before {
+    content: "\e188";
+  }
+}
+
+@mixin glyphicon-sound-stereo() {
+  &:before {
+    content: "\e189";
+  }
+}
+
+@mixin glyphicon-sound-dolby() {
+  &:before {
+    content: "\e190";
+  }
+}
+
+@mixin glyphicon-sound-5-1() {
+  &:before {
+    content: "\e191";
+  }
+}
+
+@mixin glyphicon-sound-6-1() {
+  &:before {
+    content: "\e192";
+  }
+}
+
+@mixin glyphicon-sound-7-1() {
+  &:before {
+    content: "\e193";
+  }
+}
+
+@mixin glyphicon-copyright-mark() {
+  &:before {
+    content: "\e194";
+  }
+}
+
+@mixin glyphicon-registration-mark() {
+  &:before {
+    content: "\e195";
+  }
+}
+
+@mixin glyphicon-cloud-download() {
+  &:before {
+    content: "\e197";
+  }
+}
+
+@mixin glyphicon-cloud-upload() {
+  &:before {
+    content: "\e198";
+  }
+}
+
+@mixin glyphicon-tree-conifer() {
+  &:before {
+    content: "\e199";
+  }
+}
+
+@mixin glyphicon-tree-deciduous() {
+  &:before {
+    content: "\e200";
+  }
+}

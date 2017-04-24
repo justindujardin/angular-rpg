@@ -1,0 +1,23 @@
+@import '../../style/variables';
+@import '../../style/mixins';
+
+:host {
+  display: inline-flex;
+  height: inherit;
+  div {
+    height: inherit;
+    /* Damage states */
+    &.fine {
+      background-color: rgb(46, 109, 166);
+    }
+    &.hurt {
+      background-color: rgba(230, 200, 40, 1);
+    }
+    &.critical {
+      background-color: rgba(183, 0, 5, 0.5);
+    }
+    &.dead {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+  }
+}

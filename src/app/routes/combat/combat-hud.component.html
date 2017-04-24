@@ -1,0 +1,8 @@
+<div class="status" *ngFor="let member of party$ | async" [ngClass]="getMemberClass(member,combat?.focus)">
+  <rpg-health-bar [model]="member">
+  </rpg-health-bar>
+  <div class="text">
+    <span class="name">{{member.name}}</span>
+    <span class="hp">HP {{member.hp}} / {{member.maxhp}}</span>
+  </div>
+</div>

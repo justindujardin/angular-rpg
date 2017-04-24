@@ -1,0 +1,17 @@
+<map-feature-input-behavior [scene]="scene" #input></map-feature-input-behavior>
+<combat-encounter-behavior [scene]="scene" #encounter></combat-encounter-behavior>
+<section name="features">
+  <map-feature *ngFor="let feature of features$ | async"
+               [tiledMap]="resource$ | async"
+               [scene]="scene"
+               (onClose)="player.escapeFeature()"
+               [feature]="feature"></map-feature>
+</section>
+<world-player
+  #player
+  *ngIf="notTraveling$ | async"
+  [map]="self"
+  [scene]="scene"
+  [point]="renderPoint$ | async"
+  [model]="partyLeader$ | async"></world-player>
+<ng-content></ng-content>

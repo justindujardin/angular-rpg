@@ -1,0 +1,40 @@
+<div layout="column" class="store" layout-padding *ngIf="active$ | async">
+  <h1>{{actionVerb$ | async}} {{name$ | async}}</h1> <span>Gold: {{partyGold$ | async}}</span>
+
+  <div class="inventory" layout-padding flex>
+    <ul *ngIf="isBuying$ | async">
+      <li class="item" *ngFor="let item of inventory$ | async" (click)="_selected$.next(item)" layout="row">
+        <rpg-sprite width="32" height="32" class="icon" [name]="item.icon"></rpg-sprite>
+        <span flex class="item-name" [innerText]="item.name"></span>
+        <span class="item-price" [innerText]="item.value"></span>
+      </li>
+    </ul>
+
+    <ul *ngIf="isSelling$ | async">
+      <li class="item" *ngFor="let item of partyInventory$ | async" (click)="_selected$.next(item)" layout="row">
+        <rpg-sprite width="32" height="32" class="icon" [name]="item.icon"></rpg-sprite>
+        <span flex class="item-name" [innerText]="item.name"></span>
+        <span class="item-price" [innerText]="item.value"></span>
+      </li>
+    </ul>
+    <ul *ngIf="selected$ | async">
+      <li class="item selected" layout="row">
+        <rpg-sprite width="32" height="32" class="icon" [name]="(selected$ | async)?.icon"></rpg-sprite>
+        <span flex class="item-name" [innerText]="(selected$ | async)?.name"></span>
+        <span class="item-price" [innerText]="(selected$ | async)?.value"></span>
+      </li>
+    </ul>
+
+  </div>
+
+
+  <div class="prompt btn-group" *ngIf="selected$ | async">
+    <button (click)="_selected$.next(null)">Back</button>
+    <button (click)="_onAction$.next()" [innerText]="(selling$ | async)?'Sell':'Buy'"></button>
+  </div>
+  <div class="prompt btn-group" *ngIf="!(selected$ | async)">
+    <button (click)="onClose.next($event)">Done</button>
+    <button (click)="_onToggleAction$.next()" [innerText]="(selling$ | async)?'Back':'Sell'"></button>
+  </div>
+
+</div>

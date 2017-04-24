@@ -1,0 +1,17 @@
+// Combat View
+// --------------------------------------------------------------------------
+@import '../../style/variables';
+@import '../../style/mixins';
+@import '../../style/icons';
+
+:host {
+  * {
+    @include no-select();
+  }
+  rpg-health-bar {
+    width: 100%;
+    @include flex-inline();
+  }
+
+}
+

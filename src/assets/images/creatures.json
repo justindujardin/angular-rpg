@@ -1,0 +1,767 @@
+{
+  "alienstaff.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 0,
+    "y": 0
+  },
+  "bear.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 16,
+    "y": 0
+  },
+  "blackSpider.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 0,
+    "y": 16
+  },
+  "blueGoblin.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 16,
+    "y": 16
+  },
+  "blueSnake.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 32,
+    "y": 0
+  },
+  "bugbear.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 32,
+    "y": 16
+  },
+  "bugbear2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 0,
+    "y": 32
+  },
+  "cavePeeper.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 16,
+    "y": 32
+  },
+  "clayGolem.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 32,
+    "y": 32
+  },
+  "crab.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 48,
+    "y": 0
+  },
+  "crawFighter.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 48,
+    "y": 16
+  },
+  "cyclops.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 48,
+    "y": 32
+  },
+  "drowElf.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 0,
+    "y": 48
+  },
+  "dude.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 16,
+    "y": 48
+  },
+  "dwarf2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 32,
+    "y": 48
+  },
+  "dwarfGuard.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 48,
+    "y": 48
+  },
+  "dwarfKing.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 64,
+    "y": 0
+  },
+  "emperor.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 64,
+    "y": 16
+  },
+  "ghoul.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 64,
+    "y": 32
+  },
+  "gnome.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 64,
+    "y": 48
+  },
+  "gnome2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 0,
+    "y": 64
+  },
+  "gnome3.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 16,
+    "y": 64
+  },
+  "gnomeKing.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 32,
+    "y": 64
+  },
+  "goblin.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 48,
+    "y": 64
+  },
+  "goblin4.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 64,
+    "y": 64
+  },
+  "goblin6.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 80,
+    "y": 0
+  },
+  "goblin7.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 80,
+    "y": 16
+  },
+  "goblinArcher.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 80,
+    "y": 32
+  },
+  "goblinKing.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 80,
+    "y": 48
+  },
+  "goblinScout.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 80,
+    "y": 64
+  },
+  "goblinWizard.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 0,
+    "y": 80
+  },
+  "greensnake.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 16,
+    "y": 80
+  },
+  "greenSpider.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 32,
+    "y": 80
+  },
+  "guard2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 48,
+    "y": 80
+  },
+  "hugeSpider.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 64,
+    "y": 80
+  },
+  "iceGolem.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 80,
+    "y": 80
+  },
+  "iceMage.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 96,
+    "y": 0
+  },
+  "iceTroll.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 96,
+    "y": 16
+  },
+  "imp.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 96,
+    "y": 32
+  },
+  "jellyfish.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 96,
+    "y": 48
+  },
+  "kobold.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 96,
+    "y": 64
+  },
+  "koboldShaman.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 96,
+    "y": 80
+  },
+  "koboldSwordsman.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 0,
+    "y": 96
+  },
+  "man.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 16,
+    "y": 96
+  },
+  "man3.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 32,
+    "y": 96
+  },
+  "merman.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 48,
+    "y": 96
+  },
+  "mermanFighter.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 64,
+    "y": 96
+  },
+  "mermanWizard.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 80,
+    "y": 96
+  },
+  "mindFlayer.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 96,
+    "y": 96
+  },
+  "minotaur.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 112,
+    "y": 0
+  },
+  "mummy.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 112,
+    "y": 16
+  },
+  "ogre.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 112,
+    "y": 32
+  },
+  "ogre2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 112,
+    "y": 48
+  },
+  "oldMan.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 112,
+    "y": 64
+  },
+  "oldMan2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 112,
+    "y": 80
+  },
+  "oliphant.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 112,
+    "y": 96
+  },
+  "oliphant2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 0,
+    "y": 112
+  },
+  "oliphant3.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 16,
+    "y": 112
+  },
+  "oliphant4.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 32,
+    "y": 112
+  },
+  "oolanMaster.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 48,
+    "y": 112
+  },
+  "phantom2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 64,
+    "y": 112
+  },
+  "pirate.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 80,
+    "y": 112
+  },
+  "pirate2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 96,
+    "y": 112
+  },
+  "redSnake.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 112,
+    "y": 112
+  },
+  "redSpider.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 128,
+    "y": 0
+  },
+  "rockGolem.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 128,
+    "y": 16
+  },
+  "skeleton.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 128,
+    "y": 32
+  },
+  "skeletonGuard.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 128,
+    "y": 48
+  },
+  "skeletonWizard.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 128,
+    "y": 64
+  },
+  "snake.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 128,
+    "y": 80
+  },
+  "snowman.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 128,
+    "y": 96
+  },
+  "soldier.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 128,
+    "y": 112
+  },
+  "spectre.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 0,
+    "y": 128
+  },
+  "swordFish.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 16,
+    "y": 128
+  },
+  "tarrMan2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 32,
+    "y": 128
+  },
+  "tarrSoldier.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 48,
+    "y": 128
+  },
+  "treant.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 64,
+    "y": 128
+  },
+  "treantElder.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 80,
+    "y": 128
+  },
+  "troll.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 96,
+    "y": 128
+  },
+  "twoHeadedTroll.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 112,
+    "y": 128
+  },
+  "vezu.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 128,
+    "y": 128
+  },
+  "wererat.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 144,
+    "y": 0
+  },
+  "whiteSnake.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 144,
+    "y": 16
+  },
+  "wraith2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 144,
+    "y": 32
+  },
+  "zombie3.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "creatures",
+    "index": null,
+    "x": 144,
+    "y": 48
+  }
+}

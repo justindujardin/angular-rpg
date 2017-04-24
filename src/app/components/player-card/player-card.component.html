@@ -1,0 +1,14 @@
+<section class="hero-card" [class]="getPlayerCSSClassMap()">
+  <h3 class="name" [innerText]="model.name"></h3>
+  <rpg-sprite class="image" [name]="model.icon" frame="7" width="64" height="72"></rpg-sprite>
+  <div>Level {{model.level}}</div>
+  <div>HP {{model.hp}} / {{model.maxhp}}</div>
+  <rpg-health-bar [model]="model"></rpg-health-bar>
+  <div>EXP {{model.exp}} / {{model.nextLevelExp || 1}}</div>
+
+  <div [innerText]="getCSSProgressWidth()"></div>
+  <div class="hero-stat">Attack : {{model.attack}}</div>
+  <div class="hero-stat">Speed : {{model.speed}}</div>
+  <div class="hero-stat">Defense : {{model.defense}}</div>
+  <div class="hero-stat">Magic : {{model.magic}}</div>
+</section>

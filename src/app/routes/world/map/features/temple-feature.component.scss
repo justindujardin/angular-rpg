@@ -1,0 +1,26 @@
+@import '../../../../style/variables';
+@import '../../../../style/mixins';
+
+temple-feature {
+  .temple-view {
+    @include pow-dialog();
+    z-index: $zCanvasGui;
+    text-align: center;
+    margin: auto;
+    max-width: 800px;
+    button {
+      @include btn-flat();
+    }
+    .header {
+      h1 {
+        margin: 0;
+      }
+    }
+    ul.party {
+      list-style: none;
+      li {
+        display: inline-block;
+      }
+    }
+  }
+}
