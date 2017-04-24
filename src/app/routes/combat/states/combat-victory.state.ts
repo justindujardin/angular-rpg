@@ -75,6 +75,7 @@ export class CombatVictoryStateComponent extends CombatMachineState {
 
   enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
+
     this.store.select(sliceCombatState)
       .take(1)
       .combineLatest(this.items$, (state: CombatState, items: ITemplateItem[]) => {

@@ -5,11 +5,17 @@ import {Entity} from '../entity/entity.model';
 import {Item} from '../item';
 
 export interface CombatVictorySummary {
+  /** The array of party members that survived the combat encounter */
   party: Entity[];
+  /** The list of enemies that were in the encounter */
   enemies: Combatant[];
+  /** Party members that leveled up */
   levels: Entity[];
+  /** Items collected during combat */
   items?: Item[];
+  /** Items collected during combat */
   gold: number;
+  /** Total experience from the encounter */
   exp: number;
 }
 

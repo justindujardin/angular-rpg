@@ -1,4 +1,3 @@
-import * as _ from 'underscore';
 import {AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild} from '@angular/core';
 import {IProcessObject} from '../../../game/pow-core/time';
 import {NamedMouseElement, PowInput} from '../../../game/pow2/core/input';
@@ -19,10 +18,7 @@ import {LoadingService} from '../../components/loading/loading.service';
 import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
 import {CombatStateMachineComponent} from './states/combat.machine';
-import {Item} from '../../models/item';
-import {Entity} from '../../models/entity/entity.model';
 import {CombatMapComponent} from './combat-map.entity';
-import {CombatVictorySummary} from '../../models/combat/combat.actions';
 
 /**
  * Describe a selectable menu item for a user input in combat.

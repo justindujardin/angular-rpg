@@ -5,6 +5,8 @@ import {Map} from 'immutable';
 import {Item} from '../item';
 import {EntityObject, EntityCollection, removeEntityFromCollection, addEntityToCollection} from '../base-entity';
 import {GameStateActionTypes, GameStateHealPartyAction, GameStateActions} from '../game-state/game-state.actions';
+import {CombatActionTypes, CombatVictoryAction} from '../combat/combat.actions';
+import {assertTrue} from '../util';
 
 /** Collection of Entity objects */
 export type EntityState = {
@@ -61,6 +63,21 @@ export function entityReducer(state: EntityState = initialState, action: EntityR
         const newMp = updateBeings.getIn([partyMemberId, 'maxmp']);
         updateBeings = updateBeings.setIn([partyMemberId, 'hp'], newHp);
         updateBeings = updateBeings.setIn([partyMemberId, 'mp'], newMp);
+      });
+      return {
+        ...state,
+        beings: {
+          byId: updateBeings.toJS(),
+          allIds: state.beings.allIds
+        }
+      };
+    }
+    case CombatActionTypes.VICTORY: {
+      const victoryAction = action as CombatVictoryAction;
+      let updateBeings: Map<string, Entity> = Immutable.fromJS(state.beings.byId);
+      victoryAction.payload.party.forEach((entity: Entity) => {
+        assertTrue(!!(entity && entity.eid), 'invalid party entity in combat victory action');
+        updateBeings = updateBeings.mergeIn([entity.eid], entity as any);
       });
       return {
         ...state,

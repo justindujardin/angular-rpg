@@ -9,6 +9,7 @@ import {
 import {Item} from '../item';
 import {EntityCollection} from '../base-entity';
 import {GameStateHealPartyAction} from '../game-state/game-state.actions';
+import {CombatVictoryAction, CombatVictorySummary} from '../combat/combat.actions';
 
 describe('Entity', () => {
 
@@ -147,17 +148,21 @@ describe('Entity', () => {
     describe('GameStateHealPartyAction', () => {
       it('should restore all entities in partyIds hp and mp to their maximum', () => {
         const initial: EntityState = defaultState('beings', {
-          byId: {[testId]: fakeEntity({
-            hp: 10, maxhp: 25,
-            mp:  0, maxmp: 25
-          })},
+          byId: {
+            [testId]: fakeEntity({
+              hp: 10, maxhp: 25,
+              mp: 0, maxmp: 25
+            })
+          },
           allIds: [testId]
         });
         const expected: EntityState = defaultState('beings', {
-          byId: {[testId]: fakeEntity({
-            hp: 25, maxhp: 25,
-            mp: 25, maxmp: 25
-          })},
+          byId: {
+            [testId]: fakeEntity({
+              hp: 25, maxhp: 25,
+              mp: 25, maxmp: 25
+            })
+          },
           allIds: [testId]
         });
         const actual = entityReducer(initial, new GameStateHealPartyAction({
@@ -165,6 +170,52 @@ describe('Entity', () => {
           partyIds: [testId]
         }));
         expect(actual).toEqual(expected);
+      });
+    });
+
+
+    describe('CombatVictoryAction', () => {
+      function summaryData(values?: Partial<CombatVictorySummary>): CombatVictorySummary {
+        return Object.assign({
+          party: [],
+          enemies: [],
+          levels: [],
+          items: [],
+          gold: 0,
+          exp: 0
+        }, values || {});
+      }
+
+      it('should update state of party members coming out of combat', () => {
+        const victoryMemberId: string = 'victoriousFlamingo';
+        const victoryMemberBefore = fakeEntity({
+          eid: victoryMemberId,
+          hp: 10,
+          attack: 8,
+          level: 1
+        });
+        const victoryMemberAfter = fakeEntity({
+          eid: victoryMemberId,
+          hp: 4,
+          attack: 10,
+          level: 2
+        });
+        const initial: EntityState = defaultState('beings', {
+          byId: {
+            [victoryMemberId]: victoryMemberBefore
+          },
+          allIds: [victoryMemberId]
+        });
+        const expected: EntityState = defaultState('beings', {
+          byId: {
+            [victoryMemberId]: victoryMemberAfter
+          },
+          allIds: [victoryMemberId]
+        });
+        const actual = entityReducer(initial, new CombatVictoryAction(summaryData({
+          party: [victoryMemberAfter]
+        })));
+        expect(actual.beings.byId[victoryMemberId]).toEqual(expected.beings.byId[victoryMemberId]);
       });
     });
 
