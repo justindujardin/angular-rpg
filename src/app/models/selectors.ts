@@ -30,6 +30,9 @@ import {
   sliceCombatEncounterEnemies, sliceCombatEncounterParty,
   sliceCombatLoading
 } from './combat/combat.reducer';
+import {BaseEntity} from './base-entity';
+import * as Immutable from 'immutable';
+import {ITemplateId} from './game-data/game-data.model';
 
 /**
  * This file contains the application level data selectors that can be used with @ngrx/store to
@@ -72,8 +75,8 @@ export const sliceEntitiesState = (state) => state.entities;
  * represented in the byIds dictionary. It's often easier to deal with array of items
  * than objects.
  */
-export const entitiesToArray = (object: {[uniqueId: string]: any}, ids: string[]) => {
-  return ids.map((id: string) => object[id]);
+export const entitiesToArray = (object: Immutable.Map<string, BaseEntity>, ids: Immutable.List<string>) => {
+  return ids.map((id: string) => object.get(id)).toArray();
 };
 
 // Beings
@@ -120,6 +123,14 @@ export const getGameInventory = createSelector(getEntityItemById, getGameInvento
  */
 export const sliceGameDataState = (state) => state.gameData;
 
+/**
+ * Given a template entity collection "byIds" object, and its "allIds" array, return an array of the items
+ * represented in the byIds dictionary. It's often easier to deal with array of items than objects.
+ */
+export const gameDataToArray = (object: Immutable.Map<string, ITemplateId>, ids: Immutable.List<string>) => {
+  return ids.map((id: string) => object.get(id)).toArray();
+};
+
 export const getGameDataForType = (type: string) => {
   return createSelector(sliceGameDataState, sliceGameDataType(type));
 };
@@ -127,41 +138,41 @@ export const getGameDataForType = (type: string) => {
 export const getGameDataWeaponsById = createSelector(sliceGameDataState, sliceWeapons);
 export const getGameDataWeaponIds = createSelector(sliceGameDataState, sliceWeaponIds);
 /** Select an array of weapons */
-export const getGameDataWeapons = createSelector(getGameDataWeaponsById, getGameDataWeaponIds, entitiesToArray);
+export const getGameDataWeapons = createSelector(getGameDataWeaponsById, getGameDataWeaponIds, gameDataToArray);
 
 export const getGameDataArmorsById = createSelector(sliceGameDataState, sliceArmors);
 export const getGameDataArmorIds = createSelector(sliceGameDataState, sliceArmorIds);
 /** Select an array of armors */
-export const getGameDataArmors = createSelector(getGameDataArmorsById, getGameDataArmorIds, entitiesToArray);
+export const getGameDataArmors = createSelector(getGameDataArmorsById, getGameDataArmorIds, gameDataToArray);
 
 export const getGameDataItemsById = createSelector(sliceGameDataState, sliceItems);
 export const getGameDataItemIds = createSelector(sliceGameDataState, sliceItemIds);
 /** Select an array of items */
-export const getGameDataItems = createSelector(getGameDataItemsById, getGameDataItemIds, entitiesToArray);
+export const getGameDataItems = createSelector(getGameDataItemsById, getGameDataItemIds, gameDataToArray);
 
 export const getGameDataEnemiesById = createSelector(sliceGameDataState, sliceEnemies);
 export const getGameDataEnemiesIds = createSelector(sliceGameDataState, sliceEnemiesIds);
 /** Select an array of items */
-export const getGameDataEnemies = createSelector(getGameDataEnemiesById, getGameDataEnemiesIds, entitiesToArray);
+export const getGameDataEnemies = createSelector(getGameDataEnemiesById, getGameDataEnemiesIds, gameDataToArray);
 
 export const getGameDataMagicsById = createSelector(sliceGameDataState, sliceMagics);
 export const getGameDataMagicIds = createSelector(sliceGameDataState, sliceMagicIds);
 /** Select an array of magics */
-export const getGameDataMagics = createSelector(getGameDataMagicsById, getGameDataMagicIds, entitiesToArray);
+export const getGameDataMagics = createSelector(getGameDataMagicsById, getGameDataMagicIds, gameDataToArray);
 
 export const getGameDataClassesById = createSelector(sliceGameDataState, sliceClasses);
 export const getGameDataClassesIds = createSelector(sliceGameDataState, sliceClassesIds);
 /** Select an array of game character classes */
-export const getGameDataClasses = createSelector(getGameDataClassesById, getGameDataClassesIds, entitiesToArray);
+export const getGameDataClasses = createSelector(getGameDataClassesById, getGameDataClassesIds, gameDataToArray);
 
 export const getGameDataRandomEncountersById = createSelector(sliceGameDataState, sliceRandomEncounters);
 export const getGameDataRandomEncounterIds = createSelector(sliceGameDataState, sliceRandomEncounterIds);
 /** Select an array of random combat encounters */
 export const getGameDataRandomEncounters =
-  createSelector(getGameDataRandomEncountersById, getGameDataRandomEncounterIds, entitiesToArray);
+  createSelector(getGameDataRandomEncountersById, getGameDataRandomEncounterIds, gameDataToArray);
 
 export const getGameDataFixedEncountersById = createSelector(sliceGameDataState, sliceFixedEncounters);
 export const getGameDataFixedEncounterIds = createSelector(sliceGameDataState, sliceFixedEncounterIds);
 /** Select an array of fixed combat encounters */
 export const getGameDataFixedEncounters =
-  createSelector(getGameDataFixedEncountersById, getGameDataFixedEncounterIds, entitiesToArray);
+  createSelector(getGameDataFixedEncountersById, getGameDataFixedEncounterIds, gameDataToArray);

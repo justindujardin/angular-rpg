@@ -1,4 +1,7 @@
 import * as Immutable from 'immutable';
+import {TypedRecord} from 'typed-immutable-record';
+import {assertTrue} from './util';
+import {ITemplateId} from './game-data/game-data.model';
 
 /**
  * Most basic entity only has an `eid` unique identifier for indexing.
@@ -71,59 +74,60 @@ export interface BaseEntity extends TemplateEntity {
 
 /** Describe a collection of entities of a single type */
 export interface EntityCollection<T> {
-  byId: {
-    [uniqueId: string]: T
-  };
-  allIds: string[];
+  byId: Immutable.Map<string, T>;
+  allIds: Immutable.List<string>;
+}
+
+export type EntityCollectionItem = BaseEntity | ITemplateId;
+
+/**
+ * Entity collection record. DO NOT USE outside of models/ folder.
+ * @private
+ * @internal
+ */
+export interface EntityCollectionRecord extends TypedRecord<EntityCollectionRecord>, EntityCollection<BaseEntity> {
 }
 
 /**
  * @internal Add an entity to a given collection, and return a new collection. If there
  * is already an object with the given ID, the existing collection will be returned.
  */
-export function addEntityToCollection<T>(collection: EntityCollection<T>,
-                                         entity: T, id: string): EntityCollection<T> {
-  if (collection.allIds.indexOf(id) > -1) {
-    return collection;
-  }
-  return Immutable.fromJS(collection).merge({
-    allIds: [...collection.allIds, id],
-    byId: Object.assign({}, collection.byId, {
-      [id]: entity
-    })
-  }).toJS();
+export function addEntityToCollection(collection: EntityCollectionRecord,
+                                      entity: EntityCollectionItem, entityId: string): EntityCollectionRecord {
+  const index = collection.allIds.indexOf(entityId);
+  assertTrue(index === -1, `item (${entityId}) already exists in collection`);
+  collection = collection.updateIn(['allIds'], (allIds: Immutable.List<string>) => {
+    return allIds.push(entityId);
+  });
+  return collection.updateIn(['byId'], (byId: Immutable.Map<string, EntityCollectionItem>) => {
+    return byId.set(entityId, entity);
+  });
 }
 
 /**
  * @internal Update an entity in the given collection, and return a new collection. If there
  * is no object with the given ID, throw.
  */
-export function updateEntityInCollection<T>(collection: EntityCollection<T>,
-                                            entity: T, id: string): EntityCollection<T> {
-  if (collection.allIds.indexOf(id) === -1) {
-    throw new Error('entity not found');
-  }
-  return Immutable.fromJS(collection).merge({
-    allIds: [...collection.allIds, id],
-    byId: Object.assign({}, collection.byId, {
-      [id]: entity
-    })
-  }).toJS();
+export function mergeEntityInCollection(collection: EntityCollectionRecord,
+                                        entity: Partial<BaseEntity | ITemplateId>,
+                                        entityId: string): EntityCollectionRecord {
+  const index = collection.allIds.indexOf(entityId);
+  assertTrue(index !== -1, `item (${entityId}) does not exist in collection`);
+  return collection.updateIn(['byId'], (byId: Immutable.Map<string, BaseEntity>) => {
+    return byId.mergeIn([entityId], entity as any);
+  });
 }
 
 /**
  * @internal Remove an entity from a collection. IF the entity does not exist, return the
  * input collection, otherwise return a copy of the new collection.
  */
-export function removeEntityFromCollection<T>(collection: EntityCollection<T>,
-                                              entityId: string): EntityCollection<T> {
-  if (!collection || !collection.byId[entityId]) {
-    return collection;
-  }
-  const result = Immutable.fromJS(collection).toJS();
-  delete result.byId[entityId];
-  result.allIds = collection.allIds.filter((id: string) => id !== entityId);
-  return result;
+export function removeEntityFromCollection(collection: EntityCollectionRecord,
+                                           entityId: string): EntityCollectionRecord {
+  const index = collection.allIds.indexOf(entityId);
+  assertTrue(index !== -1, `item (${entityId}) does not exist in collection`);
+  collection = collection.updateIn(['allIds'], (allIds) => allIds.filter((id) => id !== entityId));
+  return collection.updateIn(['byId'], (byId: Immutable.Map<string, BaseEntity>) => byId.remove(entityId));
 }
 
 /**
