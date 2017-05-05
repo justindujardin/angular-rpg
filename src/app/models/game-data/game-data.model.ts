@@ -6,7 +6,8 @@
  * @fileOverview
  */
 import {EntityType} from '../entity/entity.model';
-import {BaseEntity, IHiddenAttributes, newGuid} from '../base-entity';
+import {BaseEntity, IHiddenAttributes} from '../base-entity';
+import {newGuid} from '../util';
 
 export type ItemCategories = 'item' | 'weapon' | 'armor';
 

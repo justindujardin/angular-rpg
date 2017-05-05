@@ -36,12 +36,12 @@ export class CombatVictoryStateComponent extends CombatMachineState {
   /**
    * Item templates to instantiate any combat victory reward items
    */
-  private items$: Observable<ITemplateItem[]> = this.store.select(getGameDataWeapons)
+  private items$: Observable<Immutable.List<ITemplateItem>> = this.store.select(getGameDataWeapons)
     .combineLatest(
       this.store.select(getGameDataArmors),
       this.store.select(getGameDataItems),
       (weapons, armors, items) => {
-        return [...items, ...weapons, ...armors];
+        return items.concat(weapons).concat(armors);
       });
 
   constructor(public store: Store<AppState>) {

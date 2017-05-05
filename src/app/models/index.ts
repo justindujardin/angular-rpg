@@ -4,10 +4,12 @@ import {storeFreeze} from 'ngrx-store-freeze';
 import {routerReducer} from '@ngrx/router-store';
 import * as fromGameState from './game-state/game-state.reducer';
 import * as fromGameData from './game-data/game-data.reducer';
+import {gameDataFromJSON} from './game-data/game-data.reducer';
 import * as fromCombat from './combat/combat.reducer';
+import {combatFromJSON} from './combat/combat.reducer';
 import * as fromEntity from './entity/entity.reducer';
+import {entityFromJSON} from './entity/entity.reducer';
 import {GameStateActionTypes} from './game-state/game-state.actions';
-import {combatStateFactory} from './combat/combat.reducer';
 
 export const reducers = {
   router: routerReducer,
@@ -23,10 +25,11 @@ function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
     switch (action.type) {
       case 'SET_ROOT_STATE':
       case GameStateActionTypes.LOAD_SUCCESS:
-        // TODO: This happens because only the combat state subtree is immutable currently
         return {
           ...action.payload,
-          combat: combatStateFactory(action.payload.combat)
+          entities: entityFromJSON(action.payload.entities),
+          gameData: gameDataFromJSON(action.payload.gameData),
+          combat: combatFromJSON(action.payload.combat)
         };
       default:
         return reducer(state, action);

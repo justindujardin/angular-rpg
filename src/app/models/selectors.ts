@@ -76,7 +76,7 @@ export const sliceEntitiesState = (state) => state.entities;
  * than objects.
  */
 export const entitiesToArray = (object: Immutable.Map<string, BaseEntity>, ids: Immutable.List<string>) => {
-  return ids.map((id: string) => object.get(id)).toArray();
+  return ids.map((id: string) => object[id]).toArray();
 };
 
 // Beings
@@ -106,11 +106,11 @@ export const getGameCombatZone = createSelector(sliceGameState, sliceCombatZone)
 export const getGameBattleCounter = createSelector(sliceGameState, sliceBattleCounter);
 
 export const getGameParty = createSelector(getEntityBeingById, getGamePartyIds, (entities, ids) => {
-  return ids.map((id) => entities[id]);
+  return ids.map((id) => entities.get(id));
 });
 
 export const getGameInventory = createSelector(getEntityItemById, getGameInventoryIds, (entities, ids) => {
-  return ids.map((id) => entities[id]);
+  return ids.map((id) => entities.get(id));
 });
 
 //
@@ -128,7 +128,7 @@ export const sliceGameDataState = (state) => state.gameData;
  * represented in the byIds dictionary. It's often easier to deal with array of items than objects.
  */
 export const gameDataToArray = (object: Immutable.Map<string, ITemplateId>, ids: Immutable.List<string>) => {
-  return ids.map((id: string) => object.get(id)).toArray();
+  return ids.map((id: string) => object.get(id));
 };
 
 export const getGameDataForType = (type: string) => {

@@ -33,6 +33,19 @@ export const combatStateFactory = makeTypedFactory<CombatState, CombatStateRecor
   id: '',
 });
 
+/**
+ * Convert input Plain JSON object into an Immutable.js representation with the correct records.
+ * @param object The input values.
+ */
+export function combatFromJSON(object: CombatState): CombatState {
+  const recordValues = {
+    ...object,
+    enemies: Immutable.List<Combatant>(object.enemies),
+    party: Immutable.List<Entity>(object.party),
+  };
+  return combatStateFactory(recordValues);
+}
+
 export function combatReducer(state: CombatStateRecord = combatStateFactory(),
                               action: CombatActions): CombatStateRecord {
   switch (action.type) {

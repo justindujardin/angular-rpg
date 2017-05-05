@@ -1,5 +1,8 @@
 import * as Immutable from 'immutable';
-import {addEntityToCollection, EntityCollection, EntityCollectionRecord} from '../base-entity';
+import {
+  addEntityToCollection, EntityCollection, entityCollectionFromJSON,
+  EntityCollectionRecord
+} from '../base-entity';
 import {
   ITemplateWeapon,
   ITemplateArmor,
@@ -135,6 +138,28 @@ export interface GameDataState {
   randomEncounters: EntityCollection<ITemplateRandomEncounter>;
 }
 
+/**
+ * Convert input Plain JSON object into an Immutable.js representation with the correct records.
+ * @param object The input values.
+ */
+export function gameDataFromJSON(object: GameDataState): GameDataState {
+  const result = gameDataFactory({
+    weapons: entityWeaponsCollectionFactory(entityCollectionFromJSON(object.weapons)),
+    items: entityItemsCollectionFactory(entityCollectionFromJSON(object.items)),
+    armor: entityArmorsCollectionFactory(entityCollectionFromJSON(object.armor)),
+    enemies: entityEnemiesCollectionFactory(entityCollectionFromJSON(object.enemies)),
+    magic: entityMagicsCollectionFactory(entityCollectionFromJSON(object.magic)),
+    classes: entityClassesCollectionFactory(entityCollectionFromJSON(object.classes)),
+    fixedEncounters: entityFixedEncountersCollectionFactory(entityCollectionFromJSON(object.fixedEncounters)),
+    randomEncounters: entityRandomEncountersCollectionFactory(entityCollectionFromJSON(object.randomEncounters))
+  });
+  return result;
+}
+
+/**
+ * Manage shared state for game-design data. Items for sale, monsters that exist in a fixed combat
+ * encounter, base attributes for each class, etc.
+ */
 export function gameDataReducer(state: GameDataState = gameDataFactory(),
                                 action: GameDataActionClasses): GameDataState {
   const removeId: string = action.payload as string;

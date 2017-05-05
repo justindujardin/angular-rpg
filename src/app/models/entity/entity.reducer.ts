@@ -3,7 +3,7 @@ import {EntityActions, EntityActionTypes} from './entity.actions';
 import {
   addEntityToCollection,
   BaseEntity,
-  EntityCollection,
+  EntityCollection, entityCollectionFromJSON,
   EntityCollectionRecord,
   mergeEntityInCollection,
   removeEntityFromCollection
@@ -41,8 +41,8 @@ const entityItemsCollectionFactory =
 
 /** Collection of Entity objects */
 export interface EntityState {
-  beings: EntityCollection<Entity>;
-  items: EntityCollection<Item>;
+  readonly beings: EntityCollection<Entity>;
+  readonly items: EntityCollection<Item>;
   // TODO: features: EntityCollection<Feature>; <-- control treasure chests, fixed encounters on maps visibility etc.
   // TODO: quests: EntityCollection<Quest>; <-- OR express everything as a quest, and just start some of them silently
 }
@@ -61,6 +61,18 @@ export const entityStateFactory = makeTypedFactory<EntityState, EntityStateRecor
   beings: entityBeingsCollectionFactory(),
   items: entityItemsCollectionFactory()
 });
+
+/**
+ * Convert input Plain JSON object into an Immutable.js representation with the correct records.
+ * @param object The input values.
+ */
+export function entityFromJSON(object: EntityState): EntityState {
+  const recordValues = {
+    beings: entityBeingsCollectionFactory(entityCollectionFromJSON(object.beings)),
+    items: entityItemsCollectionFactory(entityCollectionFromJSON(object.items))
+  };
+  return entityStateFactory(recordValues);
+}
 
 type EntityReducerTypes = EntityActions | GameStateActions;
 
