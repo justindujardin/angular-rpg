@@ -1,16 +1,23 @@
 import {Entity} from './entity.model';
-import {EntityActions, EntityActionTypes} from './entity.actions';
+import {
+  EntityActions,
+  EntityAddBeingAction,
+  EntityAddItemAction, EntityLevelUpAction,
+  EntityRemoveBeingAction,
+  EntityRemoveItemAction
+} from './entity.actions';
 import {
   addEntityToCollection,
   BaseEntity,
-  EntityCollection, entityCollectionFromJSON,
+  EntityCollection,
+  entityCollectionFromJSON,
   EntityCollectionRecord,
   mergeEntityInCollection,
   removeEntityFromCollection
 } from '../base-entity';
-import {GameStateActions, GameStateActionTypes, GameStateHealPartyAction} from '../game-state/game-state.actions';
-import {CombatActionTypes, CombatVictoryAction} from '../combat/combat.actions';
-import {assertTrue} from '../util';
+import {GameStateHealPartyAction} from '../game-state/game-state.actions';
+import {CombatVictoryAction} from '../combat/combat.actions';
+import {assertTrue, exhaustiveCheck} from '../util';
 import {makeTypedFactory, TypedRecord} from 'typed-immutable-record';
 import {Item} from '../item';
 import * as Immutable from 'immutable';
@@ -74,30 +81,33 @@ export function entityFromJSON(object: EntityState): EntityState {
   return entityStateFactory(recordValues);
 }
 
-type EntityReducerTypes = EntityActions | GameStateActions;
+type EntityReducerTypes = EntityActions | GameStateHealPartyAction | CombatVictoryAction;
 
 export function entityReducer(state: EntityStateRecord = entityStateFactory(),
                               action: EntityReducerTypes): EntityState {
   switch (action.type) {
-    case EntityActionTypes.ADD_BEING: {
-      const entity: BaseEntity = action.payload as BaseEntity;
+    case EntityAddBeingAction.typeId: {
+      const entity: BaseEntity = action.payload;
       return state.updateIn(['beings'], (items) => addEntityToCollection(items, entity, entity.eid));
     }
-    case EntityActionTypes.REMOVE_BEING: {
+    case EntityRemoveBeingAction.typeId: {
       const entityId: string = action.payload;
       return state.updateIn(['beings'], (items) => removeEntityFromCollection(items, entityId));
     }
-    case EntityActionTypes.ADD_ITEM: {
-      const entity: BaseEntity = action.payload as BaseEntity;
+    case EntityAddItemAction.typeId: {
+      const entity: Item = action.payload;
       return state.updateIn(['items'], (items) => addEntityToCollection(items, entity, entity.eid));
     }
-    case EntityActionTypes.REMOVE_ITEM: {
+    case EntityLevelUpAction.typeId: {
+      return state;
+    }
+    case EntityRemoveItemAction.typeId: {
       const entityId: string = action.payload;
       return state.updateIn(['items'], (items) => removeEntityFromCollection(items, entityId));
     }
-    case GameStateActionTypes.HEAL_PARTY: {
+    case GameStateHealPartyAction.typeId: {
       let result: EntityStateRecord = state;
-      const partyAction = action as GameStateHealPartyAction;
+      const partyAction: GameStateHealPartyAction = action;
       return result.updateIn(['beings'], (beings: EntityCollectionRecord) => {
         let updateBeingsResult = beings;
         partyAction.payload.partyIds.forEach((partyMemberId: string) => {
@@ -111,9 +121,9 @@ export function entityReducer(state: EntityStateRecord = entityStateFactory(),
         return updateBeingsResult;
       });
     }
-    case CombatActionTypes.VICTORY: {
+    case CombatVictoryAction.typeId: {
       let result: EntityStateRecord = state;
-      const victoryAction = action as CombatVictoryAction;
+      const victoryAction: CombatVictoryAction = action;
       return result.updateIn(['beings'], (beings: EntityCollectionRecord) => {
         let updateBeingsResult = beings;
         victoryAction.payload.party.forEach((partyEntity: Entity) => {
@@ -124,6 +134,7 @@ export function entityReducer(state: EntityStateRecord = entityStateFactory(),
       });
     }
     default:
+      exhaustiveCheck(action);
       return state;
   }
 }

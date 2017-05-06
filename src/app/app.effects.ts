@@ -1,16 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Effect, Actions} from '@ngrx/effects';
 import {
-  GameStateActionTypes,
   GameStateTravelAction,
   GameStateTravelFailAction,
   GameStateTravelSuccessAction
 } from './models/game-state/game-state.actions';
 import {LoadingService} from './components/loading';
-import {CombatActionTypes, CombatActions} from './models/combat/combat.actions';
 import {replace} from '@ngrx/router-store';
-import {CombatEncounter} from './models/combat/combat.model';
-import {assertTrue} from './models/util';
 
 /**
  * AppComponent effects describe the navigation side-effects of various game actions.
@@ -23,7 +19,7 @@ export class AppEffects {
 
   /** When the game is loading or traveling, show the loading ui. */
   @Effect({dispatch: false}) loadingIndicator$ = this.actions$
-    .ofType(GameStateActionTypes.TRAVEL)
+    .ofType(GameStateTravelAction.typeId)
     .distinctUntilChanged()
     .do((action: GameStateTravelAction) => {
       this.loadingService.message = `Traveling to ${action.payload.map}...`;
@@ -31,7 +27,7 @@ export class AppEffects {
     });
   /** When the game is done loading or traveling, hide the loading ui. */
   @Effect({dispatch: false}) loadingDoneIndicator$ = this.actions$
-    .ofType(GameStateActionTypes.TRAVEL_SUCCESS, GameStateActionTypes.TRAVEL_FAIL)
+    .ofType(GameStateTravelSuccessAction.typeId, GameStateTravelFailAction.typeId)
     .distinctUntilChanged()
     .do((action: GameStateTravelSuccessAction | GameStateTravelFailAction) => {
       this.loadingService.loading = false;
@@ -39,7 +35,7 @@ export class AppEffects {
 
   /** route update to world map */
   @Effect() navigateToWorldRoute$ = this.actions$
-    .ofType(GameStateActionTypes.TRAVEL_SUCCESS)
+    .ofType(GameStateTravelSuccessAction.typeId)
     .debounceTime(100)
     .distinctUntilChanged()
     .map((action: GameStateTravelSuccessAction) => {

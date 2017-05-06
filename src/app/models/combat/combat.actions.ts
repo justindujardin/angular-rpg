@@ -19,35 +19,29 @@ export interface CombatVictorySummary {
   exp: number;
 }
 
-export const CombatActionTypes = {
-  ENCOUNTER: type('rpg/combat/encounter'),
-  ENCOUNTER_READY: type('rpg/combat/ready'),
-  ENCOUNTER_ERROR: type('rpg/combat/error'),
-  VICTORY: type('rpg/combat/victory/async'),
-  VICTORY_COMPLETE: type('rpg/combat/victory/done'),
-  ACTION_ATTACK: type('rpg/combat/attack')
-};
-
 //
 // Fixed Encounter Actions
 //
 
 export class CombatEncounterAction implements Action {
-  type = CombatActionTypes.ENCOUNTER;
+  static typeId: 'COMBAT_ENCOUNTER' = type('COMBAT_ENCOUNTER');
+  type = CombatEncounterAction.typeId;
 
   constructor(public payload: CombatEncounter) {
   }
 }
 
 export class CombatEncounterErrorAction implements Action {
-  type = CombatActionTypes.ENCOUNTER_ERROR;
+  static typeId: 'COMBAT_ENCOUNTER_ERROR' = type('COMBAT_ENCOUNTER_ERROR');
+  type = CombatEncounterErrorAction.typeId;
 
   constructor(public payload: CombatEncounter) {
   }
 }
 
 export class CombatEncounterReadyAction implements Action {
-  type = CombatActionTypes.ENCOUNTER_READY;
+  static typeId: 'COMBAT_ENCOUNTER_READY' = type('COMBAT_ENCOUNTER_READY');
+  readonly type = CombatEncounterReadyAction.typeId;
 
   constructor(public payload: CombatEncounter) {
   }
@@ -58,7 +52,8 @@ export class CombatEncounterReadyAction implements Action {
 //
 
 export class CombatAttackAction implements Action {
-  type = CombatActionTypes.ACTION_ATTACK;
+  static typeId: 'COMBAT_ATTACK' = type('COMBAT_ATTACK');
+  readonly type = CombatAttackAction.typeId;
 
   constructor(public payload: CombatAttack) {
   }
@@ -66,7 +61,8 @@ export class CombatAttackAction implements Action {
 
 /** Async event that notifies the user of combat victory and updates the game-state party tree. */
 export class CombatVictoryAction implements Action {
-  type = CombatActionTypes.VICTORY;
+  static typeId: 'COMBAT_VICTORY' = type('COMBAT_VICTORY');
+  readonly type = CombatVictoryAction.typeId;
 
   constructor(public payload: CombatVictorySummary) {
   }
@@ -74,7 +70,8 @@ export class CombatVictoryAction implements Action {
 
 /** Dispatched after UI animation side-effects are complete */
 export class CombatVictoryCompleteAction implements Action {
-  type = CombatActionTypes.VICTORY_COMPLETE;
+  static typeId: 'COMBAT_VICTORY_DONE' = type('COMBAT_VICTORY_DONE');
+  type = CombatVictoryCompleteAction.typeId;
 
   constructor(public payload: CombatVictorySummary) {
   }

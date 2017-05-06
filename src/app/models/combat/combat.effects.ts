@@ -1,11 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Rx';
-import {Effect, Actions} from '@ngrx/effects';
+import {Actions, Effect} from '@ngrx/effects';
 import {
-  CombatActionTypes,
-  CombatEncounterReadyAction,
+  CombatEncounterAction,
   CombatEncounterErrorAction,
-  CombatEncounterAction, CombatVictoryAction, CombatVictoryCompleteAction, CombatActions, CombatVictorySummary
+  CombatEncounterReadyAction,
+  CombatVictoryAction,
+  CombatVictoryCompleteAction,
+  CombatVictorySummary
 } from './combat.actions';
 import {CombatService} from './combat.service';
 import {CombatEncounter} from './combat.model';
@@ -28,7 +30,7 @@ export class CombatEffects {
               private combatService: CombatService) {
   }
 
-  @Effect() beginCombat$ = this.actions$.ofType(CombatActionTypes.ENCOUNTER)
+  @Effect() beginCombat$ = this.actions$.ofType(CombatEncounterAction.typeId)
     .switchMap((action: CombatEncounterAction) => {
       return this.combatService.loadEncounter(action.payload);
     })
@@ -41,11 +43,11 @@ export class CombatEffects {
 
   /** route update to combat encounter */
   @Effect() navigateToCombatRoute$ = this.actions$
-    .ofType(CombatActionTypes.ENCOUNTER_READY)
+    .ofType(CombatEncounterReadyAction.typeId)
     .debounceTime(100)
     .distinctUntilChanged()
     .map((action: CombatEncounterAction) => {
-      const encounter = action.payload as CombatEncounter;
+      const encounter: CombatEncounter = action.payload;
       assertTrue(encounter.id || encounter.zone, 'combat must either be in a zone or have an id');
       return replace(['combat', encounter.id || encounter.zone]);
     });
@@ -53,7 +55,7 @@ export class CombatEffects {
   /**
    * When a combat victory action is dispatched, notify the user about what they've won.
    */
-  @Effect() combatVictory$ = this.actions$.ofType(CombatActionTypes.VICTORY)
+  @Effect() combatVictory$ = this.actions$.ofType(CombatVictoryAction.typeId)
     .switchMap((action: CombatVictoryAction) => {
       const data: CombatVictorySummary = action.payload;
       return Observable.create((subject: Subscriber<CombatVictoryAction>) => {
@@ -87,7 +89,7 @@ export class CombatEffects {
 
   /** route update back to map after a combat encounter */
   @Effect() navigateToMapRoute$ = this.actions$
-    .ofType(CombatActionTypes.VICTORY_COMPLETE)
+    .ofType(CombatVictoryCompleteAction.typeId)
     .debounceTime(100)
     .switchMap(() => this.store.select(getGameMap))
     .map((map: string) => {

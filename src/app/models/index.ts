@@ -9,7 +9,7 @@ import * as fromCombat from './combat/combat.reducer';
 import {combatFromJSON} from './combat/combat.reducer';
 import * as fromEntity from './entity/entity.reducer';
 import {entityFromJSON} from './entity/entity.reducer';
-import {GameStateActionTypes} from './game-state/game-state.actions';
+import {GameStateLoadSuccessAction} from './game-state/game-state.actions';
 
 export const reducers = {
   router: routerReducer,
@@ -24,7 +24,7 @@ function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
   return (state, action) => {
     switch (action.type) {
       case 'SET_ROOT_STATE':
-      case GameStateActionTypes.LOAD_SUCCESS:
+      case GameStateLoadSuccessAction.typeId:
         return {
           ...action.payload,
           entities: entityFromJSON(action.payload.entities),

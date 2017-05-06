@@ -4,24 +4,17 @@ import {BaseEntity} from '../base-entity';
 import {Item} from '../item';
 import {Entity} from './entity.model';
 
-export const EntityActionTypes = {
-  ADD_BEING: type('rpg/entity/being/add'),
-  REMOVE_BEING: type('rpg/entity/being/remove'),
-  ADD_ITEM: type('rpg/entity/item/create'),
-  REMOVE_ITEM: type('rpg/entity/item/remove'),
-  ADD_OBJECTIVE: type('rpg/entity/objective/create'),
-  REMOVE_OBJECTIVE: type('rpg/entity/objective/remove'),
-  LEVEL_UP: type('rpg/entity/levelup')
-};
 export class EntityAddBeingAction implements Action {
-  type: string = EntityActionTypes.ADD_BEING;
+  static typeId: 'ENTITY_ADD_BEING' = type('ENTITY_ADD_BEING');
+  readonly type = EntityAddBeingAction.typeId;
 
   constructor(public payload: BaseEntity) {
 
   }
 }
 export class EntityRemoveBeingAction implements Action {
-  type: string = EntityActionTypes.REMOVE_BEING;
+  static typeId: 'ENTITY_REMOVE_BEING' = type('ENTITY_REMOVE_BEING');
+  type = EntityRemoveBeingAction.typeId;
   payload: string;
 
   constructor(entityId: string) {
@@ -30,7 +23,8 @@ export class EntityRemoveBeingAction implements Action {
 }
 
 export class EntityAddItemAction implements Action {
-  type: string = EntityActionTypes.ADD_ITEM;
+  static typeId: 'ENTITY_ADD_ITEM' = type('ENTITY_ADD_ITEM');
+  type = EntityAddItemAction.typeId;
 
   constructor(public payload: Item) {
 
@@ -38,7 +32,9 @@ export class EntityAddItemAction implements Action {
 }
 
 export class EntityRemoveItemAction implements Action {
-  type: string = EntityActionTypes.REMOVE_ITEM;
+  static typeId: 'ENTITY_REMOVE_ITEM' = type('ENTITY_REMOVE_ITEM');
+  type = EntityRemoveItemAction.typeId;
+
   payload: string;
 
   constructor(entityId: string) {
@@ -47,7 +43,8 @@ export class EntityRemoveItemAction implements Action {
 }
 
 export class EntityLevelUpAction implements Action {
-  type: string = EntityActionTypes.LEVEL_UP;
+  static typeId: 'ENTITY_LEVEL_UP' = type('ENTITY_LEVEL_UP');
+  type = EntityLevelUpAction.typeId;
   payload: {
     eid: string;
     changes: Partial<Entity>
@@ -64,4 +61,5 @@ export class EntityLevelUpAction implements Action {
 export type EntityActions = EntityAddBeingAction |
   EntityRemoveBeingAction |
   EntityAddItemAction |
-  EntityRemoveItemAction;
+  EntityRemoveItemAction |
+  EntityLevelUpAction;

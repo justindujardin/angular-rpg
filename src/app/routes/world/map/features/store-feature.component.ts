@@ -47,7 +47,7 @@ export function storeItemsFilter(items: Immutable.List<ITemplateItem>,
                                  groups: string[],
                                  level: number): Immutable.List<ITemplateItem> {
   // TODO: This any cast shouldn't be here. I was in a hurry.
-  return <any>items.filter((i: ITemplateItem) => {
+  return <any> items.filter((i: ITemplateItem) => {
     const levelMatch: boolean = (typeof i.level === 'undefined' || i.level === level);
     return levelMatch && itemInGroups(i, groups);
   });

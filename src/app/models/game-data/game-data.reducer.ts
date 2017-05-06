@@ -1,21 +1,27 @@
 import * as Immutable from 'immutable';
 import {
-  addEntityToCollection, EntityCollection, entityCollectionFromJSON,
+  addEntityToCollection,
+  EntityCollection,
+  entityCollectionFromJSON,
   EntityCollectionRecord
 } from '../base-entity';
 import {
-  ITemplateWeapon,
   ITemplateArmor,
-  ITemplateItem,
-  ITemplateRandomEncounter,
-  ITemplateFixedEncounter,
   ITemplateClass,
+  ITemplateEnemy,
+  ITemplateFixedEncounter,
+  ITemplateId,
+  ITemplateItem,
   ITemplateMagic,
-  ITemplateEnemy, ITemplateId
+  ITemplateRandomEncounter,
+  ITemplateWeapon
 } from './game-data.model';
-import {GameDataActionClasses, GameDataActionTypes, IGameDataAddPayload} from './game-data.actions';
+import {
+  GameDataActionClasses, GameDataAddSheetAction, GameDataRemoveSheetAction,
+  IGameDataAddPayload
+} from './game-data.actions';
 import {makeTypedFactory, TypedRecord} from 'typed-immutable-record';
-import {assertTrue} from '../util';
+import {assertTrue, exhaustiveCheck} from '../util';
 
 // Weapons
 //
@@ -162,11 +168,10 @@ export function gameDataFromJSON(object: GameDataState): GameDataState {
  */
 export function gameDataReducer(state: GameDataState = gameDataFactory(),
                                 action: GameDataActionClasses): GameDataState {
-  const removeId: string = action.payload as string;
-  const addSheet: IGameDataAddPayload = action.payload as IGameDataAddPayload;
   const stateRecord = state as GameDataStateRecord;
   switch (action.type) {
-    case GameDataActionTypes.ADD_SHEET: {
+    case GameDataAddSheetAction.typeId: {
+      const addSheet: IGameDataAddPayload = action.payload;
       assertTrue(!!state[addSheet.sheet], 'unknown collection cannot be added with sheet name: ' + addSheet.sheet);
       return stateRecord.updateIn([addSheet.sheet], (record: EntityCollectionRecord) => {
         addSheet.data.forEach((data: ITemplateId) => {
@@ -175,7 +180,8 @@ export function gameDataReducer(state: GameDataState = gameDataFactory(),
         return record;
       });
     }
-    case GameDataActionTypes.REMOVE_SHEET: {
+    case GameDataRemoveSheetAction.typeId: {
+      const removeId: string = action.payload;
       assertTrue(stateRecord.has(removeId), 'cannot remove sheet that does not exist: ' + removeId);
       return stateRecord.updateIn([removeId], (e: EntityCollectionRecord) => {
         return e
@@ -184,6 +190,7 @@ export function gameDataReducer(state: GameDataState = gameDataFactory(),
       });
     }
     default:
+      exhaustiveCheck(action);
       return state;
   }
 }

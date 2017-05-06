@@ -12,7 +12,7 @@
  * are unique.
  */
 
-let typeCache: { [label: string]: boolean } = {};
+const typeCache: { [label: string]: boolean } = {};
 export function type<T>(label: T | ''): T {
   if (typeCache[<string> label]) {
     throw new Error(`Action type "${label}" is not unique"`);
@@ -21,6 +21,16 @@ export function type<T>(label: T | ''): T {
   typeCache[<string> label] = true;
 
   return label as T;
+}
+
+/**
+ * Helper for exhaustive switch checking using tagged union types
+ * @param input The union type
+ */
+export function exhaustiveCheck(input: never) {
+  // This function is compiler magic. Call it with the source of a switch(source) using a tagged union of
+  // types, and it will throw a compiler error if a valid switch case from the union type is missing.
+  // The error will include the type that is missing.
 }
 
 /**
