@@ -110,6 +110,14 @@ describe('Combat', () => {
         const actual = combatReducer(state, new CombatAttackAction(attack(attacker, defender, 3)));
         expect(actual.enemies.get(0).hp).toBe(2);
       });
+      it('should throw if given an entity that is in neither enemies nor party lists', () => {
+        const attacker = combatant();
+        const defender = combatant({hp: 5});
+        const state = combatStateFactory();
+        expect(() => {
+          combatReducer(state, new CombatAttackAction(attack(attacker, defender, 3)));
+        }).toThrow();
+      });
       it('should never set hp to values less than 0', () => {
         const attacker = combatant();
         const defender = combatant({hp: 5});

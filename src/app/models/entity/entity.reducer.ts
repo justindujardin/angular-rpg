@@ -2,7 +2,7 @@ import {Entity} from './entity.model';
 import {
   EntityActions,
   EntityAddBeingAction,
-  EntityAddItemAction, EntityLevelUpAction,
+  EntityAddItemAction,
   EntityRemoveBeingAction,
   EntityRemoveItemAction
 } from './entity.actions';
@@ -98,9 +98,6 @@ export function entityReducer(state: EntityStateRecord = entityStateFactory(),
       const entity: Item = action.payload;
       return state.updateIn(['items'], (items) => addEntityToCollection(items, entity, entity.eid));
     }
-    case EntityLevelUpAction.typeId: {
-      return state;
-    }
     case EntityRemoveItemAction.typeId: {
       const entityId: string = action.payload;
       return state.updateIn(['items'], (items) => removeEntityFromCollection(items, entityId));
@@ -113,7 +110,7 @@ export function entityReducer(state: EntityStateRecord = entityStateFactory(),
         partyAction.payload.partyIds.forEach((partyMemberId: string) => {
           const newHp = state.beings.byId.getIn([partyMemberId, 'maxhp']);
           const newMp = state.beings.byId.getIn([partyMemberId, 'maxmp']);
-          updateBeingsResult = mergeEntityInCollection(beings, {
+          updateBeingsResult = mergeEntityInCollection(updateBeingsResult, {
             hp: newHp,
             mp: newMp
           }, partyMemberId);
@@ -128,7 +125,7 @@ export function entityReducer(state: EntityStateRecord = entityStateFactory(),
         let updateBeingsResult = beings;
         victoryAction.payload.party.forEach((partyEntity: Entity) => {
           assertTrue(!!(partyEntity && partyEntity.eid), 'invalid party entity in combat victory action');
-          updateBeingsResult = mergeEntityInCollection(beings, partyEntity, partyEntity.eid);
+          updateBeingsResult = mergeEntityInCollection(updateBeingsResult, partyEntity, partyEntity.eid);
         });
         return updateBeingsResult;
       });

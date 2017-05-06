@@ -42,24 +42,7 @@ export class EntityRemoveItemAction implements Action {
   }
 }
 
-export class EntityLevelUpAction implements Action {
-  static typeId: 'ENTITY_LEVEL_UP' = type('ENTITY_LEVEL_UP');
-  type = EntityLevelUpAction.typeId;
-  payload: {
-    eid: string;
-    changes: Partial<Entity>
-  };
-
-  constructor(entityId: string, changes: Partial<Entity>) {
-    this.payload = {
-      eid: entityId,
-      changes
-    };
-  }
-}
-
 export type EntityActions = EntityAddBeingAction |
   EntityRemoveBeingAction |
   EntityAddItemAction |
-  EntityRemoveItemAction |
-  EntityLevelUpAction;
+  EntityRemoveItemAction;

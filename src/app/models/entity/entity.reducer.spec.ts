@@ -159,6 +159,7 @@ describe('Entity', () => {
 
       it('should update state of party members coming out of combat', () => {
         const victoryMemberId: string = 'victoriousFlamingo';
+        const victorySecondId: string = 'eVellish';
         const victoryMemberBefore = fakeEntity({
           eid: victoryMemberId,
           hp: 10,
@@ -171,14 +172,31 @@ describe('Entity', () => {
           attack: 10,
           level: 2
         });
-        const initial: EntityStateRecord = defaultState('beings', [victoryMemberBefore]);
+        const victorySecondBefore = fakeEntity({
+          eid: victorySecondId,
+          hp: 10,
+          attack: 8,
+          level: 1
+        });
+        const victorySecondAfter = fakeEntity({
+          eid: victorySecondId,
+          hp: 4,
+          attack: 10,
+          level: 2
+        });
+        const initial: EntityStateRecord = defaultState('beings', [victoryMemberBefore, victorySecondBefore]);
         const actual = entityReducer(initial, new CombatVictoryAction(summaryData({
-          party: [victoryMemberAfter]
+          party: [victoryMemberAfter, victorySecondAfter]
         })));
         const entity: Entity = actual.beings.byId.get(victoryMemberId);
         expect(entity.hp).toBe(victoryMemberAfter.hp);
         expect(entity.attack).toBe(victoryMemberAfter.attack);
         expect(entity.level).toBe(victoryMemberAfter.level);
+
+        const second: Entity = actual.beings.byId.get(victorySecondId);
+        expect(second.hp).toBe(victorySecondAfter.hp);
+        expect(second.attack).toBe(victorySecondAfter.attack);
+        expect(second.level).toBe(victorySecondAfter.level);
       });
     });
 
