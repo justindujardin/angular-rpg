@@ -37,6 +37,7 @@ export class GameWorld extends World {
   constructor(public loader: ResourceManager, public store: Store<AppState>, public sprites: SpriteRender) {
     super();
     _sharedGameWorld = this;
+    // TODO: This breaks HMR. Only init this data when creating a new game.
     // Preload sprite sheets
     this.loadSprites()
       .then(() => this.loadGameData())

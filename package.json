@@ -118,7 +118,7 @@
     "rxjs": "~5.0.2",
     "typed-immutable-record": "0.0.6",
     "underscore": "^1.8.3",
-    "zone.js": "~0.7.4"
+    "zone.js": "~0.7.6"
   },
   "devDependencies": {
     "@angular/compiler-cli": "^4.0.1",
@@ -184,7 +184,7 @@
     "ts-node": "^2.0.0",
     "tslint": "~4.3.1",
     "typedoc": "^0.5.3",
-    "typescript": "~2.1.5",
+    "typescript": "~2.2.2",
     "url-loader": "^0.5.7",
     "v8-lazy-parse-webpack-plugin": "^0.3.0",
     "webpack": "2.2.0",

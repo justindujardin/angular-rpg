@@ -39,7 +39,7 @@ export class SpriteRender {
     this.canvas.width = width;
     this.canvas.height = height;
     this.context = this.canvas.getContext('2d') as CanvasRenderingContext2D;
-    this.context.msImageSmoothingEnabled = false;
+    (<any> this.context).msImageSmoothingEnabled = false;
     (<any> this.context).imageSmoothingEnabled = false;
     (<any> this.context).webkitImageSmoothingEnabled = false;
     (<any> this.context).mozImageSmoothingEnabled = false;

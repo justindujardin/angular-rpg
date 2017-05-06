@@ -152,7 +152,7 @@ describe('GameState', () => {
       it('should throw if item is missing "id" template identifier', () => {
         const state = defaultState();
         expect(() => {
-          const item = fakeItem();
+          const item: any = fakeItem();
           delete item.id;
           gameStateReducer(state, new GameStateAddInventoryAction(item));
         }).toThrow();

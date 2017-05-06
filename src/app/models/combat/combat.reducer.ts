@@ -1,4 +1,7 @@
-import {CombatActions, CombatAttackAction, CombatEncounterAction, CombatEncounterReadyAction} from './combat.actions';
+import {
+  CombatActions, CombatAttackAction, CombatEncounterAction, CombatEncounterReadyAction,
+  CombatVictoryAction, CombatVictoryCompleteAction
+} from './combat.actions';
 import {Combatant, CombatAttack, CombatState} from './combat.model';
 import * as Immutable from 'immutable';
 import {List} from 'immutable';
@@ -57,6 +60,13 @@ export function combatReducer(state: CombatStateRecord = combatStateFactory(),
     }
     case CombatEncounterReadyAction.typeId: {
       return state.merge({loading: true});
+    }
+    case CombatVictoryAction.typeId: {
+      return state;
+    }
+    case CombatVictoryCompleteAction.typeId: {
+      // We're done here, reset state
+      return combatStateFactory();
     }
     case CombatAttackAction.typeId: {
       const data: CombatAttack = action.payload;

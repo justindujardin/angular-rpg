@@ -1,6 +1,9 @@
 import {Combatant, CombatAttack, CombatEncounter} from './combat.model';
 import {combatReducer, combatStateFactory} from './combat.reducer';
-import {CombatAttackAction, CombatEncounterAction} from './combat.actions';
+import {
+  CombatAttackAction, CombatEncounterAction, CombatVictoryCompleteAction,
+  CombatVictorySummary
+} from './combat.actions';
 import {entityId} from '../game-data/game-data.model';
 import * as Immutable from 'immutable';
 import {Entity} from '../entity/entity.model';
@@ -40,6 +43,29 @@ describe('Combat', () => {
         expect(state.loading).toBe(false);
         const actual = combatReducer(state, new CombatEncounterAction(encounter()));
         expect(actual.loading).toBe(true);
+      });
+    });
+    describe('CombatVictoryCompleteAction', () => {
+      it('should reset combat state', () => {
+        const state = combatStateFactory({
+          type: 'fixed',
+          loading: false,
+          enemies: Immutable.List([combatant()]),
+          party: Immutable.List<Entity>([combatant()])
+        });
+        const victorySummary: CombatVictorySummary = {
+          party: [],
+          enemies: [],
+          levels: [],
+          items: [],
+          gold: 0,
+          exp: 0
+        };
+        expect(state.enemies.count()).toBe(1);
+        expect(state.party.count()).toBe(1);
+        const actual = combatReducer(state, new CombatVictoryCompleteAction(victorySummary));
+        expect(actual.enemies.count()).toBe(0);
+        expect(actual.party.count()).toBe(0);
       });
     });
     describe('CombatAttackAction', () => {

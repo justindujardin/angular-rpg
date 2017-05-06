@@ -80,4 +80,6 @@ export class CombatVictoryCompleteAction implements Action {
 export type CombatActions
   = CombatEncounterAction
   | CombatEncounterReadyAction
-  | CombatAttackAction;
+  | CombatAttackAction
+  | CombatVictoryAction
+  | CombatVictoryCompleteAction;
