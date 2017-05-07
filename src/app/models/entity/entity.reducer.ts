@@ -108,8 +108,8 @@ export function entityReducer(state: EntityStateRecord = entityStateFactory(),
       return result.updateIn(['beings'], (beings: EntityCollectionRecord) => {
         let updateBeingsResult = beings;
         partyAction.payload.partyIds.forEach((partyMemberId: string) => {
-          const newHp = state.beings.byId.getIn([partyMemberId, 'maxhp']);
-          const newMp = state.beings.byId.getIn([partyMemberId, 'maxmp']);
+          const newHp = state.beings.byId.get(partyMemberId).maxhp;
+          const newMp = state.beings.byId.get(partyMemberId).maxmp;
           updateBeingsResult = mergeEntityInCollection(updateBeingsResult, {
             hp: newHp,
             mp: newMp

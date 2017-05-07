@@ -131,17 +131,29 @@ describe('Entity', () => {
 
     describe('GameStateHealPartyAction', () => {
       it('should restore all entities in partyIds hp and mp to their maximum', () => {
-        const initial: EntityStateRecord = defaultState('beings', [fakeEntity({
+        const secondId: string = 'MotTon';
+        // TODO: did not work with multiple party members. Cleared out all their data in temple
+        const first = fakeEntity({
           hp: 10, maxhp: 25,
           mp: 0, maxmp: 25
-        })]);
+        });
+        const second = fakeEntity({
+          eid: secondId,
+          hp: 4, maxhp: 20,
+          mp: 0, maxmp: 25
+        });
+        const initial: EntityStateRecord = defaultState('beings', [first, second]);
         const actual = entityReducer(initial, new GameStateHealPartyAction({
           cost: 0,
-          partyIds: [testId]
+          partyIds: [testId, secondId]
         }));
-        const healedEntity: BaseEntity = actual.beings.byId.get(testId);
-        expect(healedEntity.hp).toBe(healedEntity.maxhp);
-        expect(healedEntity.mp).toBe(healedEntity.maxmp);
+        const firstHealed: BaseEntity = actual.beings.byId.get(testId);
+        expect(firstHealed.hp).toBe(firstHealed.maxhp);
+        expect(firstHealed.mp).toBe(firstHealed.maxmp);
+
+        const secondHealed: BaseEntity = actual.beings.byId.get(secondId);
+        expect(secondHealed.hp).toBe(secondHealed.maxhp);
+        expect(secondHealed.mp).toBe(secondHealed.maxmp);
       });
     });
 

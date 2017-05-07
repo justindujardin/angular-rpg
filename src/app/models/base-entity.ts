@@ -114,7 +114,7 @@ export function mergeEntityInCollection(collection: EntityCollectionRecord,
   const index = collection.allIds.indexOf(entityId);
   assertTrue(index !== -1, `item (${entityId}) does not exist in collection`);
   return collection.updateIn(['byId'], (byId: Immutable.Map<string, BaseEntity>) => {
-    return byId.mergeIn([entityId], entity as any);
+    return byId.set(entityId, Immutable.Map<string, any>(byId.get(entityId)).merge(entity).toJS());
   });
 }
 

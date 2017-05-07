@@ -19,7 +19,7 @@ import {getGamePartyGold, getGameParty} from '../../../../models/selectors';
 import {Entity} from '../../../../models/entity/entity.model';
 import {IScene} from '../../../../../game/pow2/scene/scene.model';
 import {GameStateHealPartyAction} from '../../../../models/game-state/game-state.actions';
-import {BaseEntity} from '../../../../models/base-entity';
+import * as Immutable from 'immutable';
 
 @Component({
   selector: 'temple-feature',
@@ -37,7 +37,7 @@ export class TempleFeatureComponent extends TiledFeatureComponent implements OnI
   active$: Observable<boolean>;
 
   partyGold$: Observable<number> = this.store.select(getGamePartyGold);
-  party$: Observable<Entity[]> = this.store.select(getGameParty);
+  party$: Observable<Immutable.List<Entity>> = this.store.select(getGameParty);
 
   name$: Observable<string> = this.feature$.map((data: TiledMapFeatureData) => {
     return data.properties.name;
@@ -62,8 +62,8 @@ export class TempleFeatureComponent extends TiledFeatureComponent implements OnI
 
   ngOnInit(): void {
     this._onRestSubscription$ = this._onRest$.withLatestFrom(this.party$, this.partyGold$, this.cost$,
-      (evt, party: BaseEntity[], partyGold: number, cost: number) => {
-        const alreadyHealed: boolean = !_.find(party, (p: Entity) => {
+      (evt, party: Immutable.List<Entity>, partyGold: number, cost: number) => {
+        const alreadyHealed: boolean = !party.find((p: Entity) => {
           console.log(p, RPGGame.getHPForLevel(1, p));
           return p.hp !== p.maxhp;
         });
@@ -74,7 +74,7 @@ export class TempleFeatureComponent extends TiledFeatureComponent implements OnI
           this.notify.show('Keep your money.\nYour party is already fully healed.');
         }
         else {
-          const partyIds: string[] = _.map(party, (p) => p.eid);
+          const partyIds: string[] = party.map((p) => p.eid).toArray();
           this.store.dispatch(new GameStateHealPartyAction({
             cost,
             partyIds

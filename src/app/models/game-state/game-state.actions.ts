@@ -108,13 +108,13 @@ export class GameStateTravelAction implements Action {
   type = GameStateTravelAction.typeId;
 
   payload: {
-    map: string;
+    location: string;
     position: IPoint;
   };
 
-  constructor(map: string, position: IPoint) {
+  constructor(location: string, position: IPoint) {
     this.payload = {
-      map, position
+      location, position
     };
   }
 }

@@ -59,8 +59,10 @@ export function storeItemsFilter(items: Immutable.List<ITemplateItem>,
  * @param groups The item groups that are supported by this store
  * @returns {ITemplateItem[]} The filtered item list
  */
-export function sellItemsFilter(items: ITemplateItem[], groups: string[]): ITemplateItem[] {
-  return (items || []).filter((i: ITemplateItem) => {
+export function sellItemsFilter(items: Immutable.List<ITemplateItem>,
+                                groups: string[]) {
+  // TODO: This any cast shouldn't be here. I was in a hurry.
+  return <any> items.filter((i: ITemplateItem) => {
     return itemInGroups(i, groups);
   });
 }
@@ -157,11 +159,12 @@ export class StoreFeatureComponent extends TiledFeatureComponent implements OnDe
   /**
    * The items that the party has available to sell to the merchant
    */
-  partyInventory$: Observable<Item[]> = this.store.select(getGameInventory)
-    .combineLatest(this.category$, (inventory, category) => {
+  partyInventory$: Observable<Immutable.List<Item>> = this.store.select(getGameInventory)
+    .combineLatest(this.category$, (inventory: Immutable.List<Item>, category: string) => {
       return inventory.filter((i) => i.category === category);
     })
-    .combineLatest(this.groups$, sellItemsFilter);
+    // TODO: This cast shouldn't be here. Types being a pain. Hopefully immutable 4 has better types.
+    .combineLatest(this.groups$, <any> sellItemsFilter);
 
   /**
    * Calculate the inventory for the store. Filter by category, item grouping, and player level.

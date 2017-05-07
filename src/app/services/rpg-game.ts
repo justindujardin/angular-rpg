@@ -26,6 +26,8 @@ import {Entity, EntityType} from '../models/entity/entity.model';
 import {EntityAddBeingAction} from '../models/entity/entity.actions';
 import {GameStateService} from '../models/game-state/game-state.service';
 
+import * as Immutable from 'immutable';
+
 @Injectable()
 export class RPGGame {
   styleBackground: string = 'rgba(0,0,0,1)';
@@ -149,13 +151,13 @@ export class RPGGame {
         const ranger = RPGGame.create('ranger', 'Ranger');
         const healer = RPGGame.create('healer', 'Mage');
         const initialState: GameState = {
-          party: [warrior.eid, ranger.eid, healer.eid],
-          inventory: [],
+          party: Immutable.List<string>([warrior.eid, ranger.eid, healer.eid]),
+          inventory: Immutable.List<string>(),
           battleCounter: 0,
-          keyData: {},
+          keyData: Immutable.Map<string, any>(),
           gold: 200,
           combatZone: '',
-          map: 'town',
+          location: 'town',
           position: {x: 12, y: 8},
           shipPosition: {x: 0, y: 0}
         };
@@ -163,7 +165,7 @@ export class RPGGame {
         this.store.dispatch(new EntityAddBeingAction(warrior));
         this.store.dispatch(new EntityAddBeingAction(ranger));
         this.store.dispatch(new EntityAddBeingAction(healer));
-        this.store.dispatch(new GameStateTravelAction(initialState.map, initialState.position));
+        this.store.dispatch(new GameStateTravelAction(initialState.location, initialState.position));
         resolve(true);
       }
     });

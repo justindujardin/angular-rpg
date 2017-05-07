@@ -45,7 +45,7 @@ export class PartyInventoryComponent {
 
   nextCharacter() {
     this.currentIndex++;
-    if (this.currentIndex >= this.model.party.length) {
+    if (this.currentIndex >= this.model.party.count()) {
       this.currentIndex = 0;
     }
     this.character = this.model.party[this.currentIndex];
@@ -54,7 +54,7 @@ export class PartyInventoryComponent {
   previousCharacter() {
     this.currentIndex--;
     if (this.currentIndex < 0) {
-      this.currentIndex = this.model.party.length - 1;
+      this.currentIndex = this.model.party.count() - 1;
     }
     this.character = this.model.party[this.currentIndex];
   }

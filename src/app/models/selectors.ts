@@ -33,6 +33,8 @@ import {
 import {BaseEntity} from './base-entity';
 import * as Immutable from 'immutable';
 import {ITemplateId} from './game-data/game-data.model';
+import {Entity} from './entity/entity.model';
+import {Item} from './item';
 
 /**
  * This file contains the application level data selectors that can be used with @ngrx/store to
@@ -109,9 +111,12 @@ export const getGameParty = createSelector(getEntityBeingById, getGamePartyIds, 
   return ids.map((id) => entities.get(id));
 });
 
-export const getGameInventory = createSelector(getEntityItemById, getGameInventoryIds, (entities, ids) => {
-  return ids.map((id) => entities.get(id));
-});
+export const getGameInventory = createSelector(
+  getEntityItemById,
+  getGameInventoryIds,
+  (entities: Immutable.Map<string, Item>, ids: Immutable.List<string>) => {
+    return ids.map((id) => entities.get(id));
+  });
 
 //
 // Game data

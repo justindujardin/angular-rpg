@@ -73,13 +73,13 @@ export class GameStateEffects {
         default:
           return;
       }
-      return new GameStateTravelAction(gameState.map, gameState.position);
+      return new GameStateTravelAction(gameState.location, gameState.position);
     });
 
   @Effect() travel$ = this.actions$.ofType(GameStateTravelAction.typeId)
     .switchMap((action: GameStateTravelAction) => {
-      return this.gameStateService.loadMap(action.payload.map)
-        .map(() => action.payload.map);
+      return this.gameStateService.loadMap(action.payload.location)
+        .map(() => action.payload.location);
     })
     // TODO: This debounce is to let the UI transition to a loading screen for at least and appropriate
     //       amount of time to let the map hide (to flashes of camera movement and map changing)

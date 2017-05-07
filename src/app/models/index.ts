@@ -10,6 +10,7 @@ import {combatFromJSON} from './combat/combat.reducer';
 import * as fromEntity from './entity/entity.reducer';
 import {entityFromJSON} from './entity/entity.reducer';
 import {GameStateLoadSuccessAction} from './game-state/game-state.actions';
+import {gameStateFromJSON} from './game-state/game-state.reducer';
 
 export const reducers = {
   router: routerReducer,
@@ -27,6 +28,7 @@ function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
       case GameStateLoadSuccessAction.typeId:
         return {
           ...action.payload,
+          gameState: gameStateFromJSON(action.payload.gameState),
           entities: entityFromJSON(action.payload.entities),
           gameData: gameDataFromJSON(action.payload.gameData),
           combat: combatFromJSON(action.payload.combat)
@@ -38,9 +40,10 @@ function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
 }
 
 const DEV_REDUCERS = [stateSetter, storeFreeze/*, storeLogger()*/];
+const PROD_REDUCERS = [stateSetter];
 
 const developmentReducer = compose(...DEV_REDUCERS, combineReducers)(reducers);
-const productionReducer = combineReducers(reducers);
+const productionReducer = compose(...PROD_REDUCERS, combineReducers)(reducers);
 
 export function rootReducer(state: any, action: any) {
   if (ENV !== 'development') {

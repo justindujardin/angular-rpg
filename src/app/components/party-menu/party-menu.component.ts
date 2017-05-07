@@ -4,9 +4,9 @@ import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {getGamePartyGold, getGameParty} from '../../models/selectors';
-import {BaseEntity} from '../../models/base-entity';
 import {Entity} from '../../models/entity/entity.model';
 import {GameStateSaveAction} from '../../models/game-state/game-state.actions';
+import * as Immutable from 'immutable';
 
 @Component({
   selector: 'party-menu',
@@ -20,7 +20,7 @@ export class PartyMenuComponent {
   open: boolean = false;
 
   partyGold$: Observable<number> = this.store.select(getGamePartyGold);
-  party$: Observable<Entity[]> = this.store.select(getGameParty);
+  party$: Observable<Immutable.List<Entity>> = this.store.select(getGameParty);
 
   toggle() {
     this.open = !this.open;

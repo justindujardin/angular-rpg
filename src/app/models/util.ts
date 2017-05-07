@@ -2,6 +2,7 @@
  * Sourced from ngrx/example-app: https://github.com/ngrx/example-app/blob/master/src/app/util.ts
  */
 
+import {makeTypedFactory, TypedRecord} from 'typed-immutable-record';
 /**
  * This function coerces a string into a string literal type.
  * Using tagged union types in TypeScript 2.0, this enables
@@ -32,6 +33,14 @@ export function exhaustiveCheck(input: never) {
   // types, and it will throw a compiler error if a valid switch case from the union type is missing.
   // The error will include the type that is missing.
 }
+
+/**
+ * {@see 'typed-immutable-record'/makeTypedFactory} but returns a factor function that accepts a Partial<E>
+ *   as the init values argument.
+ */
+export function makeRecordFactory<E, T extends TypedRecord<T> & E>(obj: E, name?: string): (val?: Partial<E>) => T {
+  return makeTypedFactory<E, T>(obj, name);
+};
 
 /**
  * Throw errors if the given expression is falsy

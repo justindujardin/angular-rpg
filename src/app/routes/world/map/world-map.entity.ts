@@ -32,6 +32,7 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../../../app.model';
 import {GameTileMap} from '../../../scene/game-tile-map';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import * as Immutable from 'immutable';
 
 //
 // TODO: Player position is not sync'd to store!
@@ -146,8 +147,8 @@ export class WorldMapComponent extends GameTileMap implements AfterViewInit, OnD
 
   /** Observable of Entity representing the player-card leader to be rendered in the world */
   partyLeader$: Observable<Entity> = this.store.select(getGameParty)
-    .map((party: Entity[]) => {
-      return Object.assign({}, party[0]);
+    .map((party: Immutable.List<Entity>) => {
+      return party.get(0);
     });
 
 }

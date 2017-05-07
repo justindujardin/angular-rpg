@@ -22,7 +22,7 @@ export class AppEffects {
     .ofType(GameStateTravelAction.typeId)
     .distinctUntilChanged()
     .do((action: GameStateTravelAction) => {
-      this.loadingService.message = `Traveling to ${action.payload.map}...`;
+      this.loadingService.message = `Traveling to ${action.payload.location}...`;
       this.loadingService.loading = true;
     });
   /** When the game is done loading or traveling, hide the loading ui. */
