@@ -21,7 +21,6 @@ import {
   getVitalityForLevel,
   getXPForLevel
 } from '../../../models/levels';
-import {EntityLevelUpAction} from '../../../models/entity/entity.actions';
 import {CombatVictoryAction, CombatVictorySummary} from '../../../models/combat/combat.actions';
 import * as Immutable from 'immutable';
 
@@ -36,32 +35,36 @@ export class CombatVictoryStateComponent extends CombatMachineState {
   /**
    * Item templates to instantiate any combat victory reward items
    */
-  private items$: Observable<ITemplateItem[]> = this.store.select(getGameDataWeapons)
+  private items$: Observable<Immutable.List<ITemplateItem>> = this.store.select(getGameDataWeapons)
     .combineLatest(
       this.store.select(getGameDataArmors),
       this.store.select(getGameDataItems),
       (weapons, armors, items) => {
-        return [...items, ...weapons, ...armors];
+        return items.concat(weapons).concat(armors);
       });
 
   constructor(public store: Store<AppState>) {
     super();
   }
 
-  awardExperience(exp: number, model: Entity): boolean {
+  awardExperience(exp: number, model: Entity): Entity {
     const newExp: number = model.exp + exp;
+    let result: Entity = {
+      ...model,
+      exp: newExp
+    };
     const nextLevel: number = getXPForLevel(model.level + 1);
     if (newExp >= nextLevel) {
-      this.awardLevelUp(model);
-      return true;
+      result = this.awardLevelUp(model);
     }
-    return false;
+    return result;
   }
 
-  awardLevelUp(model: Entity) {
+  awardLevelUp(model: Entity): Entity {
     const nextLevel: number = model.level + 1;
     const newHP = getHPForLevel(nextLevel, model);
-    const changes: Partial<Entity> = {
+    return {
+      ...model,
       level: nextLevel,
       maxhp: newHP,
       hp: newHP,
@@ -70,7 +73,6 @@ export class CombatVictoryStateComponent extends CombatMachineState {
       defense: getVitalityForLevel(nextLevel, model),
       magic: getIntelligenceForLevel(nextLevel, model)
     };
-    this.store.dispatch(new EntityLevelUpAction(model.eid, changes));
   }
 
   enter(machine: CombatStateMachineComponent) {
@@ -79,8 +81,9 @@ export class CombatVictoryStateComponent extends CombatMachineState {
     this.store.select(sliceCombatState)
       .take(1)
       .combineLatest(this.items$, (state: CombatState, items: ITemplateItem[]) => {
-        const players: Immutable.List<Entity> = state.party;
-        assertTrue(players.count() > 0, 'no living players during combat victory state');
+        let players: Entity[] = state.party.toArray();
+        let enemies: Combatant[] = state.enemies.toArray();
+        assertTrue(players.length > 0, 'no living players during combat victory state');
         let gold: number = 0;
         let exp: number = 0;
         let itemTemplateIds: string[] = [];
@@ -121,27 +124,26 @@ export class CombatVictoryStateComponent extends CombatMachineState {
 
         // Award experience
         //
-        const expPerParty: number = Math.round(exp / players.count());
+        const expPerParty: number = Math.round(exp / players.length);
         const levelUps: Entity[] = [];
-        players.forEach((player: Entity) => {
-          const leveled: boolean = this.awardExperience(expPerParty, player);
-          if (leveled) {
+        players = players.map((player: Entity) => {
+          let result = this.awardExperience(expPerParty, player);
+          if (result.level > player.level) {
             levelUps.push(player);
           }
+          return result;
         });
 
+        // Dispatch victory action
         const summary: CombatVictorySummary = {
-          party: state.party
-          enemies: state.enemies
+          party: players,
+          enemies,
           levels: levelUps,
           items: itemInstances,
           gold,
           exp
         };
-
-        machine.notify('combat:victory', summary, () => {
-          this.store.dispatch(new CombatVictoryAction(summary));
-        });
+        this.store.dispatch(new CombatVictoryAction(summary));
       }).subscribe();
   }
 }

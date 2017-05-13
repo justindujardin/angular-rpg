@@ -1,41 +1,10 @@
-
-.slide-anim {
-}
-
-.slide-anim.ng-hide {
-}
-
-.slide-anim.ng-hide-add {
-  @extend .pt-page-moveToLeft;
-  @extend .pt-page-ontop;
-  display: block !important;
-}
-
-.slide-anim.ng-hide-remove {
-  @extend .pt-page-moveToRight;
-  display: block !important;
-}
+@import '../../style/variables';
 
 $inventoryIconSize: 64px;
 $inventoryLabelPaddingTop: 30px;
 
 :host {
   text-align: center;
-  .btn {
-    margin: 5px 5px;
-    font-size: 2em;
-    &.next {
-      float: right;
-    }
-    &.previous {
-      float: left;
-    }
-
-    > * {
-      pointer-events: none;
-    }
-
-  }
 
   ul {
     list-style-type: none;

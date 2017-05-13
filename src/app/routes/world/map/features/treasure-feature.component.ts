@@ -53,13 +53,13 @@ export class TreasureFeatureComponent extends TiledFeatureComponent {
   }
 
   enter(object: TileObject): boolean {
-
     if (typeof this.properties.gold !== 'undefined') {
       this.store.dispatch(new GameStateAddGoldAction(this.properties.gold));
       this.notify.show(`You found ${this.properties.gold} gold!`, null, 0);
     }
     if (typeof this.properties.item === 'string') {
-      const item = this.host.world.itemModelFromId<Item>(this.properties.item);
+      console.warn('treasure items need fixin\'');
+      const item = null; // this.host.world.itemModelFromId<Item>(this.properties.item);
       if (!item) {
         return;
       }

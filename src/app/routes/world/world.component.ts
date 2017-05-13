@@ -53,7 +53,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
       }
       else if (this.partyMenu) {
         // Otherwise toggle the party menu
-        this.partyMenu.toggle();
+        this.partyMenu.open = !this.partyMenu.open;
       }
     }
   }

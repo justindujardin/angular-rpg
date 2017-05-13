@@ -23,7 +23,8 @@ import {IBehavior} from '../../pow-core/behavior';
 import {GameWorld} from '../../../app/services/game-world';
 
 export class Scene extends Events implements IScene, IProcessObject, IWorldObject {
-  id: string = _.uniqueId('scene');
+  private static sceneCount: number = 0;
+  id: string = `scene-${Scene.sceneCount++}`;
   name: string;
   db: SceneSpatialDatabase = new SceneSpatialDatabase();
   options: any = {};
@@ -108,6 +109,8 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
   // Object add/remove helpers.
   // -----------------------------------------------------------------------------
   removeIt(property: string, object: any): boolean {
+    // Debugging Aid:
+    // console.info(`Scene (${this.id}) - ${object._uid} = ${object}`);
     let removed: boolean = false;
     this[property] = _.filter(this[property], (obj: any) => {
       if (object && obj && obj._uid === object._uid) {
@@ -131,6 +134,8 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
   }
 
   addIt(property: string, object: any): boolean {
+    // Debugging Aid:
+    // console.info(`Scene (${this.id}) + ${object._uid} = ${object}`);
 
     // Remove object from any scene it might already be in.
     if (object.scene) {

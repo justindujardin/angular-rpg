@@ -1,4 +1,4 @@
-<section class="hero-card" [class]="getPlayerCSSClassMap()">
+<section class="hero-card" [class]="getPlayerCSSClassMap()" fxLayout="column" fxLayoutAlign="space-between center">
   <h3 class="name" [innerText]="model.name"></h3>
   <rpg-sprite class="image" [name]="model.icon" frame="7" width="64" height="72"></rpg-sprite>
   <div>Level {{model.level}}</div>

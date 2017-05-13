@@ -106,11 +106,29 @@ export class CombatEncounterBehaviorComponent extends SceneObjectBehavior {
 
     console.warn('HACK in triggerCombat - static get GameWorld... need injection strategy');
     const world = GameWorld.get();
-    world.randomEncounter(zone, () => {
+    this.randomEncounter(zone, () => {
       this.resetBattleCounter();
       this.listenMoves();
     });
     this.combatFlag = true;
+  }
+
+  randomEncounter(zone: IZoneMatch, then?: Function) {
+  //   const gsr = this.spreadsheet;
+  //   const encountersData = gsr.getSheetData('randomencounters');
+  //   const encounters: ITemplateFixedEncounter[] = _.filter(encountersData, (enc: any) => {
+  //     return _.indexOf(enc.zones, zone.map) !== -1 || _.indexOf(enc.zones, zone.target) !== -1;
+  //   });
+  //   if (encounters.length === 0) {
+  //     if (then) {
+  //       then(true);
+  //     }
+  //     return;
+  //   }
+  //   const max = encounters.length - 1;
+  //   const min = 0;
+  //   const encounter = encounters[Math.floor(Math.random() * (max - min + 1)) + min];
+  //   this.doEncounter(zone, encounter, then);
   }
 
   private _setCounter(value: number) {

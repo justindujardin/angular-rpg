@@ -4,10 +4,13 @@ import {storeFreeze} from 'ngrx-store-freeze';
 import {routerReducer} from '@ngrx/router-store';
 import * as fromGameState from './game-state/game-state.reducer';
 import * as fromGameData from './game-data/game-data.reducer';
+import {gameDataFromJSON} from './game-data/game-data.reducer';
 import * as fromCombat from './combat/combat.reducer';
+import {combatFromJSON} from './combat/combat.reducer';
 import * as fromEntity from './entity/entity.reducer';
-import {GameStateActionTypes} from './game-state/game-state.actions';
-import {combatStateFactory} from './combat/combat.reducer';
+import {entityFromJSON} from './entity/entity.reducer';
+import {GameStateLoadSuccessAction} from './game-state/game-state.actions';
+import {gameStateFromJSON} from './game-state/game-state.reducer';
 
 export const reducers = {
   router: routerReducer,
@@ -22,11 +25,13 @@ function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
   return (state, action) => {
     switch (action.type) {
       case 'SET_ROOT_STATE':
-      case GameStateActionTypes.LOAD_SUCCESS:
-        // TODO: This happens because only the combat state subtree is immutable currently
+      case GameStateLoadSuccessAction.typeId:
         return {
           ...action.payload,
-          combat: combatStateFactory(action.payload.combat)
+          gameState: gameStateFromJSON(action.payload.gameState),
+          entities: entityFromJSON(action.payload.entities),
+          gameData: gameDataFromJSON(action.payload.gameData),
+          combat: combatFromJSON(action.payload.combat)
         };
       default:
         return reducer(state, action);
@@ -35,9 +40,10 @@ function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
 }
 
 const DEV_REDUCERS = [stateSetter, storeFreeze/*, storeLogger()*/];
+const PROD_REDUCERS = [stateSetter];
 
 const developmentReducer = compose(...DEV_REDUCERS, combineReducers)(reducers);
-const productionReducer = combineReducers(reducers);
+const productionReducer = compose(...PROD_REDUCERS, combineReducers)(reducers);
 
 export function rootReducer(state: any, action: any) {
   if (ENV !== 'development') {

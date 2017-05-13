@@ -1,48 +1,41 @@
 @import '../../style/variables';
-
-$navWidth: 320px;
+@import '../../style/mixins';
 
 :host {
-  position: fixed;
-  bottom: 5px;
-  left: 5px;
-  z-index: $zCanvasGui;
-  font-family: 'GraphicPixel', sans-serif;
-  .navigation {
+  *:not(md-icon):not([md-icon-button]):not([md-fab]) {
+    font-family: $pixelFont;
+    @include stroke-text(1px, #000);
+  }
+  background-color: rgba(0, 0, 0, 0.54);
+  color: white;
+  md-toolbar {
     position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    max-width: $navWidth;
-    width: $navWidth;
-    background-color: $menuOverlayBackground;
-    nav {
-      margin: 0;
-      a {
-        display: block;
+    border-bottom: 6px solid white;
+    button {
+      font-size: 20px;
+      &.active {
+        color: $colorGold;
       }
     }
   }
 
-  .btn-open {
+  button[md-fab] {
     position: fixed;
-    bottom: 16px;
-    left: 16px;
+    bottom: 12px;
+    right: 12px;
   }
 
-  .views {
-    overflow: auto;
-    overflow-x: hidden;
-    > * {
-      color: #fff;
-      background-color: rgba(0, 0, 0, 0.8);
-      overflow-x: hidden;
-      overflow-y: auto;
-      position: fixed;
-      top: 0;
-      left: $navWidth;
-      bottom: 0;
-      right: 0;
-    }
+  md-card {
+    @include eight-bit-panel();
+    position: fixed;
+    margin: auto;
+    right: 24px;
+    bottom: -12px;
+    min-height: 250px;
+    max-height: 85%;
+    padding-bottom: 36px; // normal 24px plus 12 for the negative bottom
+    left: 24px;
+    max-width: 600px;
+    overflow-y: auto;
   }
 }

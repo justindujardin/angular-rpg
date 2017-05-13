@@ -4,7 +4,10 @@ import {GameStateEffects} from './game-state.effects';
 import {GameState} from './game-state.model';
 import {Observable} from 'rxjs';
 import {GameStateService} from './game-state.service';
-import {GameStateActionTypes, GameStateTravelAction, GameStateNewAction} from './game-state.actions';
+import {
+  GameStateTravelAction, GameStateNewAction, GameStateLoadSuccessAction,
+  GameStateTravelSuccessAction
+} from './game-state.actions';
 import {ServicesModule} from '../../services/index';
 import {StoreModule} from '@ngrx/store';
 import {rootReducer} from '../index';
@@ -48,7 +51,7 @@ describe('GameState', () => {
       it('should dispatch load success after game state service loads the game', () => {
         runner.queue(new GameStateNewAction(fakeGameState));
         effects.initLoadedGame$.subscribe((result) => {
-          expect(result.type).toBe(GameStateActionTypes.LOAD_SUCCESS);
+          expect(result.type).toBe(GameStateLoadSuccessAction.typeId);
         });
       });
     });
@@ -60,7 +63,7 @@ describe('GameState', () => {
       it('should dispatch a travel action to the current location after game load success', () => {
         runner.queue(new GameStateNewAction(fakeGameState));
         effects.afterLoadTravelToCurrentLocation$.subscribe((result) => {
-          expect(result.type).toBe(GameStateActionTypes.TRAVEL);
+          expect(result.type).toBe(GameStateTravelAction.typeId);
         });
       });
     });
@@ -70,7 +73,7 @@ describe('GameState', () => {
         runner.queue(new GameStateTravelAction('map', {x: 0, y: 0}));
         effects.travel$.subscribe((result) => {
           expect(mockStateService.loadMapCalls).toBe(1);
-          expect(result.type).toBe(GameStateActionTypes.TRAVEL_SUCCESS);
+          expect(result.type).toBe(GameStateTravelSuccessAction.typeId);
         });
       });
     });

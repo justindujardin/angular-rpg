@@ -15,10 +15,10 @@ import {AppState} from '../../../../app.model';
 import {Store} from '@ngrx/store';
 import {CombatAttackAction} from '../../../../models/combat/combat.actions';
 import {CombatAttack} from '../../../../models/combat/combat.model';
-import * as rules from '../../../../models/combat/combat.api';
 import {Entity} from '../../../../models/entity/entity.model';
 import {GameWorld} from '../../../../services/game-world';
 import {ImageResource} from '../../../../../game/pow-core/resources/image.resource';
+import {CombatService} from '../../../../models/combat/combat.service';
 /**
  * Attack another entity in combat.
  */
@@ -31,7 +31,9 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
 
   @Input() combat: CombatComponent;
 
-  constructor(private store: Store<AppState>, public gameWorld: GameWorld) {
+  constructor(private store: Store<AppState>,
+              private combatService: CombatService,
+              private gameWorld: GameWorld) {
     super();
   }
 
@@ -65,7 +67,7 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
     const playerRender =
       attacker.findBehavior(CombatPlayerRenderBehaviorComponent) as CombatPlayerRenderBehaviorComponent;
     const attack = () => {
-      const damage: number = rules.attackCombatant(attacker.model, defender.model);
+      const damage: number = this.combatService.attackCombatant(attacker.model, defender.model);
       const didKill: boolean = (defender.model.hp - damage) <= 0;
       const hit: boolean = damage > 0;
       const defending: boolean = false; // TODO: Maps to guard action

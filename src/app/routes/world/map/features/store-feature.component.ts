@@ -43,8 +43,11 @@ import Immutable from 'immutable';
  * @param level The level of items that are sold in this store
  * @returns {ITemplateItem[]} The filtered item list
  */
-export function storeItemsFilter(items: ITemplateItem[], groups: string[], level: number): ITemplateItem[] {
-  return items.filter((i: ITemplateItem) => {
+export function storeItemsFilter(items: Immutable.List<ITemplateItem>,
+                                 groups: string[],
+                                 level: number): Immutable.List<ITemplateItem> {
+  // TODO: This any cast shouldn't be here. I was in a hurry.
+  return <any> items.filter((i: ITemplateItem) => {
     const levelMatch: boolean = (typeof i.level === 'undefined' || i.level === level);
     return levelMatch && itemInGroups(i, groups);
   });
@@ -56,8 +59,10 @@ export function storeItemsFilter(items: ITemplateItem[], groups: string[], level
  * @param groups The item groups that are supported by this store
  * @returns {ITemplateItem[]} The filtered item list
  */
-export function sellItemsFilter(items: ITemplateItem[], groups: string[]): ITemplateItem[] {
-  return (items || []).filter((i: ITemplateItem) => {
+export function sellItemsFilter(items: Immutable.List<ITemplateItem>,
+                                groups: string[]) {
+  // TODO: This any cast shouldn't be here. I was in a hurry.
+  return <any> items.filter((i: ITemplateItem) => {
     return itemInGroups(i, groups);
   });
 }
@@ -118,11 +123,11 @@ export class StoreFeatureComponent extends TiledFeatureComponent implements OnDe
   /** @internal */
   private _level$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
   /** @internal */
-  private _weapons$: Observable<ITemplateWeapon[]> = this.store.select(getGameDataWeapons);
+  private _weapons$: Observable<Immutable.List<ITemplateWeapon>> = this.store.select(getGameDataWeapons);
   /** @internal */
-  private _armors$: Observable<ITemplateArmor[]> = this.store.select(getGameDataArmors);
+  private _armors$: Observable<Immutable.List<ITemplateArmor>> = this.store.select(getGameDataArmors);
   /** @internal */
-  private _items$: Observable<ITemplateItem[]> = this.store.select(getGameDataItems);
+  private _items$: Observable<Immutable.List<ITemplateItem>> = this.store.select(getGameDataItems);
   /** @internal */
   private _selling$ = new BehaviorSubject<boolean>(false);
 
@@ -154,16 +159,17 @@ export class StoreFeatureComponent extends TiledFeatureComponent implements OnDe
   /**
    * The items that the party has available to sell to the merchant
    */
-  partyInventory$: Observable<Item[]> = this.store.select(getGameInventory)
-    .combineLatest(this.category$, (inventory, category) => {
+  partyInventory$: Observable<Immutable.List<Item>> = this.store.select(getGameInventory)
+    .combineLatest(this.category$, (inventory: Immutable.List<Item>, category: string) => {
       return inventory.filter((i) => i.category === category);
     })
-    .combineLatest(this.groups$, sellItemsFilter);
+    // TODO: This cast shouldn't be here. Types being a pain. Hopefully immutable 4 has better types.
+    .combineLatest(this.groups$, <any> sellItemsFilter);
 
   /**
    * Calculate the inventory for the store. Filter by category, item grouping, and player level.
    */
-  inventory$: Observable<ITemplateItem[]> = this._weapons$
+  inventory$: Observable<Immutable.List<ITemplateItem>> = this._weapons$
     .combineLatest(this._armors$, this._items$, this.category$, (weapons, armors, items, cat) => {
       switch (cat) {
         case 'items':
@@ -174,7 +180,7 @@ export class StoreFeatureComponent extends TiledFeatureComponent implements OnDe
           return armors;
         default:
           // If there is no category, the vendor can sell all types.
-          return [...items, ...weapons, ...armors];
+          return items.concat(weapons).concat(armors);
       }
     })
     .combineLatest(this.groups$, this.level$, storeItemsFilter);

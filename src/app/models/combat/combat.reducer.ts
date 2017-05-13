@@ -1,9 +1,12 @@
-import {CombatActions, CombatActionTypes} from './combat.actions';
+import {
+  CombatActions, CombatAttackAction, CombatEncounterAction, CombatEncounterReadyAction,
+  CombatVictoryAction, CombatVictoryCompleteAction
+} from './combat.actions';
 import {Combatant, CombatAttack, CombatState} from './combat.model';
-import {List} from 'immutable';
-import {assertTrue} from '../util';
-import {makeTypedFactory, TypedRecord} from 'typed-immutable-record';
 import * as Immutable from 'immutable';
+import {List} from 'immutable';
+import {assertTrue, exhaustiveCheck} from '../util';
+import {makeTypedFactory, TypedRecord} from 'typed-immutable-record';
 import {Entity} from '../entity/entity.model';
 
 /**
@@ -33,20 +36,40 @@ export const combatStateFactory = makeTypedFactory<CombatState, CombatStateRecor
   id: '',
 });
 
+/**
+ * Convert input Plain JSON object into an Immutable.js representation with the correct records.
+ * @param object The input values.
+ */
+export function combatFromJSON(object: CombatState): CombatState {
+  const recordValues = {
+    ...object,
+    enemies: Immutable.List<Combatant>(object.enemies),
+    party: Immutable.List<Entity>(object.party),
+  };
+  return combatStateFactory(recordValues);
+}
+
 export function combatReducer(state: CombatStateRecord = combatStateFactory(),
                               action: CombatActions): CombatStateRecord {
   switch (action.type) {
-    case CombatActionTypes.ENCOUNTER: {
+    case CombatEncounterAction.typeId: {
       return state.merge({
         loading: true,
         ...action.payload
       });
     }
-    case CombatActionTypes.ENCOUNTER_READY: {
+    case CombatEncounterReadyAction.typeId: {
       return state.merge({loading: true});
     }
-    case CombatActionTypes.ACTION_ATTACK: {
-      const data = action.payload as CombatAttack;
+    case CombatVictoryAction.typeId: {
+      return state;
+    }
+    case CombatVictoryCompleteAction.typeId: {
+      // We're done here, reset state
+      return combatStateFactory();
+    }
+    case CombatAttackAction.typeId: {
+      const data: CombatAttack = action.payload;
       const matchDefender = (c: Combatant) => c.eid === data.defender.eid;
       assertTrue(state.type !== 'none', 'invalid encounter for attack action');
 
@@ -83,6 +106,7 @@ export function combatReducer(state: CombatStateRecord = combatStateFactory(),
       return state;
     }
     default:
+      exhaustiveCheck(action);
       return state;
   }
 }

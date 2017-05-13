@@ -13,7 +13,6 @@ export * from './resource-manager';
 export * from './time';
 export * from './world';
 export * from './resources/audio.resource';
-export * from './resources/entities.resource';
 export * from './resources/image.resource';
 export * from './resources/json.resource';
 export * from './resources/script.resource';

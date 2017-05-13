@@ -1,7 +1,6 @@
-import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
-import {RPGGame} from '../../services/index';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {SpriteRender} from '../../services/sprite-render';
-import {Observable, ReplaySubject, BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
 @Component({
@@ -52,9 +51,50 @@ export class RPGSpriteComponent {
     this._get(value);
   }
 
-  constructor(private game: RPGGame,
-              private sanitizer: DomSanitizer,
+  styleBackground: string = 'rgba(0,0,0,1)';
+  /**
+   * Use a singleton canvas for rendering all sprites
+   */
+  private static _renderCanvas: HTMLCanvasElement;
+  private _canvasAcquired: boolean = false;
+
+  constructor(private sanitizer: DomSanitizer,
               private renderer: SpriteRender) {
+    if (!RPGSpriteComponent._renderCanvas) {
+      RPGSpriteComponent._renderCanvas = document.createElement('canvas') as HTMLCanvasElement;
+      RPGSpriteComponent._renderCanvas.width = RPGSpriteComponent._renderCanvas.height = 64;
+      RPGSpriteComponent._renderCanvas.style.position = 'absolute';
+      RPGSpriteComponent._renderCanvas.style.left = RPGSpriteComponent._renderCanvas.style.top = '-9000px';
+    }
+  }
+
+  /**
+   * Returns a canvas rendering context that may be drawn to.  A corresponding
+   * call to releaseRenderContext will return the drawn content of the context.
+   */
+  getRenderContext(width: number, height: number): CanvasRenderingContext2D {
+    if (this._canvasAcquired) {
+      throw new Error('Only one rendering canvas is available at a time.' +
+        ' Check for calls to this function without corresponding releaseCanvas() calls.');
+    }
+    this._canvasAcquired = true;
+    RPGSpriteComponent._renderCanvas.width = width;
+    RPGSpriteComponent._renderCanvas.height = height;
+    const context: any = RPGSpriteComponent._renderCanvas.getContext('2d');
+    context.webkitImageSmoothingEnabled = false;
+    context.mozImageSmoothingEnabled = false;
+    context.msImageSmoothingEnabled = false;
+    (<any> context).imageSmoothingEnabled = false;
+    return context;
+  }
+
+  /**
+   * Call this after getRenderContext to finish rendering and have the source
+   * of the canvas content returned as a data url string.
+   */
+  releaseRenderContext(): string {
+    this._canvasAcquired = false;
+    return RPGSpriteComponent._renderCanvas.toDataURL();
   }
 
   private _get(src: string) {
@@ -67,10 +107,10 @@ export class RPGSpriteComponent {
       const width: number = parseInt(this._width$.value, 10);
       const height: number = parseInt(this._height$.value, 10);
 
-      const renderContext: any = this.game.getRenderContext(width, height);
+      const renderContext: any = this.getRenderContext(width, height);
       renderContext.clearRect(0, 0, width, height);
       renderContext.drawImage(sprite, 0, 0, width, height);
-      const imageDataUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.game.releaseRenderContext());
+      const imageDataUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.releaseRenderContext());
       this._dataUrl$.next(imageDataUrl);
     });
 

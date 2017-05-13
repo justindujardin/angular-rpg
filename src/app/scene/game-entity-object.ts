@@ -27,7 +27,8 @@ export class GameEntityObject extends TileObject {
   world: GameWorld;
 
   getSpells(): ITemplateMagic[] {
-    const spells: any = this.world.spreadsheet.getSheetData('magic');
+    console.warn('no spell data available in GameEntityObject.getSpells');
+    const spells: any = [];
     const caster = this.model as Entity;
     const userLevel: number = caster.level;
     const userClass: string = caster.type;

@@ -16,15 +16,18 @@
 module.exports = {
   link: [
     /** <link> tags for favicons **/
-    { rel: 'icon', type: 'image/x-icon', href: '/assets/icon/favicon.ico' },
-    { rel: 'shortcut icon', type: 'image/x-icon', href: '/assets/icon/favicon.ico' },
+    {rel: 'icon', type: 'image/x-icon', href: '/assets/icon/favicon.ico'},
+    {rel: 'shortcut icon', type: 'image/x-icon', href: '/assets/icon/favicon.ico'},
 
     /** <link> tags for a Web App Manifest **/
     // { rel: 'manifest', href: '/assets/manifest.json' }
+
+    /** Material Icons */
+    {rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons'}
   ],
   meta: [
-    { name: 'msapplication-TileColor', content: '#00bcd4' },
-    { name: 'msapplication-TileImage', content: '/assets/icon/ms-icon-144x144.png', '=content': true },
-    { name: 'theme-color', content: '#00bcd4' }
+    {name: 'msapplication-TileColor', content: '#00bcd4'},
+    {name: 'msapplication-TileImage', content: '/assets/icon/ms-icon-144x144.png', '=content': true},
+    {name: 'theme-color', content: '#00bcd4'}
   ]
 };

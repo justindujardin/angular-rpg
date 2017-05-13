@@ -1,51 +1,21 @@
-import {EntityCollection} from '../base-entity';
-import {GameDataState, gameDataReducer} from './game-data.reducer';
+import {addEntityToCollection, EntityCollectionRecord} from '../base-entity';
+import {gameDataFactory, gameDataReducer, GameDataStateRecord} from './game-data.reducer';
 import {GameDataAddSheetAction, GameDataRemoveSheetAction} from './game-data.actions';
 import {ITemplateId} from './game-data.model';
 
 describe('GameData', () => {
 
-  function defaultState(collection?: string, values?: Partial<EntityCollection<any>>): GameDataState {
-    const resultState: GameDataState = {
-      weapons: {
-        byId: {},
-        allIds: []
-      },
-      armor: {
-        byId: {},
-        allIds: []
-      },
-      enemies: {
-        byId: {},
-        allIds: []
-      },
-      items: {
-        byId: {},
-        allIds: []
-      },
-      magic: {
-        byId: {},
-        allIds: []
-      },
-      classes: {
-        byId: {},
-        allIds: []
-      },
-      fixedEncounters: {
-        byId: {},
-        allIds: []
-      },
-      randomEncounters: {
-        byId: {},
-        allIds: []
-      }
-    };
-    if (collection && values) {
-      return Object.assign(resultState, {
-        [collection]: Object.assign(values)
+  function defaultState(collection?: string, items?: ITemplateId[]): GameDataStateRecord {
+    let resultState: GameDataStateRecord = gameDataFactory();
+    if (collection && items) {
+      resultState = resultState.updateIn([collection], (record: EntityCollectionRecord) => {
+        items.forEach((data: ITemplateId) => {
+          record = addEntityToCollection(record, data, data.id);
+        });
+        return record;
       });
     }
-    return Object.assign({}, resultState);
+    return resultState;
   }
 
   let counter = 0;
@@ -60,40 +30,34 @@ describe('GameData', () => {
   describe('Actions', () => {
     describe('GameDataAddSheetAction', () => {
       it('should add a sheet of data to a table with the given name', () => {
-        const initial: GameDataState = defaultState();
+        const initial: GameDataStateRecord = defaultState();
         const item = fakeItem();
-        const desired: GameDataState = defaultState('weapons', {
-          allIds: [item.id],
-          byId: {[item.id]: item}
-        });
-        const out = gameDataReducer(initial, new GameDataAddSheetAction('weapons', [item]));
-        expect(out).toEqual(desired);
+        const desired: GameDataStateRecord = defaultState('weapons', [item]);
+        const out = gameDataReducer(initial, new GameDataAddSheetAction('weapons', [item])) as GameDataStateRecord;
+        expect(out.weapons).toEqual(desired.weapons);
       });
-      it('should ignore unknown sheet names', () => {
-        const initial: GameDataState = defaultState();
-        const out = gameDataReducer(initial, new GameDataAddSheetAction('invalid', [fakeItem()]));
-        expect(out).toEqual(initial);
+      it('should throw given an unknown sheet name', () => {
+        const initial: GameDataStateRecord = defaultState();
+        const item = fakeItem();
+        expect(() => {
+          gameDataReducer(initial, new GameDataAddSheetAction('invalid', [item]));
+        }).toThrow();
       });
     });
     describe('GameDataRemoveSheetAction', () => {
       it('should remove all data from a sheet with the given name', () => {
         const item = fakeItem();
-        const initial: GameDataState = defaultState('weapons', {
-          allIds: [item.id],
-          byId: {[item.id]: item}
-        });
-        const desired: GameDataState = defaultState();
-        const out = gameDataReducer(initial, new GameDataRemoveSheetAction('weapons'));
-        expect(out).toEqual(desired);
+        const initial: GameDataStateRecord = defaultState('weapons', [item]);
+        const out = gameDataReducer(initial, new GameDataRemoveSheetAction('weapons')) as GameDataStateRecord;
+        expect(out.weapons.byId.count()).toBe(0);
+        expect(out.weapons.allIds.count()).toBe(0);
       });
-      it('should ignore unknown sheet names', () => {
+      it('should throw with unknown sheet name', () => {
         const item = fakeItem();
-        const initial: GameDataState = defaultState('weapons', {
-          allIds: [item.id],
-          byId: {[item.id]: item}
-        });
-        const out = gameDataReducer(initial, new GameDataRemoveSheetAction('invalid'));
-        expect(out).toEqual(initial);
+        const initial: GameDataStateRecord = defaultState('weapons', [item]);
+        expect(() => {
+          gameDataReducer(initial, new GameDataRemoveSheetAction('invalid'));
+        }).toThrow();
       });
     });
   });

@@ -1,4 +1,5 @@
 import {IPoint} from '../../../game/pow-core/point';
+import * as Immutable from 'immutable';
 
 export enum GamePositionFacing {
   WEST = 0,
@@ -9,18 +10,16 @@ export enum GamePositionFacing {
 
 export interface GameState {
   /** Unique IDs of all the members of the party */
-  readonly party: string[];
+  readonly party: Immutable.List<string>;
   /** Unique IDs of all the items that the party has */
-  readonly inventory: string[];
+  readonly inventory: Immutable.List<string>;
   readonly battleCounter: number;
   readonly gold: number;
-  readonly keyData: {
-    [key: string]: any
-  };
+  readonly keyData: Immutable.Map<string, any>;
   /**
    * The current map this player is in
    */
-  readonly map: string;
+  readonly location: string;
 
   /**
    * The point this player is at

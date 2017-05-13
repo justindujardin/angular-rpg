@@ -17,13 +17,13 @@ import * as _ from 'underscore';
 import {SceneObjectBehavior} from './scene-object-behavior';
 import {BehaviorHost} from '../../pow-core/behavior-host';
 import {Scene} from './scene';
-import {Point, IPoint} from '../../pow-core/point';
+import {IPoint, Point} from '../../pow-core/point';
 /**
  * An object that may exist in a `Scene` and receives time updates.
  */
 export class SceneObject extends BehaviorHost {
-  id: string;
-  _uid: string = _.uniqueId('so');
+  private static objectCount: number = 0;
+  _uid: string = `scene-object-${SceneObject.objectCount++}`;
   scene: Scene;
   enabled: boolean;
   // The object point

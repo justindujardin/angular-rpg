@@ -1,52 +1,18 @@
 import * as _ from 'underscore';
-import {GameStateModel} from '../../game/rpg/models/gameStateModel';
-import {GameDataResource} from '../models/game-data/game-data.resource';
-import {registerSprites} from '../../game/pow2/core/api';
-import {Subject} from 'rxjs/Subject';
-import {Observable, ReplaySubject} from 'rxjs/Rx';
-import {JSONResource} from '../../game/pow-core/resources/json.resource';
+import {GameDataResource} from './game-data.resource';
 import {Injectable} from '@angular/core';
-import {ResourceManager} from '../../game/pow-core/resource-manager';
-import {PowInput} from '../../game/pow2/core/input';
-import {World} from '../../game/pow-core/world';
-import {SpriteRender} from './sprite-render';
-import {AppState} from '../app.model';
+import {ResourceManager} from '../../../game/pow-core/resource-manager';
 import {Store} from '@ngrx/store';
-import {SPREADSHEET_ID} from '../models/game-data/game-data.model';
-import {GameDataAddSheetAction} from '../models/game-data/game-data.actions';
-
-let _sharedGameWorld: GameWorld = null;
+import {AppState} from '../../app.model';
+import {SPREADSHEET_ID} from './game-data.model';
+import {GameDataAddSheetAction} from './game-data.actions';
+import {registerSprites} from '../../../game/pow2/core/api';
+import {JSONResource} from '../../../game/pow-core/resources/json.resource';
 
 @Injectable()
-export class GameWorld extends World {
-  input: PowInput = new PowInput();
+export class GameDataService {
 
-  /**
-   * Subject that emits when the game world has been loaded and is
-   * ready to be interacted with.
-   */
-  private _ready$: Subject<void> = new ReplaySubject<void>(1);
-  ready$: Observable<void> = this._ready$;
-
-  /**
-   * Access to the game's Google Doc spreadsheet configuration.  For more
-   * information, see [GameDataResource].
-   */
-  spreadsheet: GameDataResource = null;
-
-  constructor(public loader: ResourceManager, public store: Store<AppState>, public sprites: SpriteRender) {
-    super();
-    _sharedGameWorld = this;
-    // TODO: This breaks HMR. Only init this data when creating a new game.
-    // Preload sprite sheets
-    this.loadSprites()
-      .then(() => this.loadGameData())
-      .then(() => this._ready$.next())
-      .catch((e) => console.error(e));
-  }
-
-  static get(): GameWorld {
-    return _sharedGameWorld;
+  constructor(public loader: ResourceManager, public store: Store<AppState>) {
   }
 
   /** Load game data from google spreadsheet */
@@ -60,7 +26,6 @@ export class GameWorld extends World {
       this.store.dispatch(new GameDataAddSheetAction('classes', resource.data.classes));
       this.store.dispatch(new GameDataAddSheetAction('randomEncounters', resource.data.randomencounters));
       this.store.dispatch(new GameDataAddSheetAction('fixedEncounters', resource.data.fixedencounters));
-      this.spreadsheet = resource;
     });
   }
 

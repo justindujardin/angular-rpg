@@ -1,76 +1,137 @@
 import {Entity} from './entity.model';
-import {EntityActionTypes, EntityActions} from './entity.actions';
-import * as Immutable from 'immutable';
-import {Map} from 'immutable';
+import {
+  EntityActions,
+  EntityAddBeingAction,
+  EntityAddItemAction,
+  EntityRemoveBeingAction,
+  EntityRemoveItemAction
+} from './entity.actions';
+import {
+  addEntityToCollection,
+  BaseEntity,
+  EntityCollection,
+  entityCollectionFromJSON,
+  EntityCollectionRecord,
+  mergeEntityInCollection,
+  removeEntityFromCollection
+} from '../base-entity';
+import {GameStateHealPartyAction} from '../game-state/game-state.actions';
+import {CombatVictoryAction} from '../combat/combat.actions';
+import {assertTrue, exhaustiveCheck} from '../util';
+import {makeTypedFactory, TypedRecord} from 'typed-immutable-record';
 import {Item} from '../item';
-import {EntityObject, EntityCollection, removeEntityFromCollection, addEntityToCollection} from '../base-entity';
-import {GameStateActionTypes, GameStateHealPartyAction, GameStateActions} from '../game-state/game-state.actions';
+import * as Immutable from 'immutable';
+
+// Beings
+//
+/** @internal */
+export interface EntityBeingsRecord extends TypedRecord<EntityBeingsRecord>, EntityCollection<Entity> {
+}
+/** @internal */
+const entityBeingsCollectionFactory =
+  makeTypedFactory<EntityCollection<Entity>, EntityBeingsRecord>({
+    byId: Immutable.Map<string, Entity>(),
+    allIds: Immutable.List<string>()
+  });
+
+// Items
+//
+/** @internal */
+export interface EntityItemsRecord extends TypedRecord<EntityItemsRecord>, EntityCollection<Item> {
+}
+/** @internal */
+const entityItemsCollectionFactory =
+  makeTypedFactory<EntityCollection<Item>, EntityItemsRecord>({
+    byId: Immutable.Map<string, Item>(),
+    allIds: Immutable.List<string>()
+  });
 
 /** Collection of Entity objects */
-export type EntityState = {
-  beings: EntityCollection<Entity>;
-  items: EntityCollection<Item>;
+export interface EntityState {
+  readonly beings: EntityCollection<Entity>;
+  readonly items: EntityCollection<Item>;
   // TODO: features: EntityCollection<Feature>; <-- control treasure chests, fixed encounters on maps visibility etc.
   // TODO: quests: EntityCollection<Quest>; <-- OR express everything as a quest, and just start some of them silently
-};
+}
+/**
+ * Entity collections state record. Stores named entity collection records.
+ * @private
+ * @internal
+ */
+export interface EntityStateRecord extends TypedRecord<EntityStateRecord>, EntityState {
+}
 
-const initialState: EntityState = {
-  beings: {
-    byId: {},
-    allIds: []
-  },
-  items: {
-    byId: {},
-    allIds: []
-  }
-};
+/**
+ * @internal
+ */
+export const entityStateFactory = makeTypedFactory<EntityState, EntityStateRecord>({
+  beings: entityBeingsCollectionFactory(),
+  items: entityItemsCollectionFactory()
+});
 
-type EntityReducerTypes = EntityActions | GameStateActions;
+/**
+ * Convert input Plain JSON object into an Immutable.js representation with the correct records.
+ * @param object The input values.
+ */
+export function entityFromJSON(object: EntityState): EntityState {
+  const recordValues = {
+    beings: entityBeingsCollectionFactory(entityCollectionFromJSON(object.beings)),
+    items: entityItemsCollectionFactory(entityCollectionFromJSON(object.items))
+  };
+  return entityStateFactory(recordValues);
+}
 
-export function entityReducer(state: EntityState = initialState, action: EntityReducerTypes): EntityState {
-  const id: string = action.payload as string;
-  const entity: EntityObject = action.payload as EntityObject;
+type EntityReducerTypes = EntityActions | GameStateHealPartyAction | CombatVictoryAction;
+
+export function entityReducer(state: EntityStateRecord = entityStateFactory(),
+                              action: EntityReducerTypes): EntityState {
   switch (action.type) {
-
-    case EntityActionTypes.ADD_BEING: {
-      return Immutable.fromJS(state).merge({
-        beings: addEntityToCollection<Entity>(state.beings, entity as Entity, entity.eid)
-      }).toJS();
+    case EntityAddBeingAction.typeId: {
+      const entity: BaseEntity = action.payload;
+      return state.updateIn(['beings'], (items) => addEntityToCollection(items, entity, entity.eid));
     }
-    case EntityActionTypes.REMOVE_BEING: {
-      return Immutable.fromJS(state).merge({
-        beings: removeEntityFromCollection<Entity>(state.beings, id)
-      }).toJS();
+    case EntityRemoveBeingAction.typeId: {
+      const entityId: string = action.payload;
+      return state.updateIn(['beings'], (items) => removeEntityFromCollection(items, entityId));
     }
-
-    case EntityActionTypes.ADD_ITEM: {
-      return Immutable.fromJS(state).merge({
-        items: addEntityToCollection<Item>(state.items, entity as Item, entity.eid)
-      }).toJS();
+    case EntityAddItemAction.typeId: {
+      const entity: Item = action.payload;
+      return state.updateIn(['items'], (items) => addEntityToCollection(items, entity, entity.eid));
     }
-    case EntityActionTypes.REMOVE_ITEM: {
-      return Immutable.fromJS(state).merge({
-        items: removeEntityFromCollection<Item>(state.items, id)
-      }).toJS();
+    case EntityRemoveItemAction.typeId: {
+      const entityId: string = action.payload;
+      return state.updateIn(['items'], (items) => removeEntityFromCollection(items, entityId));
     }
-    case GameStateActionTypes.HEAL_PARTY: {
-      const partyAction = action as GameStateHealPartyAction;
-      let updateBeings: Map<string, Entity> = Immutable.fromJS(state.beings.byId);
-      partyAction.payload.partyIds.forEach((partyMemberId: string) => {
-        const newHp = updateBeings.getIn([partyMemberId, 'maxhp']);
-        const newMp = updateBeings.getIn([partyMemberId, 'maxmp']);
-        updateBeings = updateBeings.setIn([partyMemberId, 'hp'], newHp);
-        updateBeings = updateBeings.setIn([partyMemberId, 'mp'], newMp);
+    case GameStateHealPartyAction.typeId: {
+      let result: EntityStateRecord = state;
+      const partyAction: GameStateHealPartyAction = action;
+      return result.updateIn(['beings'], (beings: EntityCollectionRecord) => {
+        let updateBeingsResult = beings;
+        partyAction.payload.partyIds.forEach((partyMemberId: string) => {
+          const newHp = state.beings.byId.get(partyMemberId).maxhp;
+          const newMp = state.beings.byId.get(partyMemberId).maxmp;
+          updateBeingsResult = mergeEntityInCollection(updateBeingsResult, {
+            hp: newHp,
+            mp: newMp
+          }, partyMemberId);
+        });
+        return updateBeingsResult;
       });
-      return {
-        ...state,
-        beings: {
-          byId: updateBeings.toJS(),
-          allIds: state.beings.allIds
-        }
-      };
+    }
+    case CombatVictoryAction.typeId: {
+      let result: EntityStateRecord = state;
+      const victoryAction: CombatVictoryAction = action;
+      return result.updateIn(['beings'], (beings: EntityCollectionRecord) => {
+        let updateBeingsResult = beings;
+        victoryAction.payload.party.forEach((partyEntity: Entity) => {
+          assertTrue(!!(partyEntity && partyEntity.eid), 'invalid party entity in combat victory action');
+          updateBeingsResult = mergeEntityInCollection(updateBeingsResult, partyEntity, partyEntity.eid);
+        });
+        return updateBeingsResult;
+      });
     }
     default:
+      exhaustiveCheck(action);
       return state;
   }
 }

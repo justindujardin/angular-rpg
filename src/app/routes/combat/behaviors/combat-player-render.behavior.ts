@@ -4,7 +4,7 @@ import {TickedBehavior} from '../../../../game/pow2/scene/behaviors/ticked-behav
 import {Headings} from '../../world/behaviors/player-render.behavior';
 import {AnimatedBehaviorComponent, IAnimationConfig} from '../../../behaviors/animated.behavior';
 import {Point} from '../../../../game/pow-core/point';
-import {CombatService} from '../../../services/combat.service';
+import {CombatService} from '../../../models/combat/combat.service';
 import {GameEntityObject} from '../../../scene/game-entity-object';
 export enum StateFrames {
   DEFAULT = 10,

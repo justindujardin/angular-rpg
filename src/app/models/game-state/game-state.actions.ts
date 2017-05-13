@@ -5,43 +5,26 @@ import {IPoint} from '../../../game/pow-core';
 import {Item} from '../item';
 import {AppState} from '../../app.model';
 
-export const GameStateActionTypes = {
-  SAVE: type('rpg/state/save'),
-  SAVE_SUCCESS: type('rpg/state/save-success'),
-  SAVE_FAIL: type('rpg/state/save-fail'),
-  LOAD: type('rpg/state/load'),
-  LOAD_SUCCESS: type('rpg/state/load-success'),
-  LOAD_FAIL: type('rpg/state/load-fail'),
-  NEW: type('rpg/state/new'),
-  NEW_SUCCESS: type('rpg/state/new-success'),
-  NEW_FAIL: type('rpg/state/new-fail'),
-  SET_KEY_DATA: type('rpg/state/set-key-data'),
-  TRAVEL: type('rpg/state/travel'),
-  TRAVEL_SUCCESS: type('rpg/state/travel-success'),
-  TRAVEL_FAIL: type('rpg/state/travel-fail'),
-  MOVE: type('rpg/state/move'),
-  ADD_GOLD: type('rpg/state/gold'),
-  ADD_INVENTORY: type('rpg/state/inventory/add'),
-  REMOVE_INVENTORY: type('rpg/state/inventory/remove'),
-  HEAL_PARTY: type('rpg/state/entity/heal'),
-};
-
 //
 // Save state Actions
 //
 export class GameStateSaveAction implements Action {
-  type = GameStateActionTypes.SAVE;
+  static typeId: 'GAME_SAVE' = type('GAME_SAVE');
+  type = GameStateSaveAction.typeId;
+
   payload: null = null;
 
 }
 
 export class GameStateSaveSuccessAction implements Action {
-  type = GameStateActionTypes.SAVE_SUCCESS;
+  static typeId: 'GAME_SAVE_SUCCESS' = type('GAME_SAVE_SUCCESS');
+  type = GameStateSaveSuccessAction.typeId;
   payload: string = null;
 }
 
 export class GameStateSaveFailAction implements Action {
-  type = GameStateActionTypes.SAVE_FAIL;
+  static typeId: 'GAME_SAVE_FAIL' = type('GAME_SAVE_FAIL');
+  type = GameStateSaveFailAction.typeId;
 
   constructor(public payload: any) {
   }
@@ -51,19 +34,22 @@ export class GameStateSaveFailAction implements Action {
 // Load state Actions
 //
 export class GameStateLoadAction implements Action {
-  type = GameStateActionTypes.LOAD;
+  static typeId: 'GAME_LOAD' = type('GAME_LOAD');
+  type = GameStateLoadAction.typeId;
   payload: void;
 }
 
 export class GameStateLoadSuccessAction implements Action {
-  type = GameStateActionTypes.LOAD_SUCCESS;
+  static typeId: 'GAME_LOAD_SUCCESS' = type('GAME_LOAD_SUCCESS');
+  type = GameStateLoadSuccessAction.typeId;
 
   constructor(public payload: AppState) {
   }
 }
 
 export class GameStateLoadFailAction implements Action {
-  type = GameStateActionTypes.LOAD_FAIL;
+  static typeId: 'GAME_LOAD_FAIL' = type('GAME_LOAD_FAIL');
+  type = GameStateLoadFailAction.typeId;
 
   constructor(public payload: any) {
   }
@@ -73,21 +59,24 @@ export class GameStateLoadFailAction implements Action {
 // New game state Actions
 //
 export class GameStateNewAction implements Action {
-  type = GameStateActionTypes.NEW;
+  static typeId: 'GAME_NEW' = type('GAME_NEW');
+  type = GameStateNewAction.typeId;
 
   constructor(public payload: GameState) {
   }
 }
 
 export class GameStateNewSuccessAction implements Action {
-  type = GameStateActionTypes.NEW_SUCCESS;
+  static typeId: 'GAME_NEW_SUCCESS' = type('GAME_NEW_SUCCESS');
+  type = GameStateNewSuccessAction.typeId;
 
   constructor(public payload: GameState) {
   }
 }
 
 export class GameStateNewFailAction implements Action {
-  type = GameStateActionTypes.NEW_FAIL;
+  static typeId: 'GAME_NEW_FAIL' = type('GAME_NEW_FAIL');
+  type = GameStateNewFailAction.typeId;
 
   constructor(public payload: any) {
   }
@@ -97,7 +86,8 @@ export class GameStateNewFailAction implements Action {
 // key/value data for map features and such
 //
 export class GameStateSetKeyDataAction implements Action {
-  type = GameStateActionTypes.SET_KEY_DATA;
+  static typeId: 'GAME_SET_KEY_DATA' = type('GAME_SET_KEY_DATA');
+  type = GameStateSetKeyDataAction.typeId;
   payload: {
     key: string;
     value: any;
@@ -114,29 +104,32 @@ export class GameStateSetKeyDataAction implements Action {
 // Travel state actions
 //
 export class GameStateTravelAction implements Action {
-  type = GameStateActionTypes.TRAVEL;
+  static typeId: 'GAME_TRAVEL' = type('GAME_TRAVEL');
+  type = GameStateTravelAction.typeId;
 
   payload: {
-    map: string;
+    location: string;
     position: IPoint;
   };
 
-  constructor(map: string, position: IPoint) {
+  constructor(location: string, position: IPoint) {
     this.payload = {
-      map, position
+      location, position
     };
   }
 }
 
 export class GameStateTravelSuccessAction implements Action {
-  type = GameStateActionTypes.TRAVEL_SUCCESS;
+  static typeId: 'GAME_TRAVEL_SUCCESS' = type('GAME_TRAVEL_SUCCESS');
+  type = GameStateTravelSuccessAction.typeId;
 
   constructor(public payload: string) {
   }
 }
 
 export class GameStateTravelFailAction implements Action {
-  type = GameStateActionTypes.TRAVEL_FAIL;
+  static typeId: 'GAME_TRAVEL_FAIL' = type('GAME_TRAVEL_FAIL');
+  type = GameStateTravelFailAction.typeId;
 
   constructor(public payload: any) {
   }
@@ -153,7 +146,8 @@ export interface GameStateMoveData {
 }
 
 export class GameStateMoveAction implements Action {
-  type = GameStateActionTypes.MOVE;
+  static typeId: 'GAME_MOVE' = type('GAME_MOVE');
+  type = GameStateMoveAction.typeId;
 
   constructor(public payload: IPoint) {
   }
@@ -163,7 +157,8 @@ export class GameStateMoveAction implements Action {
 // Gold state actions
 //
 export class GameStateAddGoldAction implements Action {
-  type = GameStateActionTypes.ADD_GOLD;
+  static typeId: 'GAME_ADD_GOLD' = type('GAME_ADD_GOLD');
+  type = GameStateAddGoldAction.typeId;
 
   constructor(public payload: number) {
   }
@@ -173,7 +168,8 @@ export class GameStateAddGoldAction implements Action {
 // Party state actions
 //
 export class GameStateHealPartyAction implements Action {
-  type = GameStateActionTypes.HEAL_PARTY;
+  static typeId: 'GAME_HEAL_PARTY' = type('GAME_HEAL_PARTY');
+  type = GameStateHealPartyAction.typeId;
 
   constructor(public payload: {
     cost: number;
@@ -186,13 +182,15 @@ export class GameStateHealPartyAction implements Action {
 // Inventory actions
 //
 export class GameStateAddInventoryAction implements Action {
-  type = GameStateActionTypes.ADD_INVENTORY;
+  static typeId: 'GAME_ADD_INVENTORY' = type('GAME_ADD_INVENTORY');
+  type = GameStateAddInventoryAction.typeId;
 
   constructor(public payload: Item) {
   }
 }
 export class GameStateRemoveInventoryAction implements Action {
-  type = GameStateActionTypes.REMOVE_INVENTORY;
+  static typeId: 'GAME_REMOVE_INVENTORY' = type('GAME_REMOVE_INVENTORY');
+  type = GameStateRemoveInventoryAction.typeId;
 
   constructor(public payload: Item) {
   }
@@ -208,6 +206,7 @@ export type GameStateActions
   | GameStateNewAction
   | GameStateNewSuccessAction
   | GameStateNewFailAction
+  | GameStateSetKeyDataAction
   | GameStateTravelAction
   | GameStateTravelSuccessAction
   | GameStateTravelFailAction

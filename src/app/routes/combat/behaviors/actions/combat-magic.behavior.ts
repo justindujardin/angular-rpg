@@ -13,7 +13,6 @@
 // import {Component, Input} from "@angular/core";
 // import {IPlayerActionCallback} from "../../states/combat.machine";
 // import {CombatComponent, CombatAttackSummary} from "../../combat.component";
-// import {damage} from "../../../../models/combat/combat.api";
 //
 //
 // /**
