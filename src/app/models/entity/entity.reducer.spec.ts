@@ -10,6 +10,7 @@ import {Item} from '../item';
 import {addEntityToCollection, BaseEntity, EntityCollectionRecord} from '../base-entity';
 import {GameStateHealPartyAction} from '../game-state/game-state.actions';
 import {CombatVictoryAction, CombatVictorySummary} from '../combat/combat.actions';
+import {entityFactory} from '../records';
 
 describe('Entity', () => {
 
@@ -27,29 +28,6 @@ describe('Entity', () => {
 
     }
     return resultState;
-  }
-
-  function fakeEntity(values?: Partial<Entity>): Entity {
-    const baseEntity: Entity = {
-      exp: 0,
-      level: 0,
-      type: 'npc',
-      icon: 'invalid.png',
-      eid: testId,
-      baseattack: 0,
-      basedefense: 0,
-      basemagic: 0,
-      basespeed: 0,
-      attack: 0,
-      defense: 0,
-      magic: 0,
-      speed: 0,
-      mp: 0,
-      maxmp: 0,
-      hp: 0,
-      maxhp: 0
-    };
-    return Object.assign({}, baseEntity, values || {});
   }
 
   function fakeItem(): Item {
@@ -74,7 +52,7 @@ describe('Entity', () => {
     describe('EntityAddBeingAction', () => {
       it('should add an entity to the collection', () => {
         const initial: EntityStateRecord = defaultState();
-        const entity = fakeEntity();
+        const entity = entityFactory({eid: testId});
         const out = entityReducer(initial, new EntityAddBeingAction(entity));
         expect(out.beings.byId.has(entity.eid)).toBe(true);
         expect(out.beings.allIds.indexOf(entity.eid)).toBeGreaterThan(-1);
@@ -82,7 +60,7 @@ describe('Entity', () => {
     });
     describe('EntityRemoveBeingAction', () => {
       it('should remove an entity from the collection if it exists', () => {
-        const entity = fakeEntity();
+        const entity = entityFactory({eid: testId});
         const initial: EntityStateRecord = defaultState('beings', [entity]);
         expect(initial.beings.byId.count()).toBe(1);
         expect(initial.beings.allIds.count()).toBe(1);
@@ -133,11 +111,12 @@ describe('Entity', () => {
       it('should restore all entities in partyIds hp and mp to their maximum', () => {
         const secondId: string = 'MotTon';
         // TODO: did not work with multiple party members. Cleared out all their data in temple
-        const first = fakeEntity({
+        const first = entityFactory({
+          eid: testId,
           hp: 10, maxhp: 25,
           mp: 0, maxmp: 25
         });
-        const second = fakeEntity({
+        const second = entityFactory({
           eid: secondId,
           hp: 4, maxhp: 20,
           mp: 0, maxmp: 25
@@ -172,25 +151,25 @@ describe('Entity', () => {
       it('should update state of party members coming out of combat', () => {
         const victoryMemberId: string = 'victoriousFlamingo';
         const victorySecondId: string = 'eVellish';
-        const victoryMemberBefore = fakeEntity({
+        const victoryMemberBefore = entityFactory({
           eid: victoryMemberId,
           hp: 10,
           attack: 8,
           level: 1
         });
-        const victoryMemberAfter = fakeEntity({
+        const victoryMemberAfter = entityFactory({
           eid: victoryMemberId,
           hp: 4,
           attack: 10,
           level: 2
         });
-        const victorySecondBefore = fakeEntity({
+        const victorySecondBefore = entityFactory({
           eid: victorySecondId,
           hp: 10,
           attack: 8,
           level: 1
         });
-        const victorySecondAfter = fakeEntity({
+        const victorySecondAfter = entityFactory({
           eid: victorySecondId,
           hp: 4,
           attack: 10,

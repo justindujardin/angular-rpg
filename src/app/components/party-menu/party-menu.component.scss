@@ -3,46 +3,19 @@
 $navWidth: 320px;
 
 :host {
-  position: fixed;
-  bottom: 5px;
-  left: 5px;
-  z-index: $zCanvasGui;
-  font-family: 'GraphicPixel', sans-serif;
-  .navigation {
+  md-sidenav-container {
     position: fixed;
-    left: 0;
     top: 0;
+    right: 0;
     bottom: 0;
-    max-width: $navWidth;
-    width: $navWidth;
-    background-color: $menuOverlayBackground;
-    nav {
-      margin: 0;
-      a {
-        display: block;
-      }
-    }
+    left: 0;
+    z-index: $zCanvasGui;
+    font-family: 'GraphicPixel', sans-serif;
+    background-color: rgba(0, 0, 0, 0.54);
+    color: white;
   }
 
-  .btn-open {
-    position: fixed;
-    bottom: 16px;
-    left: 16px;
-  }
-
-  .views {
-    overflow: auto;
-    overflow-x: hidden;
-    > * {
-      color: #fff;
-      background-color: rgba(0, 0, 0, 0.8);
-      overflow-x: hidden;
-      overflow-y: auto;
-      position: fixed;
-      top: 0;
-      left: $navWidth;
-      bottom: 0;
-      right: 0;
-    }
+  player-card {
+    min-width: 200px;
   }
 }

@@ -30,41 +30,13 @@ import * as Immutable from 'immutable';
 
 @Injectable()
 export class RPGGame {
-  styleBackground: string = 'rgba(0,0,0,1)';
-  private _renderCanvas: HTMLCanvasElement;
-  private _canvasAcquired: boolean = false;
-
   constructor(public loader: ResourceManager,
               private store: Store<AppState>) {
-    this._renderCanvas = document.createElement('canvas') as HTMLCanvasElement;
-    this._renderCanvas.width = this._renderCanvas.height = 64;
-    this._renderCanvas.style.position = 'absolute';
-    this._renderCanvas.style.left = this._renderCanvas.style.top = '-9000px';
-    this.store.subscribe();
   }
 
   static getHPForLevel(level: number, model: Entity): number {
     return Math.floor(model.basedefense * Math.pow(level, 1.1)) + (model.basedefense * 2);
   }
-
-  // awardLevelUp() {
-  //   var nextLevel: number = this.attributes.level + 1;
-  //   var newHP = this.getHPForLevel(nextLevel);
-  //   this.set({
-  //     level: nextLevel,
-  //     maxhp: newHP,
-  //     // REMOVE auto-heal when you level up.  I think I'd rather people die from time-to-time.
-  //     //hp: newHP,
-  //     attack: this.getStrengthForLevel(nextLevel),
-  //     speed: this.getAgilityForLevel(nextLevel),
-  //     defense: this.getVitalityForLevel(nextLevel),
-  //     magic: this.getIntelligenceForLevel(nextLevel),
-  //
-  //     nextLevelExp: this.getXPForLevel(nextLevel + 1),
-  //     prevLevelExp: this.getXPForLevel(nextLevel)
-  //   });
-  //   this.trigger('levelUp', this);
-  // }
 
   static create(type: EntityType, name: string) {
     const HERO_DEFAULTS: Partial<Entity> = {
@@ -169,35 +141,6 @@ export class RPGGame {
         resolve(true);
       }
     });
-  }
-
-  /**
-   * Returns a canvas rendering context that may be drawn to.  A corresponding
-   * call to releaseRenderContext will return the drawn content of the context.
-   */
-  getRenderContext(width: number, height: number): CanvasRenderingContext2D {
-    if (this._canvasAcquired) {
-      throw new Error('Only one rendering canvas is available at a time.' +
-        ' Check for calls to this function without corresponding releaseCanvas() calls.');
-    }
-    this._canvasAcquired = true;
-    this._renderCanvas.width = width;
-    this._renderCanvas.height = height;
-    const context: any = this._renderCanvas.getContext('2d');
-    context.webkitImageSmoothingEnabled = false;
-    context.mozImageSmoothingEnabled = false;
-    context.msImageSmoothingEnabled = false;
-    (<any> context).imageSmoothingEnabled = false;
-    return context;
-  }
-
-  /**
-   * Call this after getRenderContext to finish rendering and have the source
-   * of the canvas content returned as a data url string.
-   */
-  releaseRenderContext(): string {
-    this._canvasAcquired = false;
-    return this._renderCanvas.toDataURL();
   }
 
 }

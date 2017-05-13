@@ -4,7 +4,8 @@ import {HeroModel} from '../../../game/rpg/models/all';
 
 @Component({
   selector: 'player-card',
-  templateUrl: 'player-card.component.html'
+  templateUrl: './player-card.component.html',
+  styleUrls: ['./player-card.component.scss']
 })
 export class PlayerCardComponent {
   @Input()
