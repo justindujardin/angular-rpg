@@ -7,39 +7,68 @@ import {getGamePartyGold, getGameParty} from '../../models/selectors';
 import {Entity} from '../../models/entity/entity.model';
 import {GameStateSaveAction} from '../../models/game-state/game-state.actions';
 import * as Immutable from 'immutable';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+
+export type PartyMenuStates = 'party' | 'inventory' | 'settings';
 
 @Component({
   selector: 'party-menu',
   styleUrls: ['party-menu.component.scss'],
-  templateUrl: 'party-menu.component.html'
+  templateUrl: 'party-menu.component.html',
+  animations: [
+    trigger(
+      'card', [
+        transition(':enter', [
+          style({transform: 'translateY(100%)'}),
+          animate('110ms', style({transform: 'translateY(0)'}))
+        ]),
+        transition(':leave', [
+          style({transform: 'translateY(0)'}),
+          animate('110ms', style({transform: 'translateY(100%)'}))
+        ])
+      ]
+    ),
+    trigger(
+      'toolbar', [
+        transition(':enter', [
+          style({transform: 'translateY(-100%)'}),
+          animate('110ms', style({transform: 'translateY(0)'}))
+        ]),
+        transition(':leave', [
+          style({transform: 'translateY(0)'}),
+          animate('110ms', style({transform: 'translateY(-100%)'}))
+        ])
+      ]
+    ),
+    trigger(
+      'fab', [
+        transition(':enter', [
+          style({transform: 'translateY(100%)'}),
+          animate('110ms', style({transform: 'translateY(0)'}))
+        ]),
+        transition(':leave', [
+          style({transform: 'translateY(0)'}),
+          animate('110ms', style({transform: 'translateY(100%)'}))
+        ])
+      ]
+    )
+  ]
 })
 export class PartyMenuComponent {
   @Input()
-  page: string = 'party';
+  page: PartyMenuStates = 'party';
   @Input()
   open: boolean = false;
 
   partyGold$: Observable<number> = this.store.select(getGamePartyGold);
   party$: Observable<Immutable.List<Entity>> = this.store.select(getGameParty);
 
-  toggle() {
-    this.open = !this.open;
-  }
-
-  showParty() {
-    this.page = 'party';
-  }
-
-  showInventory() {
-    this.page = 'inventory';
-  }
-
-  menuResetGame() {
+  resetGame() {
     // this.game.resetGame();
     this.notify.show('Game data deleted.  Next time you refresh you will begin a new game.');
   }
 
-  menuSaveGame() {
+  saveGame() {
     this.store.dispatch(new GameStateSaveAction());
   }
 

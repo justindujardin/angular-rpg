@@ -1,0 +1,92 @@
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+$md-font-family: 'GraphicPixel', sans-serif;
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+$mat-rpg-blue: (
+  50: #ccf4ff,
+  100: #ccf5ff,
+  200: #7de1fa,
+  300: #59c3de,
+  400: #009cc7,
+  500: #0088ad,
+  600: #007494,
+  700: #00607a,
+  800: #004c62,
+  900: #002833,
+  A100: #e6f9ff,
+  A200: #81a7b3,
+  A400: #5c8e99,
+  A700: #3d8799,
+  contrast: (
+    50: $black-87-opacity,
+    100: $black-87-opacity,
+    200: $black-87-opacity,
+    300: $black-87-opacity,
+    400: white,
+    500: white,
+    600: $white-87-opacity,
+    700: $white-87-opacity,
+    800: $white-87-opacity,
+    900: $white-87-opacity,
+    A100: $black-87-opacity,
+    A200: $black-87-opacity,
+    A400: white,
+    A700: $white-87-opacity,
+  )
+);
+
+$mat-rpg-gold: (
+  50: #fffae6,
+  100: #fff5c7,
+  200: #fff0ad,
+  300: #ffeb94,
+  400: #ffe77a,
+  500: #ffe261,
+  600: #ffdd45,
+  700: #e6b800,
+  800: #d9b100,
+  900: #cca300,
+  A100: #fffae6,
+  A200: #fff5c7,
+  A400: #fff0ad,
+  A700: #ffe77a,
+  contrast: (
+    50: $black-87-opacity,
+    100: $black-87-opacity,
+    200: $black-87-opacity,
+    300: $black-87-opacity,
+    400: $black-87-opacity,
+    500: $black-87-opacity,
+    600: $black-87-opacity,
+    700: $black-87-opacity,
+    800: $black-87-opacity,
+    900: $black-87-opacity,
+    A100: $black-87-opacity,
+    A200: $black-87-opacity,
+    A400: $black-87-opacity,
+    A700: $black-87-opacity,
+  )
+);
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue.
+$rpg-app-primary: mat-palette($mat-rpg-blue, 800, 500, 900);
+$rpg-app-accent: mat-palette($mat-rpg-gold, 800, 500, 900);
+
+// The warn palette is optional (defaults to red).
+$rpg-app-warn: mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$rpg-app-theme: mat-dark-theme($rpg-app-primary, $rpg-app-accent, $rpg-app-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($rpg-app-theme);

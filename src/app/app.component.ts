@@ -7,7 +7,7 @@ import {NotificationService} from './components/notification/notification.servic
 @Component({
   selector: 'app',
   encapsulation: ViewEncapsulation.None,
-  // styleUrls: ['./app.component.scss'],
+  styleUrls: ['./app.component.scss'],
   templateUrl: './app.component.html'
 })
 export class AppComponent {

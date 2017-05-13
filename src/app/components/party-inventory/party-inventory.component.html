@@ -1,64 +1,64 @@
-<div *ngIf="currentEntity$ | async" fxLayout="column">
+<div *ngFor="let current of [currentEntity$ | async]" fxLayout="column">
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
-    <button class="btn btn-flat previous" (click)="previousCharacter()">
-      <span class="glyphicon glyphicon-chevron-left"></span>
+    <button md-icon-button (click)="previousCharacter()">
+      <md-icon>chevron_left</md-icon>
     </button>
 
-    <h2 flex fxLayout="column" fxLayoutAlign="center center">
-      <rpg-sprite class="image" [name]="(currentEntity$ | async).icon" frame="7"></rpg-sprite>
-      <span>{{(currentEntity$ | async).name}}</span>
-    </h2>
-    <button class="btn btn-flat next" (click)="nextCharacter()">
-      <span class="glyphicon glyphicon-chevron-right"></span>
+    <section fxLayout="row" fxFlex fxLayoutAlign="space-around center">
+      <div flex fxLayout="column" fxLayoutAlign="center center">
+        <rpg-sprite class="image" [name]="current.icon" frame="7"></rpg-sprite>
+        <span>{{current.name}}</span>
+      </div>
+      <div>
+        <div>HP {{current.hp}} / {{current.maxhp}}</div>
+        <div>Attack : {{current.attack}}</div>
+        <div>Magic : {{current.magic}}</div>
+        <div>Defense : {{current.defense}}</div>
+        <div>Speed : {{current.speed}}</div>
+      </div>
+    </section>
+
+    <button md-icon-button (click)="nextCharacter()">
+      <md-icon>chevron_right</md-icon>
     </button>
   </div>
-  <h3 fxLayout="column">
-    <div>HP {{(currentEntity$ | async).hp}} / {{(currentEntity$ | async).maxhp}}</div>
-    <rpg-health-bar [model]="character"></rpg-health-bar>
-    <div fxLayout="row" fxLayoutAlign="space-around center" flex>
-      <div class="hero-stat">Attack : {{(currentEntity$ | async).attack}}</div>
-      <div class="hero-stat">Magic : {{(currentEntity$ | async).magic}}</div>
-      <div class="hero-stat">Defense : {{(currentEntity$ | async).defense}}</div>
-      <div class="hero-stat">Speed : {{(currentEntity$ | async).speed}}</div>
-    </div>
-
-  </h3>
 
 
   <ul class="equipped" fxLayout="row" fxLayoutAlign="space-around start">
-    <li class="weapon" *ngIf="(currentEntity$ | async).weapon" (click)="unequipItem()">
+    <li class="weapon" *ngIf="current.weapon" (click)="unequipItem()">
       <span class="desc">Weapon</span>
-      <rpg-sprite class="icon" [name]="(currentEntity$ | async).icon"></rpg-sprite>
+      <rpg-sprite class="icon" [name]="current.icon"></rpg-sprite>
     </li>
-    <li class="jewelry item" *ngIf="(currentEntity$ | async).accessory" (click)="unequipItem()">
+    <li class="jewelry item" *ngIf="current.accessory" (click)="unequipItem()">
       <span class="desc">Accessory</span>
-      <rpg-sprite class="icon" [name]="(currentEntity$ | async).icon"></rpg-sprite>
+      <rpg-sprite class="icon" [name]="current.icon"></rpg-sprite>
     </li>
-    <li class="head item" *ngIf="(currentEntity$ | async).head" (click)="unequipItem()">
+    <li class="head item" *ngIf="current.head" (click)="unequipItem()">
       <span class="desc">Head</span>
-      <rpg-sprite class="icon" [name]="(currentEntity$ | async).icon"></rpg-sprite>
+      <rpg-sprite class="icon" [name]="current.icon"></rpg-sprite>
     </li>
-    <li class="body item" *ngIf="(currentEntity$ | async).body" (click)="unequipItem()">
+    <li class="body item" *ngIf="current.body" (click)="unequipItem()">
       <span class="desc">Body</span>
-      <rpg-sprite class="icon" [name]="(currentEntity$ | async).icon"></rpg-sprite>
+      <rpg-sprite class="icon" [name]="current.icon"></rpg-sprite>
     </li>
-    <li class="arms item" *ngIf="(currentEntity$ | async).arms" (click)="unequipItem()">
+    <li class="arms item" *ngIf="current.arms" (click)="unequipItem()">
       <span class="desc">Arms</span>
-      <rpg-sprite class="icon" [name]="(currentEntity$ | async).icon"></rpg-sprite>
+      <rpg-sprite class="icon" [name]="current.icon"></rpg-sprite>
     </li>
-    <li class="feet item" *ngIf="(currentEntity$ | async).feet" (click)="unequipItem()">
+    <li class="feet item" *ngIf="current.feet" (click)="unequipItem()">
       <span class="desc">Feet</span>
-      <rpg-sprite class="icon" [name]="(currentEntity$ | async).icon"></rpg-sprite>
+      <rpg-sprite class="icon" [name]="current.icon"></rpg-sprite>
     </li>
   </ul>
-</div>
 
-<div class="container">
-  <h1>Inventory</h1>
-  <ul class="unequipped">
-    <li class="item" *ngFor="let item of (inventory$ | async)" (click)="equipItem(item)">
-      <span class="desc">{{item.name}}</span>
-      <rpg-sprite class="icon" [name]="item.icon"></rpg-sprite>
-    </li>
-  </ul>
+  <div class="container">
+    <h3>Inventory</h3>
+    <ul class="unequipped">
+      <li class="item" *ngFor="let item of (inventory$ | async)" (click)="equipItem(item)">
+        <span class="desc">{{item.name}}</span>
+        <rpg-sprite class="icon" [name]="item.icon"></rpg-sprite>
+      </li>
+    </ul>
+  </div>
+
 </div>

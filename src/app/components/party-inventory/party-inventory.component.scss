@@ -5,21 +5,6 @@ $inventoryLabelPaddingTop: 30px;
 
 :host {
   text-align: center;
-  .btn {
-    margin: 5px 5px;
-    font-size: 2em;
-    &.next {
-      float: right;
-    }
-    &.previous {
-      float: left;
-    }
-
-    > * {
-      pointer-events: none;
-    }
-
-  }
 
   ul {
     list-style-type: none;
@@ -27,7 +12,6 @@ $inventoryLabelPaddingTop: 30px;
     margin: 0;
     padding: 10px;
     > li {
-
       position: relative;
       padding-top: $inventoryLabelPaddingTop;
       height: $inventoryIconSize + $inventoryLabelPaddingTop;

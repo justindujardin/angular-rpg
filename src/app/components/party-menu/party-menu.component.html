@@ -1,29 +1,25 @@
-<md-sidenav-container *ngIf="open">
-  <md-sidenav mode="side" opened="true" fxLayout="column">
-    <md-list>
-      <md-list-item>
-        <button md-button (click)="toggle()" class="btn-close">Close</button>
-      </md-list-item>
-      <md-list-item>
-        <button md-button (click)="showParty()" class="btn-party">Party</button>
-      </md-list-item>
-      <md-list-item>
-        <button md-button (click)="showInventory()" class="btn-inventory">Inventory</button>
-      </md-list-item>
-      <md-list-item>
-        <button md-button (click)="menuSaveGame()">Save Game</button>
-      </md-list-item>
-      <md-list-item>
-        <button md-button (click)="menuResetGame()">Reset Game</button>
-      </md-list-item>
+<md-toolbar color="primary" class="mat-elevation-z4" *ngIf="open == true" [@toolbar]="open">
+  <button md-button (click)="page = 'party'" [ngClass]="{active: page == 'party'}">Party</button>
+  <button md-button (click)="page = 'inventory'" [ngClass]="{active: page == 'inventory'}">Inventory</button>
+  <button md-button (click)="page = 'settings'" [ngClass]="{active: page == 'settings'}">Settings</button>
+  <span fxFlex></span>
+</md-toolbar>
 
-    </md-list>
-  </md-sidenav>
-  <div class="party" *ngIf="page == 'party'">
-    <h1>Party Gold: {{partyGold$ | async}}</h1>
-    <section fxLayout="row" fxLayoutWrap>
-      <player-card *ngFor="let member of party$ | async" [model]="member"></player-card>
-    </section>
-  </div>
+<md-card class="mat-elevation-z3" [@card]="open" *ngIf="open == true">
   <party-inventory *ngIf="page == 'inventory'"></party-inventory>
-</md-sidenav-container>
+
+  <md-card-title *ngIf="page == 'party'">Party Gold: {{partyGold$ | async}}</md-card-title>
+  <md-card-content *ngIf="page == 'party'"
+                   fxLayout="row" fxLayoutWrap fxLayoutAlign="space-around center">
+    <player-card *ngFor="let member of party$ | async" [model]="member"></player-card>
+  </md-card-content>
+
+  <md-card-title *ngIf="page == 'settings'">Game Save</md-card-title>
+  <md-card-actions *ngIf="page == 'settings'">
+    <button md-button color="warn" (click)="resetGame()">Reset Game</button>
+    <button md-button (click)="saveGame()">Save Game</button>
+  </md-card-actions>
+</md-card>
+<button md-fab color="accent" (click)="open = !open" [@fab]="open">
+  <md-icon>{{open ? 'close' : 'menu'}}</md-icon>
+</button>
