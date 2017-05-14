@@ -15,7 +15,7 @@ export type ItemGroups = 'default' | 'rare' | 'magic';
 
 export type ItemElements = 'holy' | 'water' | 'wind' | 'heal';
 
-export type ItemArmorType = 'body' | 'head' | 'feet' | 'arms';
+export type ItemArmorType = 'armor' | 'helm' | 'boots' | 'shield';
 
 /**
  * The Google Spreadsheet ID to load game data from.  This must be a published
@@ -31,7 +31,10 @@ export interface ITemplateId {
   readonly id: string;
 }
 
-export interface ITemplateItem extends ITemplateId {
+export interface ITemplateBaseItem extends ITemplateId {
+  /** Each type specifies this */
+  readonly type: any;
+
   /**
    * The sprite icon name to use to render the item, e.g. "shortSword.png", "bluePotion.png".
    * Note that the icon must exist in the game's sprites collection to be valid.
@@ -63,27 +66,33 @@ export interface ITemplateItem extends ITemplateId {
    */
   readonly groups?: ItemGroups[];
 }
-export interface ITemplateWeapon extends ITemplateItem {
+
+export interface ITemplateItem extends ITemplateBaseItem {
+  readonly type: 'item';
+}
+
+export interface ITemplateWeapon extends ITemplateBaseItem {
+  readonly type: 'weapon';
   /**
    * The attack value for this weapon.
    */
   attack: number;
 }
-export interface ITemplateArmor extends ITemplateItem {
+export interface ITemplateArmor extends ITemplateBaseItem {
   /**
    * What part of the body does the armor apply to?
    */
-  type: ItemArmorType;
+  readonly type: ItemArmorType;
 
   /**
    * The defensive rating of this piece of armor.
    */
-  defense: number;
+  readonly defense: number;
 }
 
 export type MagicType = 'target' | 'all';
 
-export interface ITemplateMagic extends ITemplateItem {
+export interface ITemplateMagic extends ITemplateBaseItem {
   readonly type: MagicType;
 
   /**

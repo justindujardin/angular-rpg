@@ -1,13 +1,13 @@
 import {Component, Input} from '@angular/core';
-import {RPGGame, NotificationService} from '../../services/index';
+import {NotificationService, RPGGame} from '../../services/index';
 import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
-import {getGamePartyGold, getGameParty} from '../../models/selectors';
+import {getGameParty, getGamePartyGold} from '../../models/selectors';
 import {Entity} from '../../models/entity/entity.model';
 import {GameStateSaveAction} from '../../models/game-state/game-state.actions';
 import * as Immutable from 'immutable';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import {animate, style, transition, trigger} from '@angular/animations';
 
 export type PartyMenuStates = 'party' | 'inventory' | 'settings';
 

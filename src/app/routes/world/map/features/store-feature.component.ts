@@ -11,7 +11,7 @@ import {
 import {Observable, BehaviorSubject, Subject} from 'rxjs';
 import {IScene} from '../../../../../game/pow2/scene/scene.model';
 import {
-  instantiateEntity, ITemplateArmor, ITemplateItem,
+  instantiateEntity, ITemplateArmor, ITemplateBaseItem,
   ITemplateWeapon
 } from '../../../../models/game-data/game-data.model';
 import {
@@ -41,13 +41,13 @@ import Immutable from 'immutable';
  * @param items The list of items to filter
  * @param groups The item groups that are supported by this store
  * @param level The level of items that are sold in this store
- * @returns {ITemplateItem[]} The filtered item list
+ * @returns {ITemplateBaseItem[]} The filtered item list
  */
-export function storeItemsFilter(items: Immutable.List<ITemplateItem>,
+export function storeItemsFilter(items: Immutable.List<ITemplateBaseItem>,
                                  groups: string[],
-                                 level: number): Immutable.List<ITemplateItem> {
+                                 level: number): Immutable.List<ITemplateBaseItem> {
   // TODO: This any cast shouldn't be here. I was in a hurry.
-  return <any> items.filter((i: ITemplateItem) => {
+  return <any> items.filter((i: ITemplateBaseItem) => {
     const levelMatch: boolean = (typeof i.level === 'undefined' || i.level === level);
     return levelMatch && itemInGroups(i, groups);
   });
@@ -57,12 +57,12 @@ export function storeItemsFilter(items: Immutable.List<ITemplateItem>,
  * Given a list of potential items to sell, filter to only ones that can be bartered in this store.
  * @param items The list of items to filter
  * @param groups The item groups that are supported by this store
- * @returns {ITemplateItem[]} The filtered item list
+ * @returns {ITemplateBaseItem[]} The filtered item list
  */
-export function sellItemsFilter(items: Immutable.List<ITemplateItem>,
+export function sellItemsFilter(items: Immutable.List<ITemplateBaseItem>,
                                 groups: string[]) {
   // TODO: This any cast shouldn't be here. I was in a hurry.
-  return <any> items.filter((i: ITemplateItem) => {
+  return <any> items.filter((i: ITemplateBaseItem) => {
     return itemInGroups(i, groups);
   });
 }
@@ -76,7 +76,7 @@ export function getFeatureProperty(name: string, defaultValue = null): (f: Tiled
 /**
  * return true if the given item belongs to at least one of the given groups
  */
-export function itemInGroups(item: ITemplateItem, groups: string[]): boolean {
+export function itemInGroups(item: ITemplateBaseItem, groups: string[]): boolean {
   if (!item) {
     return false;
   }
@@ -127,7 +127,7 @@ export class StoreFeatureComponent extends TiledFeatureComponent implements OnDe
   /** @internal */
   private _armors$: Observable<Immutable.List<ITemplateArmor>> = this.store.select(getGameDataArmors);
   /** @internal */
-  private _items$: Observable<Immutable.List<ITemplateItem>> = this.store.select(getGameDataItems);
+  private _items$: Observable<Immutable.List<ITemplateBaseItem>> = this.store.select(getGameDataItems);
   /** @internal */
   private _selling$ = new BehaviorSubject<boolean>(false);
 
@@ -169,7 +169,7 @@ export class StoreFeatureComponent extends TiledFeatureComponent implements OnDe
   /**
    * Calculate the inventory for the store. Filter by category, item grouping, and player level.
    */
-  inventory$: Observable<Immutable.List<ITemplateItem>> = this._weapons$
+  inventory$: Observable<Immutable.List<ITemplateBaseItem>> = this._weapons$
     .combineLatest(this._armors$, this._items$, this.category$, (weapons, armors, items, cat) => {
       switch (cat) {
         case 'items':

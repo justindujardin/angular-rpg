@@ -1,5 +1,5 @@
 import {EntityObject} from './base-entity';
-import {ITemplateItem, ItemCategories} from './game-data/game-data.model';
+import {ItemCategories, ITemplateItem} from './game-data/game-data.model';
 
 /**
  * An instance of a template item that has been created.

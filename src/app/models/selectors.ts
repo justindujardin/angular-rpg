@@ -1,5 +1,8 @@
 import {createSelector} from 'reselect';
-import {sliceEntityBeings, sliceEntityBeingIds, sliceEntityItems, sliceEntityItemIds} from './entity/entity.reducer';
+import {
+  sliceEntityBeings, sliceEntityBeingIds, sliceEntityItems, sliceEntityItemIds,
+  EntityItemTypes
+} from './entity/entity.reducer';
 import {
   sliceBattleCounter,
   sliceCombatZone,
@@ -32,9 +35,10 @@ import {
 } from './combat/combat.reducer';
 import {BaseEntity} from './base-entity';
 import * as Immutable from 'immutable';
-import {ITemplateId} from './game-data/game-data.model';
-import {Entity} from './entity/entity.model';
-import {Item} from './item';
+import {ITemplateArmor, ITemplateId, ITemplateWeapon} from './game-data/game-data.model';
+import {Entity, EntityWithEquipment} from './entity/entity.model';
+import {AppState} from '../app.model';
+import {Selector} from 'reselect/lib/reselect';
 
 /**
  * This file contains the application level data selectors that can be used with @ngrx/store to
@@ -85,9 +89,31 @@ export const entitiesToArray = (object: Immutable.Map<string, BaseEntity>, ids: 
 export const getEntityBeingById = createSelector(sliceEntitiesState, sliceEntityBeings);
 export const getEntityBeingIds = createSelector(sliceEntitiesState, sliceEntityBeingIds);
 
+/** Select just one entity by its ID */
+export const getEntityById = (id: string) => {
+  return createSelector(getEntityBeingById, (entities: Immutable.Map<string, Entity>) => {
+    return entities.get(id);
+  });
+};
+
 // Items
 export const getEntityItemById = createSelector(sliceEntitiesState, sliceEntityItems);
 export const getEntityItemIds = createSelector(sliceEntitiesState, sliceEntityItemIds);
+
+/** Resolve equipment slots to their item entity objects for representation in the UI */
+export const getEntityEquipment = (entityId: string): Selector<AppState, EntityWithEquipment> => {
+  return createSelector(getEntityById(entityId), getEntityItemById, (entity, items) => {
+    const result: Partial<EntityWithEquipment> = {
+      armor: items.get(entity.armor) as ITemplateArmor,
+      helm: items.get(entity.helm) as ITemplateArmor,
+      shield: items.get(entity.shield) as ITemplateArmor,
+      accessory: items.get(entity.accessory) as ITemplateArmor,
+      boots: items.get(entity.boots) as ITemplateArmor,
+      weapon: items.get(entity.weapon) as ITemplateWeapon,
+    };
+    return Object.assign({}, entity, result) as EntityWithEquipment;
+  });
+};
 
 //
 // Game application state
@@ -114,7 +140,7 @@ export const getGameParty = createSelector(getEntityBeingById, getGamePartyIds, 
 export const getGameInventory = createSelector(
   getEntityItemById,
   getGameInventoryIds,
-  (entities: Immutable.Map<string, Item>, ids: Immutable.List<string>) => {
+  (entities: Immutable.Map<string, EntityItemTypes>, ids: Immutable.List<string>) => {
     return ids.map((id) => entities.get(id));
   });
 

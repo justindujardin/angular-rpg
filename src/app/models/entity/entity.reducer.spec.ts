@@ -35,6 +35,7 @@ describe('Entity', () => {
 
   function fakeItem(): Item {
     const testItem: Item = {
+      type: 'item',
       eid: testId,
       category: 'item',
       id: 'test-item',
@@ -119,7 +120,7 @@ describe('Entity', () => {
             entityId: 'invalid',
             itemId: item.eid,
             slot: 'armor'
-          }))
+          }));
         }).toThrow();
       });
       it('should throw if the entity already has an item in the target slot', () => {
@@ -133,7 +134,7 @@ describe('Entity', () => {
             entityId: 'foo',
             itemId: 'invalid',
             slot: 'armor'
-          }))
+          }));
         }).toThrow();
       });
       it('should equip the item in the given slot for the target entity', () => {
@@ -161,7 +162,7 @@ describe('Entity', () => {
             entityId: 'invalid',
             itemId: item.eid,
             slot: 'armor'
-          }))
+          }));
         }).toThrow();
       });
       it('should throw if the entity does not have the itemId already in the slot to remove from', () => {
@@ -174,7 +175,7 @@ describe('Entity', () => {
             entityId: 'foo',
             itemId: 'invalid',
             slot: 'armor'
-          }))
+          }));
         }).toThrow();
       });
       it('should remove the item from the given slot for the target entity', () => {

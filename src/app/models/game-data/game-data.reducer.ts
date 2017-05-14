@@ -11,7 +11,7 @@ import {
   ITemplateEnemy,
   ITemplateFixedEncounter,
   ITemplateId,
-  ITemplateItem,
+  ITemplateBaseItem,
   ITemplateMagic,
   ITemplateRandomEncounter,
   ITemplateWeapon
@@ -37,11 +37,11 @@ const entityWeaponsCollectionFactory = makeTypedFactory<EntityCollection<ITempla
 // Items
 //
 /** @internal */
-export interface EntityItemsRecord extends TypedRecord<EntityItemsRecord>, EntityCollection<ITemplateItem> {
+export interface EntityItemsRecord extends TypedRecord<EntityItemsRecord>, EntityCollection<ITemplateBaseItem> {
 }
 /** @internal */
-const entityItemsCollectionFactory = makeTypedFactory<EntityCollection<ITemplateItem>, EntityItemsRecord>({
-  byId: Immutable.Map<string, ITemplateItem>(),
+const entityItemsCollectionFactory = makeTypedFactory<EntityCollection<ITemplateBaseItem>, EntityItemsRecord>({
+  byId: Immutable.Map<string, ITemplateBaseItem>(),
   allIds: Immutable.List<string>()
 });
 
@@ -135,7 +135,7 @@ export const gameDataFactory = makeTypedFactory<GameDataState, GameDataStateReco
 /** Collection of game data template objects */
 export interface GameDataState {
   weapons: EntityCollection<ITemplateWeapon>;
-  items: EntityCollection<ITemplateItem>;
+  items: EntityCollection<ITemplateBaseItem>;
   armor: EntityCollection<ITemplateArmor>;
   enemies: EntityCollection<ITemplateEnemy>;
   magic: EntityCollection<ITemplateMagic>;

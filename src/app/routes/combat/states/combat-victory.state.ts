@@ -11,7 +11,7 @@ import {Store} from '@ngrx/store';
 import {getGameDataArmors, getGameDataItems, getGameDataWeapons, sliceCombatState} from '../../../models/selectors';
 import {assertTrue} from '../../../models/util';
 import {GameStateAddGoldAction, GameStateAddInventoryAction} from '../../../models/game-state/game-state.actions';
-import {instantiateEntity, ITemplateItem} from '../../../models/game-data/game-data.model';
+import {instantiateEntity, ITemplateBaseItem} from '../../../models/game-data/game-data.model';
 import {Observable} from 'rxjs/Observable';
 import {
   getAgilityForLevel,
@@ -35,7 +35,7 @@ export class CombatVictoryStateComponent extends CombatMachineState {
   /**
    * Item templates to instantiate any combat victory reward items
    */
-  private items$: Observable<Immutable.List<ITemplateItem>> = this.store.select(getGameDataWeapons)
+  private items$: Observable<Immutable.List<ITemplateBaseItem>> = this.store.select(getGameDataWeapons)
     .combineLatest(
       this.store.select(getGameDataArmors),
       this.store.select(getGameDataItems),
@@ -80,7 +80,7 @@ export class CombatVictoryStateComponent extends CombatMachineState {
 
     this.store.select(sliceCombatState)
       .take(1)
-      .combineLatest(this.items$, (state: CombatState, items: ITemplateItem[]) => {
+      .combineLatest(this.items$, (state: CombatState, items: ITemplateBaseItem[]) => {
         let players: Entity[] = state.party.toArray();
         let enemies: Combatant[] = state.enemies.toArray();
         assertTrue(players.length > 0, 'no living players during combat victory state');
@@ -116,7 +116,7 @@ export class CombatVictoryStateComponent extends CombatMachineState {
         //
         const itemInstances: Item[] = [];
         itemTemplateIds.forEach((itemId: string) => {
-          const item: ITemplateItem = items.find((i: ITemplateItem) => i.id === itemId);
+          const item: ITemplateBaseItem = items.find((i: ITemplateBaseItem) => i.id === itemId);
           assertTrue(!!item, 'cannot award unknown item ' + itemId);
           const model = instantiateEntity<Item>(item);
           this.store.dispatch(new GameStateAddInventoryAction(model));

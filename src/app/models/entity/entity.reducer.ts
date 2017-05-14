@@ -16,7 +16,8 @@ import {
   removeEntityFromCollection
 } from '../base-entity';
 import {
-  GameStateEquipItemAction, GameStateHealPartyAction,
+  GameStateEquipItemAction,
+  GameStateHealPartyAction,
   GameStateUnequipItemAction
 } from '../game-state/game-state.actions';
 import {CombatVictoryAction} from '../combat/combat.actions';
@@ -24,7 +25,8 @@ import {assertTrue, exhaustiveCheck} from '../util';
 import {makeTypedFactory, TypedRecord} from 'typed-immutable-record';
 import {Item} from '../item';
 import * as Immutable from 'immutable';
-import {EntityRecord} from "../records";
+import {EntityRecord} from '../records';
+import {ITemplateArmor, ITemplateItem, ITemplateWeapon} from '../game-data/game-data.model';
 
 // Beings
 //
@@ -50,10 +52,17 @@ const entityItemsCollectionFactory =
     allIds: Immutable.List<string>()
   });
 
+/** Union type for entity items that may exist in the collection */
+export type EntityItemTypes
+  = Item
+  | ITemplateWeapon
+  | ITemplateArmor
+  | ITemplateItem;
+
 /** Collection of Entity objects */
 export interface EntityState {
   readonly beings: EntityCollection<Entity>;
-  readonly items: EntityCollection<Item>;
+  readonly items: EntityCollection<EntityItemTypes>;
   // TODO: features: EntityCollection<Feature>; <-- control treasure chests, fixed encounters on maps visibility etc.
   // TODO: quests: EntityCollection<Quest>; <-- OR express everything as a quest, and just start some of them silently
 }
@@ -133,7 +142,10 @@ export function entityReducer(state: EntityStateRecord = entityStateFactory(),
       assertTrue(!current[action.payload.slot],
         `entity already has item ${current[action.payload.slot]} in ${action.payload.slot}`);
       return result.updateIn(['beings', 'byId', action.payload.entityId], (entity: EntityRecord) => {
-        return entity.set(action.payload.slot, action.payload.itemId);
+        return {
+          ...entity,
+          [action.payload.slot]: action.payload.itemId
+        };
       });
     }
     case GameStateUnequipItemAction.typeId: {
@@ -143,7 +155,10 @@ export function entityReducer(state: EntityStateRecord = entityStateFactory(),
       assertTrue(current[action.payload.slot] === action.payload.itemId,
         `entity does not have item ${current[action.payload.slot]} equipped ${action.payload.slot}`);
       return result.updateIn(['beings', 'byId', action.payload.entityId], (entity: EntityRecord) => {
-        return entity.remove(action.payload.slot);
+        return {
+          ...entity,
+          [action.payload.slot]: null
+        };
       });
     }
     case CombatVictoryAction.typeId: {
