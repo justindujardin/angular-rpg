@@ -8,7 +8,10 @@ import {
 } from './entity.actions';
 import {Item} from '../item';
 import {addEntityToCollection, BaseEntity, EntityCollectionRecord} from '../base-entity';
-import {GameStateHealPartyAction} from '../game-state/game-state.actions';
+import {
+  GameStateEquipItemAction, GameStateHealPartyAction,
+  GameStateUnequipItemAction
+} from '../game-state/game-state.actions';
 import {CombatVictoryAction, CombatVictorySummary} from '../combat/combat.actions';
 import {entityFactory} from '../records';
 
@@ -107,10 +110,93 @@ describe('Entity', () => {
     // Entity specific mutations
     //
 
+    describe('GameStateEquipItemAction', () => {
+      it('should throw if the entityId is invalid', () => {
+        expect(() => {
+          const item: Item = fakeItem();
+          const state = entityReducer(defaultState(), new EntityAddItemAction(item)) as EntityStateRecord;
+          entityReducer(state, new GameStateEquipItemAction({
+            entityId: 'invalid',
+            itemId: item.eid,
+            slot: 'armor'
+          }))
+        }).toThrow();
+      });
+      it('should throw if the entity already has an item in the target slot', () => {
+        expect(() => {
+          const entity = entityFactory({
+            armor: 'someCoolItem',
+            eid: 'foo'
+          });
+          const state = entityReducer(defaultState(), new EntityAddBeingAction(entity)) as EntityStateRecord;
+          entityReducer(state, new GameStateEquipItemAction({
+            entityId: 'foo',
+            itemId: 'invalid',
+            slot: 'armor'
+          }))
+        }).toThrow();
+      });
+      it('should equip the item in the given slot for the target entity', () => {
+        const entity = entityFactory({
+          eid: 'foo'
+        });
+        const item = fakeItem();
+        let state = entityReducer(defaultState(), new EntityAddItemAction(item)) as EntityStateRecord;
+        state = entityReducer(state, new EntityAddBeingAction(entity)) as EntityStateRecord;
+        state = entityReducer(state, new GameStateEquipItemAction({
+          entityId: entity.eid,
+          itemId: item.eid,
+          slot: 'armor'
+        })) as EntityStateRecord;
+        expect(state.beings.byId.get(entity.eid).armor).toBe(item.eid);
+      });
+    });
+
+    describe('GameStateUnequipItemAction', () => {
+      it('should throw if the entityId is invalid', () => {
+        expect(() => {
+          const item: Item = fakeItem();
+          const state = entityReducer(defaultState(), new EntityAddItemAction(item)) as EntityStateRecord;
+          entityReducer(state, new GameStateUnequipItemAction({
+            entityId: 'invalid',
+            itemId: item.eid,
+            slot: 'armor'
+          }))
+        }).toThrow();
+      });
+      it('should throw if the entity does not have the itemId already in the slot to remove from', () => {
+        expect(() => {
+          const entity = entityFactory({
+            eid: 'foo'
+          });
+          const state = entityReducer(defaultState(), new EntityAddBeingAction(entity)) as EntityStateRecord;
+          entityReducer(state, new GameStateUnequipItemAction({
+            entityId: 'foo',
+            itemId: 'invalid',
+            slot: 'armor'
+          }))
+        }).toThrow();
+      });
+      it('should remove the item from the given slot for the target entity', () => {
+        const item = fakeItem();
+        const entity = entityFactory({
+          armor: item.eid,
+          eid: 'foo'
+        });
+        let state = entityReducer(defaultState(), new EntityAddItemAction(item)) as EntityStateRecord;
+        state = entityReducer(state, new EntityAddBeingAction(entity)) as EntityStateRecord;
+        state = entityReducer(state, new GameStateUnequipItemAction({
+          entityId: entity.eid,
+          itemId: item.eid,
+          slot: 'armor'
+        })) as EntityStateRecord;
+        expect(state.beings.byId.get(entity.eid).armor).toBe(null);
+      });
+    });
+
     describe('GameStateHealPartyAction', () => {
       it('should restore all entities in partyIds hp and mp to their maximum', () => {
         const secondId: string = 'MotTon';
-        // TODO: did not work with multiple party members. Cleared out all their data in temple
         const first = entityFactory({
           eid: testId,
           hp: 10, maxhp: 25,

@@ -5,7 +5,8 @@ import {
   GameStateSetKeyDataAction, GameStateNewAction, GameStateAddGoldAction, GameStateHealPartyAction,
   GameStateAddInventoryAction, GameStateRemoveInventoryAction, GameStateTravelSuccessAction, GameStateTravelFailAction,
   GameStateLoadAction, GameStateLoadSuccessAction, GameStateLoadFailAction, GameStateSaveAction,
-  GameStateSaveSuccessAction, GameStateSaveFailAction, GameStateNewSuccessAction, GameStateNewFailAction
+  GameStateSaveSuccessAction, GameStateSaveFailAction, GameStateNewSuccessAction, GameStateNewFailAction,
+  GameStateEquipItemAction, GameStateUnequipItemAction
 } from './game-state.actions';
 import {GameState} from './game-state.model';
 import * as Immutable from 'immutable';
@@ -70,6 +71,20 @@ export function gameStateReducer(state: GameStateRecord = gameStateFactory(), ac
         location: action.payload.location
       });
     }
+    case GameStateEquipItemAction.typeId:
+      assertTrue(state.party.find((i) => i === action.payload.entityId),
+        'cannot equip item on entity that is not in the party');
+      assertTrue(state.inventory.find((i) => i === action.payload.itemId), 'item does not exist in inventory');
+      return state.merge({
+        inventory: state.inventory.filter((i: string) => i !== action.payload.itemId)
+      });
+    case GameStateUnequipItemAction.typeId:
+      assertTrue(state.party.find((i) => i === action.payload.entityId),
+        'cannot remove item from entity that is not in the party');
+      assertTrue(!state.inventory.find((i) => i === action.payload.itemId), 'item already exists in inventory');
+      return state.merge({
+        inventory: state.inventory.push(action.payload.itemId)
+      });
     case GameStateTravelSuccessAction.typeId:
     case GameStateTravelFailAction.typeId:
     case GameStateLoadAction.typeId:

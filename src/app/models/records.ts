@@ -6,7 +6,7 @@ import {Entity} from './entity/entity.model';
 /**
  * A record for points that have x/y numbers.
  */
-interface PointRecord extends TypedRecord<PointRecord>, IPoint {
+export interface PointRecord extends TypedRecord<PointRecord>, IPoint {
 }
 
 /** Create a {@see IPoint} record with x and y number values */
@@ -16,7 +16,7 @@ export const pointFactory = makeRecordFactory<IPoint, PointRecord>({
 });
 
 /** Immutable record for Entity objects */
-interface EntityRecord extends TypedRecord<EntityRecord>, Entity {
+export interface EntityRecord extends TypedRecord<EntityRecord>, Entity {
 
 }
 /** Create an Entity with a given partial set of properties to override defaults */
@@ -38,5 +38,11 @@ export const entityFactory = makeRecordFactory<Entity, EntityRecord>({
   hp: 0,
   mp: 0,
   maxhp: 0,
-  maxmp: 0
+  maxmp: 0,
+  weapon: null,
+  armor: null,
+  helm: null,
+  shield: null,
+  boots: null,
+  accessory: null,
 });

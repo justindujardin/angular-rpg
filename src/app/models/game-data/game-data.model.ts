@@ -164,13 +164,6 @@ export interface ITemplateRandomEncounter extends ITemplateEncounter {
 }
 
 /**
- * Callback when
- */
-export interface IGameEncounterCallback {
-  (victory: boolean): void;
-}
-
-/**
  * Instantiate an item from its template and assign it a unique eid value.
  * @param from The ITemplateId to stamp out a copy of
  * @param values Any optional values to assign to the instance during creation

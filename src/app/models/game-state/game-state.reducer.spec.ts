@@ -7,7 +7,8 @@ import {
   GameStateMoveAction,
   GameStateAddGoldAction,
   GameStateSetKeyDataAction,
-  GameStateAddInventoryAction, GameStateRemoveInventoryAction, GameStateNewAction
+  GameStateAddInventoryAction, GameStateRemoveInventoryAction, GameStateNewAction, GameStateEquipItemAction,
+  GameStateUnequipItemAction
 } from './game-state.actions';
 import {Item} from '../item';
 import {entityId} from '../game-data/game-data.model';
@@ -48,6 +49,81 @@ describe('GameState', () => {
           partyIds: []
         }));
         expect(actual.gold).toEqual(50);
+      });
+    });
+
+    describe('GameStateEquipItemAction', () => {
+      it('should throw if item to equip does not currently exist in inventory', () => {
+        const state = gameStateFactory({
+          party: Immutable.List<string>(['fooUser'])
+        });
+        expect(() => {
+          gameStateReducer(state, new GameStateEquipItemAction({
+            slot: 'weapon',
+            itemId: 'foo',
+            entityId: 'fooUser'
+          }));
+        }).toThrow();
+      });
+      it('should throw if entity to equip item on is not in the party', () => {
+        const state = gameStateFactory();
+        expect(() => {
+          gameStateReducer(state, new GameStateEquipItemAction({
+            slot: 'weapon',
+            itemId: 'foo',
+            entityId: 'asd'
+          }));
+        }).toThrow();
+      });
+      it('should remove item from inventory when equipped', () => {
+        const state = gameStateFactory({
+          inventory: Immutable.List<string>(['foo']),
+          party: Immutable.List<string>(['fooUser'])
+        });
+        expect(state.inventory.count()).toBe(1);
+        const actual = gameStateReducer(state, new GameStateEquipItemAction({
+          slot: 'weapon',
+          itemId: 'foo',
+          entityId: 'fooUser'
+        }));
+        expect(actual.inventory.count()).toBe(0);
+      });
+    });
+
+    describe('GameStateUnequipItemAction', () => {
+      it('should throw if item already exists in inventory', () => {
+        const state = gameStateFactory({
+          inventory: Immutable.List<string>(['foo'])
+        });
+        expect(() => {
+          gameStateReducer(state, new GameStateUnequipItemAction({
+            slot: 'weapon',
+            itemId: 'foo',
+            entityId: ''
+          }));
+        }).toThrow();
+      });
+      it('should throw if user to unequip from is not in the party', () => {
+        const state = gameStateFactory();
+        expect(() => {
+          gameStateReducer(state, new GameStateUnequipItemAction({
+            slot: 'weapon',
+            itemId: 'foo',
+            entityId: 'asd'
+          }));
+        }).toThrow();
+      });
+      it('should add item to inventory when unequipped', () => {
+        const state = gameStateFactory({
+          party: Immutable.List<string>(['fooUser'])
+        });
+        expect(state.inventory.count()).toBe(0);
+        const actual = gameStateReducer(state, new GameStateUnequipItemAction({
+          slot: 'weapon',
+          itemId: 'foo',
+          entityId: 'fooUser'
+        }));
+        expect(actual.inventory.count()).toBe(1);
       });
     });
 

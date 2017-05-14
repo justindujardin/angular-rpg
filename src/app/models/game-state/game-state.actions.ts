@@ -4,6 +4,7 @@ import {type} from '../util';
 import {IPoint} from '../../../game/pow-core';
 import {Item} from '../item';
 import {AppState} from '../../app.model';
+import {EntitySlots} from '../entity/entity.model';
 
 //
 // Save state Actions
@@ -178,6 +179,30 @@ export class GameStateHealPartyAction implements Action {
   }
 }
 
+export class GameStateEquipItemAction implements Action {
+  static typeId: 'GAME_EQUIP_ITEM' = type('GAME_EQUIP_ITEM');
+  type = GameStateEquipItemAction.typeId;
+
+  constructor(public payload: {
+    entityId: string;
+    itemId: string;
+    slot: keyof EntitySlots;
+  }) {
+  }
+}
+
+export class GameStateUnequipItemAction implements Action {
+  static typeId: 'GAME_UNEQUIP_ITEM' = type('GAME_UNEQUIP_ITEM');
+  type = GameStateUnequipItemAction.typeId;
+
+  constructor(public payload: {
+    entityId: string;
+    itemId: string;
+    slot: keyof EntitySlots;
+  }) {
+  }
+}
+
 //
 // Inventory actions
 //
@@ -213,5 +238,7 @@ export type GameStateActions
   | GameStateMoveAction
   | GameStateAddGoldAction
   | GameStateHealPartyAction
+  | GameStateEquipItemAction
+  | GameStateUnequipItemAction
   | GameStateAddInventoryAction
   | GameStateRemoveInventoryAction;

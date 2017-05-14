@@ -15,12 +15,16 @@ import {
   mergeEntityInCollection,
   removeEntityFromCollection
 } from '../base-entity';
-import {GameStateHealPartyAction} from '../game-state/game-state.actions';
+import {
+  GameStateEquipItemAction, GameStateHealPartyAction,
+  GameStateUnequipItemAction
+} from '../game-state/game-state.actions';
 import {CombatVictoryAction} from '../combat/combat.actions';
 import {assertTrue, exhaustiveCheck} from '../util';
 import {makeTypedFactory, TypedRecord} from 'typed-immutable-record';
 import {Item} from '../item';
 import * as Immutable from 'immutable';
+import {EntityRecord} from "../records";
 
 // Beings
 //
@@ -81,7 +85,11 @@ export function entityFromJSON(object: EntityState): EntityState {
   return entityStateFactory(recordValues);
 }
 
-type EntityReducerTypes = EntityActions | GameStateHealPartyAction | CombatVictoryAction;
+type EntityReducerTypes = EntityActions
+  | GameStateEquipItemAction
+  | GameStateUnequipItemAction
+  | GameStateHealPartyAction
+  | CombatVictoryAction;
 
 export function entityReducer(state: EntityStateRecord = entityStateFactory(),
                               action: EntityReducerTypes): EntityState {
@@ -116,6 +124,26 @@ export function entityReducer(state: EntityStateRecord = entityStateFactory(),
           }, partyMemberId);
         });
         return updateBeingsResult;
+      });
+    }
+    case GameStateEquipItemAction.typeId: {
+      let result: EntityStateRecord = state;
+      const current: Entity = state.beings.byId.get(action.payload.entityId);
+      assertTrue(!!current, 'entity does not exist');
+      assertTrue(!current[action.payload.slot],
+        `entity already has item ${current[action.payload.slot]} in ${action.payload.slot}`);
+      return result.updateIn(['beings', 'byId', action.payload.entityId], (entity: EntityRecord) => {
+        return entity.set(action.payload.slot, action.payload.itemId);
+      });
+    }
+    case GameStateUnequipItemAction.typeId: {
+      let result: EntityStateRecord = state;
+      const current: Entity = state.beings.byId.get(action.payload.entityId);
+      assertTrue(!!current, 'entity does not exist');
+      assertTrue(current[action.payload.slot] === action.payload.itemId,
+        `entity does not have item ${current[action.payload.slot]} equipped ${action.payload.slot}`);
+      return result.updateIn(['beings', 'byId', action.payload.entityId], (entity: EntityRecord) => {
+        return entity.remove(action.payload.slot);
       });
     }
     case CombatVictoryAction.typeId: {

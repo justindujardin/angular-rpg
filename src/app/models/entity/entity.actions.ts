@@ -2,7 +2,6 @@ import {type} from '../util';
 import {Action} from '@ngrx/store';
 import {BaseEntity} from '../base-entity';
 import {Item} from '../item';
-import {Entity} from './entity.model';
 
 export class EntityAddBeingAction implements Action {
   static typeId: 'ENTITY_ADD_BEING' = type('ENTITY_ADD_BEING');
