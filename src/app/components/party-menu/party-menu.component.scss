@@ -11,6 +11,19 @@
   md-toolbar {
     position: fixed;
     border-bottom: 6px solid white;
+    h1 {
+      line-height: 28px;
+      height: 32px;
+      margin: 0;
+      a {
+        color: white;
+        text-decoration: none;
+      }
+    }
+    rpg-sprite {
+      height: 32px;
+      margin-left: 6px;
+    }
     button {
       font-size: 20px;
       &.active {
@@ -31,7 +44,7 @@
     margin: auto;
     right: 24px;
     bottom: -12px;
-    top: 64px + 12px;
+    top: 64px + 24px;
     padding-bottom: 36px; // normal 24px plus 12 for the negative bottom
     left: 24px;
     max-width: 600px;

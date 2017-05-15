@@ -1,3 +1,4 @@
 rpg-sprite {
-  // Inline-block the element
+  // make sure whitespace doesn't mess up the height
+  font-size: 0;
 }

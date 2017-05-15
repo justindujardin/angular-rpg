@@ -5,6 +5,7 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'rpg-sprite',
+  styleUrls: ['./sprite.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<img [style.width]="width$ | async" [style.height]="height$ | async" [src]="dataUrl$ | async">`
 })
