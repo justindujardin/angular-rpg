@@ -21,8 +21,8 @@ import {
   GameStateUnequipItemAction
 } from '../game-state/game-state.actions';
 import {CombatVictoryAction} from '../combat/combat.actions';
-import {assertTrue, exhaustiveCheck} from '../util';
-import {makeTypedFactory, TypedRecord} from 'typed-immutable-record';
+import {assertTrue, exhaustiveCheck, makeRecordFactory} from '../util';
+import {TypedRecord} from 'typed-immutable-record';
 import {Item} from '../item';
 import * as Immutable from 'immutable';
 import {EntityRecord} from '../records';
@@ -35,7 +35,7 @@ export interface EntityBeingsRecord extends TypedRecord<EntityBeingsRecord>, Ent
 }
 /** @internal */
 const entityBeingsCollectionFactory =
-  makeTypedFactory<EntityCollection<Entity>, EntityBeingsRecord>({
+  makeRecordFactory<EntityCollection<Entity>, EntityBeingsRecord>({
     byId: Immutable.Map<string, Entity>(),
     allIds: Immutable.List<string>()
   });
@@ -47,7 +47,7 @@ export interface EntityItemsRecord extends TypedRecord<EntityItemsRecord>, Entit
 }
 /** @internal */
 const entityItemsCollectionFactory =
-  makeTypedFactory<EntityCollection<Item>, EntityItemsRecord>({
+  makeRecordFactory<EntityCollection<Item>, EntityItemsRecord>({
     byId: Immutable.Map<string, Item>(),
     allIds: Immutable.List<string>()
   });
@@ -77,7 +77,7 @@ export interface EntityStateRecord extends TypedRecord<EntityStateRecord>, Entit
 /**
  * @internal
  */
-export const entityStateFactory = makeTypedFactory<EntityState, EntityStateRecord>({
+export const entityStateFactory = makeRecordFactory<EntityState, EntityStateRecord>({
   beings: entityBeingsCollectionFactory(),
   items: entityItemsCollectionFactory()
 });

@@ -1,19 +1,20 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Rx';
 import {
-  GameStateLoadSuccessAction,
+  GameStateLoadAction,
   GameStateLoadFailAction,
+  GameStateLoadSuccessAction,
+  GameStateNewSuccessAction,
+  GameStateSaveAction,
+  GameStateSaveFailAction,
+  GameStateSaveSuccessAction,
   GameStateTravelAction,
   GameStateTravelFailAction,
-  GameStateTravelSuccessAction,
-  GameStateSaveSuccessAction,
-  GameStateSaveFailAction,
-  GameStateLoadAction, GameStateSaveAction, GameStateNewSuccessAction
+  GameStateTravelSuccessAction
 } from './game-state.actions';
-import {Effect, Actions} from '@ngrx/effects';
+import {Actions, Effect} from '@ngrx/effects';
 import {GameState} from './game-state.model';
 import {GameStateService} from './game-state.service';
-import {Store} from '@ngrx/store';
 import {NotificationService} from '../../components/notification/notification.service';
 import {AppState} from '../../app.model';
 
@@ -22,7 +23,6 @@ export class GameStateEffects {
 
   constructor(private actions$: Actions,
               private notify: NotificationService,
-              private store: Store<AppState>,
               private gameStateService: GameStateService) {
   }
 
@@ -41,8 +41,7 @@ export class GameStateEffects {
    * When a save action is dispatched, serialize the app state to local storage.
    */
   @Effect() saveGameState$ = this.actions$.ofType(GameStateSaveAction.typeId)
-    .switchMap(() => this.store.take(1))
-    .map((state: AppState) => this.gameStateService.save(state))
+    .map((state: AppState) => this.gameStateService.save())
     .map(() => new GameStateSaveSuccessAction())
     .catch((e) => {
       return Observable.of(new GameStateSaveFailAction(e.toString()));

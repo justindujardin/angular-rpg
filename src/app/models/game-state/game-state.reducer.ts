@@ -12,7 +12,7 @@ import {GameState} from './game-state.model';
 import * as Immutable from 'immutable';
 import {Item} from '../item';
 import {assertTrue, exhaustiveCheck, makeRecordFactory} from '../util';
-import {makeTypedFactory, TypedRecord} from 'typed-immutable-record';
+import {TypedRecord} from 'typed-immutable-record';
 import {pointFactory} from '../records';
 
 /**

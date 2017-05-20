@@ -3,21 +3,18 @@ import {Observable, ReplaySubject} from 'rxjs/Rx';
 import {ResourceManager} from '../../../game/pow-core/resource-manager';
 import {TiledTMXResource} from '../../../game/pow-core/resources/tiled/tiled-tmx.resource';
 import {getMapUrl} from '../../../game/pow2/core/api';
-import {GameState} from './game-state.model';
 import {AppState} from '../../app.model';
+import {Store} from '@ngrx/store';
 
 @Injectable()
 export class GameStateService {
 
-  constructor(private loader: ResourceManager) {
+  constructor(private loader: ResourceManager,
+              private store: Store<AppState>) {
   }
 
   private _worldMap$ = new ReplaySubject<TiledTMXResource>(1);
   worldMap$: Observable<TiledTMXResource> = this._worldMap$;
-
-  loadGame(from: GameState): Observable<GameState> {
-    return Observable.of(from).debounceTime(100);
-  }
 
   /**
    * Load a Tiled TMX Map from a url
@@ -37,6 +34,10 @@ export class GameStateService {
     localStorage.removeItem(GameStateService.STATE_KEY);
   }
 
+  hasSaveGame(): boolean {
+    return !!localStorage.getItem(GameStateService.STATE_KEY);
+  }
+
   load(): Observable<AppState> {
     return Observable.interval(10).take(1).map(() => {
       const data = JSON.parse(localStorage.getItem(GameStateService.STATE_KEY)) as AppState;
@@ -47,10 +48,15 @@ export class GameStateService {
   /**
    * Serialize the application state for later loading
    */
-  save(data: AppState): Observable<AppState> {
-    const jsonData: string = JSON.stringify(data);
-    localStorage.setItem(GameStateService.STATE_KEY, jsonData);
-    return Observable.interval(10).take(1).map(() => data);
+  save(): Observable<AppState> {
+    return this.store
+      .take(1)
+      .map((state: AppState) => {
+        const jsonData: string = JSON.stringify(state);
+        localStorage.setItem(GameStateService.STATE_KEY, jsonData);
+        return state;
+      });
+
   }
 
 }

@@ -17,11 +17,11 @@ import {
   ITemplateWeapon
 } from './game-data.model';
 import {
-  GameDataActionClasses, GameDataAddSheetAction, GameDataRemoveSheetAction,
+  GameDataActionClasses, GameDataAddSheetAction, GameDataFetchAction, GameDataRemoveSheetAction,
   IGameDataAddPayload
 } from './game-data.actions';
-import {makeTypedFactory, TypedRecord} from 'typed-immutable-record';
-import {assertTrue, exhaustiveCheck} from '../util';
+import {TypedRecord} from 'typed-immutable-record';
+import {assertTrue, exhaustiveCheck, makeRecordFactory} from '../util';
 
 // Weapons
 //
@@ -29,7 +29,7 @@ import {assertTrue, exhaustiveCheck} from '../util';
 export interface EntityWeaponsRecord extends TypedRecord<EntityWeaponsRecord>, EntityCollection<ITemplateWeapon> {
 }
 /** @internal */
-const entityWeaponsCollectionFactory = makeTypedFactory<EntityCollection<ITemplateWeapon>, EntityWeaponsRecord>({
+const entityWeaponsCollectionFactory = makeRecordFactory<EntityCollection<ITemplateWeapon>, EntityWeaponsRecord>({
   byId: Immutable.Map<string, ITemplateWeapon>(),
   allIds: Immutable.List<string>()
 });
@@ -40,7 +40,7 @@ const entityWeaponsCollectionFactory = makeTypedFactory<EntityCollection<ITempla
 export interface EntityItemsRecord extends TypedRecord<EntityItemsRecord>, EntityCollection<ITemplateBaseItem> {
 }
 /** @internal */
-const entityItemsCollectionFactory = makeTypedFactory<EntityCollection<ITemplateBaseItem>, EntityItemsRecord>({
+const entityItemsCollectionFactory = makeRecordFactory<EntityCollection<ITemplateBaseItem>, EntityItemsRecord>({
   byId: Immutable.Map<string, ITemplateBaseItem>(),
   allIds: Immutable.List<string>()
 });
@@ -51,7 +51,7 @@ const entityItemsCollectionFactory = makeTypedFactory<EntityCollection<ITemplate
 export interface EntityArmorsRecord extends TypedRecord<EntityArmorsRecord>, EntityCollection<ITemplateArmor> {
 }
 /** @internal */
-const entityArmorsCollectionFactory = makeTypedFactory<EntityCollection<ITemplateArmor>, EntityArmorsRecord>({
+const entityArmorsCollectionFactory = makeRecordFactory<EntityCollection<ITemplateArmor>, EntityArmorsRecord>({
   byId: Immutable.Map<string, ITemplateArmor>(),
   allIds: Immutable.List<string>()
 });
@@ -62,7 +62,7 @@ const entityArmorsCollectionFactory = makeTypedFactory<EntityCollection<ITemplat
 export interface EntityEnemiesRecord extends TypedRecord<EntityEnemiesRecord>, EntityCollection<ITemplateEnemy> {
 }
 /** @internal */
-const entityEnemiesCollectionFactory = makeTypedFactory<EntityCollection<ITemplateEnemy>, EntityEnemiesRecord>({
+const entityEnemiesCollectionFactory = makeRecordFactory<EntityCollection<ITemplateEnemy>, EntityEnemiesRecord>({
   byId: Immutable.Map<string, ITemplateEnemy>(),
   allIds: Immutable.List<string>()
 });
@@ -73,7 +73,7 @@ const entityEnemiesCollectionFactory = makeTypedFactory<EntityCollection<ITempla
 export interface EntityMagicsRecord extends TypedRecord<EntityMagicsRecord>, EntityCollection<ITemplateMagic> {
 }
 /** @internal */
-const entityMagicsCollectionFactory = makeTypedFactory<EntityCollection<ITemplateMagic>, EntityMagicsRecord>({
+const entityMagicsCollectionFactory = makeRecordFactory<EntityCollection<ITemplateMagic>, EntityMagicsRecord>({
   byId: Immutable.Map<string, ITemplateMagic>(),
   allIds: Immutable.List<string>()
 });
@@ -84,7 +84,7 @@ const entityMagicsCollectionFactory = makeTypedFactory<EntityCollection<ITemplat
 export interface EntityClassesRecord extends TypedRecord<EntityClassesRecord>, EntityCollection<ITemplateClass> {
 }
 /** @internal */
-const entityClassesCollectionFactory = makeTypedFactory<EntityCollection<ITemplateClass>, EntityClassesRecord>({
+const entityClassesCollectionFactory = makeRecordFactory<EntityCollection<ITemplateClass>, EntityClassesRecord>({
   byId: Immutable.Map<string, ITemplateClass>(),
   allIds: Immutable.List<string>()
 });
@@ -97,7 +97,7 @@ export interface EntityFixedEncountersRecord extends TypedRecord<EntityFixedEnco
 }
 /** @internal */
 const entityFixedEncountersCollectionFactory =
-  makeTypedFactory<EntityCollection<ITemplateFixedEncounter>, EntityFixedEncountersRecord>({
+  makeRecordFactory<EntityCollection<ITemplateFixedEncounter>, EntityFixedEncountersRecord>({
     byId: Immutable.Map<string, ITemplateFixedEncounter>(),
     allIds: Immutable.List<string>()
   });
@@ -110,7 +110,7 @@ export interface EntityRandomEncountersRecord extends TypedRecord<EntityRandomEn
 }
 /** @internal */
 const entityRandomEncountersCollectionFactory =
-  makeTypedFactory<EntityCollection<ITemplateRandomEncounter>, EntityRandomEncountersRecord>({
+  makeRecordFactory<EntityCollection<ITemplateRandomEncounter>, EntityRandomEncountersRecord>({
     byId: Immutable.Map<string, ITemplateRandomEncounter>(),
     allIds: Immutable.List<string>()
   });
@@ -121,7 +121,7 @@ const entityRandomEncountersCollectionFactory =
 export interface GameDataStateRecord extends TypedRecord<GameDataStateRecord>, GameDataState {
 }
 /** @internal */
-export const gameDataFactory = makeTypedFactory<GameDataState, GameDataStateRecord>({
+export const gameDataFactory = makeRecordFactory<GameDataState, GameDataStateRecord>({
   weapons: entityWeaponsCollectionFactory(),
   items: entityItemsCollectionFactory(),
   armor: entityArmorsCollectionFactory(),
@@ -170,6 +170,9 @@ export function gameDataReducer(state: GameDataState = gameDataFactory(),
                                 action: GameDataActionClasses): GameDataState {
   const stateRecord = state as GameDataStateRecord;
   switch (action.type) {
+    case GameDataFetchAction.typeId: {
+      return state;
+    }
     case GameDataAddSheetAction.typeId: {
       const addSheet: IGameDataAddPayload = action.payload;
       assertTrue(!!state[addSheet.sheet], 'unknown collection cannot be added with sheet name: ' + addSheet.sheet);

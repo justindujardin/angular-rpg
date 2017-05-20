@@ -6,6 +6,22 @@ export interface IGameDataAddPayload {
   data: any[];
 }
 
+/**
+ * Fetch game data from the given Google Spreadsheet URL.
+ *
+ * @note The spreadsheet must be published and publicly accessible.
+ */
+export class GameDataFetchAction implements Action {
+  static typeId: 'DATA_FETCH_REMOTE' = type('DATA_FETCH_REMOTE');
+  type = GameDataFetchAction.typeId;
+
+  payload: string;
+
+  constructor(googleSpreadsheetId: string) {
+    this.payload = googleSpreadsheetId;
+  }
+}
+
 export class GameDataAddSheetAction implements Action {
   static typeId: 'DATA_ADD_SHEET' = type('DATA_ADD_SHEET');
   type = GameDataAddSheetAction.typeId;
@@ -26,4 +42,7 @@ export class GameDataRemoveSheetAction implements Action {
   }
 }
 
-export type GameDataActionClasses = GameDataAddSheetAction | GameDataRemoveSheetAction;
+export type GameDataActionClasses
+  = GameDataAddSheetAction
+  | GameDataRemoveSheetAction
+  | GameDataFetchAction;

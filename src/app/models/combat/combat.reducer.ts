@@ -5,8 +5,8 @@ import {
 import {Combatant, CombatAttack, CombatState} from './combat.model';
 import * as Immutable from 'immutable';
 import {List} from 'immutable';
-import {assertTrue, exhaustiveCheck} from '../util';
-import {makeTypedFactory, TypedRecord} from 'typed-immutable-record';
+import {assertTrue, exhaustiveCheck, makeRecordFactory} from '../util';
+import {TypedRecord} from 'typed-immutable-record';
 import {Entity} from '../entity/entity.model';
 
 /**
@@ -23,7 +23,7 @@ interface CombatStateRecord extends TypedRecord<CombatStateRecord>, CombatState 
  * testing.
  * @internal
  */
-export const combatStateFactory = makeTypedFactory<CombatState, CombatStateRecord>({
+export const combatStateFactory = makeRecordFactory<CombatState, CombatStateRecord>({
   loading: false,
   enemies: Immutable.List<Combatant>(),
   party: Immutable.List<Entity>(),
