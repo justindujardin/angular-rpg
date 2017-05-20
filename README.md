@@ -123,8 +123,8 @@ npm run build:docker
 
 angular-rpg is an open source project sponsored by JetBrains.  
 
-[![JetBrains](src/assets/sponsors/jetbrains-logo.svg)](https://www.jetbrains.com/)
+[![JetBrains](https://rawgit.com/justindujardin/angular-rpg/0f2d8fc6fe3c0fc80d1ceb473fda46fedba61847/src/assets/sponsors/jetbrains-logo.svg)](https://www.jetbrains.com/)
 
 The project is built in and built in WebStorm, an excellent IDE for angular and Typescript development.
 
-[![WebStorm IDE](src/assets/sponsors/ws-logo-text.svg)](https://www.jetbrains.com/)
+[![WebStorm IDE](https://rawgit.com/justindujardin/angular-rpg/0f2d8fc6fe3c0fc80d1ceb473fda46fedba61847/src/assets/sponsors/ws-logo-text.svg)](https://www.jetbrains.com/)
