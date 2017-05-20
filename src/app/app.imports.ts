@@ -9,7 +9,6 @@ import {PowCoreModule} from '../game/pow-core/index';
 import {ROUTES} from './app.routes';
 import {rootReducer} from './models/index';
 import {CombatModule} from './routes/combat/index';
-import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {GameStateEffects} from './models/game-state/game-state.effects';
 import {EffectsModule} from '@ngrx/effects';
 import {AppEffects} from './app.effects';
@@ -40,7 +39,18 @@ export const APP_IMPORTS = [
   RouterModule.forRoot(ROUTES, {useHash: true}),
   StoreModule.provideStore(rootReducer),
   RouterStoreModule.connectRouter(),
-  StoreDevtoolsModule.instrumentOnlyWithExtension(),
+
+  // TODO: store/devtools disabled because of poor performance.
+  //
+  // Because devtools serializes state to JSON, if you have a large amount of data in your stores (~500 objects)
+  // the time it takes to serialize and deserialize the object becomes significant. This is crippling to the
+  // performance of the app.
+  //
+  // To re-enable the devtools, [fix this](https://github.com/ngrx/store-devtools/issues/57) and then pass
+  // the option to use [Immutable compatible devtools](https://goo.gl/Wym3eT).
+  //
+  // StoreDevtoolsModule.instrumentStore(),
+
   EffectsModule.run(GameStateEffects),
   EffectsModule.run(CombatEffects),
   EffectsModule.run(SpritesEffects),

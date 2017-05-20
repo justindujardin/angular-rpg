@@ -13,6 +13,7 @@ import {spritesFromJSON} from './sprites/sprites.reducer';
 import {entityFromJSON} from './entity/entity.reducer';
 import {GameStateLoadSuccessAction} from './game-state/game-state.actions';
 import {gameStateFromJSON} from './game-state/game-state.reducer';
+import {rpgLogger} from './logger';
 
 export const reducers = {
   router: routerReducer,
@@ -43,7 +44,7 @@ function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
   };
 }
 
-const DEV_REDUCERS = [stateSetter, storeFreeze/*, storeLogger()*/];
+const DEV_REDUCERS = [stateSetter, storeFreeze, rpgLogger];
 const PROD_REDUCERS = [stateSetter];
 
 const developmentReducer = compose(...DEV_REDUCERS, combineReducers)(reducers);
