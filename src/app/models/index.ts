@@ -8,6 +8,8 @@ import {gameDataFromJSON} from './game-data/game-data.reducer';
 import * as fromCombat from './combat/combat.reducer';
 import {combatFromJSON} from './combat/combat.reducer';
 import * as fromEntity from './entity/entity.reducer';
+import * as fromSprites from './sprites/sprites.reducer';
+import {spritesFromJSON} from './sprites/sprites.reducer';
 import {entityFromJSON} from './entity/entity.reducer';
 import {GameStateLoadSuccessAction} from './game-state/game-state.actions';
 import {gameStateFromJSON} from './game-state/game-state.reducer';
@@ -17,7 +19,8 @@ export const reducers = {
   gameData: fromGameData.gameDataReducer,
   gameState: fromGameState.gameStateReducer,
   combat: fromCombat.combatReducer,
-  entities: fromEntity.entityReducer
+  entities: fromEntity.entityReducer,
+  sprites: fromSprites.spritesReducer
 };
 
 // Generate a reducer to set the root state in dev mode for HMR
@@ -31,7 +34,8 @@ function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
           gameState: gameStateFromJSON(action.payload.gameState),
           entities: entityFromJSON(action.payload.entities),
           gameData: gameDataFromJSON(action.payload.gameData),
-          combat: combatFromJSON(action.payload.combat)
+          combat: combatFromJSON(action.payload.combat),
+          sprites: spritesFromJSON(action.payload.sprites)
         };
       default:
         return reducer(state, action);

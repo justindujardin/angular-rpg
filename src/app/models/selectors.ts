@@ -39,6 +39,7 @@ import {ITemplateArmor, ITemplateId, ITemplateWeapon} from './game-data/game-dat
 import {Entity, EntityWithEquipment} from './entity/entity.model';
 import {AppState} from '../app.model';
 import {Selector} from 'reselect/lib/reselect';
+import {sliceSpritesLoaded, sliceSpritesById} from './sprites/sprites.reducer';
 
 /**
  * This file contains the application level data selectors that can be used with @ngrx/store to
@@ -66,6 +67,18 @@ export const sliceCombatState = (state) => state.combat;
 export const getCombatLoading = createSelector(sliceCombatState, sliceCombatLoading);
 export const getCombatEncounterParty = createSelector(sliceCombatState, sliceCombatEncounterParty);
 export const getCombatEncounterEnemies = createSelector(sliceCombatState, sliceCombatEncounterEnemies);
+
+//
+// Sprites
+//
+
+/**
+ * Slice off the "sprites" branch of the main application state.
+ */
+export const sliceSpritesState = (state) => state.sprites;
+
+export const getSpritesLoaded = createSelector(sliceSpritesState, sliceSpritesLoaded);
+export const getSpriteMap = createSelector(sliceSpritesState, sliceSpritesById);
 
 //
 // Entity collections

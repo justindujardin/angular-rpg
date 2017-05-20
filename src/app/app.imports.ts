@@ -17,6 +17,9 @@ import {WorldModule} from './routes/world';
 import {BehaviorsModule} from './behaviors/index';
 import {CombatEffects} from './models/combat/combat.effects';
 import {AppComponentsModule} from './components/index';
+import {GameDataEffects} from './models/game-data/game-data.effects';
+import {SpritesEffects} from './models/sprites/sprites.effects';
+
 
 export const APP_IMPORTS = [
   BrowserModule,
@@ -40,5 +43,7 @@ export const APP_IMPORTS = [
   StoreDevtoolsModule.instrumentOnlyWithExtension(),
   EffectsModule.run(GameStateEffects),
   EffectsModule.run(CombatEffects),
+  EffectsModule.run(SpritesEffects),
+  EffectsModule.run(GameDataEffects),
   EffectsModule.run(AppEffects)
 ];

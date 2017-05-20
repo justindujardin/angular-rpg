@@ -14,6 +14,9 @@ import {AppState} from '../app.model';
 import {Store} from '@ngrx/store';
 import {SPREADSHEET_ID} from '../models/game-data/game-data.model';
 import {GameDataAddSheetAction} from '../models/game-data/game-data.actions';
+import {SpritesLoadAction} from '../models/sprites/sprites.actions';
+import {GameStateService} from '../models/game-state/game-state.service';
+import {GameStateLoadAction} from '../models/game-state/game-state.actions';
 
 let _sharedGameWorld: GameWorld = null;
 
@@ -28,21 +31,24 @@ export class GameWorld extends World {
   private _ready$: Subject<void> = new ReplaySubject<void>(1);
   ready$: Observable<void> = this._ready$;
 
-  /**
-   * Access to the game's Google Doc spreadsheet configuration.  For more
-   * information, see [GameDataResource].
-   */
-  spreadsheet: GameDataResource = null;
-
-  constructor(public loader: ResourceManager, public store: Store<AppState>, public sprites: SpriteRender) {
+  constructor(public loader: ResourceManager,
+              public store: Store<AppState>,
+              public sprites: SpriteRender,
+              public gameStateService: GameStateService) {
     super();
     _sharedGameWorld = this;
     // TODO: This breaks HMR. Only init this data when creating a new game.
     // Preload sprite sheets
-    this.loadSprites()
-      .then(() => this.loadGameData())
-      .then(() => this._ready$.next())
-      .catch((e) => console.error(e));
+    if (this.gameStateService.hasSaveGame()) {
+      this.store.dispatch(new GameStateLoadAction());
+    }
+    else {
+      this.store.dispatch(new SpritesLoadAction('assets/images/index.json'));
+      this.loadSprites()
+        .then(() => this.loadGameData())
+        .then(() => this._ready$.next())
+        .catch((e) => console.error(e));
+    }
   }
 
   static get(): GameWorld {
@@ -60,7 +66,6 @@ export class GameWorld extends World {
       this.store.dispatch(new GameDataAddSheetAction('classes', resource.data.classes));
       this.store.dispatch(new GameDataAddSheetAction('randomEncounters', resource.data.randomencounters));
       this.store.dispatch(new GameDataAddSheetAction('fixedEncounters', resource.data.fixedencounters));
-      this.spreadsheet = resource;
     });
   }
 
