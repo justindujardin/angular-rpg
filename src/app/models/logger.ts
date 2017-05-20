@@ -18,16 +18,16 @@ class DeferredValue {
     return this._lazy();
   }
 
-  constructor(__value: DeferredValueTypes) {
+  constructor(value: DeferredValueTypes) {
     // If it's immutable, toJS it once, and cache the value
-    if (!Immutable.Map.isMap(__value) || Immutable.List.isList(__value)) {
+    if (!Immutable.Map.isMap(value) || Immutable.List.isList(value)) {
       let cached;
       this._lazy = () => {
-        return cached || (cached = __value.toJS());
+        return cached || (cached = value.toJS());
       };
     }
     else {
-      this._lazy = () => __value;
+      this._lazy = () => value;
     }
   }
 }
@@ -51,4 +51,4 @@ export const rpgLogger = storeLogger({
     });
     return result;
   }
-})
+});

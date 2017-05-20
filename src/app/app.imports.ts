@@ -19,7 +19,6 @@ import {AppComponentsModule} from './components/index';
 import {GameDataEffects} from './models/game-data/game-data.effects';
 import {SpritesEffects} from './models/sprites/sprites.effects';
 
-
 export const APP_IMPORTS = [
   BrowserModule,
   CommonModule,

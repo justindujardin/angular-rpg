@@ -62,6 +62,7 @@ export const data = {
  * Register a dictionary of sprite meta data.  This is for automatically
  * generated sprite sheets, and only defaults to setting information if
  * it has not already been set by a call to describeSprites.
+ * @deprecated TODO: remove this by updating code to reference the data in ngrx/store
  */
 export function registerSprites(name: string, value: Object) {
   for (let prop in value) {
