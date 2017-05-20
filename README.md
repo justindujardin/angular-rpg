@@ -117,3 +117,14 @@ npm run e2e:live
 ```bash
 npm run build:docker
 ```
+
+
+## Sponsors
+
+angular-rpg is an open source project sponsored by JetBrains.  
+
+[![JetBrains](src/assets/sponsors/jetbrains-logo.svg)](https://www.jetbrains.com/)
+
+The project is built in and built in WebStorm, an excellent IDE for angular and Typescript development.
+
+[![WebStorm IDE](src/assets/sponsors/ws-logo-text.svg)](https://www.jetbrains.com/)

@@ -1,5 +1,5 @@
 <md-toolbar color="primary" class="mat-elevation-z4" *ngIf="open == true" [@toolbar]="open">
-  <h1><a href="https://github.com/justindujardin/angular-rpg" target="_blank">RPG</a></h1>
+  <h1 fxShow="false" fxShow.gt-sm><a href="https://github.com/justindujardin/angular-rpg" target="_blank">RPG</a></h1>
   <rpg-sprite [height]="32" [width]="32" name="longSword.png"></rpg-sprite>
   <span fxFlex></span>
   <button md-button (click)="page = 'party'" [ngClass]="{active: page == 'party'}">Party</button>

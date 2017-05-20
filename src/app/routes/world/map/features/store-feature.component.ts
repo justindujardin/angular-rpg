@@ -53,6 +53,14 @@ export function storeItemsFilter(items: Immutable.List<ITemplateBaseItem>,
   });
 }
 
+//
+//
+//
+// TODO: Maps need to be updated to change "category" for stores to a list of item types
+// because currently all stores show nothing to sell.
+//
+//
+
 /**
  * Given a list of potential items to sell, filter to only ones that can be bartered in this store.
  * @param items The list of items to filter

@@ -14,7 +14,6 @@
  limitations under the License.
  */
 import {Injectable} from '@angular/core';
-import {RPGGame} from '../../services/rpg-game';
 import {Animate} from '../../services/animate';
 import {GameWorld} from '../../services/game-world';
 import {IWorldObject} from '../../../game/pow-core/world';
@@ -53,6 +52,8 @@ export interface INotifyItem {
 
 /**
  * Provide a basic service for queuing and showing messages to the user.
+ *
+ * TODO: Refactor this to use observable current notification, remove Animate service and replace with ng animations.
  */
 @Injectable()
 export class NotificationService implements IWorldObject, IProcessObject {
@@ -86,7 +87,7 @@ export class NotificationService implements IWorldObject, IProcessObject {
   private _queue: INotifyItem[] = [];
   private _dismissBinding: (e: any) => any = null;
 
-  constructor(public game: RPGGame, public animate: Animate) {
+  constructor(public animate: Animate) {
     this._dismissBinding = (e) => {
       this.dismiss();
     };
