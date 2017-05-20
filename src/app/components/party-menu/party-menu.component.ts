@@ -5,9 +5,10 @@ import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {getGameParty, getGamePartyGold} from '../../models/selectors';
 import {Entity} from '../../models/entity/entity.model';
-import {GameStateSaveAction} from '../../models/game-state/game-state.actions';
+import {GameStateDeleteAction, GameStateSaveAction} from '../../models/game-state/game-state.actions';
 import * as Immutable from 'immutable';
 import {animate, style, transition, trigger} from '@angular/animations';
+import {GameStateService} from '../../models/game-state/game-state.service';
 
 export type PartyMenuStates = 'party' | 'inventory' | 'settings';
 
@@ -64,8 +65,7 @@ export class PartyMenuComponent {
   party$: Observable<Immutable.List<Entity>> = this.store.select(getGameParty);
 
   resetGame() {
-    // this.game.resetGame();
-    this.notify.show('Game data deleted.  Next time you refresh you will begin a new game.');
+    this.store.dispatch(new GameStateDeleteAction());
   }
 
   saveGame() {
@@ -74,6 +74,7 @@ export class PartyMenuComponent {
 
   constructor(public game: RPGGame,
               public store: Store<AppState>,
+              public gameStateService: GameStateService,
               public notify: NotificationService) {
 
   }

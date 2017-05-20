@@ -13,17 +13,10 @@ export class GameResolver implements Resolve<any> {
 
   /** Resolve when the world ready$ observable emits */
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return new Promise((resolve) => {
-      this.loadingService.loading = true;
-      this.loadingService.title = 'RPG!';
-      this.loadingService.message = 'Initializing the world...';
-      const sub = this.world.ready$.subscribe(() => {
-        if (sub) {
-          sub.unsubscribe();
-        }
-        resolve();
-      });
-    });
-
+    this.loadingService.loading = true;
+    this.loadingService.title = 'RPG!';
+    this.loadingService.message = 'Initializing the world...';
+    // Wait for the world.ready$ observable to emit
+    return this.world.ready$.take(1);
   }
 }

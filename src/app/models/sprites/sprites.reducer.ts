@@ -6,6 +6,7 @@ import {
   SpriteActions, SpritesLoadAction, SpritesLoadFailAction, SpritesLoadSuccessAction,
   SpritesRegisterAction
 } from './sprites.actions';
+import {registerSprites} from '../../../game/pow2/core/api';
 
 interface SpritesStateRecord extends TypedRecord<SpritesStateRecord>, SpriteState {
 }
@@ -27,6 +28,7 @@ export function spritesFromJSON(object: SpriteState): SpriteState {
     spritesById: Immutable.Map<string, SpriteData>(object.spritesById),
     loaded: object.loaded
   };
+  registerSprites('', object.spritesById);
   return spritesStateFactory(recordValues);
 }
 

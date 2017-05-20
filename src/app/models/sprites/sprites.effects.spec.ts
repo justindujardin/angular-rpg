@@ -39,11 +39,11 @@ describe('Sprites', () => {
   }
 
   describe('Effects', () => {
-    describe('loadSprites$', () => {
+    describe('loadSpreadsheetData$', () => {
       it('should load sprites from sprite service when sprites load action is dispatched', (done) => {
         const {runner, effects} = setup();
         runner.queue(new SpritesLoadAction('fake/path/index.json'));
-        effects.loadSprites$.subscribe((result) => {
+        effects.loadSpreadsheetData$.subscribe((result) => {
           expect(result.type).toBe(SpritesLoadSuccessAction.typeId);
           done();
         });

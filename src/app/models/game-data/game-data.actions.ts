@@ -12,13 +12,25 @@ export interface IGameDataAddPayload {
  * @note The spreadsheet must be published and publicly accessible.
  */
 export class GameDataFetchAction implements Action {
-  static typeId: 'DATA_FETCH_REMOTE' = type('DATA_FETCH_REMOTE');
+  static typeId: 'GAME_DATA_FETCH' = type('GAME_DATA_FETCH');
   type = GameDataFetchAction.typeId;
 
   payload: string;
 
   constructor(googleSpreadsheetId: string) {
     this.payload = googleSpreadsheetId;
+  }
+}
+export class GameDataFetchSuccessAction implements Action {
+  static typeId: 'GAME_DATA_FETCH_SUCCESS' = type('GAME_DATA_FETCH_SUCCESS');
+  type = GameDataFetchSuccessAction.typeId;
+  constructor(public payload: string) {
+  }
+}
+export class GameDataFetchFailAction implements Action {
+  static typeId: 'GAME_DATA_FETCH_FAIL' = type('GAME_DATA_FETCH_FAIL');
+  type = GameDataFetchFailAction.typeId;
+  constructor(public payload: string) {
   }
 }
 
@@ -45,4 +57,6 @@ export class GameDataRemoveSheetAction implements Action {
 export type GameDataActionClasses
   = GameDataAddSheetAction
   | GameDataRemoveSheetAction
-  | GameDataFetchAction;
+  | GameDataFetchAction
+  | GameDataFetchSuccessAction
+  | GameDataFetchFailAction;

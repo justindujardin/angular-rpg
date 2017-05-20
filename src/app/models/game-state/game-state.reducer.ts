@@ -1,12 +1,28 @@
 import {
   GameStateActions,
-  GameStateTravelAction,
+  GameStateAddGoldAction,
+  GameStateAddInventoryAction,
+  GameStateDeleteAction,
+  GameStateDeleteFailAction,
+  GameStateDeleteSuccessAction,
+  GameStateEquipItemAction,
+  GameStateHealPartyAction,
+  GameStateLoadAction,
+  GameStateLoadFailAction,
+  GameStateLoadSuccessAction,
   GameStateMoveAction,
-  GameStateSetKeyDataAction, GameStateNewAction, GameStateAddGoldAction, GameStateHealPartyAction,
-  GameStateAddInventoryAction, GameStateRemoveInventoryAction, GameStateTravelSuccessAction, GameStateTravelFailAction,
-  GameStateLoadAction, GameStateLoadSuccessAction, GameStateLoadFailAction, GameStateSaveAction,
-  GameStateSaveSuccessAction, GameStateSaveFailAction, GameStateNewSuccessAction, GameStateNewFailAction,
-  GameStateEquipItemAction, GameStateUnequipItemAction
+  GameStateNewAction,
+  GameStateNewFailAction,
+  GameStateNewSuccessAction,
+  GameStateRemoveInventoryAction,
+  GameStateSaveAction,
+  GameStateSaveFailAction,
+  GameStateSaveSuccessAction,
+  GameStateSetKeyDataAction,
+  GameStateTravelAction,
+  GameStateTravelFailAction,
+  GameStateTravelSuccessAction,
+  GameStateUnequipItemAction
 } from './game-state.actions';
 import {GameState} from './game-state.model';
 import * as Immutable from 'immutable';
@@ -90,6 +106,9 @@ export function gameStateReducer(state: GameStateRecord = gameStateFactory(), ac
     case GameStateLoadAction.typeId:
     case GameStateLoadSuccessAction.typeId:
     case GameStateLoadFailAction.typeId:
+    case GameStateDeleteAction.typeId:
+    case GameStateDeleteSuccessAction.typeId:
+    case GameStateDeleteFailAction.typeId:
     case GameStateSaveAction.typeId:
     case GameStateSaveSuccessAction.typeId:
     case GameStateSaveFailAction.typeId:

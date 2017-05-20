@@ -35,6 +35,7 @@ export class SpritesService {
                     const meta: SpriteDataMap = spritesLoaded[0].data;
                     console.log("dispatch for " + fileName);
                     this.store.dispatch(new SpritesRegisterAction(meta));
+                    registerSprites(fileName, meta);
                   });
               }));
             })

@@ -27,7 +27,7 @@ import {
   sliceFixedEncounterIds,
   sliceItems,
   sliceItemIds,
-  sliceGameDataType, sliceEnemies, sliceEnemiesIds
+  sliceGameDataType, sliceEnemies, sliceEnemiesIds, sliceGameDataLoaded
 } from './game-data/game-data.reducer';
 import {
   sliceCombatEncounterEnemies, sliceCombatEncounterParty,
@@ -167,6 +167,10 @@ export const getGameInventory = createSelector(
  */
 export const sliceGameDataState = (state) => state.gameData;
 
+/**
+ * Boolean indicating if the gamedata tree is loaded.
+ */
+export const getGameDataLoaded = createSelector(sliceGameDataState, sliceGameDataLoaded);
 /**
  * Given a template entity collection "byIds" object, and its "allIds" array, return an array of the items
  * represented in the byIds dictionary. It's often easier to deal with array of items than objects.

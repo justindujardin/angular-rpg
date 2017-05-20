@@ -17,7 +17,9 @@ import {
   ITemplateWeapon
 } from './game-data.model';
 import {
-  GameDataActionClasses, GameDataAddSheetAction, GameDataFetchAction, GameDataRemoveSheetAction,
+  GameDataActionClasses, GameDataAddSheetAction, GameDataFetchAction, GameDataFetchFailAction,
+  GameDataFetchSuccessAction,
+  GameDataRemoveSheetAction,
   IGameDataAddPayload
 } from './game-data.actions';
 import {TypedRecord} from 'typed-immutable-record';
@@ -122,6 +124,7 @@ export interface GameDataStateRecord extends TypedRecord<GameDataStateRecord>, G
 }
 /** @internal */
 export const gameDataFactory = makeRecordFactory<GameDataState, GameDataStateRecord>({
+  loaded: false,
   weapons: entityWeaponsCollectionFactory(),
   items: entityItemsCollectionFactory(),
   armor: entityArmorsCollectionFactory(),
@@ -134,6 +137,7 @@ export const gameDataFactory = makeRecordFactory<GameDataState, GameDataStateRec
 
 /** Collection of game data template objects */
 export interface GameDataState {
+  loaded: boolean;
   weapons: EntityCollection<ITemplateWeapon>;
   items: EntityCollection<ITemplateBaseItem>;
   armor: EntityCollection<ITemplateArmor>;
@@ -150,6 +154,7 @@ export interface GameDataState {
  */
 export function gameDataFromJSON(object: GameDataState): GameDataState {
   const result = gameDataFactory({
+    loaded: object.loaded,
     weapons: entityWeaponsCollectionFactory(entityCollectionFromJSON(object.weapons)),
     items: entityItemsCollectionFactory(entityCollectionFromJSON(object.items)),
     armor: entityArmorsCollectionFactory(entityCollectionFromJSON(object.armor)),
@@ -170,8 +175,14 @@ export function gameDataReducer(state: GameDataState = gameDataFactory(),
                                 action: GameDataActionClasses): GameDataState {
   const stateRecord = state as GameDataStateRecord;
   switch (action.type) {
-    case GameDataFetchAction.typeId: {
+    case GameDataFetchAction.typeId:
+    case GameDataFetchFailAction.typeId: {
       return state;
+    }
+    case GameDataFetchSuccessAction.typeId: {
+      return stateRecord.merge({
+        loaded: true
+      });
     }
     case GameDataAddSheetAction.typeId: {
       const addSheet: IGameDataAddPayload = action.payload;
@@ -206,6 +217,9 @@ export const sliceGameDataType = (type: string) => {
 export const sliceGameDataTypeIds = (type: string) => {
   return (state: GameDataState) => state[type].allIds;
 };
+
+/** @internal {@see sliceGameDataState} */
+export const sliceGameDataLoaded = (state: GameDataState) => state.loaded;
 
 /** @internal {@see sliceGameDataState} */
 export const sliceWeaponIds = (state: GameDataState) => state.weapons.allIds;

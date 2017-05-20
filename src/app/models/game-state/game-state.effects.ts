@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Rx';
 import {
+  GameStateDeleteAction, GameStateDeleteFailAction, GameStateDeleteSuccessAction,
   GameStateLoadAction,
   GameStateLoadFailAction,
   GameStateLoadSuccessAction,
@@ -41,7 +42,7 @@ export class GameStateEffects {
    * When a save action is dispatched, serialize the app state to local storage.
    */
   @Effect() saveGameState$ = this.actions$.ofType(GameStateSaveAction.typeId)
-    .map((state: AppState) => this.gameStateService.save())
+    .switchMap((state: AppState) => this.gameStateService.save())
     .map(() => new GameStateSaveSuccessAction())
     .catch((e) => {
       return Observable.of(new GameStateSaveFailAction(e.toString()));
@@ -52,6 +53,23 @@ export class GameStateEffects {
     .ofType(GameStateSaveSuccessAction.typeId)
     .do(() => {
       this.notify.show('Game state saved!  Nice.');
+    });
+
+  /**
+   * When a delete action is dispatched, remove the saved state in localstorage.
+   */
+  @Effect() clearGameState$ = this.actions$.ofType(GameStateDeleteAction.typeId)
+    .switchMap((state: AppState) => this.gameStateService.resetGame())
+    .map(() => new GameStateDeleteSuccessAction())
+    .catch((e) => {
+      return Observable.of(new GameStateDeleteFailAction(e.toString()));
+    });
+
+  /** When game data is deleted, notify the user. */
+  @Effect({dispatch: false}) clearGameSuccess$ = this.actions$
+    .ofType(GameStateDeleteSuccessAction.typeId)
+    .do(() => {
+      this.notify.show('Game data deleted.  Next time you refresh you will begin a new game.');
     });
 
   /**
@@ -82,7 +100,7 @@ export class GameStateEffects {
     })
     // TODO: This debounce is to let the UI transition to a loading screen for at least and appropriate
     //       amount of time to let the map hide (to flashes of camera movement and map changing)
-    .debounceTime(1000)
+    .debounceTime(500)
     .map((map: string) => {
       return new GameStateTravelSuccessAction(map);
     })

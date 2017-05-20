@@ -30,10 +30,10 @@ export interface SpriteData {
 export type SpriteDataMap = Immutable.Map<string, SpriteData>;
 
 /**
- * Sprite "database" for looking up the sprite sheet metadata for a given texture in the `art/sprites`
- * folder. Duplicate items are not allowed
+ * Sprite registry for looking up the sprite sheet metadata for a given texture in the `art/sprites`
+ * folder. Duplicate items are not allowed.
  *
- * @note Sprites are referenced simply by their filename, e.g. "shortSword.png" or "bluePotion.png"
+ * @note Sprites are referenced by filename, e.g. "shortSword.png" or "bluePotion.png"
  */
 export interface SpriteState {
   spritesById: SpriteDataMap;

@@ -12,9 +12,7 @@ import {EntitySlots} from '../entity/entity.model';
 export class GameStateSaveAction implements Action {
   static typeId: 'GAME_SAVE' = type('GAME_SAVE');
   type = GameStateSaveAction.typeId;
-
   payload: null = null;
-
 }
 
 export class GameStateSaveSuccessAction implements Action {
@@ -26,6 +24,29 @@ export class GameStateSaveSuccessAction implements Action {
 export class GameStateSaveFailAction implements Action {
   static typeId: 'GAME_SAVE_FAIL' = type('GAME_SAVE_FAIL');
   type = GameStateSaveFailAction.typeId;
+
+  constructor(public payload: any) {
+  }
+}
+
+//
+// Delete save state Actions
+//
+export class GameStateDeleteAction implements Action {
+  static typeId: 'GAME_SAVE_DELETE' = type('GAME_SAVE_DELETE');
+  type = GameStateDeleteAction.typeId;
+  payload: null = null;
+}
+
+export class GameStateDeleteSuccessAction implements Action {
+  static typeId: 'GAME_SAVE_DELETE_SUCCESS' = type('GAME_SAVE_DELETE_SUCCESS');
+  type = GameStateDeleteSuccessAction.typeId;
+  payload: string = null;
+}
+
+export class GameStateDeleteFailAction implements Action {
+  static typeId: 'GAME_SAVE_DELETE_FAIL' = type('GAME_SAVE_DELETE_FAIL');
+  type = GameStateDeleteFailAction.typeId;
 
   constructor(public payload: any) {
   }
@@ -225,6 +246,9 @@ export type GameStateActions
   = GameStateSaveAction
   | GameStateSaveSuccessAction
   | GameStateSaveFailAction
+  | GameStateDeleteAction
+  | GameStateDeleteSuccessAction
+  | GameStateDeleteFailAction
   | GameStateLoadAction
   | GameStateLoadSuccessAction
   | GameStateLoadFailAction

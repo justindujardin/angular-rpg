@@ -30,8 +30,10 @@ export class GameStateService {
 
   static STATE_KEY: string = '_angular2PowRPGState';
 
-  resetGame() {
-    localStorage.removeItem(GameStateService.STATE_KEY);
+  resetGame(): Observable<void> {
+    return Observable.interval(10).take(1).map(() => {
+      localStorage.removeItem(GameStateService.STATE_KEY);
+    });
   }
 
   hasSaveGame(): boolean {
@@ -56,7 +58,6 @@ export class GameStateService {
         localStorage.setItem(GameStateService.STATE_KEY, jsonData);
         return state;
       });
-
   }
 
 }
