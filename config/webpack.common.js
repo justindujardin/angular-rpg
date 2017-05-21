@@ -385,7 +385,8 @@ module.exports = function (options) {
           ]
         },
         ServiceWorker: {
-          events: true
+          events: true,
+          navigateFallbackURL: '/'
         },
         AppCache: {
           events: true
