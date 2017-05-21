@@ -226,6 +226,8 @@ describe('Entity', () => {
     describe('CombatVictoryAction', () => {
       function summaryData(values?: Partial<CombatVictorySummary>): CombatVictorySummary {
         return Object.assign({
+          type: 'fixed',
+          id: 'fake-id',
           party: [],
           enemies: [],
           levels: [],

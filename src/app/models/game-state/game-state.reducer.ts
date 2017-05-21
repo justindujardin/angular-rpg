@@ -163,6 +163,8 @@ export function gameStateReducer(state: GameStateRecord = gameStateFactory(), ac
       return state;
   }
 }
+/** @internal {@see sliceGameState} */
+export const sliceGameStateKeyData = (state: GameState) => state.keyData;
 
 export function sliceGold(state: GameState) {
   return state.gold;

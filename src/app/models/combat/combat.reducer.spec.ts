@@ -54,6 +54,8 @@ describe('Combat', () => {
           party: Immutable.List<Entity>([combatant()])
         });
         const victorySummary: CombatVictorySummary = {
+          type: 'fixed',
+          id: 'fake-id',
           party: [],
           enemies: [],
           levels: [],

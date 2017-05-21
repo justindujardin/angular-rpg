@@ -1,7 +1,6 @@
 import {SceneObjectBehavior} from '../../../../game/pow2/scene/scene-object-behavior';
 import {GameTileMap} from '../../../scene/game-tile-map';
 import {GameEntityObject} from '../../../scene/game-entity-object';
-import {Point} from '../../../../game/pow-core/point';
 import {GameStateSetBattleCounterAction} from '../../../models/game-state/game-state.actions';
 import {
   getGameBattleCounter,
@@ -20,7 +19,6 @@ import {entityId, ITemplateEnemy, ITemplateRandomEncounter} from '../../../model
 import {Entity} from '../../../models/entity/entity.model';
 import {List} from 'immutable';
 import {CombatEncounterAction} from '../../../models/combat/combat.actions';
-import {PlayerRenderBehaviorComponent} from './player-render.behavior';
 import {PlayerBehaviorComponent} from './player-behavior';
 
 /**
@@ -120,7 +118,7 @@ export class CombatEncounterBehaviorComponent extends SceneObjectBehavior {
             type: 'random',
             id: encounter.id,
             enemies: List<Combatant>(encounter.enemies.map(toCombatant)),
-            zone: zone.target,
+            zone: zone.target || zone.map,
             message: encounter.message,
             party: List<Entity>(party)
           };

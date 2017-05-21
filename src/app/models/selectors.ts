@@ -10,7 +10,7 @@ import {
   sliceShipPosition,
   slicePosition,
   sliceGold,
-  slicePartyIds, sliceInventoryIds
+  slicePartyIds, sliceInventoryIds, sliceGameStateKeyData
 } from './game-state/game-state.reducer';
 import {
   sliceWeaponIds,
@@ -40,6 +40,7 @@ import {Entity, EntityWithEquipment} from './entity/entity.model';
 import {AppState} from '../app.model';
 import {Selector} from 'reselect/lib/reselect';
 import {sliceSpritesLoaded, sliceSpritesById} from './sprites/sprites.reducer';
+import {assertTrue} from './util';
 
 /**
  * This file contains the application level data selectors that can be used with @ngrx/store to
@@ -145,16 +146,29 @@ export const getGameShipPosition = createSelector(sliceGameState, sliceShipPosit
 export const getGameMap = createSelector(sliceGameState, sliceMap);
 export const getGameCombatZone = createSelector(sliceGameState, sliceCombatZone);
 export const getGameBattleCounter = createSelector(sliceGameState, sliceBattleCounter);
-
+export const getGameKeyData = createSelector(sliceGameState, sliceGameStateKeyData);
 export const getGameParty = createSelector(getEntityBeingById, getGamePartyIds, (entities, ids) => {
   return ids.map((id) => entities.get(id));
 });
+/** Select just one data key from the gamesate keyData object. */
+export const getGameKey = (key: string) => {
+  return createSelector(getGameKeyData, (data: Immutable.Map<string, any>) => {
+    return data.get(key);
+  });
+};
 
 export const getGameInventory = createSelector(
   getEntityItemById,
   getGameInventoryIds,
   (entities: Immutable.Map<string, EntityItemTypes>, ids: Immutable.List<string>) => {
-    return ids.map((id) => entities.get(id));
+    return ids.map((id) => {
+      const result = entities.get(id);
+      // Ensure that any item in the inventory has a corresponding entity. If not, throw a loud error
+      // instead of crashing hard in an obscure place.
+      assertTrue(result,
+        `${id} is present in inventory but not in entity collection. Did you forget to dispatch EntityAddItemAction?`);
+      return result;
+    });
   });
 
 //

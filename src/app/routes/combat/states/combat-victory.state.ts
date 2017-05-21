@@ -136,6 +136,8 @@ export class CombatVictoryStateComponent extends CombatMachineState {
 
         // Dispatch victory action
         const summary: CombatVictorySummary = {
+          type: machine.encounter.type,
+          id: machine.encounter.id,
           party: players,
           enemies,
           levels: levelUps,

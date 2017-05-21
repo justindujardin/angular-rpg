@@ -20,6 +20,7 @@ import {Entity} from '../entity/entity.model';
 import {AppState} from '../../app.model';
 import {Store} from '@ngrx/store';
 import {getGameMap} from '../selectors';
+import {GameStateSetKeyDataAction} from '../game-state/game-state.actions';
 
 @Injectable()
 export class CombatEffects {
@@ -78,6 +79,11 @@ export class CombatEffects {
           subject.next(action);
           subject.complete();
         });
+
+        // Also, hide the encounter if it was fixed.
+        if (data.type === 'fixed') {
+          this.store.dispatch(new GameStateSetKeyDataAction(data.id, true));
+        }
         return () => {
           // No cleanup
         };

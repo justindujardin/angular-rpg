@@ -17,6 +17,9 @@ import {Scene} from '../../../../game/pow2/scene/scene';
 import {TiledTMXResource} from '../../../../game/pow-core/resources/tiled/tiled-tmx.resource';
 import {ITiledObject} from '../../../../game/pow-core/resources/tiled/tiled.model';
 import {TileObject} from '../../../../game/pow2/tile/tile-object';
+import {getGameKey} from '../../../models/selectors';
+import {AppState} from '../../../app.model';
+import {Store} from '@ngrx/store';
 
 /**
  * An enumeration of the serialized names used to refer to map feature map from within a TMX file
@@ -129,6 +132,24 @@ export class MapFeatureComponent extends TileObjectBehavior implements AfterView
 
   host: GameFeatureObject;
 
+  /**
+   * Observable of whether this feature is hidden/inactive by its unique ID
+   */
+  enabled$: Observable<boolean> = this._feature$
+    .switchMap((f: TiledMapFeatureData) => {
+      // If there's no unique ID it can't be disabled
+      if (!f || !f.properties || !f.properties.id) {
+        return Observable.of(undefined);
+      }
+      // Select just the
+      return this.store.select(getGameKey(f.properties.id));
+    })
+    .map((data) => data !== true);
+
+  constructor(public store: Store<AppState>) {
+    super();
+  }
+
   toString() {
     const featureData = this._feature$.value;
     if (featureData) {
@@ -168,55 +189,5 @@ export class MapFeatureComponent extends TileObjectBehavior implements AfterView
       this._hostSubscription = null;
     }
     this.disconnectHost();
-  }
-
-  connectBehavior(): boolean {
-    if (!super.connectBehavior()) {
-      return false;
-    }
-    if (!this.host.feature) {
-      console.log('Feature host missing feature data.');
-      return false;
-    }
-    // Inherit ID from the unique feature data's id.
-    this.id = this.host.feature.id;
-    return true;
-  }
-
-  syncBehavior(): boolean {
-    if (!super.syncBehavior()) {
-      return false;
-    }
-    this.host.visible = this.host.enabled = !this.getDataHidden();
-    return true;
-  }
-
-  /**
-   * Hide and disable a feature object in a persistent manner.
-   * @param hidden Whether to hide or unhide the object.
-   */
-  setDataHidden(hidden: boolean = true) {
-    console.warn('fix setDataHidden for hiding map features once they\'ve been destroyed');
-    // if (this.host && this.host.world && this.host.world.model && this.host.id) {
-    //   this.host.world.model.setKeyData('' + this.host.id, {
-    //     hidden: hidden
-    //   });
-    //   this.syncBehavior();
-    // }
-  }
-
-  /**
-   * Determine if a feature has been persistently hidden by a call
-   * to `hideFeature`.
-   */
-  getDataHidden(): boolean {
-    console.warn('fix getDataHidden for hiding map features once they\'ve been destroyed');
-    // if (this.host && this.host.world && this.host.world.model && this.host.id) {
-    //   var data: any = this.host.world.model.getKeyData('' + this.host.id);
-    //   if (data && data.hidden) {
-    //     return true;
-    //   }
-    // }
-    return false;
   }
 }

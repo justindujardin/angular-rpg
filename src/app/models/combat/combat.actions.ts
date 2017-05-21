@@ -1,10 +1,14 @@
 import {Action} from '@ngrx/store';
 import {type} from '../util';
-import {Combatant, CombatAttack, CombatEncounter} from './combat.model';
+import {Combatant, CombatAttack, CombatEncounter, CombatType} from './combat.model';
 import {Entity} from '../entity/entity.model';
 import {Item} from '../item';
 
 export interface CombatVictorySummary {
+  /** The encounter ID */
+  id: string;
+  /** The type of encounter */
+  type: CombatType;
   /** The array of party members that survived the combat encounter */
   party: Entity[];
   /** The list of enemies that were in the encounter */

@@ -39,6 +39,7 @@ import {List} from 'immutable';
     <ng-content></ng-content>`
 })
 export class CombatFeatureComponent extends TiledFeatureComponent {
+
   party: PlayerBehaviorComponent = null;
 
   @Input() feature: TiledMapFeatureData;
@@ -86,7 +87,7 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
             type: 'fixed',
             id: encounter.id,
             enemies: List<Combatant>(encounter.enemies.map(toCombatant)),
-            zone: zone.target,
+            zone: zone.target || zone.map,
             message: encounter.message,
             party: List<Entity>(party)
           };
@@ -96,35 +97,4 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
       .subscribe();
     return true;
   }
-
-  //
-  // fixedEncounter(zone: IZoneMatch, encounter: ITemplateFixedEncounter) {
-  //   if (!encounter) {
-  //     return;
-  //   }
-  //   this.doEncounter(zone, encounter);
-  // }
-  //
-  // private doEncounter(zoneInfo: IZoneMatch, encounter: ITemplateEncounter, then?: IGameEncounterCallback) {
-  //
-  //   const enemyList: any[] = []; // this.spreadsheet.getSheetData('enemies');
-  //   const toCombatant = (id: string): Combatant => {
-  //     const itemTemplate = _.where(enemyList, {
-  //       id
-  //     })[0];
-  //     itemTemplate.maxhp = itemTemplate.hp;
-  //     itemTemplate.maxmp = itemTemplate.mp;
-  //     return Object.assign({}, itemTemplate) as Combatant;
-  //   };
-  //
-  //   const payload: CombatFixedEncounter = {
-  //     id: encounter.id,
-  //     enemies: encounter.enemies.map(toCombatant),
-  //     zone: zoneInfo.target,
-  //     message: encounter.message,
-  //     party: [] // TODO: entity
-  //   };
-  //   this.store.dispatch(new CombatFixedEncounterAction(payload));
-  // }
-
 }

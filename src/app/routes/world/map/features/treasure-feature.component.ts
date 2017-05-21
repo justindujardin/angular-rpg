@@ -15,41 +15,54 @@
  */
 import {TiledFeatureComponent, TiledMapFeatureData} from '../map-feature.component';
 import {TileObject} from '../../../../../game/pow2/tile/tile-object';
-import {Component, Input} from '@angular/core';
-import {GameStateAddGoldAction} from '../../../../models/game-state/game-state.actions';
-import {EntityAddItemAction} from '../../../../models/entity/entity.actions';
-import {Item} from '../../../../models/item';
+import {AfterViewInit, Component, Input} from '@angular/core';
+import {
+  GameStateAddGoldAction, GameStateAddInventoryAction,
+  GameStateSetKeyDataAction
+} from '../../../../models/game-state/game-state.actions';
 import {AppState} from '../../../../app.model';
 import {Store} from '@ngrx/store';
 import {NotificationService} from '../../../../components/notification/notification.service';
+import {getGameDataItems, getGameDataArmors, getGameDataWeapons} from '../../../../models/selectors';
+import {
+  instantiateEntity, ITemplateArmor, ITemplateBaseItem, ITemplateItem,
+  ITemplateWeapon
+} from '../../../../models/game-data/game-data.model';
+import * as Immutable from 'immutable';
+import {Item} from '../../../../models/item';
+import {Observable} from 'rxjs/Observable';
+import {EntityAddItemAction} from '../../../../models/entity/entity.actions';
 
 @Component({
   selector: 'treasure-feature',
   template: `
     <ng-content></ng-content>`
 })
-export class TreasureFeatureComponent extends TiledFeatureComponent {
+export class TreasureFeatureComponent extends TiledFeatureComponent implements AfterViewInit {
   @Input() feature: TiledMapFeatureData;
+
+  /** @internal */
+  private _weapons$: Observable<Immutable.List<ITemplateWeapon>> = this.store.select(getGameDataWeapons);
+  /** @internal */
+  private _armors$: Observable<Immutable.List<ITemplateArmor>> = this.store.select(getGameDataArmors);
+  /** @internal */
+  private _items$: Observable<Immutable.List<ITemplateBaseItem>> = this.store.select(getGameDataItems);
+
+  /** Available items that can be instantiated from a treasure chest. */
+  inventory$: Observable<Immutable.List<ITemplateBaseItem>> = this._weapons$
+    .combineLatest(this._armors$, this._items$, (weapons, armors, items) => {
+      return items.concat(weapons).concat(armors);
+    });
 
   constructor(public store: Store<AppState>,
               public notify: NotificationService) {
     super();
   }
 
-  connectBehavior(): boolean {
-    if (!this.properties || !this.properties.id) {
-      console.error('Treasure must have a given id so it may be hidden');
-      return false;
+  ngAfterViewInit() {
+    if (!this.properties.id) {
+      throw new Error('treasure must always have a unique lower-snake-case id');
     }
-    return super.connectBehavior();
-  }
-
-  syncBehavior(): boolean {
-    if (!super.syncBehavior() || !this.host.feature) {
-      return false;
-    }
-    this.name = 'Treasure Chest';
-    return true;
   }
 
   enter(object: TileObject): boolean {
@@ -58,17 +71,20 @@ export class TreasureFeatureComponent extends TiledFeatureComponent {
       this.notify.show(`You found ${this.properties.gold} gold!`, null, 0);
     }
     if (typeof this.properties.item === 'string') {
-      console.warn('treasure items need fixin\'');
-      const item = null; // this.host.world.itemModelFromId<Item>(this.properties.item);
-      if (!item) {
-        return;
-      }
-      this.store.dispatch(new EntityAddItemAction(item));
-      this.notify.show(`You found ${item.name}!`, null, 0);
+      this.inventory$.take(1).do((items: Immutable.List<ITemplateItem>) => {
+        const template = items.find((item) => {
+          return item.id === this.properties.item;
+        });
+        if (!template) {
+          throw new Error('could not find item template for id: ' + this.properties.item);
+        }
+        const itemInstance = instantiateEntity<Item>(template);
+        this.store.dispatch(new EntityAddItemAction(itemInstance));
+        this.store.dispatch(new GameStateAddInventoryAction(itemInstance));
+        this.notify.show(`You found ${template.name}!`, null, 0);
+      }).subscribe();
     }
-
-    console.warn('set data hidden treasure feature');
-    // this.setDataHidden(true);
+    this.store.dispatch(new GameStateSetKeyDataAction(this.properties.id, true));
     return true;
   }
 }

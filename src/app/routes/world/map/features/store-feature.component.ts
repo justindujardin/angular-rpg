@@ -169,7 +169,7 @@ export class StoreFeatureComponent extends TiledFeatureComponent implements OnDe
    */
   partyInventory$: Observable<Immutable.List<Item>> = this.store.select(getGameInventory)
     .combineLatest(this.category$, (inventory: Immutable.List<Item>, category: string) => {
-      return inventory.filter((i) => i.category === category);
+      return inventory.filter((i) => i && i.category === category);
     })
     // TODO: This cast shouldn't be here. Types being a pain. Hopefully immutable 4 has better types.
     .combineLatest(this.groups$, <any> sellItemsFilter);
@@ -237,7 +237,7 @@ export class StoreFeatureComponent extends TiledFeatureComponent implements OnDe
 
   /** Stream of clicks on the actionable button */
   private _doActionSubscription$ = this._onAction$
-    .withLatestFrom(this.store.select(sliceGameState), this.category$, (evt, model: GameState, category: string) => {
+    .withLatestFrom(this.store.select(sliceGameState), (evt, model: GameState) => {
       if (!this._selected$.value) {
         return;
       }

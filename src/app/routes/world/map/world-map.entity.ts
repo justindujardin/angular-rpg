@@ -19,13 +19,13 @@ import {ResourceManager} from '../../../../game/pow-core/resource-manager';
 import {Behavior} from '../../../../game/pow-core/behavior';
 import {MapFeatureInputBehaviorComponent} from '../behaviors/map-feature-input.behavior';
 import {Scene} from '../../../../game/pow2/scene/scene';
-import {MapFeatureComponent} from './map-feature.component';
+import {MapFeatureComponent, TiledMapFeatureData} from './map-feature.component';
 import {ISceneViewRenderer} from '../../../../game/pow2/scene/scene.model';
 import {TileObjectRenderer} from '../../../../game/pow2/tile/render/tile-object-renderer';
 import {SceneView} from '../../../../game/pow2/scene/scene-view';
 import {WorldPlayerComponent} from './world-player.entity';
 import {Entity} from '../../../models/entity/entity.model';
-import {getGameParty, getGamePartyPosition} from '../../../models/selectors';
+import {getGameKeyData, getGameParty, getGamePartyPosition} from '../../../models/selectors';
 import {IPoint, Point} from '../../../../game/pow-core/point';
 import {LoadingService} from '../../../components/loading/loading.service';
 import {Store} from '@ngrx/store';
@@ -68,9 +68,21 @@ export class WorldMapComponent extends GameTileMap implements AfterViewInit, OnD
     });
 
   /** Features can be derived after a new map resource has been loaded */
-  features$: Observable<any> = this.resource$.map(() => {
+  features$: Observable<TiledMapFeatureData[]> = this.resource$.map(() => {
     return this.features.objects;
   });
+
+  /**
+   * Exclude features that are marked as hidden in the game keydata storage.
+   */
+  activeFeatures$: Observable<any> = this.store.select(getGameKeyData)
+    .combineLatest(this.features$, (keyMap: Immutable.Map<string, any>, features: TiledMapFeatureData[]) => {
+      return features.filter((f: TiledMapFeatureData) => {
+        // If it doesn't have an ID then it can't be hidden.
+        // If there is a value in the keyData with the id as a key and true as a value, the feature is hidden.
+        return !f.properties || !f.properties.id || keyMap.get(f.properties.id) !== true;
+      });
+    });
 
   private _renderPoint$: BehaviorSubject<IPoint> = new BehaviorSubject(this.renderPoint);
 
