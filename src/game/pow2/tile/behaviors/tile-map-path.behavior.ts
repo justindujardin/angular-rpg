@@ -44,7 +44,7 @@ export class TileMapPathBehavior extends TileObjectBehavior {
     return super.disconnectBehavior();
   }
 
-  private _updateGraph() {
+  protected _updateGraph() {
     const nodes = this.buildWeightedGraph();
     this._graph = new astar.Graph(nodes);
   }

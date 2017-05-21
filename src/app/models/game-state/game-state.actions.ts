@@ -129,15 +129,10 @@ export class GameStateTravelAction implements Action {
   static typeId: 'GAME_TRAVEL' = type('GAME_TRAVEL');
   type = GameStateTravelAction.typeId;
 
-  payload: {
+  constructor(public payload: {
     location: string;
     position: IPoint;
-  };
-
-  constructor(location: string, position: IPoint) {
-    this.payload = {
-      location, position
-    };
+  }) {
   }
 }
 
@@ -200,6 +195,14 @@ export class GameStateHealPartyAction implements Action {
   }
 }
 
+export class GameStateSetBattleCounterAction implements Action {
+  static typeId: 'GAME_SET_BATTLE_COUNTER' = type('GAME_SET_BATTLE_COUNTER');
+  type = GameStateSetBattleCounterAction.typeId;
+
+  constructor(public payload: number) {
+  }
+}
+
 export class GameStateEquipItemAction implements Action {
   static typeId: 'GAME_EQUIP_ITEM' = type('GAME_EQUIP_ITEM');
   type = GameStateEquipItemAction.typeId;
@@ -259,6 +262,7 @@ export type GameStateActions
   | GameStateTravelAction
   | GameStateTravelSuccessAction
   | GameStateTravelFailAction
+  | GameStateSetBattleCounterAction
   | GameStateMoveAction
   | GameStateAddGoldAction
   | GameStateHealPartyAction

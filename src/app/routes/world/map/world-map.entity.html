@@ -1,5 +1,4 @@
 <map-feature-input-behavior [scene]="scene" #input></map-feature-input-behavior>
-<combat-encounter-behavior [scene]="scene" #encounter></combat-encounter-behavior>
 <section name="features">
   <map-feature *ngFor="let feature of features$ | async"
                [tiledMap]="resource$ | async"

@@ -21,7 +21,7 @@ import {TileMap} from '../../../../game/pow2/tile/tile-map';
 import {SceneObject} from '../../../../game/pow2/scene/scene-object';
 import {IMoveDescription} from '../../../../game/pow2/scene/behaviors/movable-behavior';
 import {GameStateMoveAction} from '../../../models/game-state/game-state.actions';
-import {Component} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {ITiledLayer} from '../../../../game/pow-core/resources/tiled/tiled.model';
 
 @Component({
@@ -39,6 +39,11 @@ export class PlayerBehaviorComponent extends BasePlayerComponent {
     'CombatFeatureComponent',
     'sign'
   ];
+
+  /**
+   * Output when a move on the map is completed.
+   */
+  @Output() onCompleteMove = new EventEmitter<IMoveDescription>();
 
   /**
    * Collide with the rpg tile map features and obstacles.
@@ -88,6 +93,7 @@ export class PlayerBehaviorComponent extends BasePlayerComponent {
   completeMove(move: IMoveDescription) {
     // HACKS: Need an injection strategy for these behavior components.
     this.host.world.store.dispatch(new GameStateMoveAction(move.to));
+    this.onCompleteMove.next(move);
     super.completeMove(move);
   }
 

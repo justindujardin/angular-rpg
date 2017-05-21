@@ -38,7 +38,8 @@ import {BehaviorSubject, Observable} from 'rxjs';
     <player-render-behavior #render></player-render-behavior>
     <collision-behavior #collision></collision-behavior>
     <player-map-path-behavior [tileMap]="map" #path></player-map-path-behavior>
-    <player-behavior #player></player-behavior>
+    <player-behavior (onCompleteMove)="encounter.completeMove($event)" #player></player-behavior>
+    <combat-encounter-behavior [scene]="scene" #encounter [tileMap]="map" [player]="self"></combat-encounter-behavior>
     <player-camera-behavior #camera></player-camera-behavior>
     <player-look-behavior
       (onLook)="onFeatureLook($event)"
@@ -48,12 +49,15 @@ import {BehaviorSubject, Observable} from 'rxjs';
   `
 })
 export class WorldPlayerComponent extends GameEntityObject implements AfterViewInit, OnDestroy, ISceneViewRenderer {
-  @ViewChildren('render,collision,path,player,trigger,camera') behaviors: QueryList<SceneObjectBehavior>;
+  @ViewChildren('render,collision,path,player,trigger,camera,encounter') behaviors: QueryList<SceneObjectBehavior>;
   @Input() icon: string;
   @Input() model: Entity;
   @Input() scene: Scene;
   @Input() map: GameTileMap;
   @Input() point: Point;
+
+  /** For referencing in template */
+  readonly self: WorldPlayerComponent = this;
 
   /** The fill color to use when rendering a path target. */
   targetFill: string = 'rgba(10,255,10,0.3)';

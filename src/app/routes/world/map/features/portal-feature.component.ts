@@ -21,7 +21,8 @@ import {Store} from '@ngrx/store';
 import {GameStateTravelAction} from '../../../../models/game-state/game-state.actions';
 @Component({
   selector: 'portal-feature',
-  template: `<ng-content></ng-content>`
+  template: `
+    <ng-content></ng-content>`
 })
 export class PortalFeatureComponent extends TiledFeatureComponent {
   @Input() feature: TiledMapFeatureData;
@@ -36,9 +37,12 @@ export class PortalFeatureComponent extends TiledFeatureComponent {
     if (!this.properties.target) {
       return false;
     }
-    this.store.dispatch(new GameStateTravelAction(this.properties.target, {
-      x: this.properties.targetX,
-      y: this.properties.targetY
+    this.store.dispatch(new GameStateTravelAction({
+      location: this.properties.target,
+      position: {
+        x: this.properties.targetX,
+        y: this.properties.targetY
+      }
     }));
     return true;
   }

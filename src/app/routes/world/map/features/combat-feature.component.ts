@@ -67,7 +67,6 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
 
     // Find the combat zone and launch a fixed encounter.
     const zone: IZoneMatch = this.host.tileMap.getCombatZones(this.party.host.point);
-    zone.fixed = true;
 
     this.store.select(getGameParty)
       .withLatestFrom(

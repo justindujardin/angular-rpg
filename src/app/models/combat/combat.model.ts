@@ -22,11 +22,6 @@ export interface IZoneMatch {
    * The point that target refers to.
    */
   targetPoint: IPoint;
-
-  /**
-   * Fixed or random?
-   */
-  fixed: boolean;
 }
 
 /** A combatant in a combat encounter */

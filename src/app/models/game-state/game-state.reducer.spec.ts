@@ -155,7 +155,10 @@ describe('GameState', () => {
           location: 'firstMap'
         });
         const newMap = 'newMap';
-        const actual = gameStateReducer(state, new GameStateTravelAction(newMap, state.position));
+        const actual = gameStateReducer(state, new GameStateTravelAction({
+          location: newMap,
+          position: state.position
+        }));
         expect(actual.location).toBe(newMap);
       });
       it('should update the player position', () => {
@@ -163,7 +166,10 @@ describe('GameState', () => {
           position: pointFactory({x: 0, y: 0})
         });
         const expected = pointFactory({x: 10, y: 10});
-        const actual = gameStateReducer(state, new GameStateTravelAction('', expected));
+        const actual = gameStateReducer(state, new GameStateTravelAction({
+          location: '',
+          position: expected
+        }));
         expect(actual.position).toEqual(expected);
       });
     });

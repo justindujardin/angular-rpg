@@ -17,7 +17,7 @@ import * as _ from 'underscore';
 import {BasePlayerComponent} from '../../../behaviors/base-player.behavior';
 import {TileMapPathBehavior} from '../../../../game/pow2/tile/behaviors/tile-map-path.behavior';
 import {ITiledLayer} from '../../../../game/pow-core/resources/tiled/tiled.model';
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {GameTileMap} from '../../../scene/game-tile-map';
 /**
  * Build Astar paths with GameFeatureObject tilemaps.
@@ -26,9 +26,14 @@ import {GameTileMap} from '../../../scene/game-tile-map';
   selector: 'player-map-path-behavior',
   template: `<ng-content></ng-content>`
 })
-export class PlayerMapPathBehaviorComponent extends TileMapPathBehavior {
+export class PlayerMapPathBehaviorComponent extends TileMapPathBehavior implements OnInit {
+  ngOnInit(): void {
+    console.log("path is created: ", this);
+  }
 
   @Input() tileMap: GameTileMap;
+
+
 
   buildWeightedGraph(): number[][] {
     let x: number;

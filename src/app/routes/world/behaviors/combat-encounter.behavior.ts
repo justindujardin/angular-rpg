@@ -1,141 +1,133 @@
-import {GameWorld} from '../../../services/game-world';
 import {SceneObjectBehavior} from '../../../../game/pow2/scene/scene-object-behavior';
 import {GameTileMap} from '../../../scene/game-tile-map';
 import {GameEntityObject} from '../../../scene/game-entity-object';
-import {PlayerBehaviorComponent} from './player-behavior';
 import {Point} from '../../../../game/pow-core/point';
-import {GameStateSetKeyDataAction} from '../../../models/game-state/game-state.actions';
-import {getGameBattleCounter} from '../../../models/selectors';
+import {GameStateSetBattleCounterAction} from '../../../models/game-state/game-state.actions';
+import {
+  getGameBattleCounter,
+  getGameDataEnemies,
+  getGameDataRandomEncounters,
+  getGameParty
+} from '../../../models/selectors';
 import {Component, Input} from '@angular/core';
 import {Scene} from '../../../../game/pow2/scene/scene';
-import {IZoneMatch} from '../../../models/combat/combat.model';
+import {Combatant, CombatEncounter, IZoneMatch} from '../../../models/combat/combat.model';
+import {IMoveDescription} from '../../../../game/pow2/scene/behaviors/movable-behavior';
+import {Observable} from 'rxjs/Observable';
+import {AppState} from '../../../app.model';
+import {Store} from '@ngrx/store';
+import {entityId, ITemplateEnemy, ITemplateRandomEncounter} from '../../../models/game-data/game-data.model';
+import {Entity} from '../../../models/entity/entity.model';
+import {List} from 'immutable';
+import {CombatEncounterAction} from '../../../models/combat/combat.actions';
+import {PlayerRenderBehaviorComponent} from './player-render.behavior';
+import {PlayerBehaviorComponent} from './player-behavior';
 
 /**
- * A component that when added to a GameTileMap listens
- * to the player moves and after a random number of them forces
- * an encounter with a group of creatures from the current combat
- * zone.
+ * A behavior that decrements the party battleCounter each time a move
+ * description is given to the `completeMove` method.
+ *
+ * When the party battleCounter reaches zero, a random encounter will
+ * be started in the current combat zone. Combat zones are defined in
+ * map files. See `wilderness.tmx` for an example.
  */
 @Component({
   selector: 'combat-encounter-behavior',
-  template: `<ng-content></ng-content>`
+  template: `
+    <ng-content></ng-content>`
 })
 export class CombatEncounterBehaviorComponent extends SceneObjectBehavior {
-  host: GameTileMap;
-  battleCounter: number;
-  combatFlag: boolean = false;
-  combatZone: string = 'default';
-  isDangerous: boolean = false;
-  enabled: boolean = false;
-  @Input() scene: Scene;
 
-  connectBehavior(): boolean {
-    const world = GameWorld.get();
-    if (!world || !super.connectBehavior() || !(this.host instanceof GameTileMap)) {
-      return false;
+  @Input() scene: Scene;
+  @Input() tileMap: GameTileMap;
+  @Input() player: GameEntityObject;
+
+  battleCounter$: Observable<number> = this.store.select(getGameBattleCounter);
+
+  constructor(private store: Store<AppState>) {
+    super();
+  }
+
+  completeMove(move: IMoveDescription) {
+    if (!this.tileMap) {
+      return;
     }
-    // Get the initial battle counter value
-    world.store.select(getGameBattleCounter).take(1).subscribe((p: number) => {
-      if (p === undefined) {
-        this.resetBattleCounter();
+    const map = this.tileMap.map;
+    if (!map || !map.properties || !map.properties.combat) {
+      return;
+    }
+    const terrain = this.tileMap.getTerrain('Terrain', move.to.x, move.to.y);
+    const isDangerous: boolean = terrain && terrain.isDangerous;
+    const dangerValue: number = isDangerous ? 10 : 6;
+    this.battleCounter$.take(1).subscribe((currentCounter: number) => {
+      const newCounter: number = currentCounter - dangerValue;
+      if (newCounter <= 0) {
+        this.triggerCombat(move);
+      }
+      else {
+        this.store.dispatch(new GameStateSetBattleCounterAction(newCounter));
       }
     });
-    return true;
   }
 
-  disconnectBehavior(): boolean {
-    if (this.player) {
-      this.player.off(null, null, this);
-    }
-    this.player = null;
-    return super.disconnectBehavior();
-  }
-
-  player: GameEntityObject = null;
-
-  syncBehavior(): boolean {
-    super.syncBehavior();
-    // Determine if the map wants this component to be enabled.
-    this.enabled = this.host.map && this.host.map.properties && this.host.map.properties.combat;
-    this.stopListening();
-    this.player = null;
-    if (this.host.scene) {
-      this.player = this.host.scene.objectByComponent(PlayerBehaviorComponent) as GameEntityObject;
-    }
-    this.listenMoves();
-    return !!this.player;
-  }
-
-  listenMoves() {
-    this.stopListening();
-    if (this.player && this.enabled) {
-      this.player.on(PlayerBehaviorComponent.Events.MOVE_BEGIN, this.moveProcess, this);
-    }
-  }
-
-  stopListening() {
-    if (this.player) {
-      this.player.off(null, null, this);
-    }
-  }
-
-  moveProcess(player: PlayerBehaviorComponent, from: Point, to: Point) {
-    const terrain = this.host.getTerrain('Terrain', to.x, to.y);
-    this.isDangerous = terrain && terrain.isDangerous;
-    const dangerValue = this.isDangerous ? 10 : 6;
-    if (this.battleCounter <= 0) {
-      this.triggerCombat(to);
-    }
-    this._setCounter(this.battleCounter - dangerValue);
-    return false;
-  }
-
-  resetBattleCounter() {
+  rollBattleCounter(): number {
     const max: number = 255;
     const min: number = 64;
-    this._setCounter(Math.floor(Math.random() * (max - min + 1)) + min);
-    this.combatFlag = false;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  triggerCombat(at: Point) {
-    const zone: IZoneMatch = this.host.getCombatZones(at);
-    zone.fixed = false;
-    this.combatZone = zone.map || zone.target;
-    console.log(`Combat in zone : ${this.combatZone}`);
-    this.stopListening();
-
-    console.warn('HACK in triggerCombat - static get GameWorld... need injection strategy');
-    const world = GameWorld.get();
-    this.randomEncounter(zone, () => {
-      this.resetBattleCounter();
-      this.listenMoves();
-    });
-    this.combatFlag = true;
-  }
-
-  randomEncounter(zone: IZoneMatch, then?: Function) {
-  //   const gsr = this.spreadsheet;
-  //   const encountersData = gsr.getSheetData('randomencounters');
-  //   const encounters: ITemplateFixedEncounter[] = _.filter(encountersData, (enc: any) => {
-  //     return _.indexOf(enc.zones, zone.map) !== -1 || _.indexOf(enc.zones, zone.target) !== -1;
-  //   });
-  //   if (encounters.length === 0) {
-  //     if (then) {
-  //       then(true);
-  //     }
-  //     return;
-  //   }
-  //   const max = encounters.length - 1;
-  //   const min = 0;
-  //   const encounter = encounters[Math.floor(Math.random() * (max - min + 1)) + min];
-  //   this.doEncounter(zone, encounter, then);
-  }
-
-  private _setCounter(value: number) {
-    this.battleCounter = value;
-    const world = GameWorld.get();
-    if (world) {
-      world.store.dispatch(new GameStateSetKeyDataAction('battleCounter', this.battleCounter));
+  triggerCombat(move: IMoveDescription) {
+    const at = move.to;
+    const zone: IZoneMatch = this.tileMap.getCombatZones(at);
+    if (!zone) {
+      throw new Error('missing combat zone at point: ' + at);
     }
+
+    // Set a new battle counter value
+    const newCounter = this.rollBattleCounter();
+    this.store.dispatch(new GameStateSetBattleCounterAction(newCounter));
+
+    // Stop the moving entity until it has defeated the combat encounter.
+    const mover = this.player.findBehavior(PlayerBehaviorComponent) as PlayerBehaviorComponent;
+    if (mover) {
+      mover.velocity.zero();
+    }
+    // Start combat
+    this.store.select(getGameParty)
+      .withLatestFrom(
+        this.store.select(getGameDataRandomEncounters),
+        this.store.select(getGameDataEnemies),
+        (party: Entity[], encounters: List<ITemplateRandomEncounter>, enemies: ITemplateEnemy[]) => {
+          const viableEncounters = encounters.filter((enc: any) => {
+            return enc.zones.indexOf(zone.map) !== -1 || enc.zones.indexOf(zone.target) !== -1;
+          });
+          if (viableEncounters.count() === 0) {
+            throw new Error('no valid encounters for this zone');
+          }
+          const max = viableEncounters.count() - 1;
+          const min = 0;
+          const encounter = viableEncounters.get(Math.floor(Math.random() * (max - min + 1)) + min);
+          const toCombatant = (id: string): Combatant => {
+            const itemTemplate = enemies.find((e) => e.id === id);
+            return Object.assign({}, itemTemplate, {
+              eid: entityId(itemTemplate.id),
+              maxhp: itemTemplate.hp,
+              maxmp: itemTemplate.mp
+            }) as Combatant;
+          };
+
+          const payload: CombatEncounter = {
+            type: 'random',
+            id: encounter.id,
+            enemies: List<Combatant>(encounter.enemies.map(toCombatant)),
+            zone: zone.target,
+            message: encounter.message,
+            party: List<Entity>(party)
+          };
+          this.store.dispatch(new CombatEncounterAction(payload));
+        })
+      .take(1)
+      .subscribe();
+
   }
 }

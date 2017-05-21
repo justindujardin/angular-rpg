@@ -137,7 +137,7 @@ export class RPGGame {
         this.store.dispatch(new EntityAddBeingAction(warrior));
         this.store.dispatch(new EntityAddBeingAction(ranger));
         this.store.dispatch(new EntityAddBeingAction(healer));
-        this.store.dispatch(new GameStateTravelAction(initialState.location, initialState.position));
+        this.store.dispatch(new GameStateTravelAction(initialState));
         resolve(true);
       }
     });

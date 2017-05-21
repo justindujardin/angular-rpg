@@ -90,7 +90,7 @@ export class GameStateEffects {
         default:
           return;
       }
-      return new GameStateTravelAction(gameState.location, gameState.position);
+      return new GameStateTravelAction(gameState);
     });
 
   @Effect() travel$ = this.actions$.ofType(GameStateTravelAction.typeId)

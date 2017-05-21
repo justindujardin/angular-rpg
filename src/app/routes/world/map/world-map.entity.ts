@@ -54,7 +54,7 @@ export class WorldMapComponent extends GameTileMap implements AfterViewInit, OnD
   renderPoint: Point = new Point();
 
   @ViewChild(WorldPlayerComponent) player: WorldPlayerComponent;
-  @ViewChildren('input,encounter') behaviors: QueryList<Behavior>;
+  @ViewChildren('input') behaviors: QueryList<Behavior>;
   @ViewChildren(MapFeatureComponent) mapFeatures: QueryList<MapFeatureComponent>;
 
   private _subscriptions: Subscription[] = [];

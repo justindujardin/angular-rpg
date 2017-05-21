@@ -79,7 +79,10 @@ describe('GameState', () => {
       it('should dispatch a travel success action after loading the map', (done) => {
         const {runner, effects} = setup();
         expect(mockStateService.loadMapCalls).toBe(0);
-        runner.queue(new GameStateTravelAction('map', {x: 0, y: 0}));
+        runner.queue(new GameStateTravelAction({
+          location: 'map',
+          position: {x: 0, y: 0}
+        }));
         effects.travel$.subscribe((result) => {
           expect(mockStateService.loadMapCalls).toBe(1);
           expect(result.type).toBe(GameStateTravelSuccessAction.typeId);

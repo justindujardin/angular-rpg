@@ -18,6 +18,7 @@ import {
   GameStateSaveAction,
   GameStateSaveFailAction,
   GameStateSaveSuccessAction,
+  GameStateSetBattleCounterAction,
   GameStateSetKeyDataAction,
   GameStateTravelAction,
   GameStateTravelFailAction,
@@ -49,7 +50,7 @@ export const gameStateFactory = makeRecordFactory<GameState, GameStateRecord>({
   party: Immutable.List<string>(),
   inventory: Immutable.List<string>(),
   keyData: Immutable.Map<string, any>(),
-  battleCounter: 0,
+  battleCounter: 64,
   gold: 0,
   location: '',
   combatZone: '',
@@ -116,6 +117,11 @@ export function gameStateReducer(state: GameStateRecord = gameStateFactory(), ac
     case GameStateMoveAction.typeId: {
       return state.merge({
         position: action.payload
+      });
+    }
+    case GameStateSetBattleCounterAction.typeId: {
+      return state.merge({
+        battleCounter: action.payload
       });
     }
     case GameStateSetKeyDataAction.typeId:

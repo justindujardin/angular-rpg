@@ -127,8 +127,7 @@ export class GameTileMap extends TileMap {
     const result: IZoneMatch = {
       map: null,
       target: null,
-      targetPoint: at,
-      fixed: false
+      targetPoint: at
     };
     if (this.map && this.map.properties && this.map.properties) {
       if (typeof this.map.properties.combatZone !== 'undefined') {
