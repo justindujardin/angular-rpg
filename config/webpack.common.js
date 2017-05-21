@@ -21,6 +21,8 @@ const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const ngcWebpack = require('ngc-webpack');
 const SpriteSheetPlugin = require('./sprite-sheet-plugin');
+const OfflinePlugin = require('offline-plugin');
+
 /*
  * Webpack Constants
  */
@@ -368,6 +370,26 @@ module.exports = function (options) {
        */
       new webpack.ProvidePlugin({
         Tabletop: 'tabletop'
+      }),
+
+      new OfflinePlugin({
+        safeToUseOptionalCaches: true,
+        caches: {
+          main: [
+            'main.*.js',
+            'polyfills.*.js',
+            'vendor.*.js'
+          ],
+          additional: [
+            ':rest:'
+          ]
+        },
+        ServiceWorker: {
+          events: true
+        },
+        AppCache: {
+          events: true
+        }
       })
 
     ],

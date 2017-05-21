@@ -100,7 +100,7 @@ export class GameStateEffects {
     })
     // TODO: This debounce is to let the UI transition to a loading screen for at least and appropriate
     //       amount of time to let the map hide (to flashes of camera movement and map changing)
-    .debounceTime(500)
+    .debounceTime(10)
     .map((map: string) => {
       return new GameStateTravelSuccessAction(map);
     })

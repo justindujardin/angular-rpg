@@ -165,6 +165,7 @@
     "ngc-webpack": "1.1.0",
     "node-sass": "^4.2.0",
     "npm-run-all": "^4.0.0",
+    "offline-plugin": "^4.8.1",
     "parse5": "^3.0.1",
     "pngjs": "^3.0.0",
     "protractor": "^4.0.14",

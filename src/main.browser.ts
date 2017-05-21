@@ -1,3 +1,4 @@
+import './main.sw';
 import './rxjs.imports';
 /*
  * Angular bootstraping

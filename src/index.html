@@ -7,7 +7,6 @@
 
   <title><%= htmlWebpackPlugin.options.title %></title>
 
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
   <meta name="description" content="<%= htmlWebpackPlugin.options.title %>">
 
   <% if (webpackConfig.htmlElements.headTags) { %>
@@ -51,6 +50,32 @@
       animation: scaleUp .7s ease both;
     }
 
+    /* ♥ Self-hosted Material Design icons for Service Worker love ♥ ︎*/
+    .material-icons {
+      font-family: 'Material Icons';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;  /* Preferred icon size */
+      display: inline-block;
+      line-height: 1;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+
+      /* Support for all WebKit browsers. */
+      -webkit-font-smoothing: antialiased;
+      /* Support for Safari and Chrome. */
+      text-rendering: optimizeLegibility;
+
+      /* Support for Firefox. */
+      -moz-osx-font-smoothing: grayscale;
+
+      /* Support for IE. */
+      font-feature-settings: 'liga';
+    }
+
     /* Stroke Text Effect */
     @font-face {
       font-family: 'GraphicPixel';
@@ -67,6 +92,18 @@
       url('assets/fonts/glyphicons-halflings-regular.woff') format('woff'),
       url('assets/fonts/glyphicons-halflings-regular.ttf') format('truetype'),
       url('assets/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+    }
+
+    @font-face {
+      font-family: 'Material Icons';
+      font-style: normal;
+      font-weight: 400;
+      src: url(assets/fonts/iconfont/MaterialIcons-Regular.eot); /* For IE6-8 */
+      src: local('Material Icons'),
+      local('MaterialIcons-Regular'),
+      url(assets/fonts/iconfont/MaterialIcons-Regular.woff2) format('woff2'),
+      url(assets/fonts/iconfont/MaterialIcons-Regular.woff) format('woff'),
+      url(assets/fonts/iconfont/MaterialIcons-Regular.ttf) format('truetype');
     }
 
     @font-face {

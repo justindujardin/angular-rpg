@@ -1,3 +1,4 @@
+import './main.sw';
 /*
  * Angular bootstraping
  */
@@ -8,6 +9,7 @@ import {decorateModuleRef} from './app/environment';
  * our top level module that holds all of our map
  */
 import {AppModuleNgFactory} from '../compiled/src/app/app.module.ngfactory';
+
 
 /*
  * Bootstrap our Angular app with a top level NgModule
