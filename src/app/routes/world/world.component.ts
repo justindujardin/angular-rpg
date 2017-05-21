@@ -24,6 +24,9 @@ import {TileMapView} from '../../../game/pow2/tile/tile-map-view';
 import {LoadingService} from '../../components/loading/loading.service';
 import {PartyMenuComponent} from '../../components/party-menu/party-menu.component';
 import {WorldMapComponent} from './map/world-map.entity';
+import {GameFeatureObject} from '../../scene/game-feature-object';
+import {Rect} from '../../../game/pow-core/rect';
+import {Point} from '../../../game/pow-core/point';
 
 @Component({
   selector: 'world',
@@ -42,6 +45,11 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
   @ViewChild(PartyMenuComponent) partyMenu: PartyMenuComponent;
 
   /**
+   * Whether to render debug view information
+   */
+  debug: boolean = false;
+
+  /**
    * Escape action handler. Escape out of any active feature or menu
    */
   @HostListener('document:keyup', ['$event'])
@@ -55,6 +63,9 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
         // Otherwise toggle the party menu
         this.partyMenu.open = !this.partyMenu.open;
       }
+    }
+    else if (event.key === '1') {
+      this.debug = !this.debug;
     }
   }
 
@@ -146,6 +157,78 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
         this.map.player.renderFrame(this, elapsed);
       }
     }
+    if (this.debug) {
+      this.debugRender();
+    }
     return this;
+  }
+
+
+  /**
+   * Render Tile debug information.
+   */
+  debugRender() {
+    const debugStrings = [
+      `Camera: (${this.camera.point.x},${this.camera.point.y})`
+    ];
+    const player = this.scene.objectByComponent(PlayerBehaviorComponent);
+    if (player) {
+      debugStrings.push(`Player: (${player.point.x},${player.point.y})`);
+    }
+    const clipRect = this.getCameraClip();
+    debugStrings.push(`Clip: (${clipRect.point.x},${clipRect.point.y}) (${clipRect.extent.x},${clipRect.extent.y})`);
+
+    // Render the clip rectangle
+    this.context.strokeStyle = "#00ff00";
+    const screenClip = this.worldToScreen(clipRect);
+    this.context.strokeRect(screenClip.point.x, screenClip.point.y, screenClip.extent.x, screenClip.extent.y);
+
+    // Render impassable tiles on the map in the clip rect
+    this.context.strokeStyle = '#ff0000';
+    const clipXMin = clipRect.point.x;
+    const clipXMax = clipRect.getRight();
+    const clipYMin = clipRect.point.y;
+    const clipYMax = clipRect.getBottom();
+    for (let x = clipXMin; x <= clipXMax; x++) {
+      for (let y = clipYMin; y <= clipYMax; y++) {
+        this.map.getLayers().forEach((layer) => {
+          const tile = this.map.getTerrain(layer.name, x, y);
+          if (tile && !tile.passable) {
+            const screenTile: Rect = this.worldToScreen(new Rect(new Point(x - 0.5, y - 0.5), new Point(1, 1)));
+            this.context.strokeRect(screenTile.point.x, screenTile.point.y, screenTile.extent.x, screenTile.extent.y);
+          }
+        });
+      }
+    }
+
+    // Game features
+    this.context.strokeStyle = '#0000FF';
+    const tiles = this.scene.objectsByType(GameFeatureObject);
+    tiles.forEach((object: any) => {
+      const point = object.renderPoint || object.point;
+      const screenTile: Rect = this.worldToScreen(new Rect(new Point(point.x - 0.5, point.y - 0.5), new Point(1, 1)));
+      this.context.strokeRect(screenTile.point.x, screenTile.point.y, screenTile.extent.x, screenTile.extent.y);
+    });
+
+    // Framerate information
+    debugStrings.push(`MSPF: ${this.world.time.mspf}`);
+    debugStrings.push(`FPS:  ${this.scene.fps.toFixed(0)}`);
+
+    // Debug strings
+    const fontSize = 6;
+    this.context.save();
+    this.context.font = `bold ${fontSize}px GraphicPixel`;
+    const renderPos = this.worldToScreen(clipRect.point);
+    let textX = renderPos.x + 10;
+    let textY = renderPos.y + 10;
+    let i: number;
+    for (i = 0; i < debugStrings.length; ++i) {
+      this.context.fillStyle = 'rgba(0,0,0,0.8)';
+      this.context.fillText(debugStrings[i], textX + 1, textY + 1);
+      this.context.fillStyle = 'rgba(255,255,255,1)';
+      this.context.fillText(debugStrings[i], textX, textY);
+      textY += fontSize;
+    }
+    this.context.restore();
   }
 }
