@@ -94,16 +94,19 @@ export class PowInput implements IWorldObject {
 
   mouseHook(view: SceneView, name: string): NamedMouseElement {
     const hooks = _.where(this._mouseElements, {name}) as NamedMouseElement[];
-    if (hooks.length > 0) {
-      return hooks[0];
-    }
     const result: NamedMouseElement = {
       name,
       view,
       point: new Point(-1, -1),
       world: new Point(-1, -1)
     };
-    this._mouseElements.push(result);
+    // Overwrite any existing hook with a conflicting name
+    if (hooks.length > 0) {
+      hooks[0] = result;
+    }
+    else {
+      this._mouseElements.push(result);
+    }
     return result;
   }
 
