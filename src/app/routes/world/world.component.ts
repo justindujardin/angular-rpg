@@ -163,7 +163,6 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     return this;
   }
 
-
   /**
    * Render Tile debug information.
    */
@@ -179,7 +178,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     debugStrings.push(`Clip: (${clipRect.point.x},${clipRect.point.y}) (${clipRect.extent.x},${clipRect.extent.y})`);
 
     // Render the clip rectangle
-    this.context.strokeStyle = "#00ff00";
+    this.context.strokeStyle = '#00ff00';
     const screenClip = this.worldToScreen(clipRect);
     this.context.strokeRect(screenClip.point.x, screenClip.point.y, screenClip.extent.x, screenClip.extent.y);
 
