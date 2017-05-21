@@ -37,7 +37,7 @@ class DeferredValue {
  */
 export const rpgLogger = storeLogger({
   collapsed: true,
-  stateTransformer: (state) => {
+  stateTransformer: (state: any) => {
     // This is called for actions and for meta entries with timing data. Ignore those.
     if (state.action && state.nextState) {
       return state;
