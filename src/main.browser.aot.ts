@@ -10,7 +10,6 @@ import {decorateModuleRef} from './app/environment';
  */
 import {AppModuleNgFactory} from '../compiled/src/app/app.module.ngfactory';
 
-
 /*
  * Bootstrap our Angular app with a top level NgModule
  */
