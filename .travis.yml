@@ -17,4 +17,4 @@ before_script:
   - sleep 3
 script:
   - npm run test
-  - npm run build:prod:aot
+  - npm run build:aot:prod
