@@ -1,12 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Observable, ReplaySubject} from 'rxjs/Rx';
 import {ResourceManager} from '../../../game/pow-core/resource-manager';
-import {Combatant, CombatEncounter} from './combat.model';
+import {CombatantTypes, CombatEncounter} from './combat.model';
 import {getMapUrl} from '../../../game/pow2/core/api';
 import {TiledTMXResource} from '../../../game/pow-core/resources/tiled/tiled-tmx.resource';
 import {BaseEntity} from '../base-entity';
 import {ITiledLayer} from '../../../game/pow-core/resources/tiled/tiled.model';
 import * as _ from 'underscore';
+import {EntityWithEquipment} from '../entity/entity.model';
 
 @Injectable()
 export class CombatService {
@@ -47,7 +48,7 @@ export class CombatService {
   }
 
 // Chance to hit = (BASE_CHANCE_TO_HIT + PLAYER_HIT_PERCENT) - EVASION
-  rollHit(attacker: Combatant, defender: Combatant): boolean {
+  rollHit(attacker: CombatantTypes, defender: CombatantTypes): boolean {
     const roll: number = _.random(0, 200);
     const attackerEvasion: number = this.getEvasion(attacker);
     const defenderEvasion: number = this.getEvasion(defender);
@@ -62,12 +63,23 @@ export class CombatService {
     return roll <= chance;
   }
 
-  getEvasion(target: Combatant): number {
+  getEvasion(target: CombatantTypes): number {
     return target.speed;
   }
 
-  attackCombatant(attacker: Combatant, defender: Combatant): number {
-    const amount = this.getAttackStrength(attacker);
+  /**
+   * One combatant attacks another!
+   *
+   * - sum the base attack and a weapon to get damage
+   * - sum the base defense and all the armors to get defense
+   * - damage = attack - defense with a minimum value of 1 if a hit lands
+   *
+   * @returns {number} The damage value to apply to the defender.
+   */
+  attackCombatant(attacker: CombatantTypes, defender: CombatantTypes): number {
+    const attackStrength = this.getAttackStrength(attacker);
+    const defense = this.getDefense(defender);
+    const amount = attackStrength - defense;
     const damage = this.varyDamage(amount);
     if (this.rollHit(attacker, defender)) {
       return Math.ceil(damage);
@@ -75,29 +87,27 @@ export class CombatService {
     return 0;
   }
 
-  getDefense(member: Combatant, base: boolean = false): number {
-    return member.defense;
-    // var obj: any = this;
-    // var basedefense: number = _.reduce(PARTY_ARMOR_TYPES, (val: number, type: string) => {
-    //   var item: any = obj[type];
-    //   if (!item) {
-    //     return val;
-    //   }
-    //   return val + item.attributes.defense;
-    // }, 0);
-    // return basedefense + (base ? 0 : defenseBuff);
+  getDefense(member: CombatantTypes): number {
+    const equipped = member as EntityWithEquipment;
+    const shieldDefense = equipped.shield ? equipped.shield.defense : 0;
+    const armorDefense = equipped.armor ? equipped.armor.defense : 0;
+    const bootsDefense = equipped.boots ? equipped.boots.defense : 0;
+    const helmDefense = equipped.helm ? equipped.helm.defense : 0;
+    const accessoryDefense = equipped.accessory ? equipped.accessory.defense : 0;
+    return member.defense + shieldDefense + armorDefense + bootsDefense + helmDefense + accessoryDefense;
   }
 
-  getAttackStrength(combatant: Combatant): number {
+  getAttackStrength(combatant: CombatantTypes): number {
     return this.getWeaponStrength(combatant) + combatant.attack / 2;
   }
 
-  getMagicStrength(combatant: Combatant): number {
+  getMagicStrength(combatant: CombatantTypes): number {
     return this.getWeaponStrength(combatant) + combatant.magic / 2;
   }
 
-  getWeaponStrength(combatant: Combatant): number {
-    return 0;
+  getWeaponStrength(combatant: CombatantTypes): number {
+    const equipped = combatant as EntityWithEquipment;
+    return equipped.weapon ? equipped.weapon.attack : 0;
   }
 
   /**

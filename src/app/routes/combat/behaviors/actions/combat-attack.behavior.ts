@@ -15,10 +15,11 @@ import {AppState} from '../../../../app.model';
 import {Store} from '@ngrx/store';
 import {CombatAttackAction} from '../../../../models/combat/combat.actions';
 import {CombatAttack} from '../../../../models/combat/combat.model';
-import {Entity} from '../../../../models/entity/entity.model';
+import {Entity, EntityWithEquipment} from '../../../../models/entity/entity.model';
 import {GameWorld} from '../../../../services/game-world';
 import {ImageResource} from '../../../../../game/pow-core/resources/image.resource';
 import {CombatService} from '../../../../models/combat/combat.service';
+import {getEntityEquipment} from '../../../../models/selectors';
 /**
  * Attack another entity in combat.
  */
@@ -67,67 +68,76 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
     const playerRender =
       attacker.findBehavior(CombatPlayerRenderBehaviorComponent) as CombatPlayerRenderBehaviorComponent;
     const attack = () => {
-      const damage: number = this.combatService.attackCombatant(attacker.model, defender.model);
-      const didKill: boolean = (defender.model.hp - damage) <= 0;
-      const hit: boolean = damage > 0;
-      const defending: boolean = false; // TODO: Maps to guard action
-      const hitSound: string = getSoundEffectUrl(didKill ? 'killed' : (hit ? (defending ? 'miss' : 'hit') : 'miss'));
+      this.store.select(getEntityEquipment(attacker.model.eid)).combineLatest(
+        this.store.select(getEntityEquipment(defender.model.eid)),
+        (equippedAttacker: EntityWithEquipment, equippedDefender: EntityWithEquipment) => {
+          const damage: number =
+            this.combatService.attackCombatant(equippedAttacker || attacker.model, equippedDefender || defender.model);
+          const didKill: boolean = (defender.model.hp - damage) <= 0;
+          const hit: boolean = damage > 0;
+          const defending: boolean = false; // TODO: Maps to guard action
+          const hitSound: string =
+            getSoundEffectUrl(didKill ? 'killed' : (hit ? (defending ? 'miss' : 'hit') : 'miss'));
 
-      const attackData: CombatAttack = {
-        attacker: attacker.model,
-        defender: defender.model,
-        damage
-      };
-      this.store.dispatch(new CombatAttackAction(attackData));
+          const attackData: CombatAttack = {
+            attacker: attacker.model,
+            defender: defender.model,
+            damage
+          };
+          this.store.dispatch(new CombatAttackAction(attackData));
 
-      const damageAnimation: string = hit ? (defending ? 'animSmoke.png' : 'animHit.png') : 'animMiss.png';
-      const meta: ISpriteMeta = this.gameWorld.sprites.getSpriteMeta(damageAnimation);
-      if (!meta) {
-        console.warn('could not find damage animation in sprites metadata: ' + damageAnimation);
-        return done();
-      }
-
-      this.gameWorld.sprites.getSpriteSheet(meta.source).then((damageImages: ImageResource[]) => {
-        const damageImage: HTMLImageElement = damageImages[0].data;
-        const components = {
-          animation: new AnimatedSpriteBehavior({
-            spriteName: 'attack',
-            lengthMS: 350
-          }),
-          sprite: new SpriteComponent({
-            name: 'attack',
-            icon: damageAnimation,
-            meta,
-            image: damageImage
-          }),
-          damage: new DamageComponent(),
-          sound: new SoundBehavior({
-            url: hitSound,
-            volume: 0.3
-          })
-        };
-        if (playerRender) {
-          playerRender.setState('Moving');
-        }
-        defender.addComponentDictionary(components);
-        components.damage.once('damage:done', () => {
-          if (playerRender) {
-            playerRender.setState();
+          const damageAnimation: string = hit ? (defending ? 'animSmoke.png' : 'animHit.png') : 'animMiss.png';
+          const meta: ISpriteMeta = this.gameWorld.sprites.getSpriteMeta(damageAnimation);
+          if (!meta) {
+            console.warn('could not find damage animation in sprites metadata: ' + damageAnimation);
+            return done();
           }
-          if (didKill) {
-            _.defer(() => {
-              defender.destroy();
+
+          this.gameWorld.sprites.getSpriteSheet(meta.source).then((damageImages: ImageResource[]) => {
+            const damageImage: HTMLImageElement = damageImages[0].data;
+            const components = {
+              animation: new AnimatedSpriteBehavior({
+                spriteName: 'attack',
+                lengthMS: 350
+              }),
+              sprite: new SpriteComponent({
+                name: 'attack',
+                icon: damageAnimation,
+                meta,
+                image: damageImage
+              }),
+              damage: new DamageComponent(),
+              sound: new SoundBehavior({
+                url: hitSound,
+                volume: 0.3
+              })
+            };
+            if (playerRender) {
+              playerRender.setState('Moving');
+            }
+            defender.addComponentDictionary(components);
+            components.damage.once('damage:done', () => {
+              if (playerRender) {
+                playerRender.setState();
+              }
+              if (didKill) {
+                _.defer(() => {
+                  defender.destroy();
+                });
+              }
+              defender.removeComponentDictionary(components);
             });
-          }
-          defender.removeComponentDictionary(components);
-        });
-        const data: CombatAttackSummary = {
-          damage,
-          attacker,
-          defender
-        };
-        this.combat.machine.notify('combat:attack', data, done);
-      });
+            const data: CombatAttackSummary = {
+              damage,
+              attacker,
+              defender
+            };
+            this.combat.machine.notify('combat:attack', data, done);
+          });
+
+        })
+        .take(1)
+        .subscribe();
     };
 
     if (playerRender) {

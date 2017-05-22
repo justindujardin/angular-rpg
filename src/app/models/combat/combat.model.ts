@@ -1,7 +1,7 @@
 import {BaseEntity} from '../base-entity';
 import {IPoint} from '../../../game/pow-core/point';
 import * as Immutable from 'immutable';
-import {Entity} from '../entity/entity.model';
+import {Entity, EntityWithEquipment} from '../entity/entity.model';
 
 /** Valid combat types */
 export type CombatType = 'none' | 'fixed' | 'random';
@@ -35,6 +35,8 @@ export interface Combatant extends BaseEntity {
   /** The gold that can be looted aftefor defeating this combatant */
   readonly gold?: number;
 }
+
+export type CombatantTypes = Combatant | EntityWithEquipment;
 
 /**
  * A Combat encounter descriptor.  Used to describe the configuration of combat.

@@ -115,8 +115,11 @@ export const getEntityItemById = createSelector(sliceEntitiesState, sliceEntityI
 export const getEntityItemIds = createSelector(sliceEntitiesState, sliceEntityItemIds);
 
 /** Resolve equipment slots to their item entity objects for representation in the UI */
-export const getEntityEquipment = (entityId: string): Selector<AppState, EntityWithEquipment> => {
+export const getEntityEquipment = (entityId: string): Selector<AppState, EntityWithEquipment | null> => {
   return createSelector(getEntityById(entityId), getEntityItemById, (entity, items) => {
+    if (!entity) {
+      return null;
+    }
     const result: Partial<EntityWithEquipment> = {
       armor: items.get(entity.armor) as ITemplateArmor,
       helm: items.get(entity.helm) as ITemplateArmor,
