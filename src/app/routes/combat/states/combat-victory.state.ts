@@ -129,7 +129,7 @@ export class CombatVictoryStateComponent extends CombatMachineState {
         players = players.map((player: Entity) => {
           let result = this.awardExperience(expPerParty, player);
           if (result.level > player.level) {
-            levelUps.push(player);
+            levelUps.push(result);
           }
           return result;
         });

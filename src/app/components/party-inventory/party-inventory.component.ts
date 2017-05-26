@@ -34,6 +34,7 @@ import {Subject} from 'rxjs/Subject';
 import {Subscription} from 'rxjs/Subscription';
 import {GameStateEquipItemAction, GameStateUnequipItemAction} from '../../models/game-state/game-state.actions';
 import {EntityItemTypes} from '../../models/entity/entity.reducer';
+import {CombatService} from '../../models/combat/combat.service';
 
 /** @internal to PartyInventoryComponent */
 interface PartyInventoryEquipmentEvent {
@@ -126,6 +127,7 @@ export class PartyInventoryComponent implements OnDestroy {
 
   constructor(public game: RPGGame,
               public store: Store<AppState>,
+              public combatService: CombatService,
               public notify: NotificationService) {
   }
 

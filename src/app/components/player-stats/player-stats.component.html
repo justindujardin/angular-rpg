@@ -1,0 +1,18 @@
+<div *ngIf="showLevel$ | async">Level {{(model$ | async)?.level}}</div>
+
+<section *ngIf="showHP$ | async">
+  <div>HP {{(model$ | async)?.hp}} / {{(model$ | async)?.maxhp}}</div>
+  <md-progress-bar [value]="healthPercentage$ | async"></md-progress-bar>
+</section>
+
+<section *ngIf="showExperience$ | async">
+  <div>EXP {{(model$ | async)?.exp}} / {{nextLevelExp$ | async}}</div>
+  <md-progress-bar [value]="nextLevelPercentage$ | async"></md-progress-bar>
+</section>
+
+<section *ngIf="showCombatStats$ | async">
+  <div class="hero-stat">Attack : {{attack$ | async}}</div>
+  <div class="hero-stat">Defense : {{defense$ | async}}</div>
+  <div class="hero-stat">Magic : {{magic$ | async}}</div>
+  <div class="hero-stat">Speed : {{speed$ | async}}</div>
+</section>

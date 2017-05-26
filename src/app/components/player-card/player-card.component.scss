@@ -12,19 +12,8 @@
       margin-top: 5px;
       text-align: center;
     }
-    health-bar {
-      width: 100%;
-    }
-    .progress {
-      border-radius: 0;
-      margin-bottom: 5px;
-      height: 10px;
-    }
-    .hero-stat {
-      text-align: right;
-      strong {
-        float: left;
-      }
+    player-stats {
+      text-align: center;
     }
   }
 }

@@ -50,8 +50,8 @@ export class CombatService {
 // Chance to hit = (BASE_CHANCE_TO_HIT + PLAYER_HIT_PERCENT) - EVASION
   rollHit(attacker: CombatantTypes, defender: CombatantTypes): boolean {
     const roll: number = _.random(0, 200);
-    const attackerEvasion: number = this.getEvasion(attacker);
-    const defenderEvasion: number = this.getEvasion(defender);
+    const attackerEvasion: number = this.getSpeed(attacker);
+    const defenderEvasion: number = this.getSpeed(defender);
     const favorDodge = attackerEvasion < defenderEvasion;
     const chance: number = favorDodge ? 180 : 120; // TODO: Some real calculation here
     if (roll === 200) {
@@ -63,7 +63,7 @@ export class CombatService {
     return roll <= chance;
   }
 
-  getEvasion(target: CombatantTypes): number {
+  getSpeed(target: CombatantTypes): number {
     return target.speed;
   }
 
@@ -77,7 +77,7 @@ export class CombatService {
    * @returns {number} The damage value to apply to the defender.
    */
   attackCombatant(attacker: CombatantTypes, defender: CombatantTypes): number {
-    const attackStrength = this.getAttackStrength(attacker);
+    const attackStrength = this.getAttack(attacker);
     const defense = this.getDefense(defender);
     const amount = attackStrength - defense;
     const damage = this.varyDamage(amount);
@@ -87,6 +87,9 @@ export class CombatService {
     return 0;
   }
 
+  /**
+   * Determine the total defense value of this character including all equipped accessories and armor
+   */
   getDefense(member: CombatantTypes): number {
     const equipped = member as EntityWithEquipment;
     const shieldDefense = equipped.shield ? equipped.shield.defense : 0;
@@ -97,12 +100,15 @@ export class CombatService {
     return member.defense + shieldDefense + armorDefense + bootsDefense + helmDefense + accessoryDefense;
   }
 
-  getAttackStrength(combatant: CombatantTypes): number {
-    return this.getWeaponStrength(combatant) + combatant.attack / 2;
+  /**
+   * The total attack strength of this combatant including any weapons
+   */
+  getAttack(combatant: CombatantTypes): number {
+    return this.getWeaponStrength(combatant) + combatant.attack;
   }
 
-  getMagicStrength(combatant: CombatantTypes): number {
-    return this.getWeaponStrength(combatant) + combatant.magic / 2;
+  getMagic(combatant: CombatantTypes): number {
+    return combatant.magic;
   }
 
   getWeaponStrength(combatant: CombatantTypes): number {

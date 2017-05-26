@@ -44,7 +44,7 @@ export class TempleFeatureComponent extends TiledFeatureComponent implements OnI
   });
 
   icon$: Observable<string> = this.feature$.map((data: TiledMapFeatureData) => {
-    return data.properties.name;
+    return data.properties.icon;
   });
 
   cost$: Observable<number> = this.feature$.map((data: TiledMapFeatureData) => {

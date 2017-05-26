@@ -28,6 +28,7 @@ import {
 } from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {RPG_PLAYER_STATS_EXPORTS} from './player-stats/index';
 
 export * from './health-bar/index';
 export * from './loading/index';
@@ -35,6 +36,7 @@ export * from './notification/index';
 export * from './party-inventory/index';
 export * from './party-menu/index';
 export * from './player-card/index';
+export * from './player-stats/index';
 export * from './sprite/index';
 
 /** Common game/application components */
@@ -45,6 +47,7 @@ export const APP_COMPONENTS_EXPORTS = [
   ...RPG_PARTY_INVENTORY_EXPORTS,
   ...RPG_PARTY_MENU_EXPORTS,
   ...RPG_PLAYER_CARD_EXPORTS,
+  ...RPG_PLAYER_STATS_EXPORTS,
   ...RPG_SPRITE_EXPORTS
 ];
 

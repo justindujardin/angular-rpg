@@ -1,4 +1,4 @@
-import './main.sw';
+import './sw.browser';
 /*
  * Angular bootstraping
  */

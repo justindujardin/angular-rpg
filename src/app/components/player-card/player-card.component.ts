@@ -1,30 +1,30 @@
-import {Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {RPGGame} from '../../services/index';
 import {HeroModel} from '../../../game/rpg/models/all';
+import {Observable} from 'rxjs/Observable';
+import {Entity} from '../../models/entity/entity.model';
+import {Subject} from 'rxjs/Subject';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {AppState} from '../../app.model';
+import {Store} from '@ngrx/store';
 
 @Component({
   selector: 'player-card',
   templateUrl: './player-card.component.html',
-  styleUrls: ['./player-card.component.scss']
+  styleUrls: ['./player-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlayerCardComponent {
+
+  private _model$: Subject<Entity> = new BehaviorSubject<Entity>(null);
+  model$: Observable<Entity> = this._model$;
+
   @Input()
-  model: any; // TODO: Revisit this with Entity type when model refactor is finishing up
-
-  constructor(public game: RPGGame) {
+  set model(value: Entity) {
+    this._model$.next(value);
   }
 
-  getPlayerCSSClassMap(): any {
-    return {
-      dead: this.model && this.model.hp <= 0
-    };
-  }
-
-  getCSSProgressWidth(): number {
-    let width = 0;
-    if (this.model) {
-      width = (this.model.exp - this.model.prevLevelExp) / (this.model.nextLevelExp - this.model.prevLevelExp) * 100;
-    }
-    return Math.round(width);
+  constructor(public game: RPGGame,
+              public store: Store<AppState>) {
   }
 }

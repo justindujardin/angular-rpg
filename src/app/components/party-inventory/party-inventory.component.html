@@ -10,11 +10,10 @@
         <span>{{current.name}}</span>
       </div>
       <div>
-        <div>HP {{current.hp}} / {{current.maxhp}}</div>
-        <div>Attack : {{current.attack}}</div>
-        <div>Magic : {{current.magic}}</div>
-        <div>Defense : {{current.defense}}</div>
-        <div>Speed : {{current.speed}}</div>
+        <player-stats [model]="current"
+                      [showExperience]="false"
+                      [showHP]="false"
+                      [showLevel]="false"></player-stats>
       </div>
     </section>
 

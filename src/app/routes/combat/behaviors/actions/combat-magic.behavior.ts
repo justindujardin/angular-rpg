@@ -109,7 +109,7 @@
 //                  as CombatPlayerRenderBehaviorComponent;
 //     attackerPlayer.magic(() => {
 //       const attackModel = attacker.model;
-//       const magicAttack = attackModel.varyDamage(attackModel.getMagicStrength() + this.spell.value);
+//       const magicAttack = attackModel.varyDamage(attackModel.getMagic() + this.spell.value);
 //       const damage: number = damage(defender.model, magicAttack);
 //       const didKill: boolean = defender.model.hp <= 0;
 //       const hit: boolean = damage > 0;

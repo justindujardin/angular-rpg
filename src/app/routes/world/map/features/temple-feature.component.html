@@ -16,8 +16,13 @@
 
   <ul class="party">
     <li *ngFor="let hero of party$ | async">
+      <h1>{{hero.name}}</h1>
+      <player-stats
+        [showLevel]="false"
+        [showExperience]="false"
+        [showCombatStats]="false"
+        [model]="hero"></player-stats>
       <rpg-sprite class="image" frame="7" width="96" height="96" [name]="hero.icon"></rpg-sprite>
-      <rpg-health-bar [model]="hero"></rpg-health-bar>
     </li>
   </ul>
 </div>
