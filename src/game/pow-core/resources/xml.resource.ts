@@ -15,6 +15,7 @@
  */
 import {Resource} from '../resource';
 import * as _ from 'underscore';
+import * as $ from 'jquery';
 
 /**
  * Use jQuery to load an XML file from a URL.

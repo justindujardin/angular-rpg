@@ -31,7 +31,7 @@ export interface IAudioFormat {
   /**
    * The media resource type to check against an audio element.
    */
-    type: string;
+  type: string;
 }
 
 /**

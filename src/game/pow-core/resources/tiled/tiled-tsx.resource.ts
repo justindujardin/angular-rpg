@@ -17,6 +17,7 @@ import {XMLResource} from '../xml.resource';
 import {ImageResource} from '../image.resource';
 import * as _ from 'underscore';
 import {ITileInstanceMeta, compactUrl, readTiledProperties} from './tiled';
+import * as $ from 'jquery';
 
 export class TilesetTile {
   id: number;

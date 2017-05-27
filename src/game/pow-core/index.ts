@@ -15,7 +15,6 @@ export * from './world';
 export * from './resources/audio.resource';
 export * from './resources/image.resource';
 export * from './resources/json.resource';
-export * from './resources/script.resource';
 export * from './resources/xml.resource';
 export * from './resources/tiled/tiled';
 export * from './resources/tiled/tiled-tmx.resource';

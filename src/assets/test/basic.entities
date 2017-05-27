@@ -1,0 +1,49 @@
+[
+  {
+    "name": "EntityWithComponents",
+    "type": "pow-core/entity|Entity",
+    "components": [
+      {
+        "name": "one",
+        "type": "pow-core/component|Component"
+      },
+      {
+        "name": "two",
+        "type": "pow-core/component|Component"
+      }
+    ]
+  },
+  {
+    "name": "EntityWithParams",
+    "type": "/base/test/pow-core/resources/entities.spec|BooleanConstructObject",
+    "params": [
+      "arg"
+    ],
+    "inputs": {
+      "arg": "boolean"
+    }
+  },
+  {
+    "name": "EntityWithComponentInput",
+    "type": "pow-core/entity|Entity",
+    "inputs": {
+      "component": "pow-core/component|Component"
+    }
+  },
+  {
+    "name": "ComponentWithParams",
+    "type": "pow-core/entity|Entity",
+    "inputs": {
+      "arg": "boolean"
+    },
+    "components": [
+      {
+        "name": "test",
+        "type": "/base/test/pow-core/resources/entities.spec|BooleanConstructComponent",
+        "params": [
+          "arg"
+        ]
+      }
+    ]
+  }
+]

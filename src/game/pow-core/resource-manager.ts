@@ -2,7 +2,6 @@ import * as _ from 'underscore';
 import {errors} from './errors';
 import {IResource} from './resource';
 import {ImageResource} from './resources/image.resource';
-import {ScriptResource} from './resources/script.resource';
 import {JSONResource} from './resources/json.resource';
 import {XMLResource} from './resources/xml.resource';
 import {TiledTMXResource} from './resources/tiled/tiled-tmx.resource';
@@ -21,7 +20,6 @@ export class ResourceManager {
   private _cache: Object = {};
   private _types: Object = {
     'png': ImageResource,
-    'js': ScriptResource,
     'json': JSONResource,
     'xml': XMLResource,
     'tmx': TiledTMXResource,

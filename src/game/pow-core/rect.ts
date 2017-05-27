@@ -125,7 +125,7 @@ export class Rect implements IRect {
     return new Point(x, y);
   }
 
-  setCenter(point: Point|IPoint): Rect;
+  setCenter(point: Point | IPoint): Rect;
   setCenter(x: number, y: number): Rect;
   setCenter(pointOrX: any, y?: number): Rect {
     let x: number;

@@ -14,6 +14,7 @@
  limitations under the License.
  */
 import {Resource} from '../resource';
+import * as $ from 'jquery';
 /**
  * Use jQuery to load a JSON file from a URL.
  */

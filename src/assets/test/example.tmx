@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="4" height="4" tilewidth="16" tileheight="16">
+  <tileset firstgid="1" source="example.tsx"/>
+  <layer name="TestLayer" width="4" height="4">
+    <data encoding="csv">
+      1,1,1,1,
+      1,1,1,1,
+      1,1,1,1,
+      1,1,1,1
+    </data>
+  </layer>
+  <objectgroup color="#000000" draworder="topdown" name="TestObject" width="4" height="4">
+    <object name="example" x="5" y="5" width="64" height="64" type="box" visible="false">
+      <properties>
+        <property name="result" value="OK"/>
+        <property name="number" value="10"/>
+        <property name="boolean" value="false"/>
+      </properties>
+    </object>
+    <object name="example2" x="0" y="0" width="64" height="64"/>
+  </objectgroup>
+</map>

@@ -29,6 +29,7 @@ import {XMLResource} from '../xml.resource';
 import {Resource} from '../../resource';
 import {TiledTSXResource} from './tiled-tsx.resource';
 import * as _ from 'underscore';
+import * as $ from 'jquery';
 import 'jquery';
 import {ITiledObject, ITileSetDependency, ITiledLayer} from './tiled.model';
 
@@ -180,6 +181,7 @@ export class TiledTMXResource extends XMLResource {
         }
       });
 
+      // IF failed is set to true, the promise will already have been rejected, so we can return safely here.
       if (failed) {
         return;
       }

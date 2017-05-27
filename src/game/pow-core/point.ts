@@ -47,7 +47,7 @@ export class Point implements IPoint {
     return `${this.x},${this.y}`;
   }
 
-  set(point: Point|IPoint): Point;
+  set(point: Point | IPoint): Point;
   set(x: number, y: number): Point;
   set(pointOrX: any, y?: any): Point {
     // Instance of point, or set from plain object with x/y properties
@@ -198,7 +198,7 @@ export class Point implements IPoint {
     return result;
   }
 
-  interpolate(from: Point, to: Point, factor: number): IPoint {
-    return Point.interpolate(this, from, to, factor);
+  interpolate(from: Point, to: Point, factor: number): Point {
+    return Point.interpolate(this, from, to, factor) as Point;
   }
 }

@@ -14,7 +14,7 @@ export class BehaviorHost extends Events implements IBehaviorHost {
   id: string;
   name: string;
 
-  protected _connectedBehaviors: IBehavior[] = [];
+  _connectedBehaviors: IBehavior[] = [];
 
   destroy() {
     _.each(this._connectedBehaviors, (o: IBehavior) => {
