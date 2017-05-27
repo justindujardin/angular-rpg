@@ -129,15 +129,16 @@ export class AudioResource extends Resource implements IAudioSource {
   }
 
   play(when: number = 0): IAudioSource {
-    if (this._source) {
-      this._source.start(when);
+    if (this.data) {
+      this.data.volume = this.volume;
+      this.data.play();
     }
     return this;
   }
 
   pause(): IAudioSource {
-    if (this._source) {
-      this._source.stop(0);
+    if (this.data) {
+      this.data.pause();
     }
     return this;
   }
