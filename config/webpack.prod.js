@@ -18,6 +18,8 @@ const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 const WebpackMd5Hash = require('webpack-md5-hash');
 const V8LazyParseWebpackPlugin = require('v8-lazy-parse-webpack-plugin');
+const OfflinePlugin = require('offline-plugin');
+
 /**
  * Webpack Constants
  */
@@ -92,9 +94,9 @@ module.exports = function (env) {
         {
           test: /\.css$/,
           loader: ExtractTextPlugin.extract({
-              fallbackLoader: 'style-loader',
-              loader: 'css-loader'
-            }),
+            fallbackLoader: 'style-loader',
+            loader: 'css-loader'
+          }),
           include: [helpers.root('src', 'styles')]
         },
 
@@ -104,9 +106,9 @@ module.exports = function (env) {
         {
           test: /\.scss$/,
           loader: ExtractTextPlugin.extract({
-              fallbackLoader: 'style-loader',
-              loader: 'css-loader!sass-loader'
-            }),
+            fallbackLoader: 'style-loader',
+            loader: 'css-loader!sass-loader'
+          }),
           include: [helpers.root('src', 'styles')]
         },
 
@@ -304,6 +306,29 @@ module.exports = function (env) {
        *
        * See: https://github.com/th0r/webpack-bundle-analyzer
        */
+
+      /** Service worker support */
+      new OfflinePlugin({
+        safeToUseOptionalCaches: true,
+        caches: {
+          main: [
+            'main.*.js',
+            'polyfills.*.js',
+            'vendor.*.js'
+          ],
+          additional: [
+            ':rest:'
+          ]
+        },
+        ServiceWorker: {
+          events: true,
+          navigateFallbackURL: '/'
+        },
+        AppCache: {
+          events: true
+        }
+      })
+
 
     ],
 
