@@ -87,6 +87,7 @@ export class CombatMapComponent extends GameTileMap implements AfterViewInit, On
   ngAfterViewInit(): void {
     this.scene.addObject(this);
     this.addBehavior(this.camera);
+    // Whenever the underlying map resource changes, update party/enemy state from latest values.
     this._resourceSubscription = this.resource$.do(() => {
       this.party.forEach((p: CombatPlayerComponent, index: number) => {
         p.setSprite(p.model.icon);

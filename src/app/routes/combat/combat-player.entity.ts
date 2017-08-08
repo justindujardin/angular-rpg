@@ -15,7 +15,7 @@ import {SceneObjectBehavior} from '../../../game/pow2/scene/scene-object-behavio
 import {CombatAttackBehaviorComponent} from './behaviors/actions/combat-attack.behavior';
 // import {CombatMagicBehavior} from './behaviors/actions/combat-magic.behavior';
 // import {CombatItemBehavior} from './behaviors/actions/combat-item.behavior';
-// import {CombatRunBehavior} from './behaviors/actions/combat-run.behavior';
+import {CombatRunBehavior} from './behaviors/actions/combat-run.behavior';
 // import {CombatGuardBehavior} from './behaviors/actions/combat-guard.behavior';
 import {CombatComponent} from './combat.component';
 import {Entity} from '../../models/entity/entity.model';
@@ -28,7 +28,7 @@ import {Entity} from '../../models/entity/entity.model';
     <combat-attack-behavior [combat]="combat" #attack></combat-attack-behavior>
     <!--<combat-magic-behavior [combat]="combat" #magic></combat-magic-behavior>-->
     <!--<combat-item-behavior [combat]="combat" #item></combat-item-behavior>-->
-    <!--<combat-run-behavior [combat]="combat" #run></combat-run-behavior>-->
+    <combat-run-behavior [combat]="combat" #run></combat-run-behavior>
     <!--<combat-guard-behavior [combat]="combat" #guard></combat-guard-behavior>-->
     <ng-content></ng-content>
   `
@@ -73,7 +73,7 @@ export const COMBAT_PLAYER_COMPONENTS = [
   CombatAttackBehaviorComponent,
   // CombatMagicBehavior,
   // CombatItemBehavior,
-  // CombatRunBehavior,
+  CombatRunBehavior,
   // CombatGuardBehavior,
   CombatPlayerComponent
 ];
