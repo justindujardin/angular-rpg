@@ -1,2 +1,10 @@
-
 <h1>EDITING STUFF, np.</h1>
+
+<p>{{map$ | async}}</p>
+
+
+<ul *ngIf="(editable$ | async)">
+  <li *ngFor="let layer of (editable$ | async)?.layers">
+    {{layer.name}}
+  </li>
+</ul>
