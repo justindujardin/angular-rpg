@@ -15,6 +15,7 @@ export const ROUTES: Routes = [
       gameState: GameResolver
     }
   },
+  { path: 'editor/:id', loadChildren: './routes/+editor#EditorModule'},
   {
     path: 'combat/:id',
     component: CombatComponent,
