@@ -6,8 +6,14 @@ import {WorldComponent} from './routes/world/world.component';
 import {CanActivateWorld} from './routes/world/world.guards';
 import {CombatComponent} from './routes/combat';
 import {CanActivateCombat} from './routes/combat/combat.guards';
+import {WorldResolver} from './routes/world/world.resolver';
+import {HomeComponent} from './routes/home/home.component';
 
 export const ROUTES: Routes = [
+  {
+    path: 'home',
+    component: HomeComponent
+  },
   {
     path: '',
     component: GameComponent,
@@ -24,7 +30,10 @@ export const ROUTES: Routes = [
   {
     path: 'world/:id',
     component: WorldComponent,
-    canActivate: [CanActivateWorld]
+    canActivate: [CanActivateWorld],
+    resolve: {
+      gameState: WorldResolver
+    }
   },
   {path: '**', component: NoContentComponent}
 ];

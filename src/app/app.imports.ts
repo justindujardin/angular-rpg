@@ -35,7 +35,10 @@ export const APP_IMPORTS = [
   PowCoreModule.forRoot(),
 
   ReactiveFormsModule,
-  RouterModule.forRoot(ROUTES, {useHash: true}),
+  RouterModule.forRoot(ROUTES, {
+    useHash: true,
+    enableTracing: true
+  }),
   StoreModule.provideStore(rootReducer),
   RouterStoreModule.connectRouter(),
 

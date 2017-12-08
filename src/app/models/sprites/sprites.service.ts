@@ -17,7 +17,9 @@ export class SpritesService {
               private store: Store<AppState>) {
   }
 
-  /** Preload sprite sheet metadata */
+  /**
+   * Load a sprite sheet metadata file, and all the listed sprite sheets inside of it
+   */
   loadSprites(indexMetaUrl: string): Observable<void> {
     return this.store.select(getSpritesLoaded)
       .take(1)

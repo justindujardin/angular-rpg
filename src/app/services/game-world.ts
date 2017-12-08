@@ -37,13 +37,6 @@ export class GameWorld extends World {
               public gameStateService: GameStateService) {
     super();
     _sharedGameWorld = this;
-    if (this.gameStateService.hasSaveGame()) {
-      this.store.dispatch(new GameStateLoadAction());
-    }
-    else {
-      this.store.dispatch(new SpritesLoadAction('assets/images/index.json'));
-      this.store.dispatch(new GameDataFetchAction(SPREADSHEET_ID));
-    }
   }
 
   static get(): GameWorld {

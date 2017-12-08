@@ -4,8 +4,11 @@ import 'rxjs/add/observable/of';
 import {LoadingService} from '../../components/loading/loading.service';
 import {GameWorld} from '../../services/game-world';
 
+/**
+ * Makes sure that the game data stores are loaded before showing route.
+ */
 @Injectable()
-export class GameResolver implements Resolve<any> {
+export class WorldResolver implements Resolve<any> {
 
   constructor(private world: GameWorld, private loadingService: LoadingService) {
 
@@ -17,6 +20,6 @@ export class GameResolver implements Resolve<any> {
     this.loadingService.title = 'RPG!';
     this.loadingService.message = 'Initializing the world...';
     // Wait for the world.ready$ observable to emit
-    return true;
+    return this.world.ready$.take(1);
   }
 }

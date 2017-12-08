@@ -11,6 +11,7 @@ export class SpritesEffects {
               private spritesService: SpritesService) {
   }
 
+  /** When a sprite load action is dispatched with a url pointing to a sprites index json file, load it */
   @Effect() loadSprites$ = this.actions$.ofType(SpritesLoadAction.typeId)
     .switchMap((action: SpritesLoadAction) => {
       return this.spritesService.loadSprites(action.payload).map(() => action.payload);
