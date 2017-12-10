@@ -1,5 +1,5 @@
 import {compose} from '@ngrx/core/compose';
-import {ActionReducer, combineReducers} from '@ngrx/store';
+import {ActionReducer, combineReducers, StoreModule} from '@ngrx/store';
 import {storeFreeze} from 'ngrx-store-freeze';
 import {routerReducer} from '@ngrx/router-store';
 import * as fromGameState from './game-state/game-state.reducer';
@@ -14,6 +14,11 @@ import {entityFromJSON} from './entity/entity.reducer';
 import {GameStateLoadSuccessAction} from './game-state/game-state.actions';
 import {gameStateFromJSON} from './game-state/game-state.reducer';
 import {rpgLogger} from './logger';
+import {ModuleWithProviders, NgModule} from '@angular/core';
+import {GameStateService} from './game-state/game-state.service';
+import {GameDataService} from './game-data/game-data.service';
+import {SpritesService} from './sprites/sprites.service';
+import {CombatService} from './combat/combat.service';
 
 export const reducers = {
   router: routerReducer,
@@ -58,4 +63,23 @@ export function rootReducer(state: any, action: any) {
   }
 }
 
-export const MODEL_PROVIDERS: any[] = [];
+export const MODELS_PROVIDERS = [
+  CombatService,
+  SpritesService,
+  GameDataService,
+  GameStateService
+];
+
+@NgModule({
+  providers: MODELS_PROVIDERS,
+  imports: []
+})
+export class ModelsModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: ModelsModule,
+      providers: MODELS_PROVIDERS
+    };
+  }
+
+}

@@ -1,14 +1,16 @@
 import {Events} from '../../../../game/pow-core/events';
 import {
-  EditableMapTileData, EditableMapTileLayer, EditableMapTileSet,
+  EditableMapTileData,
+  EditableMapTileLayer,
+  EditableMapTileSet,
   EditableTileMapData
 } from '../interfaces/editable-map';
 import {Point} from '../../../../game/pow-core/point';
 import {errors} from '../../../../game/pow-core/errors';
 export class EditableTileLayer extends Events implements EditableMapTileLayer {
   static TYPES: any = {
-    LAYER: "layer",
-    OBJECTGROUP: "objectgroup"
+    LAYER: 'layer',
+    OBJECTGROUP: 'objectgroup'
   };
   static EVENTS: any = {
     CHANGE_TILE: 'change:tile',
@@ -51,7 +53,7 @@ export class EditableTileLayer extends Events implements EditableMapTileLayer {
       throw new Error(errors.INVALID_ARGUMENTS);
     }
     this.size = size;
-    this.tiles = <number[]>Array.apply(null, new Array(size.x * size.y)).map(Number.prototype.valueOf, 0);
+    this.tiles = Array.apply(null, new Array(size.x * size.y)).map(Number.prototype.valueOf, 0) as number[];
   }
 
   setTileGid(index: number, gid: number) {
@@ -75,7 +77,7 @@ export class EditableTileMap extends Events implements EditableTileMapData {
   point: Point = new Point(0, 0);
   size: Point = new Point(1, 1);
   tileSize: Point = new Point(16, 16);
-  name: string = "Untitled";
+  name: string = 'Untitled';
   // TODO: Replace with observable outputs?
   static EVENTS: any = {
     ADD_LAYER: 'layer:add',
@@ -102,7 +104,7 @@ export class EditableTileMap extends Events implements EditableTileMapData {
     if (index < 0 || index > this.layers.length) {
       throw new Error(errors.INDEX_OUT_OF_RANGE);
     }
-    return <EditableTileLayer>this.layers[index];
+    return this.layers[index] as EditableTileLayer;
   }
 
   addLayer(layer: EditableTileLayer) {
@@ -121,7 +123,7 @@ export class EditableTileMap extends Events implements EditableTileMapData {
     if (index < 0 || index > this.layers.length) {
       throw new Error(errors.INDEX_OUT_OF_RANGE);
     }
-    var layer: EditableTileLayer = this.layers[index];
+    let layer: EditableTileLayer = this.layers[index];
     this.layers.splice(index, 1);
     this.trigger(EditableTileMap.EVENTS.REMOVE_LAYER, layer, index);
 

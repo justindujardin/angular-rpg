@@ -30,19 +30,19 @@ export class EditorComponent implements OnInit {
   ngOnInit() {
     // HACKS: Remove this test code.
     this.map$.take(1).subscribe((map) => {
-      console.log("map iz -> " + map);
+      console.log('map iz -> ' + map);
       const mapUrl: string = getMapUrl(map);
       this.tiledLoader.load(mapUrl).then((r) => {
-        console.log("loaded editable map");
+        console.log('loaded editable map');
         console.log(r);
       });
       this.loader.load(mapUrl).then((r) => {
-        console.log("loaded map");
+        console.log('loaded map');
         console.log(r);
       });
 
     });
-    console.log("the +editor is loaded. shipit.");
+    console.log('the +editor is loaded. shipit.');
   }
 
 }

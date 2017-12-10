@@ -1,12 +1,12 @@
 import {
-  Component,
-  ViewEncapsulation,
-  ChangeDetectionStrategy,
   AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
   ElementRef,
+  HostListener,
   OnDestroy,
   ViewChild,
-  HostListener
+  ViewEncapsulation
 } from '@angular/core';
 import {NotificationService} from '../../components/notification/notification.service';
 import {RPGGame} from '../../services/rpg-game';
@@ -19,7 +19,7 @@ import {Scene} from '../../../game/pow2/scene/scene';
 import {SceneView} from '../../../game/pow2/scene/scene-view';
 import {TileMap} from '../../../game/pow2/tile/tile-map';
 import {TileMapPathBehavior} from '../../../game/pow2/tile/behaviors/tile-map-path.behavior';
-import {PowInput, NamedMouseElement} from '../../../game/pow2/core/input';
+import {NamedMouseElement, PowInput} from '../../../game/pow2/core/input';
 import {TileMapView} from '../../../game/pow2/tile/tile-map-view';
 import {LoadingService} from '../../components/loading/loading.service';
 import {PartyMenuComponent} from '../../components/party-menu/party-menu.component';
@@ -65,6 +65,9 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
       }
     }
     else if (event.key === '1') {
+      console.log('toggle editor');
+    }
+    else if (event.key === '2') {
       this.debug = !this.debug;
     }
   }
@@ -75,11 +78,12 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
   mouse: NamedMouseElement = null;
   scene: Scene = new Scene();
 
-  constructor(public game: RPGGame,
-              public notify: NotificationService,
-              public loadingService: LoadingService,
-              public store: Store<AppState>,
-              public world: GameWorld) {
+  constructor(
+    public game: RPGGame,
+    public notify: NotificationService,
+    public loadingService: LoadingService,
+    public store: Store<AppState>,
+    public world: GameWorld) {
     super();
     this.world.mark(this.scene);
     this.world.time.start();

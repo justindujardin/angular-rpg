@@ -1,7 +1,6 @@
 import {EditableTileLayer, EditableTileMap} from './editable-map';
 import {Point} from '../../../../game/pow-core/point';
 import {IMapLoader} from '../interfaces/map-loader';
-import {EditableMapTileData} from '../interfaces/editable-map';
 import {TiledTSXResource} from '../../../../game/pow-core/resources/tiled/tiled-tsx.resource';
 import {TiledTMXResource} from '../../../../game/pow-core/resources/tiled/tiled-tmx.resource';
 import {ITiledLayer} from '../../../../game/pow-core/resources/tiled/tiled.model';
@@ -12,9 +11,8 @@ import {Injectable} from '@angular/core';
 /** Used to beautify XML map outputs */
 declare var vkbeautify: any;
 
-
 export function PowLayerToTiledLayer(layer: EditableTileLayer): ITiledLayer {
-  var result: ITiledLayer = {
+  let result: ITiledLayer = {
     opacity: layer.opacity,
     name: layer.name,
     x: layer.point.x,
@@ -31,14 +29,19 @@ export function PowLayerToTiledLayer(layer: EditableTileLayer): ITiledLayer {
     case EditableTileLayer.TYPES.OBJECTGROUP:
       result.objects = layer.objects;
       break;
+    default:
+      console.warn(`PowLayerToTiledLayer: unknown layer type -> ${layer.type}`);
+      break;
   }
   return result;
 }
 
 export function TiledLayerToPowLayer(layer: ITiledLayer): EditableTileLayer {
   // TODO: more robust type detection?  What about if tiles is undefined, and layers is also undefined?
-  var type: string = typeof layer.data !== 'undefined' ? EditableTileLayer.TYPES.LAYER : EditableTileLayer.TYPES.OBJECTGROUP;
-  var powLayer: EditableTileLayer = new EditableTileLayer(type);
+  let type: string = typeof layer.data !== 'undefined'
+    ? EditableTileLayer.TYPES.LAYER
+    : EditableTileLayer.TYPES.OBJECTGROUP;
+  let powLayer: EditableTileLayer = new EditableTileLayer(type);
   _.extend(powLayer, {
     tiles: layer.data,
     objects: layer.objects,
@@ -79,7 +82,7 @@ export class TiledMapLoader implements IMapLoader {
           const tilesX = tsxRes.imageWidth / tsxRes.tilewidth;
           const x = index % tilesX;
           const y = Math.floor((index - x) / tilesX);
-          result.tileInfo.push(<EditableMapTileData>{
+          result.tileInfo.push({
             url: tsxRes.imageUrl,
             image: tsxRes.image.data,
             imageSize: new Point(tsxRes.imageWidth, tsxRes.imageHeight),

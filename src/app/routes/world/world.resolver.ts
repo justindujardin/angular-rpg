@@ -16,10 +16,10 @@ export class WorldResolver implements Resolve<any> {
 
   /** Resolve when the world ready$ observable emits */
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    this.loadingService.loading = true;
-    this.loadingService.title = 'RPG!';
-    this.loadingService.message = 'Initializing the world...';
-    // Wait for the world.ready$ observable to emit
-    return this.world.ready$.take(1);
+    // this.loadingService.loading = true;
+    // this.loadingService.title = 'RPG!';
+    // this.loadingService.message = 'Initializing the world...';
+    // // Wait for the world.ready$ observable to emit
+    // return this.world.ready$.take(1);
   }
 }

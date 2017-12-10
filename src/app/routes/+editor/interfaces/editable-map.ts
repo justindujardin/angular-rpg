@@ -49,4 +49,3 @@ export interface EditableTileMapData extends EditableMapNamed, EditableMapBounds
   tileSize: Point;
   layers: EditableMapTileLayer[];
 }
-

@@ -36,4 +36,3 @@ export class EditorModule {
 }
 
 console.log('AngularRPG Editor loaded.');
-

@@ -1,13 +1,10 @@
-import {ReactiveFormsModule, FormsModule} from '@angular/forms';
+import {ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {RouterStoreModule} from '@ngrx/router-store';
 import {StoreModule} from '@ngrx/store';
-import {CommonModule} from '@angular/common';
-import {BrowserModule} from '@angular/platform-browser';
-import {HttpModule} from '@angular/http';
 import {PowCoreModule} from '../game/pow-core/index';
 import {ROUTES} from './app.routes';
-import {rootReducer} from './models/index';
+import {ModelsModule, rootReducer} from './models/index';
 import {CombatModule} from './routes/combat/index';
 import {GameStateEffects} from './models/game-state/game-state.effects';
 import {EffectsModule} from '@ngrx/effects';
@@ -18,12 +15,11 @@ import {CombatEffects} from './models/combat/combat.effects';
 import {AppComponentsModule} from './components/index';
 import {GameDataEffects} from './models/game-data/game-data.effects';
 import {SpritesEffects} from './models/sprites/sprites.effects';
+import {ServicesModule} from './services/index';
 
 export const APP_IMPORTS = [
-  BrowserModule,
-  CommonModule,
-  FormsModule,
-  HttpModule,
+  ServicesModule.forRoot(),
+  ModelsModule.forRoot(),
 
   // Components
   BehaviorsModule.forRoot(),

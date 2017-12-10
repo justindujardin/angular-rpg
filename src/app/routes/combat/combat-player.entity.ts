@@ -15,7 +15,7 @@ import {SceneObjectBehavior} from '../../../game/pow2/scene/scene-object-behavio
 import {CombatAttackBehaviorComponent} from './behaviors/actions/combat-attack.behavior';
 // import {CombatMagicBehavior} from './behaviors/actions/combat-magic.behavior';
 // import {CombatItemBehavior} from './behaviors/actions/combat-item.behavior';
-import {CombatRunBehavior} from './behaviors/actions/combat-run.behavior';
+import {CombatRunBehaviorComponent} from './behaviors/actions/combat-run.behavior';
 // import {CombatGuardBehavior} from './behaviors/actions/combat-guard.behavior';
 import {CombatComponent} from './combat.component';
 import {Entity} from '../../models/entity/entity.model';
@@ -73,7 +73,7 @@ export const COMBAT_PLAYER_COMPONENTS = [
   CombatAttackBehaviorComponent,
   // CombatMagicBehavior,
   // CombatItemBehavior,
-  CombatRunBehavior,
+  CombatRunBehaviorComponent,
   // CombatGuardBehavior,
   CombatPlayerComponent
 ];
