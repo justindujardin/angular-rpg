@@ -108,6 +108,9 @@ export class PartyInventoryComponent implements OnDestroy {
       if (event.item.usedby && !event.item.usedby.find((e) => e === entity.type)) {
         return this.notify.show(`${entity.name} cannot equip this item`);
       }
+      if (entity[event.slot]) {
+        return this.notify.show(`${entity.name} already has item in ${event.slot}`);
+      }
       this.store.dispatch(new GameStateEquipItemAction({
         entityId: entity.eid,
         slot: event.slot,
