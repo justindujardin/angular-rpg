@@ -170,6 +170,14 @@ export class GameStateMoveAction implements Action {
   }
 }
 
+export class GameStateBoardShipAction implements Action {
+  static typeId: 'GAME_BOARD_SHIP_STATE' = type('GAME_BOARD_SHIP_STATE');
+  type = GameStateBoardShipAction.typeId;
+
+  constructor(public payload: boolean) {
+  }
+}
+
 //
 // Gold state actions
 //
@@ -264,6 +272,7 @@ export type GameStateActions
   | GameStateTravelFailAction
   | GameStateSetBattleCounterAction
   | GameStateMoveAction
+  | GameStateBoardShipAction
   | GameStateAddGoldAction
   | GameStateHealPartyAction
   | GameStateEquipItemAction

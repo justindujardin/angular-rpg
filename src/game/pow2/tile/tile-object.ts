@@ -15,7 +15,6 @@
  */
 import * as _ from 'underscore';
 import {ImageResource} from '../../pow-core/resources/image.resource';
-import {SpriteComponent} from './behaviors/sprite.behavior';
 import {Scene} from '../scene/scene';
 import {IPoint, Point} from '../../pow-core';
 import {MovableBehavior} from '../scene/behaviors/movable-behavior';
@@ -23,6 +22,7 @@ import {GameWorld} from '../../../app/services/game-world';
 import {TileMap} from './tile-map';
 import {SceneObject} from '../scene/scene-object';
 import {ISpriteMeta} from '../core/api';
+import {EventEmitter} from '@angular/core';
 
 export interface TileObjectOptions {
   point?: IPoint;
@@ -61,6 +61,9 @@ export class TileObject extends SceneObject implements TileObjectOptions {
   tileMap: TileMap;
   world: GameWorld;
   scale: number;
+
+  /** Emits when the object icon is changed */
+  onChangeIcon: EventEmitter<string> = new EventEmitter<string>();
 
   private _icon: string;
   set icon(value: string) {
@@ -116,47 +119,26 @@ export class TileObject extends SceneObject implements TileObjectOptions {
     if (!name) {
       this.meta = null;
     }
-    else {
-      const world = GameWorld.get();
-      if (!world) {
-        return oldSprite;
-      }
-      const meta = world.sprites.getSpriteMeta(name);
-      world.sprites.getSpriteSheet(meta.source).then((images: ImageResource[]) => {
-        const image = images[0];
-        this.meta = meta;
-        this.image = image.data;
-        this.frame = frame;
-      });
+    if (this._icon !== name) {
+      this.icon = name;
     }
-    this.icon = name;
     return oldSprite;
   }
 
   _updateIcon(icon: string) {
     const world = GameWorld.get();
-    if (!world || this._icon === icon) {
+    if (!world) {
       return;
     }
-    const meta = world.sprites.getSpriteMeta(name);
+    const meta = world.sprites.getSpriteMeta(icon);
     if (meta) {
       world.sprites.getSpriteSheet(meta.source).then((images: ImageResource[]) => {
         const image = images[0];
         this.meta = meta;
         this.image = image.data;
+        this.onChangeIcon.next(icon);
       });
     }
-  }
-
-  getIcon() {
-    if (this.icon) {
-      return this.icon;
-    }
-    const spriteComponent = this.findBehavior(SpriteComponent) as SpriteComponent;
-    if (spriteComponent) {
-      return spriteComponent.icon;
-    }
-    return null;
   }
 
 }

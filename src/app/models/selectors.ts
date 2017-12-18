@@ -10,7 +10,7 @@ import {
   sliceShipPosition,
   slicePosition,
   sliceGold,
-  slicePartyIds, sliceInventoryIds, sliceGameStateKeyData
+  slicePartyIds, sliceInventoryIds, sliceGameStateKeyData, sliceBoardedShip
 } from './game-state/game-state.reducer';
 import {
   sliceWeaponIds,
@@ -146,6 +146,7 @@ export const getGamePartyIds = createSelector(sliceGameState, slicePartyIds);
 export const getGamePartyGold = createSelector(sliceGameState, sliceGold);
 export const getGamePartyPosition = createSelector(sliceGameState, slicePosition);
 export const getGameShipPosition = createSelector(sliceGameState, sliceShipPosition);
+export const getGameBoardedShip = createSelector(sliceGameState, sliceBoardedShip);
 export const getGameMap = createSelector(sliceGameState, sliceMap);
 export const getGameCombatZone = createSelector(sliceGameState, sliceCombatZone);
 export const getGameBattleCounter = createSelector(sliceGameState, sliceBattleCounter);

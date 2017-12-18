@@ -27,6 +27,11 @@ export interface GameState {
   readonly position: IPoint;
 
   /**
+   * True when the party is onboard the ship
+   */
+  readonly boardedShip: boolean;
+
+  /**
    * The position of the party ship in the world.
    */
   readonly shipPosition: IPoint;
