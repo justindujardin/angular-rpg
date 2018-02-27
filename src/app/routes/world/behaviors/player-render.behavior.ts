@@ -17,6 +17,7 @@ import {TickedBehavior} from '../../../../game/pow2/scene/behaviors/ticked-behav
 import {TileObject} from '../../../../game/pow2/tile/tile-object';
 import {Animator} from '../../../../game/pow2/core/animator';
 import {Component} from '@angular/core';
+import {Subscription} from 'rxjs/Subscription';
 export enum MoveFrames {
   LEFT = 10,
   RIGHT = 4,
@@ -39,17 +40,42 @@ export enum Headings {
 
 @Component({
   selector: 'player-render-behavior',
-  template: `<ng-content></ng-content>`
+  template: `
+    <ng-content></ng-content>`
 })
 export class PlayerRenderBehaviorComponent extends TickedBehavior {
   host: TileObject;
   private _animator: Animator = new Animator();
   heading: Headings = Headings.WEST;
   animating: boolean = false;
+  private _sourceAnimsFor: string = '';
+
+  private _changeSubscription: Subscription;
+
+  connectBehavior(): boolean {
+    if (!super.connectBehavior()) {
+      return false;
+    }
+
+    // When the host icon changes, invalidate source animation data
+    this._changeSubscription = this.host.onChangeIcon.subscribe(() => {
+      this.setHeading(this.heading, false);
+    });
+    return true;
+  }
+
+  disconnectBehavior(): boolean {
+    if (this._changeSubscription) {
+      this._changeSubscription.unsubscribe();
+      this._changeSubscription = null;
+    }
+    return super.disconnectBehavior();
+  }
 
   setHeading(direction: Headings, animating: boolean) {
-    if (!this._animator.sourceAnims) {
+    if (!this._animator.sourceAnims || this._sourceAnimsFor !== this.host.icon) {
       this._animator.setAnimationSource(this.host.icon);
+      this._sourceAnimsFor = this.host.icon;
     }
     this.heading = direction;
     switch (this.heading) {

@@ -15,18 +15,40 @@
  */
 import {TileObject} from '../../../../../game/pow2/tile/tile-object';
 import {Subscription} from 'rxjs';
-import {getGameShipPosition} from '../../../../models/selectors';
-import {IPoint, Point} from '../../../../../game/pow-core/point';
-import {TiledFeatureComponent, TiledMapFeatureData} from '../map-feature.component';
+import {getGameBoardedShip, getGameShipPosition} from '../../../../models/selectors';
+import {Point} from '../../../../../game/pow-core/point';
+import {MapFeatureComponent, TiledFeatureComponent, TiledMapFeatureData} from '../map-feature.component';
 import {GameFeatureObject} from '../../../../scene/game-feature-object';
 import {PlayerBehaviorComponent} from '../../behaviors/player-behavior';
-import {GameStateSetKeyDataAction} from '../../../../models/game-state/game-state.actions';
-import {Component, Input} from '@angular/core';
+import {GameStateBoardShipAction} from '../../../../models/game-state/game-state.actions';
+import {AfterViewInit, Component, Host, Input, OnDestroy} from '@angular/core';
+import {AppState} from '../../../../app.model';
+import {Store} from '@ngrx/store';
+import {PointRecord} from '../../../../models/records';
 @Component({
   selector: 'ship-feature',
-  template: `<ng-content></ng-content>`
+  template: '<ng-content></ng-content>'
 })
-export class ShipFeatureComponent extends TiledFeatureComponent {
+export class ShipFeatureComponent extends TiledFeatureComponent implements OnDestroy, AfterViewInit {
+  ngOnDestroy(): void {
+    // nope
+  }
+
+  ngAfterViewInit(): void {
+    // Check for boarded state when the feature is initialized.
+    this.store.select(getGameBoardedShip)
+      .debounceTime(100)
+      .first().subscribe((boarded: boolean) => {
+      if (boarded && this.mapFeature.scene) {
+        const playerHost = this.mapFeature.scene.objectByComponent(PlayerBehaviorComponent) as GameFeatureObject;
+        if (playerHost) {
+          this.enter(playerHost);
+          this.entered(playerHost);
+        }
+      }
+    });
+
+  }
   party: PlayerBehaviorComponent;
   partyObject: TileObject;
   partySprite: string;
@@ -34,6 +56,12 @@ export class ShipFeatureComponent extends TiledFeatureComponent {
   @Input() feature: TiledMapFeatureData;
 
   private _subscription: Subscription = null;
+
+  constructor(
+    private store: Store<AppState>,
+    @Host() private mapFeature: MapFeatureComponent) {
+    super();
+  }
 
   disconnectBehavior(): boolean {
     if (this._subscription) {
@@ -47,20 +75,17 @@ export class ShipFeatureComponent extends TiledFeatureComponent {
     if (!super.connectBehavior()) {
       return false;
     }
-    const gameWorld = this.host.world;
-    if (gameWorld) {
-      this._subscription = this.host.world.store.select(getGameShipPosition)
-        .distinctUntilChanged()
-        .subscribe((p: IPoint) => {
-          this.host.setPoint(p);
-        });
-    }
+    this._subscription = this.store.select(getGameShipPosition)
+      .distinctUntilChanged()
+      .subscribe((p: PointRecord) => {
+        this.host.setPoint({x: p.x, y: p.y});
+      });
+
     return true;
   }
 
   enter(object: GameFeatureObject): boolean {
-    // Must have a entity component to board a ship.  Don't want buildings
-    // and NPCs boarding ships... or do we?  [maniacal laugh]
+    // Only a player can board a ship
     this.party = object.findBehavior(PlayerBehaviorComponent) as PlayerBehaviorComponent;
     if (!this.party) {
       return false;
@@ -82,11 +107,11 @@ export class ShipFeatureComponent extends TiledFeatureComponent {
     if (this.partyObject || !this.party) {
       return false;
     }
+    this.store.dispatch(new GameStateBoardShipAction(true));
     this.partyObject = object;
-    object.setSprite(this.host.icon);
     this.host.visible = false;
     this.host.enabled = false;
-
+    object.setSprite(this.host.icon, 0);
     this._tickInterval = setInterval(() => {
       if (Point.equal(this.partyObject.point, this.party.targetPoint) && !this.party.heading.isZero()) {
         const from: Point = new Point(this.partyObject.point);
@@ -111,6 +136,7 @@ export class ShipFeatureComponent extends TiledFeatureComponent {
     this.host.enabled = true;
     this.partyObject = null;
     this.party = null;
-    this.host.world.store.dispatch(new GameStateSetKeyDataAction('shipPosition', this.host.point));
+    this.store.dispatch(new GameStateBoardShipAction(false));
+    // this.store.dispatch(new GameStateMoveAction(to));
   }
 }

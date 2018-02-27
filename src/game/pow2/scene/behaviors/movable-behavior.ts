@@ -132,6 +132,13 @@ export class MovableBehavior extends TickedBehavior {
       this.host.point.x = this.targetPoint.x;
       this.host.point.y = this.targetPoint.y;
 
+      // Can happen sometimes when loading a game on board a ship then immediate disembarking
+      if (!this.currentMove) {
+        this.currentMove = {
+          from: new Point(this.host.point),
+          to: new Point(this.targetPoint)
+        };
+      }
       //
       this.completeMove(this.currentMove);
     }

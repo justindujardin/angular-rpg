@@ -1,13 +1,16 @@
 import {gameStateFactory, gameStateReducer} from './game-state.reducer';
 import {GameState} from './game-state.model';
 import {
-  GameStateLoadAction,
-  GameStateHealPartyAction,
-  GameStateTravelAction,
-  GameStateMoveAction,
   GameStateAddGoldAction,
+  GameStateAddInventoryAction,
+  GameStateBoardShipAction,
+  GameStateEquipItemAction,
+  GameStateHealPartyAction,
+  GameStateMoveAction,
+  GameStateNewAction,
+  GameStateRemoveInventoryAction,
   GameStateSetKeyDataAction,
-  GameStateAddInventoryAction, GameStateRemoveInventoryAction, GameStateNewAction, GameStateEquipItemAction,
+  GameStateTravelAction,
   GameStateUnequipItemAction
 } from './game-state.actions';
 import {Item} from '../item';
@@ -194,6 +197,29 @@ describe('GameState', () => {
         const expected = pointFactory({x: 10, y: 10});
         const actual = gameStateReducer(state, new GameStateMoveAction(expected));
         expect(actual.position).toEqual(expected);
+      });
+      it('should update shipPosition when boardedShip is true', () => {
+        const state = gameStateFactory({
+          position: {x: 0, y: 0},
+          shipPosition: {x: 0, y: 0},
+          boardedShip: true
+        });
+        const expected = pointFactory({x: 10, y: 10});
+        const actual = gameStateReducer(state, new GameStateMoveAction(expected));
+        expect(actual.position).toEqual(expected);
+        expect(actual.shipPosition).toEqual(expected);
+      });
+    });
+    describe('GameStateBoardShipAction', () => {
+      it('should toggle boardedShip boolean', () => {
+        [true, false].forEach((value) => {
+          const state = gameStateFactory({
+            boardedShip: value
+          });
+          const expected = !value;
+          const actual = gameStateReducer(state, new GameStateBoardShipAction(expected));
+          expect(actual.boardedShip).toEqual(expected);
+        });
       });
     });
     describe('GameStateAddInventoryAction', () => {

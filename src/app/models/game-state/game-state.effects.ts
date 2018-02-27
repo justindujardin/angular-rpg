@@ -42,7 +42,7 @@ export class GameStateEffects {
    * When a save action is dispatched, serialize the app state to local storage.
    */
   @Effect() saveGameState$ = this.actions$.ofType(GameStateSaveAction.typeId)
-    .switchMap((state: AppState) => this.gameStateService.save())
+    .switchMap(() => this.gameStateService.save())
     .map(() => new GameStateSaveSuccessAction())
     .catch((e) => {
       return Observable.of(new GameStateSaveFailAction(e.toString()));
@@ -59,7 +59,7 @@ export class GameStateEffects {
    * When a delete action is dispatched, remove the saved state in localstorage.
    */
   @Effect() clearGameState$ = this.actions$.ofType(GameStateDeleteAction.typeId)
-    .switchMap((state: AppState) => this.gameStateService.resetGame())
+    .switchMap(() => this.gameStateService.resetGame())
     .map(() => new GameStateDeleteSuccessAction())
     .catch((e) => {
       return Observable.of(new GameStateDeleteFailAction(e.toString()));

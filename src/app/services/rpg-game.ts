@@ -131,6 +131,7 @@ export class RPGGame {
           combatZone: '',
           location: 'town',
           position: {x: 12, y: 8},
+          boardedShip: false,
           shipPosition: {x: 0, y: 0}
         };
         this.store.dispatch(new GameStateNewAction(initialState));

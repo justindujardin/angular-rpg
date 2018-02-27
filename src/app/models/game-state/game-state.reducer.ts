@@ -2,6 +2,7 @@ import {
   GameStateActions,
   GameStateAddGoldAction,
   GameStateAddInventoryAction,
+  GameStateBoardShipAction,
   GameStateDeleteAction,
   GameStateDeleteFailAction,
   GameStateDeleteSuccessAction,
@@ -30,7 +31,7 @@ import * as Immutable from 'immutable';
 import {Item} from '../item';
 import {assertTrue, exhaustiveCheck, makeRecordFactory} from '../util';
 import {TypedRecord} from 'typed-immutable-record';
-import {pointFactory} from '../records';
+import {pointFactory, PointRecord} from '../records';
 
 /**
  * Game state record.
@@ -55,7 +56,8 @@ export const gameStateFactory = makeRecordFactory<GameState, GameStateRecord>({
   location: '',
   combatZone: '',
   position: pointFactory(),
-  shipPosition: pointFactory()
+  shipPosition: pointFactory(),
+  boardedShip: false
 });
 
 /**
@@ -115,8 +117,21 @@ export function gameStateReducer(state: GameStateRecord = gameStateFactory(), ac
     case GameStateSaveFailAction.typeId:
       return state;
     case GameStateMoveAction.typeId: {
+      if (state.boardedShip) {
+        return state.merge({
+          position: action.payload,
+          shipPosition: action.payload,
+        });
+      }
+      else {
+        return state.merge({
+          position: action.payload
+        });
+      }
+    }
+    case GameStateBoardShipAction.typeId: {
       return state.merge({
-        position: action.payload
+        boardedShip: action.payload
       });
     }
     case GameStateSetBattleCounterAction.typeId: {
@@ -180,6 +195,10 @@ export function slicePosition(state: GameState) {
 
 export function sliceShipPosition(state: GameState) {
   return state.shipPosition;
+}
+
+export function sliceBoardedShip(state: GameState) {
+  return state.boardedShip;
 }
 
 export function sliceBattleCounter(state: GameState) {
