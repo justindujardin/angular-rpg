@@ -1,10 +1,18 @@
-# AngularRpg
+# AngularRPG
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.2.
+![Build](https://github.com/justindujardin/angular-rpg/workflows/Build/badge.svg)
+![Tests](https://github.com/justindujardin/angular-rpg/workflows/Tests/badge.svg)
+![Storybook](https://github.com/justindujardin/angular-rpg/workflows/Storybook/badge.svg)
+
+A mobile-friendly 2D turn-based RPG inspired by the original Final Fantasy game for NES.
 
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+## Storybook
+
+Run `npm run storybook` to run the local storybook UI development server. Navigate to `http://localhost:6006/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
