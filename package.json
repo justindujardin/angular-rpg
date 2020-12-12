@@ -41,6 +41,7 @@
         "build:prod": "ng build --prod",
         "test:watch": "ng test",
         "test:ci": "npm run clean && npm run test",
+        "stories:ci": "npm run clean && npm run build-storybook",
         "build:ci": "npm run clean && npm run build:prod"
     },
     "private": true,
