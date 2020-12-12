@@ -102,7 +102,7 @@ describe('Time', () => {
         t.removeObject(m);
         expect(window.requestAnimationFrame).toBeDefined();
         _.each(olds, (value, key: any) => {
-          window[key] = value;
+          (window as any)[key] = value;
         });
         done();
       });
