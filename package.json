@@ -3,17 +3,44 @@
   "description": "Angular RPG game inspired by Final Fantasy--built with Typescript, Angular, rxjs, ngrx/store, and ngrx/effects.",
   "homepage": "https://github.com/justindujardin/angular-rpg",
   "version": "0.0.0",
+  "license": "MIT",
+  "keywords": [
+    "angular",
+    "game",
+    "rpg",
+    "fantasy",
+    "sprites",
+    "2d",
+    "components",
+    "composition",
+    "ngrx",
+    "redux",
+    "rxjs",
+    "typescript"
+  ],
+  "bugs": {
+    "url": "https://github.com/justindujardin/angular-rpg/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/justindujardin/angular-rpg.git"
+  },
+  "author": "Justin DuJardin <justin@dujardinconsulting.com>",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "format": "npx prettier --write src e2e",
     "build": "ng build",
-    "test": "ng test --browsers ChromeDebug",
+    "test": "ng test --watch=false --browsers=ChromeHeadlessCustom",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "clean": "rimraf ./dist",
     "docs:json": "compodoc src/app -p ./tsconfig.json -e json -d src",
     "storybook": "npm run docs:json && start-storybook -p 6006",
-    "build-storybook": "npm run docs:json && build-storybook -s src/"
+    "build-storybook": "npm run docs:json && build-storybook -s src/",
+    "build:prod": "ng build --prod",
+    "test:watch": "ng test",
+    "build:ci": "npm run clean && npm run test && npm run build:prod"
   },
   "private": true,
   "dependencies": {
