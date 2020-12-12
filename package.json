@@ -2,7 +2,7 @@
     "name": "angular-rpg",
     "description": "Angular RPG game inspired by Final Fantasy--built with Typescript, Angular, rxjs, ngrx/store, and ngrx/effects.",
     "homepage": "https://github.com/justindujardin/angular-rpg",
-    "version": "0.0.0",
+    "version": "0.1.0",
     "license": "MIT",
     "keywords": [
         "angular",
