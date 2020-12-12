@@ -1,5 +1,5 @@
-@import '../../../../style/variables';
-@import '../../../../style/mixins';
+@import "../../../../style/variables";
+@import "../../../../style/mixins";
 
 store-feature {
   .store {
@@ -44,7 +44,7 @@ store-feature {
         }
         &:hover {
           * {
-            color: #0FF !important;
+            color: #0ff !important;
           }
         }
       }

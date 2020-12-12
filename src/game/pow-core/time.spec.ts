@@ -1,6 +1,6 @@
-import {IProcessObject, Time} from './time';
-import {Events} from './events';
 import * as _ from 'underscore';
+import { Events } from './events';
+import { IProcessObject, Time } from './time';
 
 class MockTimeObject extends Events implements IProcessObject {
   _uid: string = _.uniqueId('p');
@@ -39,7 +39,7 @@ describe('Time', () => {
       },
       processFrame() {
         counter.frames++;
-      }
+      },
     };
     time.addObject(counter);
     return counter;
@@ -58,7 +58,7 @@ describe('Time', () => {
         time.removeObject(counter);
         time.stop();
         done();
-      }, 50);
+      }, 100);
     });
   });
 
@@ -85,7 +85,7 @@ describe('Time', () => {
   describe('polyFillAnimationFrames', () => {
     it('should trigger time updates with polyfill and setInterval', (done) => {
       let olds: any = {
-        requestAnimationFrame: window.requestAnimationFrame
+        requestAnimationFrame: window.requestAnimationFrame,
       };
       const vendors = ['ms', 'moz', 'webkit', 'o'];
       for (let i = 0; i < vendors.length; i++) {
@@ -108,13 +108,9 @@ describe('Time', () => {
       });
       t.start();
     });
-
   });
 
-  const functions = [
-    'webkitRequestAnimationFrame',
-    'mozRequestAnimationFrame'
-  ];
+  const functions = ['webkitRequestAnimationFrame', 'mozRequestAnimationFrame'];
   functions.forEach((fnName) => {
     const w: any = window;
     if (!w[fnName]) {

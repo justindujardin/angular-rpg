@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,15 +13,18 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {SceneObjectBehavior} from '../scene-object-behavior';
-import {SceneView} from '../scene-view';
-import {Point} from '../../../pow-core/point';
+import { Point } from '../../../pow-core/point';
+import { SceneObjectBehavior } from '../scene-object-behavior';
+import { SceneView } from '../scene-view';
 
 export class CameraBehavior extends SceneObjectBehavior {
   process(view: SceneView) {
     view.camera.point.set(this.host.point);
     view.cameraScale = view.context.canvas.width > 768 ? 4 : 2;
-    const screenPoint = new Point(view.context.canvas.width, view.context.canvas.height);
+    const screenPoint = new Point(
+      view.context.canvas.width,
+      view.context.canvas.height
+    );
     const canvasSize = view.screenToWorld(screenPoint, view.cameraScale);
     view.camera.extent.set(canvasSize);
   }

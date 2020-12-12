@@ -1,7 +1,7 @@
 /*! Copyright (c) 2013-2017 Justin DuJardin and Contributors. MIT License. */
-import * as _ from 'underscore';
-import {ITiledBase, ITiledObject, ITiledLayerBase} from './tiled.model';
 import * as $ from 'jquery';
+import * as _ from 'underscore';
+import { ITiledBase, ITiledLayerBase, ITiledObject } from './tiled.model';
 export interface ITileInstanceMeta {
   image: HTMLImageElement;
   url: string;
@@ -21,7 +21,7 @@ export function readITiledBase(el: any): ITiledBase {
     width: parseInt(getElAttribute(el, 'width') || '0', 10),
     height: parseInt(getElAttribute(el, 'height') || '0', 10),
     visible: parseInt(getElAttribute(el, 'visible') || '1', 10) === 1, // 0 or 1,
-    _xml: el
+    _xml: el,
   };
 }
 
@@ -85,8 +85,7 @@ export function compactUrl(base: string, relative: string) {
     }
     if (parts[i] === '..') {
       stack.pop();
-    }
-    else {
+    } else {
       stack.push(parts[i]);
     }
   }
@@ -94,17 +93,14 @@ export function compactUrl(base: string, relative: string) {
 }
 
 export function xml2Str(xmlNode) {
-
   try {
     // Gecko- and Webkit-based browsers (Firefox, Chrome), Opera.
-    return (new XMLSerializer()).serializeToString(xmlNode);
-  }
-  catch (e) {
+    return new XMLSerializer().serializeToString(xmlNode);
+  } catch (e) {
     try {
       // Internet Explorer.
       return xmlNode.xml;
-    }
-    catch (e) {
+    } catch (e) {
       // Other browsers without XML Serializer
       throw new Error('Xmlserializer not supported');
     }
@@ -132,8 +128,7 @@ export function readTiledProperties(el: any) {
         let checkNumber = parseFloat(value);
         if (checkValue === 'true' || checkValue === 'false') {
           value = checkValue === 'true';
-        }
-        else if (!isNaN((checkNumber))) {
+        } else if (!isNaN(checkNumber)) {
           value = checkNumber;
         }
       }
@@ -161,10 +156,12 @@ export function writeTiledProperties(el: any, data: any) {
 
 export function getChildren(el: any, tag: string): any[] {
   const list = el.find(tag);
-  return _.compact(_.map(list, (c) => {
-    const child: any = $(c);
-    return child.parent()[0] !== el[0] ? null : child;
-  }));
+  return _.compact(
+    _.map(list, (c) => {
+      const child: any = $(c);
+      return child.parent()[0] !== el[0] ? null : child;
+    })
+  );
 }
 
 export function getChild(el: any, tag: string): any {

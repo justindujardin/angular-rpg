@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin
+ Copyright (C) 2013-2020 by Justin DuJardin
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {errors} from './errors';
+import { errors } from './errors';
 
 export interface IPoint {
   x: number;
@@ -31,14 +31,11 @@ export class Point implements IPoint {
   constructor(pointOrX?: any, y?: any) {
     if (pointOrX && pointOrX.hasOwnProperty('x') && pointOrX.hasOwnProperty('y')) {
       this.set(pointOrX.x, pointOrX.y);
-    }
-    else if (typeof pointOrX === 'string' && typeof y === 'string') {
+    } else if (typeof pointOrX === 'string' && typeof y === 'string') {
       this.set(parseFloat(pointOrX), parseFloat(y));
-    }
-    else if (typeof pointOrX === 'number' && typeof y === 'number') {
+    } else if (typeof pointOrX === 'number' && typeof y === 'number') {
       this.set(pointOrX, y);
-    }
-    else {
+    } else {
       this.zero();
     }
   }
@@ -51,15 +48,16 @@ export class Point implements IPoint {
   set(x: number, y: number): Point;
   set(pointOrX: any, y?: any): Point {
     // Instance of point, or set from plain object with x/y properties
-    if (pointOrX instanceof Point || (pointOrX && pointOrX.x !== undefined && pointOrX.y !== undefined)) {
+    if (
+      pointOrX instanceof Point ||
+      (pointOrX && pointOrX.x !== undefined && pointOrX.y !== undefined)
+    ) {
       this.x = pointOrX.x;
       this.y = pointOrX.y;
-    }
-    else if (typeof pointOrX === 'number' && typeof y === 'number') {
+    } else if (typeof pointOrX === 'number' && typeof y === 'number') {
       this.x = pointOrX;
       this.y = y;
-    }
-    else {
+    } else {
       throw new Error(errors.INVALID_ARGUMENTS);
     }
     return this;
@@ -88,12 +86,10 @@ export class Point implements IPoint {
     if (pointOrXOrValue instanceof Point) {
       this.x += pointOrXOrValue.x;
       this.y += pointOrXOrValue.y;
-    }
-    else if (typeof pointOrXOrValue === 'number' && typeof y === 'undefined') {
+    } else if (typeof pointOrXOrValue === 'number' && typeof y === 'undefined') {
       this.x += pointOrXOrValue;
       this.y += pointOrXOrValue;
-    }
-    else {
+    } else {
       this.x += pointOrXOrValue;
       this.y += y;
     }
@@ -107,12 +103,10 @@ export class Point implements IPoint {
     if (pointOrXOrValue instanceof Point) {
       this.x -= pointOrXOrValue.x;
       this.y -= pointOrXOrValue.y;
-    }
-    else if (typeof pointOrXOrValue === 'number' && typeof y === 'undefined') {
+    } else if (typeof pointOrXOrValue === 'number' && typeof y === 'undefined') {
       this.x -= pointOrXOrValue;
       this.y -= pointOrXOrValue;
-    }
-    else {
+    } else {
       this.x -= pointOrXOrValue;
       this.y -= y;
     }
@@ -126,12 +120,10 @@ export class Point implements IPoint {
     if (pointOrXOrValue instanceof Point) {
       this.x *= pointOrXOrValue.x;
       this.y *= pointOrXOrValue.y;
-    }
-    else if (typeof pointOrXOrValue === 'number' && typeof y === 'undefined') {
+    } else if (typeof pointOrXOrValue === 'number' && typeof y === 'undefined') {
       this.x *= pointOrXOrValue;
       this.y *= pointOrXOrValue;
-    }
-    else {
+    } else {
       this.x *= pointOrXOrValue;
       this.y *= y;
     }
@@ -148,15 +140,13 @@ export class Point implements IPoint {
       }
       this.x /= pointOrXOrValue.x;
       this.y /= pointOrXOrValue.y;
-    }
-    else if (typeof pointOrXOrValue === 'number' && typeof y === 'undefined') {
+    } else if (typeof pointOrXOrValue === 'number' && typeof y === 'undefined') {
       if (pointOrXOrValue === 0) {
         throw new Error(errors.DIVIDE_ZERO);
       }
       this.x /= pointOrXOrValue;
       this.y /= pointOrXOrValue;
-    }
-    else {
+    } else {
       if (pointOrXOrValue === 0 || y === 0) {
         throw new Error(errors.DIVIDE_ZERO);
       }
@@ -193,8 +183,8 @@ export class Point implements IPoint {
 
   static interpolate(result: IPoint, from: IPoint, to: IPoint, factor: number): IPoint {
     factor = Math.min(Math.max(factor, 0), 1);
-    result.x = (from.x * (1.0 - factor)) + (to.x * factor);
-    result.y = (from.y * (1.0 - factor)) + (to.y * factor);
+    result.x = from.x * (1.0 - factor) + to.x * factor;
+    result.y = from.y * (1.0 - factor) + to.y * factor;
     return result;
   }
 

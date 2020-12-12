@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {SceneObjectRenderer} from '../../scene/scene-object-renderer';
-import {Rect} from '../../../pow-core/rect';
-import {TileMap} from '../tile-map';
-import {TileMapView} from '../tile-map-view';
-import {ITiledLayer} from '../../../pow-core/resources/tiled/tiled.model';
-import {ITileInstanceMeta} from '../../../pow-core/resources/tiled/tiled';
+import { Rect } from '../../../pow-core/rect';
+import { ITileInstanceMeta } from '../../../pow-core/resources/tiled/tiled';
+import { ITiledLayer } from '../../../pow-core/resources/tiled/tiled.model';
+import { SceneObjectRenderer } from '../../scene/scene-object-renderer';
+import { TileMap } from '../tile-map';
+import { TileMapView } from '../tile-map-view';
 export class TileMapRenderer extends SceneObjectRenderer {
   buffer: HTMLCanvasElement[][] = null; // A 2d grid of rendered canvas textures.
   bufferMapName: string = null; // The name of the rendered map.  If the map name changes, the buffer is re-rendered.
@@ -44,8 +44,12 @@ export class TileMapRenderer extends SceneObjectRenderer {
       this.buffer = null;
       this.bufferComplete = false;
     }
-    if (!this.bufferComplete || this.buffer === null ||
-      this.bufferMapName === null || this.bufferMapName !== object.map.url) {
+    if (
+      !this.bufferComplete ||
+      this.buffer === null ||
+      this.bufferMapName === null ||
+      this.bufferMapName !== object.map.url
+    ) {
       const tileUnitSize = squareSize / view.unitSize;
       // Unit size is 16px, so rows/columns should be 16*16 for 256px each.
       const columns = Math.ceil(object.bounds.extent.x / squareUnits);
@@ -65,7 +69,6 @@ export class TileMapRenderer extends SceneObjectRenderer {
           this.buffer[col][row] = view.renderToCanvas(squareSize, squareSize, (ctx) => {
             for (let x = xOffset; x < xEnd; x++) {
               for (let y = yOffset; y < yEnd; y++) {
-
                 // Each layer
                 _.each(layers, (l: ITiledLayer) => {
                   if (!l.visible) {
@@ -74,7 +77,7 @@ export class TileMapRenderer extends SceneObjectRenderer {
                   const gid: number = object.getTileGid(l.name, x, y);
                   const meta: ITileInstanceMeta = object.getTileMeta(gid);
                   if (meta) {
-                    const image: HTMLImageElement = (<any> meta.image).data;
+                    const image: HTMLImageElement = (<any>meta.image).data;
                     if (!image || !image.complete) {
                       this.bufferComplete = false;
                       return;
@@ -87,7 +90,17 @@ export class TileMapRenderer extends SceneObjectRenderer {
                     const dstY: number = (y - yOffset) * view.unitSize;
                     const dstW: number = view.unitSize;
                     const dstH: number = view.unitSize;
-                    ctx.drawImage(image, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
+                    ctx.drawImage(
+                      image,
+                      srcX,
+                      srcY,
+                      srcW,
+                      srcH,
+                      dstX,
+                      dstY,
+                      dstW,
+                      dstH
+                    );
                   }
                 });
               }
@@ -110,13 +123,19 @@ export class TileMapRenderer extends SceneObjectRenderer {
     // Unit size is 16px, so rows/columns should be 16*16 for 256px each.
     for (col = 0; col < cols; col++) {
       for (row = 0; row < rows; row++) {
-        this._renderRect.set(col * squareUnits - 0.5, row * squareUnits - 0.5, squareUnits, squareUnits);
+        this._renderRect.set(
+          col * squareUnits - 0.5,
+          row * squareUnits - 0.5,
+          squareUnits,
+          squareUnits
+        );
         view.fastWorldToScreenRect(this._renderRect, this._renderRect);
         if (!this._renderRect.intersect(this._clipRect)) {
           continue;
         }
         // console.log("Tile " + renderRect.toString())
-        view.context.drawImage(this.buffer[col][row],
+        view.context.drawImage(
+          this.buffer[col][row],
           // From source
           0,
           0,
@@ -126,7 +145,8 @@ export class TileMapRenderer extends SceneObjectRenderer {
           this._renderRect.point.x,
           this._renderRect.point.y,
           squareScreen,
-          squareScreen);
+          squareScreen
+        );
       }
     }
   }

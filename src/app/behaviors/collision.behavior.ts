@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,14 +13,14 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {SceneObject} from '../../game/pow2/scene/scene-object';
-import {SceneObjectBehavior} from '../../game/pow2/scene/scene-object-behavior';
-import {Rect} from '../../game/pow-core/rect';
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
+import { Rect } from '../../game/pow-core/rect';
+import { SceneObject } from '../../game/pow2/scene/scene-object';
+import { SceneObjectBehavior } from '../../game/pow2/scene/scene-object-behavior';
 
 @Component({
   selector: 'collision-behavior',
-  template: `<ng-content></ng-content>`
+  template: `<ng-content></ng-content>`,
 })
 export class CollisionBehaviorComponent extends SceneObjectBehavior {
   collideBox: Rect = new Rect(0, 0, 1, 1);
@@ -42,7 +42,11 @@ export class CollisionBehaviorComponent extends SceneObjectBehavior {
     this.collideBox.point.x = x;
     this.collideBox.point.y = y;
     this.resultsArray.length = 0;
-    const hit: boolean = this.host.scene.db.queryRect(this.collideBox, type, this.resultsArray);
+    const hit: boolean = this.host.scene.db.queryRect(
+      this.collideBox,
+      type,
+      this.resultsArray
+    );
     return hit ? this.resultsArray[0] : null;
   }
 }

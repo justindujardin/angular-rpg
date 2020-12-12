@@ -1,4 +1,3 @@
-
 # Pow2 Icon Font
 
 ### GameIcons.net icons
@@ -8,7 +7,6 @@ http://game-icons.net/
 by Lorc, Delapouite & contributors: http://creativecommons.org/licenses/by/3.0/
 
 Used for gameish placeholder icons, Inventory, attack buttons, etc.
-
 
 ### Foundation icon set
 
@@ -30,4 +28,4 @@ http://browser-quest.mozilla.org
 
 https://github.com/mozilla/BrowserQuest
 
-unmodified from BrowserQuest project.  http://creativecommons.org/licenses/by-sa/3.0/
+unmodified from BrowserQuest project. http://creativecommons.org/licenses/by-sa/3.0/

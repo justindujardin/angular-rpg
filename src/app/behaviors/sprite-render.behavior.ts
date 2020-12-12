@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,22 +13,21 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {AfterViewInit, Component, Input, OnDestroy} from '@angular/core';
-import {SceneObjectBehavior} from '../../game/pow2/scene/scene-object-behavior';
-import {Observable} from 'rxjs/Observable';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Subscription} from 'rxjs/Subscription';
-import {ImageResource} from '../../game/pow-core/resources/image.resource';
-import {GameWorld} from '../services/game-world';
-import {ISpriteMeta} from '../../game/pow2/core/api';
+import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { distinctUntilChanged, map } from 'rxjs/operators';
+import { ImageResource } from '../../game/pow-core/resources/image.resource';
+import { ISpriteMeta } from '../../game/pow2/core/api';
+import { SceneObjectBehavior } from '../../game/pow2/scene/scene-object-behavior';
+import { GameWorld } from '../services/game-world';
 
 @Component({
   selector: 'sprite-render-behavior',
-  template: `
-    <ng-content></ng-content>`
+  template: ` <ng-content></ng-content>`,
 })
-export class SpriteRenderBehaviorComponent extends SceneObjectBehavior implements AfterViewInit, OnDestroy {
-
+export class SpriteRenderBehaviorComponent
+  extends SceneObjectBehavior
+  implements AfterViewInit, OnDestroy {
   constructor(public gameWorld: GameWorld) {
     super();
   }
@@ -50,23 +49,29 @@ export class SpriteRenderBehaviorComponent extends SceneObjectBehavior implement
   image: HTMLImageElement | null = null;
 
   ngAfterViewInit(): void {
-    this._subscription = this.icon$.distinctUntilChanged().do((name: string) => {
-      if (!name) {
-        this.meta = null;
-        this.image = null;
-        return;
-      }
-      this.meta = this.gameWorld.sprites.getSpriteMeta(name);
-      if (this.meta) {
-        this.gameWorld.sprites.getSpriteSheet(this.meta.source).then((images: ImageResource[]) => {
-          this.image = images[0].data;
-        });
-      }
-    }).subscribe();
+    this._subscription = this.icon$
+      .pipe(
+        distinctUntilChanged(),
+        map((name: string) => {
+          if (!name) {
+            this.meta = null;
+            this.image = null;
+            return;
+          }
+          this.meta = this.gameWorld.sprites.getSpriteMeta(name);
+          if (this.meta) {
+            this.gameWorld.sprites
+              .getSpriteSheet(this.meta.source)
+              .then((images: ImageResource[]) => {
+                this.image = images[0].data;
+              });
+          }
+        })
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {
     this._subscription.unsubscribe();
   }
-
 }

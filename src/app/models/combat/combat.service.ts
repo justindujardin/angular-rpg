@@ -1,70 +1,67 @@
-import {Injectable} from '@angular/core';
-import {Observable, ReplaySubject} from 'rxjs/Rx';
-import {ResourceManager} from '../../../game/pow-core/resource-manager';
-import {CombatantTypes, CombatEncounter} from './combat.model';
-import {getMapUrl} from '../../../game/pow2/core/api';
-import {TiledTMXResource} from '../../../game/pow-core/resources/tiled/tiled-tmx.resource';
-import {BaseEntity} from '../base-entity';
-import {ITiledLayer} from '../../../game/pow-core/resources/tiled/tiled.model';
-import * as _ from 'underscore';
-import {EntityWithEquipment} from '../entity/entity.model';
+import { Injectable } from '@angular/core';
+import { from, Observable, ReplaySubject } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ResourceManager } from '../../../game/pow-core/resource-manager';
+import { TiledTMXResource } from '../../../game/pow-core/resources/tiled/tiled-tmx.resource';
+import { ITiledLayer } from '../../../game/pow-core/resources/tiled/tiled.model';
+import { getMapUrl } from '../../../game/pow2/core/api';
+import { CombatantTypes } from '../base-entity';
+import { EntityWithEquipment } from '../entity/entity.model';
+import {
+  ITemplateArmor,
+  ITemplateBaseItem,
+  ITemplateMagic,
+  ITemplateWeapon,
+} from '../game-data/game-data.model';
+import {
+  calculateDamage,
+  calculateMagicEffects,
+  EnemyMechanics,
+  ICalculateDamageConfig,
+  ICalculateMagicEffectsConfig,
+  ICalculateMagicTarget,
+  ICombatDamage,
+  IMagicEffects,
+  PartyMechanics,
+} from '../mechanics';
+import { CombatEncounter } from './combat.model';
+
+export interface ICombatCastSpellConfig {
+  caster: CombatantTypes;
+  spell: ITemplateMagic;
+  targets: CombatantTypes[];
+  inventory: ITemplateBaseItem[];
+}
 
 @Injectable()
 export class CombatService {
-
-  constructor(private resourceLoader: ResourceManager) {
-  }
+  public readonly enemies = EnemyMechanics;
+  public readonly party = PartyMechanics;
+  constructor(private resourceLoader: ResourceManager) {}
 
   private _combatMap$ = new ReplaySubject<TiledTMXResource>(1);
   combatMap$: Observable<TiledTMXResource> = this._combatMap$;
 
   loadMap(combatZone: string): Observable<TiledTMXResource> {
     const mapUrl = getMapUrl('combat');
-    return Observable.fromPromise(this.resourceLoader.load(mapUrl)
-      .then((maps: TiledTMXResource[]) => {
+    return from(
+      this.resourceLoader.load(mapUrl).then((maps: TiledTMXResource[]) => {
         if (!maps[0] || !maps[0].data) {
           return null;
         }
         const result: TiledTMXResource = maps[0];
         // Hide all layers that don't correspond to the current combat zone
         result.layers.forEach((l: ITiledLayer) => {
-          l.visible = (l.name === combatZone);
+          l.visible = l.name === combatZone;
         });
         this._combatMap$.next(result);
         return result;
-      }));
+      })
+    );
   }
 
   loadEncounter(encounter: CombatEncounter): Observable<CombatEncounter> {
-    return this.loadMap(encounter.zone).map(() => encounter);
-  }
-
-  //
-  // Combat API helpers
-  //
-
-  isDefeated(test: BaseEntity): boolean {
-    return !test || test.hp <= 0;
-  }
-
-// Chance to hit = (BASE_CHANCE_TO_HIT + PLAYER_HIT_PERCENT) - EVASION
-  rollHit(attacker: CombatantTypes, defender: CombatantTypes): boolean {
-    const roll: number = _.random(0, 200);
-    const attackerEvasion: number = this.getSpeed(attacker);
-    const defenderEvasion: number = this.getSpeed(defender);
-    const favorDodge = attackerEvasion < defenderEvasion;
-    const chance: number = favorDodge ? 180 : 120; // TODO: Some real calculation here
-    if (roll === 200) {
-      return false;
-    }
-    if (roll === 0) {
-      return true;
-    }
-    return roll <= chance;
-  }
-
-  getSpeed(target: CombatantTypes): number {
-    return target.speed;
+    return this.loadMap(encounter.zone).pipe(map(() => encounter));
   }
 
   /**
@@ -74,56 +71,91 @@ export class CombatService {
    * - sum the base defense and all the armors to get defense
    * - damage = attack - defense with a minimum value of 1 if a hit lands
    *
-   * @returns {number} The damage value to apply to the defender.
+   * @returns The damage calculated to apply to the defender.
    */
-  attackCombatant(attacker: CombatantTypes, defender: CombatantTypes): number {
-    const attackStrength = this.getAttack(attacker);
-    const defense = this.getDefense(defender);
-    const amount = attackStrength - defense;
-    const damage = this.varyDamage(amount);
-    if (this.rollHit(attacker, defender)) {
-      return Math.ceil(damage);
-    }
-    return 0;
+  attackCombatant(
+    attacker: CombatantTypes | EntityWithEquipment,
+    defender: CombatantTypes | EntityWithEquipment
+  ): ICombatDamage {
+    const attackerEntity = attacker as EntityWithEquipment;
+    const defenderEntity = defender as EntityWithEquipment;
+    const attackerType = attackerEntity.type !== undefined ? 'party' : 'enemy';
+    const defenderType = defenderEntity.type !== undefined ? 'party' : 'enemy';
+    const dmgConfig: ICalculateDamageConfig = {
+      attacker,
+      attackerType,
+      attackerWeapons: this.getWeapons(attacker),
+      defender,
+      defenderType,
+      defenderArmor: this.getArmors(defender),
+    };
+    return calculateDamage(dmgConfig);
   }
 
   /**
-   * Determine the total defense value of this character including all equipped accessories and armor
+   * Cast a spell at one or more targets!
    */
-  getDefense(member: CombatantTypes): number {
+  castSpell(config: ICombatCastSpellConfig): IMagicEffects {
+    const magicTargets: ICalculateMagicTarget[] = config.targets.map(
+      (entity: CombatantTypes) => {
+        return {
+          armors: this.getArmors(entity),
+          entity,
+          inventory: config.inventory.slice(),
+          weapons: this.getWeapons(entity),
+        };
+      }
+    );
+
+    const casterEntity = config.caster as EntityWithEquipment;
+    const targetEntity = config.targets[0] as EntityWithEquipment;
+    const casterType = casterEntity.type !== undefined ? 'party' : 'enemy';
+    const targetsType = targetEntity.type !== undefined ? 'party' : 'enemy';
+    const dmgConfig: ICalculateMagicEffectsConfig = {
+      spells: [config.spell],
+      caster: casterEntity,
+      casterType,
+      targets: magicTargets,
+      targetsType,
+    };
+    return calculateMagicEffects(dmgConfig);
+  }
+
+  getArmors(member: CombatantTypes): ITemplateArmor[] {
+    let armors: ITemplateArmor[] = [];
     const equipped = member as EntityWithEquipment;
-    const shieldDefense = equipped.shield ? equipped.shield.defense : 0;
-    const armorDefense = equipped.armor ? equipped.armor.defense : 0;
-    const bootsDefense = equipped.boots ? equipped.boots.defense : 0;
-    const helmDefense = equipped.helm ? equipped.helm.defense : 0;
-    const accessoryDefense = equipped.accessory ? equipped.accessory.defense : 0;
-    return member.defense + shieldDefense + armorDefense + bootsDefense + helmDefense + accessoryDefense;
+    if (equipped.shield) {
+      armors.push(equipped.shield);
+    }
+    if (equipped.boots) {
+      armors.push(equipped.boots);
+    }
+    if (equipped.armor) {
+      armors.push(equipped.armor);
+    }
+    if (equipped.helm) {
+      armors.push(equipped.helm);
+    }
+    if (equipped.accessory) {
+      armors.push(equipped.accessory);
+    }
+    return armors;
   }
-
-  /**
-   * The total attack strength of this combatant including any weapons
-   */
-  getAttack(combatant: CombatantTypes): number {
-    return this.getWeaponStrength(combatant) + combatant.attack;
+  getWeapons(member: CombatantTypes): ITemplateWeapon[] {
+    // NOTE: This only deals with a single weapon, but returns an array
+    //  so it's easy to add dual-weapons later if it's desirable.
+    let weapons: ITemplateWeapon[] = [];
+    const equipped = member as EntityWithEquipment;
+    if (equipped.weapon) {
+      weapons.push(equipped.weapon);
+    }
+    return weapons;
   }
+  //
+  // Combat API helpers
+  //
 
-  getMagic(combatant: CombatantTypes): number {
-    return combatant.magic;
+  isDefeated(test: CombatantTypes): boolean {
+    return !test || test.hp <= 0;
   }
-
-  getWeaponStrength(combatant: CombatantTypes): number {
-    const equipped = combatant as EntityWithEquipment;
-    return equipped.weapon ? equipped.weapon.attack : 0;
-  }
-
-  /**
-   * Given a base amount of damage, vary the output to be somewhere between 80% and 120%
-   * of the input.
-   */
-  varyDamage(amount: number): number {
-    const max = amount * 1.2;
-    const min = amount * 0.8;
-    return Math.max(1, Math.floor(Math.random() * (max - min + 1)) + min);
-  }
-
 }

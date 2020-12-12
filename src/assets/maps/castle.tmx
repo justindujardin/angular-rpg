@@ -222,7 +222,7 @@
   <object name="Ashvari Apothecary" type="StoreFeatureComponent" x="64" y="128" width="16" height="16">
    <properties>
     <property name="buyRate" value="120"/>
-    <property name="category" value="items"/>
+    <property name="category" value="magic"/>
     <property name="groups" value="default"/>
     <property name="icon" value="shop.png"/>
     <property name="level" value="2"/>

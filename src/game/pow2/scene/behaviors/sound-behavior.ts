@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {SceneObjectBehavior} from '../scene-object-behavior';
-import {AudioResource} from '../../../pow-core/resources/audio.resource';
-import {GameWorld} from '../../../../app/services/game-world';
+import { GameWorld } from '../../../../app/services/game-world';
+import { AudioResource } from '../../../pow-core/resources/audio.resource';
+import { SceneObjectBehavior } from '../scene-object-behavior';
 
 export interface SoundComponentOptions {
   url: string;
@@ -27,10 +27,12 @@ export interface SoundComponentOptions {
 const DEFAULTS: SoundComponentOptions = {
   url: null,
   volume: 1,
-  loop: false
+  loop: false,
 };
 
-export class SoundBehavior extends SceneObjectBehavior implements SoundComponentOptions {
+export class SoundBehavior
+  extends SceneObjectBehavior
+  implements SoundComponentOptions {
   url: string;
   volume: number;
   loop: boolean;
@@ -77,8 +79,7 @@ export class SoundBehavior extends SceneObjectBehavior implements SoundComponent
             if (!this.loop) {
               this.audio.data.pause();
               this.trigger('audio:done', this);
-            }
-            else {
+            } else {
               this.trigger('audio:loop', this);
             }
           }

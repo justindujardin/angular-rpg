@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,19 +13,18 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+import { Component, Input } from '@angular/core';
 import * as _ from 'underscore';
-import {BasePlayerComponent} from '../../../behaviors/base-player.behavior';
-import {TileMapPathBehavior} from '../../../../game/pow2/tile/behaviors/tile-map-path.behavior';
-import {ITiledLayer} from '../../../../game/pow-core/resources/tiled/tiled.model';
-import {Component, Input} from '@angular/core';
-import {GameTileMap} from '../../../scene/game-tile-map';
+import { ITiledLayer } from '../../../../game/pow-core/resources/tiled/tiled.model';
+import { TileMapPathBehavior } from '../../../../game/pow2/tile/behaviors/tile-map-path.behavior';
+import { BasePlayerComponent } from '../../../behaviors/base-player.behavior';
+import { GameTileMap } from '../../../scene/game-tile-map';
 /**
  * Build Astar paths with GameFeatureObject tilemaps.
  */
 @Component({
   selector: 'player-map-path-behavior',
-  template: `
-    <ng-content></ng-content>`
+  template: ` <ng-content></ng-content>`,
 })
 export class PlayerMapPathBehaviorComponent extends TileMapPathBehavior {
   @Input() tileMap: GameTileMap;
@@ -42,7 +41,6 @@ export class PlayerMapPathBehaviorComponent extends TileMapPathBehavior {
 
     for (x = 0; x < this.tileMap.bounds.extent.x; x++) {
       for (let y: number = 0; y < this.tileMap.bounds.extent.y; y++) {
-
         // Tile Weights, the higher the value the more avoided the
         // tile will be in output paths.
 
@@ -63,8 +61,7 @@ export class PlayerMapPathBehaviorComponent extends TileMapPathBehavior {
           if (terrain.passable === false) {
             weight = 1000;
             blocked = true;
-          }
-          else if (terrain.isPath === true) {
+          } else if (terrain.isPath === true) {
             weight = 1;
           }
         }
@@ -84,8 +81,8 @@ export class PlayerMapPathBehaviorComponent extends TileMapPathBehavior {
       }
       if (_.indexOf(collideTypes, obj.type) !== -1) {
         /* tslint:disable */
-        const xPos: number = o.x / o.width | 0;
-        const yPos: number = o.y / o.height | 0;
+        const xPos: number = (o.x / o.width) | 0;
+        const yPos: number = (o.y / o.height) | 0;
         /* tslint:enable */
         if (!obj.passable && this.tileMap.bounds.pointInRect(xPos, yPos)) {
           grid[xPos][yPos] = 100;

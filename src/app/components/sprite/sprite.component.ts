@@ -1,16 +1,19 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {SpriteRender} from '../../services/sprite-render';
-import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
-import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+import { SpriteRender } from '../../services/sprite-render';
 
 @Component({
   selector: 'rpg-sprite',
   styleUrls: ['./sprite.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<img [style.width]="width$ | async" [style.height]="height$ | async" [src]="dataUrl$ | async">`
+  template: `<img
+    [style.width]="width$ | async"
+    [style.height]="height$ | async"
+    [src]="dataUrl$ | async"
+  />`,
 })
 export class RPGSpriteComponent {
-
   static INVALID_IMAGE: string = 'assets/images/a/blank.gif';
 
   private _dataUrl$ = new ReplaySubject<SafeResourceUrl>(1);
@@ -59,13 +62,15 @@ export class RPGSpriteComponent {
   private static _renderCanvas: HTMLCanvasElement;
   private _canvasAcquired: boolean = false;
 
-  constructor(private sanitizer: DomSanitizer,
-              private renderer: SpriteRender) {
+  constructor(private sanitizer: DomSanitizer, private renderer: SpriteRender) {
     if (!RPGSpriteComponent._renderCanvas) {
-      RPGSpriteComponent._renderCanvas = document.createElement('canvas') as HTMLCanvasElement;
+      RPGSpriteComponent._renderCanvas = document.createElement(
+        'canvas'
+      ) as HTMLCanvasElement;
       RPGSpriteComponent._renderCanvas.width = RPGSpriteComponent._renderCanvas.height = 64;
       RPGSpriteComponent._renderCanvas.style.position = 'absolute';
-      RPGSpriteComponent._renderCanvas.style.left = RPGSpriteComponent._renderCanvas.style.top = '-9000px';
+      RPGSpriteComponent._renderCanvas.style.left = RPGSpriteComponent._renderCanvas.style.top =
+        '-9000px';
     }
   }
 
@@ -75,8 +80,10 @@ export class RPGSpriteComponent {
    */
   getRenderContext(width: number, height: number): CanvasRenderingContext2D {
     if (this._canvasAcquired) {
-      throw new Error('Only one rendering canvas is available at a time.' +
-        ' Check for calls to this function without corresponding releaseCanvas() calls.');
+      throw new Error(
+        'Only one rendering canvas is available at a time.' +
+          ' Check for calls to this function without corresponding releaseCanvas() calls.'
+      );
     }
     this._canvasAcquired = true;
     RPGSpriteComponent._renderCanvas.width = width;
@@ -85,7 +92,7 @@ export class RPGSpriteComponent {
     context.webkitImageSmoothingEnabled = false;
     context.mozImageSmoothingEnabled = false;
     context.msImageSmoothingEnabled = false;
-    (<any> context).imageSmoothingEnabled = false;
+    (<any>context).imageSmoothingEnabled = false;
     return context;
   }
 
@@ -103,17 +110,20 @@ export class RPGSpriteComponent {
       this._dataUrl$.next(RPGSpriteComponent.INVALID_IMAGE);
       return;
     }
-    this.renderer.getSingleSprite(src, this._frame$.value).then((sprite: HTMLImageElement) => {
-      // Get the context for drawing
-      const width: number = parseInt(this._width$.value, 10);
-      const height: number = parseInt(this._height$.value, 10);
+    this.renderer
+      .getSingleSprite(src, this._frame$.value)
+      .then((sprite: HTMLImageElement) => {
+        // Get the context for drawing
+        const width: number = parseInt(this._width$.value, 10);
+        const height: number = parseInt(this._height$.value, 10);
 
-      const renderContext: any = this.getRenderContext(width, height);
-      renderContext.clearRect(0, 0, width, height);
-      renderContext.drawImage(sprite, 0, 0, width, height);
-      const imageDataUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.releaseRenderContext());
-      this._dataUrl$.next(imageDataUrl);
-    });
-
+        const renderContext: any = this.getRenderContext(width, height);
+        renderContext.clearRect(0, 0, width, height);
+        renderContext.drawImage(sprite, 0, 0, width, height);
+        const imageDataUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+          this.releaseRenderContext()
+        );
+        this._dataUrl$.next(imageDataUrl);
+      });
   }
 }

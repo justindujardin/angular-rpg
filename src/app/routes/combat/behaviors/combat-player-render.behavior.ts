@@ -1,11 +1,14 @@
+import { Component } from '@angular/core';
 import * as _ from 'underscore';
-import {Component} from '@angular/core';
-import {TickedBehavior} from '../../../../game/pow2/scene/behaviors/ticked-behavior';
-import {Headings} from '../../world/behaviors/player-render.behavior';
-import {AnimatedBehaviorComponent, IAnimationConfig} from '../../../behaviors/animated.behavior';
-import {Point} from '../../../../game/pow-core/point';
-import {CombatService} from '../../../models/combat/combat.service';
-import {GameEntityObject} from '../../../scene/game-entity-object';
+import { Point } from '../../../../game/pow-core/point';
+import { TickedBehavior } from '../../../../game/pow2/scene/behaviors/ticked-behavior';
+import {
+  AnimatedBehaviorComponent,
+  IAnimationConfig,
+} from '../../../behaviors/animated.behavior';
+import { CombatService } from '../../../models/combat/combat.service';
+import { GameEntityObject } from '../../../scene/game-entity-object';
+import { Headings } from '../../world/behaviors/player-render.behavior';
 export enum StateFrames {
   DEFAULT = 10,
   SWING = 1,
@@ -13,12 +16,12 @@ export enum StateFrames {
   WALK = 3,
   STRIKE = 3,
   CELEBRATE = 4,
-  DEAD = 5
+  DEAD = 5,
 }
 
 @Component({
   selector: 'combat-player-render-behavior',
-  template: `<ng-content></ng-content>`
+  template: `<ng-content></ng-content>`,
 })
 export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
   _elapsed: number = 0;
@@ -34,7 +37,9 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
   }
 
   syncBehavior(): boolean {
-    this.animator = this.host.findBehavior(AnimatedBehaviorComponent) as AnimatedBehaviorComponent;
+    this.animator = this.host.findBehavior(
+      AnimatedBehaviorComponent
+    ) as AnimatedBehaviorComponent;
     return super.syncBehavior();
   }
 
@@ -67,7 +72,9 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
   }
 
   getAttackFrames(): number[] {
-    return this.attackDirection === Headings.WEST ? [12, 13, 14, 15, 14, 13, 12] : [4, 5, 6, 7, 6, 5, 4];
+    return this.attackDirection === Headings.WEST
+      ? [12, 13, 14, 15, 14, 13, 12]
+      : [4, 5, 6, 7, 6, 5, 4];
   }
 
   getMagicAnimation(strikeCb: () => any) {
@@ -76,7 +83,7 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
         name: 'Prep Animation',
         callback: () => {
           this.host.setSprite(this.host.icon.replace('.png', '-magic.png'), 19);
-        }
+        },
       },
       {
         name: 'Magic cast',
@@ -87,7 +94,7 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
           if (strikeCb) {
             strikeCb();
           }
-        }
+        },
       },
       {
         name: 'Back to rest',
@@ -96,9 +103,8 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
         frames: [15, 16, 17, 18, 19],
         callback: () => {
           this.host.setSprite(this.host.icon.replace('-magic.png', '.png'), 10);
-        }
-      }
-
+        },
+      },
     ];
   }
 
@@ -115,7 +121,7 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
           if (this.host.world.sprites.getSpriteMeta(attackAnimationsSource)) {
             this.host.setSprite(attackAnimationsSource, 12);
           }
-        }
+        },
       },
       {
         name: 'Strike at Opponent',
@@ -127,49 +133,62 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
           if (strikeCb) {
             strikeCb();
           }
-        }
+        },
       },
       {
         name: 'Return to Party',
         duration: 250,
         repeats: 0,
         frames: this.getBackwardFrames(),
-        move: new Point(this.getBackwardDirection(), 0)
-      }
+        move: new Point(this.getBackwardDirection(), 0),
+      },
     ];
   }
 
   moveForward(then?: () => any) {
-    this._playAnimation([{
-      name: 'Move Forward',
-      repeats: 0,
-      duration: 250,
-      frames: this.getForwardFrames(),
-      move: new Point(this.getForwardDirection(), 0)
-    }], then);
+    this._playAnimation(
+      [
+        {
+          name: 'Move Forward',
+          repeats: 0,
+          duration: 250,
+          frames: this.getForwardFrames(),
+          move: new Point(this.getForwardDirection(), 0),
+        },
+      ],
+      then
+    );
   }
 
   moveBackward(then?: () => any) {
-    this._playAnimation([{
-      name: 'Move Backward',
-      repeats: 0,
-      duration: 250,
-      frames: this.getBackwardFrames(),
-      move: new Point(this.getBackwardDirection(), 0)
-    }], then);
+    this._playAnimation(
+      [
+        {
+          name: 'Move Backward',
+          repeats: 0,
+          duration: 250,
+          frames: this.getBackwardFrames(),
+          move: new Point(this.getBackwardDirection(), 0),
+        },
+      ],
+      then
+    );
   }
 
   _playAnimation(animation: IAnimationConfig[], then: () => any) {
     if (!this.animator || this.animating) {
       return;
     }
-    const animations: IAnimationConfig[] = _.map(animation, (anim: IAnimationConfig) => {
-      const result = _.extend({}, anim);
-      if (typeof result.move !== 'undefined') {
-        result.move = result.move.clone();
+    const animations: IAnimationConfig[] = _.map(
+      animation,
+      (anim: IAnimationConfig) => {
+        const result = _.extend({}, anim);
+        if (typeof result.move !== 'undefined') {
+          result.move = result.move.clone();
+        }
+        return result;
       }
-      return result;
-    });
+    );
     this.animating = true;
     this.animator.playChain(animations, () => {
       this.animating = false;
@@ -183,13 +202,16 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
     if (!this.animator || this.animating) {
       return;
     }
-    const animations: IAnimationConfig[] = _.map(attackAnimation, (anim: IAnimationConfig) => {
-      const result = _.extend({}, anim);
-      if (typeof result.move !== 'undefined') {
-        result.move = result.move.clone();
+    const animations: IAnimationConfig[] = _.map(
+      attackAnimation,
+      (anim: IAnimationConfig) => {
+        const result = _.extend({}, anim);
+        if (typeof result.move !== 'undefined') {
+          result.move = result.move.clone();
+        }
+        return result;
       }
-      return result;
-    });
+    );
     this.animating = true;
     this.animator.playChain(animations, () => {
       this.animating = false;
@@ -203,10 +225,9 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
     super.interpolateTick(elapsed);
 
     if (!this.animating) {
-
       // Choose frame for interpolated position
       const factor = this._elapsed / this.tickRateMS;
-      const altFrame = (factor > 0.0 && factor < 0.5);
+      const altFrame = factor > 0.0 && factor < 0.5;
       let frame = StateFrames.DEFAULT;
       switch (this.state) {
         case 'Injured':

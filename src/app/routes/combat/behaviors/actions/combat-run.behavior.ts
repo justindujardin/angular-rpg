@@ -1,14 +1,13 @@
+import { Component, Input } from '@angular/core';
 import * as _ from 'underscore';
-import {CombatActionBehavior} from '../combat-action.behavior';
-import {CombatEscapeStateComponent, CombatRunSummary} from '../../states/combat-escape.state';
-import {CombatEndTurnStateComponent} from '../../states/combat-end-turn.state';
-import {Component, Input} from '@angular/core';
-import {IPlayerActionCallback} from '../../states/combat.machine';
-import {CombatComponent} from '../../combat.component';
+import { CombatComponent } from '../../combat.component';
+import { CombatRunSummary } from '../../states/combat-escape.state';
+import { IPlayerActionCallback } from '../../states/combat.machine';
+import { CombatActionBehavior } from '../combat-action.behavior';
 
 @Component({
   selector: 'combat-run-behavior',
-  template: '<ng-content></ng-content>'
+  template: '<ng-content></ng-content>',
 })
 export class CombatRunBehaviorComponent extends CombatActionBehavior {
   name: string = 'run';
@@ -25,14 +24,13 @@ export class CombatRunBehaviorComponent extends CombatActionBehavior {
     let success: boolean = this._rollEscape();
     let data: CombatRunSummary = {
       success,
-      player: this.combat.machine.current
+      player: this.combat.machine.current,
     };
     this.combat.machine.notify('combat:run', data, () => {
       if (success) {
-        this.combat.machine.setCurrentState(CombatEscapeStateComponent.NAME);
-      }
-      else {
-        this.combat.machine.setCurrentState(CombatEndTurnStateComponent.NAME);
+        this.combat.machine.setCurrentState('escape');
+      } else {
+        this.combat.machine.setCurrentState('end-turn');
       }
       if (then) {
         then(this);
@@ -61,5 +59,4 @@ export class CombatRunBehaviorComponent extends CombatActionBehavior {
     }
     return roll <= chance;
   }
-
 }

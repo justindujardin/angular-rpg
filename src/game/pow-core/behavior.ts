@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,9 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {BehaviorHost} from './behavior-host';
-import {Events} from './events';
 import * as _ from 'underscore';
+import { BehaviorHost } from './behavior-host';
+import { Events } from './events';
 /**
  * Most basic object.  Has an id and a name.
  */
@@ -29,7 +29,6 @@ export interface IObject {
  * hot-swapping map.
  */
 export interface IBehavior extends IObject {
-
   /**
    * The host object that this component belongs to.
    */
@@ -62,8 +61,8 @@ export interface IBehaviorHost extends IObject {
 
   syncBehaviors();
 
-  findBehavior(type: Function): IBehavior;
-  findBehaviors(type: Function): IBehavior[];
+  findBehavior<T extends IBehavior>(type: Function): T;
+  findBehaviors<T extends IBehavior>(type: Function): T[];
 
   findBehaviorByName(name: string): IBehavior;
 }
@@ -91,15 +90,17 @@ export class Behavior extends Events implements IBehavior {
   }
 
   toString(): string {
+    if (this.name) {
+      return this.name;
+    }
     const ctor: any = this.constructor;
     const ctorString: string = ctor ? ctor.toString().match(/function (.+?)\(/) : null;
     if (ctor && ctor.name) {
       return ctor.name;
-    }
-    else if (ctorString && ctorString[1]) {
+    } else if (ctorString && ctorString[1]) {
       return ctorString[1];
     } else {
-      return this.name;
+      return 'Behavior';
     }
   }
 }

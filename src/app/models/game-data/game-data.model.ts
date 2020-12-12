@@ -1,3 +1,7 @@
+import * as Immutable from 'immutable';
+import { EntityType, IEnemy, IPartyMember } from '../base-entity';
+import { newGuid } from '../util';
+
 /**
  * The game data is defined in a shared Google Spreadsheet, to allow designers to easily tweak the
  * game without developer intervention. This file describes the data that is imported from the spreadsheet
@@ -5,24 +9,19 @@
  *
  * @fileOverview
  */
-import {EntityType} from '../entity/entity.model';
-import {BaseEntity, IHiddenAttributes} from '../base-entity';
-import {newGuid} from '../util';
-
-export type ItemCategories = 'item' | 'weapon' | 'armor';
 
 export type ItemGroups = 'default' | 'rare' | 'magic';
 
 export type ItemElements = 'holy' | 'water' | 'wind' | 'heal';
 
-export type ItemArmorType = 'armor' | 'helm' | 'boots' | 'shield';
+export type ItemArmorType = 'armor' | 'helm' | 'boots' | 'shield' | 'accessory';
 
 /**
  * The Google Spreadsheet ID to load game data from.  This must be a published
  * google spreadsheet key.
- * @type {string} The google spreadsheet ID
  */
-export const SPREADSHEET_ID: string = '1LXSRyupQanOYeZv-h7lgSwaAzB-TxwfDPFJyZqnaewc';
+export const SPREADSHEET_ID: string =
+  'https://docs.google.com/spreadsheets/d/1JK3NthX0O0-8BvJFTSMhngaioDbpa7qJiOlWI2H2RQ0/edit?usp=sharing';
 
 export interface ITemplateId {
   /**
@@ -77,6 +76,10 @@ export interface ITemplateWeapon extends ITemplateBaseItem {
    * The attack value for this weapon.
    */
   attack: number;
+  /**
+   * The hit-percentage bonus the weapon imparts
+   */
+  hit: number;
 }
 export interface ITemplateArmor extends ITemplateBaseItem {
   /**
@@ -88,25 +91,32 @@ export interface ITemplateArmor extends ITemplateBaseItem {
    * The defensive rating of this piece of armor.
    */
   readonly defense: number;
+
+  /**
+   * The weight of the item (heavier items decrease evasion more)
+   */
+  readonly weight: number;
 }
 
 export type MagicType = 'target' | 'all';
 
 export interface ITemplateMagic extends ITemplateBaseItem {
-  readonly type: MagicType;
-
-  /**
-   * True if the magic benefits the target.
-   */
-  readonly benefit: boolean;
-
-  /**
-   * How much the magic benefits or harms the target.
-   */
+  readonly type: 'spell';
+  /** What type of target does this spell have? */
+  readonly target: MagicType;
+  /** What is the readable name for this spell? */
+  readonly magicname: string;
+  /** The base MP cost required to cast this */
+  readonly magiccost: number;
+  /** The id of the effect this spell applies */
+  readonly effect: string;
+  /** The magnitude of the effect */
   readonly magnitude: number;
+  /** True if the magic benefits the target. */
+  readonly benefit: boolean;
 }
 
-export interface ITemplateClass extends ITemplateId, IHiddenAttributes {
+export interface ITemplateClass extends ITemplateId, IPartyMember {
   /**
    * Human readable class name, e.g. "Warrior" or "Mage"
    */
@@ -120,7 +130,7 @@ export interface ITemplateClass extends ITemplateId, IHiddenAttributes {
   readonly icon: string;
 }
 
-export interface ITemplateEnemy extends ITemplateId, BaseEntity {
+export interface ITemplateEnemy extends ITemplateId, IEnemy {
   /** Current magic points */
   readonly mp: number;
   /** Current health points */
@@ -144,8 +154,8 @@ export interface ITemplateEnemy extends ITemplateId, BaseEntity {
  */
 export interface ITemplateEncounter extends ITemplateId {
   readonly id: string; // unique id in spreadsheet
-  readonly enemies: string[]; // array of enemies in this encounter
-  readonly message: string[]; // message to display when combat begins
+  readonly enemies: Immutable.List<string>; // array of enemies in this encounter
+  readonly message: Immutable.List<string>; // message to display when combat begins
 }
 
 /**
@@ -177,10 +187,18 @@ export interface ITemplateRandomEncounter extends ITemplateEncounter {
  * @param from The ITemplateId to stamp out a copy of
  * @param values Any optional values to assign to the instance during creation
  */
-export function instantiateEntity<T extends ITemplateId>(from: any, values?: Partial<T>): T {
-  return Object.assign({
-    eid: entityId(from.id),
-  }, from, values || {}) as T;
+export function instantiateEntity<T extends ITemplateId>(
+  from: any,
+  values?: Partial<T>
+): T {
+  return Object.assign(
+    {
+      eid: entityId(from.id),
+      status: [],
+    },
+    from,
+    values || {}
+  ) as T;
 }
 
 /** Generate a UUID for a given input template ID that is unique across all instances of the same template base */

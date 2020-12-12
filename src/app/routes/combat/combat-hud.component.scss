@@ -1,6 +1,6 @@
-@import '../../style/variables';
-@import '../../style/mixins';
-@import '../../style/icons';
+@import "../../style/variables";
+@import "../../style/mixins";
+@import "../../style/icons";
 
 :host {
   font-family: $pixelFont;
@@ -28,7 +28,8 @@
     @media (min-width: $layout-breakpoint-sm) {
       min-height: $app-bar-height;
     }
-    rpg-health-bar, .text {
+    rpg-health-bar,
+    .text {
       height: 100%;
       position: absolute;
       top: 0;
@@ -66,4 +67,3 @@
     }
   }
 }
-

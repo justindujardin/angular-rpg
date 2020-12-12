@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin
+ Copyright (C) 2013-2020 by Justin DuJardin
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,16 +13,15 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {Resource} from '../resource';
-import {errors} from '../errors';
-import {Time} from '../time';
 import * as _ from 'underscore';
+import { errors } from '../errors';
+import { Resource } from '../resource';
+import { Time } from '../time';
 
 /**
  * A supported audio format description that maps extensions to resource types.
  */
 export interface IAudioFormat {
-
   /**
    * The file extension that corresponds to this format.
    */
@@ -49,11 +48,11 @@ export interface IAudioSource {
 export class AudioResource extends Resource implements IAudioSource {
   data: HTMLAudioElement;
   private static FORMATS: any[] = [
+    ['wav', ['audio/wav; codecs="1"']],
     ['mp3', ['audio/mpeg;']],
     ['m4a', ['audio/x-m4a;']],
     ['aac', ['audio/mp4a;', 'audio/mp4;']],
     ['ogg', ['audio/ogg; codecs="vorbis"']],
-    ['wav', ['audio/wav; codecs="1"']]
   ];
 
   /**
@@ -85,17 +84,15 @@ export class AudioResource extends Resource implements IAudioSource {
               if (!!a.canPlayType(type)) {
                 this._types.push({
                   extension,
-                  type
+                  type,
                 });
               }
             });
           });
-        }
-        catch (e) {
+        } catch (e) {
           // Fall through
         }
       }
-
     }
     return this._types.slice();
   }
@@ -159,21 +156,17 @@ export class AudioResource extends Resource implements IAudioSource {
       url = url.substr(0, index);
     }
     return `${url}.${format.extension}`;
-
   }
 
   private _loadAudioElement(formats: IAudioFormat[]): Promise<AudioResource> {
-
     return new Promise<AudioResource>((resolve, reject) => {
       let sources: number = formats.length;
       let completed;
       const invalid: string[] = [];
       const reference: HTMLAudioElement = document.createElement('audio');
-      let timer = new Time()
-        .start()
-        .addObject({
-          tick: () => reference.readyState > 3 ? completed() : null
-        });
+      let timer = new Time().start().addObject({
+        tick: () => (reference.readyState > 3 ? completed() : null),
+      });
       completed = () => {
         this.data = reference;
         this._audio = reference;

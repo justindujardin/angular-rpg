@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,24 +13,23 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {CameraBehavior} from '../../../../game/pow2/scene/behaviors/camera-behavior';
-import {SceneView} from '../../../../game/pow2/scene/scene-view';
-import {Component} from '@angular/core';
-import {GameEntityObject} from '../../../scene/game-entity-object';
-import {Point} from '../../../../game/pow-core/point';
+import { Component } from '@angular/core';
+import { Point } from '../../../../game/pow-core/point';
+import { CameraBehavior } from '../../../../game/pow2/scene/behaviors/camera-behavior';
+import { SceneView } from '../../../../game/pow2/scene/scene-view';
+import { GameEntityObject } from '../../../scene/game-entity-object';
 
 @Component({
   selector: 'player-camera-behavior',
-  template: `<ng-content></ng-content>`
+  template: `<ng-content></ng-content>`,
 })
 export class PlayerCameraBehaviorComponent extends CameraBehavior {
   host: GameEntityObject;
 
   process(view: SceneView) {
-
     const w: number = view.context.canvas.width;
     view.camera.point.set(this.host.point);
-    view.cameraScale = w > 1024 ? 6 : (w > 768 ? 4 : (w > 480 ? 3 : 2));
+    view.cameraScale = w > 1024 ? 6 : w > 768 ? 4 : w > 480 ? 3 : 2;
     const screenRect = new Point(view.context.canvas.width, view.context.canvas.height);
     const canvasSize = view.screenToWorld(screenRect, view.cameraScale);
     view.camera.extent.set(canvasSize);
@@ -40,17 +39,25 @@ export class PlayerCameraBehaviorComponent extends CameraBehavior {
 
     // Clamp to tile map if it is present.
     if (this.host.tileMap) {
-      view.camera.point.x = Math.min(view.camera.point.x, this.host.tileMap.bounds.extent.x - view.camera.extent.x);
-      view.camera.point.y = Math.min(view.camera.point.y, this.host.tileMap.bounds.extent.y - view.camera.extent.y);
+      view.camera.point.x = Math.min(
+        view.camera.point.x,
+        this.host.tileMap.bounds.extent.x - view.camera.extent.x
+      );
+      view.camera.point.y = Math.min(
+        view.camera.point.y,
+        this.host.tileMap.bounds.extent.y - view.camera.extent.y
+      );
       view.camera.point.x = Math.max(0, view.camera.point.x);
       view.camera.point.y = Math.max(0, view.camera.point.y);
 
       // Center in viewport if tilemap is smaller than camera.
       if (this.host.tileMap.bounds.extent.x < view.camera.extent.x) {
-        view.camera.point.x = (this.host.tileMap.bounds.extent.x - view.camera.extent.x) / 2;
+        view.camera.point.x =
+          (this.host.tileMap.bounds.extent.x - view.camera.extent.x) / 2;
       }
       if (this.host.tileMap.bounds.extent.y < view.camera.extent.y) {
-        view.camera.point.y = (this.host.tileMap.bounds.extent.y - view.camera.extent.y) / 2;
+        view.camera.point.y =
+          (this.host.tileMap.bounds.extent.y - view.camera.extent.y) / 2;
       }
     }
   }

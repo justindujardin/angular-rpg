@@ -1,7 +1,7 @@
 import * as _ from 'underscore';
-import {errors} from './errors';
-import {IBehavior, IBehaviorHost} from './behavior';
-import {Events} from './events';
+import { IBehavior, IBehaviorHost } from './behavior';
+import { errors } from './errors';
+import { Events } from './events';
 
 /**
  * A BehaviorHost is a container for groups of components.
@@ -23,25 +23,27 @@ export class BehaviorHost extends Events implements IBehaviorHost {
     this._connectedBehaviors.length = 0;
   }
 
-  findBehavior(type: Function): IBehavior {
+  findBehavior<T extends IBehavior>(type: Function): T {
     const values: any[] = this._connectedBehaviors;
     const l: number = this._connectedBehaviors.length;
     for (let i = 0; i < l; i++) {
-      const o: IBehavior = values[i];
-      if (o instanceof type) {
+      const o: T = values[i];
+      const typeFn: any = type;
+      if (o instanceof typeFn) {
         return o;
       }
     }
     return null;
   }
 
-  findBehaviors(type: Function): IBehavior[] {
+  findBehaviors<T extends IBehavior>(type: Function): T[] {
     const values: any[] = this._connectedBehaviors;
-    const results: IBehavior[] = [];
+    const results: T[] = [];
     const l: number = this._connectedBehaviors.length;
     for (let i = 0; i < l; i++) {
-      const o: IBehavior = values[i];
-      if (o instanceof type) {
+      const o: T = values[i];
+      const typeFn: any = type;
+      if (o instanceof typeFn) {
         results.push(o);
       }
     }
@@ -72,7 +74,7 @@ export class BehaviorHost extends Events implements IBehaviorHost {
     if (!component) {
       throw new Error(errors.REQUIRED_ARGUMENT);
     }
-    if (_.where(this._connectedBehaviors, {id: component.id}).length > 0) {
+    if (_.where(this._connectedBehaviors, { id: component.id }).length > 0) {
       throw new Error(errors.ALREADY_EXISTS);
     }
     component.host = this;
@@ -87,8 +89,11 @@ export class BehaviorHost extends Events implements IBehaviorHost {
     return true;
   }
 
-  removeBehaviorByType(componentType: any, silent: boolean = false): boolean {
-    const component = this.findBehavior(componentType);
+  removeBehaviorByType<T extends IBehavior>(
+    componentType: any,
+    silent: boolean = false
+  ): boolean {
+    const component = this.findBehavior<T>(componentType);
     if (!component) {
       return false;
     }
@@ -113,5 +118,4 @@ export class BehaviorHost extends Events implements IBehaviorHost {
     }
     return change;
   }
-
 }

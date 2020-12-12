@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="27" height="22" tilewidth="16" tileheight="16" nextobjectid="12">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="27" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="15">
  <properties>
   <property name="music" value="assets/music/TownTheme"/>
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
- <layer name="Terrain" width="27" height="22">
+ <layer id="1" name="Terrain" width="27" height="22">
   <data encoding="csv">
 46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,
 46,46,46,46,46,46,46,46,46,46,46,69,46,69,46,46,46,46,46,46,46,46,46,18,18,18,18,
@@ -30,7 +30,7 @@
 18,18,18,18,18,18,18,18,46,46,18,18,18,18,18,18,18,18,18,18,18,46,46,18,18,18,18
 </data>
  </layer>
- <objectgroup name="Features">
+ <objectgroup id="2" name="Features">
   <object id="1" name="wilderness" type="PortalFeatureComponent" x="192" y="64" width="16" height="16">
    <properties>
     <property name="icon" value="doorInWall.png"/>
@@ -114,12 +114,13 @@
   </object>
   <object id="11" name="Items" type="StoreFeatureComponent" x="272" y="144" width="16" height="16">
    <properties>
-    <property name="category" value="items"/>
+    <property name="category" value="magic"/>
     <property name="groups" value="default"/>
     <property name="icon" value="shop.png"/>
     <property name="level" value="1"/>
     <property name="name" value="Items"/>
    </properties>
   </object>
+  <object id="14" name="block" type="BlockFeatureComponent" x="192" y="48" width="16" height="16"/>
  </objectgroup>
 </map>

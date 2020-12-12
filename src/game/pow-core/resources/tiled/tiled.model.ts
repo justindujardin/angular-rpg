@@ -10,7 +10,7 @@ export interface ITiledBase {
   width: number;
   height: number;
   visible: boolean;
-  _xml: any;
+  _xml?: any;
 }
 
 // <layer>, <objectgroup>
@@ -25,8 +25,8 @@ export interface ITiledLayer extends ITiledLayerBase {
 }
 
 // <object>
-export interface ITiledObject extends ITiledBase {
-  properties?: any;
+export interface ITiledObject<PropertiesType = any> extends ITiledBase {
+  properties?: PropertiesType;
   rotation?: number;
   type?: string;
   gid?: number;

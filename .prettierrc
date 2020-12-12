@@ -1,0 +1,11 @@
+{
+  "printWidth": 88,
+  "overrides": [
+    {
+      "files": "src/**/*.tsx",
+      "options": {
+        "parser": "html"
+      }
+    }
+  ]
+}

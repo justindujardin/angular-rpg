@@ -1,3 +1,8 @@
+import * as Immutable from 'immutable';
+import { TypedRecord } from 'typed-immutable-record';
+import { Item } from '../item';
+import { pointFactory } from '../records';
+import { assertTrue, exhaustiveCheck, makeRecordFactory } from '../util';
 import {
   GameStateActions,
   GameStateAddGoldAction,
@@ -24,22 +29,16 @@ import {
   GameStateTravelAction,
   GameStateTravelFailAction,
   GameStateTravelSuccessAction,
-  GameStateUnequipItemAction
+  GameStateUnequipItemAction,
 } from './game-state.actions';
-import {GameState} from './game-state.model';
-import * as Immutable from 'immutable';
-import {Item} from '../item';
-import {assertTrue, exhaustiveCheck, makeRecordFactory} from '../util';
-import {TypedRecord} from 'typed-immutable-record';
-import {pointFactory, PointRecord} from '../records';
+import { GameState } from './game-state.model';
 
 /**
  * Game state record.
  * @private
  * @internal
  */
-interface GameStateRecord extends TypedRecord<GameStateRecord>, GameState {
-}
+interface GameStateRecord extends TypedRecord<GameStateRecord>, GameState {}
 
 /**
  * Factory for creating combat state records. Useful for instantiating combat subtree
@@ -57,7 +56,7 @@ export const gameStateFactory = makeRecordFactory<GameState, GameStateRecord>({
   combatZone: '',
   position: pointFactory(),
   shipPosition: pointFactory(),
-  boardedShip: false
+  boardedShip: false,
 });
 
 /**
@@ -71,12 +70,15 @@ export function gameStateFromJSON(object: GameState): GameState {
     inventory: Immutable.List<string>(object.inventory),
     keyData: Immutable.Map<string, any>(object.keyData),
     position: pointFactory(object.position),
-    shipPosition: pointFactory(object.shipPosition)
+    shipPosition: pointFactory(object.shipPosition),
   };
   return gameStateFactory(recordValues);
 }
 
-export function gameStateReducer(state: GameStateRecord = gameStateFactory(), action: GameStateActions): GameState {
+export function gameStateReducer(
+  state: GameStateRecord = gameStateFactory(),
+  action: GameStateActions
+): GameState {
   switch (action.type) {
     case GameStateNewAction.typeId: {
       return gameStateFromJSON(action.payload);
@@ -87,22 +89,32 @@ export function gameStateReducer(state: GameStateRecord = gameStateFactory(), ac
     case GameStateTravelAction.typeId: {
       return state.merge({
         position: pointFactory(action.payload.position),
-        location: action.payload.location
+        location: action.payload.location,
       });
     }
     case GameStateEquipItemAction.typeId:
-      assertTrue(state.party.find((i) => i === action.payload.entityId),
-        'cannot equip item on entity that is not in the party');
-      assertTrue(state.inventory.find((i) => i === action.payload.itemId), 'item does not exist in inventory');
+      assertTrue(
+        state.party.find((i) => i === action.payload.entityId),
+        'cannot equip item on entity that is not in the party'
+      );
+      assertTrue(
+        state.inventory.find((i) => i === action.payload.itemId),
+        'item does not exist in inventory'
+      );
       return state.merge({
-        inventory: state.inventory.filter((i: string) => i !== action.payload.itemId)
+        inventory: state.inventory.filter((i: string) => i !== action.payload.itemId),
       });
     case GameStateUnequipItemAction.typeId:
-      assertTrue(state.party.find((i) => i === action.payload.entityId),
-        'cannot remove item from entity that is not in the party');
-      assertTrue(!state.inventory.find((i) => i === action.payload.itemId), 'item already exists in inventory');
+      assertTrue(
+        state.party.find((i) => i === action.payload.entityId),
+        'cannot remove item from entity that is not in the party'
+      );
+      assertTrue(
+        !state.inventory.find((i) => i === action.payload.itemId),
+        'item already exists in inventory'
+      );
       return state.merge({
-        inventory: state.inventory.push(action.payload.itemId)
+        inventory: state.inventory.push(action.payload.itemId),
       });
     case GameStateTravelSuccessAction.typeId:
     case GameStateTravelFailAction.typeId:
@@ -122,55 +134,63 @@ export function gameStateReducer(state: GameStateRecord = gameStateFactory(), ac
           position: action.payload,
           shipPosition: action.payload,
         });
-      }
-      else {
+      } else {
         return state.merge({
-          position: action.payload
+          position: action.payload,
         });
       }
     }
     case GameStateBoardShipAction.typeId: {
       return state.merge({
-        boardedShip: action.payload
+        boardedShip: action.payload,
       });
     }
     case GameStateSetBattleCounterAction.typeId: {
       return state.merge({
-        battleCounter: action.payload
+        battleCounter: action.payload,
       });
     }
     case GameStateSetKeyDataAction.typeId:
       return state.merge({
-        keyData: state.keyData.set(action.payload.key, action.payload.value)
+        keyData: state.keyData.set(action.payload.key, action.payload.value),
       });
     case GameStateAddGoldAction.typeId: {
       return state.merge({
-        gold: state.gold + action.payload
+        gold: state.gold + action.payload,
       });
     }
     case GameStateHealPartyAction.typeId: {
       // Subtract cost and return.
       return state.merge({
-        gold: state.gold - action.payload.cost
+        gold: state.gold - action.payload.cost,
       });
     }
     case GameStateAddInventoryAction.typeId: {
       const item: Item = action.payload;
       assertTrue(item, 'cannot add invalid item to inventory');
-      assertTrue(item.eid, 'item must have an eid. consider using "entityId" or "instantiateEntity" during creation');
-      assertTrue(item.id, 'item must have a template id. see game-data models for more information');
+      assertTrue(
+        item.eid,
+        'item must have an eid. consider using "entityId" or "instantiateEntity" during creation'
+      );
+      assertTrue(
+        item.id,
+        'item must have a template id. see game-data models for more information'
+      );
       const exists: boolean = !!state.inventory.find((i: string) => i === item.eid);
       assertTrue(!exists, 'item already exists in inventory');
       return state.merge({
-        inventory: state.inventory.push(item.eid)
+        inventory: state.inventory.push(item.eid),
       });
     }
     case GameStateRemoveInventoryAction.typeId: {
       const item: Item = action.payload;
       const inventory = state.inventory.filter((i: string) => i !== item.eid);
-      assertTrue(inventory.count() === state.inventory.count() - 1, 'item does not exist in party inventory to remove');
+      assertTrue(
+        inventory.count() === state.inventory.count() - 1,
+        'item does not exist in party inventory to remove'
+      );
       return state.merge({
-        inventory
+        inventory,
       });
     }
     default:

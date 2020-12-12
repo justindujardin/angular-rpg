@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,40 +13,44 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {Component, Input} from '@angular/core';
-import {BaseEntity} from '../../models/base-entity';
+import { Component, Input } from '@angular/core';
+import { CombatantTypes } from '../../models/base-entity';
 
+/**
+ * Render a linear progress bar to represent an Entity's health
+ */
 @Component({
   selector: 'rpg-health-bar',
   styleUrls: ['./health-bar.component.scss'],
-  template: `
-  <div [ngClass]="getCSSClassMap()" [style.width]="getProgressBarWidth() + '%'">
+  template: ` <div
+    [ngClass]="_getCSSClassMap()"
+    [style.width]="_getProgressBarWidth() + '%'"
+  >
     <ng-content></ng-content>
-  </div>`
+  </div>`,
 })
 export class RPGHealthBarComponent {
   @Input()
-  model: BaseEntity;
+  model: CombatantTypes;
 
-  getCSSClassMap(): {[className: string]: boolean} {
+  _getCSSClassMap(): { [className: string]: boolean } {
     if (!this.model) {
       return {};
     }
-    const pct: number = Math.round(this.model.hp / this.model.maxhp * 100);
+    const pct: number = Math.round((this.model.hp / this.model.maxhp) * 100);
     return {
       dead: pct === 0,
       critical: pct < 33,
       hurt: pct < 66,
-      fine: pct > 66
+      fine: pct > 66,
     };
   }
 
-  getProgressBarWidth(): number {
+  _getProgressBarWidth(): number {
     let width = 0;
     if (this.model && this.model) {
-      width = Math.ceil(this.model.hp / this.model.maxhp * 100);
+      width = Math.ceil((this.model.hp / this.model.maxhp) * 100);
     }
     return width;
   }
-
 }

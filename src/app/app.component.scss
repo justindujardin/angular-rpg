@@ -1,10 +1,4 @@
-@import './style/variables.scss';
-@import 'style/page-transitions';
-@import './style/animation.scss';
-@import './style/mixins.scss';
-@import './style/loading.scss';
-@import './style/theme.scss';
-
+@import "./style/mixins.scss";
 
 html,
 body {
@@ -22,7 +16,7 @@ canvas {
 }
 
 .ebp {
-  font-family: 'GraphicPixel', sans-serif;
+  font-family: "GraphicPixel", sans-serif;
   @include eight-bit-panel(6px);
 }
 

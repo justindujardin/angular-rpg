@@ -2,9 +2,17 @@
 <combat-player
   *ngFor="let p of (party$ | async); trackBy: combatTrackBy"
   [icon]="p.icon"
-  [model]="p"></combat-player>
+  [model]="p"
+  [scene]="scene"
+  [combat]="combat"
+  #partyMember
+></combat-player>
 <combat-enemy
   *ngFor="let e of (enemies$ | async); trackBy: combatTrackBy"
   [icon]="e.icon"
-  [model]="e"></combat-enemy>
+  [model]="e"
+  [scene]="scene"
+  [combat]="combat"
+  #enemy
+></combat-enemy>
 <ng-content></ng-content>

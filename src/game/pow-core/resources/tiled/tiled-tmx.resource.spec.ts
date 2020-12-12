@@ -1,6 +1,6 @@
-import {TiledTMXResource} from './tiled-tmx.resource';
-import {ITiledLayer, ITiledObject} from './tiled.model';
 import * as $ from 'jquery';
+import { TiledTMXResource } from './tiled-tmx.resource';
+import { ITiledLayer, ITiledObject } from './tiled.model';
 
 describe('TiledTMXResource', () => {
   it('should be defined', () => {
@@ -8,7 +8,6 @@ describe('TiledTMXResource', () => {
   });
 
   it('should succeed with good url', (done) => {
-
     new TiledTMXResource()
       .fetch('assets/test/example.tmx')
       .then((resource: TiledTMXResource) => {
@@ -75,44 +74,48 @@ describe('TiledTMXResource', () => {
         const xmlStr: string = resource.write();
         // Serialize as an XML string, and deserialize into object form.
         // Test this rather than XML string comparisons to be less fragile.
-        const xml = $(xmlStr);
-        new TiledTMXResource('assets/test/example.tmx', xml).load().then((clone: TiledTMXResource) => {
-          // Layer data
-          expect(clone.layers[0].data).toEqual(resource.layers[0].data);
+        const xml = $.parseXML(xmlStr);
+        new TiledTMXResource('assets/test/example.tmx', xml)
+          .load()
+          .then((clone: TiledTMXResource) => {
+            // Layer data
+            expect(clone.layers[0].data).toEqual(resource.layers[0].data);
 
-          // Object layer comparisons
-          const l2: ITiledLayer = clone.layers[1];
-          const o2: ITiledObject = l2.objects[0];
+            // Object layer comparisons
+            const l2: ITiledLayer = clone.layers[1];
+            const o2: ITiledObject = l2.objects[0];
 
-          expect(l1.objects.length).toBe(l2.objects.length);
-          expect(l1.color).toBe(l2.color);
+            expect(l1.objects.length).toBe(l2.objects.length);
+            expect(l1.color).toBe(l2.color);
 
-          expect(o2.properties).toBeDefined();
-          expect(o2.properties.result).toBe(o1.properties.result);
-          expect(o2.name).toBe(o1.name);
-          expect(o2.type).toBe(o1.type);
+            expect(o2.properties).toBeDefined();
+            expect(o2.properties.result).toBe(o1.properties.result);
+            expect(o2.name).toBe(o1.name);
+            expect(o2.type).toBe(o1.type);
 
-          done();
-        });
+            done();
+          });
       });
   });
 
   it('should fail with bad url', (done) => {
-    new TiledTMXResource()
-      .fetch('bad/does/not/exist.tmx')
-      .catch(() => done());
+    new TiledTMXResource().fetch('bad/does/not/exist.tmx').catch((err) => {
+      expect(err).toBeDefined();
+      done();
+    });
   });
 
   it('should fail with missing image source', (done) => {
-    new TiledTMXResource()
-      .fetch('assets/test/badImage.tmx')
-      .catch(() => done());
+    new TiledTMXResource().fetch('assets/test/badImage.tmx').catch((err) => {
+      expect(err).toBeDefined();
+      done();
+    });
   });
 
   it('should fail with non-csv encoded layer data', (done) => {
-    new TiledTMXResource()
-      .fetch('assets/test/badEncoding.tmx')
-      .catch(() => done());
+    new TiledTMXResource().fetch('assets/test/badEncoding.tmx').catch((err) => {
+      expect(err).toBeDefined();
+      done();
+    });
   });
-
 });

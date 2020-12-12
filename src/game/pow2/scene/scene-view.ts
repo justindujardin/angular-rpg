@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {SceneObject} from './scene-object';
-import {ISceneView} from './scene.model';
-import {Rect} from '../../pow-core/rect';
-import {Scene} from './scene';
-import {SceneViewComponent} from './scene-view-component';
-import {Point} from '../../pow-core/point';
+import { Point } from '../../pow-core/point';
+import { Rect } from '../../pow-core/rect';
+import { Scene } from './scene';
+import { SceneObject } from './scene-object';
+import { SceneViewComponent } from './scene-view-component';
+import { ISceneView } from './scene.model';
 /**
  * A view that renders a `Scene` through a given HTMLCanvasElement.
  *
@@ -156,7 +156,12 @@ export class SceneView extends SceneObject implements ISceneView {
       x = renderPos.x;
       y = renderPos.y;
     }
-    return this.context.clearRect(x, y, this.context.canvas.width, this.context.canvas.height);
+    return this.context.clearRect(
+      x,
+      y,
+      this.context.canvas.width,
+      this.context.canvas.height
+    );
   }
 
   // Coordinate Conversions (World/Screen)
@@ -176,8 +181,7 @@ export class SceneView extends SceneObject implements ISceneView {
       result.point.multiply(this.unitSize * scale);
       result.extent.multiply(this.unitSize * scale);
       return result;
-    }
-    else if (value instanceof Point) {
+    } else if (value instanceof Point) {
       return new Point(value).multiply(this.unitSize * scale);
     }
     return value * (this.unitSize * scale);
@@ -197,8 +201,7 @@ export class SceneView extends SceneObject implements ISceneView {
       result.point.multiply(1 / (this.unitSize * scale));
       result.extent.multiply(1 / (this.unitSize * scale));
       return result;
-    }
-    else if (value instanceof Point) {
+    } else if (value instanceof Point) {
       return new Point(value).multiply(1 / (this.unitSize * scale));
     }
     return value * (1 / (this.unitSize * scale));
@@ -254,8 +257,8 @@ export class SceneView extends SceneObject implements ISceneView {
         animation.time = this.scene.time + animation.rate;
       }
     }
-    return this.animations = _.filter(this.animations, (a: any) => {
+    return (this.animations = _.filter(this.animations, (a: any) => {
       return a.done !== true;
-    });
+    }));
   }
 }

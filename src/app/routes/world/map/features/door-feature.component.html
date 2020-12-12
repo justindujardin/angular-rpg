@@ -1,0 +1,12 @@
+<div layout="row" layout-padding class="dialog" *ngIf="active$ | async">
+  <rpg-sprite class="character" [name]="icon$ | async"></rpg-sprite>
+  <div flex class="body-text" *ngIf="cantUnlock$ | async">
+    <p [innerText]="title$ | async"></p>
+    <span class="text" [innerText]="lockedText$ | async"></span>
+  </div>
+  <div flex class="body-text" *ngIf="canUnlock$ | async">
+    <p [innerText]="title$ | async"></p>
+    <span class="text" [innerText]="unlockText$ | async"></span>
+  </div>
+  <button class="btn-close" (click)="onClose.next($event)">x</button>
+</div>

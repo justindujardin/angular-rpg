@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,14 +13,14 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {CombatBeginTurnStateComponent} from './combat-begin-turn.state';
-import {CombatChooseActionStateComponent} from './combat-choose-action.state';
-import {CombatDefeatStateComponent} from './combat-defeat.state';
-import {CombatEndTurnStateComponent} from './combat-end-turn.state';
-import {CombatEscapeStateComponent} from './combat-escape.state';
-import {CombatStartStateComponent} from './combat-start.state';
-import {CombatVictoryStateComponent} from './combat-victory.state';
-import {CombatStateMachineComponent} from './combat.machine';
+import { CombatBeginTurnStateComponent } from './combat-begin-turn.state';
+import { CombatChooseActionStateComponent } from './combat-choose-action.state';
+import { CombatDefeatStateComponent } from './combat-defeat.state';
+import { CombatEndTurnStateComponent } from './combat-end-turn.state';
+import { CombatEscapeStateComponent } from './combat-escape.state';
+import { CombatStartStateComponent } from './combat-start.state';
+import { CombatVictoryStateComponent } from './combat-victory.state';
+import { CombatStateMachineComponent } from './combat.machine';
 export * from './combat-base.state';
 export * from './combat-begin-turn.state';
 export * from './combat-choose-action.state';
@@ -39,5 +39,5 @@ export const COMBAT_STATE_COMPONENTS = [
   CombatEndTurnStateComponent,
   CombatEscapeStateComponent,
   CombatStartStateComponent,
-  CombatVictoryStateComponent
+  CombatVictoryStateComponent,
 ];

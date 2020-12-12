@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,16 +13,16 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+import { EventEmitter } from '@angular/core';
 import * as _ from 'underscore';
-import {ImageResource} from '../../pow-core/resources/image.resource';
-import {Scene} from '../scene/scene';
-import {IPoint, Point} from '../../pow-core';
-import {MovableBehavior} from '../scene/behaviors/movable-behavior';
-import {GameWorld} from '../../../app/services/game-world';
-import {TileMap} from './tile-map';
-import {SceneObject} from '../scene/scene-object';
-import {ISpriteMeta} from '../core/api';
-import {EventEmitter} from '@angular/core';
+import { GameWorld } from '../../../app/services/game-world';
+import { IPoint, Point } from '../../pow-core';
+import { ImageResource } from '../../pow-core/resources/image.resource';
+import { ISpriteMeta } from '../core/api';
+import { MovableBehavior } from '../scene/behaviors/movable-behavior';
+import { Scene } from '../scene/scene';
+import { SceneObject } from '../scene/scene-object';
+import { TileMap } from './tile-map';
 
 export interface TileObjectOptions {
   point?: IPoint;
@@ -49,7 +49,7 @@ export const DEFAULTS: TileObjectOptions = {
   icon: '',
   scale: 1,
   image: null,
-  tileMap: null
+  tileMap: null,
 };
 
 export class TileObject extends SceneObject implements TileObjectOptions {
@@ -140,5 +140,4 @@ export class TileObject extends SceneObject implements TileObjectOptions {
       });
     }
   }
-
 }

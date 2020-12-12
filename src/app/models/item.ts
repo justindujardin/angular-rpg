@@ -1,15 +1,12 @@
-import {EntityObject} from './base-entity';
-import {ItemCategories, ITemplateItem} from './game-data/game-data.model';
+import { IEntityObject } from './base-entity';
+import { ITemplateItem } from './game-data/game-data.model';
+
+export type ItemCategories = 'item' | 'weapon' | 'armor' | 'misc' | 'spell';
 
 /**
  * An instance of a template item that has been created.
  */
-export interface Item extends ITemplateItem, EntityObject {
-  /**
-   * The ID of the entity that this item is equipped by (if any)
-   */
-  readonly equippedBy?: string | undefined;
-
+export interface Item extends ITemplateItem, IEntityObject {
   /**
    * The category of the item. Useful for filtering by item type.
    */

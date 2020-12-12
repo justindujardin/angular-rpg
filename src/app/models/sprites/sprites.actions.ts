@@ -1,13 +1,12 @@
-import {Action} from '@ngrx/store';
-import {type} from '../util';
-import {SpriteDataMap} from './sprites.model';
+import { Action } from '@ngrx/store';
+import { type } from '../util';
+import { SpriteDataMap } from './sprites.model';
 
 export class SpritesRegisterAction implements Action {
   static typeId: 'SPRITE_REGISTER_MAP' = type('SPRITE_REGISTER_MAP');
   type = SpritesRegisterAction.typeId;
 
-  constructor(public payload: SpriteDataMap) {
-  }
+  constructor(public payload: SpriteDataMap) {}
 }
 
 export class SpritesLoadAction implements Action {
@@ -39,8 +38,8 @@ export class SpritesLoadFailAction implements Action {
   }
 }
 
-export type SpriteActions
-  = SpritesRegisterAction
+export type SpriteActions =
+  | SpritesRegisterAction
   | SpritesLoadAction
   | SpritesLoadSuccessAction
   | SpritesLoadFailAction;

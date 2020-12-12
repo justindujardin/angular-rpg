@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {getSpriteMeta} from './api';
+import { getSpriteMeta } from './api';
 /**
  * Really Janky class to play animations associated with a pow2 sprite.
  *
@@ -68,7 +68,7 @@ export class Animator {
 
   interpolate(from: number, to: number, factor: number): number {
     factor = Math.min(Math.max(factor, 0), 1);
-    return (from * (1.0 - factor)) + (to * factor);
+    return from * (1.0 - factor) + to * factor;
   }
 
   getFrame(): number {

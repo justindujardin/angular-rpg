@@ -1,10 +1,10 @@
-import {Resource} from './resource';
-import {ResourceManager} from './resource-manager';
-import {errors} from './errors';
-import {ServicesModule} from '../../app/services/index';
-import {TestBed} from '@angular/core/testing';
-import {rootReducer} from '../../app/models/index';
-import {StoreModule} from '@ngrx/store';
+import { TestBed } from '@angular/core/testing';
+import { StoreModule } from '@ngrx/store';
+import { metaReducers, reducers } from '../../app/models';
+import { ServicesModule } from '../../app/services/index';
+import { errors } from './errors';
+import { Resource } from './resource';
+import { ResourceManager } from './resource-manager';
 declare const _: any;
 
 class MockResource extends Resource {
@@ -28,16 +28,18 @@ class MockFailResource extends Resource {
 }
 
 describe('ResourceManager', () => {
-
   beforeEach(() => {
     return TestBed.configureTestingModule({
-      imports: [StoreModule.provideStore(rootReducer), ServicesModule.forRoot()]
+      imports: [
+        StoreModule.forRoot(reducers, { metaReducers }),
+        ServicesModule.forRoot(),
+      ],
     });
   });
 
   let loader: ResourceManager;
   beforeEach(() => {
-    loader = TestBed.get(ResourceManager);
+    loader = TestBed.inject(ResourceManager);
   });
 
   it('should be defined and instantiable', () => {
@@ -55,14 +57,20 @@ describe('ResourceManager', () => {
       loader
         .create<MockResource>(MockResource)
         .load()
-        .then(() => done());
+        .then((data) => {
+          expect(data).toBeDefined();
+          done();
+        });
     });
 
     it('should reject promise when resource fails to load', (done) => {
       loader
         .create<MockFailResource>(MockFailResource)
         .load()
-        .catch(() => done());
+        .catch((err) => {
+          expect(err).toBeDefined();
+          done();
+        });
     });
   });
 
@@ -71,23 +79,31 @@ describe('ResourceManager', () => {
       loader
         .loadAsType<MockResource>('something', MockResource)
         .catch(console.error.bind(console))
-        .then(() => done());
+        .then((data) => {
+          expect(data).toBeDefined();
+          done();
+        });
     });
     it('should reject with error if not given a source', (done) => {
-      loader
-        .loadAsType<MockResource>(null, MockResource)
-        .catch(() => done());
+      loader.loadAsType<MockResource>(null, MockResource).catch((err) => {
+        expect(err).toBeDefined();
+        done();
+      });
     });
     it('should reject with error if not given a type to load as', (done) => {
-      loader
-        .loadAsType<MockResource>('something', null)
-        .catch(() => done());
+      loader.loadAsType<MockResource>('something', null).catch((err) => {
+        expect(err).toBeDefined();
+        done();
+      });
     });
   });
 
   describe('load', () => {
     it('should fail with unknown resource type', (done) => {
-      loader.load<MockResource>('something.unknown').catch(() => done());
+      loader.load<MockResource>('something.unknown').catch((err) => {
+        expect(err).toBeDefined();
+        done();
+      });
     });
     it('should cache loaded resources', (done) => {
       loader.registerType('mock', MockResource);
@@ -116,7 +132,10 @@ describe('ResourceManager', () => {
   describe('registerType', () => {
     it('should register custom types', (done) => {
       loader.registerType('mock', MockResource);
-      loader.load('made-up.mock').then(() => done());
+      loader.load('made-up.mock').then((data) => {
+        expect(data).toBeDefined();
+        done();
+      });
     });
   });
 
@@ -126,7 +145,7 @@ describe('ResourceManager', () => {
         ['png', 'foo.png'],
         ['png', 'http://www.website.com/foo.png'],
         ['', 'http://www.website.com/foo'],
-        ['', 'foo/bar']
+        ['', 'foo/bar'],
       ];
       for (let i: number = 0; i < expectations.length; i++) {
         const tuple: [string, string] = expectations[i];
@@ -134,5 +153,4 @@ describe('ResourceManager', () => {
       }
     });
   });
-
 });

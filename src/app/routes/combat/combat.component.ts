@@ -1,24 +1,31 @@
-import {AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild} from '@angular/core';
-import {IProcessObject} from '../../../game/pow-core/time';
-import {NamedMouseElement, PowInput} from '../../../game/pow2/core/input';
-import {RPGGame} from '../../services/rpg-game';
-import {GameWorld} from '../../services/game-world';
-import {NotificationService} from '../../components/notification/notification.service';
-import {Point} from '../../../game/pow-core/point';
-import {Scene} from '../../../game/pow2/scene/scene';
-import {GameEntityObject} from '../../scene/game-entity-object';
-import {SceneObject} from '../../../game/pow2/scene/scene-object';
-import {ItemModel} from '../../../game/rpg/models/itemModel';
-import {HeroModel} from '../../../game/rpg/models/heroModel';
-import {TileMapView} from '../../../game/pow2/tile/tile-map-view';
-import {UIAttachment} from './behaviors/choose-action.machine';
-import {CombatRunSummary} from './states/combat-escape.state';
-import {CombatDefeatSummary} from './states/combat-defeat.state';
-import {LoadingService} from '../../components/loading/loading.service';
-import {AppState} from '../../app.model';
-import {Store} from '@ngrx/store';
-import {CombatStateMachineComponent} from './states/combat.machine';
-import {CombatMapComponent} from './combat-map.entity';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Point } from '../../../game/pow-core/point';
+import { IProcessObject } from '../../../game/pow-core/time';
+import { NamedMouseElement, PowInput } from '../../../game/pow2/core/input';
+import { Scene } from '../../../game/pow2/scene/scene';
+import { SceneObject } from '../../../game/pow2/scene/scene-object';
+import { TileMapView } from '../../../game/pow2/tile/tile-map-view';
+import { AppState } from '../../app.model';
+import { LoadingService } from '../../components/loading/loading.service';
+import { NotificationService } from '../../components/notification/notification.service';
+import { GameEntityObject } from '../../scene/game-entity-object';
+import { Animate } from '../../services/animate';
+import { GameWorld } from '../../services/game-world';
+import { RPGGame } from '../../services/rpg-game';
+import { CombatMapComponent } from './combat-map.entity';
+import { CombatPlayerComponent } from './combat-player.entity';
+import { CombatDefeatSummary } from './states/combat-defeat.state';
+import { CombatRunSummary } from './states/combat-escape.state';
+import { CombatStateMachineComponent } from './states/combat.machine';
+import { UIAttachment } from './types';
 
 /**
  * Describe a selectable menu item for a user input in combat.
@@ -41,14 +48,15 @@ export interface CombatAttackSummary {
   templateUrl: './combat.component.html',
   host: {
     '(window:resize)': '_onResize($event)',
-    '(click)': '_onClick($event)'
-  }
+    '(click)': '_onClick($event)',
+  },
 })
 /**
  * Render and provide input for a combat encounter.
  */
-export class CombatComponent extends TileMapView implements IProcessObject, OnDestroy, AfterViewInit {
-
+export class CombatComponent
+  extends TileMapView
+  implements IProcessObject, OnDestroy, AfterViewInit {
   combat: CombatComponent = this;
 
   @Input() scene: Scene = new Scene();
@@ -81,11 +89,14 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
   @ViewChild('combatCanvas') canvasElementRef: ElementRef;
   @ViewChild(CombatMapComponent) map: CombatMapComponent;
 
-  constructor(public game: RPGGame,
-              public notify: NotificationService,
-              public loadingService: LoadingService,
-              public store: Store<AppState>,
-              public world: GameWorld) {
+  constructor(
+    public game: RPGGame,
+    public notify: NotificationService,
+    public animate: Animate,
+    public loadingService: LoadingService,
+    public store: Store<AppState>,
+    public world: GameWorld
+  ) {
     super();
     this.world.mark(this.scene);
   }
@@ -137,8 +148,8 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
       return;
     }
     const targetPos: Point = new Point(this.pointer.object.point);
-    targetPos.y = (targetPos.y - this.camera.point.y) + this.pointer.offset.y;
-    targetPos.x = (targetPos.x - this.camera.point.x) + this.pointer.offset.x;
+    targetPos.y = targetPos.y - this.camera.point.y + this.pointer.offset.y;
+    targetPos.x = targetPos.x - this.camera.point.x + this.pointer.offset.x;
     const screenPos: Point = this.worldToScreen(targetPos, this.cameraScale);
     const el: HTMLElement = this.pointer.element.nativeElement;
     el.style.left = `${screenPos.x}px`;
@@ -173,18 +184,39 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
    */
   applyDamage(to: SceneObject, value: number) {
     const targetPos: Point = new Point(to.point);
-    targetPos.y -= (this.camera.point.y + 1.25);
+    targetPos.y -= this.camera.point.y + 1.25;
     targetPos.x -= this.camera.point.x;
     const screenPos: Point = this.worldToScreen(targetPos, this.cameraScale);
-    screenPos.add(this.canvasElementRef.nativeElement.offsetLeft, this.canvasElementRef.nativeElement.offsetTop);
+    screenPos.add(
+      this.canvasElementRef.nativeElement.offsetLeft,
+      this.canvasElementRef.nativeElement.offsetTop
+    );
     this.damages.push({
       timeout: new Date().getTime() + 5 * 1000,
       value: Math.abs(value),
       classes: {
         miss: value === 0,
-        heal: value < 0
+        heal: value < 0,
       },
-      position: screenPos
+      position: screenPos,
+    });
+  }
+
+  /**
+   * Shake a given HTMLElement for some duration
+   * @param el The element to shake
+   * @param duration The duration to keep the shake effect going.
+   */
+  shake(el: HTMLElement, duration: number = 0.3): Promise<void> {
+    return new Promise((resolve) => {
+      const inPromise = this.animate.enter(el, 'shake');
+      setTimeout(() => {
+        const outPromise = this.animate.leave(el, 'shake');
+        Promise.all([inPromise, outPromise]).then(() => {
+          el.classList.remove('shake');
+          resolve();
+        });
+      }, duration * 1000);
     });
   }
 
@@ -214,14 +246,16 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
       const b = data.defender.model.name;
       if (data.damage > 0) {
         msg = `${a} attacked ${b} for ${data.damage} damage!`;
-      }
-      else if (data.damage < 0) {
+      } else if (data.damage < 0) {
         msg = `${a} healed ${b} for ${Math.abs(data.damage)} hit points`;
-      }
-      else {
+      } else {
         msg = `${a} attacked ${b}, and MISSED!`;
       }
       this.applyDamage(data.defender, data.damage);
+      // players taking damage shake the camera
+      if (data.damage > 0 && data.defender instanceof CombatPlayerComponent) {
+        this.shake(this.canvasElementRef.nativeElement);
+      }
       this.notify.show(msg, _done);
     });
     this.machine.on('combat:run', (data: CombatRunSummary) => {
@@ -229,18 +263,20 @@ export class CombatComponent extends TileMapView implements IProcessObject, OnDe
       let msg: string = data.player.model.name;
       if (data.success) {
         msg += ' bravely ran away!';
-      }
-      else {
+      } else {
         msg += ' failed to escape!';
       }
       this.notify.show(msg, _done);
     });
     this.machine.on('combat:defeat', (data: CombatDefeatSummary) => {
       const done = this.machine.notifyWait();
-      this.notify.show('Your entity was defeated...', () => {
-        this.game.initGame().then(done);
-      }, 0);
+      this.notify.show(
+        'Your party was defeated...',
+        () => {
+          this.game.initGame().then(done);
+        },
+        0
+      );
     });
-
   }
 }

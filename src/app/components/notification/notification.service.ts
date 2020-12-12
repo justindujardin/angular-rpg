@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,11 +13,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {Injectable} from '@angular/core';
-import {Animate} from '../../services/animate';
-import {GameWorld} from '../../services/game-world';
-import {IWorldObject} from '../../../game/pow-core/world';
-import {IProcessObject} from '../../../game/pow-core/time';
+import { Injectable } from '@angular/core';
+import { IProcessObject } from '../../../game/pow-core/time';
+import { IWorldObject } from '../../../game/pow-core/world';
+import { Animate } from '../../services/animate';
+import { GameWorld } from '../../services/game-world';
 
 /**
  * Describe a notification that exists in the queue.
@@ -97,7 +97,7 @@ export class NotificationService implements IWorldObject, IProcessObject {
     const obj: INotifyItem = {
       message,
       done,
-      duration: typeof duration === 'undefined' ? this.defaultTimeout : duration
+      duration: typeof duration === 'undefined' ? this.defaultTimeout : duration,
     };
     return this.queue(obj);
   }
@@ -121,7 +121,6 @@ export class NotificationService implements IWorldObject, IProcessObject {
         this.message = null;
       }
       this.paused = false;
-
     });
     if (this._current) {
       this._current.dismissed = true;
@@ -160,5 +159,4 @@ export class NotificationService implements IWorldObject, IProcessObject {
       this.paused = false;
     });
   }
-
 }

@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,31 +13,32 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+import { Component, EventEmitter, Output } from '@angular/core';
+import { GameTileMap } from '../../../../app/scene/game-tile-map';
 import * as _ from 'underscore';
-import {GameEntityObject} from '../../../scene/game-entity-object';
-import {GameFeatureObject} from '../../../scene/game-feature-object';
-import {BasePlayerComponent} from '../../../behaviors/base-player.behavior';
-import {TileMap} from '../../../../game/pow2/tile/tile-map';
-import {SceneObject} from '../../../../game/pow2/scene/scene-object';
-import {IMoveDescription} from '../../../../game/pow2/scene/behaviors/movable-behavior';
-import {GameStateMoveAction} from '../../../models/game-state/game-state.actions';
-import {Component, EventEmitter, Output} from '@angular/core';
-import {ITiledLayer} from '../../../../game/pow-core/resources/tiled/tiled.model';
+import { ITiledLayer } from '../../../../game/pow-core/resources/tiled/tiled.model';
+import { IMoveDescription } from '../../../../game/pow2/scene/behaviors/movable-behavior';
+import { SceneObject } from '../../../../game/pow2/scene/scene-object';
+import { BasePlayerComponent } from '../../../behaviors/base-player.behavior';
+import { GameStateMoveAction } from '../../../models/game-state/game-state.actions';
+import { GameEntityObject } from '../../../scene/game-entity-object';
+import { GameFeatureObject } from '../../../scene/game-feature-object';
 
 @Component({
   selector: 'player-behavior',
-  template: `<ng-content></ng-content>`
+  template: `<ng-content></ng-content>`,
 })
 export class PlayerBehaviorComponent extends BasePlayerComponent {
   host: GameEntityObject;
-  map: TileMap = null;
+  map: GameTileMap = null;
 
   static COLLIDE_TYPES: string[] = [
     'TempleFeatureComponent',
     'StoreFeatureComponent',
     'DialogFeatureComponent',
+    'DoorFeatureComponent',
     'CombatFeatureComponent',
-    'sign'
+    'sign',
   ];
 
   /**
@@ -48,17 +49,18 @@ export class PlayerBehaviorComponent extends BasePlayerComponent {
   /**
    * Collide with the rpg tile map features and obstacles.
    */
-  collideMove(x: number, y: number, results: SceneObject[] = []) {
+  collideMove(x: number, y: number, results: SceneObject[] = []): boolean {
     if (this.host.scene && !this.map) {
-      this.map = this.host.scene.objectByType(TileMap) as TileMap;
+      this.map = this.host.scene.objectByType(GameTileMap) as GameTileMap;
     }
     let i = 0;
 
-    const collision: boolean = this.collider && this.collider.collide(x, y, GameFeatureObject, results);
+    const collision: boolean =
+      this.collider && this.collider.collide(x, y, GameFeatureObject, results);
     if (collision) {
       for (i = 0; i < results.length; i++) {
-        const o = <GameFeatureObject> results[i];
-        if (o.passable === true || !o.type) {
+        const o = <GameFeatureObject>results[i];
+        if (o.passable === true || !o.type || !o.enabled) {
           return false;
         }
         if (_.indexOf(PlayerBehaviorComponent.COLLIDE_TYPES, o.type) !== -1) {
@@ -96,5 +98,4 @@ export class PlayerBehaviorComponent extends BasePlayerComponent {
     this.onCompleteMove.next(move);
     super.completeMove(move);
   }
-
 }

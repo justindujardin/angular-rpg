@@ -1,7 +1,13 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Rx';
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@ngrx/effects';
+import { of } from 'rxjs';
+import { catchError, debounceTime, map, switchMap, tap } from 'rxjs/operators';
+import { AppState } from '../../app.model';
+import { NotificationService } from '../../components/notification/notification.service';
 import {
-  GameStateDeleteAction, GameStateDeleteFailAction, GameStateDeleteSuccessAction,
+  GameStateDeleteAction,
+  GameStateDeleteFailAction,
+  GameStateDeleteSuccessAction,
   GameStateLoadAction,
   GameStateLoadFailAction,
   GameStateLoadSuccessAction,
@@ -11,74 +17,81 @@ import {
   GameStateSaveSuccessAction,
   GameStateTravelAction,
   GameStateTravelFailAction,
-  GameStateTravelSuccessAction
+  GameStateTravelSuccessAction,
 } from './game-state.actions';
-import {Actions, Effect} from '@ngrx/effects';
-import {GameState} from './game-state.model';
-import {GameStateService} from './game-state.service';
-import {NotificationService} from '../../components/notification/notification.service';
-import {AppState} from '../../app.model';
+import { GameState } from './game-state.model';
+import { GameStateService } from './game-state.service';
 
 @Injectable()
 export class GameStateEffects {
-
-  constructor(private actions$: Actions,
-              private notify: NotificationService,
-              private gameStateService: GameStateService) {
-  }
+  constructor(
+    private actions$: Actions,
+    private notify: NotificationService,
+    private gameStateService: GameStateService
+  ) {}
 
   /**
    * When a load action is dispatched, async load the state and then dispatch
    * a Success action.
    */
-  @Effect() initLoadedGame$ = this.actions$.ofType(GameStateLoadAction.typeId)
-    .switchMap((action: GameStateLoadAction) => this.gameStateService.load())
-    .map((state: AppState) => new GameStateLoadSuccessAction(state))
-    .catch((e) => {
-      return Observable.of(new GameStateLoadFailAction(e.toString()));
-    });
+  @Effect() initLoadedGame$ = this.actions$.pipe(
+    ofType(GameStateLoadAction.typeId),
+    switchMap((action: GameStateLoadAction) => this.gameStateService.load()),
+    map((state: AppState) => new GameStateLoadSuccessAction(state)),
+    catchError((e) => {
+      return of(new GameStateLoadFailAction(e.toString()));
+    })
+  );
 
   /**
    * When a save action is dispatched, serialize the app state to local storage.
    */
-  @Effect() saveGameState$ = this.actions$.ofType(GameStateSaveAction.typeId)
-    .switchMap(() => this.gameStateService.save())
-    .map(() => new GameStateSaveSuccessAction())
-    .catch((e) => {
-      return Observable.of(new GameStateSaveFailAction(e.toString()));
-    });
+  @Effect() saveGameState$ = this.actions$.pipe(
+    ofType(GameStateSaveAction.typeId),
+    switchMap(() => this.gameStateService.save()),
+    map(() => new GameStateSaveSuccessAction()),
+    catchError((e) => {
+      return of(new GameStateSaveFailAction(e.toString()));
+    })
+  );
 
   /** When the game has been saved, notify the user. */
-  @Effect({dispatch: false}) saveGameSuccess$ = this.actions$
-    .ofType(GameStateSaveSuccessAction.typeId)
-    .do(() => {
+  @Effect({ dispatch: false }) saveGameSuccess$ = this.actions$.pipe(
+    ofType(GameStateSaveSuccessAction.typeId),
+    tap(() => {
       this.notify.show('Game state saved!  Nice.');
-    });
+    })
+  );
 
   /**
    * When a delete action is dispatched, remove the saved state in localstorage.
    */
-  @Effect() clearGameState$ = this.actions$.ofType(GameStateDeleteAction.typeId)
-    .switchMap(() => this.gameStateService.resetGame())
-    .map(() => new GameStateDeleteSuccessAction())
-    .catch((e) => {
-      return Observable.of(new GameStateDeleteFailAction(e.toString()));
-    });
+  @Effect() clearGameState$ = this.actions$.pipe(
+    ofType(GameStateDeleteAction.typeId),
+    switchMap(() => this.gameStateService.resetGame()),
+    map(() => new GameStateDeleteSuccessAction()),
+    catchError((e) => {
+      return of(new GameStateDeleteFailAction(e.toString()));
+    })
+  );
 
   /** When game data is deleted, notify the user. */
-  @Effect({dispatch: false}) clearGameSuccess$ = this.actions$
-    .ofType(GameStateDeleteSuccessAction.typeId)
-    .do(() => {
-      this.notify.show('Game data deleted.  Next time you refresh you will begin a new game.');
-    });
+  @Effect({ dispatch: false }) clearGameSuccess$ = this.actions$.pipe(
+    ofType(GameStateDeleteSuccessAction.typeId),
+    tap(() => {
+      this.notify.show(
+        'Game data deleted.  Next time you refresh you will begin a new game.'
+      );
+    })
+  );
 
   /**
    * After a successful game create/load, travel to the initial location
    */
-  @Effect() afterLoadTravelToCurrentLocation$ = this.actions$
-    .ofType(GameStateNewSuccessAction.typeId, GameStateLoadSuccessAction.typeId)
-    .debounceTime(10)
-    .map((action) => {
+  @Effect() afterLoadTravelToCurrentLocation$ = this.actions$.pipe(
+    ofType(GameStateNewSuccessAction.typeId, GameStateLoadSuccessAction.typeId),
+    debounceTime(10),
+    map((action: GameStateNewSuccessAction | GameStateLoadSuccessAction) => {
       let gameState: GameState;
       switch (action.type) {
         case GameStateNewSuccessAction.typeId:
@@ -91,21 +104,24 @@ export class GameStateEffects {
           return;
       }
       return new GameStateTravelAction(gameState);
-    });
-
-  @Effect() travel$ = this.actions$.ofType(GameStateTravelAction.typeId)
-    .switchMap((action: GameStateTravelAction) => {
-      return this.gameStateService.loadMap(action.payload.location)
-        .map(() => action.payload.location);
     })
+  );
+
+  @Effect() travel$ = this.actions$.pipe(
+    ofType(GameStateTravelAction.typeId),
+    switchMap((action: GameStateTravelAction) => {
+      return this.gameStateService
+        .loadMap(action.payload.location)
+        .pipe(map(() => action.payload.location));
+    }),
     // TODO: This debounce is to let the UI transition to a loading screen for at least and appropriate
     //       amount of time to let the map hide (to flashes of camera movement and map changing)
-    .debounceTime(10)
-    .map((map: string) => {
-      return new GameStateTravelSuccessAction(map);
+    debounceTime(10),
+    map((newMap: string) => {
+      return new GameStateTravelSuccessAction(newMap);
+    }),
+    catchError((e) => {
+      return of(new GameStateTravelFailAction(e.toString()));
     })
-    .catch((e) => {
-      return Observable.of(new GameStateTravelFailAction(e.toString()));
-    });
-
+  );
 }

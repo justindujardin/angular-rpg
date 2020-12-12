@@ -1,5 +1,5 @@
 import * as Immutable from 'immutable';
-import {storeLogger} from 'ngrx-store-logger';
+import { storeLogger } from 'ngrx-store-logger';
 
 /**
  * Possible types for values that need to be lazily evaluated
@@ -25,8 +25,7 @@ class DeferredValue {
       this._lazy = () => {
         return cached || (cached = value.toJS());
       };
-    }
-    else {
+    } else {
       this._lazy = () => value;
     }
   }
@@ -50,5 +49,5 @@ export const rpgLogger = storeLogger({
       result[k] = new DeferredValue(state[k]);
     });
     return result;
-  }
+  },
 });

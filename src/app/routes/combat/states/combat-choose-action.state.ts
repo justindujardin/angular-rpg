@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,27 +13,29 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import * as _ from 'underscore';
 import {
-  Component,
-  Input,
-  ElementRef,
-  ViewChild,
-  Renderer,
   AfterViewInit,
-  OnDestroy,
+  Component,
+  ElementRef,
+  forwardRef,
   Inject,
-  forwardRef
+  Input,
+  OnDestroy,
+  Renderer2,
+  ViewChild,
 } from '@angular/core';
-import {GameEntityObject} from '../../../scene/game-entity-object';
-import {CombatMachineState} from './combat-base.state';
-import {CombatStateMachineComponent} from './combat.machine';
-import {CombatBeginTurnStateComponent} from './combat-begin-turn.state';
-import {CombatActionBehavior} from '../behaviors/combat-action.behavior';
-import {ChooseActionType, ChooseActionStateMachine} from '../behaviors/choose-action.machine';
-import {Point} from '../../../../game/pow-core/point';
-import {Observable, BehaviorSubject, Subscription} from 'rxjs';
-import {CombatComponent} from '../combat.component';
+import { BehaviorSubject, interval, Observable, Subscription } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
+import { ITemplateBaseItem } from '../../../../app/models/game-data/game-data.model';
+import * as _ from 'underscore';
+import { Point } from '../../../../game/pow-core/point';
+import { GameEntityObject } from '../../../scene/game-entity-object';
+import { ChooseActionStateMachine } from '../behaviors/choose-action.machine';
+import { CombatActionBehavior } from '../behaviors/combat-action.behavior';
+import { CombatComponent } from '../combat.component';
+import { CombatMachineState } from './combat-base.state';
+import { CombatStateMachineComponent } from './combat.machine';
+import { CombatStateNames } from './states';
 
 export interface IChooseActionEvent {
   players: GameEntityObject[];
@@ -47,6 +49,7 @@ export interface IChooseActionEvent {
 export interface ICombatMenuItem {
   select(): any;
   label: string;
+  source: GameEntityObject | CombatActionBehavior | ITemplateBaseItem;
 }
 
 /**
@@ -56,21 +59,32 @@ export interface ICombatMenuItem {
   selector: 'combat-choose-action-state',
   styleUrls: ['./combat-choose-action.state.scss'],
   template: `<ul *ngIf="items.length > 0" class="ebp action-menu">
-  <li *ngFor="let item of items" (click)="item.select()" [innerText]="item.label"></li>
-</ul>
-<span #combatPointer
+      <li
+        *ngFor="let item of items"
+        [attr.data-sectionvalue]="item"
+        [class.selected]="pointAt?._uid == item.source?._uid"
+        (click)="item.select()"
+        (mouseover)="pointAtItem(item)"
+        [innerText]="item.label"
+      ></li>
+    </ul>
+    <span
+      #combatPointer
       class="point-to-player"
       [class.hidden]="!pointAt"
       [style.left]="(pointerPosition$ | async)?.x + 'px'"
       [style.top]="(pointerPosition$ | async)?.y + 'px'"
-></span>
-<ng-content></ng-content>`
+    ></span>
+    <ng-content></ng-content>`,
 })
-export class CombatChooseActionStateComponent extends CombatMachineState implements AfterViewInit, OnDestroy {
-  static NAME: string = 'Combat Choose Actions';
-  name: string = CombatChooseActionStateComponent.NAME;
+export class CombatChooseActionStateComponent
+  extends CombatMachineState
+  implements AfterViewInit, OnDestroy {
+  static NAME: CombatStateNames = 'choose-action';
+  name: CombatStateNames = CombatChooseActionStateComponent.NAME;
   pending: GameEntityObject[] = [];
-  machine: CombatStateMachineComponent = null;
+  machine: CombatStateMachineComponent | null = null;
+  pointerOffset: Point = new Point(0, 0);
 
   @ViewChild('combatPointer') pointerElementRef: ElementRef;
   /**
@@ -84,28 +98,37 @@ export class CombatChooseActionStateComponent extends CombatMachineState impleme
   pointOffset: Point = new Point();
   private _pointerPosition$ = new BehaviorSubject(new Point());
 
+  private _currentMachine: ChooseActionStateMachine | null = null;
+
   /** The screen translated pointer position */
-  pointerPosition$: Observable<Point> = this._pointerPosition$.distinctUntilChanged();
+  pointerPosition$: Observable<Point> = this._pointerPosition$.pipe(
+    distinctUntilChanged()
+  );
 
   private _timerSubscription: Subscription;
 
-  constructor(private renderer: Renderer,
-              @Inject(forwardRef(() => CombatComponent)) private combat: CombatComponent) {
+  constructor(
+    private renderer: Renderer2,
+    @Inject(forwardRef(() => CombatComponent)) private combat: CombatComponent
+  ) {
     super();
   }
 
   ngAfterViewInit(): void {
     // Every n milliseconds, update the pointer to track the current target
-    this._timerSubscription = Observable.interval(50).do(() => {
+    this._timerSubscription = interval(50).subscribe(() => {
       if (!this.pointAt || !this.combat) {
         return;
       }
       const targetPos: Point = new Point(this.pointAt.point);
-      targetPos.y = (targetPos.y - this.combat.camera.point.y) + this.pointOffset.y;
-      targetPos.x = (targetPos.x - this.combat.camera.point.x) + this.pointOffset.x;
-      const screenPos: Point = this.combat.worldToScreen(targetPos, this.combat.cameraScale);
+      targetPos.y = targetPos.y - this.combat.camera.point.y + this.pointOffset.y;
+      targetPos.x = targetPos.x - this.combat.camera.point.x + this.pointOffset.x;
+      const screenPos: Point = this.combat.worldToScreen(
+        targetPos,
+        this.combat.cameraScale
+      );
       this._pointerPosition$.next(screenPos);
-    }).subscribe();
+    });
   }
 
   ngOnDestroy(): void {
@@ -119,8 +142,11 @@ export class CombatChooseActionStateComponent extends CombatMachineState impleme
     }
     this.machine = machine;
 
-    const combatants: GameEntityObject[] = [...machine.getLiveParty(), ...machine.getLiveEnemies()];
-    machine.turnList = _.shuffle<GameEntityObject>(combatants);
+    const combatants: GameEntityObject[] = [
+      ...machine.getLiveParty(),
+      ...machine.getLiveEnemies(),
+    ];
+    machine.turnList = _.shuffle<GameEntityObject[]>(combatants);
     machine.current = machine.turnList.shift();
     machine.currentDone = true;
 
@@ -140,31 +166,35 @@ export class CombatChooseActionStateComponent extends CombatMachineState impleme
         });
         console.log(`${action.from.model.name} chose ${action.getActionName()}`);
         if (this.pending.length === 0) {
-          machine.setCurrentState(CombatBeginTurnStateComponent.NAME);
+          machine.setCurrentState('begin-turn');
         }
       },
       players: this.pending,
-      enemies: machine.getLiveEnemies()
+      enemies: machine.getLiveEnemies(),
     };
 
     const choices: GameEntityObject[] = chooseData.players.slice();
-    let inputState;
 
     const next = () => {
       const p: GameEntityObject = choices.shift();
       if (!p) {
+        this._currentMachine = null;
         return;
       }
-      inputState.current = p;
-      inputState.setCurrentState(ChooseActionType.NAME);
+      this._currentMachine.current = p;
+      this._currentMachine.setCurrentState('choose-action');
     };
     const chooseSubmit = (action: CombatActionBehavior) => {
-      inputState.data.choose(action);
+      this._currentMachine.data.choose(action);
       next();
     };
-    inputState = new ChooseActionStateMachine(this, machine.scene, chooseData, chooseSubmit);
+    this._currentMachine = new ChooseActionStateMachine(
+      this,
+      machine.scene,
+      chooseData,
+      chooseSubmit
+    );
     next();
-
   }
 
   exit(machine: CombatStateMachineComponent) {
@@ -172,29 +202,41 @@ export class CombatChooseActionStateComponent extends CombatMachineState impleme
     return super.exit(machine);
   }
 
-  setPointerTarget(object: GameEntityObject, directionClass: string = 'right', offset: Point = new Point()) {
+  setPointerTarget(
+    object: GameEntityObject,
+    directionClass: 'left' | 'right' = 'right'
+  ) {
     const pointer: HTMLElement = this.pointerElementRef.nativeElement;
-    this.renderer.setElementClass(pointer, 'left', false);
-    this.renderer.setElementClass(pointer, 'right', false);
-    this.renderer.setElementClass(pointer, directionClass, true);
+    this.renderer.removeClass(pointer, 'left');
+    this.renderer.removeClass(pointer, 'right');
+    this.renderer.addClass(pointer, directionClass);
     this.pointAt = object;
-    this.pointOffset = offset;
+    this.pointOffset = this.pointerOffset;
+  }
+
+  /** Point at the object represented by the given menu item */
+  pointAtItem(item: ICombatMenuItem) {
+    // Only support targeting enemies rn
+    if (item.source instanceof GameEntityObject) {
+      this.pointAt = item.source;
+      this.setPointerTarget(item.source, 'left');
+      this._currentMachine.target = item.source;
+    }
   }
 
   addPointerClass(clazz: string) {
-    this.renderer.setElementClass(this.pointerElementRef.nativeElement, clazz, true);
+    this.renderer.addClass(this.pointerElementRef.nativeElement, clazz);
   }
 
   removePointerClass(clazz: string) {
-    this.renderer.setElementClass(this.pointerElementRef.nativeElement, clazz, false);
+    this.renderer.removeClass(this.pointerElementRef.nativeElement, clazz);
   }
 
   hidePointer() {
-    this.renderer.setElementClass(this.pointerElementRef.nativeElement, 'hidden', true);
+    this.renderer.addClass(this.pointerElementRef.nativeElement, 'hidden');
   }
 
   showPointer() {
-    this.renderer.setElementClass(this.pointerElementRef.nativeElement, 'hidden', false);
+    this.renderer.removeClass(this.pointerElementRef.nativeElement, 'hidden');
   }
-
 }

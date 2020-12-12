@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {SceneObjectBehavior} from './scene-object-behavior';
-import {BehaviorHost} from '../../pow-core/behavior-host';
-import {Scene} from './scene';
-import {IPoint, Point} from '../../pow-core/point';
+import { BehaviorHost } from '../../pow-core/behavior-host';
+import { IPoint, Point } from '../../pow-core/point';
+import { Scene } from './scene';
+import { SceneObjectBehavior } from './scene-object-behavior';
 /**
  * An object that may exist in a `Scene` and receives time updates.
  */
@@ -37,7 +37,7 @@ export class SceneObject extends BehaviorHost {
     _.extend(this, _.defaults(options || {}), {
       point: new Point(0, 0),
       size: new Point(1, 1),
-      enabled: true
+      enabled: true,
     });
   }
 
@@ -50,7 +50,9 @@ export class SceneObject extends BehaviorHost {
     const l: number = this._connectedBehaviors.length;
     for (let i = 0; i < l; i++) {
       if (!values[i]) {
-        throw new Error('Component deleted during tick, use _.defer to delay removal until the callstack unwinds');
+        throw new Error(
+          'Component deleted during tick, use _.defer to delay removal until the callstack unwinds'
+        );
       }
       if (values[i].tick) {
         values[i].tick(elapsed);
@@ -67,7 +69,9 @@ export class SceneObject extends BehaviorHost {
     const l: number = this._connectedBehaviors.length;
     for (let i = 0; i < l; i++) {
       if (!values[i]) {
-        throw new Error('Component deleted during interpolateTick, delay removal until the callstack unwinds');
+        throw new Error(
+          'Component deleted during interpolateTick, delay removal until the callstack unwinds'
+        );
       }
       if (values[i].interpolateTick) {
         values[i].interpolateTick(elapsed);
@@ -100,9 +104,10 @@ export class SceneObject extends BehaviorHost {
       }
     });
     if (failed) {
-      console.log(`Failed to add component set to host. Component ${failed.toString()} failed to connect to host.`);
-    }
-    else {
+      console.log(
+        `Failed to add component set to host. Component ${failed.toString()} failed to connect to host.`
+      );
+    } else {
       this.syncBehaviors();
     }
     return !failed;
@@ -113,16 +118,19 @@ export class SceneObject extends BehaviorHost {
     const removeIds: string[] = _.map(components, (value: SceneObjectBehavior) => {
       return value.id;
     });
-    this._connectedBehaviors = _.filter(this._connectedBehaviors, (obj: SceneObjectBehavior) => {
-      if (_.indexOf(removeIds, obj.id) !== -1) {
-        if (obj.disconnectBehavior() === false) {
-          return true;
+    this._connectedBehaviors = _.filter(
+      this._connectedBehaviors,
+      (obj: SceneObjectBehavior) => {
+        if (_.indexOf(removeIds, obj.id) !== -1) {
+          if (obj.disconnectBehavior() === false) {
+            return true;
+          }
+          obj.host = null;
+          return false;
         }
-        obj.host = null;
-        return false;
+        return true;
       }
-      return true;
-    });
+    );
     const change: boolean = this._connectedBehaviors.length === previousCount;
     if (change && silent !== true) {
       this.syncBehaviors();

@@ -1,15 +1,13 @@
-import {type} from '../util';
-import {Action} from '@ngrx/store';
-import {BaseEntity} from '../base-entity';
-import {Item} from '../item';
+import { Action } from '@ngrx/store';
+import { IEntityObject } from '../base-entity';
+import { Item } from '../item';
+import { type } from '../util';
 
 export class EntityAddBeingAction implements Action {
   static typeId: 'ENTITY_ADD_BEING' = type('ENTITY_ADD_BEING');
   readonly type = EntityAddBeingAction.typeId;
 
-  constructor(public payload: BaseEntity) {
-
-  }
+  constructor(public payload: IEntityObject) {}
 }
 export class EntityRemoveBeingAction implements Action {
   static typeId: 'ENTITY_REMOVE_BEING' = type('ENTITY_REMOVE_BEING');
@@ -25,9 +23,7 @@ export class EntityAddItemAction implements Action {
   static typeId: 'ENTITY_ADD_ITEM' = type('ENTITY_ADD_ITEM');
   type = EntityAddItemAction.typeId;
 
-  constructor(public payload: Item) {
-
-  }
+  constructor(public payload: Item) {}
 }
 
 export class EntityRemoveItemAction implements Action {
@@ -41,7 +37,8 @@ export class EntityRemoveItemAction implements Action {
   }
 }
 
-export type EntityActions = EntityAddBeingAction |
-  EntityRemoveBeingAction |
-  EntityAddItemAction |
-  EntityRemoveItemAction;
+export type EntityActions =
+  | EntityAddBeingAction
+  | EntityRemoveBeingAction
+  | EntityAddItemAction
+  | EntityRemoveItemAction;

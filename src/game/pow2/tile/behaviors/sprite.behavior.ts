@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {SceneObjectBehavior} from '../../scene/scene-object-behavior';
-import {TileObject} from '../tile-object';
-import {ImageResource} from '../../../pow-core/resources/image.resource';
-import {ISpriteMeta} from '../../core/api';
+import { ImageResource } from '../../../pow-core/resources/image.resource';
+import { ISpriteMeta } from '../../core/api';
+import { SceneObjectBehavior } from '../../scene/scene-object-behavior';
+import { TileObject } from '../tile-object';
 
 export interface SpriteComponentOptions {
   icon: string;
@@ -74,7 +74,8 @@ export class SpriteComponent extends SceneObjectBehavior {
         return resolve(null);
       }
       this.meta = this.host.world.sprites.getSpriteMeta(name);
-      this.host.world.sprites.getSpriteSheet(this.meta.source)
+      this.host.world.sprites
+        .getSpriteSheet(this.meta.source)
         .then((images: ImageResource[]) => {
           this.image = images[0].data;
           this.frame = frame;

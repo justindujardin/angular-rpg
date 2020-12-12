@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,14 +14,20 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {IMoveDescription, MovableBehavior} from '../../game/pow2/scene/behaviors/movable-behavior';
-import {TileObject} from '../../game/pow2/tile/tile-object';
-import {Point} from '../../game/pow-core/point';
-import {Headings, PlayerRenderBehaviorComponent} from '../routes/world/behaviors/player-render.behavior';
-import {TileObjectBehavior} from '../../game/pow2/tile/tile-object-behavior';
-import {TileMap} from '../../game/pow2/tile/tile-map';
-import {ITiledLayer} from '../../game/pow-core/resources/tiled/tiled.model';
-import {SceneObject} from '../../game/pow2/scene/scene-object';
+import { Point } from '../../game/pow-core/point';
+import { ITiledLayer } from '../../game/pow-core/resources/tiled/tiled.model';
+import {
+  IMoveDescription,
+  MovableBehavior,
+} from '../../game/pow2/scene/behaviors/movable-behavior';
+import { SceneObject } from '../../game/pow2/scene/scene-object';
+import { TileMap } from '../../game/pow2/tile/tile-map';
+import { TileObject } from '../../game/pow2/tile/tile-object';
+import { TileObjectBehavior } from '../../game/pow2/tile/tile-object-behavior';
+import {
+  Headings,
+  PlayerRenderBehaviorComponent,
+} from '../routes/world/behaviors/player-render.behavior';
 
 export class BasePlayerComponent extends MovableBehavior {
   host: TileObject;
@@ -31,7 +37,8 @@ export class BasePlayerComponent extends MovableBehavior {
     'TempleFeatureComponent',
     'StoreFeatureComponent',
     'DialogFeatureComponent',
-    'sign'
+    'DoorFeatureComponent',
+    'sign',
   ];
   private _lastFrame: number = 3;
   private _renderFrame: number = 3;
@@ -41,12 +48,13 @@ export class BasePlayerComponent extends MovableBehavior {
 
   static Events: any = {
     MOVE_BEGIN: 'move:begin',
-    MOVE_END: 'move:end'
+    MOVE_END: 'move:end',
   };
 
   syncBehavior(): boolean {
-    this.sprite = <PlayerRenderBehaviorComponent>
-      this.host.findBehavior(PlayerRenderBehaviorComponent);
+    this.sprite = <PlayerRenderBehaviorComponent>(
+      this.host.findBehavior(PlayerRenderBehaviorComponent)
+    );
     return super.syncBehavior();
   }
 
@@ -67,37 +75,29 @@ export class BasePlayerComponent extends MovableBehavior {
     if (this.velocity.y > 0 && yMove) {
       this.sprite.setHeading(Headings.SOUTH, yMove);
       this.heading.set(0, 1);
-    }
-    else if (this.velocity.y < 0 && yMove) {
+    } else if (this.velocity.y < 0 && yMove) {
       this.sprite.setHeading(Headings.NORTH, yMove);
       this.heading.set(0, -1);
-    }
-    else if (this.velocity.x < 0 && xMove) {
+    } else if (this.velocity.x < 0 && xMove) {
       this.sprite.setHeading(Headings.WEST, xMove);
       this.heading.set(-1, 0);
-    }
-    else if (this.velocity.x > 0 && xMove) {
+    } else if (this.velocity.x > 0 && xMove) {
       this.sprite.setHeading(Headings.EAST, xMove);
       this.heading.set(1, 0);
-    }
-    else {
+    } else {
       if (this.velocity.y > 0) {
         this.sprite.setHeading(Headings.SOUTH, false);
         this.heading.set(0, 1);
-      }
-      else if (this.velocity.y < 0) {
+      } else if (this.velocity.y < 0) {
         this.sprite.setHeading(Headings.NORTH, false);
         this.heading.set(0, -1);
-      }
-      else if (this.velocity.x < 0) {
+      } else if (this.velocity.x < 0) {
         this.sprite.setHeading(Headings.WEST, false);
         this.heading.set(-1, 0);
-      }
-      else if (this.velocity.x > 0) {
+      } else if (this.velocity.x > 0) {
         this.sprite.setHeading(Headings.EAST, false);
         this.heading.set(1, 0);
-      }
-      else {
+      } else {
         this.sprite.setMoving(false);
       }
     }
@@ -112,7 +112,7 @@ export class BasePlayerComponent extends MovableBehavior {
    * @returns {boolean} True if the passable attribute was found and set to false.
    */
   collideWithMap(at: Point, passableAttribute: string): boolean {
-    let map = <TileMap> this.host.scene.objectByType(TileMap);
+    let map = <TileMap>this.host.scene.objectByType(TileMap);
     if (map) {
       const layers: ITiledLayer[] = map.getLayers();
       for (let i = 0; i < layers.length; i++) {
@@ -145,7 +145,7 @@ export class BasePlayerComponent extends MovableBehavior {
     this.collider.collide(move.from.x, move.from.y, TileObject, results);
     for (i = 0; i < results.length; i++) {
       o = results[i];
-      comp = <TileObjectBehavior> o.findBehavior(this.collideComponentType);
+      comp = <TileObjectBehavior>o.findBehavior(this.collideComponentType);
       if (!comp || !comp.enter) {
         continue;
       }
@@ -157,7 +157,7 @@ export class BasePlayerComponent extends MovableBehavior {
     this.collider.collide(move.to.x, move.to.y, TileObject, results);
     for (i = 0; i < results.length; i++) {
       o = results[i];
-      comp = <TileObjectBehavior> o.findBehavior(this.collideComponentType);
+      comp = <TileObjectBehavior>o.findBehavior(this.collideComponentType);
       if (!comp || !comp.enter) {
         continue;
       }
@@ -183,7 +183,7 @@ export class BasePlayerComponent extends MovableBehavior {
       return o._uid !== this.host._uid;
     });
     if (fromObject) {
-      comp = <TileObjectBehavior> fromObject.findBehavior(this.collideComponentType);
+      comp = <TileObjectBehavior>fromObject.findBehavior(this.collideComponentType);
       if (comp && comp.host._uid !== this.host._uid) {
         comp.exited(this.host);
       }
@@ -196,11 +196,10 @@ export class BasePlayerComponent extends MovableBehavior {
       return o._uid !== this.host._uid;
     });
     if (toObject) {
-      comp = <TileObjectBehavior> toObject.findBehavior(this.collideComponentType);
+      comp = <TileObjectBehavior>toObject.findBehavior(this.collideComponentType);
       if (comp && comp.host._uid !== this.host._uid) {
         comp.entered(this.host);
       }
     }
-
   }
 }

@@ -1,10 +1,10 @@
-import {Action} from '@ngrx/store';
-import {GameState, GamePositionFacing} from './game-state.model';
-import {type} from '../util';
-import {IPoint} from '../../../game/pow-core';
-import {Item} from '../item';
-import {AppState} from '../../app.model';
-import {EntitySlots} from '../entity/entity.model';
+import { Action } from '@ngrx/store';
+import { IPoint } from '../../../game/pow-core';
+import { AppState } from '../../app.model';
+import { EntitySlots } from '../entity/entity.model';
+import { Item } from '../item';
+import { type } from '../util';
+import { GamePositionFacing, GameState } from './game-state.model';
 
 //
 // Save state Actions
@@ -25,8 +25,7 @@ export class GameStateSaveFailAction implements Action {
   static typeId: 'GAME_SAVE_FAIL' = type('GAME_SAVE_FAIL');
   type = GameStateSaveFailAction.typeId;
 
-  constructor(public payload: any) {
-  }
+  constructor(public payload: any) {}
 }
 
 //
@@ -48,8 +47,7 @@ export class GameStateDeleteFailAction implements Action {
   static typeId: 'GAME_SAVE_DELETE_FAIL' = type('GAME_SAVE_DELETE_FAIL');
   type = GameStateDeleteFailAction.typeId;
 
-  constructor(public payload: any) {
-  }
+  constructor(public payload: any) {}
 }
 
 //
@@ -65,16 +63,14 @@ export class GameStateLoadSuccessAction implements Action {
   static typeId: 'GAME_LOAD_SUCCESS' = type('GAME_LOAD_SUCCESS');
   type = GameStateLoadSuccessAction.typeId;
 
-  constructor(public payload: AppState) {
-  }
+  constructor(public payload: AppState) {}
 }
 
 export class GameStateLoadFailAction implements Action {
   static typeId: 'GAME_LOAD_FAIL' = type('GAME_LOAD_FAIL');
   type = GameStateLoadFailAction.typeId;
 
-  constructor(public payload: any) {
-  }
+  constructor(public payload: any) {}
 }
 
 //
@@ -84,24 +80,21 @@ export class GameStateNewAction implements Action {
   static typeId: 'GAME_NEW' = type('GAME_NEW');
   type = GameStateNewAction.typeId;
 
-  constructor(public payload: GameState) {
-  }
+  constructor(public payload: GameState) {}
 }
 
 export class GameStateNewSuccessAction implements Action {
   static typeId: 'GAME_NEW_SUCCESS' = type('GAME_NEW_SUCCESS');
   type = GameStateNewSuccessAction.typeId;
 
-  constructor(public payload: GameState) {
-  }
+  constructor(public payload: GameState) {}
 }
 
 export class GameStateNewFailAction implements Action {
   static typeId: 'GAME_NEW_FAIL' = type('GAME_NEW_FAIL');
   type = GameStateNewFailAction.typeId;
 
-  constructor(public payload: any) {
-  }
+  constructor(public payload: any) {}
 }
 
 //
@@ -117,7 +110,8 @@ export class GameStateSetKeyDataAction implements Action {
 
   constructor(key: string, value: any) {
     this.payload = {
-      key, value
+      key,
+      value,
     };
   }
 }
@@ -129,27 +123,26 @@ export class GameStateTravelAction implements Action {
   static typeId: 'GAME_TRAVEL' = type('GAME_TRAVEL');
   type = GameStateTravelAction.typeId;
 
-  constructor(public payload: {
-    location: string;
-    position: IPoint;
-  }) {
-  }
+  constructor(
+    public payload: {
+      location: string;
+      position: IPoint;
+    }
+  ) {}
 }
 
 export class GameStateTravelSuccessAction implements Action {
   static typeId: 'GAME_TRAVEL_SUCCESS' = type('GAME_TRAVEL_SUCCESS');
   type = GameStateTravelSuccessAction.typeId;
 
-  constructor(public payload: string) {
-  }
+  constructor(public payload: string) {}
 }
 
 export class GameStateTravelFailAction implements Action {
   static typeId: 'GAME_TRAVEL_FAIL' = type('GAME_TRAVEL_FAIL');
   type = GameStateTravelFailAction.typeId;
 
-  constructor(public payload: any) {
-  }
+  constructor(public payload: any) {}
 }
 
 //
@@ -166,16 +159,14 @@ export class GameStateMoveAction implements Action {
   static typeId: 'GAME_MOVE' = type('GAME_MOVE');
   type = GameStateMoveAction.typeId;
 
-  constructor(public payload: IPoint) {
-  }
+  constructor(public payload: IPoint) {}
 }
 
 export class GameStateBoardShipAction implements Action {
   static typeId: 'GAME_BOARD_SHIP_STATE' = type('GAME_BOARD_SHIP_STATE');
   type = GameStateBoardShipAction.typeId;
 
-  constructor(public payload: boolean) {
-  }
+  constructor(public payload: boolean) {}
 }
 
 //
@@ -185,8 +176,7 @@ export class GameStateAddGoldAction implements Action {
   static typeId: 'GAME_ADD_GOLD' = type('GAME_ADD_GOLD');
   type = GameStateAddGoldAction.typeId;
 
-  constructor(public payload: number) {
-  }
+  constructor(public payload: number) {}
 }
 
 //
@@ -196,43 +186,45 @@ export class GameStateHealPartyAction implements Action {
   static typeId: 'GAME_HEAL_PARTY' = type('GAME_HEAL_PARTY');
   type = GameStateHealPartyAction.typeId;
 
-  constructor(public payload: {
-    cost: number;
-    partyIds: string[]
-  }) {
-  }
+  constructor(
+    public payload: {
+      cost: number;
+      partyIds: string[];
+    }
+  ) {}
 }
 
 export class GameStateSetBattleCounterAction implements Action {
   static typeId: 'GAME_SET_BATTLE_COUNTER' = type('GAME_SET_BATTLE_COUNTER');
   type = GameStateSetBattleCounterAction.typeId;
 
-  constructor(public payload: number) {
-  }
+  constructor(public payload: number) {}
 }
 
 export class GameStateEquipItemAction implements Action {
   static typeId: 'GAME_EQUIP_ITEM' = type('GAME_EQUIP_ITEM');
   type = GameStateEquipItemAction.typeId;
 
-  constructor(public payload: {
-    entityId: string;
-    itemId: string;
-    slot: keyof EntitySlots;
-  }) {
-  }
+  constructor(
+    public payload: {
+      entityId: string;
+      itemId: string;
+      slot: keyof EntitySlots;
+    }
+  ) {}
 }
 
 export class GameStateUnequipItemAction implements Action {
   static typeId: 'GAME_UNEQUIP_ITEM' = type('GAME_UNEQUIP_ITEM');
   type = GameStateUnequipItemAction.typeId;
 
-  constructor(public payload: {
-    entityId: string;
-    itemId: string;
-    slot: keyof EntitySlots;
-  }) {
-  }
+  constructor(
+    public payload: {
+      entityId: string;
+      itemId: string;
+      slot: keyof EntitySlots;
+    }
+  ) {}
 }
 
 //
@@ -242,19 +234,17 @@ export class GameStateAddInventoryAction implements Action {
   static typeId: 'GAME_ADD_INVENTORY' = type('GAME_ADD_INVENTORY');
   type = GameStateAddInventoryAction.typeId;
 
-  constructor(public payload: Item) {
-  }
+  constructor(public payload: Item) {}
 }
 export class GameStateRemoveInventoryAction implements Action {
   static typeId: 'GAME_REMOVE_INVENTORY' = type('GAME_REMOVE_INVENTORY');
   type = GameStateRemoveInventoryAction.typeId;
 
-  constructor(public payload: Item) {
-  }
+  constructor(public payload: Item) {}
 }
 
-export type GameStateActions
-  = GameStateSaveAction
+export type GameStateActions =
+  | GameStateSaveAction
   | GameStateSaveSuccessAction
   | GameStateSaveFailAction
   | GameStateDeleteAction

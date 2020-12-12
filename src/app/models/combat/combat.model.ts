@@ -1,7 +1,6 @@
-import {BaseEntity} from '../base-entity';
-import {IPoint} from '../../../game/pow-core/point';
 import * as Immutable from 'immutable';
-import {Entity, EntityWithEquipment} from '../entity/entity.model';
+import { IPoint } from '../../../game/pow-core/point';
+import { CombatantTypes, IEnemy, IPartyMember } from '../base-entity';
 
 /** Valid combat types */
 export type CombatType = 'none' | 'fixed' | 'random';
@@ -24,19 +23,17 @@ export interface IZoneMatch {
   targetPoint: IPoint;
 }
 
-/** A combatant in a combat encounter */
-export interface Combatant extends BaseEntity {
-  /** The hyphenated-lower-case-unique-id of the combatant */
-  readonly id?: string;
-  /** The name of the combatant */
-  readonly name?: string;
-  /** The experience awarded for defeating this combatant */
-  readonly exp?: number;
-  /** The gold that can be looted aftefor defeating this combatant */
-  readonly gold?: number;
-}
-
-export type CombatantTypes = Combatant | EntityWithEquipment;
+// /** A combatant in a combat encounter */
+// export interface Combatant extends IEntityObject {
+//   /** The hyphenated-lower-case-unique-id of the combatant */
+//   readonly id?: string;
+//   /** The name of the combatant */
+//   readonly name?: string;
+//   /** The experience awarded for defeating this combatant */
+//   readonly exp?: number;
+//   /** The gold that can be looted aftefor defeating this combatant */
+//   readonly gold?: number;
+// }
 
 /**
  * A Combat encounter descriptor.  Used to describe the configuration of combat.
@@ -45,16 +42,16 @@ export interface CombatEncounter {
   /** The type of combat */
   readonly type: CombatType;
   /** array of enemies in this encounter */
-  readonly enemies: Immutable.List<Combatant>;
+  readonly enemies: Immutable.List<IEnemy>;
   /**
    * Working copy of entity members in the combat simulation. When the combat
    * encounter is complete, the state of entity members will be transferred back
    * to the main game state. This allows us to encapsulate combat encounters
    * and potentially abort them without having to undo any actions on the game state.
    */
-  readonly party: Immutable.List<Entity>;
+  readonly party: Immutable.List<IPartyMember>;
   /** message to display when combat begins */
-  readonly message?: string[];
+  readonly message?: Immutable.List<string>;
   /** The amount of gold to award the player after a victory */
   readonly gold?: number;
   /** The experience to divide amongst the party after a victory */
@@ -80,6 +77,6 @@ export interface CombatState extends CombatEncounter {
 /** Description of a combat attackCombatant */
 export interface CombatAttack {
   damage: number;
-  attacker: BaseEntity;
-  defender: BaseEntity;
+  attacker: CombatantTypes;
+  defender: CombatantTypes;
 }

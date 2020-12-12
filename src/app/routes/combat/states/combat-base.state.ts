@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,12 +13,12 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {State} from '../../../../game/pow2/core/state';
+import { State } from '../../../../game/pow2/core/state';
+import { CombatStateNames } from './states';
 
 /**
  * CombatMachineState is set when the player transitions in to a combat
  * encounter.  This can be any type of triggered encounter, from
  * the map or a feature interaction, or anything else.
  */
-export class CombatMachineState extends State {
-}
+export class CombatMachineState extends State<CombatStateNames> {}

@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 // TODO: TileMap isn't getting added to Spatial DB properly.  Can't query for it!
 // Scene assuming something about the spatial properties on objects?
 import * as _ from 'underscore';
-import {TiledTSXResource} from '../../pow-core/resources/tiled/tiled-tsx.resource';
-import {ITileInstanceMeta} from '../../pow-core/resources/tiled/tiled';
-import {ITiledLayer} from '../../pow-core/resources/tiled/tiled.model';
-import {SceneObject} from '../scene/scene-object';
-import {TiledTMXResource} from '../../pow-core/resources/tiled/tiled-tmx.resource';
-import {Rect} from '../../pow-core/rect';
-import {Scene} from '../scene/scene';
+import { Rect } from '../../pow-core/rect';
+import { ITileInstanceMeta } from '../../pow-core/resources/tiled/tiled';
+import { TiledTMXResource } from '../../pow-core/resources/tiled/tiled-tmx.resource';
+import { TiledTSXResource } from '../../pow-core/resources/tiled/tiled-tsx.resource';
+import { ITiledLayer } from '../../pow-core/resources/tiled/tiled.model';
+import { Scene } from '../scene/scene';
+import { SceneObject } from '../scene/scene-object';
 
 export class TileMap extends SceneObject {
   map: TiledTMXResource;
@@ -38,7 +38,7 @@ export class TileMap extends SceneObject {
     LOADED: 'loaded',
     UNLOADED: 'unloaded',
     MAP_LOADED: 'map:loaded',
-    MAP_UNLOADED: 'map:unloaded'
+    MAP_UNLOADED: 'map:unloaded',
   };
 
   isLoaded(): boolean {
@@ -80,8 +80,8 @@ export class TileMap extends SceneObject {
       }
       this.tiles = this.tiles.concat(tiles.tiles);
     });
-    this.features = _.where(this.map.layers, {name: 'Features'})[0] || [];
-    this.zones = _.where(this.map.layers, {name: 'Zones'})[0] || [];
+    this.features = _.where(this.map.layers, { name: 'Features' })[0] || [];
+    this.zones = _.where(this.map.layers, { name: 'Zones' })[0] || [];
     this.loaded();
     return true;
   }
@@ -91,7 +91,7 @@ export class TileMap extends SceneObject {
   }
 
   getLayer(name: string): ITiledLayer {
-    return _.where(this.map.layers, {name})[0] as ITiledLayer;
+    return _.where(this.map.layers, { name })[0] as ITiledLayer;
   }
 
   getTerrain(layer: string, x: number, y: number) {

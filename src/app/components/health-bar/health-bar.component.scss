@@ -1,14 +1,17 @@
-@import '../../style/variables';
-@import '../../style/mixins';
+@import "../../style/variables";
+@import "../../style/mixins";
 
 :host {
-  display: inline-flex;
+  display: inline-block;
   height: inherit;
+  min-width: 100px;
+  height: 10px;
+  border: 1px solid $gameBlack;
   div {
     height: inherit;
     /* Damage states */
     &.fine {
-      background-color: rgb(46, 109, 166);
+      background-color: $gameLightBlue;
     }
     &.hurt {
       background-color: rgba(230, 200, 40, 1);

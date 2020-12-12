@@ -1,7 +1,6 @@
-import {Observable, BehaviorSubject} from 'rxjs/Rx';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 export class LoadingService {
-
   /* @internal */
   private _loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
@@ -12,7 +11,6 @@ export class LoadingService {
 
   /**
    * Set the loading state of the application
-   * @param value
    */
   set loading(value: boolean) {
     this._loading$.next(value);
@@ -35,5 +33,4 @@ export class LoadingService {
   set message(value: string) {
     this._message$.next(value);
   }
-
 }

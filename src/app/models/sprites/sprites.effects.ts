@@ -1,24 +1,30 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Rx';
-import {Actions, Effect} from '@ngrx/effects';
-import {SpritesLoadAction, SpritesLoadFailAction, SpritesLoadSuccessAction} from './sprites.actions';
-import {SpritesService} from './sprites.service';
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@ngrx/effects';
+import { of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import {
+  SpritesLoadAction,
+  SpritesLoadFailAction,
+  SpritesLoadSuccessAction,
+} from './sprites.actions';
+import { SpritesService } from './sprites.service';
 
 @Injectable()
 export class SpritesEffects {
+  constructor(private actions$: Actions, private spritesService: SpritesService) {}
 
-  constructor(private actions$: Actions,
-              private spritesService: SpritesService) {
-  }
-
-  @Effect() loadSprites$ = this.actions$.ofType(SpritesLoadAction.typeId)
-    .switchMap((action: SpritesLoadAction) => {
-      return this.spritesService.loadSprites(action.payload).map(() => action.payload);
-    })
-    .map((url: string) => {
+  @Effect() loadSprites$ = this.actions$.pipe(
+    ofType(SpritesLoadAction.typeId),
+    switchMap((action: SpritesLoadAction) => {
+      return this.spritesService
+        .loadSprites(action.payload)
+        .pipe(map(() => action.payload));
+    }),
+    map((url: string) => {
       return new SpritesLoadSuccessAction(url);
+    }),
+    catchError((e) => {
+      return of(new SpritesLoadFailAction(e.toString()));
     })
-    .catch((e) => {
-      return Observable.of(new SpritesLoadFailAction(e.toString()));
-    });
+  );
 }

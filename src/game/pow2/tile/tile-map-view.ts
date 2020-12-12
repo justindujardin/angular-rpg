@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,12 +13,12 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {SceneView} from '../scene/scene-view';
-import {TileMapRenderer} from './render/tile-map-renderer';
-import {TileMap} from './tile-map';
-import {IRect} from '../../pow-core/rect';
-import {CameraBehavior} from '../scene/behaviors/camera-behavior';
-import {Point} from '../../pow-core';
+import { Point } from '../../pow-core';
+import { IRect } from '../../pow-core/rect';
+import { CameraBehavior } from '../scene/behaviors/camera-behavior';
+import { SceneView } from '../scene/scene-view';
+import { TileMapRenderer } from './render/tile-map-renderer';
+import { TileMap } from './tile-map';
 
 export class TileMapView extends SceneView {
   mapRenderer: TileMapRenderer = new TileMapRenderer();
@@ -61,10 +61,12 @@ export class TileMapView extends SceneView {
       clipGrow.point.y += rect.point.y - clipGrow.point.y;
     }
     if (clipGrow.point.x + clipGrow.extent.x > rect.point.x + rect.extent.x) {
-      clipGrow.point.x -= ((clipGrow.point.x + clipGrow.extent.x) - (rect.point.x + rect.extent.x));
+      clipGrow.point.x -=
+        clipGrow.point.x + clipGrow.extent.x - (rect.point.x + rect.extent.x);
     }
     if (clipGrow.point.y + clipGrow.extent.y > rect.point.y + rect.extent.y) {
-      clipGrow.point.y -= ((clipGrow.point.y + clipGrow.extent.y) - (rect.point.y + rect.extent.y));
+      clipGrow.point.y -=
+        clipGrow.point.y + clipGrow.extent.y - (rect.point.y + rect.extent.y);
     }
     return clipGrow;
   }
@@ -78,7 +80,9 @@ export class TileMapView extends SceneView {
       this.cameraComponent = this.map.findBehavior(CameraBehavior) as CameraBehavior;
     }
     if (!this.cameraComponent) {
-      this.cameraComponent = this.scene.componentByType(CameraBehavior) as CameraBehavior;
+      this.cameraComponent = this.scene.componentByType(
+        CameraBehavior
+      ) as CameraBehavior;
     }
     super.processCamera();
   }
@@ -97,7 +101,10 @@ export class TileMapView extends SceneView {
     worldTilePos.y = parseFloat(worldTilePos.y.toFixed(2));
     worldCameraPos.x = parseFloat(worldCameraPos.x.toFixed(2));
     worldCameraPos.y = parseFloat(worldCameraPos.y.toFixed(2));
-    this.context.translate(worldTilePos.x - worldCameraPos.x, worldTilePos.y - worldCameraPos.y);
+    this.context.translate(
+      worldTilePos.x - worldCameraPos.x,
+      worldTilePos.y - worldCameraPos.y
+    );
   }
 
   /*

@@ -1,4 +1,4 @@
-@import '../../style/variables';
+@import "../../style/variables";
 
 $inventoryIconSize: 64px;
 $inventoryLabelPaddingTop: 36px;
@@ -40,17 +40,16 @@ $inventoryLabelPaddingTop: 36px;
       .compare {
         color: #0f0;
       }
-
     }
   }
   .unequipped {
     > li {
       display: inline-block;
     }
-
   }
 
-  ul, ul > li {
+  ul,
+  ul > li {
     display: inline-block;
     list-style-type: none;
   }

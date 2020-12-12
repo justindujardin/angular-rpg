@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {ISceneObject} from './scene.model';
-import {Rect} from '../../pow-core/rect';
-import {Point} from '../../pow-core/point';
+import { Point } from '../../pow-core/point';
+import { Rect } from '../../pow-core/rect';
+import { ISceneObject } from './scene.model';
 
 /**
  * Very, very simple spatial database.  Because all the game objects have

@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin
+ Copyright (C) 2013-2020 by Justin DuJardin
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -56,6 +56,5 @@ export const errors = {
   /**
    * A component failed to register.
    */
-  COMPONENT_REGISTER_FAIL: 'component failed to register with host entity'
-
+  COMPONENT_REGISTER_FAIL: 'component failed to register with host entity',
 };

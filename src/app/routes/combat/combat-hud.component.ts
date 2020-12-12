@@ -1,37 +1,40 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {Scene} from '../../../game/pow2/scene/scene';
-import {Observable} from 'rxjs/Observable';
-import {getCombatEncounterParty} from '../../models/selectors';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../app.model';
-import {LoadingService} from '../../components/loading/loading.service';
-import {ResourceManager} from '../../../game/pow-core/resource-manager';
-import {Entity} from '../../models/entity/entity.model';
-import {GameEntityObject} from '../../scene/game-entity-object';
-import {List} from 'immutable';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { List } from 'immutable';
+import { Observable } from 'rxjs';
+import { IPartyMember } from '../../models/base-entity';
+import { ResourceManager } from '../../../game/pow-core/resource-manager';
+import { Scene } from '../../../game/pow2/scene/scene';
+import { AppState } from '../../app.model';
+import { LoadingService } from '../../components/loading/loading.service';
+import { getCombatEncounterParty } from '../../models/selectors';
+import { GameEntityObject } from '../../scene/game-entity-object';
 
 @Component({
   selector: 'combat-hud',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./combat-hud.component.scss'],
-  templateUrl: './combat-hud.component.html'
+  templateUrl: './combat-hud.component.html',
 })
 export class CombatHUDComponent {
-
   @Input() scene: Scene;
 
-  /** Observable<Entity[]> of player-card members */
-  party$: Observable<List<Entity>> = this.store.select(getCombatEncounterParty);
+  party$: Observable<List<IPartyMember>> = this.store.select(getCombatEncounterParty);
 
-  constructor(public store: Store<AppState>,
-              public loadingService: LoadingService,
-              public loader: ResourceManager) {
-  }
+  constructor(
+    public store: Store<AppState>,
+    public loadingService: LoadingService,
+    public loader: ResourceManager
+  ) {}
 
   getMemberClass(member: GameEntityObject, focused?: GameEntityObject): any {
     return {
-      focused: focused && focused.model && member && member.model && member.model.name === focused.model.name
+      focused:
+        focused &&
+        focused.model &&
+        member &&
+        member.model &&
+        member.model.name === focused.model.name,
     };
   }
-
 }

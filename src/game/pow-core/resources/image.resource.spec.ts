@@ -1,4 +1,4 @@
-import {ImageResource} from './image.resource';
+import { ImageResource } from './image.resource';
 
 describe('ImageResource', () => {
   it('should be defined', () => {
@@ -6,17 +6,16 @@ describe('ImageResource', () => {
   });
 
   it('should succeed with good url', (done) => {
-    new ImageResource()
-      .fetch('assets/test/vezu.png')
-      .then((res: ImageResource) => {
-        expect(res.data.naturalWidth).toBe(16);
-        expect(res.data.naturalHeight).toBe(16);
-        done();
-      });
+    new ImageResource().fetch('assets/test/vezu.png').then((res: ImageResource) => {
+      expect(res.data.naturalWidth).toBe(16);
+      expect(res.data.naturalHeight).toBe(16);
+      done();
+    });
   });
   it('should fail with bad url', (done) => {
-    new ImageResource()
-      .fetch('assets/test/invalidfile.png')
-      .catch(() => done());
+    new ImageResource().fetch('assets/test/invalidfile.png').catch((err) => {
+      expect(err).toBeDefined();
+      done();
+    });
   });
 });

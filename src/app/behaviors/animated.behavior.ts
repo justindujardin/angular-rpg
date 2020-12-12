@@ -1,8 +1,8 @@
+import { Component } from '@angular/core';
 import * as _ from 'underscore';
-import {Point} from '../../game/pow-core/point';
-import {TickedBehavior} from '../../game/pow2/scene/behaviors/ticked-behavior';
-import {TileObject} from '../../game/pow2/tile/tile-object';
-import {Component} from '@angular/core';
+import { Point } from '../../game/pow-core/point';
+import { TickedBehavior } from '../../game/pow2/scene/behaviors/ticked-behavior';
+import { TileObject } from '../../game/pow2/tile/tile-object';
 
 export interface IAnimationConfig {
   /**
@@ -31,14 +31,13 @@ export interface IAnimationTask extends IAnimationConfig {
   complete?: boolean;
   startFrame: number; // The starting frame to restore when the animation is complete.
   done?: (config: IAnimationConfig) => void;
-
 }
 
 // Implementation
 // -------------------------------------------------------------------------
 @Component({
   selector: 'animated-behavior',
-  template: '<ng-content></ng-content>'
+  template: '<ng-content></ng-content>',
 })
 export class AnimatedBehaviorComponent extends TickedBehavior {
   host: TileObject;
@@ -46,7 +45,7 @@ export class AnimatedBehaviorComponent extends TickedBehavior {
   static EVENTS = {
     Started: 'start',
     Stopped: 'stop',
-    Repeated: 'repeat'
+    Repeated: 'repeat',
   };
   private _tasks: IAnimationTask[] = [];
   private _animationKeys: any[] = [];
@@ -90,7 +89,7 @@ export class AnimatedBehaviorComponent extends TickedBehavior {
         // this.host.frame = task.startFrame;
         this.trigger(AnimatedBehaviorComponent.EVENTS.Stopped, {
           task,
-          component: this
+          component: this,
         });
         i--;
       }
@@ -118,7 +117,11 @@ export class AnimatedBehaviorComponent extends TickedBehavior {
         // Interp point
         // console.log("Interp from " + task.start + " to " + task.target );
         if (task.move && task.move instanceof Point) {
-          const interpolated: Point = task.value.interpolate(task.start, task.target, factor);
+          const interpolated: Point = task.value.interpolate(
+            task.start,
+            task.target,
+            factor
+          );
           this.host.point.x = interpolated.x;
           this.host.point.y = interpolated.y;
         }
@@ -137,7 +140,7 @@ export class AnimatedBehaviorComponent extends TickedBehavior {
 
   interpolate(from: number, to: number, factor: number): number {
     factor = Math.min(Math.max(factor, 0), 1);
-    return (from * (1.0 - factor)) + (to * factor);
+    return from * (1.0 - factor) + to * factor;
   }
 
   playChain(animations: IAnimationConfig[], cb: () => void) {
@@ -149,7 +152,7 @@ export class AnimatedBehaviorComponent extends TickedBehavior {
       animations.push({
         name: 'Chain Callback',
         duration: 0,
-        callback: cb
+        callback: cb,
       });
     }
     // TODO: Need a list of these for multiple animations on
@@ -170,5 +173,4 @@ export class AnimatedBehaviorComponent extends TickedBehavior {
     };
     this.play(this._currentAnimation);
   }
-
 }

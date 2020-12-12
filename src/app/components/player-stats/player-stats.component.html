@@ -1,18 +1,23 @@
-<div *ngIf="showLevel$ | async">Level {{(model$ | async)?.level}}</div>
+<div *ngIf="showLevel$ | async">Level {{ (model$ | async)?.level }}</div>
 
 <section *ngIf="showHP$ | async">
-  <div>HP {{(model$ | async)?.hp}} / {{(model$ | async)?.maxhp}}</div>
-  <md-progress-bar [value]="healthPercentage$ | async"></md-progress-bar>
+  <div>HP {{ (model$ | async)?.hp }} / {{ (model$ | async)?.maxhp }}</div>
+  <mat-progress-bar [value]="healthPercentage$ | async"></mat-progress-bar>
 </section>
 
 <section *ngIf="showExperience$ | async">
-  <div>EXP {{(model$ | async)?.exp}} / {{nextLevelExp$ | async}}</div>
-  <md-progress-bar [value]="nextLevelPercentage$ | async"></md-progress-bar>
+  <div>EXP {{ (model$ | async)?.exp }} / {{ nextLevelExp$ | async }}</div>
+  <mat-progress-bar [value]="nextLevelPercentage$ | async"></mat-progress-bar>
 </section>
 
 <section *ngIf="showCombatStats$ | async">
-  <div class="hero-stat">Attack : {{attack$ | async}}</div>
-  <div class="hero-stat">Defense : {{defense$ | async}}</div>
-  <div class="hero-stat">Magic : {{magic$ | async}}</div>
-  <div class="hero-stat">Speed : {{speed$ | async}}</div>
+  <div class="hero-stat">Strength : {{ (model$ | async)?.strength[0] }}</div>
+  <div class="hero-stat">Vitality : {{ (model$ | async)?.vitality[0] }}</div>
+  <div class="hero-stat">Intelligence : {{ (model$ | async)?.intelligence[0] }}</div>
+  <div class="hero-stat">Agility : {{ (model$ | async)?.agility[0] }}</div>
+  <div class="hero-stat">Luck : {{ (model$ | async)?.luck[0] }}</div>
+  <mat-divider></mat-divider>
+  <div class="hero-stat">Attack : {{ attack$ | async }}</div>
+  <div class="hero-stat">Defense : {{ defense$ | async }}</div>
+  <div class="hero-stat">Evasion : {{ evasion$ | async }}</div>
 </section>

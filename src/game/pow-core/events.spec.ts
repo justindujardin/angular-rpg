@@ -1,4 +1,4 @@
-import {Events} from './events';
+import { Events } from './events';
 describe('Events', () => {
   it('should be defined', () => {
     expect(Events).toBeDefined();
@@ -28,7 +28,7 @@ describe('Events', () => {
     });
     it('should support object listener syntax', () => {
       obj.on({
-        event: cb
+        event: cb,
       });
       obj.trigger('event');
       expect(count).toBe(1);
@@ -55,10 +55,12 @@ describe('Events', () => {
     });
     it('should do nothing with bad input', () => {
       const ev: string = 'event';
-      obj.on(ev, cb);
-      obj.off(null, cb);
-      obj.off(null, null, this);
-      obj.off(ev, null, null);
+      expect(() => {
+        obj.on(ev, cb);
+        obj.off(null, cb);
+        obj.off(null, null, this);
+        obj.off(ev, null, null);
+      }).not.toThrow();
     });
   });
 
@@ -112,7 +114,5 @@ describe('Events', () => {
       obj.trigger('event event');
       expect(count).toBe(2);
     });
-
   });
-
 });

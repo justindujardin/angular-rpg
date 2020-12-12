@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -15,37 +15,38 @@
  */
 // State Interfaces
 // -------------------------------------------------------------------------
-import {IStateMachine} from './state-machine';
+import { IStateMachine } from './state-machine';
 
-export interface IState {
-  name: string;
-  enter(machine: IStateMachine);
-  exit(machine: IStateMachine);
-  update(machine: IStateMachine);
+export interface IState<TStateNames extends string> {
+  name: TStateNames;
+  enter(machine: IStateMachine<TStateNames>);
+  exit(machine: IStateMachine<TStateNames>);
+  update(machine: IStateMachine<TStateNames>);
 }
-export interface IStateTransition {
-  targetState: string;
-  evaluate(machine: IStateMachine): boolean;
+
+export interface IStateTransition<TStateTransitionNames extends string> {
+  targetState: TStateTransitionNames;
+  evaluate(machine: IStateMachine<TStateTransitionNames>): boolean;
 }
 
 // Implementation
 // -------------------------------------------------------------------------
-export class State implements IState {
-  name: string;
-  transitions: IStateTransition[] = [];
+export class State<T extends string> implements IState<T> {
+  name: T;
+  transitions: IStateTransition<T>[] = [];
 
-  enter(machine: IStateMachine) {
+  enter(machine: IStateMachine<T>) {
     // nothing
   }
 
-  exit(machine: IStateMachine) {
+  exit(machine: IStateMachine<T>) {
     // nothing
   }
 
-  update(machine: IStateMachine) {
+  update(machine: IStateMachine<T>) {
     const l: number = this.transitions.length;
     for (let i: number = 0; i < l; i++) {
-      const t: IStateTransition = this.transitions[i];
+      const t: IStateTransition<T> = this.transitions[i];
       if (!t.evaluate(machine)) {
         continue;
       }
@@ -57,10 +58,11 @@ export class State implements IState {
   }
 }
 
-export class StateTransition implements IStateTransition {
-  targetState: string;
+export class StateTransition<TTransitionNames extends string>
+  implements IStateTransition<TTransitionNames> {
+  targetState: TTransitionNames;
 
-  evaluate(machine: IStateMachine): boolean {
+  evaluate(machine: IStateMachine<TTransitionNames>): boolean {
     return true;
   }
 }

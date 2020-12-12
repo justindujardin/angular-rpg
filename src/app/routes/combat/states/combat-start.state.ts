@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,21 +13,22 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+import { Component } from '@angular/core';
 import * as _ from 'underscore';
-import {CombatMachineState} from './combat-base.state';
-import {CombatStateMachineComponent} from './combat.machine';
-import {CombatChooseActionStateComponent} from './combat-choose-action.state';
-import {Component} from '@angular/core';
-import {NotificationService} from '../../../components/notification/notification.service';
+import { NotificationService } from '../../../components/notification/notification.service';
+import { CombatMachineState } from './combat-base.state';
+import { CombatChooseActionStateComponent } from './combat-choose-action.state';
+import { CombatStateMachineComponent } from './combat.machine';
+import { CombatStateNames } from './states';
 
 // Combat Begin
 @Component({
   selector: 'combat-start-state',
-  template: `<ng-content></ng-content>`
+  template: `<ng-content></ng-content>`,
 })
 export class CombatStartStateComponent extends CombatMachineState {
-  static NAME: string = 'Combat Started';
-  name: string = CombatStartStateComponent.NAME;
+  static NAME: CombatStateNames = 'start';
+  name: CombatStateNames = CombatStartStateComponent.NAME;
 
   constructor(private notify: NotificationService) {
     super();
@@ -44,11 +45,11 @@ export class CombatStartStateComponent extends CombatMachineState {
         // If the message contains pipe's, treat what is between each pipe as a separate
         // message to be displayed.
         let msgs = encounter.message.slice();
-        const last = msgs.pop();
-        msgs.forEach((m) => this.notify.show(m, null, 0));
+        const last = msgs.last();
+        const others = msgs.take(msgs.size - 1);
+        others.forEach((m) => this.notify.show(m, null, 0));
         this.notify.show(last, _done, 0);
-      }
-      else {
+      } else {
         _done();
       }
     });

@@ -1,5 +1,5 @@
-import {TiledTSXResource} from './tiled-tsx.resource';
-import {ITileInstanceMeta} from './tiled';
+import { ITileInstanceMeta } from './tiled';
+import { TiledTSXResource } from './tiled-tsx.resource';
 describe('TiledTSXResource', () => {
   it('should be defined', () => {
     expect(TiledTSXResource).toBeDefined();
@@ -14,14 +14,16 @@ describe('TiledTSXResource', () => {
       });
   });
   it('should fail with bad url', (done) => {
-    new TiledTSXResource()
-      .fetch('bad/does/not/exist.tsx')
-      .catch(() => done());
+    new TiledTSXResource().fetch('bad/does/not/exist.tsx').catch((data) => {
+      expect(data).toBeDefined();
+      done();
+    });
   });
   it('should fail with missing image source', (done) => {
-    new TiledTSXResource()
-      .fetch('assets/test/badImage.tsx')
-      .catch(() => done());
+    new TiledTSXResource().fetch('assets/test/badImage.tsx').catch((data) => {
+      expect(data).toBeDefined();
+      done();
+    });
   });
 
   describe('getTileMeta', () => {

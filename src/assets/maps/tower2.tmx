@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="19" height="19" tilewidth="16" tileheight="16">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="19" height="19" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="6">
  <properties>
   <property name="combat" value="true"/>
   <property name="combatZone" value="zone-ice-tower"/>
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
- <layer name="Terrain" width="19" height="19">
+ <layer id="1" name="Terrain" width="19" height="19">
   <data encoding="csv">
 34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,
-34,50,50,50,50,50,34,34,34,34,34,34,34,50,50,50,50,50,34,
-34,34,34,50,50,50,34,34,34,34,34,34,34,50,50,50,50,50,34,
-34,50,50,50,50,50,50,50,34,50,34,50,50,50,50,50,50,50,34,
-34,34,34,50,50,50,34,50,34,50,34,50,34,50,50,50,50,50,34,
-34,50,50,50,50,50,34,50,34,50,34,50,34,50,50,50,50,50,34,
-34,34,34,34,34,34,34,50,34,50,34,50,34,34,34,50,34,34,34,
-34,34,34,34,34,34,34,50,34,50,34,50,34,34,34,50,34,34,34,
-34,34,34,34,34,34,34,50,34,50,34,50,34,34,34,50,34,34,34,
-34,34,34,34,34,34,34,50,50,50,50,50,34,34,34,50,34,34,34,
-34,34,34,34,34,34,34,34,34,50,34,34,34,34,34,50,34,34,34,
-34,34,34,34,34,34,34,34,34,50,34,34,34,34,34,50,34,34,34,
-34,34,34,34,34,34,34,34,34,50,34,34,34,34,34,50,34,34,34,
-34,50,50,50,50,50,34,34,34,34,34,34,34,50,50,50,50,50,34,
-34,50,50,50,50,50,34,34,34,34,34,34,34,50,50,50,50,50,34,
-34,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,34,
-34,50,50,50,50,50,34,34,34,34,34,34,34,50,50,50,50,50,34,
-34,50,50,50,50,50,34,34,34,34,34,34,34,50,50,50,50,50,34,
+34,51,51,51,51,51,34,34,34,34,34,34,34,51,51,51,51,51,34,
+34,34,34,51,51,51,34,34,34,34,34,34,34,51,51,51,51,51,34,
+34,51,51,51,51,51,51,51,34,51,34,51,51,51,51,51,51,51,34,
+34,34,34,51,51,51,34,51,34,51,34,51,34,51,51,51,51,51,34,
+34,51,51,51,51,51,34,51,34,51,34,51,34,51,51,51,51,51,34,
+34,34,34,34,34,34,34,51,34,51,34,51,34,34,34,51,34,34,34,
+34,34,34,34,34,34,34,51,34,51,34,51,34,34,34,51,34,34,34,
+34,34,34,34,34,34,34,51,34,51,34,51,34,34,34,51,34,34,34,
+34,34,34,34,34,34,34,51,51,51,51,51,34,34,34,51,34,34,34,
+34,34,34,34,34,34,34,34,34,51,34,34,34,34,34,51,34,34,34,
+34,34,34,34,34,34,34,34,34,51,34,34,34,34,34,51,34,34,34,
+34,34,34,34,34,34,34,34,34,51,34,34,34,34,34,51,34,34,34,
+34,51,51,51,51,51,34,34,34,34,34,34,34,51,51,51,51,51,34,
+34,51,51,51,51,51,34,34,34,34,34,34,34,51,51,51,51,51,34,
+34,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,51,34,
+34,51,51,51,51,51,34,34,34,34,34,34,34,51,51,51,51,51,34,
+34,51,51,51,51,51,34,34,34,34,34,34,34,51,51,51,51,51,34,
 34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34
 </data>
  </layer>
- <objectgroup draworder="topdown" name="Features" width="19" height="19">
-  <object name="tower1" type="PortalFeatureComponent" x="48" y="240" width="16" height="16">
+ <objectgroup id="2" name="Features">
+  <object id="1" name="tower1" type="PortalFeatureComponent" x="48" y="240" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
     <property name="target" value="tower1"/>
@@ -39,7 +39,7 @@
     <property name="transitionType" value="down"/>
    </properties>
   </object>
-  <object name="iceGolem.png" type="CombatFeatureComponent" x="144" y="144" width="16" height="16">
+  <object id="2" name="iceGolem.png" type="CombatFeatureComponent" x="144" y="144" width="16" height="16">
    <properties>
     <property name="creatures" value=""/>
     <property name="gold" value="8"/>
@@ -49,7 +49,7 @@
     <property name="text" value="Two handlers release the bonds on a hulking monstrosity made entirely of ice! It lurches towards you!"/>
    </properties>
   </object>
-  <object name="iceTroll.png" type="CombatFeatureComponent" x="80" y="48" width="16" height="16">
+  <object id="3" name="iceTroll.png" type="CombatFeatureComponent" x="80" y="48" width="16" height="16">
    <properties>
     <property name="ambushed" value="true"/>
     <property name="creatures" value=""/>
@@ -60,7 +60,7 @@
     <property name="text" value="You are set upon by a group of trolls!"/>
    </properties>
   </object>
-  <object name="Bag of Holding" type="alert" x="144" y="48" width="16" height="16">
+  <object id="4" name="Bag of Holding" type="alert" x="144" y="48" width="16" height="16">
    <properties>
     <property name="icon" value="bag.png"/>
     <property name="sets" value="bagOfHolding"/>
@@ -70,7 +70,7 @@
     <property name="until" value="bagOfHolding"/>
    </properties>
   </object>
-  <object name="tower3" type="PortalFeatureComponent" x="16" y="80" width="16" height="16">
+  <object id="5" name="tower3" type="PortalFeatureComponent" x="16" y="80" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
     <property name="target" value="tower3"/>

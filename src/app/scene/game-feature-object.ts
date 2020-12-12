@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {GameTileMap} from './game-tile-map';
-import {GameWorld} from '../services/game-world';
-import {TileObject} from '../../game/pow2/tile/tile-object';
+import { TileObject } from '../../game/pow2/tile/tile-object';
+import { GameWorld } from '../services/game-world';
+import { GameTileMap } from './game-tile-map';
 
 export class GameFeatureObject extends TileObject {
   tileMap: GameTileMap;
@@ -35,6 +35,7 @@ export class GameFeatureObject extends TileObject {
     this.point.x = options.x;
     this.point.y = options.y;
     this.frame = typeof options.frame !== 'undefined' ? options.frame : 0;
-    this.groups = typeof options.groups === 'string' ? options.groups.split('|') : options.groups;
+    this.groups =
+      typeof options.groups === 'string' ? options.groups.split('|') : options.groups;
   }
 }

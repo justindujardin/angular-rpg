@@ -1,14 +1,13 @@
-import * as _ from 'underscore';
-import {errors} from './errors';
-import {IResource} from './resource';
-import {ImageResource} from './resources/image.resource';
-import {JSONResource} from './resources/json.resource';
-import {XMLResource} from './resources/xml.resource';
-import {TiledTMXResource} from './resources/tiled/tiled-tmx.resource';
-import {TiledTSXResource} from './resources/tiled/tiled-tsx.resource';
-import {AudioResource} from './resources/audio.resource';
-import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { errors } from './errors';
+import { IResource } from './resource';
+import { AudioResource } from './resources/audio.resource';
+import { ImageResource } from './resources/image.resource';
+import { JSONResource } from './resources/json.resource';
+import { TiledTMXResource } from './resources/tiled/tiled-tmx.resource';
+import { TiledTSXResource } from './resources/tiled/tiled-tsx.resource';
+import { XMLResource } from './resources/xml.resource';
 
 /**
  * A basic resource loading manager with api for requesting
@@ -19,22 +18,20 @@ import {Http} from '@angular/http';
 export class ResourceManager {
   private _cache: Object = {};
   private _types: Object = {
-    'png': ImageResource,
-    'json': JSONResource,
-    'xml': XMLResource,
-    'tmx': TiledTMXResource,
-    'tsx': TiledTSXResource,
+    png: ImageResource,
+    json: JSONResource,
+    xml: XMLResource,
+    tmx: TiledTMXResource,
+    tsx: TiledTSXResource,
     '': AudioResource,
-    'mp3': AudioResource,
-    'm4a': AudioResource,
-    'aac': AudioResource,
-    'ogg': AudioResource,
-    'wav': AudioResource
+    mp3: AudioResource,
+    m4a: AudioResource,
+    aac: AudioResource,
+    ogg: AudioResource,
+    wav: AudioResource,
   };
 
-  constructor(public http: Http) {
-
-  }
+  constructor(public http: HttpClient) {}
 
   /**
    * Register a custom resource class type
@@ -71,8 +68,7 @@ export class ResourceManager {
       let resource: T = this._cache[source];
       if (resource && resource.data) {
         return resolve(resource);
-      }
-      else if (!resource) {
+      } else if (!resource) {
         resource = this._cache[source] = new resourceType(source, null);
       }
       resource
@@ -91,28 +87,29 @@ export class ResourceManager {
   load<T extends IResource | IResource[]>(sources: string | string[]): Promise<T[]> {
     return new Promise<T[]>((resolve, reject) => {
       const results: T[] = [];
-      let loadQueue: number = 0;
-      let errors: number = 0;
-      if (!_.isArray(sources)) {
+      let loadQueue = 0;
+      let errors = 0;
+      if (!Array.isArray(sources)) {
         sources = [sources];
       }
       function _checkDone() {
         if (loadQueue === 0) {
-          return (errors === 0) ? resolve(results) : reject(errors + ' resources failed to load');
+          return errors === 0
+            ? resolve(results)
+            : reject(errors + ' resources failed to load');
         }
       }
 
       for (let i: number = 0; i < sources.length; i++) {
-        let src: string = sources[i];
-        let extension: string = this.getResourceExtension(src);
-        let type: any = this._types[extension];
+        const src: string = sources[i];
+        const extension: string = this.getResourceExtension(src);
+        const type: any = this._types[extension];
         if (!type) {
           errors++;
           continue;
         }
         loadQueue++;
-        this
-          .loadAsType<any>(src, this._types[extension])
+        this.loadAsType<any>(src, this._types[extension])
           .then((resource: any) => {
             loadQueue--;
             _checkDone();

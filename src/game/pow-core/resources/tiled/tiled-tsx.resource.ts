@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin
+ Copyright (C) 2013-2020 by Justin DuJardin
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,11 +13,10 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {XMLResource} from '../xml.resource';
-import {ImageResource} from '../image.resource';
 import * as _ from 'underscore';
-import {ITileInstanceMeta, compactUrl, readTiledProperties} from './tiled';
-import * as $ from 'jquery';
+import { ImageResource } from '../image.resource';
+import { XMLResource } from '../xml.resource';
+import { compactUrl, ITileInstanceMeta, readTiledProperties } from './tiled';
 
 export class TilesetTile {
   id: number;
@@ -50,7 +49,9 @@ export class TiledTSXResource extends XMLResource {
       this.name = this.getElAttribute(tileSet, 'name');
       this.tilewidth = parseInt(this.getElAttribute(tileSet, 'tilewidth'), 10);
       this.tileheight = parseInt(this.getElAttribute(tileSet, 'tileheight'), 10);
-      const relativePath: string = this.url ? this.url.substr(0, this.url.lastIndexOf('/') + 1) : '';
+      const relativePath: string = this.url
+        ? this.url.substr(0, this.url.lastIndexOf('/') + 1)
+        : '';
 
       // Load tiles and custom properties.
       const tiles = this.getChildren(tileSet, 'tile');
@@ -61,14 +62,17 @@ export class TiledTSXResource extends XMLResource {
         this.tiles.push(tile);
       });
 
-      const image: any = this.getChild(tileSet, 'img');
+      const image: any = this.getChild(tileSet, 'image');
       if (!image || image.length === 0) {
         return resolve(this);
       }
       const source = this.getElAttribute(image, 'source');
       this.imageWidth = parseInt(this.getElAttribute(image, 'width') || '0', 10);
       this.imageHeight = parseInt(this.getElAttribute(image, 'height') || '0', 10);
-      this.imageUrl = compactUrl(this.relativeTo ? this.relativeTo : relativePath, source);
+      this.imageUrl = compactUrl(
+        this.relativeTo ? this.relativeTo : relativePath,
+        source
+      );
       console.log(`Tileset source: ${this.imageUrl}`);
 
       new ImageResource(this.imageUrl)
@@ -101,13 +105,16 @@ export class TiledTSXResource extends XMLResource {
   }
 
   hasGid(gid: number): boolean {
-    return this.firstgid !== -1
-      && gid >= this.firstgid
-      && gid < this.firstgid + this.tiles.length;
+    return (
+      this.firstgid !== -1 &&
+      gid >= this.firstgid &&
+      gid < this.firstgid + this.tiles.length
+    );
   }
 
   getTileMeta(gidOrIndex: number): ITileInstanceMeta {
-    const index: number = this.firstgid !== -1 ? (gidOrIndex - (this.firstgid)) : gidOrIndex;
+    const index: number =
+      this.firstgid !== -1 ? gidOrIndex - this.firstgid : gidOrIndex;
     const tilesX = this.imageWidth / this.tilewidth;
     const x = index % tilesX;
     const y = Math.floor((index - x) / tilesX);
@@ -117,7 +124,7 @@ export class TiledTSXResource extends XMLResource {
       x: x * this.tilewidth,
       y: y * this.tileheight,
       width: this.tilewidth,
-      height: this.tileheight
+      height: this.tileheight,
     });
   }
 }

@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin
+ Copyright (C) 2013-2020 by Justin DuJardin
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,8 +13,8 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {errors} from './errors';
-import {Point, IPoint} from './point';
+import { errors } from './errors';
+import { IPoint, Point } from './point';
 export interface IRect {
   point: Point;
   extent: Point;
@@ -32,16 +32,13 @@ export class Rect implements IRect {
     if (rectOrPointOrX instanceof Rect) {
       this.point = new Point(rectOrPointOrX.point);
       this.extent = new Point(rectOrPointOrX.extent);
-    }
-    else if (typeof width === 'number' && typeof height === 'number') {
+    } else if (typeof width === 'number' && typeof height === 'number') {
       this.point = new Point(rectOrPointOrX, extentOrY);
       this.extent = new Point(width, height);
-    }
-    else if (rectOrPointOrX instanceof Point && extentOrY instanceof Point) {
+    } else if (rectOrPointOrX instanceof Point && extentOrY instanceof Point) {
       this.point = new Point(rectOrPointOrX);
       this.extent = new Point(extentOrY);
-    }
-    else {
+    } else {
       this.point = new Point(0, 0);
       this.extent = new Point(1, 1);
     }
@@ -59,16 +56,13 @@ export class Rect implements IRect {
     if (rectOrPointOrX instanceof Rect) {
       this.point.set(rectOrPointOrX.point);
       this.extent.set(rectOrPointOrX.extent);
-    }
-    else if (typeof width === 'number' && typeof height === 'number') {
+    } else if (typeof width === 'number' && typeof height === 'number') {
       this.point.set(rectOrPointOrX, extentOrY);
       this.extent.set(width, height);
-    }
-    else if (rectOrPointOrX instanceof Point && extentOrY instanceof Point) {
+    } else if (rectOrPointOrX instanceof Point && extentOrY instanceof Point) {
       this.point.set(rectOrPointOrX);
       this.extent.set(extentOrY);
-    }
-    else {
+    } else {
       throw new Error(errors.INVALID_ARGUMENTS);
     }
     return this;
@@ -82,9 +76,11 @@ export class Rect implements IRect {
     const right: number = this.point.x + this.extent.x;
     const bottom: number = this.point.y + this.extent.y;
     this.point.x = Math.max(clipRect.point.x, this.point.x);
-    this.extent.x = Math.min(clipRect.point.x + clipRect.extent.x, right) - this.point.x;
+    this.extent.x =
+      Math.min(clipRect.point.x + clipRect.extent.x, right) - this.point.x;
     this.point.y = Math.max(clipRect.point.y, this.point.y);
-    this.extent.y = Math.min(clipRect.point.y + clipRect.extent.y, bottom) - this.point.y;
+    this.extent.y =
+      Math.min(clipRect.point.y + clipRect.extent.y, bottom) - this.point.y;
     return this;
   }
 
@@ -93,10 +89,12 @@ export class Rect implements IRect {
   }
 
   intersect(clipRect: IRect): boolean {
-    return !(clipRect.point.x > this.point.x + this.extent.x ||
-    clipRect.point.x + clipRect.extent.x < this.point.x ||
-    clipRect.point.y > this.point.y + this.extent.y ||
-    clipRect.point.y + clipRect.extent.y < this.point.y);
+    return !(
+      clipRect.point.x > this.point.x + this.extent.x ||
+      clipRect.point.x + clipRect.extent.x < this.point.x ||
+      clipRect.point.y > this.point.y + this.extent.y ||
+      clipRect.point.y + clipRect.extent.y < this.point.y
+    );
   }
 
   pointInRect(point: Point): boolean;
@@ -106,11 +104,9 @@ export class Rect implements IRect {
     if (pointOrX instanceof Point) {
       x = pointOrX.x;
       y = pointOrX.y;
-    }
-    else if (typeof pointOrX === 'number' && typeof y === 'number') {
+    } else if (typeof pointOrX === 'number' && typeof y === 'number') {
       x = pointOrX;
-    }
-    else {
+    } else {
       throw new Error(errors.INVALID_ARGUMENTS);
     }
     if (x >= this.point.x + this.extent.x || y >= this.point.y + this.extent.y) {
@@ -129,11 +125,13 @@ export class Rect implements IRect {
   setCenter(x: number, y: number): Rect;
   setCenter(pointOrX: any, y?: number): Rect {
     let x: number;
-    if (pointOrX instanceof Point || (pointOrX && pointOrX.x !== undefined && pointOrX.y !== undefined)) {
+    if (
+      pointOrX instanceof Point ||
+      (pointOrX && pointOrX.x !== undefined && pointOrX.y !== undefined)
+    ) {
       x = pointOrX.x;
       y = pointOrX.y;
-    }
-    else {
+    } else {
       x = pointOrX;
     }
     this.point.x = parseFloat((x - this.extent.x * 0.5).toFixed(2));
