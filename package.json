@@ -67,7 +67,7 @@
         "tabletop": "^1.6.3",
         "tslib": "^2.0.0",
         "typed-immutable-record": "0.0.6",
-        "underscore": "^1.12.0",
+        "underscore": "~1.8.3",
         "zone.js": "~0.10.2"
     },
     "devDependencies": {
@@ -84,7 +84,7 @@
         "@types/jasminewd2": "~2.0.3",
         "@types/jquery": "^3.5.1",
         "@types/node": "^12.11.1",
-        "@types/underscore": "^1.10.23",
+        "@types/underscore": "~1.8.3",
         "babel-loader": "^8.1.0",
         "codelyzer": "^6.0.0",
         "eslint-config-prettier": "^6.11.0",

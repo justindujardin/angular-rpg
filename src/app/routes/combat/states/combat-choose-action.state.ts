@@ -146,7 +146,7 @@ export class CombatChooseActionStateComponent
       ...machine.getLiveParty(),
       ...machine.getLiveEnemies(),
     ];
-    machine.turnList = _.shuffle<GameEntityObject[]>(combatants);
+    machine.turnList = _.shuffle<GameEntityObject>(combatants);
     machine.current = machine.turnList.shift();
     machine.currentDone = true;
 

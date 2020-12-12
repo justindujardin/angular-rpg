@@ -35,7 +35,7 @@ export class GameEntityObject extends TileObject {
     return _.filter(spells, (spell: ITemplateMagic) => {
       return (
         spell.level <= userLevel &&
-        _.indexOf<EntityType[]>(spell.usedby, userClass) !== -1
+        _.indexOf<EntityType>(spell.usedby, userClass) !== -1
       );
     });
   }
