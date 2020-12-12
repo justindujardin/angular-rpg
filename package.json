@@ -40,7 +40,8 @@
         "build-storybook": "npm run docs:json && build-storybook -s src/",
         "build:prod": "ng build --prod",
         "test:watch": "ng test",
-        "build:ci": "npm run clean && npm run test && npm run build:prod"
+        "test:ci": "npm run clean && npm run test",
+        "build:ci": "npm run clean && npm run build:prod"
     },
     "private": true,
     "dependencies": {
