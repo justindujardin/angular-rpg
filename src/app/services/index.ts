@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,23 +13,20 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {Animate} from './animate';
-import {RPGGame} from './rpg-game';
-import {GameWorld} from './game-world';
-import {NgModule, ModuleWithProviders} from '@angular/core';
-import {PowCoreModule} from '../../game/pow-core/index';
-import {SpriteRender} from './sprite-render';
-import {StoreModule} from '@ngrx/store';
-import {EffectsModule} from '@ngrx/effects';
-import {Visibility} from './visibility';
-import {GameStateService} from '../models/game-state/game-state.service';
-import {CombatService} from '../models/combat/combat.service';
-import {NotificationService} from '../components/notification/notification.service';
-import {GameDataService} from '../models/game-data/game-data.service';
-import {SpritesService} from '../models/sprites/sprites.service';
-export * from './animate';
-export * from '../components/notification/notification.service';
-export * from './rpg-game';
+import { ModuleWithProviders, NgModule } from '@angular/core';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { PowCoreModule } from '../../game/pow-core/index';
+import { NotificationService } from '../components/notification/notification.service';
+import { CombatService } from '../models/combat/combat.service';
+import { GameDataService } from '../models/game-data/game-data.service';
+import { GameStateService } from '../models/game-state/game-state.service';
+import { SpritesService } from '../models/sprites/sprites.service';
+import { Animate } from './animate';
+import { GameWorld } from './game-world';
+import { RPGGame } from './rpg-game';
+import { SpriteRender } from './sprite-render';
+import { Visibility } from './visibility';
 
 export const SERVICE_PROVIDERS = [
   Animate,
@@ -41,19 +38,18 @@ export const SERVICE_PROVIDERS = [
   CombatService,
   SpritesService,
   GameDataService,
-  GameStateService
+  GameStateService,
 ];
 
 @NgModule({
   providers: SERVICE_PROVIDERS,
-  imports: [PowCoreModule, StoreModule, EffectsModule]
+  imports: [PowCoreModule, StoreModule, EffectsModule],
 })
 export class ServicesModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<ServicesModule> {
     return {
       ngModule: ServicesModule,
-      providers: SERVICE_PROVIDERS
+      providers: SERVICE_PROVIDERS,
     };
   }
-
 }

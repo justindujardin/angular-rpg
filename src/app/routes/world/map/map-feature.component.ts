@@ -1,30 +1,40 @@
-import {GameFeatureObject} from '../../../scene/game-feature-object';
-import {TileObjectBehavior} from '../../../../game/pow2/tile/tile-object-behavior';
 import {
-  Component,
-  Input,
   AfterViewInit,
-  OnDestroy,
-  ViewChildren,
-  QueryList,
   ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
   Output,
-  EventEmitter
+  QueryList,
+  ViewChildren,
 } from '@angular/core';
-import {Observable, BehaviorSubject, Subscription, Subject, ReplaySubject} from 'rxjs';
-import {GameWorld} from '../../../services/game-world';
-import {Scene} from '../../../../game/pow2/scene/scene';
-import {TiledTMXResource} from '../../../../game/pow-core/resources/tiled/tiled-tmx.resource';
-import {ITiledObject} from '../../../../game/pow-core/resources/tiled/tiled.model';
-import {TileObject} from '../../../../game/pow2/tile/tile-object';
-import {getGameKey} from '../../../models/selectors';
-import {AppState} from '../../../app.model';
-import {Store} from '@ngrx/store';
+import { Store } from '@ngrx/store';
+import {
+  BehaviorSubject,
+  combineLatest,
+  Observable,
+  of,
+  ReplaySubject,
+  Subject,
+  Subscription,
+} from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { TiledTMXResource } from '../../../../game/pow-core/resources/tiled/tiled-tmx.resource';
+import { ITiledObject } from '../../../../game/pow-core/resources/tiled/tiled.model';
+import { Scene } from '../../../../game/pow2/scene/scene';
+import { TileObject } from '../../../../game/pow2/tile/tile-object';
+import { TileObjectBehavior } from '../../../../game/pow2/tile/tile-object-behavior';
+import { AppState } from '../../../app.model';
+import { getGameKey, getGameKeyData } from '../../../models/selectors';
+import { GameFeatureObject } from '../../../scene/game-feature-object';
+import { GameWorld } from '../../../services/game-world';
 
 /**
  * An enumeration of the serialized names used to refer to map feature map from within a TMX file
  */
-export type TiledMapFeatureTypes = 'PortalFeatureComponent'
+export type TiledMapFeatureTypes =
+  | 'PortalFeatureComponent'
   | 'CombatFeatureComponent'
   | 'ShipFeatureComponent'
   | 'TreasureFeatureComponent'
@@ -32,19 +42,24 @@ export type TiledMapFeatureTypes = 'PortalFeatureComponent'
   | 'StoreFeatureComponent'
   | 'TempleFeatureComponent';
 
-export type TiledMapFeatureData = ITiledObject;
+export type TiledMapFeatureData<PropertiesType = any> = ITiledObject<PropertiesType>;
 
-export class TiledFeatureComponent extends TileObjectBehavior {
+export class TiledFeatureComponent<
+  T extends TiledMapFeatureData = TiledMapFeatureData
+> extends TileObjectBehavior {
   host: GameFeatureObject;
 
   /**
    * Write-only feature input.
    */
-  set feature(value: TiledMapFeatureData) {
+  set feature(value: T) {
     this._feature$.next(value);
   }
+  get feature(): T {
+    return this._feature$.value;
+  }
 
-  protected _feature$: BehaviorSubject<TiledMapFeatureData> = new BehaviorSubject(null);
+  protected _feature$: BehaviorSubject<T> = new BehaviorSubject(null);
 
   /**
    * Observable of feature data.
@@ -52,7 +67,7 @@ export class TiledFeatureComponent extends TileObjectBehavior {
   feature$: Observable<TiledMapFeatureData> = this._feature$;
 
   get properties(): any {
-    return this._feature$.value ? (this._feature$.value.properties || {}) : {};
+    return this._feature$.value ? this._feature$.value.properties || {} : {};
   }
 
   protected assertFeature() {
@@ -64,7 +79,6 @@ export class TiledFeatureComponent extends TileObjectBehavior {
   private _active$ = new BehaviorSubject<boolean>(false);
   active$: Observable<boolean> = this._active$;
 
-  @Input()
   set active(value: boolean) {
     this._active$.next(value);
   }
@@ -88,9 +102,11 @@ export class TiledFeatureComponent extends TileObjectBehavior {
 @Component({
   selector: 'map-feature',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './map-feature.component.html'
+  templateUrl: './map-feature.component.html',
 })
-export class MapFeatureComponent extends TileObjectBehavior implements AfterViewInit, OnDestroy {
+export class MapFeatureComponent
+  extends TileObjectBehavior
+  implements AfterViewInit, OnDestroy {
   @Input() set feature(value: TiledMapFeatureData) {
     this._feature$.next(value);
   }
@@ -107,44 +123,86 @@ export class MapFeatureComponent extends TileObjectBehavior implements AfterView
 
   @Output() onClose: EventEmitter<TiledFeatureComponent> = new EventEmitter();
 
-  private _featureComponent$: Subject<TiledFeatureComponent> = new ReplaySubject<TiledFeatureComponent>(1);
+  private _featureComponent$: Subject<TiledFeatureComponent> = new ReplaySubject<
+    TiledFeatureComponent
+  >(1);
 
-  private _feature$: BehaviorSubject<TiledMapFeatureData> = new BehaviorSubject<TiledMapFeatureData>(null);
+  private _feature$: BehaviorSubject<TiledMapFeatureData> = new BehaviorSubject<
+    TiledMapFeatureData
+  >(null);
 
   feature$: Observable<TiledMapFeatureData> = this._feature$;
 
-  type$: Observable<TiledMapFeatureTypes> = this.feature$.map((f) => f.type);
+  type$: Observable<TiledMapFeatureTypes> = this.feature$.pipe(
+    map((f) => f.type as TiledMapFeatureTypes)
+  );
 
-  gameFeatureObject$: Observable<GameFeatureObject> = this.feature$
-    .combineLatest(this._featureComponent$, (data: TiledMapFeatureData, component: TiledFeatureComponent) => {
+  gameFeatureObject$: Observable<GameFeatureObject> = combineLatest(
+    [this.feature$, this._featureComponent$],
+    (data: TiledMapFeatureData, component: TiledFeatureComponent) => {
       if (!data || !this.tiledMap) {
         return null;
       }
       const options = Object.assign({}, data.properties || {}, {
         type: data.type,
         x: Math.round(data.x / this.tiledMap.tilewidth),
-        y: Math.round(data.y / this.tiledMap.tileheight)
+        y: Math.round(data.y / this.tiledMap.tileheight),
       });
       const result = new GameFeatureObject(options);
       result.addBehavior(component);
       return result;
-    });
+    }
+  );
 
   host: GameFeatureObject;
 
   /**
    * Observable of whether this feature is hidden/inactive by its unique ID
    */
-  enabled$: Observable<boolean> = this._feature$
-    .switchMap((f: TiledMapFeatureData) => {
+  enabled$: Observable<boolean> = combineLatest([
+    this._feature$,
+    this.store.select(getGameKeyData),
+  ]).pipe(
+    switchMap((args) => {
       // If there's no unique ID it can't be disabled
-      if (!f || !f.properties || !f.properties.id) {
-        return Observable.of(undefined);
+      if (!args || !args[0] || !args[0].properties) {
+        return of(undefined);
       }
-      // Select just the
-      return this.store.select(getGameKey(f.properties.id));
+      const f: TiledMapFeatureData = args[0];
+      // Select the id/after values and a bool for if after is not undefined
+      return combineLatest([
+        this.store.select(getGameKey(f.properties.id)),
+        this.store.select(getGameKey(f.properties.after)),
+        of(!!f.properties.after),
+        this.store.select(getGameKey(f.properties.until)),
+        of(!!f.properties.until),
+      ]);
+    }),
+    map((keys?) => {
+      if (!keys) {
+        return true;
+      }
+      const idKey: boolean | undefined = keys[0];
+      const afterKey: boolean | undefined = keys[1];
+      const hasAfterKey: boolean = keys[2];
+      const untilKey: boolean | undefined = keys[3];
+      const hasUntilKey: boolean = keys[4];
+      // This is disabled because its id is found in key store
+      if (idKey === true) {
+        return false;
+      }
+      // The after key is present and satisfied
+      if (hasAfterKey && !afterKey) {
+        return false;
+      }
+      // The until key is present and satisfied
+      if (hasUntilKey && untilKey) {
+        return false;
+      }
+      // Nothing stops this, it's enabled
+      return true;
     })
-    .map((data) => data !== true);
+  );
 
   constructor(public store: Store<AppState>) {
     super();
@@ -164,12 +222,16 @@ export class MapFeatureComponent extends TileObjectBehavior implements AfterView
     if (this.featureQuery.length > 0) {
       this._featureComponent$.next(this.featureQuery.first);
     }
-    this._hostSubscription = this.gameFeatureObject$.do((featureObject: GameFeatureObject) => {
-      this.disconnectHost();
-      this.host = featureObject;
-      GameWorld.get().mark(this.host);
-      this.scene.addObject(this.host);
-    }).subscribe();
+    this._hostSubscription = this.gameFeatureObject$
+      .pipe(
+        map((featureObject: GameFeatureObject) => {
+          this.disconnectHost();
+          this.host = featureObject;
+          GameWorld.get().mark(this.host);
+          this.scene.addObject(this.host);
+        })
+      )
+      .subscribe();
   }
 
   private disconnectHost() {

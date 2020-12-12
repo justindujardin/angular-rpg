@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,13 +13,12 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 /**
  * Provide an API for animating elements with CSS transitions
  */
 @Injectable()
 export class Animate {
-
   /**
    * Look up the transition event name for the browser type and cache it.
    */
@@ -71,11 +70,15 @@ export class Animate {
       if (!duration) {
         continue;
       }
-      duration = ( duration.indexOf('ms') > -1 ) ? parseFloat(duration) : parseFloat(duration) * 1000;
+      duration =
+        duration.indexOf('ms') > -1
+          ? parseFloat(duration)
+          : parseFloat(duration) * 1000;
       if (includeDelay) {
         let delay = style['-' + prefixes[i] + '-transition-delay'];
         if (typeof delay !== 'undefined') {
-          duration += ( delay.indexOf('ms') > -1 ) ? parseFloat(delay) : parseFloat(delay) * 1000;
+          duration +=
+            delay.indexOf('ms') > -1 ? parseFloat(delay) : parseFloat(delay) * 1000;
         }
       }
       return duration;
@@ -87,11 +90,11 @@ export class Animate {
   whichTransitionEvent(): string {
     let t: string;
     const el: any = document.createElement('fakeelement');
-    const transitions: {[prefix: string]: string} = {
+    const transitions: { [prefix: string]: string } = {
       transition: 'transitionend',
       OTransition: 'oTransitionEnd',
       MozTransition: 'transitionend',
-      WebkitTransition: 'webkitTransitionEnd'
+      WebkitTransition: 'webkitTransitionEnd',
     };
 
     for (t in transitions) {
@@ -100,5 +103,4 @@ export class Animate {
       }
     }
   }
-
 }

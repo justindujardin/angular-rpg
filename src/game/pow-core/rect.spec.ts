@@ -1,6 +1,6 @@
-import {Rect} from './rect';
-import {Point} from './point';
-import {errors} from './errors';
+import { errors } from './errors';
+import { Point } from './point';
+import { Rect } from './rect';
 
 describe('Rect', () => {
   it('should be defined', () => {
@@ -44,7 +44,6 @@ describe('Rect', () => {
         p.set('four' as any, 10 as any);
       }).toThrow(new Error(errors.INVALID_ARGUMENTS));
     });
-
   });
 
   describe('string coercion', () => {
@@ -58,8 +57,8 @@ describe('Rect', () => {
     it('should accept another rect instance as argument', () => {
       const r1: Rect = new Rect(15, 15, 0, 0);
       const r2: Rect = new Rect().set(r1);
-      expect(r2.point.equal(r1.point));
-      expect(r2.extent.equal(r1.extent));
+      expect(r2.point.equal(r1.point)).toBeTrue();
+      expect(r2.extent.equal(r1.extent)).toBeTrue();
     });
     it('should accept x y width and height numbers as arguments', () => {
       const r1: Rect = new Rect().set(15, 15, 0, 0);
@@ -146,7 +145,6 @@ describe('Rect', () => {
         r1.pointInRect('four' as any, 10 as any);
       }).toThrow(new Error(errors.INVALID_ARGUMENTS));
     });
-
   });
 
   describe('getCenter', () => {
@@ -202,7 +200,9 @@ describe('Rect', () => {
   describe('getHalfSize', () => {
     it('should return half of the extent of the rectangle', () => {
       expect(new Rect(5, 5, 10, 10).getHalfSize().equal(new Point(5, 5))).toBeTruthy();
-      expect(new Rect(0, 0, 9, 9).getHalfSize().equal(new Point(4.5, 4.5))).toBeTruthy();
+      expect(
+        new Rect(0, 0, 9, 9).getHalfSize().equal(new Point(4.5, 4.5))
+      ).toBeTruthy();
     });
   });
 

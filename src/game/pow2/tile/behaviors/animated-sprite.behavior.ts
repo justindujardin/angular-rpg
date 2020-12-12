@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {SpriteComponent} from './sprite.behavior';
-import {TickedBehavior} from '../../scene/behaviors/ticked-behavior';
-import {TileObject} from '../tile-object';
+import { TickedBehavior } from '../../scene/behaviors/ticked-behavior';
+import { TileObject } from '../tile-object';
+import { SpriteComponent } from './sprite.behavior';
 export interface AnimatedSpriteComponentOptions {
   lengthMS?: number;
   spriteName: string;
@@ -30,10 +30,12 @@ export class AnimatedSpriteBehavior extends TickedBehavior {
   spriteComponent: SpriteComponent;
   spriteName: string;
 
-  constructor(options: AnimatedSpriteComponentOptions = {
-    lengthMS: 500,
-    spriteName: null
-  }) {
+  constructor(
+    options: AnimatedSpriteComponentOptions = {
+      lengthMS: 500,
+      spriteName: null,
+    }
+  ) {
     super();
     if (typeof options !== 'undefined') {
       _.extend(this, options);
@@ -51,7 +53,9 @@ export class AnimatedSpriteBehavior extends TickedBehavior {
       return false;
     }
     const sprites = this.host.findBehaviors(SpriteComponent) as SpriteComponent[];
-    this.spriteComponent = _.where(sprites, {name: this.spriteName})[0] as SpriteComponent;
+    this.spriteComponent = _.where(sprites, {
+      name: this.spriteName,
+    })[0] as SpriteComponent;
     return !!this.spriteComponent;
   }
 

@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,9 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {CameraBehavior} from '../../scene/behaviors/camera-behavior';
-import {TileMap} from '../tile-map';
-import {SceneView} from '../../scene/scene-view';
+import { CameraBehavior } from '../../scene/behaviors/camera-behavior';
+import { SceneView } from '../../scene/scene-view';
+import { TileMap } from '../tile-map';
 export class TileMapCameraComponent extends CameraBehavior {
   host: TileMap;
 
@@ -25,14 +25,23 @@ export class TileMapCameraComponent extends CameraBehavior {
 
   process(view: SceneView) {
     view.camera.point.set(this.host.bounds.point);
-    view.cameraScale = Math.min(6, Math.round(view.screenToWorld(view.context.canvas.width) / view.camera.extent.x));
+    view.cameraScale = Math.min(
+      6,
+      Math.round(view.screenToWorld(view.context.canvas.width) / view.camera.extent.x)
+    );
 
     // Clamp to tile map if it is present.
     if (this.host) {
       view.camera.point.x = Math.max(0, view.camera.point.x);
       view.camera.point.y = Math.max(0, view.camera.point.y);
-      view.camera.point.x = Math.min(view.camera.point.x, this.host.bounds.extent.x - view.camera.extent.x);
-      view.camera.point.y = Math.min(view.camera.point.y, this.host.bounds.extent.y - view.camera.extent.y);
+      view.camera.point.x = Math.min(
+        view.camera.point.x,
+        this.host.bounds.extent.x - view.camera.extent.x
+      );
+      view.camera.point.y = Math.min(
+        view.camera.point.y,
+        this.host.bounds.extent.y - view.camera.extent.y
+      );
 
       // Center in viewport if tilemap is smaller than camera.
       if (this.host.bounds.extent.x < view.camera.extent.x) {

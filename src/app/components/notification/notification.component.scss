@@ -1,5 +1,5 @@
-@import '../../style/variables';
-@import '../../style/mixins';
+@import "../../style/variables";
+@import "../../style/mixins";
 
 :host {
   padding: 0;
@@ -34,14 +34,17 @@
     top: 45%;
     left: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.80);
+    background-color: rgba(0, 0, 0, 0.8);
     border: none;
     box-shadow: none;
     margin: auto;
     position: absolute;
     padding: 25px 10px;
-    font-size: 2.5em;
+    font-size: 1em;
     color: #fff;
     @include stroke-text(1px, #000);
+    @media (min-width: $layout-breakpoint-sm) {
+      font-size: 2.2em;
+    }
   }
 }

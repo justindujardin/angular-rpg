@@ -1,6 +1,6 @@
-import {Behavior} from './behavior';
-import {BehaviorHost} from './behavior-host';
-import {errors} from './errors';
+import { Behavior } from './behavior';
+import { BehaviorHost } from './behavior-host';
+import { errors } from './errors';
 
 class TestBehaviorNamed extends Behavior {
   constructor(public name: string) {
@@ -54,9 +54,7 @@ describe('BehaviorHost', () => {
   }
 
   it('findBehavior finds a single component by a given type', () => {
-    const e: BehaviorHost = entityWithBehaviors([
-      new TestBehaviorNamed('comp1')
-    ]);
+    const e: BehaviorHost = entityWithBehaviors([new TestBehaviorNamed('comp1')]);
     expect(e.findBehavior(TestBehaviorNamed).name).toBe('comp1');
     expect(e.findBehavior(TestBehaviorBoolean)).toBeNull();
   });
@@ -73,7 +71,7 @@ describe('BehaviorHost', () => {
   it('findBehaviorByName finds components by name', () => {
     const e: BehaviorHost = entityWithBehaviors([
       new TestBehaviorNamed('comp1'),
-      new TestBehaviorNamed('comp2')
+      new TestBehaviorNamed('comp2'),
     ]);
     expect(e._connectedBehaviors.length).toBe(2);
     expect(e.findBehaviorByName('comp1')).not.toBeNull();
@@ -155,7 +153,6 @@ describe('BehaviorHost', () => {
       expect(e.removeBehavior(d, true)).toBe(true);
       expect(c.syncCalls).toBe(0);
     });
-
   });
   describe('removeBehaviorByType', () => {
     it('removes a component by type', () => {
@@ -185,5 +182,4 @@ describe('BehaviorHost', () => {
       expect(c.syncCalls).toBe(0);
     });
   });
-
 });

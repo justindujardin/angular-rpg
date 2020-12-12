@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,11 +13,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {data, ISpriteMeta} from '../../game/pow2/core/api';
-import {Rect} from '../../game/pow-core/rect';
-import {ImageResource} from '../../game/pow-core/resources/image.resource';
-import {Injectable} from '@angular/core';
-import {ResourceManager} from '../../game/pow-core/resource-manager';
+import { Injectable } from '@angular/core';
+import { Rect } from '../../game/pow-core/rect';
+import { ResourceManager } from '../../game/pow-core/resource-manager';
+import { ImageResource } from '../../game/pow-core/resources/image.resource';
+import { data, ISpriteMeta } from '../../game/pow2/core/api';
 
 @Injectable()
 export class SpriteRender {
@@ -39,10 +39,10 @@ export class SpriteRender {
     this.canvas.width = width;
     this.canvas.height = height;
     this.context = this.canvas.getContext('2d') as CanvasRenderingContext2D;
-    (<any> this.context).msImageSmoothingEnabled = false;
-    (<any> this.context).imageSmoothingEnabled = false;
-    (<any> this.context).webkitImageSmoothingEnabled = false;
-    (<any> this.context).mozImageSmoothingEnabled = false;
+    (<any>this.context).msImageSmoothingEnabled = false;
+    (<any>this.context).imageSmoothingEnabled = false;
+    (<any>this.context).webkitImageSmoothingEnabled = false;
+    (<any>this.context).mozImageSmoothingEnabled = false;
   }
 
   getSpriteSheet(name: string): Promise<ImageResource[]> {
@@ -66,15 +66,21 @@ export class SpriteRender {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Render the sprite to the canvas at 0,0
-        this.context.drawImage(image.data,
+        this.context.drawImage(
+          image.data,
           // x,y
-          cell.point.x, cell.point.y,
+          cell.point.x,
+          cell.point.y,
           // width,height
-          cell.extent.x, cell.extent.y,
+          cell.extent.x,
+          cell.extent.y,
           // target x,y
-          0, 0,
+          0,
+          0,
           // target width,height
-          this.canvas.width, this.canvas.height);
+          this.canvas.width,
+          this.canvas.height
+        );
 
         // Serialize the canvas and return as an HTMLImageElement
         const src: string = this.canvas.toDataURL();
@@ -97,17 +103,20 @@ export class SpriteRender {
     let sourceHeight: number = SpriteRender.SIZE;
     let cy = c.y;
     if (c.frames > 1) {
-      if (c && typeof c.cellWidth !== 'undefined' && typeof c.cellHeight !== 'undefined') {
+      if (
+        c &&
+        typeof c.cellWidth !== 'undefined' &&
+        typeof c.cellHeight !== 'undefined'
+      ) {
         sourceWidth = c.cellWidth;
         sourceHeight = c.cellHeight;
       }
       const cwidth = c.width / sourceWidth;
-      const fx = (frame % (cwidth));
+      const fx = frame % cwidth;
       const fy = Math.floor((frame - fx) / cwidth);
       cx += fx * sourceWidth;
       cy += fy * sourceHeight;
-    }
-    else {
+    } else {
       sourceWidth = c.width;
       sourceHeight = c.height;
     }

@@ -1,24 +1,33 @@
 // Combat View
 // --------------------------------------------------------------------------
-@import '../../../style/variables';
-@import '../../../style/mixins';
-@import '../../../style/icons';
+@import "../../../style/variables";
+@import "../../../style/mixins";
+@import "../../../style/icons";
 
 :host {
-
-  .action-menu, .targets-menu, .spells-menu {
+  font-family: "GraphicPixel", sans-serif;
+  .action-menu,
+  .targets-menu,
+  .spells-menu {
     position: absolute;
-    bottom: 100%;
-    width: 100%;
     margin: 0;
+    top: 0;
+    width: 100%;
     text-align: center;
     list-style-type: none;
+    background-color: $gameBlue;
     padding: 0;
+    border: none;
+    border: 1px solid white;
+    box-sizing: border-box;
     li {
       text-transform: capitalize;
       @include flex-inline();
       cursor: pointer;
       padding: 10px 15px;
+      &.selected {
+        color: $gameGold;
+      }
       &:hover {
         color: $gameGold;
       }
@@ -40,27 +49,27 @@
     z-index: $zCanvasGui;
     position: absolute;
     &.left {
-      content: '<';
+      content: "<";
       @include glyphicon-chevron-left();
     }
     &.right {
-      content: '>';
+      content: ">";
       @include glyphicon-chevron-right();
     }
-    &.attack, &.magic {
-      content: 'X';
+    &.attack,
+    &.magic {
+      content: "X";
       @include glyphicon-screenshot();
       color: red;
     }
   }
 
   @media (min-width: $layout-breakpoint-sm) {
-
-    .point-to-player {
-      font-size: 2em;
-    }
+    font-size: 2em;
     .combat-view {
-      .action-menu, .targets-menu, .spells-menu {
+      .action-menu,
+      .targets-menu,
+      .spells-menu {
         margin: 20px;
         width: auto;
         padding: 5px 25px;
@@ -69,14 +78,14 @@
   }
 
   @media (max-width: $layout-breakpoint-sm - 1) {
-
     .combat-view {
-      .action-menu, .targets-menu, .spells-menu {
+      .action-menu,
+      .targets-menu,
+      .spells-menu {
         border-radius: 0;
         border-left: none;
         border-right: none;
       }
     }
   }
-
 }

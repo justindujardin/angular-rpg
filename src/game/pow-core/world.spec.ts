@@ -1,4 +1,4 @@
-import {IWorld, IWorldObject, World} from './world';
+import { IWorld, IWorldObject, World } from './world';
 class WorldObject implements IWorldObject {
   world: IWorld;
 }
@@ -13,7 +13,6 @@ class WorldObjectWithCallbacks implements IWorldObject {
   onRemoveFromWorld(world: IWorld) {
     this.added = false;
   }
-
 }
 describe('World', () => {
   it('is defined', () => expect(World).toBeDefined());
@@ -26,10 +25,10 @@ describe('World', () => {
   it('allows overriding services after construction', () => {
     const world = new World();
     const override: any = {
-      key: 'foo'
+      key: 'foo',
     };
     world.setService('loader', override);
-    expect(((world as any).loader).key).toBe('foo');
+    expect((world as any).loader.key).toBe('foo');
   });
 
   describe('mark', () => {
@@ -43,11 +42,15 @@ describe('World', () => {
     it('does not explode with object that does not implement onAddToWorld', () => {
       const object = new WorldObject();
       const world = new World();
-      world.mark(object);
+      expect(() => {
+        world.mark(object);
+      }).not.toThrow();
     });
     it('does not explode with bad input', () => {
       const world = new World();
-      world.mark(null);
+      expect(() => {
+        world.mark(null);
+      }).not.toThrow();
     });
   });
 
@@ -64,12 +67,15 @@ describe('World', () => {
     it('does not explode with object that does not implement onAddToWorld', () => {
       const object = new WorldObject();
       const world = new World();
-      world.erase(object);
+      expect(() => {
+        world.erase(object);
+      }).not.toThrow();
     });
     it('does not explode with bad input', () => {
       const world = new World();
-      world.erase(null);
+      expect(() => {
+        world.erase(null);
+      }).not.toThrow();
     });
   });
-
 });

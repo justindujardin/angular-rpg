@@ -1,13 +1,13 @@
 # E.B.U.R.P.
 
-Most of the maps used in this game are originally based on the excellent E.B.U.R.P. game project maps. 
+Most of the maps used in this game are originally based on the excellent E.B.U.R.P. game project maps.
 
 The maps have been converted to TiledTMX map format, and modified to describe the angular rpg map features.
 
 - http://pents90.github.io/eburp/
 - https://github.com/pents90/eburp
 
-# License 
+# License
 
 ```
  Copyright (C) 2013 by John Watkinson
@@ -24,4 +24,3 @@ The maps have been converted to TiledTMX map format, and modified to describe th
  See the License for the specific language governing permissions and
  limitations under the License.
 ```
-

@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,11 +13,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {Point} from '../../../pow-core/point';
-import {TickedBehavior} from './ticked-behavior';
-import {KeyCode} from '../../core/input';
-import {SceneObject} from '../scene-object';
-import {CollisionBehaviorComponent} from '../../../../app/behaviors/collision.behavior';
+import { CollisionBehaviorComponent } from '../../../../app/behaviors/collision.behavior';
+import { Point } from '../../../pow-core/point';
+import { KeyCode } from '../../core/input';
+import { SceneObject } from '../scene-object';
+import { TickedBehavior } from './ticked-behavior';
 /**
  * Describe a move from one point to another.
  */
@@ -49,7 +49,9 @@ export class MovableBehavior extends TickedBehavior {
   }
 
   syncBehavior(): boolean {
-    this.collider = this.host.findBehavior(CollisionBehaviorComponent) as CollisionBehaviorComponent;
+    this.collider = this.host.findBehavior(
+      CollisionBehaviorComponent
+    ) as CollisionBehaviorComponent;
     return super.syncBehavior();
   }
 
@@ -80,7 +82,7 @@ export class MovableBehavior extends TickedBehavior {
     if (!this.host.scene || !this.host.scene.world || !this.host.scene.world.input) {
       return;
     }
-    const worldInput = <any> this.host.scene.world.input;
+    const worldInput = <any>this.host.scene.world.input;
     // Keyboard input
     this.velocity.x = 0;
     if (worldInput.keyDown(KeyCode.LEFT)) {
@@ -125,8 +127,10 @@ export class MovableBehavior extends TickedBehavior {
     //
     // Check that targetPoint != point first, because or else
     // the collision check will see be against the current position.
-    if (!this.targetPoint.equal(this.host.point) && !this.collideMove(this.targetPoint.x, this.targetPoint.y)) {
-
+    if (
+      !this.targetPoint.equal(this.host.point) &&
+      !this.collideMove(this.targetPoint.x, this.targetPoint.y)
+    ) {
       // Target point is not the current point and there is no collision.
       this.workPoint.set(this.host.point);
       this.host.point.x = this.targetPoint.x;
@@ -136,7 +140,7 @@ export class MovableBehavior extends TickedBehavior {
       if (!this.currentMove) {
         this.currentMove = {
           from: new Point(this.host.point),
-          to: new Point(this.targetPoint)
+          to: new Point(this.targetPoint),
         };
       }
       //
@@ -157,8 +161,7 @@ export class MovableBehavior extends TickedBehavior {
     if (zero) {
       const next: Point = this.path.shift();
       this.velocity.set(next.x - this.host.point.x, next.y - this.host.point.y);
-    }
-    else {
+    } else {
       // Clear path is moving manually.
       this.path.length = 0;
     }
@@ -167,14 +170,19 @@ export class MovableBehavior extends TickedBehavior {
     // target point.
 
     // Determine which axis we can move along
-    if (this.velocity.y !== 0 && !this.collideMove(this.host.point.x, this.targetPoint.y)) {
+    if (
+      this.velocity.y !== 0 &&
+      !this.collideMove(this.host.point.x, this.targetPoint.y)
+    ) {
       this.targetPoint.x = this.host.point.x;
     }
     // How about the X axis?  We'll take any axis we can get.
-    else if (this.velocity.x !== 0 && !this.collideMove(this.targetPoint.x, this.host.point.y)) {
+    else if (
+      this.velocity.x !== 0 &&
+      !this.collideMove(this.targetPoint.x, this.host.point.y)
+    ) {
       this.targetPoint.y = this.host.point.y;
-    }
-    else {
+    } else {
       // Nope, collisions in all directions, just reset the target point
       this.targetPoint.set(this.host.point);
       // If there's a path, it had an invalid move, so clear it.
@@ -184,7 +192,7 @@ export class MovableBehavior extends TickedBehavior {
 
     this.currentMove = {
       from: new Point(this.host.point),
-      to: new Point(this.targetPoint)
+      to: new Point(this.targetPoint),
     };
     this.beginMove(this.currentMove);
   }

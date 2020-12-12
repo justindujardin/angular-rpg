@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,12 +13,12 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {GameFeatureObject} from '../../../scene/game-feature-object';
-import {TickedBehavior} from '../../../../game/pow2/scene/behaviors/ticked-behavior';
-import {TileObject} from '../../../../game/pow2/tile/tile-object';
-import {CollisionBehaviorComponent} from '../../../behaviors/collision.behavior';
-import {PlayerBehaviorComponent} from './player-behavior';
-import {Component, Output, EventEmitter} from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { TickedBehavior } from '../../../../game/pow2/scene/behaviors/ticked-behavior';
+import { TileObject } from '../../../../game/pow2/tile/tile-object';
+import { CollisionBehaviorComponent } from '../../../behaviors/collision.behavior';
+import { GameFeatureObject } from '../../../scene/game-feature-object';
+import { PlayerBehaviorComponent } from './player-behavior';
 
 /**
  * A Component that collides with features that are directly in front
@@ -26,7 +26,7 @@ import {Component, Output, EventEmitter} from '@angular/core';
  */
 @Component({
   selector: 'player-look-behavior',
-  template: `<ng-content></ng-content>`
+  template: `<ng-content></ng-content>`,
 })
 export class PlayerTriggerBehaviorComponent extends TickedBehavior {
   host: TileObject;
@@ -47,8 +47,12 @@ export class PlayerTriggerBehaviorComponent extends TickedBehavior {
 
   syncBehavior(): boolean {
     super.syncBehavior();
-    this.player = this.host.findBehavior(PlayerBehaviorComponent) as PlayerBehaviorComponent;
-    this.collider = this.host.findBehavior(CollisionBehaviorComponent) as CollisionBehaviorComponent;
+    this.player = this.host.findBehavior(
+      PlayerBehaviorComponent
+    ) as PlayerBehaviorComponent;
+    this.collider = this.host.findBehavior(
+      CollisionBehaviorComponent
+    ) as CollisionBehaviorComponent;
     return !!(this.player && this.collider);
   }
 
@@ -60,7 +64,12 @@ export class PlayerTriggerBehaviorComponent extends TickedBehavior {
     const results: GameFeatureObject[] = [];
     const headingX: number = this.host.point.x + this.player.heading.x;
     const headingY: number = this.host.point.y + this.player.heading.y;
-    const isTouching: boolean = this.collider.collide(headingX, headingY, GameFeatureObject, results);
+    const isTouching: boolean = this.collider.collide(
+      headingX,
+      headingY,
+      GameFeatureObject,
+      results
+    );
     const touched: GameFeatureObject = results[0];
     const currentTouchId: string = this.featureObject ? this.featureObject._uid : null;
     const touchChanged: boolean = !!(touched && touched._uid !== currentTouchId);

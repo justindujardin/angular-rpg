@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,12 +13,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {SceneObjectBehavior} from '../../../../game/pow2/scene/scene-object-behavior';
-import {GameEntityObject} from '../../../scene/game-entity-object';
-import {UsableModel} from '../../../../game/rpg/models/usableModel';
-import {IPlayerAction, IPlayerActionCallback} from '../states/combat.machine';
-import {Item} from '../../../models/item';
-import {ITemplateMagic} from '../../../models/game-data/game-data.model';
+import { SceneObjectBehavior } from '../../../../game/pow2/scene/scene-object-behavior';
+import { ITemplateMagic } from '../../../models/game-data/game-data.model';
+import { Item } from '../../../models/item';
+import { GameEntityObject } from '../../../scene/game-entity-object';
+import { IPlayerAction, IPlayerActionCallback } from '../states/combat.machine';
 
 export class CombatActionBehavior extends SceneObjectBehavior implements IPlayerAction {
   name: string = 'default';

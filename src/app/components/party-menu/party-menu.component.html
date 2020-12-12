@@ -1,27 +1,54 @@
-<md-toolbar color="primary" class="mat-elevation-z4" *ngIf="open == true" [@toolbar]="open">
-  <h1 fxShow="false" fxShow.gt-sm><a href="https://github.com/justindujardin/angular-rpg" target="_blank">RPG</a></h1>
+<mat-toolbar
+  color="primary"
+  class="mat-elevation-z4"
+  *ngIf="open == true"
+  [@toolbar]="open"
+>
+  <h1 fxShow="false" fxShow.gt-sm>
+    <a href="https://github.com/justindujardin/angular-rpg" target="_blank">RPG</a>
+  </h1>
   <rpg-sprite [height]="32" [width]="32" name="longSword.png"></rpg-sprite>
   <span fxFlex></span>
-  <button md-button (click)="page = 'party'" [ngClass]="{active: page == 'party'}">Party</button>
-  <button md-button (click)="page = 'inventory'" [ngClass]="{active: page == 'inventory'}">Inventory</button>
-  <button md-button (click)="page = 'settings'" [ngClass]="{active: page == 'settings'}">Settings</button>
-</md-toolbar>
+  <button mat-button (click)="page = 'party'" [ngClass]="{ active: page == 'party' }">
+    Party
+  </button>
+  <button
+    mat-button
+    (click)="page = 'inventory'"
+    [ngClass]="{ active: page == 'inventory' }"
+  >
+    Inventory
+  </button>
+  <button
+    mat-button
+    (click)="page = 'settings'"
+    [ngClass]="{ active: page == 'settings' }"
+  >
+    Settings
+  </button>
+</mat-toolbar>
 
-<md-card class="mat-elevation-z3" [@card]="open" *ngIf="open == true">
+<mat-card class="mat-elevation-z3" [@card]="open" *ngIf="open == true">
   <party-inventory *ngIf="page == 'inventory'"></party-inventory>
 
-  <md-card-title *ngIf="page == 'party'">Party Gold: {{partyGold$ | async}}</md-card-title>
-  <md-card-content *ngIf="page == 'party'"
-                   fxLayout="row" fxLayoutWrap fxLayoutAlign="space-around center">
+  <mat-card-title *ngIf="page == 'party'"
+    >Party Gold: {{ partyGold$ | async }}</mat-card-title
+  >
+  <mat-card-content
+    *ngIf="page == 'party'"
+    fxLayout="row"
+    fxLayoutWrap
+    fxLayoutAlign="space-around center"
+  >
     <player-card *ngFor="let member of party$ | async" [model]="member"></player-card>
-  </md-card-content>
+  </mat-card-content>
 
-  <md-card-title *ngIf="page == 'settings'">Game Save</md-card-title>
-  <md-card-actions *ngIf="page == 'settings'">
-    <button md-button color="warn" (click)="resetGame()">Reset Game</button>
-    <button md-button (click)="saveGame()">Save Game</button>
-  </md-card-actions>
-</md-card>
-<button md-fab color="accent" (click)="open = !open" [@fab]="open">
-  <md-icon>{{open ? 'close' : 'menu'}}</md-icon>
+  <mat-card-title *ngIf="page == 'settings'">Game Save</mat-card-title>
+  <mat-card-actions *ngIf="page == 'settings'">
+    <button mat-button color="warn" (click)="resetGame()">Reset Game</button>
+    <button mat-button (click)="saveGame()">Save Game</button>
+  </mat-card-actions>
+</mat-card>
+<button mat-fab color="accent" (click)="open = !open" [@fab]="open">
+  <mat-icon>{{ open ? "close" : "menu" }}</mat-icon>
 </button>

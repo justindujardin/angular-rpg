@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,11 +13,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {TickedBehavior} from '../../../../game/pow2/scene/behaviors/ticked-behavior';
-import {TileObject} from '../../../../game/pow2/tile/tile-object';
-import {Animator} from '../../../../game/pow2/core/animator';
-import {Component} from '@angular/core';
-import {Subscription} from 'rxjs/Subscription';
+import { Component } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Animator } from '../../../../game/pow2/core/animator';
+import { TickedBehavior } from '../../../../game/pow2/scene/behaviors/ticked-behavior';
+import { TileObject } from '../../../../game/pow2/tile/tile-object';
 export enum MoveFrames {
   LEFT = 10,
   RIGHT = 4,
@@ -26,7 +26,7 @@ export enum MoveFrames {
   LEFTALT = 11,
   RIGHTALT = 5,
   DOWNALT = 8,
-  UPALT = 2
+  UPALT = 2,
 }
 
 // The order here maps to the first four frames in MoveFrames above.
@@ -35,13 +35,12 @@ export enum Headings {
   WEST = 0,
   EAST = 1,
   SOUTH = 2,
-  NORTH = 3
+  NORTH = 3,
 }
 
 @Component({
   selector: 'player-render-behavior',
-  template: `
-    <ng-content></ng-content>`
+  template: ` <ng-content></ng-content>`,
 })
 export class PlayerRenderBehaviorComponent extends TickedBehavior {
   host: TileObject;

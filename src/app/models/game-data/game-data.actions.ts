@@ -1,5 +1,5 @@
-import {type} from '../util';
-import {Action} from '@ngrx/store';
+import { Action } from '@ngrx/store';
+import { type } from '../util';
 
 export interface IGameDataAddPayload {
   sheet: string;
@@ -24,14 +24,12 @@ export class GameDataFetchAction implements Action {
 export class GameDataFetchSuccessAction implements Action {
   static typeId: 'GAME_DATA_FETCH_SUCCESS' = type('GAME_DATA_FETCH_SUCCESS');
   type = GameDataFetchSuccessAction.typeId;
-  constructor(public payload: string) {
-  }
+  constructor(public payload: string) {}
 }
 export class GameDataFetchFailAction implements Action {
   static typeId: 'GAME_DATA_FETCH_FAIL' = type('GAME_DATA_FETCH_FAIL');
   type = GameDataFetchFailAction.typeId;
-  constructor(public payload: string) {
-  }
+  constructor(public payload: string) {}
 }
 
 export class GameDataAddSheetAction implements Action {
@@ -41,7 +39,7 @@ export class GameDataAddSheetAction implements Action {
   payload: IGameDataAddPayload;
 
   constructor(sheet: string, data: any[]) {
-    this.payload = {sheet, data};
+    this.payload = { sheet, data };
   }
 }
 export class GameDataRemoveSheetAction implements Action {
@@ -54,8 +52,8 @@ export class GameDataRemoveSheetAction implements Action {
   }
 }
 
-export type GameDataActionClasses
-  = GameDataAddSheetAction
+export type GameDataActionClasses =
+  | GameDataAddSheetAction
   | GameDataRemoveSheetAction
   | GameDataFetchAction
   | GameDataFetchSuccessAction

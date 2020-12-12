@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -15,8 +15,7 @@
  */
 
 export * from './combat-attack.behavior';
-// TODO: Bring these back
-// export * from './combat-guard.behavior';
-// export * from './combat-item.behavior';
-// export * from './combat-magic.behavior';
-// export * from './combat-run.behavior';
+export * from './combat-guard.behavior';
+export * from './combat-item.behavior';
+export * from './combat-magic.behavior';
+export * from './combat-run.behavior';

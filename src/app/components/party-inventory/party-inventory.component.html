@@ -1,50 +1,75 @@
 <div *ngFor="let current of [currentEntity$ | async]" fxLayout="column">
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
-    <button md-icon-button (click)="previousCharacter()">
-      <md-icon>chevron_left</md-icon>
+    <button mat-icon-button (click)="previousCharacter()">
+      <mat-icon>chevron_left</mat-icon>
     </button>
 
     <section fxLayout="row" fxFlex fxLayoutAlign="space-around center">
       <div flex fxLayout="column" fxLayoutAlign="center center">
         <rpg-sprite class="image" [name]="current.icon" frame="7"></rpg-sprite>
-        <span>{{current.name}}</span>
+        <span>{{ current.name }}</span>
       </div>
       <div>
-        <player-stats [model]="current"
-                      [showExperience]="false"
-                      [showHP]="false"
-                      [showLevel]="false"></player-stats>
+        <player-stats
+          [model]="current"
+          [showExperience]="false"
+          [showHP]="false"
+          [showLevel]="false"
+        ></player-stats>
       </div>
     </section>
 
-    <button md-icon-button (click)="nextCharacter()">
-      <md-icon>chevron_right</md-icon>
+    <button mat-icon-button (click)="nextCharacter()">
+      <mat-icon>chevron_right</mat-icon>
     </button>
   </div>
 
-
   <ul class="equipped" fxLayout="row" fxLayoutAlign="space-between center">
-    <li class="weapon" *ngIf="current.weapon" (click)="doUnequip$.next({slot:'weapon', item: current.weapon})">
+    <li
+      class="weapon"
+      *ngIf="current.weapon"
+      (click)="doUnequip$.next({ slot: 'weapon', item: current.weapon })"
+    >
       <span class="desc">Weapon</span>
       <rpg-sprite class="icon" [name]="current.weapon.icon"></rpg-sprite>
     </li>
-    <li class="jewelry item" *ngIf="current.accessory" (click)="doUnequip$.next({slot:'accessory', item: current.accessory})">
+    <li
+      class="jewelry item"
+      *ngIf="current.accessory"
+      (click)="doUnequip$.next({ slot: 'accessory', item: current.accessory })"
+    >
       <span class="desc">Accessory</span>
       <rpg-sprite class="icon" [name]="current.accessory.icon"></rpg-sprite>
     </li>
-    <li class="head item" *ngIf="current.helm" (click)="doUnequip$.next({slot:'helm', item: current.helm})">
+    <li
+      class="head item"
+      *ngIf="current.helm"
+      (click)="doUnequip$.next({ slot: 'helm', item: current.helm })"
+    >
       <span class="desc">Head</span>
       <rpg-sprite class="icon" [name]="current.helm.icon"></rpg-sprite>
     </li>
-    <li class="body item" *ngIf="current.armor" (click)="doUnequip$.next({slot:'armor', item: current.armor})">
+    <li
+      class="body item"
+      *ngIf="current.armor"
+      (click)="doUnequip$.next({ slot: 'armor', item: current.armor })"
+    >
       <span class="desc">Body</span>
       <rpg-sprite class="icon" [name]="current.armor.icon"></rpg-sprite>
     </li>
-    <li class="arms item" *ngIf="current.shield" (click)="doUnequip$.next({slot:'shield', item: current.shield})">
+    <li
+      class="arms item"
+      *ngIf="current.shield"
+      (click)="doUnequip$.next({ slot: 'shield', item: current.shield })"
+    >
       <span class="desc">Arms</span>
       <rpg-sprite class="icon" [name]="current.shield.icon"></rpg-sprite>
     </li>
-    <li class="feet item" *ngIf="current.boots" (click)="doUnequip$.next({slot:'boots', item: current.boots})">
+    <li
+      class="feet item"
+      *ngIf="current.boots"
+      (click)="doUnequip$.next({ slot: 'boots', item: current.boots })"
+    >
       <span class="desc">Feet</span>
       <rpg-sprite class="icon" [name]="current.boots.icon"></rpg-sprite>
     </li>
@@ -53,11 +78,14 @@
   <div class="container" fxLayout="column">
     <strong>Inventory</strong>
     <ul class="unequipped">
-      <li class="item" *ngFor="let item of (inventory$ | async)" (click)="doEquip$.next({slot:item.type, item: item})">
-        <span class="desc">{{item.name}}</span>
+      <li
+        class="item"
+        *ngFor="let item of inventory$ | async"
+        (click)="doEquip$.next({ slot: item.type, item: item })"
+      >
+        <span class="desc">{{ item.name }}</span>
         <rpg-sprite class="icon" [name]="item.icon"></rpg-sprite>
       </li>
     </ul>
   </div>
-
 </div>

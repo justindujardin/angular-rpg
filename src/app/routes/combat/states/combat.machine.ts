@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,20 +13,39 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
+import { Store } from '@ngrx/store';
+import * as Immutable from 'immutable';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import * as _ from 'underscore';
-import {GameWorld} from '../../../services/game-world';
-import {StateMachine} from '../../../../game/pow2/core/state-machine';
-import {IState} from '../../../../game/pow2/core/state';
-import {CombatStartStateComponent} from './combat-start.state';
-import {Component, AfterViewInit, ViewChildren, QueryList, Input} from '@angular/core';
-import {CombatEncounter} from '../../../models/combat/combat.model';
-import {CombatMachineState} from './combat-base.state';
-import {Scene} from '../../../../game/pow2/scene/scene';
-import {CombatPlayerComponent} from '../combat-player.entity';
-import {CombatEnemyComponent} from '../combat-enemy.entity';
-import {GameEntityObject} from '../../../scene/game-entity-object';
-import {TileMapView} from '../../../../game/pow2/tile/tile-map-view';
-import {CombatService} from '../../../models/combat/combat.service';
+import { IState } from '../../../../game/pow2/core/state';
+import { StateMachine } from '../../../../game/pow2/core/state-machine';
+import { Scene } from '../../../../game/pow2/scene/scene';
+import { TileMapView } from '../../../../game/pow2/tile/tile-map-view';
+import { AppState } from '../../../app.model';
+import { CombatEncounter } from '../../../models/combat/combat.model';
+import { CombatService } from '../../../models/combat/combat.service';
+import { EntityItemTypes } from '../../../models/entity/entity.reducer';
+import {
+  ITemplateArmor,
+  ITemplateMagic,
+  ITemplateWeapon,
+} from '../../../models/game-data/game-data.model';
+import { Item } from '../../../models/item';
+import { getGameInventory } from '../../../models/selectors';
+import { GameEntityObject } from '../../../scene/game-entity-object';
+import { GameWorld } from '../../../services/game-world';
+import { CombatEnemyComponent } from '../combat-enemy.entity';
+import { CombatPlayerComponent } from '../combat-player.entity';
+import { CombatMachineState } from './combat-base.state';
+import { CombatStateNames } from './states';
 
 /**
  * Completion callback for a player action.
@@ -53,26 +72,63 @@ export interface IPlayerAction {
     <combat-begin-turn-state #beginTurn></combat-begin-turn-state>
     <combat-choose-action-state
       [pointAt]="current"
-      #chooseAction></combat-choose-action-state>
+      #chooseAction
+    ></combat-choose-action-state>
     <combat-end-turn-state #endTurn></combat-end-turn-state>
     <combat-defeat-state #defeat></combat-defeat-state>
     <combat-victory-state #victory></combat-victory-state>
     <combat-escape-state #escape></combat-escape-state>
-  `
+  `,
 })
-export class CombatStateMachineComponent extends StateMachine implements AfterViewInit {
-  defaultState: string = CombatStartStateComponent.NAME;
+export class CombatStateMachineComponent
+  extends StateMachine<CombatStateNames>
+  implements AfterViewInit {
+  defaultState: CombatStateNames = 'start';
   world: GameWorld;
-  states: IState[] = [];
+  states: IState<CombatStateNames>[] = [];
   turnList: GameEntityObject[] = [];
   playerChoices: {
-    [id: string]: IPlayerAction
+    [id: string]: IPlayerAction;
   } = {};
   focus: GameEntityObject;
   current: GameEntityObject;
   currentDone: boolean = false;
 
-  constructor(private combatService: CombatService) {
+  // Use this private behavior subject to make the value sync accessible for canBeUsedBy (x_X)
+  private _items$ = new BehaviorSubject<Immutable.List<Item>>(Immutable.List([]));
+  private _armors$ = new BehaviorSubject<Immutable.List<ITemplateArmor>>(
+    Immutable.List([])
+  );
+  private _weapons$ = new BehaviorSubject<Immutable.List<ITemplateWeapon>>(
+    Immutable.List([])
+  );
+  private _spells$ = new BehaviorSubject<Immutable.List<ITemplateMagic>>(
+    Immutable.List([])
+  );
+
+  /** The items available to the party */
+  public get items(): Immutable.List<Item> {
+    return this._items$.value;
+  }
+  /** The items available to the party */
+  public get armors(): Immutable.List<ITemplateArmor> {
+    return this._armors$.value;
+  }
+  /** The items available to the party */
+  public get weapons(): Immutable.List<ITemplateWeapon> {
+    return this._weapons$.value;
+  }
+  /** The items available to the party */
+  public get spells(): Immutable.List<ITemplateMagic> {
+    return this._spells$.value;
+  }
+
+  private _subscription: Subscription;
+  ngOnDestroy(): void {
+    this._subscription.unsubscribe();
+  }
+
+  constructor(private combatService: CombatService, public store: Store<AppState>) {
     super();
   }
 
@@ -87,12 +143,41 @@ export class CombatStateMachineComponent extends StateMachine implements AfterVi
   childStates: QueryList<CombatMachineState>;
 
   ngAfterViewInit(): void {
+    this._subscription = this.store
+      .select(getGameInventory)
+      .pipe(
+        map((inventory: Immutable.List<EntityItemTypes>) => {
+          const items = inventory.filter((i: Item) => i.type === 'item').toList();
+          const weapons = inventory
+            .filter((i: ITemplateWeapon) => i.type === 'weapon')
+            .toList();
+          const armors = inventory
+            .filter(
+              (i: ITemplateArmor) =>
+                ['helm', 'boots', 'shield', 'armor'].indexOf(i.type) !== -1
+            )
+            .toList();
+          const spells = inventory
+            .filter((i: ITemplateMagic) => i.type === 'spell')
+            .toList();
+          return { items, weapons, armors, spells };
+        })
+      )
+      .subscribe((values) => {
+        const { items, weapons, armors, spells } = values;
+        this._items$.next(items as Immutable.List<Item>);
+        this._weapons$.next(weapons as Immutable.List<ITemplateWeapon>);
+        this._armors$.next(armors as Immutable.List<ITemplateArmor>);
+        this._spells$.next(spells as Immutable.List<ITemplateMagic>);
+      });
     this.addStates(this.childStates.toArray());
-    this.setCurrentState(this.getState(this.defaultState));
+    this.setCurrentStateObject(this.getState(this.defaultState));
   }
 
   isFriendlyTurn(): boolean {
-    return !!(this.current && this.party.find((member) => member._uid === this.current._uid));
+    return !!(
+      this.current && this.party.find((member) => member._uid === this.current._uid)
+    );
   }
 
   getLiveParty(): CombatPlayerComponent[] {
@@ -108,7 +193,7 @@ export class CombatStateMachineComponent extends StateMachine implements AfterVi
   }
 
   getRandomPartyMember(): GameEntityObject {
-    const players = <CombatPlayerComponent[]> _.shuffle(this.party.toArray());
+    const players = <CombatPlayerComponent[]>_.shuffle(this.party.toArray());
     while (players.length > 0) {
       const p = players.shift();
       if (!this.combatService.isDefeated(p.model)) {
@@ -119,7 +204,7 @@ export class CombatStateMachineComponent extends StateMachine implements AfterVi
   }
 
   getRandomEnemy(): GameEntityObject {
-    const players = <CombatEnemyComponent[]> _.shuffle(this.enemies.toArray());
+    const players = <CombatEnemyComponent[]>_.shuffle(this.enemies.toArray());
     while (players.length > 0) {
       const p = players.shift();
       if (!this.combatService.isDefeated(p.model)) {
@@ -136,5 +221,4 @@ export class CombatStateMachineComponent extends StateMachine implements AfterVi
   enemiesDefeated(): boolean {
     return this.getLiveEnemies().length === 0;
   }
-
 }

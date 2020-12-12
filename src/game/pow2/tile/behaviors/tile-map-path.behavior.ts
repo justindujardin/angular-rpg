@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,17 +13,16 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import * as _ from 'underscore';
-import {TileObjectBehavior} from '../tile-object-behavior';
-import {TileMap} from '../tile-map';
-import {Point} from '../../../pow-core/point';
 import * as astar from 'javascript-astar';
+import * as _ from 'underscore';
+import { Point } from '../../../pow-core/point';
+import { TileMap } from '../tile-map';
+import { TileObjectBehavior } from '../tile-object-behavior';
 
 /**
  * A component that can calculate A-star paths.
  */
 export class TileMapPathBehavior extends TileObjectBehavior {
-
   _graph: any = null; // Astar graph object
 
   public tileMap: TileMap;

@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin
+ Copyright (C) 2013-2020 by Justin DuJardin
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -43,9 +43,7 @@ export interface IEvents {
 //
 import * as _ from 'underscore';
 
-
 export class Events implements IEvents {
-
   private _events: any;
 
   // Bind an event to a `callback` function. Passing `"all"` will bind
@@ -54,7 +52,7 @@ export class Events implements IEvents {
     if (!eventsApi(this, 'on', name, [callback, context]) || !callback) return this;
     this._events || (this._events = {});
     var events = this._events[name] || (this._events[name] = []);
-    events.push({callback: callback, context: context, ctx: context || this});
+    events.push({ callback: callback, context: context, ctx: context || this });
     return this;
   }
 
@@ -77,7 +75,8 @@ export class Events implements IEvents {
   // callbacks for all events.
   off(name?: any, callback?: Function, context?: any): IEvents {
     var retain, ev, events, names, i, l, j, k;
-    if (!this._events || !eventsApi(this, 'off', name, [callback, context])) return this;
+    if (!this._events || !eventsApi(this, 'off', name, [callback, context]))
+      return this;
     if (!name && !callback && !context) {
       this._events = void 0;
       return this;
@@ -85,13 +84,17 @@ export class Events implements IEvents {
     names = name ? [name] : _.keys(this._events);
     for (i = 0, l = names.length; i < l; i++) {
       name = names[i];
-      if (events = this._events[name]) {
+      if ((events = this._events[name])) {
         this._events[name] = retain = [];
         if (callback || context) {
           for (j = 0, k = events.length; j < k; j++) {
             ev = events[j];
-            if ((callback && callback !== ev.callback && callback !== ev.callback._callback) ||
-              (context && context !== ev.context)) {
+            if (
+              (callback &&
+                callback !== ev.callback &&
+                callback !== ev.callback._callback) ||
+              (context && context !== ev.context)
+            ) {
               retain.push(ev);
             }
           }
@@ -152,7 +155,12 @@ var eventsApi = function (obj, action, name, rest) {
 // triggering events. Tries to keep the usual cases speedy (most internal
 // Backbone events have 3 arguments).
 var triggerEvents = function (events, args) {
-  var ev, i = -1, l = events.length, a1 = args[0], a2 = args[1], a3 = args[2];
+  var ev,
+    i = -1,
+    l = events.length,
+    a1 = args[0],
+    a2 = args[1],
+    a3 = args[2];
   switch (args.length) {
     case 0:
       while (++i < l) (ev = events[i]).callback.call(ev.ctx);

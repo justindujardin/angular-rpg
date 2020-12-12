@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,22 +13,28 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {ModuleWithProviders, NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {RPG_HEALTH_BAR_EXPORTS} from './health-bar/index';
-import {RPG_LOADING_EXPORTS, RPG_LOADING_PROVIDERS} from './loading/index';
-import {RPG_NOTIFICATION_EXPORTS, RPG_NOTIFICATION_PROVIDERS} from './notification/index';
-import {RPG_PARTY_MENU_EXPORTS} from './party-menu/index';
-import {RPG_PLAYER_CARD_EXPORTS} from './player-card/index';
-import {RPG_PARTY_INVENTORY_EXPORTS} from './party-inventory/index';
-import {RPG_SPRITE_EXPORTS} from './sprite/index';
+import { CommonModule } from '@angular/common';
+import { ModuleWithProviders, NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RPG_HEALTH_BAR_EXPORTS } from './health-bar/index';
+import { RPG_LOADING_EXPORTS, RPG_LOADING_PROVIDERS } from './loading/index';
 import {
-  MdButtonModule, MdButtonToggleModule, MdCardModule, MdIconModule, MdListModule, MdProgressBarModule, MdSidenavModule,
-  MdToolbarModule
-} from '@angular/material';
-import {FlexLayoutModule} from '@angular/flex-layout';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {RPG_PLAYER_STATS_EXPORTS} from './player-stats/index';
+  RPG_NOTIFICATION_EXPORTS,
+  RPG_NOTIFICATION_PROVIDERS,
+} from './notification/index';
+import { RPG_PARTY_INVENTORY_EXPORTS } from './party-inventory/index';
+import { RPG_PARTY_MENU_EXPORTS } from './party-menu/index';
+import { RPG_PLAYER_CARD_EXPORTS } from './player-card/index';
+import { RPG_PLAYER_STATS_EXPORTS } from './player-stats/index';
+import { RPG_SPRITE_EXPORTS } from './sprite/index';
 
 export * from './health-bar/index';
 export * from './loading/index';
@@ -48,7 +54,7 @@ export const APP_COMPONENTS_EXPORTS = [
   ...RPG_PARTY_MENU_EXPORTS,
   ...RPG_PLAYER_CARD_EXPORTS,
   ...RPG_PLAYER_STATS_EXPORTS,
-  ...RPG_SPRITE_EXPORTS
+  ...RPG_SPRITE_EXPORTS,
 ];
 
 /** Common component providers */
@@ -65,21 +71,19 @@ export const APP_COMPONENTS_PROVIDERS = [
     BrowserAnimationsModule,
     CommonModule,
     FlexLayoutModule,
-    MdSidenavModule,
-    MdIconModule,
-    MdListModule,
-    MdCardModule,
-    MdProgressBarModule,
-    MdToolbarModule,
-    MdButtonModule
-  ]
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    MatCardModule,
+    MatProgressBarModule,
+    MatToolbarModule,
+    MatButtonModule,
+  ],
 })
 export class AppComponentsModule {
-
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<AppComponentsModule> {
     return {
-      ngModule: AppComponentsModule
+      ngModule: AppComponentsModule,
     };
   }
-
 }

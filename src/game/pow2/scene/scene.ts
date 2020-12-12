@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,13 +14,13 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {ISceneObject, ISceneView, IScene} from './scene.model';
-import {IWorld, IWorldObject} from '../../pow-core/world';
-import {SceneSpatialDatabase} from './scene-spatial-database';
-import {IProcessObject} from '../../pow-core/time';
-import {Events} from '../../pow-core/events';
-import {IBehavior} from '../../pow-core/behavior';
-import {GameWorld} from '../../../app/services/game-world';
+import { GameWorld } from '../../../app/services/game-world';
+import { IBehavior } from '../../pow-core/behavior';
+import { Events } from '../../pow-core/events';
+import { IProcessObject } from '../../pow-core/time';
+import { IWorld, IWorldObject } from '../../pow-core/world';
+import { SceneSpatialDatabase } from './scene-spatial-database';
+import { IScene, ISceneObject, ISceneView } from './scene.model';
 
 export class Scene extends Events implements IScene, IProcessObject, IWorldObject {
   private static sceneCount: number = 0;
@@ -38,7 +38,7 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
   constructor(options: any = {}) {
     super();
     this.options = _.defaults(options || {}, {
-      debugRender: false
+      debugRender: false,
     });
   }
 
@@ -124,8 +124,7 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
         delete obj.scene;
         removed = true;
         return false;
-      }
-      else if (!obj) {
+      } else if (!obj) {
         return false;
       }
       return true;
@@ -144,7 +143,7 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
 
     // Check that we're not adding this twice (though, I suspect the above
     // should make that pretty unlikely)
-    if (_.where(this[property], {_uid: object._uid}).length > 0) {
+    if (_.where(this[property], { _uid: object._uid }).length > 0) {
       throw new Error('Object added to scene twice');
     }
     this[property].push(object);
@@ -164,7 +163,7 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
   }
 
   findIt(property: string, object: any): any {
-    return _.where(this[property], {_uid: object._uid});
+    return _.where(this[property], { _uid: object._uid });
   }
 
   // View management
@@ -182,7 +181,7 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     return !!this.findIt('_views', view);
   }
 
-  getViewOfType<T>(type: any): T {
+  getViewOfType<T extends ISceneView>(type: any): T {
     return _.find(this._views, (v: any) => {
       return v instanceof type;
     }) as T;
@@ -208,12 +207,12 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     return !!this.findIt('_objects', object);
   }
 
-  componentByType(type): IBehavior {
+  componentByType<T extends IBehavior>(type: Function): T {
     const values: any[] = this._objects;
     let l: number = this._objects.length;
     for (let i = 0; i < l; i++) {
       const o: ISceneObject = values[i];
-      const c: IBehavior = o.findBehavior(type);
+      const c: T = o.findBehavior(type);
       if (c) {
         return c;
       }
@@ -221,13 +220,13 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     return null;
   }
 
-  componentsByType(type): IBehavior[] {
+  componentsByType<T extends IBehavior>(type: Function): T[] {
     const values: any[] = this._objects;
     let l: number = this._objects.length;
-    let results: IBehavior[] = [];
+    let results: T[] = [];
     for (let i = 0; i < l; i++) {
       const o: ISceneObject = values[i];
-      const c: IBehavior[] = o.findBehaviors(type);
+      const c: T[] = o.findBehaviors(type);
       if (c) {
         results = results.concat(c);
       }
@@ -235,12 +234,12 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     return results;
   }
 
-  objectsByName(name: string): ISceneObject[] {
+  objectsByName<T extends ISceneObject>(name: string): T[] {
     const values: any[] = this._objects;
     let l: number = this._objects.length;
-    const results: ISceneObject[] = [];
+    const results: T[] = [];
     for (let i = 0; i < l; i++) {
-      const o: ISceneObject = values[i];
+      const o: T = values[i];
       if (o.name === name) {
         results.push(o);
       }
@@ -248,11 +247,11 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     return results;
   }
 
-  objectByName(name: string): ISceneObject {
+  objectByName<T extends ISceneObject>(name: string): T {
     const values: any[] = this._objects;
     let l: number = this._objects.length;
     for (let i = 0; i < l; i++) {
-      const o: ISceneObject = values[i];
+      const o: T = values[i];
       if (o.name === name) {
         return o;
       }
@@ -260,12 +259,12 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     return null;
   }
 
-  objectsByType(type): ISceneObject[] {
+  objectsByType<T extends ISceneObject>(type: Function): T[] {
     const values: any[] = this._objects;
     let l: number = this._objects.length;
-    let results: ISceneObject[] = [];
+    let results: T[] = [];
     for (let i = 0; i < l; i++) {
-      const o: ISceneObject = values[i];
+      const o: T = values[i];
       if (o instanceof type) {
         results.push(o);
       }
@@ -273,11 +272,11 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     return results;
   }
 
-  objectByType(type): ISceneObject {
+  objectByType<T extends ISceneObject>(type: Function): T {
     let values: any[] = this._objects;
     let l: number = this._objects.length;
     for (let i = 0; i < l; i++) {
-      const o: ISceneObject = values[i];
+      const o: T = values[i];
       if (o instanceof type) {
         return o;
       }
@@ -285,12 +284,12 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     return null;
   }
 
-  objectsByComponent(type): ISceneObject[] {
+  objectsByComponent<T extends ISceneObject>(type: Function): T[] {
     let values: any[] = this._objects;
     let l: number = this._objects.length;
-    const results: ISceneObject[] = [];
+    const results: T[] = [];
     for (let i = 0; i < l; i++) {
-      const o: ISceneObject = values[i];
+      const o: T = values[i];
       if (o.findBehavior(type)) {
         results.push(o);
       }
@@ -298,11 +297,11 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     return results;
   }
 
-  objectByComponent(type): ISceneObject {
+  objectByComponent<T extends ISceneObject>(type: Function): T {
     const values: any[] = this._objects;
     const l: number = this._objects.length;
     for (let i = 0; i < l; i++) {
-      const o: ISceneObject = values[i];
+      const o: T = values[i];
       if (o.findBehavior(type)) {
         return o;
       }

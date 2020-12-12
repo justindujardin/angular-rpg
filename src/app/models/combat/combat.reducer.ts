@@ -1,20 +1,29 @@
-import {
-  CombatActions, CombatAttackAction, CombatEncounterAction, CombatEncounterReadyAction,
-  CombatVictoryAction, CombatVictoryCompleteAction
-} from './combat.actions';
-import {Combatant, CombatAttack, CombatState} from './combat.model';
 import * as Immutable from 'immutable';
-import {List} from 'immutable';
-import {assertTrue, exhaustiveCheck, makeRecordFactory} from '../util';
-import {TypedRecord} from 'typed-immutable-record';
-import {Entity} from '../entity/entity.model';
+import { List } from 'immutable';
+import { TypedRecord } from 'typed-immutable-record';
+import { CombatantTypes, IEnemy, IPartyMember } from '../base-entity';
+import { assertTrue, exhaustiveCheck, makeRecordFactory } from '../util';
+import {
+  CombatActions,
+  CombatAttackAction,
+  CombatClearStatusAction,
+  CombatEncounterAction,
+  CombatEncounterReadyAction,
+  CombatEscapeAction,
+  CombatEscapeCompleteAction,
+  CombatSetStatusAction,
+  CombatVictoryAction,
+  CombatVictoryCompleteAction,
+  ICombatStatusPayload,
+} from './combat.actions';
+import { CombatAttack, CombatState } from './combat.model';
 
 /**
  * Combat state record.
- * @private
  * @internal
  */
 interface CombatStateRecord extends TypedRecord<CombatStateRecord>, CombatState {
+  // pass
 }
 
 /**
@@ -25,10 +34,10 @@ interface CombatStateRecord extends TypedRecord<CombatStateRecord>, CombatState 
  */
 export const combatStateFactory = makeRecordFactory<CombatState, CombatStateRecord>({
   loading: false,
-  enemies: Immutable.List<Combatant>(),
-  party: Immutable.List<Entity>(),
+  enemies: Immutable.List<IEnemy>(),
+  party: Immutable.List<IPartyMember>(),
   type: 'none',
-  message: [],
+  message: Immutable.List<string>(),
   gold: 0,
   experience: 0,
   items: [],
@@ -43,26 +52,70 @@ export const combatStateFactory = makeRecordFactory<CombatState, CombatStateReco
 export function combatFromJSON(object: CombatState): CombatState {
   const recordValues = {
     ...object,
-    enemies: Immutable.List<Combatant>(object.enemies),
-    party: Immutable.List<Entity>(object.party),
+    enemies: Immutable.List<IEnemy>(object.enemies),
+    party: Immutable.List<IPartyMember>(object.party),
   };
   return combatStateFactory(recordValues);
 }
 
-export function combatReducer(state: CombatStateRecord = combatStateFactory(),
-                              action: CombatActions): CombatStateRecord {
+export function combatReducer(
+  state: CombatStateRecord = combatStateFactory(),
+  action: CombatActions
+): CombatStateRecord {
   switch (action.type) {
     case CombatEncounterAction.typeId: {
       return state.merge({
         loading: true,
-        ...action.payload
+        ...action.payload,
       });
     }
+    case CombatClearStatusAction.typeId:
+    case CombatSetStatusAction.typeId: {
+      const isSet: boolean = action.type === CombatSetStatusAction.typeId;
+      let stateGroup: string = 'enemies';
+      let groupIndex: number = -1;
+      const data: ICombatStatusPayload = action.payload;
+      const matchDefender = (c: CombatantTypes) => c.eid === data.target.eid;
+
+      groupIndex = state.enemies.findIndex(matchDefender);
+      if (groupIndex === -1) {
+        stateGroup = 'party';
+        groupIndex = state.party.findIndex(matchDefender);
+      }
+      assertTrue(groupIndex !== -1, 'target not found in enemies or party lists');
+      return state.update(stateGroup, (items: List<CombatantTypes>) => {
+        const current = items.get(groupIndex);
+        assertTrue(current, 'invalid target for attack action');
+        let statuses = Immutable.Set<string>(current.status.slice());
+        if (isSet) {
+          statuses = statuses.concat(data.classes).toSet();
+        } else {
+          data.classes.forEach((clazz) => {
+            statuses = statuses.remove(clazz);
+          });
+        }
+        return items.set(groupIndex, {
+          ...current,
+          status: statuses.toJS(),
+        });
+      });
+    }
+    case CombatSetStatusAction.typeId: {
+      console.warn('CLEAR STATUS NEEDS IMPL');
+      return state;
+    }
     case CombatEncounterReadyAction.typeId: {
-      return state.merge({loading: true});
+      return state.merge({ loading: true });
     }
     case CombatVictoryAction.typeId: {
       return state;
+    }
+    case CombatEscapeAction.typeId: {
+      return state;
+    }
+    case CombatEscapeCompleteAction.typeId: {
+      // We're done here, reset state
+      return combatStateFactory();
     }
     case CombatVictoryCompleteAction.typeId: {
       // We're done here, reset state
@@ -70,20 +123,22 @@ export function combatReducer(state: CombatStateRecord = combatStateFactory(),
     }
     case CombatAttackAction.typeId: {
       const data: CombatAttack = action.payload;
-      const matchDefender = (c: Combatant) => c.eid === data.defender.eid;
+      const matchDefender = (c: CombatantTypes) => c.eid === data.defender.eid;
       assertTrue(state.type !== 'none', 'invalid encounter for attack action');
 
       // Attacking enemy
       let index = state.enemies.findIndex(matchDefender);
       if (index !== -1) {
-        const target: Combatant = data.defender;
-        return state.update('enemies', (items: List<Combatant>) => {
+        return state.update('enemies', (items: List<CombatantTypes>) => {
           const current = items.get(index);
           assertTrue(current, 'invalid target for attack action');
-          const newHp: number = Math.max(current.hp - data.damage, 0);
+          const newHp: number = Math.min(
+            current.maxhp || 10000,
+            Math.max(current.hp - data.damage, 0)
+          );
           return items.set(index, {
             ...current,
-            hp: newHp
+            hp: newHp,
           });
         });
       }
@@ -91,18 +146,23 @@ export function combatReducer(state: CombatStateRecord = combatStateFactory(),
       index = state.party.findIndex(matchDefender);
       // Attacking party
       if (index !== -1) {
-        const target: Combatant = data.defender;
-        return state.update('party', (items: List<Combatant>) => {
+        return state.update('party', (items: List<CombatantTypes>) => {
           const current = items.get(index);
           assertTrue(current, 'invalid target for attack action');
-          const newHp: number = Math.max(current.hp - data.damage, 0);
+          const newHp: number = Math.min(
+            current.maxhp || 10000,
+            Math.max(current.hp - data.damage, 0)
+          );
           return items.set(index, {
             ...current,
-            hp: newHp
+            hp: newHp,
           });
         });
       }
-      assertTrue(index !== -1, 'attack target found in neither enemies nor party lists');
+      assertTrue(
+        index !== -1,
+        'attack target found in neither enemies nor party lists'
+      );
       return state;
     }
     default:

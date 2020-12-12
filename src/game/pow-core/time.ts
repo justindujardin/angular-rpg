@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin
+ Copyright (C) 2013-2020 by Justin DuJardin
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,8 +13,8 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+import { Injectable } from '@angular/core';
 import * as _ from 'underscore';
-import {Injectable} from '@angular/core';
 
 export interface IProcessObject {
   _uid?: string;
@@ -85,7 +85,7 @@ export class Time {
     if (!object._uid) {
       object._uid = _.uniqueId('u');
     }
-    if (_.where(this.objects, {_uid: object._uid}).length === 0) {
+    if (_.where(this.objects, { _uid: object._uid }).length === 0) {
       this.objects.push(object);
     }
     return this;

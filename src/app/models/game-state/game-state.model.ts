@@ -1,11 +1,11 @@
-import {IPoint} from '../../../game/pow-core/point';
 import * as Immutable from 'immutable';
+import { IPoint } from '../../../game/pow-core/point';
 
 export enum GamePositionFacing {
   WEST = 0,
   EAST = 1,
   SOUTH = 2,
-  NORTH = 3
+  NORTH = 3,
 }
 
 export interface GameState {

@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,14 +14,14 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {GameWorld} from '../services/game-world';
-import {TileObject} from '../../game/pow2/tile/tile-object';
-import {BaseEntity} from '../models/base-entity';
-import {Entity} from '../models/entity/entity.model';
-import {ITemplateMagic} from '../models/game-data/game-data.model';
+import { TileObject } from '../../game/pow2/tile/tile-object';
+import { CombatantTypes, EntityType } from '../models/base-entity';
+import { Entity } from '../models/entity/entity.model';
+import { ITemplateMagic } from '../models/game-data/game-data.model';
+import { GameWorld } from '../services/game-world';
 
 export class GameEntityObject extends TileObject {
-  model: BaseEntity;
+  model: CombatantTypes;
   type = 'player';
   groups: any;
   world: GameWorld;
@@ -31,9 +31,12 @@ export class GameEntityObject extends TileObject {
     const spells: any = [];
     const caster = this.model as Entity;
     const userLevel: number = caster.level;
-    const userClass: string = caster.type;
+    const userClass: EntityType = caster.type as EntityType;
     return _.filter(spells, (spell: ITemplateMagic) => {
-      return spell.level <= userLevel && _.indexOf(spell.usedby, userClass) !== -1;
+      return (
+        spell.level <= userLevel &&
+        _.indexOf<EntityType>(spell.usedby, userClass) !== -1
+      );
     });
   }
 }

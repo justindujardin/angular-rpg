@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,23 +13,23 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+import { Component } from '@angular/core';
 import * as _ from 'underscore';
-import {Component} from '@angular/core';
-import {CombatMachineState} from './combat-base.state';
-import {GameEntityObject} from '../../../scene/game-entity-object';
-import {CombatStateMachineComponent, IPlayerAction} from './combat.machine';
-import {CombatAttackBehaviorComponent} from '../behaviors/actions/combat-attack.behavior';
-import {CombatService} from '../../../models/combat/combat.service';
+import { CombatService } from '../../../models/combat/combat.service';
+import { GameEntityObject } from '../../../scene/game-entity-object';
+import { CombatAttackBehaviorComponent } from '../behaviors/actions/combat-attack.behavior';
+import { CombatMachineState } from './combat-base.state';
+import { CombatStateMachineComponent, IPlayerAction } from './combat.machine';
+import { CombatStateNames } from './states';
 
 // Combat Begin
 @Component({
   selector: 'combat-begin-turn-state',
-  template: `
-    <ng-content></ng-content>`
+  template: ` <ng-content></ng-content>`,
 })
 export class CombatBeginTurnStateComponent extends CombatMachineState {
-  static NAME: string = 'Combat Begin Turn';
-  name: string = CombatBeginTurnStateComponent.NAME;
+  static NAME: CombatStateNames = 'begin-turn';
+  name: CombatStateNames = CombatBeginTurnStateComponent.NAME;
   current: GameEntityObject; // Used to restore scale on exit.
   machine: CombatStateMachineComponent;
 
@@ -53,9 +53,10 @@ export class CombatBeginTurnStateComponent extends CombatMachineState {
     if (machine.isFriendlyTurn()) {
       console.log(`TURN: ${machine.current.model.name}`);
       choice = machine.playerChoices[machine.current._uid];
-    }
-    else {
-      choice = machine.current.findBehavior(CombatAttackBehaviorComponent) as CombatAttackBehaviorComponent;
+    } else {
+      choice = machine.current.findBehavior(
+        CombatAttackBehaviorComponent
+      ) as CombatAttackBehaviorComponent;
       // TODO: This config should not be here.   Just pick a random person to attack.
       if (choice) {
         choice.to = machine.getRandomPartyMember();
@@ -81,5 +82,4 @@ export class CombatBeginTurnStateComponent extends CombatMachineState {
     this.current.scale = 1;
     super.exit(machine);
   }
-
 }

@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,20 +16,19 @@
 // State Machine Interfaces
 // -------------------------------------------------------------------------
 import * as _ from 'underscore';
-import {IState} from './state';
-import {Events, IEvents} from '../../pow-core/events';
+import { Events, IEvents } from '../../pow-core/events';
+import { IState } from './state';
 
-export interface IStateMachine extends IEvents {
+export interface IStateMachine<TStateMachineStateNames extends string> extends IEvents {
   update(data: any);
-  addState(state: IState);
-  addStates(states: IState[]);
-  getCurrentState(): IState;
-  getCurrentName(): string;
-  setCurrentState(name: string): boolean;
-  setCurrentState(state: IState): boolean;
-  setCurrentState(newState: any): boolean;
-  getPreviousState(): IState;
-  getState(name: string): IState;
+  addState(state: IState<TStateMachineStateNames>);
+  addStates(states: IState<TStateMachineStateNames>[]);
+  getCurrentState(): IState<TStateMachineStateNames>;
+  getCurrentName(): TStateMachineStateNames;
+  setCurrentStateObject(newState: IState<TStateMachineStateNames>): boolean;
+  setCurrentState(name: TStateMachineStateNames): boolean;
+  getPreviousState(): IState<TStateMachineStateNames>;
+  getState(name: TStateMachineStateNames): IState<TStateMachineStateNames>;
 }
 
 export interface IResumeCallback {
@@ -38,21 +37,22 @@ export interface IResumeCallback {
 
 // Implementation
 // -------------------------------------------------------------------------
-export class StateMachine extends Events implements IStateMachine {
-
+export class StateMachine<StateNames extends string>
+  extends Events
+  implements IStateMachine<StateNames> {
   static DEBUG_STATES: boolean = true;
 
   static Events: any = {
     ENTER: 'enter',
-    EXIT: 'exit'
+    EXIT: 'exit',
   };
 
-  defaultState: string = null;
-  states: IState[] = [];
-  private _currentState: IState = null;
-  private _previousState: IState = null;
+  defaultState: StateNames | null = null;
+  states: IState<StateNames>[] = [];
+  private _currentState: IState<StateNames> | null = null;
+  private _previousState: IState<StateNames> | null = null;
   private _newState: boolean = false;
-  private _pendingState: IState = null;
+  private _pendingState: IState<StateNames> | null = null;
 
   update(data?: any) {
     this._newState = false;
@@ -68,37 +68,37 @@ export class StateMachine extends Events implements IStateMachine {
     }
   }
 
-  addState(state: IState) {
+  addState(state: IState<StateNames>) {
     this.states.push(state);
   }
 
-  addStates(states: IState[]) {
+  addStates(states: IState<StateNames>[]) {
     this.states = _.unique(this.states.concat(states));
   }
 
-  getCurrentState(): IState {
+  getCurrentState(): IState<StateNames> {
     return this._currentState;
   }
 
-  getCurrentName(): string {
+  getCurrentName(): StateNames {
     return this._currentState !== null ? this._currentState.name : null;
   }
 
   /**
    * Set the current state after the callstack unwinds.
-   * @param newState {string|IState} Either a state object or the name of one.
+   * @param newState A state object
    */
-  setCurrentState(newState: IState | string): boolean {
-    let state = typeof newState === 'string' ? this.getState(newState) : <IState> newState;
+  setCurrentStateObject(state: IState<StateNames>): boolean {
     if (!state) {
-      console.error(`STATE NOT FOUND: ${newState}`);
+      console.error(`STATE NOT FOUND: ${state}`);
       return false;
     }
     if (this._pendingState !== null && this._pendingState.name !== state.name) {
-      console.log(`Overwriting pending state (${this._pendingState.name}) with (${state.name})`);
+      console.log(
+        `Overwriting pending state (${this._pendingState.name}) with (${state.name})`
+      );
       this._pendingState = state;
-    }
-    else if (!this._pendingState) {
+    } else if (!this._pendingState) {
       this._pendingState = state;
       _.defer(() => {
         state = this._pendingState;
@@ -110,15 +110,25 @@ export class StateMachine extends Events implements IStateMachine {
     }
     return true;
   }
+  /**
+   * Set the current state by name after the callstack unwinds.
+   * @param name A known state name
+   */
+  setCurrentState(name: StateNames): boolean {
+    let state = this.getState(name);
+    return this.setCurrentStateObject(state);
+  }
 
-  private _setCurrentState(state: IState) {
+  private _setCurrentState(state: IState<StateNames>) {
     if (!state) {
       return false;
     }
-    const oldState: IState = this._currentState;
+    const oldState: IState<StateNames> = this._currentState;
     // Already in the desired state.
     if (this._currentState && state.name === this._currentState.name) {
-      console.warn(`${this._currentState.name}: Attempting to set current state to already active state`);
+      console.warn(
+        `${this._currentState.name}: Attempting to set current state to already active state`
+      );
       return true;
     }
     this._newState = true;
@@ -126,7 +136,9 @@ export class StateMachine extends Events implements IStateMachine {
     this._currentState = state;
     // DEBUG:
     if (StateMachine.DEBUG_STATES) {
-      console.log(`STATE: ${oldState ? oldState.name : 'NULL'} -> ${this._currentState.name}`);
+      console.log(
+        `STATE: ${oldState ? oldState.name : 'NULL'} -> ${this._currentState.name}`
+      );
     }
     if (oldState) {
       this.trigger(StateMachine.Events.EXIT, oldState, state);
@@ -137,12 +149,12 @@ export class StateMachine extends Events implements IStateMachine {
     return true;
   }
 
-  getPreviousState(): IState {
+  getPreviousState(): IState<StateNames> {
     return this._previousState;
   }
 
-  getState(name: string): IState {
-    return _.find(this.states, (s: IState) => {
+  getState(name: StateNames): IState<StateNames> {
+    return _.find(this.states, (s: IState<StateNames>) => {
       return s.name === name;
     });
   }
@@ -179,7 +191,9 @@ export class StateMachine extends Events implements IStateMachine {
 
   notifyWait(): IResumeCallback {
     if (!this._asyncCurrentCallback) {
-      throw new Error('No valid async callback set!  Perhaps you called this outside of a notify event handler?');
+      throw new Error(
+        'No valid async callback set!  Perhaps you called this outside of a notify event handler?'
+      );
     }
     this._asyncProcessing++;
     return this._asyncCurrentCallback;

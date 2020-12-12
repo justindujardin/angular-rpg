@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,12 +13,12 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {IObject, IBehaviorHost, IBehavior} from '../../pow-core/behavior';
-import {IProcessObject} from '../../pow-core/time';
-import {Point, IPoint} from '../../pow-core/point';
-import {IEvents} from '../../pow-core/events';
-import {IWorld} from '../../pow-core/world';
-import {Rect} from '../../pow-core/rect';
+import { IBehavior, IBehaviorHost, IObject } from '../../pow-core/behavior';
+import { IEvents } from '../../pow-core/events';
+import { IPoint, Point } from '../../pow-core/point';
+import { Rect } from '../../pow-core/rect';
+import { IProcessObject } from '../../pow-core/time';
+import { IWorld } from '../../pow-core/world';
 /**
  * SceneObject interface
  */
@@ -49,14 +49,14 @@ export interface IScene extends IEvents {
   findObject(object): boolean;
 
   // Component and object lookups
-  componentByType(type): IBehavior;
-  componentsByType(type): IBehavior[];
-  objectsByName(name: string): ISceneObject[];
-  objectByName(name: string): ISceneObject;
-  objectsByType(type): ISceneObject[];
-  objectByType(type): ISceneObject;
-  objectsByComponent(type): ISceneObject[];
-  objectByComponent(type): ISceneObject;
+  componentByType<T extends IBehavior>(type: Function): T;
+  componentsByType<T extends IBehavior>(type: Function): T[];
+  objectsByName<T extends ISceneObject>(name: string): T[];
+  objectByName<T extends ISceneObject>(name: string): T;
+  objectsByType<T extends ISceneObject>(type: Function): T[];
+  objectByType<T extends ISceneObject>(type: Function): T;
+  objectsByComponent<T extends ISceneObject>(type: Function): T[];
+  objectByComponent<T extends ISceneObject>(type: Function): T;
 }
 
 /**
@@ -66,9 +66,9 @@ export interface IScene extends IEvents {
  * will be invoked during the scene render.
  */
 export interface ISceneViewRenderer {
-  beforeFrame(view: ISceneView, elapsed: number);
-  renderFrame(view: ISceneView, elapsed: number);
-  afterFrame(view: ISceneView, elapsed: number);
+  beforeFrame(view: ISceneView, elapsed: number): void;
+  renderFrame(view: ISceneView, elapsed: number): void;
+  afterFrame(view: ISceneView, elapsed: number): void;
 }
 
 /**
@@ -88,22 +88,22 @@ export interface ISceneView {
   renderToCanvas(width, height, renderFunction);
 
   // Render a frame. Subclass this to do your specific rendering.
-  renderFrame(elapsed: number);
+  renderFrame(elapsed: number): void;
   // Render post effects
-  renderPost();
+  renderPost(): void;
 
   // Set the render state for this scene view.
-  setRenderState();
+  setRenderState(): void;
 
   // Restore the render state to what it was before a call to setRenderState.
   restoreRenderState(): boolean;
 
   // Public render invocation.
-  render(elapsed?: number);
+  render(elapsed?: number): void;
 
   // Scene Camera updates
   // -----------------------------------------------------------------------------
-  processCamera();
+  processCamera(): void;
 
   // Scene rendering utilities
   // -----------------------------------------------------------------------------
@@ -111,7 +111,7 @@ export interface ISceneView {
   /**
    * Clear the view.
    */
-  clearRect();
+  clearRect(): void;
 
   // Coordinate Conversions (World/Screen)
   // -----------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,23 +14,15 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import {GameFeatureObject} from './game-feature-object';
-import * as rpg from '../../game/rpg/game';
-import {TileMap} from '../../game/pow2/tile/tile-map';
-import {TileObject} from '../../game/pow2/tile/tile-object';
-import {ITiledObject} from '../../game/pow-core/resources/tiled/tiled.model';
-import {Point, IPoint} from '../../game/pow-core/point';
-import {Rect} from '../../game/pow-core/rect';
-import {SceneObjectBehavior} from '../../game/pow2/scene/scene-object-behavior';
-import {SceneObject} from '../../game/pow2/scene/scene-object';
-import {WORLD_MAP_FEATURES} from '../routes/world/map/features/index';
-import {IZoneMatch} from '../models/combat/combat.model';
+import { IPoint, Point } from '../../game/pow-core/point';
+import { Rect } from '../../game/pow-core/rect';
+import { TileMap } from '../../game/pow2/tile/tile-map';
+import { IZoneMatch } from '../models/combat/combat.model';
 
 /**
  * A tile map that supports game feature objects and map.
  */
 export class GameTileMap extends TileMap {
-
   musicUrl: string;
 
   loaded() {
@@ -39,7 +31,6 @@ export class GameTileMap extends TileMap {
     if (this.map.properties && this.map.properties.music) {
       this.musicUrl = this.map.properties.music;
     }
-    this.buildFeatures();
   }
 
   destroy() {
@@ -48,7 +39,6 @@ export class GameTileMap extends TileMap {
   }
 
   unloaded() {
-    this.removeFeaturesFromScene();
     super.unloaded();
   }
 
@@ -60,62 +50,13 @@ export class GameTileMap extends TileMap {
 
   getEntryPoint(): Point {
     // If no point is specified, use the position of the first Portal on the current map
-    const portal: any = _.where(this.features.objects, {type: 'PortalFeatureComponent'})[0];
+    const portal: any = _.where(this.features.objects, {
+      type: 'PortalFeatureComponent',
+    })[0];
     if (portal) {
       return new Point(portal.x / portal.width, portal.y / portal.height);
     }
     return new Point(-1, -1);
-  }
-
-  // Construct
-  addFeaturesToScene() {
-    // _.each(this.features.objects, (obj: any) => {
-    //   obj._object = this.createFeatureObject(obj);
-    //   if (obj._object) {
-    //     this.scene.addObject(obj._object);
-    //   }
-    // });
-  }
-
-  removeFeaturesFromScene() {
-    _.each(this.features.objects, (obj: any) => {
-      const featureObject: SceneObject = <SceneObject> obj._object;
-      delete obj._object;
-      if (featureObject) {
-        featureObject.destroy();
-      }
-    });
-  }
-
-  buildFeatures(): boolean {
-    // this.removeFeaturesFromScene();
-    // if (this.scene) {
-    //   this.addFeaturesToScene();
-    // }
-    return true;
-  }
-
-  createFeatureObject(tiledObject: ITiledObject): TileObject {
-    const options = _.extend({}, tiledObject.properties || {}, {
-      tileMap: this,
-      type: tiledObject.type,
-      x: Math.round(tiledObject.x / this.map.tilewidth),
-      y: Math.round(tiledObject.y / this.map.tileheight)
-    });
-    const object = new GameFeatureObject(options);
-    if (this.scene && this.scene.world) {
-      this.scene.world.mark(object);
-    }
-    const componentType = _.find(WORLD_MAP_FEATURES, (constructor: any) => {
-      return constructor.name === tiledObject.type;
-    });
-    if (tiledObject.type && componentType) {
-      const component = new componentType() as SceneObjectBehavior;
-      if (!object.addBehavior(component)) {
-        throw new Error(`Component ${component.name} failed to connect to host ${this.name}`);
-      }
-    }
-    return object;
   }
 
   /**
@@ -127,7 +68,7 @@ export class GameTileMap extends TileMap {
     const result: IZoneMatch = {
       map: null,
       target: null,
-      targetPoint: at
+      targetPoint: at,
     };
     if (this.map && this.map.properties && this.map.properties) {
       if (typeof this.map.properties.combatZone !== 'undefined') {
@@ -143,7 +84,7 @@ export class GameTileMap extends TileMap {
       const h = z.height * invTileSize;
       return {
         bounds: new Rect(x, y, w, h),
-        name: z.name
+        name: z.name,
       };
     });
     // TODO: This will always get the first zone.  What about overlapping zones?
@@ -159,5 +100,4 @@ export class GameTileMap extends TileMap {
   toString() {
     return this.map ? this.map.url : 'no-data';
   }
-
 }

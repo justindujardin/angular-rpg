@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,23 +13,19 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {CombatMachineState} from './combat-base.state';
-import {CombatStateMachineComponent} from './combat.machine';
-import {CombatBeginTurnStateComponent} from './combat-begin-turn.state';
-import {CombatChooseActionStateComponent} from './combat-choose-action.state';
-import {CombatDefeatStateComponent} from './combat-defeat.state';
-import {CombatVictoryStateComponent} from './combat-victory.state';
-import {Component} from '@angular/core';
-import {CombatService} from '../../../models/combat/combat.service';
+import { Component } from '@angular/core';
+import { CombatService } from '../../../models/combat/combat.service';
+import { CombatMachineState } from './combat-base.state';
+import { CombatStateMachineComponent } from './combat.machine';
+import { CombatStateNames } from './states';
 
 @Component({
   selector: 'combat-end-turn-state',
-  template: `
-    <ng-content></ng-content>`
+  template: ` <ng-content></ng-content>`,
 })
 export class CombatEndTurnStateComponent extends CombatMachineState {
-  static NAME: string = 'Combat End Turn';
-  name: string = CombatEndTurnStateComponent.NAME;
+  static NAME: CombatStateNames = 'end-turn';
+  name: CombatStateNames = CombatEndTurnStateComponent.NAME;
 
   constructor(private combatService: CombatService) {
     super();
@@ -47,14 +43,13 @@ export class CombatEndTurnStateComponent extends CombatMachineState {
       }
     }
 
-    let targetState: string = machine.current ?
-      CombatBeginTurnStateComponent.NAME :
-      CombatChooseActionStateComponent.NAME;
+    let targetState: CombatStateNames = machine.current
+      ? 'begin-turn'
+      : 'choose-action';
     if (machine.partyDefeated()) {
-      targetState = CombatDefeatStateComponent.NAME;
-    }
-    else if (machine.enemiesDefeated()) {
-      targetState = CombatVictoryStateComponent.NAME;
+      targetState = 'defeat';
+    } else if (machine.enemiesDefeated()) {
+      targetState = 'victory';
     }
     if (!targetState) {
       throw new Error('Invalid transition from end turn');

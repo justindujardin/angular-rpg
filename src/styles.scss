@@ -1,0 +1,23 @@
+@import "./app/style/variables.scss";
+@import "./app/style/page-transitions";
+@import "./app/style/animation.scss";
+@import "./app/style/mixins.scss";
+@import "./app/style/loading.scss";
+@import "./app/style/theme.scss";
+
+canvas {
+  image-rendering: -moz-crisp-edges; /* Firefox */
+  image-rendering: -o-crisp-edges; /* Opera */
+  image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard naming) */
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
+}
+
+* {
+  font-family: "GraphicPixel", sans-serif;
+}
+
+.ebp {
+  font-family: "GraphicPixel", sans-serif;
+  @include eight-bit-panel(6px);
+}

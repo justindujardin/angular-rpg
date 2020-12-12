@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin and Contributors
+ Copyright (C) 2013-2020 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,18 +13,18 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+import { Component, Input } from '@angular/core';
 import * as _ from 'underscore';
-import {GameFeatureObject} from '../../../scene/game-feature-object';
-import {TickedBehavior} from '../../../../game/pow2/scene/behaviors/ticked-behavior';
-import {Rect} from '../../../../game/pow-core/rect';
-import {TileObject} from '../../../../game/pow2/tile/tile-object';
-import {NamedMouseElement} from '../../../../game/pow2/core/input';
-import {Component, Input} from '@angular/core';
-import {Scene} from '../../../../game/pow2/scene/scene';
+import { Rect } from '../../../../game/pow-core/rect';
+import { NamedMouseElement } from '../../../../game/pow2/core/input';
+import { TickedBehavior } from '../../../../game/pow2/scene/behaviors/ticked-behavior';
+import { Scene } from '../../../../game/pow2/scene/scene';
+import { TileObject } from '../../../../game/pow2/tile/tile-object';
+import { GameFeatureObject } from '../../../scene/game-feature-object';
 
 @Component({
   selector: 'map-feature-input-behavior',
-  template: `<ng-content></ng-content>`
+  template: `<ng-content></ng-content>`,
 })
 export class MapFeatureInputBehaviorComponent extends TickedBehavior {
   hitBox: Rect = new Rect(0, 0, 1, 1);
@@ -34,7 +34,12 @@ export class MapFeatureInputBehaviorComponent extends TickedBehavior {
   @Input() scene: Scene;
 
   syncBehavior(): boolean {
-    if (!super.syncBehavior() || !this.host.scene || !this.host.scene.world || !this.host.scene.world.input) {
+    if (
+      !super.syncBehavior() ||
+      !this.host.scene ||
+      !this.host.scene.world ||
+      !this.host.scene.world.input
+    ) {
       return false;
     }
     this.mouse = this.host.scene.world.input.getMouseHook('world');

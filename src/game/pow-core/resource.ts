@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013-2015 by Justin DuJardin
+ Copyright (C) 2013-2020 by Justin DuJardin
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {errors} from './errors';
+import { errors } from './errors';
 
 export interface IResource {
   url: string;
@@ -29,9 +29,7 @@ export interface IResource {
 export class Resource implements IResource {
   extension: string;
 
-  constructor(public url: string = null,
-              public data: any = null) {
-  }
+  constructor(public url: string = null, public data: any = null) {}
 
   load(data?: any): Promise<Resource> {
     return Promise.reject(errors.CLASS_NOT_IMPLEMENTED);

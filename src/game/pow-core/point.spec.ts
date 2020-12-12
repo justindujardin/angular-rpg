@@ -1,5 +1,5 @@
-import {Point} from './point';
-import {errors} from './errors';
+import { errors } from './errors';
+import { Point } from './point';
 
 describe('Point', () => {
   it('should be defined', () => {
@@ -236,5 +236,4 @@ describe('Point', () => {
       expect(current.interpolate(from, to, 0).equal(from)).toBeTruthy();
     });
   });
-
 });
