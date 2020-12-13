@@ -7,6 +7,12 @@
 
 A mobile-friendly 2D turn-based RPG inspired by the original Final Fantasy game for NES.
 
+<a href="https://angular-rpg.netlify.app/" target="_blank">
+<img height="250" src=".data/world_map.png">
+<img height="250" src=".data/combat.png">
+</a>
+
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
