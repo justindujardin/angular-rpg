@@ -40,7 +40,7 @@
         "build-storybook": "npm run docs:json && build-storybook -s src/",
         "build:prod": "ng build --prod",
         "test:watch": "ng test",
-        "coverage:ci": "sh config/codecov.sh",
+        "coverage:ci": "sh .data/codecov.sh",
         "test:ci": "npm run clean && npm run test",
         "stories:ci": "npm run clean && npm run build-storybook",
         "build:ci": "npm run clean && npm run build:prod"
