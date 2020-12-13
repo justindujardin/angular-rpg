@@ -34,3 +34,9 @@ jobs:
         run: |
           npm ci
           npm run test:ci
+
+      - name: Report Code Coverage
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        run: |
+          npm run coverage:ci

@@ -3,6 +3,7 @@
 ![Build](https://github.com/justindujardin/angular-rpg/workflows/Build/badge.svg)
 ![Tests](https://github.com/justindujardin/angular-rpg/workflows/Tests/badge.svg)
 ![Storybook](https://github.com/justindujardin/angular-rpg/workflows/Storybook/badge.svg)
+[![codecov](https://codecov.io/gh/justindujardin/angular-rpg/branch/master/graph/badge.svg?token=NZkd78oQdT)](https://codecov.io/gh/justindujardin/angular-rpg)
 
 A mobile-friendly 2D turn-based RPG inspired by the original Final Fantasy game for NES.
 
