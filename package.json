@@ -35,6 +35,7 @@
         "lint": "ng lint",
         "e2e": "ng e2e",
         "clean": "rimraf ./dist",
+        "semantic-release": "semantic-release",
         "docs:json": "compodoc src/app -p ./tsconfig.json -e json -d src",
         "storybook": "npm run docs:json && start-storybook -p 6006",
         "build-storybook": "npm run docs:json && build-storybook -s src/",
@@ -45,7 +46,6 @@
         "stories:ci": "npm run clean && npm run build-storybook",
         "build:ci": "npm run clean && npm run build:prod"
     },
-    "private": true,
     "dependencies": {
         "@angular/animations": "~10.1.2",
         "@angular/cdk": "^10.2.1",
@@ -78,6 +78,11 @@
         "@angular/compiler-cli": "~10.1.2",
         "@babel/core": "^7.11.6",
         "@compodoc/compodoc": "^1.1.11",
+        "@semantic-release/changelog": "^5.0.1",
+        "@semantic-release/commit-analyzer": "^8.0.1",
+        "@semantic-release/git": "^9.0.0",
+        "@semantic-release/github": "^7.2.0",
+        "@semantic-release/release-notes-generator": "^9.0.1",
         "@storybook/addon-actions": "^6.0.22",
         "@storybook/addon-essentials": "^6.0.22",
         "@storybook/addon-links": "^6.0.22",
@@ -103,8 +108,65 @@
         "prettier-plugin-organize-imports": "^1.1.1",
         "protractor": "~7.0.0",
         "react-is": "^16.13.1",
+        "semantic-release": "^17.3.0",
         "ts-node": "~8.3.0",
         "tslint": "~6.1.0",
         "typescript": "~4.0.2"
+    },
+    "release": {
+        "plugins": [
+            [
+                "@semantic-release/commit-analyzer",
+                {
+                    "preset": "angular",
+                    "releaseRules": [
+                        {
+                            "breaking": true,
+                            "release": "minor"
+                        },
+                        {
+                            "revert": true,
+                            "release": "patch"
+                        },
+                        {
+                            "type": "feat",
+                            "release": "patch"
+                        },
+                        {
+                            "type": "fix",
+                            "release": "patch"
+                        },
+                        {
+                            "type": "perf",
+                            "release": "patch"
+                        }
+                    ],
+                    "parserOpts": {
+                        "noteKeywords": [
+                            "BREAKING CHANGE",
+                            "BREAKING CHANGES"
+                        ]
+                    }
+                }
+            ],
+            "@semantic-release/release-notes-generator",
+            [
+                "@semantic-release/changelog",
+                {
+                    "changelogFile": "CHANGELOG.md"
+                }
+            ],
+            [
+                "@semantic-release/git",
+                {
+                    "assets": [
+                        "CHANGELOG.md",
+                        "package.json"
+                    ],
+                    "message": "chore(release): ${nextRelease.version} \n\n${nextRelease.notes}"
+                }
+            ],
+            "@semantic-release/github"
+        ]
     }
 }
