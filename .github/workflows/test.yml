@@ -42,4 +42,6 @@ jobs:
           npm run coverage:ci
 
       - name: Check for Semantic Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run semantic-release
