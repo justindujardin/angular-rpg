@@ -9,6 +9,7 @@ on:
 
 jobs:
   build:
+    if: github.event_name == 'push' && contains(toJson(github.event.commits), '[skip ci]') == false
     runs-on: ubuntu-latest
     strategy:
       matrix:
