@@ -6,7 +6,7 @@
 [![codecov](https://codecov.io/gh/justindujardin/angular-rpg/branch/master/graph/badge.svg?token=NZkd78oQdT)](https://codecov.io/gh/justindujardin/angular-rpg)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/7c7eae32-2aaf-4605-a517-bc4c2724d53b/deploy-status)](https://angular-rpg.netlify.app/)
 
-A mobile-friendly 2D turn-based RPG inspired by the original Final Fantasy game for NES.
+AngularRPG is a mobile-friendly 2D RPG starter inspired by games like Final Fantasy and Dragon Warrior.
 
 <a href="https://angular-rpg.netlify.app/" target="_blank">
 <img height="250" src=".data/world_map.png">
