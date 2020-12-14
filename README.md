@@ -56,7 +56,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://mathy.ai"><img src="https://avatars0.githubusercontent.com/u/101493?v=4" width="100px;" alt=""/><br /><sub><b>Justin DuJardin</b></sub></a><br /><a href="https://github.com/justindujardin/angular-rpg/commits?author=justindujardin" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://mathy.ai"><img src="https://avatars0.githubusercontent.com/u/101493?v=4" width="100px;" alt=""/><br /><sub><b>Justin DuJardin</b></sub></a><br /><a href="https://github.com/justindujardin/angular-rpg/commits?author=justindujardin" title="Documentation">📖</a> <a href="https://github.com/justindujardin/angular-rpg/commits?author=justindujardin" title="Code">💻</a></td>
   </tr>
 </table>
 
