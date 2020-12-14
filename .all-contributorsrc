@@ -12,7 +12,9 @@
       "profile": "https://mathy.ai",
       "contributions": [
         "doc",
-        "code"
+        "code",
+        "design",
+        "ideas"
       ]
     }
   ],
