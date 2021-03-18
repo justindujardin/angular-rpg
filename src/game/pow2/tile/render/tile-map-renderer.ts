@@ -77,7 +77,7 @@ export class TileMapRenderer extends SceneObjectRenderer {
                   const gid: number = object.getTileGid(l.name, x, y);
                   const meta: ITileInstanceMeta = object.getTileMeta(gid);
                   if (meta) {
-                    const image: HTMLImageElement = (<any>meta.image).data;
+                    const image: HTMLImageElement = (meta.image as any).data;
                     if (!image || !image.complete) {
                       this.bufferComplete = false;
                       return;
