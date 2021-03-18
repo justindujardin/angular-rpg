@@ -42,7 +42,7 @@ export const APP_IMPORTS = [
   WorldModule.forRoot(),
   PowCoreModule.forRoot(),
   ReactiveFormsModule,
-  RouterModule.forRoot(ROUTES, { useHash: true }),
+  RouterModule.forRoot(ROUTES, { useHash: true, relativeLinkResolution: 'legacy' }),
   StoreRouterConnectingModule.forRoot(),
 
   // TODO: store/devtools disabled because of poor performance.
