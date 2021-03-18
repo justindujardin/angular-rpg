@@ -1,172 +1,172 @@
 {
-    "name": "angular-rpg",
-    "description": "Angular RPG game inspired by Final Fantasy--built with Typescript, Angular, rxjs, ngrx/store, and ngrx/effects.",
-    "homepage": "https://github.com/justindujardin/angular-rpg",
-    "version": "0.1.0",
-    "license": "MIT",
-    "keywords": [
-        "angular",
-        "game",
-        "rpg",
-        "fantasy",
-        "sprites",
-        "2d",
-        "components",
-        "composition",
-        "ngrx",
-        "redux",
-        "rxjs",
-        "typescript"
-    ],
-    "bugs": {
-        "url": "https://github.com/justindujardin/angular-rpg/issues"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/justindujardin/angular-rpg"
-    },
-    "author": "Justin DuJardin <justin@dujardinconsulting.com>",
-    "scripts": {
-        "ng": "ng",
-        "start": "ng serve",
-        "format": "npx prettier --write src e2e",
-        "build": "ng build",
-        "test": "ng test --watch=false --browsers=ChromeHeadlessCustom --code-coverage",
-        "lint": "ng lint",
-        "e2e": "ng e2e",
-        "clean": "rimraf ./dist",
-        "semantic-release": "semantic-release",
-        "docs:json": "compodoc src/app -p ./tsconfig.json -e json -d src",
-        "storybook": "npm run docs:json && start-storybook -p 6006",
-        "build-storybook": "npm run docs:json && build-storybook -s src/",
-        "build:prod": "ng build --prod",
-        "test:watch": "ng test",
-        "coverage:ci": "sh .data/codecov.sh",
-        "test:ci": "npm run clean && npm run test",
-        "stories:ci": "npm run clean && npm run build-storybook",
-        "build:ci": "npm run clean && npm run build:prod"
-    },
-    "dependencies": {
-        "@angular/animations": "~10.1.2",
-        "@angular/cdk": "^10.2.1",
-        "@angular/common": "~10.1.2",
-        "@angular/compiler": "~10.1.2",
-        "@angular/core": "~10.1.2",
-        "@angular/flex-layout": "^10.0.0-beta.32",
-        "@angular/forms": "~10.1.2",
-        "@angular/material": "^10.2.1",
-        "@angular/platform-browser": "~10.1.2",
-        "@angular/platform-browser-dynamic": "~10.1.2",
-        "@angular/router": "~10.1.2",
-        "@ngrx/effects": "^10.0.0",
-        "@ngrx/router-store": "^10.0.0",
-        "@ngrx/store": "^10.0.0",
-        "immutable": "^3.8.1",
-        "javascript-astar": "^0.4.1",
-        "jquery": "^3.5.1",
-        "ngrx-store-logger": "^0.2.4",
-        "rxjs": "~6.6.0",
-        "tabletop": "^1.6.3",
-        "tslib": "^2.0.0",
-        "typed-immutable-record": "0.0.6",
-        "underscore": "~1.8.3",
-        "zone.js": "~0.10.2"
-    },
-    "devDependencies": {
-        "@angular-devkit/build-angular": "^0.1100.4",
-        "@angular/cli": "~10.1.2",
-        "@angular/compiler-cli": "~10.1.2",
-        "@babel/core": "^7.11.6",
-        "@compodoc/compodoc": "^1.1.11",
-        "@semantic-release/changelog": "^5.0.1",
-        "@semantic-release/commit-analyzer": "^8.0.1",
-        "@semantic-release/git": "^9.0.0",
-        "@semantic-release/github": "^7.2.0",
-        "@semantic-release/release-notes-generator": "^9.0.1",
-        "@storybook/addon-actions": "^6.0.22",
-        "@storybook/addon-essentials": "^6.0.22",
-        "@storybook/addon-links": "^6.0.22",
-        "@storybook/angular": "^6.0.22",
-        "@types/jasmine": "~3.5.0",
-        "@types/jasminewd2": "~2.0.3",
-        "@types/jquery": "^3.5.1",
-        "@types/node": "^12.11.1",
-        "@types/underscore": "~1.8.3",
-        "babel-loader": "^8.1.0",
-        "codelyzer": "^6.0.0",
-        "eslint-config-prettier": "^6.11.0",
-        "eslint-plugin-prettier": "^3.1.4",
-        "jasmine-core": "~3.6.0",
-        "jasmine-spec-reporter": "~5.0.0",
-        "karma": "^5.0.9",
-        "karma-chrome-launcher": "~3.1.0",
-        "karma-coverage-istanbul-reporter": "~3.0.2",
-        "karma-jasmine": "~4.0.0",
-        "karma-jasmine-html-reporter": "^1.5.0",
-        "prettier": "^2.1.2",
-        "prettier-eslint-cli": "^5.0.0",
-        "prettier-plugin-organize-imports": "^1.1.1",
-        "protractor": "~7.0.0",
-        "react-is": "^16.13.1",
-        "semantic-release": "^17.3.0",
-        "ts-node": "~8.3.0",
-        "tslint": "~6.1.0",
-        "typescript": "~4.0.2"
-    },
-    "release": {
-        "plugins": [
-            [
-                "@semantic-release/commit-analyzer",
-                {
-                    "preset": "angular",
-                    "releaseRules": [
-                        {
-                            "breaking": true,
-                            "release": "minor"
-                        },
-                        {
-                            "revert": true,
-                            "release": "patch"
-                        },
-                        {
-                            "type": "feat",
-                            "release": "patch"
-                        },
-                        {
-                            "type": "fix",
-                            "release": "patch"
-                        },
-                        {
-                            "type": "perf",
-                            "release": "patch"
-                        }
-                    ],
-                    "parserOpts": {
-                        "noteKeywords": [
-                            "BREAKING CHANGE",
-                            "BREAKING CHANGES"
-                        ]
-                    }
-                }
-            ],
-            "@semantic-release/release-notes-generator",
-            [
-                "@semantic-release/changelog",
-                {
-                    "changelogFile": "CHANGELOG.md"
-                }
-            ],
-            [
-                "@semantic-release/git",
-                {
-                    "assets": [
-                        "CHANGELOG.md",
-                        "package.json"
-                    ],
-                    "message": "chore(release): ${nextRelease.version} \n\n${nextRelease.notes}"
-                }
-            ],
-            "@semantic-release/github"
-        ]
-    }
+  "name": "angular-rpg",
+  "description": "Angular RPG game inspired by Final Fantasy--built with Typescript, Angular, rxjs, ngrx/store, and ngrx/effects.",
+  "homepage": "https://github.com/justindujardin/angular-rpg",
+  "version": "0.1.0",
+  "license": "MIT",
+  "keywords": [
+    "angular",
+    "game",
+    "rpg",
+    "fantasy",
+    "sprites",
+    "2d",
+    "components",
+    "composition",
+    "ngrx",
+    "redux",
+    "rxjs",
+    "typescript"
+  ],
+  "bugs": {
+    "url": "https://github.com/justindujardin/angular-rpg/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/justindujardin/angular-rpg"
+  },
+  "author": "Justin DuJardin <justin@dujardinconsulting.com>",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "format": "npx prettier --write src e2e",
+    "build": "ng build",
+    "test": "ng test --watch=false --browsers=ChromeHeadlessCustom --code-coverage",
+    "lint": "ng lint",
+    "e2e": "ng e2e",
+    "clean": "rimraf ./dist",
+    "semantic-release": "semantic-release",
+    "docs:json": "compodoc src/app -p ./tsconfig.json -e json -d src",
+    "storybook": "npm run docs:json && start-storybook -p 6006",
+    "build-storybook": "npm run docs:json && build-storybook -s src/",
+    "build:prod": "ng build --prod",
+    "test:watch": "ng test",
+    "coverage:ci": "sh .data/codecov.sh",
+    "test:ci": "npm run clean && npm run test",
+    "stories:ci": "npm run clean && npm run build-storybook",
+    "build:ci": "npm run clean && npm run build:prod"
+  },
+  "dependencies": {
+    "@angular/animations": "~11.2.6",
+    "@angular/cdk": "^10.2.1",
+    "@angular/common": "~11.2.6",
+    "@angular/compiler": "~11.2.6",
+    "@angular/core": "~11.2.6",
+    "@angular/flex-layout": "^10.0.0-beta.32",
+    "@angular/forms": "~11.2.6",
+    "@angular/material": "^10.2.1",
+    "@angular/platform-browser": "~11.2.6",
+    "@angular/platform-browser-dynamic": "~11.2.6",
+    "@angular/router": "~11.2.6",
+    "@ngrx/effects": "^10.0.0",
+    "@ngrx/router-store": "^10.0.0",
+    "@ngrx/store": "^10.0.0",
+    "immutable": "^3.8.1",
+    "javascript-astar": "^0.4.1",
+    "jquery": "^3.5.1",
+    "ngrx-store-logger": "^0.2.4",
+    "rxjs": "~6.6.0",
+    "tabletop": "^1.6.3",
+    "tslib": "^2.0.0",
+    "typed-immutable-record": "0.0.6",
+    "underscore": "~1.8.3",
+    "zone.js": "~0.10.2"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^0.1102.5",
+    "@angular/cli": "~11.2.5",
+    "@angular/compiler-cli": "~11.2.6",
+    "@babel/core": "^7.11.6",
+    "@compodoc/compodoc": "^1.1.11",
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/commit-analyzer": "^8.0.1",
+    "@semantic-release/git": "^9.0.0",
+    "@semantic-release/github": "^7.2.0",
+    "@semantic-release/release-notes-generator": "^9.0.1",
+    "@storybook/addon-actions": "^6.0.22",
+    "@storybook/addon-essentials": "^6.0.22",
+    "@storybook/addon-links": "^6.0.22",
+    "@storybook/angular": "^6.0.22",
+    "@types/jasmine": "~3.6.0",
+    "@types/jasminewd2": "~2.0.3",
+    "@types/jquery": "^3.5.1",
+    "@types/node": "^12.11.1",
+    "@types/underscore": "~1.8.3",
+    "babel-loader": "^8.1.0",
+    "codelyzer": "^6.0.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "jasmine-core": "~3.6.0",
+    "jasmine-spec-reporter": "~5.0.0",
+    "karma": "^6.2.0",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage-istanbul-reporter": "~3.0.2",
+    "karma-jasmine": "~4.0.0",
+    "karma-jasmine-html-reporter": "^1.5.0",
+    "prettier": "^2.1.2",
+    "prettier-eslint-cli": "^5.0.0",
+    "prettier-plugin-organize-imports": "^1.1.1",
+    "protractor": "~7.0.0",
+    "react-is": "^16.13.1",
+    "semantic-release": "^17.3.0",
+    "ts-node": "~8.3.0",
+    "tslint": "~6.1.0",
+    "typescript": "~4.0.2"
+  },
+  "release": {
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "angular",
+          "releaseRules": [
+            {
+              "breaking": true,
+              "release": "minor"
+            },
+            {
+              "revert": true,
+              "release": "patch"
+            },
+            {
+              "type": "feat",
+              "release": "patch"
+            },
+            {
+              "type": "fix",
+              "release": "patch"
+            },
+            {
+              "type": "perf",
+              "release": "patch"
+            }
+          ],
+          "parserOpts": {
+            "noteKeywords": [
+              "BREAKING CHANGE",
+              "BREAKING CHANGES"
+            ]
+          }
+        }
+      ],
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/changelog",
+        {
+          "changelogFile": "CHANGELOG.md"
+        }
+      ],
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "CHANGELOG.md",
+            "package.json"
+          ],
+          "message": "chore(release): ${nextRelease.version} \n\n${nextRelease.notes}"
+        }
+      ],
+      "@semantic-release/github"
+    ]
+  }
 }
