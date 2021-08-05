@@ -1,4 +1,4 @@
-@import "~@angular/material/theming";
+@use '~@angular/material' as mat;
 // Plus imports for other components in your app.
 
 $mat-font-family: "GraphicPixel", sans-serif;
@@ -6,7 +6,7 @@ $mat-font-family: "GraphicPixel", sans-serif;
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
-@include mat-core();
+@include mat.core();
 
 $mat-rpg-blue: (
   50: #ccf4ff,
@@ -24,20 +24,20 @@ $mat-rpg-blue: (
   A400: #5c8e99,
   A700: #3d8799,
   contrast: (
-    50: $black-87-opacity,
-    100: $black-87-opacity,
-    200: $black-87-opacity,
-    300: $black-87-opacity,
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
     400: white,
     500: white,
-    600: $white-87-opacity,
-    700: $white-87-opacity,
-    800: $white-87-opacity,
-    900: $white-87-opacity,
-    A100: $black-87-opacity,
-    A200: $black-87-opacity,
+    600: rgba(white, 0.87),
+    700: rgba(white, 0.87),
+    800: rgba(white, 0.87),
+    900: rgba(white, 0.87),
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
     A400: white,
-    A700: $white-87-opacity,
+    A700: rgba(white, 0.87),
   ),
 );
 
@@ -57,36 +57,36 @@ $mat-rpg-gold: (
   A400: #fff0ad,
   A700: #ffe77a,
   contrast: (
-    50: $black-87-opacity,
-    100: $black-87-opacity,
-    200: $black-87-opacity,
-    300: $black-87-opacity,
-    400: $black-87-opacity,
-    500: $black-87-opacity,
-    600: $black-87-opacity,
-    700: $black-87-opacity,
-    800: $black-87-opacity,
-    900: $black-87-opacity,
-    A100: $black-87-opacity,
-    A200: $black-87-opacity,
-    A400: $black-87-opacity,
-    A700: $black-87-opacity,
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: rgba(black, 0.87),
+    600: rgba(black, 0.87),
+    700: rgba(black, 0.87),
+    800: rgba(black, 0.87),
+    900: rgba(black, 0.87),
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: rgba(black, 0.87),
+    A700: rgba(black, 0.87),
   ),
 );
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue.
-$rpg-app-primary: mat-palette($mat-rpg-blue, 800, 500, 900);
-$rpg-app-accent: mat-palette($mat-rpg-gold, 800, 500, 900);
+$rpg-app-primary: mat.define-palette($mat-rpg-blue, 800, 500, 900);
+$rpg-app-accent: mat.define-palette($mat-rpg-gold, 800, 500, 900);
 
 // The warn palette is optional (defaults to red).
-$rpg-app-warn: mat-palette($mat-red);
+$rpg-app-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$rpg-app-theme: mat-dark-theme($rpg-app-primary, $rpg-app-accent, $rpg-app-warn);
+$rpg-app-theme: mat.define-dark-theme($rpg-app-primary, $rpg-app-accent, $rpg-app-warn);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include angular-material-theme($rpg-app-theme);
+@include mat.all-component-themes($rpg-app-theme);
