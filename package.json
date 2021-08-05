@@ -1,6 +1,6 @@
 {
   "name": "angular-rpg",
-  "description": "Angular RPG game inspired by Final Fantasy--built with Typescript, Angular, rxjs, ngrx/store, and ngrx/effects.",
+  "description": "Angular RPG game inspired by Final Fantasy--built with Typescript, Angular, Immutable.js, rxjs, ngrx/store, and ngrx/effects.",
   "homepage": "https://github.com/justindujardin/angular-rpg",
   "version": "0.1.0",
   "license": "MIT",
@@ -16,6 +16,7 @@
     "ngrx",
     "redux",
     "rxjs",
+    "immutable.js",
     "typescript"
   ],
   "bugs": {
@@ -84,10 +85,12 @@
     "@semantic-release/git": "^9.0.0",
     "@semantic-release/github": "^7.2.0",
     "@semantic-release/release-notes-generator": "^9.0.1",
-    "@storybook/addon-actions": "^6.0.22",
-    "@storybook/addon-essentials": "^6.0.22",
-    "@storybook/addon-links": "^6.0.22",
-    "@storybook/angular": "^6.0.22",
+    "@storybook/addon-actions": "^6.3.6",
+    "@storybook/addon-essentials": "^6.3.6",
+    "@storybook/addon-links": "^6.3.6",
+    "@storybook/angular": "^6.3.6",
+    "@storybook/builder-webpack5": "^6.3.6",
+    "@storybook/manager-webpack5": "^6.3.6",
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/jquery": "^3.5.1",
