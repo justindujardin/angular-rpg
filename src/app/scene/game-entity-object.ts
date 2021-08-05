@@ -29,7 +29,7 @@ export class GameEntityObject extends TileObject {
   private _visible: boolean = true;
   // @ts-ignore
   get visible(): boolean {
-    return this._visible && this.model && this.model.hp > 0;
+    return Boolean(this._visible && this.model && this.model.hp > 0);
   }
   set visible(value: boolean) {
     this._visible = value;
