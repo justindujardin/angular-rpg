@@ -11,7 +11,7 @@ import { CombatAttackBehaviorComponent } from './behaviors/actions/combat-attack
   selector: 'combat-enemy',
   template: `
     <sprite-render-behavior [icon]="(model$ | async)?.icon"></sprite-render-behavior>
-    <combat-attack-behavior [combat]="combat" #attack></combat-attack-behavior>
+    <combat-attack-behavior [combat]="combat"></combat-attack-behavior>
     <ng-content></ng-content>
   `,
 })
@@ -43,10 +43,6 @@ export class CombatEnemyComponent
 
   private _spriteSubscription: Subscription;
 
-  // @ts-ignore
-  get visible(): boolean {
-    return this.model && this.model.hp > 0;
-  }
 
   ngAfterViewInit(): void {
     this.scene.addObject(this);

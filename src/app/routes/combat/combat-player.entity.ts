@@ -39,10 +39,7 @@ export class CombatPlayerComponent
   @Input() icon: string;
   @Input() scene: Scene;
   @Input() combat: any; // CombatComponent - flirts with circular imports
-  // @ts-ignore
-  get visible(): boolean {
-    return this.model && this.model.hp > 0;
-  }
+
 
   ngAfterViewInit(): void {
     this.scene.addObject(this);
