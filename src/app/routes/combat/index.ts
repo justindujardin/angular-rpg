@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { BehaviorsModule } from '../../behaviors/index';
 import { AppComponentsModule } from '../../components/index';
+import { ServicesModule } from '../../services';
 import {
   CombatCameraBehaviorComponent,
   CombatPlayerRenderBehaviorComponent,
@@ -76,7 +77,7 @@ export const COMBAT_PROVIDERS = [CanActivateCombat];
 @NgModule({
   declarations: COMBAT_EXPORTS,
   exports: COMBAT_EXPORTS,
-  imports: [CommonModule, BehaviorsModule, AppComponentsModule],
+  imports: [CommonModule, BehaviorsModule, AppComponentsModule, ServicesModule],
 })
 export class CombatModule {
   static forRoot(): ModuleWithProviders<CombatModule> {
