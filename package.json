@@ -65,6 +65,7 @@
     "javascript-astar": "^0.4.1",
     "jquery": "^3.5.1",
     "ngrx-store-logger": "^0.2.4",
+    "postcss": "^8.3.6",
     "rxjs": "~6.6.6",
     "tabletop": "^1.6.3",
     "tslib": "^2.0.0",
