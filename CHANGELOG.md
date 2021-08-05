@@ -1,3 +1,10 @@
+## [0.1.3](https://github.com/justindujardin/angular-rpg/compare/v0.1.2...v0.1.3) (2021-08-05)
+
+
+### Features
+
+* update to angular@12, rxjs@12 and storybook@6.3.6 ([#18](https://github.com/justindujardin/angular-rpg/issues/18)) ([a734b52](https://github.com/justindujardin/angular-rpg/commit/a734b52c6d35d7c913e3c1e1ca63f37a63cbc579))
+
 ## [0.1.2](https://github.com/justindujardin/angular-rpg/compare/v0.1.1...v0.1.2) (2021-03-18)
 
 
