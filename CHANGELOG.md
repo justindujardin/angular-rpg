@@ -1,3 +1,11 @@
+## [0.1.4](https://github.com/justindujardin/angular-rpg/compare/v0.1.3...v0.1.4) (2021-08-05)
+
+
+### Bug Fixes
+
+* **combat:** TypeError: setting getter-only property "visible" ([110be14](https://github.com/justindujardin/angular-rpg/commit/110be14507c1b3e9ef301b36116da25bcf04fb06))
+* ChangedAfterChecked error when combat starts ([b17452e](https://github.com/justindujardin/angular-rpg/commit/b17452ea8b0064e50e08b13a2df7074db1549a2c))
+
 ## [0.1.3](https://github.com/justindujardin/angular-rpg/compare/v0.1.2...v0.1.3) (2021-08-05)
 
 
