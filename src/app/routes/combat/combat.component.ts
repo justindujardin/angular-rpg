@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
@@ -95,7 +96,8 @@ export class CombatComponent
     public animate: Animate,
     public loadingService: LoadingService,
     public store: Store<AppState>,
-    public world: GameWorld
+    public world: GameWorld,
+    private cd: ChangeDetectorRef
   ) {
     super();
     this.world.mark(this.scene);
@@ -121,6 +123,7 @@ export class CombatComponent
     // this._bindRenderCombat();
     this.world.time.addObject(this);
     this._bindRenderCombat();
+    this.cd.detectChanges();
   }
 
   //

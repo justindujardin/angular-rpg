@@ -26,6 +26,15 @@ export class GameEntityObject extends TileObject {
   groups: any;
   world: GameWorld;
 
+  private _visible: boolean = true;
+  // @ts-ignore
+  get visible(): boolean {
+    return Boolean(this._visible && this.model && this.model.hp > 0);
+  }
+  set visible(value: boolean) {
+    this._visible = value;
+  }
+
   getSpells(): ITemplateMagic[] {
     console.warn('no spell data available in GameEntityObject.getSpells');
     const spells: any = [];
