@@ -8,7 +8,6 @@ import { BehaviorsModule } from "../src/app/behaviors";
 import { AppComponentsModule } from "../src/app/components";
 import { metaReducers, reducers } from "../src/app/models";
 import { CombatEffects } from "../src/app/models/combat/combat.effects";
-import { GameDataEffects } from "../src/app/models/game-data/game-data.effects";
 import { GameStateEffects } from "../src/app/models/game-state/game-state.effects";
 import { SpritesEffects } from "../src/app/models/sprites/sprites.effects";
 import { ServicesModule } from "../src/app/services";
@@ -41,7 +40,6 @@ export const APP_IMPORTS = [
     GameStateEffects,
     // CombatEffects,
     SpritesEffects,
-    GameDataEffects,
     // AppEffects,
   ]),
 ];
