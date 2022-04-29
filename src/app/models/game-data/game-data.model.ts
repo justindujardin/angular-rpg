@@ -1,5 +1,4 @@
-import * as Immutable from 'immutable';
-import { EntityType, IEnemy, IPartyMember } from '../base-entity';
+import { EntityType, IPartyBaseStats } from '../base-entity';
 import { newGuid } from '../util';
 
 /**
@@ -15,13 +14,6 @@ export type ItemGroups = 'default' | 'rare' | 'magic';
 export type ItemElements = 'holy' | 'water' | 'wind' | 'heal';
 
 export type ItemArmorType = 'armor' | 'helm' | 'boots' | 'shield' | 'accessory';
-
-/**
- * The Google Spreadsheet ID to load game data from.  This must be a published
- * google spreadsheet key.
- */
-export const SPREADSHEET_ID: string =
-  'https://docs.google.com/spreadsheets/d/1JK3NthX0O0-8BvJFTSMhngaioDbpa7qJiOlWI2H2RQ0/edit?usp=sharing';
 
 export interface ITemplateId {
   /**
@@ -64,6 +56,10 @@ export interface ITemplateBaseItem extends ITemplateId {
    * Any logical groups of items this object matches, e.g. "rare", "magic"
    */
   readonly groups?: ItemGroups[];
+  /**
+   * The effects to apply
+   */
+  readonly effects?: string[];
 }
 
 export interface ITemplateItem extends ITemplateBaseItem {
@@ -116,7 +112,7 @@ export interface ITemplateMagic extends ITemplateBaseItem {
   readonly benefit: boolean;
 }
 
-export interface ITemplateClass extends ITemplateId, IPartyMember {
+export interface ITemplateClass extends ITemplateId, IPartyBaseStats {
   /**
    * Human readable class name, e.g. "Warrior" or "Mage"
    */
@@ -130,7 +126,15 @@ export interface ITemplateClass extends ITemplateId, IPartyMember {
   readonly icon: string;
 }
 
-export interface ITemplateEnemy extends ITemplateId, IEnemy {
+export interface ITemplateEnemy extends ITemplateId {
+  /**
+   * Human readable class name, e.g. "Warrior" or "Mage"
+   */
+  readonly name: string;
+  /** Enemy icon */
+  readonly icon: string;
+  /** Enemy level */
+  readonly level: number;
   /** Current magic points */
   readonly mp: number;
   /** Current health points */
@@ -139,10 +143,15 @@ export interface ITemplateEnemy extends ITemplateId, IEnemy {
   readonly attack: number;
   /** Defense effectiveness */
   readonly defense: number;
-  /** Magic strength */
-  readonly magic: number;
-  /** Agility/Dexterity */
-  readonly speed: number;
+  /** The amount of experience granted for defeating this enemy */
+  readonly exp: number;
+  /** The amount of gold granted for defeating this enemy */
+  readonly gold: number;
+  readonly hitpercent: number;
+  // /** Magic strength */
+  // readonly magic: number;
+  // /** Agility/Dexterity */
+  // readonly speed: number;
 }
 
 //
@@ -154,8 +163,8 @@ export interface ITemplateEnemy extends ITemplateId, IEnemy {
  */
 export interface ITemplateEncounter extends ITemplateId {
   readonly id: string; // unique id in spreadsheet
-  readonly enemies: Immutable.List<string>; // array of enemies in this encounter
-  readonly message: Immutable.List<string>; // message to display when combat begins
+  readonly enemies: string[]; // array of enemies in this encounter
+  readonly message?: string[]; // message to display when combat begins
 }
 
 /**
@@ -165,8 +174,10 @@ export interface ITemplateEncounter extends ITemplateId {
  * of the game map.
  */
 export interface ITemplateFixedEncounter extends ITemplateEncounter {
-  readonly gold?: number;
-  readonly experience?: number;
+  /** The amount of experience granted for defeating this encounter */
+  readonly experience: number;
+  /** The amount of gold granted for defeating this encounter */
+  readonly gold: number;
   readonly items?: string[];
 }
 /**

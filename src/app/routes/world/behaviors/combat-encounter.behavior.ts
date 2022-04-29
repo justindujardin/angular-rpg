@@ -1,8 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { getEnemyById } from 'app/models/game-data/enemies';
+import { RANDOM_ENCOUNTERS_DATA } from 'app/models/game-data/random-encounters';
+import * as Immutable from 'immutable';
 import { List } from 'immutable';
 import { Observable } from 'rxjs';
-import { take, withLatestFrom } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { IEnemy } from '../../../../app/models/base-entity';
 import { IMoveDescription } from '../../../../game/pow2/scene/behaviors/movable-behavior';
 import { Scene } from '../../../../game/pow2/scene/scene';
@@ -11,18 +14,9 @@ import { AppState } from '../../../app.model';
 import { CombatEncounterAction } from '../../../models/combat/combat.actions';
 import { CombatEncounter, IZoneMatch } from '../../../models/combat/combat.model';
 import { Entity } from '../../../models/entity/entity.model';
-import {
-  instantiateEntity,
-  ITemplateEnemy,
-  ITemplateRandomEncounter,
-} from '../../../models/game-data/game-data.model';
+import { instantiateEntity } from '../../../models/game-data/game-data.model';
 import { GameStateSetBattleCounterAction } from '../../../models/game-state/game-state.actions';
-import {
-  getGameBattleCounter,
-  getGameDataEnemies,
-  getGameDataRandomEncounters,
-  getGameParty,
-} from '../../../models/selectors';
+import { getGameBattleCounter, getGameParty } from '../../../models/selectors';
 import { GameEntityObject } from '../../../scene/game-entity-object';
 import { GameTileMap } from '../../../scene/game-tile-map';
 import { PlayerBehaviorComponent } from './player-behavior';
@@ -99,46 +93,37 @@ export class CombatEncounterBehaviorComponent extends SceneObjectBehavior {
     this.store
       .select(getGameParty)
       .pipe(
-        withLatestFrom(
-          this.store.select(getGameDataRandomEncounters),
-          this.store.select(getGameDataEnemies),
-          (
-            party: Entity[],
-            encounters: List<ITemplateRandomEncounter>,
-            enemies: ITemplateEnemy[]
-          ) => {
-            const viableEncounters = encounters.filter((enc: any) => {
-              return (
-                enc.zones.indexOf(zone.map) !== -1 ||
-                enc.zones.indexOf(zone.target) !== -1
-              );
-            });
-            if (viableEncounters.count() === 0) {
-              throw new Error('no valid encounters for this zone');
-            }
-            const max = viableEncounters.count() - 1;
-            const min = 0;
-            const encounter = viableEncounters.get(
-              Math.floor(Math.random() * (max - min + 1)) + min
+        map((party: Immutable.List<Entity>) => {
+          const viableEncounters = RANDOM_ENCOUNTERS_DATA.filter((enc: any) => {
+            return (
+              enc.zones.indexOf(zone.map) !== -1 ||
+              enc.zones.indexOf(zone.target) !== -1
             );
-            const toCombatant = (id: string): IEnemy => {
-              const itemTemplate: IEnemy = enemies.find((e) => e.id === id) as any;
-              return instantiateEntity<IEnemy>(itemTemplate, {
-                maxhp: itemTemplate.hp,
-              });
-            };
-
-            const payload: CombatEncounter = {
-              type: 'random',
-              id: encounter.id,
-              enemies: List<IEnemy>(encounter.enemies.map(toCombatant)),
-              zone: zone.target || zone.map,
-              message: encounter.message,
-              party: List<Entity>(party),
-            };
-            this.store.dispatch(new CombatEncounterAction(payload));
+          });
+          if (viableEncounters.length === 0) {
+            throw new Error('no valid encounters for this zone');
           }
-        ),
+          const max = viableEncounters.length - 1;
+          const min = 0;
+          const encounter =
+            viableEncounters[Math.floor(Math.random() * (max - min + 1)) + min];
+          const toCombatant = (id: string): IEnemy => {
+            const itemTemplate: IEnemy = getEnemyById(id) as any;
+            return instantiateEntity<IEnemy>(itemTemplate, {
+              maxhp: itemTemplate.hp,
+            });
+          };
+
+          const payload: CombatEncounter = {
+            type: 'random',
+            id: encounter.id,
+            enemies: List<IEnemy>(encounter.enemies.map(toCombatant)),
+            zone: zone.target || zone.map,
+            message: List<string>(encounter.message),
+            party: List<Entity>(party),
+          };
+          this.store.dispatch(new CombatEncounterAction(payload));
+        }),
         take(1)
       )
       .subscribe();

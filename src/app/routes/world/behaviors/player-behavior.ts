@@ -14,8 +14,8 @@
  limitations under the License.
  */
 import { Component, EventEmitter, Output } from '@angular/core';
-import { GameTileMap } from '../../../../app/scene/game-tile-map';
 import * as _ from 'underscore';
+import { GameTileMap } from '../../../../app/scene/game-tile-map';
 import { ITiledLayer } from '../../../../game/pow-core/resources/tiled/tiled.model';
 import { IMoveDescription } from '../../../../game/pow2/scene/behaviors/movable-behavior';
 import { SceneObject } from '../../../../game/pow2/scene/scene-object';

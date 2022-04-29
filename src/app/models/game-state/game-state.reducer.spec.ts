@@ -290,7 +290,7 @@ describe('GameState', () => {
       it('should throw if item is missing "eid" instance identifier', () => {
         const state = gameStateFactory();
         expect(() => {
-          const item = fakeItem();
+          const item: any = fakeItem();
           delete item.eid;
           gameStateReducer(state, new GameStateAddInventoryAction(item));
         }).toThrow();

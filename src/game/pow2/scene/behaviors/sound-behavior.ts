@@ -32,7 +32,8 @@ const DEFAULTS: SoundComponentOptions = {
 
 export class SoundBehavior
   extends SceneObjectBehavior
-  implements SoundComponentOptions {
+  implements SoundComponentOptions
+{
   url: string;
   volume: number;
   loop: boolean;

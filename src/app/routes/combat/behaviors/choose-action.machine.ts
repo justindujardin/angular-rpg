@@ -44,9 +44,7 @@ export type CombatChooseActionStateNames =
  * submit state will apply the selection to the state machine at which
  * point the implementation may do whatever it wants.
  */
-export class ChooseActionStateMachine extends StateMachine<
-  CombatChooseActionStateNames
-> {
+export class ChooseActionStateMachine extends StateMachine<CombatChooseActionStateNames> {
   current: GameEntityObject = null;
   target: GameEntityObject = null;
   player: CombatPlayerRenderBehaviorComponent = null;

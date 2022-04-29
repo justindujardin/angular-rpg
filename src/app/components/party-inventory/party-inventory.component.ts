@@ -77,17 +77,15 @@ export class PartyInventoryComponent implements OnDestroy {
   /**
    * Emit on this subject to equip an item to a slot
    */
-  public doEquip$: Subject<PartyInventoryEquipmentEvent> = new Subject<
-    PartyInventoryEquipmentEvent
-  >();
+  public doEquip$: Subject<PartyInventoryEquipmentEvent> =
+    new Subject<PartyInventoryEquipmentEvent>();
 
   /**
    * Emit on this subject to unequip an item from a slot
    * @type {Subject<PartyInventoryEquipmentEvent>}
    */
-  public doUnequip$: Subject<PartyInventoryEquipmentEvent> = new Subject<
-    PartyInventoryEquipmentEvent
-  >();
+  public doUnequip$: Subject<PartyInventoryEquipmentEvent> =
+    new Subject<PartyInventoryEquipmentEvent>();
 
   /**
    * The currently selected player index in the party list. If the index is out of bounds, wrap around

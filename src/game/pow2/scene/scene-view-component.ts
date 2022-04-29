@@ -21,7 +21,8 @@ import { ISceneView, ISceneViewRenderer } from './scene.model';
  */
 export class SceneViewComponent
   extends SceneObjectBehavior
-  implements ISceneViewRenderer {
+  implements ISceneViewRenderer
+{
   beforeFrame(view: ISceneView, elapsed: number) {
     // nothing
   }

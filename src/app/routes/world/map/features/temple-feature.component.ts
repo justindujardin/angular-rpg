@@ -31,7 +31,8 @@ import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.compo
 })
 export class TempleFeatureComponent
   extends TiledFeatureComponent
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   @Output() onClose = new EventEmitter();
   @Input() scene: IScene;
   // @ts-ignore

@@ -42,7 +42,8 @@ import { WorldPlayerComponent } from './world-player.entity';
 })
 export class WorldMapComponent
   extends GameTileMap
-  implements AfterViewInit, OnDestroy, ISceneViewRenderer {
+  implements AfterViewInit, OnDestroy, ISceneViewRenderer
+{
   /** For referencing in template */
   readonly self: WorldMapComponent = this;
 

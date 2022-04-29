@@ -59,7 +59,8 @@ export class State<T extends string> implements IState<T> {
 }
 
 export class StateTransition<TTransitionNames extends string>
-  implements IStateTransition<TTransitionNames> {
+  implements IStateTransition<TTransitionNames>
+{
   targetState: TTransitionNames;
 
   evaluate(machine: IStateMachine<TTransitionNames>): boolean {

@@ -12,7 +12,6 @@ import { Store } from '@ngrx/store';
 import { List } from 'immutable';
 import { Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { CombatantTypes, IEnemy, IPartyMember } from '../../models/base-entity';
 import { IPoint, Point } from '../../../game/pow-core/point';
 import { ResourceManager } from '../../../game/pow-core/resource-manager';
 import { TiledTMXResource } from '../../../game/pow-core/resources/tiled/tiled-tmx.resource';
@@ -25,6 +24,7 @@ import { TileObjectRenderer } from '../../../game/pow2/tile/render/tile-object-r
 import { TileMapView } from '../../../game/pow2/tile/tile-map-view';
 import { AppState } from '../../app.model';
 import { LoadingService } from '../../components/loading/loading.service';
+import { CombatantTypes, IEnemy, IPartyMember } from '../../models/base-entity';
 import { CombatState } from '../../models/combat/combat.model';
 import { CombatService } from '../../models/combat/combat.service';
 import {
@@ -35,7 +35,6 @@ import {
 import { GameTileMap } from '../../scene/game-tile-map';
 import { CombatCameraBehaviorComponent } from './behaviors/combat-camera.behavior';
 import { CombatEnemyComponent } from './combat-enemy.entity';
-import { CombatHUDComponent } from './combat-hud.component';
 import { CombatPlayerComponent } from './combat-player.entity';
 
 @Component({
@@ -45,7 +44,8 @@ import { CombatPlayerComponent } from './combat-player.entity';
 })
 export class CombatMapComponent
   extends GameTileMap
-  implements AfterViewInit, OnDestroy, ISceneViewRenderer {
+  implements AfterViewInit, OnDestroy, ISceneViewRenderer
+{
   private _tileRenderer: TileMapRenderer = new TileMapRenderer();
 
   @Input() scene: Scene;

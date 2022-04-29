@@ -11,14 +11,30 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "es2020",
-    "lib": ["es2018", "dom"],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
     "baseUrl": "src",
     "paths": {
-        "actions/*": [ "app/actions/*" ],
-        "selectors/*": [ "app/selectors/*" ],
-        "ui/*": [ "app/ui/*" ],
-        "logger": [ "util/logger" ],
-    }
+      "actions/*": [
+        "app/actions/*"
+      ],
+      "selectors/*": [
+        "app/selectors/*"
+      ],
+      "ui/*": [
+        "app/ui/*"
+      ],
+      "logger": [
+        "util/logger"
+      ],
+    },
   },
-  "exclude": ["editor"]
+  "angularCompilerOptions": {
+    "strictTemplates": false
+  },
+  "exclude": [
+    "editor"
+  ]
 }

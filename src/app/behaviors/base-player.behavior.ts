@@ -30,8 +30,6 @@ import {
 } from '../routes/world/behaviors/player-render.behavior';
 
 export class BasePlayerComponent extends MovableBehavior {
-  host: TileObject;
-  passableKeys: string[] = ['passable'];
   // TODO: Pass in collide types during entity creation, and assert on invalid types.
   static COLLIDE_TYPES: string[] = [
     'TempleFeatureComponent',
@@ -40,32 +38,33 @@ export class BasePlayerComponent extends MovableBehavior {
     'DoorFeatureComponent',
     'sign',
   ];
-  private _lastFrame: number = 3;
-  private _renderFrame: number = 3;
-  heading: Point = new Point(0, -1);
-  sprite: PlayerRenderBehaviorComponent = null;
-  collideComponentType: any = TileObjectBehavior;
 
   static Events: any = {
     MOVE_BEGIN: 'move:begin',
     MOVE_END: 'move:end',
   };
 
+  host: TileObject;
+  passableKeys: string[] = ['passable'];
+  private _lastFrame: number = 3;
+  private _renderFrame: number = 3;
+  heading: Point = new Point(0, -1);
+  sprite: PlayerRenderBehaviorComponent = null;
+  collideComponentType: any = TileObjectBehavior;
+
   syncBehavior(): boolean {
-    this.sprite = <PlayerRenderBehaviorComponent>(
-      this.host.findBehavior(PlayerRenderBehaviorComponent)
-    );
+    this.sprite = this.host.findBehavior(PlayerRenderBehaviorComponent);
     return super.syncBehavior();
   }
 
-  tick(elapsed: number) {
+  tick(elapsed: number): void {
     // There are four states and two rows.  The second row is all alt states, so mod it out
     // when a move ends.
     this._lastFrame = this._renderFrame > 3 ? this._renderFrame - 4 : this._renderFrame;
     super.tick(elapsed);
   }
 
-  interpolateTick(elapsed: number) {
+  interpolateTick(elapsed: number): void {
     super.interpolateTick(elapsed);
     if (!this.sprite) {
       return;

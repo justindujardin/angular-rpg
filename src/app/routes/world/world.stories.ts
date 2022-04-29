@@ -77,7 +77,7 @@ export const Sewer = Template.bind({});
 Sewer.args = { location: 'sewer', position: { x: 21, y: 1 } };
 
 export const TowerFloorOne = Template.bind({});
-TowerFloorOne.args = { location: 'tower1' , position: { x: 6, y: 8 }};
+TowerFloorOne.args = { location: 'tower1', position: { x: 6, y: 8 } };
 
 export const TowerFloorTwo = Template.bind({});
 TowerFloorTwo.args = { location: 'tower2', position: { x: 7, y: 8 } };

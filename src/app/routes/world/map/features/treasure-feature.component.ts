@@ -15,19 +15,16 @@
  */
 import { AfterViewInit, Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as Immutable from 'immutable';
-import { combineLatest, Observable } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { getArmorById } from 'app/models/game-data/armors';
+import { getItemById } from 'app/models/game-data/items';
+import { getWeaponById } from 'app/models/game-data/weapons';
 import { TileObject } from '../../../../../game/pow2/tile/tile-object';
 import { AppState } from '../../../../app.model';
 import { NotificationService } from '../../../../components/notification/notification.service';
 import { EntityAddItemAction } from '../../../../models/entity/entity.actions';
 import {
   instantiateEntity,
-  ITemplateArmor,
   ITemplateBaseItem,
-  ITemplateItem,
-  ITemplateWeapon,
 } from '../../../../models/game-data/game-data.model';
 import {
   GameStateAddGoldAction,
@@ -35,11 +32,6 @@ import {
   GameStateSetKeyDataAction,
 } from '../../../../models/game-state/game-state.actions';
 import { Item } from '../../../../models/item';
-import {
-  getGameDataArmors,
-  getGameDataItems,
-  getGameDataWeapons,
-} from '../../../../models/selectors';
 import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
 
 @Component({
@@ -48,32 +40,12 @@ import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.compo
 })
 export class TreasureFeatureComponent
   extends TiledFeatureComponent
-  implements AfterViewInit {
+  implements AfterViewInit
+{
   // Used as a recursion guard while the async treasure claiming process happens
   private taken = false;
   // @ts-ignore
   @Input() feature: TiledMapFeatureData;
-
-  /** @internal */
-  private _weapons$: Observable<Immutable.List<ITemplateWeapon>> = this.store.select(
-    getGameDataWeapons
-  );
-  /** @internal */
-  private _armors$: Observable<Immutable.List<ITemplateArmor>> = this.store.select(
-    getGameDataArmors
-  );
-  /** @internal */
-  private _items$: Observable<Immutable.List<ITemplateBaseItem>> = this.store.select(
-    getGameDataItems
-  );
-
-  /** Available items that can be instantiated from a treasure chest. */
-  inventory$: Observable<Immutable.List<ITemplateBaseItem>> = combineLatest(
-    [this._weapons$, this._armors$, this._items$],
-    (weapons, armors, items) => {
-      return items.concat(weapons).concat(armors).toList();
-    }
-  );
 
   constructor(public store: Store<AppState>, public notify: NotificationService) {
     super();
@@ -94,25 +66,21 @@ export class TreasureFeatureComponent
       this.store.dispatch(new GameStateAddGoldAction(this.properties.gold));
       this.notify.show(`You found ${this.properties.gold} gold!`, null, 0);
     } else if (typeof this.properties.item === 'string') {
-      this.inventory$
-        .pipe(
-          first(),
-          map((items: Immutable.List<ITemplateItem>) => {
-            const template = items.find((item) => {
-              return item.id === this.properties.item;
-            });
-            if (!template) {
-              throw new Error(
-                'could not find item template for id: ' + this.properties.item
-              );
-            }
-            const itemInstance = instantiateEntity<Item>(template);
-            this.store.dispatch(new EntityAddItemAction(itemInstance));
-            this.store.dispatch(new GameStateAddInventoryAction(itemInstance));
-            this.notify.show(`You found ${template.name}!`, null, 0);
-          })
-        )
-        .subscribe();
+      const templateId = this.properties.item;
+      let template: ITemplateBaseItem | null = getItemById(templateId);
+      if (!template) {
+        template = getWeaponById(templateId);
+      }
+      if (!template) {
+        template = getArmorById(templateId);
+      }
+      if (!template) {
+        throw new Error('could not find item template for id: ' + this.properties.item);
+      }
+      const itemInstance = instantiateEntity<Item>(template);
+      this.store.dispatch(new EntityAddItemAction(itemInstance));
+      this.store.dispatch(new GameStateAddInventoryAction(itemInstance));
+      this.notify.show(`You found ${template.name}!`, null, 0);
     } else if (typeof this.properties.text === 'string') {
       this.notify.show(`You found ${this.properties.text}!`, null, 0);
     }

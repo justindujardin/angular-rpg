@@ -57,7 +57,8 @@ export interface CombatAttackSummary {
  */
 export class CombatComponent
   extends TileMapView
-  implements IProcessObject, OnDestroy, AfterViewInit {
+  implements IProcessObject, OnDestroy, AfterViewInit
+{
   combat: CombatComponent = this;
 
   @Input() scene: Scene = new Scene();

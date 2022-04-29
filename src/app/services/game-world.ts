@@ -6,11 +6,9 @@ import { ResourceManager } from '../../game/pow-core/resource-manager';
 import { World } from '../../game/pow-core/world';
 import { PowInput } from '../../game/pow2/core/input';
 import { AppState } from '../app.model';
-import { GameDataFetchAction } from '../models/game-data/game-data.actions';
-import { SPREADSHEET_ID } from '../models/game-data/game-data.model';
 import { GameStateLoadAction } from '../models/game-state/game-state.actions';
 import { GameStateService } from '../models/game-state/game-state.service';
-import { getGameDataLoaded, getSpritesLoaded } from '../models/selectors';
+import { getSpritesLoaded } from '../models/selectors';
 import { SpritesLoadAction } from '../models/sprites/sprites.actions';
 import { SpriteRender } from './sprite-render';
 
@@ -23,13 +21,10 @@ export class GameWorld extends World {
   /**
    * Observable that emits when all game data has been loaded and the game can start.
    */
-  ready$: Observable<void> = combineLatest(
-    this.store.select(getSpritesLoaded),
-    this.store.select(getGameDataLoaded)
-  ).pipe(
-    map(([spritesLoaded, dataLoaded]) => {
+  ready$: Observable<void> = combineLatest(this.store.select(getSpritesLoaded)).pipe(
+    map(([spritesLoaded]) => {
       // are both tables loaded?
-      return spritesLoaded && dataLoaded;
+      return spritesLoaded;
     }),
     filter((b) => b),
     map(() => undefined)
@@ -49,7 +44,6 @@ export class GameWorld extends World {
       // this.store.dispatch(new GameDataFetchAction(SPREADSHEET_ID));
     } else {
       this.store.dispatch(new SpritesLoadAction('assets/images/index.json'));
-      this.store.dispatch(new GameDataFetchAction(SPREADSHEET_ID));
     }
   }
 

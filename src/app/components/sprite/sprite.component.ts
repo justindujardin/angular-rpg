@@ -38,9 +38,10 @@ export class RPGSpriteComponent {
   }
 
   @Input()
-  set frame(value: number) {
+  set frame(value: number | string) {
+    let newValue = Number(value);
     if (this._frame$.value !== value) {
-      this._frame$.next(value);
+      this._frame$.next(newValue);
       this._get(this._name$.value);
     }
   }
@@ -67,10 +68,11 @@ export class RPGSpriteComponent {
       RPGSpriteComponent._renderCanvas = document.createElement(
         'canvas'
       ) as HTMLCanvasElement;
-      RPGSpriteComponent._renderCanvas.width = RPGSpriteComponent._renderCanvas.height = 64;
+      RPGSpriteComponent._renderCanvas.width =
+        RPGSpriteComponent._renderCanvas.height = 64;
       RPGSpriteComponent._renderCanvas.style.position = 'absolute';
-      RPGSpriteComponent._renderCanvas.style.left = RPGSpriteComponent._renderCanvas.style.top =
-        '-9000px';
+      RPGSpriteComponent._renderCanvas.style.left =
+        RPGSpriteComponent._renderCanvas.style.top = '-9000px';
     }
   }
 

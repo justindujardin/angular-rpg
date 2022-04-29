@@ -17,7 +17,8 @@ import { CombatAttackBehaviorComponent } from './behaviors/actions/combat-attack
 })
 export class CombatEnemyComponent
   extends GameEntityObject
-  implements AfterViewInit, OnDestroy {
+  implements AfterViewInit, OnDestroy
+{
   @ViewChild(CombatAttackBehaviorComponent)
   attack: CombatAttackBehaviorComponent;
 
@@ -42,7 +43,6 @@ export class CombatEnemyComponent
   }
 
   private _spriteSubscription: Subscription;
-
 
   ngAfterViewInit(): void {
     this.scene.addObject(this);

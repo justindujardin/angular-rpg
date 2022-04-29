@@ -15,8 +15,10 @@
  */
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { ARMOR_DATA, getArmorById } from 'app/models/game-data/armors';
+import { CLASSES_DATA, getClassById } from 'app/models/game-data/classes';
+import { getWeaponById, WEAPONS_DATA } from 'app/models/game-data/weapons';
 import * as Immutable from 'immutable';
-import { first } from 'rxjs/operators';
 import * as _ from 'underscore';
 import { ResourceManager } from '../../game/pow-core/resource-manager';
 import { AppState } from '../app.model';
@@ -28,10 +30,7 @@ import {
 import { Entity, EntitySlots } from '../models/entity/entity.model';
 import {
   instantiateEntity,
-  ITemplateArmor,
   ITemplateBaseItem,
-  ITemplateClass,
-  ITemplateWeapon,
 } from '../models/game-data/game-data.model';
 import {
   GameStateAddInventoryAction,
@@ -43,21 +42,12 @@ import {
 import { GameState } from '../models/game-state/game-state.model';
 import { GameStateService } from '../models/game-state/game-state.service';
 import { Item } from '../models/item';
-import {
-  getGameDataArmorsById,
-  getGameDataClassesById,
-  getGameDataWeaponsById,
-} from '../models/selectors';
 
 @Injectable()
 export class RPGGame {
   constructor(public loader: ResourceManager, private store: Store<AppState>) {}
 
-  public create(
-    type: EntityType,
-    name: string,
-    classes: Immutable.Map<string, ITemplateClass>
-  ): Entity {
+  public create(type: EntityType, name: string): Entity {
     const HERO_DEFAULTS: Partial<Entity> = {
       eid: 'invalid-hero',
       status: [],
@@ -66,7 +56,7 @@ export class RPGGame {
       level: 1,
       exp: 0,
     };
-    const classDetails = classes.get(type);
+    const classDetails = getClassById(type);
     let character: Entity = null;
     switch (type) {
       case 'warrior':
@@ -141,24 +131,13 @@ export class RPGGame {
         resolve(false);
         return;
       }
-      const classes: Immutable.Map<string, ITemplateClass> = await this.store
-        .select(getGameDataClassesById)
-        .pipe(first())
-        .toPromise();
+      const classes = CLASSES_DATA;
+      const weapons = WEAPONS_DATA;
+      const armors = ARMOR_DATA;
 
-      const weapons: Immutable.Map<string, ITemplateWeapon> = await this.store
-        .select(getGameDataWeaponsById)
-        .pipe(first())
-        .toPromise();
-
-      const armors: Immutable.Map<string, ITemplateArmor> = await this.store
-        .select(getGameDataArmorsById)
-        .pipe(first())
-        .toPromise();
-
-      const warrior = this.create('warrior', 'Warrior', classes);
-      const ranger = this.create('ranger', 'Ranger', classes);
-      const healer = this.create('healer', 'Mage', classes);
+      const warrior = this.create('warrior', 'Warrior');
+      const ranger = this.create('ranger', 'Ranger');
+      const healer = this.create('healer', 'Mage');
       const initialState: GameState = {
         party: Immutable.List<string>([warrior.eid, ranger.eid, healer.eid]),
         inventory: Immutable.List<string>(),
@@ -177,12 +156,12 @@ export class RPGGame {
       this.store.dispatch(new EntityAddBeingAction(healer));
 
       // Provide basic equipment
-      this.giveItemToPlayer(warrior, weapons.get('club'), 'weapon');
-      this.giveItemToPlayer(warrior, armors.get('clothes'), 'armor');
-      this.giveItemToPlayer(ranger, weapons.get('slingshot'), 'weapon');
-      this.giveItemToPlayer(ranger, armors.get('clothes'), 'armor');
-      this.giveItemToPlayer(healer, weapons.get('short-staff'), 'weapon');
-      this.giveItemToPlayer(healer, armors.get('cloak'), 'armor');
+      this.giveItemToPlayer(warrior, getWeaponById('club'), 'weapon');
+      this.giveItemToPlayer(warrior, getArmorById('clothes'), 'armor');
+      this.giveItemToPlayer(ranger, getWeaponById('slingshot'), 'weapon');
+      this.giveItemToPlayer(ranger, getArmorById('clothes'), 'armor');
+      this.giveItemToPlayer(healer, getWeaponById('short-staff'), 'weapon');
+      this.giveItemToPlayer(healer, getArmorById('cloak'), 'armor');
 
       this.store.dispatch(new GameStateTravelAction(initialState));
       resolve(true);

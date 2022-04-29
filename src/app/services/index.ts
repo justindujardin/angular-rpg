@@ -19,7 +19,6 @@ import { StoreModule } from '@ngrx/store';
 import { PowCoreModule } from '../../game/pow-core/index';
 import { NotificationService } from '../components/notification/notification.service';
 import { CombatService } from '../models/combat/combat.service';
-import { GameDataService } from '../models/game-data/game-data.service';
 import { GameStateService } from '../models/game-state/game-state.service';
 import { SpritesService } from '../models/sprites/sprites.service';
 import { Animate } from './animate';
@@ -37,7 +36,6 @@ export const SERVICE_PROVIDERS = [
   NotificationService,
   CombatService,
   SpritesService,
-  GameDataService,
   GameStateService,
 ];
 

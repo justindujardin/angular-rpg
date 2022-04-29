@@ -56,7 +56,8 @@ import { TiledFeatureComponent } from './map-feature.component';
 })
 export class WorldPlayerComponent
   extends GameEntityObject
-  implements AfterViewInit, OnDestroy, ISceneViewRenderer {
+  implements AfterViewInit, OnDestroy, ISceneViewRenderer
+{
   @ViewChildren('render,collision,path,player,trigger,camera,encounter')
   behaviors: QueryList<SceneObjectBehavior>;
   @Input() model: Entity;

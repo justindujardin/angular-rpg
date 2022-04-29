@@ -50,9 +50,7 @@ import { CombatStateNames } from './states';
 /**
  * Completion callback for a player action.
  */
-export interface IPlayerActionCallback {
-  (action: IPlayerAction, error?: any): void;
-}
+export type IPlayerActionCallback = (action: IPlayerAction, error?: any) => void;
 /**
  * A Player action during combat
  */
@@ -82,7 +80,28 @@ export interface IPlayerAction {
 })
 export class CombatStateMachineComponent
   extends StateMachine<CombatStateNames>
-  implements AfterViewInit {
+  implements AfterViewInit
+{
+  /** The items available to the party */
+  public get items(): Immutable.List<Item> {
+    return this._items$.value;
+  }
+  /** The items available to the party */
+  public get armors(): Immutable.List<ITemplateArmor> {
+    return this._armors$.value;
+  }
+  /** The items available to the party */
+  public get weapons(): Immutable.List<ITemplateWeapon> {
+    return this._weapons$.value;
+  }
+  /** The items available to the party */
+  public get spells(): Immutable.List<ITemplateMagic> {
+    return this._spells$.value;
+  }
+
+  constructor(private combatService: CombatService, public store: Store<AppState>) {
+    super();
+  }
   defaultState: CombatStateNames = 'start';
   world: GameWorld;
   states: IState<CombatStateNames>[] = [];
@@ -106,31 +125,7 @@ export class CombatStateMachineComponent
     Immutable.List([])
   );
 
-  /** The items available to the party */
-  public get items(): Immutable.List<Item> {
-    return this._items$.value;
-  }
-  /** The items available to the party */
-  public get armors(): Immutable.List<ITemplateArmor> {
-    return this._armors$.value;
-  }
-  /** The items available to the party */
-  public get weapons(): Immutable.List<ITemplateWeapon> {
-    return this._weapons$.value;
-  }
-  /** The items available to the party */
-  public get spells(): Immutable.List<ITemplateMagic> {
-    return this._spells$.value;
-  }
-
   private _subscription: Subscription;
-  ngOnDestroy(): void {
-    this._subscription.unsubscribe();
-  }
-
-  constructor(private combatService: CombatService, public store: Store<AppState>) {
-    super();
-  }
 
   @Input() scene: Scene;
   @Input() encounter: CombatEncounter;
@@ -141,6 +136,9 @@ export class CombatStateMachineComponent
 
   @ViewChildren('start,beginTurn,chooseAction,endTurn,defeat,victory,escape')
   childStates: QueryList<CombatMachineState>;
+  ngOnDestroy(): void {
+    this._subscription.unsubscribe();
+  }
 
   ngAfterViewInit(): void {
     this._subscription = this.store
@@ -193,7 +191,7 @@ export class CombatStateMachineComponent
   }
 
   getRandomPartyMember(): GameEntityObject {
-    const players = <CombatPlayerComponent[]>_.shuffle(this.party.toArray());
+    const players = _.shuffle(this.party.toArray()) as CombatPlayerComponent[];
     while (players.length > 0) {
       const p = players.shift();
       if (!this.combatService.isDefeated(p.model)) {
@@ -204,7 +202,7 @@ export class CombatStateMachineComponent
   }
 
   getRandomEnemy(): GameEntityObject {
-    const players = <CombatEnemyComponent[]>_.shuffle(this.enemies.toArray());
+    const players = _.shuffle(this.enemies.toArray()) as CombatEnemyComponent[];
     while (players.length > 0) {
       const p = players.shift();
       if (!this.combatService.isDefeated(p.model)) {

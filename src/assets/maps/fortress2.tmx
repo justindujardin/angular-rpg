@@ -16,11 +16,9 @@
     <object name="goblinArcher.png" type="CombatFeatureComponent" x="256" y="48" width="16" height="16">
       <properties>
         <property name="creatures"></property>
-        <property name="gold" value="7"></property>
         <property name="icon" value="goblinArcher.png"></property>
-        <property name="id" value="goblinArchers"></property>
+        <property name="id" value="goblin-archers"></property>
         <property name="items"></property>
-        <property name="text" value="You are targeted by skilled Goblin archers!"></property>
         <property name="type" value="encounter"></property>
       </properties>
     </object>
