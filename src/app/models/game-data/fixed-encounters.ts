@@ -42,6 +42,14 @@ export const FIXED_ENCOUNTERS_DATA: ITemplateFixedEncounter[] = [
     message: ['A pack of Goblins block your passage!'],
   },
   {
+    id: 'goblin-archers',
+    enemies: ['goblin-spear', 'goblin-archer', 'goblin-archer', 'goblin-archer'],
+    experience: 0,
+    gold: 0,
+    items: [],
+    message: ['A spearman and archers block your path!'],
+  },
+  {
     id: 'fortress-wizard',
     enemies: ['goblin-wizard'],
     experience: 0,

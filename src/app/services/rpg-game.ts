@@ -43,21 +43,12 @@ import {
 import { GameState } from '../models/game-state/game-state.model';
 import { GameStateService } from '../models/game-state/game-state.service';
 import { Item } from '../models/item';
-import {
-  getGameDataArmorsById,
-  getGameDataClassesById,
-  getGameDataWeaponsById,
-} from '../models/selectors';
 
 @Injectable()
 export class RPGGame {
   constructor(public loader: ResourceManager, private store: Store<AppState>) {}
 
-  public create(
-    type: EntityType,
-    name: string,
-    classes: Immutable.Map<string, ITemplateClass>
-  ): Entity {
+  public create(type: EntityType, name: string): Entity {
     const HERO_DEFAULTS: Partial<Entity> = {
       eid: 'invalid-hero',
       status: [],

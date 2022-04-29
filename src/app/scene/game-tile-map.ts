@@ -33,12 +33,12 @@ export class GameTileMap extends TileMap {
     }
   }
 
-  destroy() {
+  destroy(): void {
     this.unloaded();
     return super.destroy();
   }
 
-  unloaded() {
+  unloaded(): void {
     super.unloaded();
   }
 

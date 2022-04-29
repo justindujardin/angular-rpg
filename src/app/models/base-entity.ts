@@ -7,7 +7,7 @@ export type EntityStatuses = 'asleep' | 'posioned' | 'dead' | 'guarding' | 'para
  */
 export interface IEntityObject {
   /** Instance ID */
-  eid: string;
+  readonly eid: string;
   readonly name: string;
   /** Template ID */
   readonly id: string;
@@ -16,7 +16,7 @@ export interface IEntityObject {
   readonly status: EntityStatuses[];
 }
 
-export interface IPartyBaseStats extends IEntityObject {
+export interface IPartyBaseStats {
   /** Used to calculate damage in combat when attacking */
   readonly strength: number[];
   /** Used to calculate evasion in combat when defending */
@@ -31,6 +31,8 @@ export interface IPartyBaseStats extends IEntityObject {
   readonly hitpercent: number[];
   /** Increases defense to magic attacks */
   readonly magicdefense: number[];
+  readonly hp: number;
+  readonly mp: number;
 }
 
 export interface IEnemy extends IEntityObject {
@@ -53,8 +55,6 @@ export interface IPartyMember extends IPartyBaseStats, IEntityObject {
   readonly type: EntityType;
   readonly level: number;
   readonly exp: number;
-  readonly hp: number;
-  readonly mp: number;
   readonly maxhp: number;
   readonly maxmp: number;
 }

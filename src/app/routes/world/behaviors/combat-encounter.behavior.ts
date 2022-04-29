@@ -133,7 +133,7 @@ export class CombatEncounterBehaviorComponent extends SceneObjectBehavior {
               id: encounter.id,
               enemies: List<IEnemy>(encounter.enemies.map(toCombatant)),
               zone: zone.target || zone.map,
-              message: encounter.message,
+              message: List<string>(encounter.message),
               party: List<Entity>(party),
             };
             this.store.dispatch(new CombatEncounterAction(payload));

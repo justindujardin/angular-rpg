@@ -15,7 +15,6 @@ import { BehaviorsModule } from './behaviors';
 import { AppComponentsModule } from './components';
 import { metaReducers, reducers } from './models';
 import { CombatEffects } from './models/combat/combat.effects';
-import { GameDataEffects } from './models/game-data/game-data.effects';
 import { GameStateEffects } from './models/game-state/game-state.effects';
 import { SpritesEffects } from './models/sprites/sprites.effects';
 import { CombatModule } from './routes/combat';
@@ -56,11 +55,5 @@ export const APP_IMPORTS = [
   //
   // StoreDevtoolsModule.instrumentStore(),
 
-  EffectsModule.forRoot([
-    GameStateEffects,
-    CombatEffects,
-    SpritesEffects,
-    GameDataEffects,
-    AppEffects,
-  ]),
+  EffectsModule.forRoot([GameStateEffects, CombatEffects, SpritesEffects, AppEffects]),
 ];

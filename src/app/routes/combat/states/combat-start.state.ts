@@ -48,7 +48,11 @@ export class CombatStartStateComponent extends CombatMachineState {
         const last = msgs.last();
         const others = msgs.take(msgs.size - 1);
         others.forEach((m) => this.notify.show(m, null, 0));
-        this.notify.show(last, _done, 0);
+        if (last) {
+          this.notify.show(last, _done, 0);
+        } else {
+          _done();
+        }
       } else {
         _done();
       }

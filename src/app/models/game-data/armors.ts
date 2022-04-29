@@ -1,4 +1,4 @@
-import { ITemplateArmor } from '../game-data.model';
+import { ITemplateArmor } from './game-data.model';
 
 export const ARMOR_DATA: ITemplateArmor[] = [
   {
