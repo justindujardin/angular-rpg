@@ -1,3 +1,10 @@
+## [0.1.5](https://github.com/justindujardin/angular-rpg/compare/v0.1.4...v0.1.5) (2022-04-29)
+
+
+### Bug Fixes
+
+* remove google sheets game data ([cde649f](https://github.com/justindujardin/angular-rpg/commit/cde649f9ae642ee4c3a0a976085dff904847622d))
+
 ## [0.1.4](https://github.com/justindujardin/angular-rpg/compare/v0.1.3...v0.1.4) (2021-08-05)
 
 
