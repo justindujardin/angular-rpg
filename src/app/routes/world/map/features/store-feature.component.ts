@@ -8,8 +8,12 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { ARMOR_DATA } from 'app/models/game-data/armors';
+import { ITEMS_DATA } from 'app/models/game-data/items';
+import { MAGIC_DATA } from 'app/models/game-data/magic';
+import { WEAPONS_DATA } from 'app/models/game-data/weapons';
 import * as Immutable from 'immutable';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, from, Observable, Subject } from 'rxjs';
 import { combineLatest, map, withLatestFrom } from 'rxjs/operators';
 import { IScene } from '../../../../../game/pow2/scene/scene.model';
 import { AppState } from '../../../../app.model';
@@ -33,10 +37,6 @@ import {
 import { GameState } from '../../../../models/game-state/game-state.model';
 import { Item } from '../../../../models/item';
 import {
-  getGameDataArmors,
-  getGameDataItems,
-  getGameDataMagics,
-  getGameDataWeapons,
   getGameInventory,
   getGamePartyGold,
   sliceGameState,
@@ -149,21 +149,13 @@ export class StoreFeatureComponent extends TiledFeatureComponent implements OnDe
   /** @internal */
   private _level$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
   /** @internal */
-  private _weapons$: Observable<Immutable.List<ITemplateWeapon>> = this.store.select(
-    getGameDataWeapons
-  );
+  private _weapons$: Observable<ITemplateWeapon[]> = from([WEAPONS_DATA]);
   /** @internal */
-  private _armors$: Observable<Immutable.List<ITemplateArmor>> = this.store.select(
-    getGameDataArmors
-  );
+  private _armors$: Observable<ITemplateArmor[]> = from([ARMOR_DATA]);
   /** @internal */
-  private _items$: Observable<Immutable.List<ITemplateBaseItem>> = this.store.select(
-    getGameDataItems
-  );
+  private _items$: Observable<ITemplateBaseItem[]> = from([ITEMS_DATA]);
   /** @internal */
-  private _magics$: Observable<Immutable.List<ITemplateMagic>> = this.store.select(
-    getGameDataMagics
-  );
+  private _magics$: Observable<ITemplateMagic[]> = from([MAGIC_DATA]);
   /** @internal */
   private _selling$ = new BehaviorSubject<boolean>(false);
 

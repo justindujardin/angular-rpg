@@ -1,4 +1,4 @@
-import { ITemplateFixedEncounter } from '../game-data.model';
+import { ITemplateFixedEncounter } from './game-data.model';
 
 export const FIXED_ENCOUNTERS_DATA: ITemplateFixedEncounter[] = [
   {
@@ -60,3 +60,8 @@ export const FIXED_ENCOUNTERS_DATA: ITemplateFixedEncounter[] = [
     ],
   },
 ];
+
+/** Get a fixed encounter descriptor given its id value */
+export function getFixedEncounterById(id: string): ITemplateFixedEncounter | null {
+  return FIXED_ENCOUNTERS_DATA.find((item) => item.id === id);
+}

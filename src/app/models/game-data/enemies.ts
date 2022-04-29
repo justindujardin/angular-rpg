@@ -1,4 +1,4 @@
-import { ITemplateEnemy } from '../game-data.model';
+import { ITemplateEnemy } from './game-data.model';
 
 export const ENEMIES_DATA: ITemplateEnemy[] = [
   {
@@ -223,3 +223,8 @@ export const ENEMIES_DATA: ITemplateEnemy[] = [
     hitpercent: 20,
   },
 ];
+
+/** Get an enemy descriptor given its id value */
+export function getEnemyById(id: string): ITemplateEnemy | null {
+  return ENEMIES_DATA.find((item) => item.id === id);
+}

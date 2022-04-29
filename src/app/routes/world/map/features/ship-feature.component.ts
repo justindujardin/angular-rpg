@@ -36,7 +36,8 @@ import {
 })
 export class ShipFeatureComponent
   extends TiledFeatureComponent<TiledMapFeatureData>
-  implements OnDestroy, AfterViewInit {
+  implements OnDestroy, AfterViewInit
+{
   ngOnDestroy(): void {
     // nope
   }

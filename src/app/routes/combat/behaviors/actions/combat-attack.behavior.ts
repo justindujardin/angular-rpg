@@ -106,9 +106,8 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
                 ? 'animSmoke.png'
                 : hitAnim
               : 'animMiss.png';
-            const meta: ISpriteMeta = this.gameWorld.sprites.getSpriteMeta(
-              damageAnimation
-            );
+            const meta: ISpriteMeta =
+              this.gameWorld.sprites.getSpriteMeta(damageAnimation);
             if (!meta) {
               console.warn(
                 'could not find damage animation in sprites metadata: ' +

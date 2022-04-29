@@ -26,8 +26,8 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, interval, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { ITemplateBaseItem } from '../../../../app/models/game-data/game-data.model';
 import * as _ from 'underscore';
+import { ITemplateBaseItem } from '../../../../app/models/game-data/game-data.model';
 import { Point } from '../../../../game/pow-core/point';
 import { GameEntityObject } from '../../../scene/game-entity-object';
 import { ChooseActionStateMachine } from '../behaviors/choose-action.machine';
@@ -79,7 +79,8 @@ export interface ICombatMenuItem {
 })
 export class CombatChooseActionStateComponent
   extends CombatMachineState
-  implements AfterViewInit, OnDestroy {
+  implements AfterViewInit, OnDestroy
+{
   static NAME: CombatStateNames = 'choose-action';
   name: CombatStateNames = CombatChooseActionStateComponent.NAME;
   pending: GameEntityObject[] = [];

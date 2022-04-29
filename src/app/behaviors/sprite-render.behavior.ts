@@ -27,7 +27,8 @@ import { GameWorld } from '../services/game-world';
 })
 export class SpriteRenderBehaviorComponent
   extends SceneObjectBehavior
-  implements AfterViewInit, OnDestroy {
+  implements AfterViewInit, OnDestroy
+{
   constructor(public gameWorld: GameWorld) {
     super();
   }

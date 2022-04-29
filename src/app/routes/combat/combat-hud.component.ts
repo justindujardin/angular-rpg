@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { List } from 'immutable';
 import { Observable } from 'rxjs';
-import { IPartyMember } from '../../models/base-entity';
 import { ResourceManager } from '../../../game/pow-core/resource-manager';
 import { Scene } from '../../../game/pow2/scene/scene';
 import { AppState } from '../../app.model';
 import { LoadingService } from '../../components/loading/loading.service';
+import { IPartyMember } from '../../models/base-entity';
 import { getCombatEncounterParty } from '../../models/selectors';
 import { GameEntityObject } from '../../scene/game-entity-object';
 

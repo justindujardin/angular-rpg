@@ -15,8 +15,11 @@
  */
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { getEnemyById } from 'app/models/game-data/enemies';
+import { getFixedEncounterById } from 'app/models/game-data/fixed-encounters';
+import * as Immutable from 'immutable';
 import { List } from 'immutable';
-import { take, withLatestFrom } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { IEnemy } from '../../../../../app/models/base-entity';
 import { AppState } from '../../../../app.model';
 import { CombatEncounterAction } from '../../../../models/combat/combat.actions';
@@ -24,14 +27,9 @@ import { CombatEncounter, IZoneMatch } from '../../../../models/combat/combat.mo
 import { Entity } from '../../../../models/entity/entity.model';
 import {
   instantiateEntity,
-  ITemplateEnemy,
   ITemplateFixedEncounter,
 } from '../../../../models/game-data/game-data.model';
-import {
-  getGameDataEnemies,
-  getGameDataFixedEncounters,
-  getGameParty,
-} from '../../../../models/selectors';
+import { getGameParty } from '../../../../models/selectors';
 import { GameEntityObject } from '../../../../scene/game-entity-object';
 import { PlayerBehaviorComponent } from '../../behaviors/player-behavior';
 import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
@@ -83,34 +81,26 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
     this.store
       .select(getGameParty)
       .pipe(
-        withLatestFrom(
-          this.store.select(getGameDataFixedEncounters),
-          this.store.select(getGameDataEnemies),
-          (
-            party: Entity[],
-            encounters: ITemplateFixedEncounter[],
-            enemies: ITemplateEnemy[]
-          ) => {
-            const encounter: ITemplateFixedEncounter = encounters.find(
-              (e) => e.id === this.properties.id
-            );
-            const toCombatant = (id: string): IEnemy => {
-              const itemTemplate: IEnemy = enemies.find((e) => e.id === id) as any;
-              return instantiateEntity<IEnemy>(itemTemplate, {
-                maxhp: itemTemplate.hp,
-              });
-            };
-            const payload: CombatEncounter = {
-              type: 'fixed',
-              id: encounter.id,
-              enemies: List<IEnemy>(encounter.enemies.map(toCombatant)),
-              zone: zone.target || zone.map,
-              message: List<string>(encounter.message),
-              party: List<Entity>(party),
-            };
-            this.store.dispatch(new CombatEncounterAction(payload));
-          }
-        ),
+        map((party: Immutable.List<Entity>) => {
+          const encounter: ITemplateFixedEncounter = getFixedEncounterById(
+            this.properties.id
+          );
+          const toCombatant = (id: string): IEnemy => {
+            const itemTemplate: IEnemy = getEnemyById(id) as any;
+            return instantiateEntity<IEnemy>(itemTemplate, {
+              maxhp: itemTemplate.hp,
+            });
+          };
+          const payload: CombatEncounter = {
+            type: 'fixed',
+            id: encounter.id,
+            enemies: List<IEnemy>(encounter.enemies.map(toCombatant)),
+            zone: zone.target || zone.map,
+            message: List<string>(encounter.message),
+            party: List<Entity>(party),
+          };
+          this.store.dispatch(new CombatEncounterAction(payload));
+        }),
         take(1)
       )
       .subscribe();

@@ -5,8 +5,6 @@ import * as fromCombat from './combat/combat.reducer';
 import { combatFromJSON } from './combat/combat.reducer';
 import * as fromEntity from './entity/entity.reducer';
 import { entityFromJSON } from './entity/entity.reducer';
-import * as fromGameData from './game-data/game-data.reducer';
-import { gameDataFromJSON } from './game-data/game-data.reducer';
 import { GameStateLoadSuccessAction } from './game-state/game-state.actions';
 import * as fromGameState from './game-state/game-state.reducer';
 import { gameStateFromJSON } from './game-state/game-state.reducer';
@@ -20,7 +18,6 @@ export interface PowAction<T = any> extends Action {
 
 export interface State {
   router: any;
-  gameData: any;
   gameState: any;
   combat: any;
   entities: any;
@@ -29,7 +26,6 @@ export interface State {
 
 export const reducers: ActionReducerMap<State> = {
   router: routerReducer,
-  gameData: fromGameData.gameDataReducer,
   gameState: fromGameState.gameStateReducer,
   combat: fromCombat.combatReducer,
   entities: fromEntity.entityReducer,
@@ -56,7 +52,6 @@ function stateSetter(
           ...action.payload,
           gameState: gameStateFromJSON(action.payload.gameState),
           entities: entityFromJSON(action.payload.entities),
-          gameData: gameDataFromJSON(action.payload.gameData),
           combat: combatFromJSON(action.payload.combat),
           sprites: spritesFromJSON(action.payload.sprites),
         };

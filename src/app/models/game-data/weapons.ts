@@ -1,4 +1,4 @@
-import { ITemplateWeapon } from '../game-data.model';
+import { ITemplateWeapon } from './game-data.model';
 
 export const WEAPONS_DATA: ITemplateWeapon[] = [
   {
@@ -233,3 +233,7 @@ export const WEAPONS_DATA: ITemplateWeapon[] = [
     elements: ['water'],
   },
 ];
+/** Get a weapon descriptor given its id value */
+export function getWeaponById(id: string): ITemplateWeapon | null {
+  return WEAPONS_DATA.find((item) => item.id === id);
+}

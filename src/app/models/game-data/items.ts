@@ -1,4 +1,4 @@
-import { ITemplateItem } from '../game-data.model';
+import { ITemplateItem } from './game-data.model';
 
 export const ITEMS_DATA: ITemplateItem[] = [
   {
@@ -21,3 +21,8 @@ export const ITEMS_DATA: ITemplateItem[] = [
     usedby: null,
   },
 ];
+
+/** Get an item descriptor given its id value */
+export function getItemById(id: string): ITemplateItem | null {
+  return ITEMS_DATA.find((item) => item.id === id);
+}

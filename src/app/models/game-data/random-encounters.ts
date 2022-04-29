@@ -1,4 +1,4 @@
-import { ITemplateRandomEncounter } from '../game-data.model';
+import { ITemplateRandomEncounter } from './game-data.model';
 
 export const RANDOM_ENCOUNTERS_DATA: ITemplateRandomEncounter[] = [
   {
@@ -32,3 +32,8 @@ export const RANDOM_ENCOUNTERS_DATA: ITemplateRandomEncounter[] = [
     enemies: ['goblin-spear', 'goblin'],
   },
 ];
+
+/** Get a random encounter descriptor given its id value */
+export function getRandomEncounterById(id: string): ITemplateRandomEncounter | null {
+  return RANDOM_ENCOUNTERS_DATA.find((item) => item.id === id);
+}

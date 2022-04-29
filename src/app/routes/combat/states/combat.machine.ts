@@ -80,7 +80,8 @@ export interface IPlayerAction {
 })
 export class CombatStateMachineComponent
   extends StateMachine<CombatStateNames>
-  implements AfterViewInit {
+  implements AfterViewInit
+{
   /** The items available to the party */
   public get items(): Immutable.List<Item> {
     return this._items$.value;

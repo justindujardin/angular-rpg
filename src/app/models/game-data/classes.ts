@@ -1,4 +1,4 @@
-import { ITemplateClass } from '../game-data.model';
+import { ITemplateClass } from './game-data.model';
 
 export const CLASSES_DATA: ITemplateClass[] = [
   {
@@ -58,3 +58,8 @@ export const CLASSES_DATA: ITemplateClass[] = [
     magicdefense: [20, 2],
   },
 ];
+
+/** Get a class descriptor given its id value */
+export function getClassById(id: string): ITemplateClass | null {
+  return CLASSES_DATA.find((clazz) => clazz.id === id);
+}

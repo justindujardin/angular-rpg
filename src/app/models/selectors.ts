@@ -15,11 +15,7 @@ import {
   sliceEntityItemIds,
   sliceEntityItems,
 } from './entity/entity.reducer';
-import {
-  ITemplateArmor,
-  ITemplateId,
-  ITemplateWeapon,
-} from './game-data/game-data.model';
+import { ITemplateArmor, ITemplateWeapon } from './game-data/game-data.model';
 import {
   sliceBattleCounter,
   sliceBoardedShip,

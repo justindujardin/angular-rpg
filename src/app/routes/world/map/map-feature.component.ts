@@ -38,6 +38,7 @@ export type TiledMapFeatureTypes =
   | 'CombatFeatureComponent'
   | 'ShipFeatureComponent'
   | 'TreasureFeatureComponent'
+  | 'DoorFeatureComponent'
   | 'DialogFeatureComponent'
   | 'StoreFeatureComponent'
   | 'TempleFeatureComponent';
@@ -106,7 +107,8 @@ export class TiledFeatureComponent<
 })
 export class MapFeatureComponent
   extends TileObjectBehavior
-  implements AfterViewInit, OnDestroy {
+  implements AfterViewInit, OnDestroy
+{
   @Input() set feature(value: TiledMapFeatureData) {
     this._feature$.next(value);
   }
@@ -123,13 +125,11 @@ export class MapFeatureComponent
 
   @Output() onClose: EventEmitter<TiledFeatureComponent> = new EventEmitter();
 
-  private _featureComponent$: Subject<TiledFeatureComponent> = new ReplaySubject<
-    TiledFeatureComponent
-  >(1);
+  private _featureComponent$: Subject<TiledFeatureComponent> =
+    new ReplaySubject<TiledFeatureComponent>(1);
 
-  private _feature$: BehaviorSubject<TiledMapFeatureData> = new BehaviorSubject<
-    TiledMapFeatureData
-  >(null);
+  private _feature$: BehaviorSubject<TiledMapFeatureData> =
+    new BehaviorSubject<TiledMapFeatureData>(null);
 
   feature$: Observable<TiledMapFeatureData> = this._feature$;
 

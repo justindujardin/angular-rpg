@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
+import * as _ from 'underscore';
 import { AppState } from '../../../../app.model';
 import {
   CombatClearStatusAction,
   CombatSetStatusAction,
 } from '../../../../models/combat/combat.actions';
-import * as _ from 'underscore';
 import { Entity } from '../../../../models/entity/entity.model';
 import { CombatComponent } from '../../combat.component';
 import { CombatMachineState } from '../../states/combat-base.state';

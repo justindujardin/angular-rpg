@@ -173,3 +173,8 @@ export const ARMOR_DATA: ITemplateArmor[] = [
     elements: ['water'],
   },
 ];
+
+/** Get an armor descriptor given its id value */
+export function getArmorById(id: string): ITemplateArmor | null {
+  return ARMOR_DATA.find((item) => item.id === id);
+}

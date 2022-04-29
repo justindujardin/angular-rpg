@@ -1,7 +1,6 @@
 import { calculateDamage, PartyMechanics } from './mechanics';
 import { Club, Imp, Ranger, Slingshot, Warrior } from './mechanics.mock';
 
-
 describe('Game Mechanics', () => {
   describe('PartyMechanics', () => {
     describe('getAttack', () => {

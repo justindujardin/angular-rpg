@@ -28,7 +28,8 @@ import { CombatPlayerRenderBehaviorComponent } from './behaviors/combat-player-r
 })
 export class CombatPlayerComponent
   extends GameEntityObject
-  implements AfterViewInit, OnDestroy {
+  implements AfterViewInit, OnDestroy
+{
   @ViewChildren('render,animation,attack,magic,guard,item,run')
   behaviors: QueryList<SceneObjectBehavior>;
 
@@ -39,7 +40,6 @@ export class CombatPlayerComponent
   @Input() icon: string;
   @Input() scene: Scene;
   @Input() combat: any; // CombatComponent - flirts with circular imports
-
 
   ngAfterViewInit(): void {
     this.scene.addObject(this);

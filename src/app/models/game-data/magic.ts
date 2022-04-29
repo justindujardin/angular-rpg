@@ -1,4 +1,4 @@
-import { ITemplateMagic } from '../game-data.model';
+import { ITemplateMagic } from './game-data.model';
 
 export const MAGIC_DATA: ITemplateMagic[] = [
   {
@@ -36,3 +36,8 @@ export const MAGIC_DATA: ITemplateMagic[] = [
     benefit: true,
   },
 ];
+
+/** Get a magic descriptor given its id value */
+export function getMagicById(id: string): ITemplateMagic | null {
+  return MAGIC_DATA.find((item) => item.id === id);
+}
