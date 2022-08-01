@@ -131,6 +131,9 @@ export class CombatEffects {
         if (data.type === 'fixed') {
           this.store.dispatch(new GameStateSetKeyDataAction(data.id, true));
         }
+
+        // Save game
+        this.store.dispatch(new GameStateSaveAction());
         return () => {
           // No cleanup
         };
