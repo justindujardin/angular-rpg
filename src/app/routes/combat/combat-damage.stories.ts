@@ -37,7 +37,7 @@ interface IDamageListItem {
   `,
 })
 class DamageStoryWrapper {
-  @Input() damages: IDamageListItem[] = [];
+  @Input() damages: IDamageListItem[];
   @ViewChild(CombatDamageComponent) damageComponent: CombatDamageComponent;
 
   expireDamage(damage: IDamageListItem) {
@@ -70,4 +70,4 @@ const Template: Story<ICombatDamageInputs> = (args: Partial<ICombatDamageInputs>
 });
 
 export const Basic = Template.bind({});
-Basic.args = {};
+Basic.args = { damages: [] };
