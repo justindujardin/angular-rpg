@@ -1,3 +1,16 @@
+## [0.1.6](https://github.com/justindujardin/angular-rpg/compare/v0.1.5...v0.1.6) (2022-08-08)
+
+
+### Features
+
+* **angular:** update material to 14.x ([30999dc](https://github.com/justindujardin/angular-rpg/commit/30999dce69922f7b10f9028b9de22347ad973c15))
+* **angular:** update to 13.x ([d83a582](https://github.com/justindujardin/angular-rpg/commit/d83a582afdcb15b7a89316aa06aad2be966f5f17))
+* **angular:** update to 14.x ([1531b8b](https://github.com/justindujardin/angular-rpg/commit/1531b8baa660fac1cdca0eb2c5225737b7336b90))
+* **karma:** update to karma-coverage library for test coverage ([5fce0be](https://github.com/justindujardin/angular-rpg/commit/5fce0be4b27575b982c4e2948cdb78489380ecad))
+* **ngrx:** update for angular 13.x ([0a055f9](https://github.com/justindujardin/angular-rpg/commit/0a055f92ca8ad494ef9791c763a697362a8c1221))
+* **ngrx:** update to 14.x ([afbb6f5](https://github.com/justindujardin/angular-rpg/commit/afbb6f5be6cae1745fd7f785c4f21ab4108abc92))
+* **storybook:** update to 6.x ([8e7cd79](https://github.com/justindujardin/angular-rpg/commit/8e7cd79e19112b8084fb875e735b557654e59c1b))
+
 ## [0.1.5](https://github.com/justindujardin/angular-rpg/compare/v0.1.4...v0.1.5) (2022-04-29)
 
 
