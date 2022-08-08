@@ -68,7 +68,6 @@
     "jquery": "^3.5.1",
     "postcss": "^8.3.6",
     "rxjs": "~6.6.6",
-    "tabletop": "^1.6.3",
     "tslib": "^2.0.0",
     "typed-immutable-record": "0.0.6",
     "underscore": "~1.12.1",
