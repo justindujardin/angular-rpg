@@ -8,7 +8,6 @@ import { entityFromJSON } from './entity/entity.reducer';
 import { GameStateLoadSuccessAction } from './game-state/game-state.actions';
 import * as fromGameState from './game-state/game-state.reducer';
 import { gameStateFromJSON } from './game-state/game-state.reducer';
-import { rpgLogger } from './logger';
 import * as fromSprites from './sprites/sprites.reducer';
 import { spritesFromJSON } from './sprites/sprites.reducer';
 
@@ -33,7 +32,7 @@ export const reducers: ActionReducerMap<State> = {
 };
 
 export const metaReducers: MetaReducer<State>[] = !environment.production
-  ? [stateSetter, rpgLogger]
+  ? [stateSetter /*rpgLogger*/]
   : [stateSetter];
 
 ///

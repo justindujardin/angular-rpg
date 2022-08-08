@@ -29,12 +29,18 @@ export class RPGSpriteComponent {
 
   @Input()
   set width(value: string) {
-    this._width$.next(value);
+    if (this._width$.value !== value) {
+      this._width$.next(value);
+      this._get(this._name$.value);
+    }
   }
 
   @Input()
   set height(value: string) {
-    this._height$.next(value);
+    if (this._height$.value !== value) {
+      this._height$.next(value);
+      this._get(this._name$.value);
+    }
   }
 
   @Input()

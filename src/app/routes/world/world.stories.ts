@@ -22,7 +22,7 @@ class Wrapper implements AfterViewInit {
   constructor(public store: Store<AppState>, public loadingService: LoadingService) {}
   @Input() debug: boolean;
   @Input() location: string = 'town';
-  @Input() position: IPoint = { x: 12, y: 8 };
+  @Input() position: IPoint;
   ngAfterViewInit(): void {
     const warrior = new Warrior();
     const initialState: GameState = {
@@ -59,19 +59,19 @@ const Template: Story<any> = (args: Partial<any>) => ({
 });
 
 export const Castle = Template.bind({});
-Castle.args = { location: 'castle' };
+Castle.args = { location: 'castle', position: { x: 12, y: 8 } };
 
 export const Crypt = Template.bind({});
 Crypt.args = { location: 'crypt', position: { x: 5, y: 30 } };
 
 export const Isle = Template.bind({});
-Isle.args = { location: 'isle' };
+Isle.args = { location: 'isle', position: { x: 12, y: 8 } };
 
 export const Keep = Template.bind({});
-Keep.args = { location: 'keep' };
+Keep.args = { location: 'keep', position: { x: 12, y: 8 } };
 
 export const Ruins = Template.bind({});
-Ruins.args = { location: 'ruins' };
+Ruins.args = { location: 'ruins', position: { x: 12, y: 8 } };
 
 export const Sewer = Template.bind({});
 Sewer.args = { location: 'sewer', position: { x: 21, y: 1 } };
@@ -86,16 +86,16 @@ export const TowerFloorThree = Template.bind({});
 TowerFloorThree.args = { location: 'tower3', position: { x: 8, y: 8 } };
 
 export const Town = Template.bind({});
-Town.args = { location: 'town' };
+Town.args = { location: 'town', position: { x: 12, y: 8 } };
 
 export const Village = Template.bind({});
-Village.args = { location: 'village' };
+Village.args = { location: 'village', position: { x: 12, y: 8 } };
 
 export const Wilderness = Template.bind({});
-Wilderness.args = { location: 'wilderness' };
+Wilderness.args = { location: 'wilderness', position: { x: 12, y: 8 } };
 
 export const FortressOne = Template.bind({});
-FortressOne.args = { location: 'fortress1' };
+FortressOne.args = { location: 'fortress1', position: { x: 12, y: 8 } };
 
 export const FortressTwo = Template.bind({});
 FortressTwo.args = { location: 'fortress2' };

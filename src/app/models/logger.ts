@@ -1,5 +1,4 @@
 import * as Immutable from 'immutable';
-import { storeLogger } from 'ngrx-store-logger';
 
 /**
  * Possible types for values that need to be lazily evaluated
@@ -30,24 +29,3 @@ class DeferredValue {
     }
   }
 }
-
-/**
- * Logger middleware that plays nice with the large RPG data state tree.
- */
-export const rpgLogger = storeLogger({
-  collapsed: true,
-  stateTransformer: (state: any) => {
-    // This is called for actions and for meta entries with timing data. Ignore those.
-    if (state.action && state.nextState) {
-      return state;
-    }
-    // Immutable objects are not very easy to navigate in the console, so we lazily convert
-    // them toJS for inspection. This makes sure the logger doesn't bog down the app with
-    // large state trees.
-    const result = {};
-    Object.keys(state).forEach((k: string) => {
-      result[k] = new DeferredValue(state[k]);
-    });
-    return result;
-  },
-});
