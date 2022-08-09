@@ -1,5 +1,10 @@
 <div layout="row" layout-padding class="dialog" *ngIf="active$ | async">
   <rpg-sprite class="character" [name]="icon$ | async"></rpg-sprite>
+  <rpg-sprite
+    class="character"
+    [name]="altIcon$ | async"
+    *ngIf="altIcon$ | async"
+  ></rpg-sprite>
   <div flex class="body-text">
     <p [innerText]="title$ | async"></p>
     <span class="text" [innerText]="text$ | async"></span>
