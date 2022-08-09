@@ -114,6 +114,17 @@
     <property name="id" value="forstress-floor1-money"/>
    </properties>
   </object>
+  <object id="16" name="DungeonExitPortal" type="PortalFeatureComponent" x="128" y="432" width="16" height="16">
+   <properties>
+    <property name="after" value="goblin-king"/>
+    <property name="icon" value="doorway.png"/>
+    <property name="id" value="fortress-exit"/>
+    <property name="target" value="fortress1"/>
+    <property name="targetX" value="8"/>
+    <property name="targetY" value="23"/>
+    <property name="transitionType" value="fortress2"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="3" name="Zones" visible="0">
   <object id="11" name="world-plains" type="danger-zone" x="208" y="128" width="144" height="240"/>
