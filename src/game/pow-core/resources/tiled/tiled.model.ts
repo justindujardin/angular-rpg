@@ -31,6 +31,7 @@ export interface ITiledObject<PropertiesType = any> extends ITiledBase {
   type?: string;
   gid?: number;
   color?: string;
+  sets?: string;
 }
 
 export interface ITileSetDependency {

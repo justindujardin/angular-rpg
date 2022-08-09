@@ -162,9 +162,12 @@ export interface ITemplateEnemy extends ITemplateId {
  * A Combat encounter descriptor.  Used to describe the configuration of combat.
  */
 export interface ITemplateEncounter extends ITemplateId {
-  readonly id: string; // unique id in spreadsheet
-  readonly enemies: string[]; // array of enemies in this encounter
-  readonly message?: string[]; // message to display when combat begins
+  /** Unique ID */
+  readonly id: string;
+  /** array of enemies in this encounter */
+  readonly enemies: string[];
+  /** message to display when combat begins */
+  readonly message?: string[];
 }
 
 /**

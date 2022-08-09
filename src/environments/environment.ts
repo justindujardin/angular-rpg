@@ -4,6 +4,10 @@
 
 export const environment = {
   production: false,
+  /** Add support for redux devtools extension when true */
+  useDevTools: true,
+  /** Force refetching of sprite sheet metadata even when it's already present in a save file */
+  alwaysLoadSprites: true,
 };
 
 /*

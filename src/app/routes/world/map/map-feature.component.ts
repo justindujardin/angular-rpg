@@ -68,7 +68,7 @@ export class TiledFeatureComponent<
   feature$: Observable<TiledMapFeatureData> = this._feature$;
 
   get properties(): any {
-    return this._feature$.value ? this._feature$.value.properties || {} : {};
+    return this._feature$.value?.properties || {};
   }
 
   protected assertFeature() {

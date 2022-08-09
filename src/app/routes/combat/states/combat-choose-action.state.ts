@@ -106,7 +106,7 @@ export class CombatChooseActionStateComponent
     distinctUntilChanged()
   );
 
-  private _timerSubscription: Subscription;
+  private _timerSubscription?: Subscription;
 
   constructor(
     private renderer: Renderer2,
@@ -133,7 +133,7 @@ export class CombatChooseActionStateComponent
   }
 
   ngOnDestroy(): void {
-    this._timerSubscription.unsubscribe();
+    this._timerSubscription?.unsubscribe();
   }
 
   enter(machine: CombatStateMachineComponent) {

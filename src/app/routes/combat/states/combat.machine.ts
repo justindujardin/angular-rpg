@@ -125,7 +125,7 @@ export class CombatStateMachineComponent
     Immutable.List([])
   );
 
-  private _subscription: Subscription;
+  private _subscription?: Subscription;
 
   @Input() scene: Scene;
   @Input() encounter: CombatEncounter;
@@ -137,7 +137,7 @@ export class CombatStateMachineComponent
   @ViewChildren('start,beginTurn,chooseAction,endTurn,defeat,victory,escape')
   childStates: QueryList<CombatMachineState>;
   ngOnDestroy(): void {
-    this._subscription.unsubscribe();
+    this._subscription?.unsubscribe();
   }
 
   ngAfterViewInit(): void {

@@ -59,6 +59,17 @@ export const FIXED_ENCOUNTERS_DATA: ITemplateFixedEncounter[] = [
       'A Goblin spiritual leader of some variety shouts curses as you approach!',
     ],
   },
+  {
+    id: 'goblin-king',
+    enemies: ['goblin-king', 'goblin-wizard', 'goblin-spear', 'goblin-archer'],
+    experience: 200,
+    gold: 100,
+    items: ['goblin-crossbow'],
+    message: [
+      'You face your enemy, the King of the Goblins!',
+      'He is enormous and flanked by well-equipped soldiers.',
+    ],
+  },
 ];
 
 /** Get a fixed encounter descriptor given its id value */
