@@ -90,52 +90,48 @@
     <property name="text" value="We are struggling under the weight of endless Goblin assaults! It is believed that a powerful and ambitious Goblin King in the Eastern edge of the forest is behind the attacks."/>
     <property name="title" value="Elvish Elder"/>
     <property name="type" value="sign"/>
-    <property name="until" value="goblinDone"/>
+    <property name="until" value="goblin-king"/>
    </properties>
   </object>
   <object name="Elvish Elder" type="DialogFeatureComponent" x="256" y="272" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
-    <property name="after" value="goblinDone"/>
+    <property name="after" value="goblin-king"/>
     <property name="icon" value="gnome2.png"/>
     <property name="text" value="Tales of your heroism will be sung by the Elvish people for all of eternity! Now sail the Wandering Sea and discover if even greater deeds await you."/>
     <property name="title" value="Elvish Elder"/>
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="Elvish Councillor" type="dispatch" x="240" y="272" width="16" height="16">
+  <object name="Elvish Councillor" type="DialogFeatureComponent" x="240" y="272" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="altIcon" value="goldKey.png"/>
     <property name="icon" value="gnomeKing.png"/>
-    <property name="sets" value=""/>
+    <property name="sets" value="goblin-fortress-key"/>
     <property name="text" value="Welcome, heroes of Bryarlake. The Goblin King in the fortress in the eastern edge of the forest must be stopped! Will you take this key, sneak into the fortress, and defeat the king?"/>
     <property name="title" value="Elvish Councillor"/>
-    <property name="type" value="dispatch"/>
-    <property name="until" value="goblinStart"/>
+    <property name="until" value="goblin-fortress-key"/>
+   </properties>
+  </object>
+  <object name="Elvish Councillor" type="DialogFeatureComponent" x="240" y="272" width="16" height="16">
+   <properties>
+    <property name="after" value="goblin-fortress-key"/>
+    <property name="icon" value="gnomeKing.png"/>
+    <property name="text" value="Please make haste to defeat the Goblin King in his fortress at the eastern extent of Nothian Forest!"/>
+    <property name="title" value="Elvish Councillor"/>
+    <property name="type" value="sign"/>
+    <property name="until" value="goblin-king"/>
    </properties>
   </object>
   <object name="Elvish Councillor" type="DialogFeatureComponent" x="240" y="272" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
-    <property name="after" value="goblinStart"/>
-    <property name="icon" value="gnomeKing.png"/>
-    <property name="text" value="Please make haste to defeat the Goblin King in his fortress at the eastern extent of Nothian Forest!"/>
-    <property name="title" value="Elvish Councillor"/>
-    <property name="type" value="sign"/>
-    <property name="until" value="goblinDone"/>
-   </properties>
-  </object>
-  <object name="Elvish Councillor" type="dispatch" x="240" y="272" width="16" height="16">
-   <properties>
-    <property name="action" value="TALK"/>
-    <property name="after" value="goblinDone"/>
+    <property name="after" value="goblin-king"/>
     <property name="altIcon" value="rolledScroll.png"/>
     <property name="icon" value="gnomeKing.png"/>
     <property name="sets" value="castleStart"/>
     <property name="text" value="Your brave acts are enough for many lifetimes, yet we urge you to take this scroll by sea to the Great Suvian Desert, where the proud people of Castle Bashgar are in great danger. A boat is prepared for you outside the city, will you go?"/>
     <property name="title" value="Elvish Councillor"/>
-    <property name="type" value="dispatch"/>
     <property name="until" value="castleStart"/>
    </properties>
   </object>
@@ -160,14 +156,13 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="chest.png" type="CombatFeatureComponent" x="240" y="256" width="16" height="16">
+  <object name="chest.png" type="TreasureFeatureComponent" x="240" y="256" width="16" height="16">
    <properties>
-    <property name="after" value="goblinDone"/>
+    <property name="after" value="goblin-king"/>
     <property name="creatures" value=""/>
-    <property name="gold" value="35"/>
+    <property name="gold" value="75"/>
     <property name="icon" value="chest.png"/>
-    <property name="id" value="goblinReward"/>
-    <property name="items" value=""/>
+    <property name="id" value="goblin-reward"/>
     <property name="text" value="The elves reward you for your defeat of the Goblin King!"/>
    </properties>
   </object>

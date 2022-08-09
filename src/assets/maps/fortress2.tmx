@@ -3,7 +3,7 @@
   xmlns="http://www.w3.org/1999/xhtml" version="1" orientation="orthogonal" width="25" height="25" tilewidth="16" tileheight="16">
   <properties>
     <property name="combat" value="true"></property>
-    <property name="combatZone" value="zone-dungeon"></property>
+    <property name="combatZone" value="zone-goblin-fortress"/>
   </properties>
   <tileset firstgid="1" source="tiles/environment.tsx"></tileset>
   <layer name="Terrain" width="25" height="25" opacity="1">
@@ -34,18 +34,12 @@
         <property name="type" value="encounter"></property>
       </properties>
     </object>
-    <object name="goblinKing.png" type="CombatFeatureComponent" x="128" y="368" width="16" height="16">
+    <object id="3" name="goblinKing.png" class="CombatFeatureComponent" x="128" y="368" width="16" height="16">
       <properties>
-        <property name="creatures"></property>
-        <property name="gold" value="23"></property>
-        <property name="icon" value="goblinKing.png"></property>
-        <property name="id" value="pitsKing2"></property>
-        <property name="items"></property>
-        <property name="sets" value="goblinDone"></property>
-        <property name="text" value="You face your enemy, the King of the Goblins! He is enormous and flanked by well-equipped soldiers."></property>
-        <property name="type" value="encounter"></property>
+        <property name="icon" value="goblinKing.png"/>
+        <property name="id" value="goblin-king"/>
       </properties>
-    </object>
+    </object> 
     <object name="fortress1" type="PortalFeatureComponent" x="368" y="192" width="16" height="16">
       <properties>
         <property name="icon" value="doorway.png"></property>
@@ -58,5 +52,8 @@
         <property name="y" value="12"></property>
       </properties>
     </object>
+  </objectgroup>
+  <objectgroup id="4" name="Zones">
+    <object id="5" name="zone-dungeon" class="danger-zone" x="0" y="0" width="400" height="400"/>
   </objectgroup>
 </map>

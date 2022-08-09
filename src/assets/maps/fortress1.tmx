@@ -22,7 +22,7 @@
 9,9,9,9,33,9,9,9,9,33,9,33,9,46,46,46,46,37,46,46,46,9,9,57,57,57,57,57,
 9,9,9,9,33,9,9,9,9,33,9,33,9,46,46,46,46,46,46,9,9,9,9,57,57,57,46,46,
 9,9,9,9,33,9,9,9,9,33,9,33,9,46,46,37,33,33,33,9,33,33,9,57,37,46,46,46,
-9,9,9,9,33,9,9,9,9,33,9,33,33,33,33,33,33,17,33,24,33,33,24,46,46,46,46,46,
+9,9,9,9,33,9,9,9,9,33,9,33,33,33,33,33,33,17,33,33,33,33,24,46,46,46,46,46,
 9,9,9,9,33,9,9,9,9,33,9,9,9,46,46,37,33,33,33,9,33,33,9,57,37,46,46,46,
 9,9,9,33,33,9,9,9,9,33,9,9,9,46,46,46,46,46,46,9,9,9,9,57,57,57,46,46,
 9,9,33,33,9,9,9,33,33,33,9,9,9,46,46,46,46,37,46,46,46,9,9,57,57,57,57,57,
@@ -79,26 +79,15 @@
     <property name="id" value="fortress-wizard"/>
    </properties>
   </object>
-  <object id="6" name="Gate" type="barrier" x="304" y="240" width="16" height="16">
+  <object id="7" name="LockedGate" type="DoorFeatureComponent" x="304" y="240" width="16" height="16">
    <properties>
     <property name="icon" value="dungeonGate.png"/>
-    <property name="text" value="There is no way to slip past the heavy gate!"/>
-    <property name="title" value="Gate"/>
-    <property name="type" value="barrier"/>
-    <property name="until" value="goblinStart"/>
-   </properties>
-  </object>
-  <object id="7" name="Unlocked" type="alert" x="304" y="240" width="16" height="16">
-   <properties>
-    <property name="after" value="goblinStart"/>
-    <property name="altIcon" value="goldKey.png"/>
-    <property name="icon" value="dungeonGate.png"/>
-    <property name="sets" value="alertGoblinKey"/>
-    <property name="text" value="You use the golden key provided by the Elves to unlock the heavy gate."/>
-    <property name="title" value="Unlocked"/>
-    <property name="type" value="alert"/>
-    <property name="until" value="alertGoblinKey"/>
-    <property name="y" value="15"/>
+    <property name="id" value="goblin-fortress-front-gate"/>
+    <property name="lockedText" value="A heavy locked gate. Perhaps someone in the nearby port can help."/>
+    <property name="requiredKey" value="goblin-fortress-key"/>
+    <property name="title" value="Goblin Fortress"/>
+    <property name="unlockText" value="You use the golden key provided by the Elves to unlock the heavy gate."/>
+    <property name="until" value="goblin-fortress-front-gate"/>
    </properties>
   </object>
   <object id="8" name="fortress2" type="PortalFeatureComponent" x="48" y="48" width="16" height="16">

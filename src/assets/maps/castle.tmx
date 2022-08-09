@@ -38,15 +38,6 @@
     <property name="type" value="block"/>
    </properties>
   </object>
-  <object name="Guard" type="barrier" x="272" y="192" width="16" height="16">
-   <properties>
-    <property name="icon" value="guard2.png"/>
-    <property name="text" value="The Castle is closed to all but heroes of the Three Kingdoms! Prove yourself elsewhere before demanding an audience of the Suvian King!"/>
-    <property name="title" value="Guard"/>
-    <property name="type" value="barrier"/>
-    <property name="until" value="goblinDone"/>
-   </properties>
-  </object>
   <object name="Guard" type="DialogFeatureComponent" x="240" y="80" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
