@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { environment } from 'environments/environment';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { ResourceManager } from '../../game/pow-core/resource-manager';
@@ -39,9 +40,10 @@ export class GameWorld extends World {
     super();
     _sharedGameWorld = this;
     if (this.gameStateService.hasSaveGame()) {
+      if (environment.alwaysLoadSprites) {
+        this.store.dispatch(new SpritesLoadAction('assets/images/index.json'));
+      }
       this.store.dispatch(new GameStateLoadAction());
-      // this.store.dispatch(new GameDataClearAction());
-      // this.store.dispatch(new GameDataFetchAction(SPREADSHEET_ID));
     } else {
       this.store.dispatch(new SpritesLoadAction('assets/images/index.json'));
     }
