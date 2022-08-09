@@ -31,13 +31,6 @@ export class DialogFeatureComponent extends TiledFeatureComponent {
   @Output() onClose = new EventEmitter();
   active$: Observable<boolean>;
 
-  /** Any game data values to set in this dialog */
-  sets$: Observable<string> = this.feature$.pipe(
-    map((f: TiledMapFeatureData) => {
-      return f.properties.sets;
-    })
-  );
-
   /** The dialog text */
   text$: Observable<string> = this.feature$.pipe(
     map((f: TiledMapFeatureData) => {
