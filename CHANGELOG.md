@@ -1,3 +1,19 @@
+## [0.1.7](https://github.com/justindujardin/angular-rpg/compare/v0.1.6...v0.1.7) (2022-08-09)
+
+
+### Bug Fixes
+
+* **dialog-feature-component:** setting game events and showing alt icons ([6b0799c](https://github.com/justindujardin/angular-rpg/commit/6b0799c88012076a2b62fe27fde8fd481deeeade))
+* **game:** port town and goblin fortress questline ([4e4fb65](https://github.com/justindujardin/angular-rpg/commit/4e4fb65ea92353dbb752ab430b62eb3a33c21c46))
+* **ship:** restore ship animations ([bf4f2b6](https://github.com/justindujardin/angular-rpg/commit/bf4f2b65942282d769468becefac74f17e1d4ca6))
+
+
+### Features
+
+* **devtools:** support redux devtools with `useDevTools` ([f49b027](https://github.com/justindujardin/angular-rpg/commit/f49b027b11bffbf81f981ea9efb26193302bca75))
+* **environment:** add `alwaysLoadSprites` to force reloading sprite sheets ([e40f855](https://github.com/justindujardin/angular-rpg/commit/e40f8554b1f8250dd7b89dda468ded9fed027bba))
+* **goblin-fortress:** add escape passage after goblin-king fight ([f49405f](https://github.com/justindujardin/angular-rpg/commit/f49405f0658551a5904d40ab5b71e5222fd8f76c))
+
 ## [0.1.6](https://github.com/justindujardin/angular-rpg/compare/v0.1.5...v0.1.6) (2022-08-08)
 
 
