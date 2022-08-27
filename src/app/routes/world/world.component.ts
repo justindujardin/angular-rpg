@@ -19,6 +19,7 @@ import { TileMapPathBehavior } from '../../../game/pow2/tile/behaviors/tile-map-
 import { TileMap } from '../../../game/pow2/tile/tile-map';
 import { TileMapView } from '../../../game/pow2/tile/tile-map-view';
 import { AppState } from '../../app.model';
+import { DebugMenuComponent } from '../../components/debug-menu/debug-menu.component';
 import { LoadingService } from '../../components/loading/loading.service';
 import { NotificationService } from '../../components/notification/notification.service';
 import { PartyMenuComponent } from '../../components/party-menu/party-menu.component';
@@ -43,6 +44,7 @@ import { WorldMapComponent } from './map/world-map.entity';
 export class WorldComponent extends TileMapView implements AfterViewInit, OnDestroy {
   @ViewChild('worldCanvas') canvasElementRef: ElementRef;
   @ViewChild(PartyMenuComponent) partyMenu: PartyMenuComponent;
+  @ViewChild(DebugMenuComponent) debugMenu: DebugMenuComponent;
 
   /**
    * Whether to render debug view information
@@ -64,6 +66,8 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
       }
     } else if (event.key === '1') {
       this.debug = !this.debug;
+    } else if (event.key === '2') {
+      this.debugMenu.open = !this.debugMenu.open;
     }
   }
 

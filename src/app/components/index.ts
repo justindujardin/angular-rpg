@@ -21,9 +21,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RPG_DEBUG_MENU_EXPORTS } from './debug-menu/index';
 import { RPG_HEALTH_BAR_EXPORTS } from './health-bar/index';
 import { RPG_LOADING_EXPORTS, RPG_LOADING_PROVIDERS } from './loading/index';
 import {
@@ -47,6 +49,7 @@ export * from './sprite/index';
 
 /** Common game/application components */
 export const APP_COMPONENTS_EXPORTS = [
+  ...RPG_DEBUG_MENU_EXPORTS,
   ...RPG_HEALTH_BAR_EXPORTS,
   ...RPG_LOADING_EXPORTS,
   ...RPG_NOTIFICATION_EXPORTS,
@@ -71,6 +74,7 @@ export const APP_COMPONENTS_PROVIDERS = [
     BrowserAnimationsModule,
     CommonModule,
     FlexLayoutModule,
+    MatSelectModule,
     MatSidenavModule,
     MatIconModule,
     MatListModule,
