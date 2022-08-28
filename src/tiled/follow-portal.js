@@ -4,12 +4,7 @@
  * follow-portal.js
  *
  * This extension adds a 'Follow Warp' (Ctrl+F) action to the Map
- * menu, which can be used to jump to the destination of a selected warp object
- * (as used on maps made for Source of Tales - http://sourceoftales.org/).
- *
- * Warps are common in games and there are of course many ways to implement
- * them, so this script is unlikely to work in your particular project. But
- * with some adjustments it probably could!
+ * menu, which jumps to the destination of a selected Door / Portal feature object
  */
 
 /* global tiled */
@@ -18,13 +13,11 @@ const followWarp = tiled.registerAction("FollowPortal", function (/* action */) 
   /** @type TileMap */
   const map = tiled.activeAsset;
   if (!map.isTileMap) {
-    tiled.alert("Not a tile map!");
     return;
   }
 
   const selectedObject = map.selectedObjects[0];
   if (!selectedObject) {
-    tiled.alert("No object selected!");
     return;
   }
 
