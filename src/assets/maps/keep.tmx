@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="23" height="23" tilewidth="16" tileheight="16">
+<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="23" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="18">
  <tileset firstgid="1" source="tiles/environment.tsx"/>
- <layer name="Terrain" width="23" height="23">
+ <layer id="1" name="Terrain" width="23" height="23">
   <data encoding="csv">
 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
 9,33,33,33,9,9,9,9,9,9,33,33,33,9,9,9,9,9,9,33,33,33,9,
@@ -28,8 +28,8 @@
 49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49
 </data>
  </layer>
- <objectgroup draworder="topdown" name="Features" width="23" height="23">
-  <object name="wilderness" type="PortalFeatureComponent" x="176" y="272" width="16" height="16">
+ <objectgroup id="2" name="Features">
+  <object id="1" name="wilderness" class="PortalFeatureComponent" x="176" y="272" width="16" height="16">
    <properties>
     <property name="icon" value="dungeonGate.png"/>
     <property name="target" value="wilderness"/>
@@ -39,12 +39,12 @@
     <property name="transitionType" value="outdoor"/>
    </properties>
   </object>
-  <object type="block" x="176" y="288" width="16" height="16" visible="0">
+  <object id="2" class="block" x="176" y="288" width="16" height="16" visible="0">
    <properties>
     <property name="type" value="block"/>
    </properties>
   </object>
-  <object name="Guard" type="barrier" x="208" y="272" width="16" height="16">
+  <object id="3" name="Guard" class="barrier" x="208" y="272" width="16" height="16">
    <properties>
     <property name="icon" value="dwarfGuard.png"/>
     <property name="text" value="During times of war, the Keep is off duty to all but those with Royal Decree!"/>
@@ -53,7 +53,7 @@
     <property name="until" value="keepStart"/>
    </properties>
   </object>
-  <object name="Guard" type="alert" x="144" y="272" width="16" height="16">
+  <object id="4" name="Guard" class="alert" x="144" y="272" width="16" height="16">
    <properties>
     <property name="after" value="keepStart"/>
     <property name="altIcon" value="sigil.png"/>
@@ -65,7 +65,7 @@
     <property name="until" value="keepDone"/>
    </properties>
   </object>
-  <object name="Guard" type="DialogFeatureComponent" x="208" y="272" width="16" height="16">
+  <object id="5" name="Guard" class="DialogFeatureComponent" x="208" y="272" width="16" height="16">
    <properties>
     <property name="after" value="alertKeepSigil"/>
     <property name="icon" value="dwarfGuard.png"/>
@@ -74,7 +74,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="Chieftain" type="dispatch" x="176" y="16" width="16" height="16">
+  <object id="6" name="Chieftain" class="dispatch" x="176" y="16" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="altIcon" value="prism.png"/>
@@ -86,7 +86,7 @@
     <property name="until" value="towerStart"/>
    </properties>
   </object>
-  <object name="Chieftain" type="DialogFeatureComponent" x="176" y="16" width="16" height="16">
+  <object id="7" name="Chieftain" class="DialogFeatureComponent" x="176" y="16" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="after" value="towerStart"/>
@@ -97,7 +97,7 @@
     <property name="until" value="towerDone"/>
    </properties>
   </object>
-  <object name="Chieftain" type="dispatch" x="176" y="16" width="16" height="16">
+  <object id="8" name="Chieftain" class="dispatch" x="176" y="16" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="after" value="towerDone"/>
@@ -109,7 +109,7 @@
     <property name="until" value="vezuStart"/>
    </properties>
   </object>
-  <object name="Chieftain" type="DialogFeatureComponent" x="176" y="16" width="16" height="16">
+  <object id="9" name="Chieftain" class="DialogFeatureComponent" x="176" y="16" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="after" value="vezuStart"/>
@@ -120,7 +120,7 @@
     <property name="until" value="gameOver"/>
    </properties>
   </object>
-  <object name="Chieftain" type="DialogFeatureComponent" x="176" y="16" width="16" height="16">
+  <object id="10" name="Chieftain" class="DialogFeatureComponent" x="176" y="16" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="after" value="gameOver"/>
@@ -130,7 +130,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="Dwarf Elder" type="DialogFeatureComponent" x="160" y="176" width="16" height="16">
+  <object id="11" name="Dwarf Elder" class="DialogFeatureComponent" x="160" y="176" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="dwarf2.png"/>
@@ -140,7 +140,7 @@
     <property name="until" value="towerStart"/>
    </properties>
   </object>
-  <object name="Dwarf Elder" type="DialogFeatureComponent" x="160" y="176" width="16" height="16">
+  <object id="12" name="Dwarf Elder" class="DialogFeatureComponent" x="160" y="176" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="after" value="towerStart"/>
@@ -150,7 +150,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="chest.png" type="CombatFeatureComponent" x="176" y="32" width="16" height="16">
+  <object id="13" name="chest.png" class="CombatFeatureComponent" x="176" y="32" width="16" height="16">
    <properties>
     <property name="after" value="towerDone"/>
     <property name="creatures" value=""/>
@@ -161,7 +161,7 @@
     <property name="text" value="The Warvish citizenry have gathered together their wealth to support you in your great quest to defeat Vezu!"/>
    </properties>
   </object>
-  <object name="Dwarven Armors" type="StoreFeatureComponent" x="112" y="96" width="16" height="16">
+  <object id="14" name="Dwarven Armors" class="StoreFeatureComponent" x="112" y="96" width="16" height="16">
    <properties>
     <property name="buyRate" value="125"/>
     <property name="category" value="armor"/>
@@ -172,7 +172,7 @@
     <property name="sellRate" value="28"/>
    </properties>
   </object>
-  <object name="Dwarven Arms" type="StoreFeatureComponent" x="240" y="96" width="16" height="16">
+  <object id="15" name="Dwarven Arms" class="StoreFeatureComponent" x="240" y="96" width="16" height="16">
    <properties>
     <property name="buyRate" value="125"/>
     <property name="category" value="weapons"/>
@@ -183,7 +183,7 @@
     <property name="sellRate" value="28"/>
    </properties>
   </object>
-  <object name="Warvian Antiquities" type="StoreFeatureComponent" x="112" y="160" width="16" height="16">
+  <object id="16" name="Warvian Antiquities" class="StoreFeatureComponent" x="112" y="160" width="16" height="16">
    <properties>
     <property name="buyRate" value="125"/>
     <property name="category" value="misc"/>
@@ -194,7 +194,7 @@
     <property name="sellRate" value="25"/>
    </properties>
   </object>
-  <object name="Potions and Elixirs" type="StoreFeatureComponent" x="240" y="160" width="16" height="16">
+  <object id="17" name="Potions and Elixirs" class="StoreFeatureComponent" x="240" y="160" width="16" height="16">
    <properties>
     <property name="buyRate" value="115"/>
     <property name="category" value="misc"/>

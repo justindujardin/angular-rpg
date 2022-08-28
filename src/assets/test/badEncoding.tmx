@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="4" height="4" tilewidth="16" tileheight="16">
-  <tileset firstgid="1" source="example.tsx"/>
-  <layer name="TestLayer" width="4" height="4">
-    <data>
-      <tile gid="1"/>
-      <tile gid="1"/>
-      <tile gid="1"/>
-      <tile gid="1"/>
-      <tile gid="1"/>
-      <tile gid="1"/>
-      <tile gid="1"/>
-      <tile gid="1"/>
-      <tile gid="1"/>
-      <tile gid="1"/>
-      <tile gid="1"/>
-      <tile gid="1"/>
-      <tile gid="1"/>
-      <tile gid="1"/>
-      <tile gid="1"/>
-      <tile gid="1"/>
-    </data>
-  </layer>
-  <objectgroup draworder="topdown" name="TestObject" width="4" height="4">
-    <object name="example" x="0" y="0" width="64" height="64">
-      <properties>
-        <property name="result" value="OK"/>
-      </properties>
-    </object>
-  </objectgroup>
+<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="4" height="4" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="2">
+ <tileset firstgid="1" source="example.tsx"/>
+ <layer id="1" name="TestLayer" width="4" height="4">
+  <data>
+   <tile gid="1"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
+  </data>
+ </layer>
+ <objectgroup id="2" name="TestObject">
+  <object id="1" name="example" x="0" y="0" width="64" height="64">
+   <properties>
+    <property name="result" value="OK"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="25" height="19" tilewidth="16" tileheight="16">
+<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="25" height="19" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="6">
  <tileset firstgid="1" source="tiles/environment.tsx"/>
- <layer name="Terrain" width="25" height="19">
+ <layer id="1" name="Terrain" width="25" height="19">
   <data encoding="csv">
 18,18,40,40,40,18,18,40,40,40,40,40,40,40,40,18,18,18,18,18,18,18,18,18,18,
 18,40,40,40,40,18,18,40,40,40,40,40,40,40,40,40,40,40,40,40,18,18,18,18,18,
@@ -24,8 +24,8 @@
 18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18
 </data>
  </layer>
- <objectgroup name="Features" width="25" height="19">
-  <object name="wilderness" type="PortalFeatureComponent" x="272" y="160" width="16" height="16">
+ <objectgroup id="2" name="Features">
+  <object id="1" name="wilderness" class="PortalFeatureComponent" x="272" y="160" width="16" height="16">
    <properties>
     <property name="icon" value="bridgeVertical.png"/>
     <property name="target" value="wilderness"/>
@@ -35,7 +35,7 @@
     <property name="transitionType" value="outdoor"/>
    </properties>
   </object>
-  <object name="Pirate" type="DialogFeatureComponent" x="224" y="160" width="16" height="16">
+  <object id="2" name="Pirate" class="DialogFeatureComponent" x="224" y="160" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="pirate.png"/>
@@ -44,7 +44,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="Pirate" type="DialogFeatureComponent" x="112" y="208" width="16" height="16">
+  <object id="3" name="Pirate" class="DialogFeatureComponent" x="112" y="208" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="pirate2.png"/>
@@ -53,7 +53,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="Buccaneer's Bazaar" type="StoreFeatureComponent" x="128" y="112" width="16" height="16">
+  <object id="4" name="Buccaneer's Bazaar" class="StoreFeatureComponent" x="128" y="112" width="16" height="16">
    <properties>
     <property name="buyRate" value="130"/>
     <property name="groups" value="[&quot;default&quot;,&quot;water&quot;]"/>
@@ -63,7 +63,7 @@
     <property name="sellRate" value="25"/>
    </properties>
   </object>
-  <object name="ship.png" type="sign" x="272" y="176" width="16" height="16">
+  <object id="5" name="ship.png" class="sign" x="272" y="176" width="16" height="16">
    <properties>
     <property name="icon" value="ship.png"/>
     <property name="type" value="sign"/>

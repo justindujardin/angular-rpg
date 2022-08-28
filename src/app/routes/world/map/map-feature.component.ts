@@ -133,8 +133,8 @@ export class MapFeatureComponent
 
   feature$: Observable<TiledMapFeatureData> = this._feature$;
 
-  type$: Observable<TiledMapFeatureTypes> = this.feature$.pipe(
-    map((f) => f.type as TiledMapFeatureTypes)
+  class$: Observable<TiledMapFeatureTypes> = this.feature$.pipe(
+    map((f) => f.class as TiledMapFeatureTypes)
   );
 
   gameFeatureObject$: Observable<GameFeatureObject> = combineLatest(
@@ -144,7 +144,7 @@ export class MapFeatureComponent
         return null;
       }
       const options = Object.assign({}, data.properties || {}, {
-        type: data.type,
+        class: data.class,
         x: Math.round(data.x / this.tiledMap.tilewidth),
         y: Math.round(data.y / this.tiledMap.tileheight),
       });

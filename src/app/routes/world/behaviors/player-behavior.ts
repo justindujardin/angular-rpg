@@ -60,10 +60,10 @@ export class PlayerBehaviorComponent extends BasePlayerComponent {
     if (collision) {
       for (i = 0; i < results.length; i++) {
         const o = <GameFeatureObject>results[i];
-        if (o.passable === true || !o.type || !o.enabled) {
+        if (o.passable === true || !o.class || !o.enabled) {
           return false;
         }
-        if (_.indexOf(PlayerBehaviorComponent.COLLIDE_TYPES, o.type) !== -1) {
+        if (_.indexOf(PlayerBehaviorComponent.COLLIDE_TYPES, o.class) !== -1) {
           return true;
         }
       }
