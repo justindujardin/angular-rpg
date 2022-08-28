@@ -1,3 +1,13 @@
+## [0.1.8](https://github.com/justindujardin/angular-rpg/compare/v0.1.7...v0.1.8) (2022-08-28)
+
+
+### Features
+
+* **tiled:** add Ctrl-F shortcut to follow a selected map portal ([18d4271](https://github.com/justindujardin/angular-rpg/commit/18d42715071db835233f70da33821e840ba2f11b))
+* **tiled:** add Tiled editor project file ([7bbeb94](https://github.com/justindujardin/angular-rpg/commit/7bbeb94b5e22feeaa1681ae04c8f958060dee52f))
+* **tiled:** add Tiled property types for most map features ([6d91b32](https://github.com/justindujardin/angular-rpg/commit/6d91b324d9c893f5042ca50d0353a76ae49e7aaf))
+* **tiled:** update maps to 1.9.0 format ([2b0594e](https://github.com/justindujardin/angular-rpg/commit/2b0594e203e80074c18feee0d088f740ef829c31))
+
 ## [0.1.7](https://github.com/justindujardin/angular-rpg/compare/v0.1.6...v0.1.7) (2022-08-09)
 
 
