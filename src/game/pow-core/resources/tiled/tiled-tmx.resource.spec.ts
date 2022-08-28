@@ -69,7 +69,7 @@ describe('TiledTMXResource', () => {
         expect(o1.properties).toBeDefined();
         expect(o1.properties.result).toBe('OK');
         expect(o1.name).toBe('example');
-        expect(o1.type).toBe('box');
+        expect(o1.class).toBe('box');
 
         const xmlStr: string = resource.write();
         // Serialize as an XML string, and deserialize into object form.
@@ -91,7 +91,7 @@ describe('TiledTMXResource', () => {
             expect(o2.properties).toBeDefined();
             expect(o2.properties.result).toBe(o1.properties.result);
             expect(o2.name).toBe(o1.name);
-            expect(o2.type).toBe(o1.type);
+            expect(o2.class).toBe(o1.class);
 
             done();
           });
