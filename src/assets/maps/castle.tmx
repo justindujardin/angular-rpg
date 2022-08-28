@@ -40,92 +40,75 @@
   </object>
   <object id="3" name="Guard" class="DialogFeatureComponent" x="240" y="80" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="icon" value="tarrSoldier.png"/>
     <property name="text" value="Welcome to the royal court of the King in the South!"/>
     <property name="title" value="Guard"/>
-    <property name="type" value="sign"/>
    </properties>
   </object>
   <object id="4" name="Guard" class="DialogFeatureComponent" x="272" y="80" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="icon" value="tarrSoldier.png"/>
     <property name="text" value="Welcome, Westerners! Be sure to visit our great shops to purchase equipment and supplies for your travels."/>
     <property name="title" value="Guard"/>
-    <property name="type" value="sign"/>
    </properties>
   </object>
   <object id="5" name="King" class="DialogFeatureComponent" x="256" y="16" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="altIcon" value="rolledScroll.png"/>
     <property name="icon" value="emperor.png"/>
     <property name="sets" value="castleDone"/>
     <property name="text" value="This scroll carries foul tidings... if the Elves are right, then our sacred Ashvari Crypts have been overrun with evil magic. Talk to my viceroy, he will provide you with the key to the Crypts."/>
     <property name="title" value="King"/>
-    <property name="type" value="sign"/>
     <property name="until" value="cryptsStart"/>
    </properties>
   </object>
   <object id="6" name="King" class="DialogFeatureComponent" x="256" y="16" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="after" value="cryptsStart"/>
     <property name="icon" value="emperor.png"/>
     <property name="text" value="The evil unleashed by that volcano in the North is spreading throughout the Three Kingdoms... I fear the worst for my people."/>
     <property name="title" value="King"/>
-    <property name="type" value="sign"/>
     <property name="until" value="cryptsDone"/>
    </properties>
   </object>
-  <object id="7" name="King" class="dispatch" x="256" y="16" width="16" height="16">
+  <object id="7" name="King" class="DialogFeatureComponent" x="256" y="16" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="after" value="cryptsDone"/>
     <property name="altIcon" value="sigil.png"/>
     <property name="icon" value="emperor.png"/>
     <property name="sets" value="keepStart"/>
     <property name="text" value="We would feast for weeks in celebration of your victory, but you must warn the Dwarves in the Tundralands that Vezu has returned. Take this Sigil to Rogaard Keep so they know you have my blessing. Will you go?"/>
     <property name="title" value="King"/>
-    <property name="type" value="dispatch"/>
     <property name="until" value="keepStart"/>
    </properties>
   </object>
   <object id="8" name="King" class="DialogFeatureComponent" x="256" y="16" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="after" value="keepStart"/>
     <property name="icon" value="emperor.png"/>
     <property name="text" value="Please visit the Dwarves at Rogaard Keep at once! The Chieftan must be informed that Vezu seeks domination of our realm."/>
     <property name="title" value="King"/>
-    <property name="type" value="sign"/>
     <property name="until" value="keepDone"/>
    </properties>
   </object>
   <object id="9" name="King" class="DialogFeatureComponent" x="256" y="16" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="after" value="keepDone"/>
     <property name="icon" value="emperor.png"/>
     <property name="text" value="May your travels be blessed and fruitful, heroes of the realm."/>
     <property name="title" value="King"/>
-    <property name="type" value="sign"/>
    </properties>
   </object>
   <object id="10" name="Suvian Viceroy" class="DialogFeatureComponent" x="240" y="16" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="icon" value="oolanMaster.png"/>
     <property name="text" value="Welcome, brave heroes! We have been expecting you."/>
     <property name="title" value="Suvian Viceroy"/>
-    <property name="type" value="sign"/>
     <property name="until" value="castleDone"/>
    </properties>
   </object>
   <object id="11" name="Suvian Viceroy" class="dispatch" x="240" y="16" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="after" value="castleDone"/>
     <property name="altIcon" value="ancientKey.png"/>
     <property name="icon" value="oolanMaster.png"/>
@@ -138,26 +121,22 @@
   </object>
   <object id="12" name="Suvian Viceory" class="DialogFeatureComponent" x="240" y="16" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="after" value="cryptsStart"/>
     <property name="icon" value="oolanMaster.png"/>
     <property name="text" value="Travel North to the Crypts with haste, lest our ancestors souls be forever damned!"/>
     <property name="title" value="Suvian Viceory"/>
-    <property name="type" value="sign"/>
     <property name="until" value="cryptsDone"/>
    </properties>
   </object>
   <object id="13" name="Suvian Viceory" class="DialogFeatureComponent" x="240" y="16" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="after" value="cryptsDone"/>
     <property name="icon" value="oolanMaster.png"/>
     <property name="text" value="The Desert Peoples bestow upon you one thousand and one thanks for your bravery in the Crypts!"/>
     <property name="title" value="Suvian Viceory"/>
-    <property name="type" value="sign"/>
    </properties>
   </object>
-  <object id="14" name="chest.png" class="CombatFeatureComponent" x="256" y="32" width="16" height="16">
+  <object id="14" name="chest.png" class="TreasureFeatureComponent" x="256" y="32" width="16" height="16">
    <properties>
     <property name="after" value="cryptsDone"/>
     <property name="creatures" value=""/>
@@ -170,11 +149,9 @@
   </object>
   <object id="15" name="Citizen" class="DialogFeatureComponent" x="48" y="144" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="icon" value="tarrMan2.png"/>
     <property name="text" value="Since the volcano erupted in the North, the world has become increasingly evil and dangerous. Only the most stalwart adventurers can safely travel beyond the castle walls."/>
     <property name="title" value="Citizen"/>
-    <property name="type" value="sign"/>
    </properties>
   </object>
   <object id="16" name="Suvian Armors" class="StoreFeatureComponent" x="480" y="64" width="16" height="16">
@@ -212,13 +189,11 @@
   </object>
   <object id="19" name="Ashvari Apothecary" class="StoreFeatureComponent" x="64" y="128" width="16" height="16">
    <properties>
-    <property name="buyRate" value="120"/>
     <property name="category" value="magic"/>
     <property name="groups" value="default"/>
     <property name="icon" value="shop.png"/>
     <property name="level" value="2"/>
     <property name="name" value="Ashvari Apothecary"/>
-    <property name="sellRate" value="22"/>
    </properties>
   </object>
   <object id="20" name="temple.png" class="TempleFeatureComponent" x="64" y="32" width="16" height="16">
@@ -230,7 +205,6 @@
   <object id="21" name="well.png" class="sign" x="448" y="128" width="16" height="16">
    <properties>
     <property name="icon" value="well.png"/>
-    <property name="type" value="sign"/>
    </properties>
   </object>
  </objectgroup>

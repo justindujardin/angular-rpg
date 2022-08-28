@@ -48,7 +48,6 @@
   </object>
   <object id="3" name="Elvish Guard" class="DialogFeatureComponent" x="304" y="96" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="icon" value="gnome3.png"/>
     <property name="text" value="Welcome, travellers from the South."/>
     <property name="title" value="Elvish Guard"/>
@@ -57,7 +56,6 @@
   </object>
   <object id="4" name="Elvish Guard" class="DialogFeatureComponent" x="336" y="96" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="icon" value="gnome3.png"/>
     <property name="text" value="May your stay in Port Artha be peaceful and restful, despite the difficulty of these times."/>
     <property name="title" value="Elvish Guard"/>
@@ -66,7 +64,6 @@
   </object>
   <object id="5" name="Elf" class="DialogFeatureComponent" x="112" y="224" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="icon" value="gnome.png"/>
     <property name="text" value="We once sailed dozens of boats from this port. We traded with our kin, the Merfolk. But they have since become distrustful and aggressive, attacking all vessels that sail the Wandering Sea."/>
     <property name="title" value="Elf"/>
@@ -85,7 +82,6 @@
   </object>
   <object id="7" name="Elvish Elder" class="DialogFeatureComponent" x="256" y="272" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="icon" value="gnome2.png"/>
     <property name="text" value="We are struggling under the weight of endless Goblin assaults! It is believed that a powerful and ambitious Goblin King in the Eastern edge of the forest is behind the attacks."/>
     <property name="title" value="Elvish Elder"/>
@@ -95,7 +91,6 @@
   </object>
   <object id="8" name="Elvish Elder" class="DialogFeatureComponent" x="256" y="272" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="after" value="goblin-king"/>
     <property name="icon" value="gnome2.png"/>
     <property name="text" value="Tales of your heroism will be sung by the Elvish people for all of eternity! Now sail the Wandering Sea and discover if even greater deeds await you."/>
@@ -125,7 +120,6 @@
   </object>
   <object id="11" name="Elvish Councillor" class="DialogFeatureComponent" x="240" y="272" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="after" value="goblin-king"/>
     <property name="altIcon" value="rolledScroll.png"/>
     <property name="icon" value="gnomeKing.png"/>
@@ -137,7 +131,6 @@
   </object>
   <object id="12" name="Elvish Councillor" class="DialogFeatureComponent" x="240" y="272" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="after" value="castleStart"/>
     <property name="icon" value="gnomeKing.png"/>
     <property name="text" value="Travel by sea South, then East until you arrive at the desert. The wondrous Castle Bashgar is located at the Eastern edge of the Suvian Kingdom."/>
@@ -148,7 +141,6 @@
   </object>
   <object id="13" name="Elvish Councillor" class="DialogFeatureComponent" x="240" y="272" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="after" value="castleDone"/>
     <property name="icon" value="gnomeKing.png"/>
     <property name="text" value="You are and always will remain a friend of the Elvish peoples."/>

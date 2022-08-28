@@ -48,7 +48,6 @@
   </object>
   <object id="3" name="Guard" class="DialogFeatureComponent" x="176" y="96" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="icon" value="soldier.png"/>
     <property name="text" value="Don't forget to equip basic weapons and armor before wandering too far from town."/>
     <property name="title" value="Guard"/>
@@ -57,7 +56,6 @@
   </object>
   <object id="4" name="Guard" class="DialogFeatureComponent" x="208" y="96" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="icon" value="soldier.png"/>
     <property name="text" value="Be careful exploring heavily forested areas as they contain more monsters than the open fields."/>
     <property name="title" value="Guard"/>
@@ -66,7 +64,6 @@
   </object>
   <object id="5" name="Citizen" class="DialogFeatureComponent" x="128" y="256" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="icon" value="man.png"/>
     <property name="text" value="I hear the Kobolds have an armory in the sewers beneath the ruins north of here.  It's well-guarded, and for good reason. I bet they have some nice weapons in there."/>
     <property name="title" value="Citizen"/>

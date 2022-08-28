@@ -37,7 +37,6 @@
   </object>
   <object id="2" name="Pirate" class="DialogFeatureComponent" x="224" y="160" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="icon" value="pirate.png"/>
     <property name="text" value="'Tis a foul wind a blownin' since that volcano blew its top. Me mates 'n I can barely sail, and there be nary finer sailors in the Kingdoms Three than me mates 'n me."/>
     <property name="title" value="Pirate"/>
@@ -46,7 +45,6 @@
   </object>
   <object id="3" name="Pirate" class="DialogFeatureComponent" x="112" y="208" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="icon" value="pirate2.png"/>
     <property name="text" value="Aye, we be stockin' none but the finest goods here on the Wanderin' Isle. Yet the trade be diminishin' in recent years."/>
     <property name="title" value="Pirate"/>

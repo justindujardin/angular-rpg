@@ -39,7 +39,6 @@
   </object>
   <object id="2" name="Elder" class="DialogFeatureComponent" x="96" y="128" width="16" height="16">
    <properties>
-    <property name="action" value="TALK"/>
     <property name="icon" value="oldMan2.png"/>
     <property name="text" value="Ho ho, you found me.  Good for you."/>
     <property name="title" value="Elder"/>
