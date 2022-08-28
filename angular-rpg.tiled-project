@@ -2,10 +2,301 @@
     "automappingRulesFile": "",
     "commands": [
     ],
-    "extensionsPath": "extensions",
+    "extensionsPath": "src/tiled",
     "folders": [
         "src"
     ],
     "propertyTypes": [
+        {
+            "color": "#ffff0000",
+            "id": 5,
+            "members": [
+                {
+                    "name": "after",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "icon",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "id",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "until",
+                    "type": "string",
+                    "value": ""
+                }
+            ],
+            "name": "CombatFeatureComponent",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ]
+        },
+        {
+            "color": "#ffffffff",
+            "id": 1,
+            "members": [
+                {
+                    "name": "after",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "altIcon",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "icon",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "sets",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "text",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "title",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "until",
+                    "type": "string",
+                    "value": ""
+                }
+            ],
+            "name": "DialogFeatureComponent",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ]
+        },
+        {
+            "color": "#ff55aa00",
+            "id": 6,
+            "members": [
+                {
+                    "name": "after",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "icon",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "id",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "lockedText",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "requiredKey",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "title",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "unlockText",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "until",
+                    "type": "string",
+                    "value": ""
+                }
+            ],
+            "name": "DoorFeatureComponent",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ]
+        },
+        {
+            "color": "#ff55007f",
+            "id": 7,
+            "members": [
+                {
+                    "name": "after",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "icon",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "target",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "targetX",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "targetY",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "until",
+                    "type": "string",
+                    "value": ""
+                }
+            ],
+            "name": "PortalFeatureComponent",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ]
+        },
+        {
+            "color": "#ffff55ff",
+            "id": 8,
+            "members": [
+            ],
+            "name": "ShipFeatureComponent",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ]
+        },
+        {
+            "color": "#ffa41341",
+            "id": 2,
+            "members": [
+                {
+                    "name": "category",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "groups",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "icon",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "level",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "value": ""
+                }
+            ],
+            "name": "StoreFeatureComponent",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ]
+        },
+        {
+            "color": "#ff0000ff",
+            "id": 3,
+            "members": [
+                {
+                    "name": "cost",
+                    "type": "int",
+                    "value": 10
+                },
+                {
+                    "name": "icon",
+                    "type": "string",
+                    "value": "temple.png"
+                }
+            ],
+            "name": "TempleFeatureComponent",
+            "type": "class",
+            "useAs": [
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset"
+            ]
+        },
+        {
+            "color": "#ffffff00",
+            "id": 4,
+            "members": [
+                {
+                    "name": "after",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "gold",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "icon",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "id",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "items",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "until",
+                    "type": "string",
+                    "value": ""
+                }
+            ],
+            "name": "TreasureFeatureComponent",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ]
+        }
     ]
 }
