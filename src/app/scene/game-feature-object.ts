@@ -22,7 +22,7 @@ export class GameFeatureObject extends TileObject {
   tileMap: GameTileMap;
   world: GameWorld;
   feature: any; // TODO: Feature Interface
-  type: string; // TODO: enum?
+  class: string; // TODO: enum?
   passable: boolean;
   groups: any[];
   category: any;

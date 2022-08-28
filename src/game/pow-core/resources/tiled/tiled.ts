@@ -27,8 +27,8 @@ export function readITiledBase(el: any): ITiledBase {
 
 export function writeITiledBase(el: any, data: ITiledObject) {
   setElAttribute(el, 'name', data.name);
-  if (data.type) {
-    setElAttribute(el, 'type', data.type);
+  if (data.class) {
+    setElAttribute(el, 'class', data.class);
   }
   if (data.x !== 0) {
     setElAttribute(el, 'x', data.x);
@@ -53,9 +53,9 @@ export function writeITiledObjectBase(el: any, data: ITiledObject) {
 export function readITiledObject(el: any): ITiledObject {
   // Base layer properties
   const result: ITiledObject = readITiledLayerBase(el);
-  const type: string = getElAttribute(el, 'type');
-  if (type) {
-    result.type = type;
+  const className: string = getElAttribute(el, 'class');
+  if (className) {
+    result.class = className;
   }
   return result;
 }

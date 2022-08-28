@@ -52,3 +52,6 @@ Thumbs.db
 src/documentation.json
 
 storybook-static
+
+# Tiled Editor session state file
+angular-rpg.tiled-session

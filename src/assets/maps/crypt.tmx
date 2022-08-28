@@ -1,131 +1,171 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1" orientation="orthogonal" width="25" height="39" tilewidth="16" tileheight="16">
-  <properties>
-    <property name="combat" value="true"></property>
-    <property name="combatZone" value="zone-crypt"></property>
-  </properties>
-  <tileset firstgid="1" source="tiles/environment.tsx"></tileset>
-  <layer name="Terrain" width="25" height="39" opacity="1">
-    <data encoding="csv">32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,55,32,32,55,55,32,23,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,55,55,55,55,55,23,23,23,23,23,32,32,32,32,32,32,32,32,32,32,32,32,32,32,55,55,55,55,55,55,55,23,23,23,23,32,32,32,32,32,32,32,32,32,32,32,32,32,55,55,55,55,55,55,55,55,55,55,55,55,55,32,23,23,23,23,32,32,32,32,32,32,32,55,55,23,23,23,55,55,55,55,55,55,55,32,32,23,32,32,23,32,32,32,32,32,32,32,55,55,23,23,55,55,55,55,55,55,55,55,55,32,23,32,23,23,32,32,32,32,32,32,32,55,55,55,55,55,55,55,55,55,55,55,55,32,32,23,32,23,32,32,23,23,23,23,32,32,32,55,55,55,55,23,23,55,55,55,23,23,32,23,23,32,23,32,32,23,32,32,23,32,32,32,32,32,55,55,55,23,23,55,55,23,23,32,23,32,32,23,32,32,23,32,23,23,32,32,32,32,55,55,55,55,55,55,55,55,23,32,32,23,32,32,23,32,32,23,32,23,32,32,32,32,55,55,55,55,55,55,32,32,32,32,32,32,23,32,32,23,32,32,23,32,23,32,32,32,32,32,32,55,55,55,55,55,55,32,32,32,32,23,32,23,23,32,32,23,32,23,32,32,32,32,32,32,32,55,55,55,55,55,32,32,32,32,23,32,23,23,23,23,23,32,23,32,32,32,32,55,55,55,55,32,55,55,23,23,23,32,23,23,32,23,23,32,32,32,32,23,23,32,32,32,55,32,32,32,32,55,55,55,32,23,23,23,32,32,32,32,32,32,32,32,32,23,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,23,32,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,6,9,9,9,9,9,9,9,9,9,9,9,9,33,33,9,9,9,9,33,33,9,33,9,33,33,9,9,9,9,9,9,9,9,33,33,9,9,33,33,9,9,9,9,33,33,9,33,9,33,9,9,9,33,33,33,33,33,24,33,33,6,33,33,33,9,9,9,9,9,24,9,24,9,24,9,9,9,33,9,9,9,9,9,33,33,9,9,9,9,9,33,9,33,33,33,33,33,33,33,33,9,9,33,33,33,33,9,9,9,9,9,9,9,33,33,33,6,33,33,33,33,33,33,33,33,9,9,9,9,9,33,33,9,9,9,9,9,9,33,9,33,9,33,33,33,33,33,33,33,33,9,40,40,40,9,9,33,9,9,9,9,9,9,33,9,9,9,9,9,24,9,24,9,24,9,9,39,39,40,40,9,33,9,9,9,9,9,9,33,9,9,9,9,33,33,9,33,9,33,9,9,39,39,39,39,9,33,9,9,9,9,9,9,33,9,9,9,9,33,33,9,33,9,33,9,9,39,39,39,39,9,6,9,9,33,33,33,9,33,9,9,9,9,9,9,9,9,9,9,9,9,39,39,39,39,24,33,6,33,33,17,33,9,33,33,33,9,9,9,9,9,9,9,9,9,9,39,39,39,39,9,6,9,9,33,33,33,9,9,9,33,33,9,9,9,9,9,9,9,9,9,39,39,39,39,9,33,9,9,9,9,9,9,9,9,9,33,33,9,9,9,9,9,9,9,9,39,39,40,40,9,33,9,9,9,9,9,9,9,9,9,9,33,33,33,33,33,33,33,33,9,40,9,9,9,9,33,9,9,33,9,9,9,9,9,9,9,9,9,9,9,9,9,9,33,9,9,9,33,33,24,33,9,33,33,33,9,33,9,9,9,9,9,9,9,9,9,9,9,33,9,9,9,33,33,9,33,9,33,33,33,9,33,9,9,9,9,9,9,9,33,33,9,9,33,9,9,9,9,9,9,33,9,9,24,9,9,24,9,9,33,33,33,33,24,33,33,33,9,33,9,9,9,33,33,24,33,33,33,33,33,33,33,33,33,33,9,9,9,9,33,33,33,9,33,9,9,9,33,33,9,9,9,9,9,9,9,9,9,9,33,33,33,33,9,9,9,33,33,33,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9</data>
-  </layer>
-  <objectgroup name="Features" width="25" height="39" opacity="1">
-    <object name="wilderness" type="PortalFeatureComponent" x="64" y="448" width="16" height="16">
-      <properties>
-        <property name="icon" value="dungeonGate.png"></property>
-        <property name="target" value="wilderness"></property>
-        <property name="targetX" value="73"></property>
-        <property name="targetY" value="57"></property>
-        <property name="text" value="Will you escape the Ashvari Crypts and return to the land of the living?"></property>
-        <property name="transitionType" value="outdoor"></property>
-        <property name="type" value="transition"></property>
-      </properties>
-    </object>
-    <object type="block" x="48" y="448" width="16" height="16" visible="false">
-      <properties>
-        <property name="type" value="block"></property>
-      </properties>
-    </object>
-    <object name="column.png" type="sign" x="48" y="432" width="16" height="16">
-      <properties>
-        <property name="icon" value="column.png"></property>
-        <property name="type" value="sign"></property>
-      </properties>
-    </object>
-    <object name="column.png" type="sign" x="48" y="464" width="16" height="16">
-      <properties>
-        <property name="icon" value="column.png"></property>
-        <property name="type" value="sign"></property>
-      </properties>
-    </object>
-    <object name="skeletonGuard.png" type="CombatFeatureComponent" x="128" y="528" width="16" height="16">
-      <properties>
-        <property name="creatures"></property>
-        <property name="gold" value="12"></property>
-        <property name="icon" value="skeletonGuard.png"></property>
-        <property name="id" value="cryptsSkeletons"></property>
-        <property name="items"></property>
-        <property name="text" value="A squadron of Skeletons attack!"></property>
-        <property name="type" value="encounter"></property>
-      </properties>
-    </object>
-    <object name="ghoul.png" type="CombatFeatureComponent" x="304" y="560" width="16" height="16">
-      <properties>
-        <property name="ambushed" value="true"></property>
-        <property name="creatures"></property>
-        <property name="gold" value="19"></property>
-        <property name="icon" value="ghoul.png"></property>
-        <property name="id" value="cryptsGhoul"></property>
-        <property name="items"></property>
-        <property name="text" value="As you pass through the door, you are ambushed by horrific, frightening creatures!"></property>
-        <property name="type" value="encounter"></property>
-      </properties>
-    </object>
-    <object name="phantom2.png" type="CombatFeatureComponent" x="224" y="352" width="16" height="16">
-      <properties>
-        <property name="creatures"></property>
-        <property name="gold" value="9"></property>
-        <property name="icon" value="phantom2.png"></property>
-        <property name="id" value="cryptsPhantom"></property>
-        <property name="items"></property>
-        <property name="text" value="Two phantasmal forms emerge, seemingly only partially present in this realm."></property>
-        <property name="type" value="encounter"></property>
-      </properties>
-    </object>
-    <object name="ship.png" type="ShipFeatureComponent" x="128" y="224" width="16" height="16">
-      <properties>
-        <property name="icon" value="ship.png"></property>
-        <property name="id" value="cryptsShip"></property>
-        <property name="passable" value="true"></property>
-        <property name="type" value="ship"></property>
-      </properties>
-    </object>
-    <object name="skeletonWizard.png" type="CombatFeatureComponent" x="160" y="32" width="16" height="16">
-      <properties>
-        <property name="ambushed" value="true"></property>
-        <property name="creatures"></property>
-        <property name="gold" value="37"></property>
-        <property name="icon" value="skeletonWizard.png"></property>
-        <property name="id" value="cryptsWizard"></property>
-        <property name="items"></property>
-        <property name="text" value="A Skeleton Wizard shrieks, &quot;With Vezu's power, we can convert the dead into an an unstoppable army against the living!&quot; It and its minions attack!"></property>
-        <property name="type" value="encounter"></property>
-      </properties>
-    </object>
-    <object name="Tablet" type="DialogFeatureComponent" x="160" y="16" width="16" height="16">
-      <properties>
-        <property name="action" value="LOOK"></property>
-        <property name="icon" value="dragonStone.png"></property>
-        <property name="sets" value="cryptsDone"></property>
-        <property name="text" value="You see here a tablet bearing a depiction of the dragon Vezu. You must inform the King that the Crypts are somehow linked to the dragon!"></property>
-        <property name="title" value="Tablet"></property>
-        <property name="type" value="sign"></property>
-      </properties>
-    </object>
-    <object name="Locked" type="barrier" x="368" y="272" width="16" height="16">
-      <properties>
-        <property name="icon" value="lockedDoor.png"></property>
-        <property name="text" value="There is an unusual-looking, narrow door here, but is locked!"></property>
-        <property name="title" value="Locked"></property>
-        <property name="type" value="barrier"></property>
-        <property name="until" value="cryptsStart"></property>
-      </properties>
-    </object>
-    <object name="Unlocked" type="alert" x="368" y="272" width="16" height="16">
-      <properties>
-        <property name="after" value="cryptsStart"></property>
-        <property name="altIcon" value="ancientKey.png"></property>
-        <property name="icon" value="lockedDoor.png"></property>
-        <property name="sets" value="alertCryptsKey"></property>
-        <property name="text" value="You use the ancient key provided by the King to open the narrow door."></property>
-        <property name="title" value="Unlocked"></property>
-        <property name="type" value="alert"></property>
-        <property name="until" value="alertCryptsKey"></property>
-        <property name="y" value="17"></property>
-      </properties>
-    </object>
-  </objectgroup>
-  <objectgroup name="Zones" width="25" height="39" opacity="1">
-    <object name="zone-cave" type="danger-zone" width="400" height="272"></object>
-    <object name="zone-dungeon" type="danger-zone" y="272" width="400" height="352"></object>
-  </objectgroup>
+<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="25" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="15">
+ <properties>
+  <property name="combat" value="true"/>
+  <property name="combatZone" value="zone-crypt"/>
+ </properties>
+ <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <layer id="1" name="Terrain" width="25" height="39">
+  <data encoding="csv">
+32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
+32,32,32,32,55,32,32,55,55,32,23,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
+32,32,32,55,55,55,55,55,23,23,23,23,23,32,32,32,32,32,32,32,32,32,32,32,32,
+32,32,55,55,55,55,55,55,55,23,23,23,23,32,32,32,32,32,32,32,32,32,32,32,32,
+32,55,55,55,55,55,55,55,55,55,55,55,55,55,32,23,23,23,23,32,32,32,32,32,32,
+32,55,55,23,23,23,55,55,55,55,55,55,55,32,32,23,32,32,23,32,32,32,32,32,32,
+32,55,55,23,23,55,55,55,55,55,55,55,55,55,32,23,32,23,23,32,32,32,32,32,32,
+32,55,55,55,55,55,55,55,55,55,55,55,55,32,32,23,32,23,32,32,23,23,23,23,32,
+32,32,55,55,55,55,23,23,55,55,55,23,23,32,23,23,32,23,32,32,23,32,32,23,32,
+32,32,32,32,55,55,55,23,23,55,55,23,23,32,23,32,32,23,32,32,23,32,23,23,32,
+32,32,32,55,55,55,55,55,55,55,55,23,32,32,23,32,32,23,32,32,23,32,23,32,32,
+32,32,55,55,55,55,55,55,32,32,32,32,32,32,23,32,32,23,32,32,23,32,23,32,32,
+32,32,32,32,55,55,55,55,55,55,32,32,32,32,23,32,23,23,32,32,23,32,23,32,32,
+32,32,32,32,32,55,55,55,55,55,32,32,32,32,23,32,23,23,23,23,23,32,23,32,32,
+32,32,55,55,55,55,32,55,55,23,23,23,32,23,23,32,23,23,32,32,32,32,23,23,32,
+32,32,55,32,32,32,32,55,55,55,32,23,23,23,32,32,32,32,32,32,32,32,32,23,32,
+32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,23,32,
+9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,6,9,
+9,9,9,9,9,9,9,9,9,9,9,33,33,9,9,9,9,33,33,9,33,9,33,33,9,
+9,9,9,9,9,9,9,33,33,9,9,33,33,9,9,9,9,33,33,9,33,9,33,9,9,
+9,33,33,33,33,33,24,33,33,6,33,33,33,9,9,9,9,9,24,9,24,9,24,9,9,
+9,33,9,9,9,9,9,33,33,9,9,9,9,9,33,9,33,33,33,33,33,33,33,33,9,
+9,33,33,33,33,9,9,9,9,9,9,9,33,33,33,6,33,33,33,33,33,33,33,33,9,
+9,9,9,9,33,33,9,9,9,9,9,9,33,9,33,9,33,33,33,33,33,33,33,33,9,
+40,40,40,9,9,33,9,9,9,9,9,9,33,9,9,9,9,9,24,9,24,9,24,9,9,
+39,39,40,40,9,33,9,9,9,9,9,9,33,9,9,9,9,33,33,9,33,9,33,9,9,
+39,39,39,39,9,33,9,9,9,9,9,9,33,9,9,9,9,33,33,9,33,9,33,9,9,
+39,39,39,39,9,6,9,9,33,33,33,9,33,9,9,9,9,9,9,9,9,9,9,9,9,
+39,39,39,39,24,33,6,33,33,17,33,9,33,33,33,9,9,9,9,9,9,9,9,9,9,
+39,39,39,39,9,6,9,9,33,33,33,9,9,9,33,33,9,9,9,9,9,9,9,9,9,
+39,39,39,39,9,33,9,9,9,9,9,9,9,9,9,33,33,9,9,9,9,9,9,9,9,
+39,39,40,40,9,33,9,9,9,9,9,9,9,9,9,9,33,33,33,33,33,33,33,33,9,
+40,9,9,9,9,33,9,9,33,9,9,9,9,9,9,9,9,9,9,9,9,9,9,33,9,
+9,9,33,33,24,33,9,33,33,33,9,33,9,9,9,9,9,9,9,9,9,9,9,33,9,
+9,9,33,33,9,33,9,33,33,33,9,33,9,9,9,9,9,9,9,33,33,9,9,33,9,
+9,9,9,9,9,33,9,9,24,9,9,24,9,9,33,33,33,33,24,33,33,33,9,33,9,
+9,9,33,33,24,33,33,33,33,33,33,33,33,33,33,9,9,9,9,33,33,33,9,33,9,
+9,9,33,33,9,9,9,9,9,9,9,9,9,9,33,33,33,33,9,9,9,33,33,33,9,
+9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9
+</data>
+ </layer>
+ <objectgroup id="2" name="Features">
+  <object id="1" name="wilderness" class="PortalFeatureComponent" x="64" y="448" width="16" height="16">
+   <properties>
+    <property name="icon" value="dungeonGate.png"/>
+    <property name="target" value="wilderness"/>
+    <property name="targetX" value="73"/>
+    <property name="targetY" value="57"/>
+    <property name="text" value="Will you escape the Ashvari Crypts and return to the land of the living?"/>
+    <property name="transitionType" value="outdoor"/>
+    <property name="type" value="transition"/>
+   </properties>
+  </object>
+  <object id="2" class="block" x="48" y="448" width="16" height="16">
+   <properties>
+    <property name="type" value="block"/>
+   </properties>
+  </object>
+  <object id="3" name="column.png" class="sign" x="48" y="432" width="16" height="16">
+   <properties>
+    <property name="icon" value="column.png"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object id="4" name="column.png" class="sign" x="48" y="464" width="16" height="16">
+   <properties>
+    <property name="icon" value="column.png"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object id="5" name="skeletonGuard.png" class="CombatFeatureComponent" x="128" y="528" width="16" height="16">
+   <properties>
+    <property name="creatures" value=""/>
+    <property name="gold" value="12"/>
+    <property name="icon" value="skeletonGuard.png"/>
+    <property name="id" value="cryptsSkeletons"/>
+    <property name="items" value=""/>
+    <property name="text" value="A squadron of Skeletons attack!"/>
+    <property name="type" value="encounter"/>
+   </properties>
+  </object>
+  <object id="6" name="ghoul.png" class="CombatFeatureComponent" x="304" y="560" width="16" height="16">
+   <properties>
+    <property name="ambushed" value="true"/>
+    <property name="creatures" value=""/>
+    <property name="gold" value="19"/>
+    <property name="icon" value="ghoul.png"/>
+    <property name="id" value="cryptsGhoul"/>
+    <property name="items" value=""/>
+    <property name="text" value="As you pass through the door, you are ambushed by horrific, frightening creatures!"/>
+    <property name="type" value="encounter"/>
+   </properties>
+  </object>
+  <object id="7" name="phantom2.png" class="CombatFeatureComponent" x="224" y="352" width="16" height="16">
+   <properties>
+    <property name="creatures" value=""/>
+    <property name="gold" value="9"/>
+    <property name="icon" value="phantom2.png"/>
+    <property name="id" value="cryptsPhantom"/>
+    <property name="items" value=""/>
+    <property name="text" value="Two phantasmal forms emerge, seemingly only partially present in this realm."/>
+    <property name="type" value="encounter"/>
+   </properties>
+  </object>
+  <object id="8" name="ship.png" class="ShipFeatureComponent" x="128" y="224" width="16" height="16">
+   <properties>
+    <property name="icon" value="ship.png"/>
+    <property name="id" value="cryptsShip"/>
+    <property name="passable" value="true"/>
+    <property name="type" value="ship"/>
+   </properties>
+  </object>
+  <object id="9" name="skeletonWizard.png" class="CombatFeatureComponent" x="160" y="32" width="16" height="16">
+   <properties>
+    <property name="ambushed" value="true"/>
+    <property name="creatures" value=""/>
+    <property name="gold" value="37"/>
+    <property name="icon" value="skeletonWizard.png"/>
+    <property name="id" value="cryptsWizard"/>
+    <property name="items" value=""/>
+    <property name="text" value="A Skeleton Wizard shrieks, &quot;With Vezu's power, we can convert the dead into an an unstoppable army against the living!&quot; It and its minions attack!"/>
+    <property name="type" value="encounter"/>
+   </properties>
+  </object>
+  <object id="10" name="Tablet" class="DialogFeatureComponent" x="160" y="16" width="16" height="16">
+   <properties>
+    <property name="action" value="LOOK"/>
+    <property name="icon" value="dragonStone.png"/>
+    <property name="sets" value="cryptsDone"/>
+    <property name="text" value="You see here a tablet bearing a depiction of the dragon Vezu. You must inform the King that the Crypts are somehow linked to the dragon!"/>
+    <property name="title" value="Tablet"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object id="11" name="Locked" class="barrier" x="368" y="272" width="16" height="16">
+   <properties>
+    <property name="icon" value="lockedDoor.png"/>
+    <property name="text" value="There is an unusual-looking, narrow door here, but is locked!"/>
+    <property name="title" value="Locked"/>
+    <property name="type" value="barrier"/>
+    <property name="until" value="cryptsStart"/>
+   </properties>
+  </object>
+  <object id="12" name="Unlocked" class="alert" x="368" y="272" width="16" height="16">
+   <properties>
+    <property name="after" value="cryptsStart"/>
+    <property name="altIcon" value="ancientKey.png"/>
+    <property name="icon" value="lockedDoor.png"/>
+    <property name="sets" value="alertCryptsKey"/>
+    <property name="text" value="You use the ancient key provided by the King to open the narrow door."/>
+    <property name="title" value="Unlocked"/>
+    <property name="type" value="alert"/>
+    <property name="until" value="alertCryptsKey"/>
+    <property name="y" value="17"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="3" name="Zones">
+  <object id="13" name="zone-cave" class="danger-zone" x="0" y="0" width="400" height="272"/>
+  <object id="14" name="zone-dungeon" class="danger-zone" x="0" y="272" width="400" height="352"/>
+ </objectgroup>
 </map>

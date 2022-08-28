@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="23" height="19" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="5">
+<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="23" height="19" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="5">
  <properties>
   <property name="combat" value="true"/>
   <property name="combatZone" value="zone-ice-tower"/>
@@ -29,7 +29,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="Features">
-  <object id="1" name="wilderness" type="PortalFeatureComponent" x="64" y="144" width="16" height="16">
+  <object id="1" name="wilderness" class="PortalFeatureComponent" x="64" y="144" width="16" height="16">
    <properties>
     <property name="icon" value="iceFloor.png"/>
     <property name="target" value="wilderness"/>
@@ -39,12 +39,12 @@
     <property name="transitionType" value="outdoor"/>
    </properties>
   </object>
-  <object id="2" type="block" x="48" y="144" width="16" height="16" visible="0">
+  <object id="2" class="block" x="48" y="144" width="16" height="16" visible="0">
    <properties>
     <property name="type" value="block"/>
    </properties>
   </object>
-  <object id="3" name="drowElf.png" type="CombatFeatureComponent" x="128" y="256" width="16" height="16">
+  <object id="3" name="drowElf.png" class="CombatFeatureComponent" x="128" y="256" width="16" height="16">
    <properties>
     <property name="creatures" value=""/>
     <property name="gold" value="25"/>
@@ -54,7 +54,7 @@
     <property name="text" value="Drow Elves and Snow Ogres approach you. &quot;You will regret setting foot in this tower!&quot;"/>
    </properties>
   </object>
-  <object id="4" name="tower2" type="PortalFeatureComponent" x="112" y="256" width="16" height="16">
+  <object id="4" name="tower2" class="PortalFeatureComponent" x="112" y="256" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
     <property name="target" value="tower2"/>

@@ -28,7 +28,7 @@ export interface ITiledLayer extends ITiledLayerBase {
 export interface ITiledObject<PropertiesType = any> extends ITiledBase {
   properties?: PropertiesType;
   rotation?: number;
-  type?: string;
+  class?: string;
   gid?: number;
   color?: string;
   sets?: string;

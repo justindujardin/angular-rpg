@@ -79,6 +79,7 @@
     "@angular/compiler-cli": "^14.1.1",
     "@babel/core": "^7.11.6",
     "@compodoc/compodoc": "^1.1.19",
+    "@mapeditor/tiled-api": "^1.8.2",
     "@semantic-release/changelog": "^6.0.0",
     "@semantic-release/commit-analyzer": "^9.0.2",
     "@semantic-release/git": "^10.0.0",
