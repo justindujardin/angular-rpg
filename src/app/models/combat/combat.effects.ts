@@ -12,7 +12,7 @@ import {
 } from 'rxjs/operators';
 import { AppState } from '../../app.model';
 import { NotificationService } from '../../components/notification/notification.service';
-import { GameStateSetKeyDataAction } from '../game-state/game-state.actions';
+import { GameStateSaveAction, GameStateSetKeyDataAction } from '../game-state/game-state.actions';
 import { Item } from '../item';
 import { IPartyStatsDiff } from '../mechanics';
 import { getGameMap } from '../selectors';
