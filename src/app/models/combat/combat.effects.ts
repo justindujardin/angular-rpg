@@ -133,7 +133,9 @@ export class CombatEffects {
         }
 
         // Save game
-        this.store.dispatch(new GameStateSaveAction());
+        if (localStorage.getItem('autoSave') === 'true') {
+          this.store.dispatch(new GameStateSaveAction());
+        }
         return () => {
           // No cleanup
         };
