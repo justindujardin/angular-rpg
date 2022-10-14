@@ -22,6 +22,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RPG_HEALTH_BAR_EXPORTS } from './health-bar/index';
@@ -72,6 +73,7 @@ export const APP_COMPONENTS_PROVIDERS = [
     CommonModule,
     FlexLayoutModule,
     MatSidenavModule,
+    MatSlideToggleModule,
     MatIconModule,
     MatListModule,
     MatCardModule,

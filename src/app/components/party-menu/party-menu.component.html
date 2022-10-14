@@ -47,6 +47,10 @@
   <mat-card-actions *ngIf="page == 'settings'">
     <button mat-button color="warn" (click)="resetGame()">Reset Game</button>
     <button mat-button (click)="saveGame()">Save Game</button>
+    <mat-slide-toggle
+      [checked]="isChecked"
+      (change)="onSlideToggle($event)"
+      >Auto Save</mat-slide-toggle>
   </mat-card-actions>
 </mat-card>
 <button mat-fab color="accent" (click)="open = !open" [@fab]="open">

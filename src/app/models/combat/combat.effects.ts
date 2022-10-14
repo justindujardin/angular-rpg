@@ -12,7 +12,7 @@ import {
 } from 'rxjs/operators';
 import { AppState } from '../../app.model';
 import { NotificationService } from '../../components/notification/notification.service';
-import { GameStateSetKeyDataAction } from '../game-state/game-state.actions';
+import { GameStateSaveAction, GameStateSetKeyDataAction } from '../game-state/game-state.actions';
 import { Item } from '../item';
 import { IPartyStatsDiff } from '../mechanics';
 import { getGameMap } from '../selectors';
@@ -130,6 +130,11 @@ export class CombatEffects {
         // Also, hide the encounter if it was fixed.
         if (data.type === 'fixed') {
           this.store.dispatch(new GameStateSetKeyDataAction(data.id, true));
+        }
+
+        // Save game
+        if (localStorage.getItem('autoSave') === 'true') {
+          this.store.dispatch(new GameStateSaveAction());
         }
         return () => {
           // No cleanup
