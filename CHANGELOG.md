@@ -1,3 +1,10 @@
+## [0.1.9](https://github.com/justindujardin/angular-rpg/compare/v0.1.8...v0.1.9) (2022-10-14)
+
+
+### Features
+
+* **ui:** Add autosave feature in settings to save after combat wins ([#27](https://github.com/justindujardin/angular-rpg/issues/27)) ([0282470](https://github.com/justindujardin/angular-rpg/commit/02824704e27fdd3a4fb872acdda370e0f114e618)), closes [#26](https://github.com/justindujardin/angular-rpg/issues/26)
+
 ## [0.1.8](https://github.com/justindujardin/angular-rpg/compare/v0.1.7...v0.1.8) (2022-08-28)
 
 
