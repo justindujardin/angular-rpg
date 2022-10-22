@@ -35,8 +35,6 @@
     <property name="target" type="file" value="wilderness.tmx"/>
     <property name="targetX" value="76"/>
     <property name="targetY" value="7"/>
-    <property name="text" value="Will you exit Rogaard Keep and return to the Warvish Tundralands?"/>
-    <property name="transitionType" value="outdoor"/>
    </properties>
   </object>
   <object id="2" class="block" x="176" y="288" width="16" height="16" visible="0">

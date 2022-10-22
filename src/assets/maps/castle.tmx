@@ -29,8 +29,6 @@
     <property name="target" type="file" value="wilderness.tmx"/>
     <property name="targetX" value="76"/>
     <property name="targetY" value="61"/>
-    <property name="text" value="Pass through the gates of Castle Bashgar and return to the Great Suvian Desert?"/>
-    <property name="transitionType" value="outdoor"/>
    </properties>
   </object>
   <object id="2" class="block" x="256" y="192" width="16" height="16" visible="0">

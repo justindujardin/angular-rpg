@@ -35,8 +35,6 @@
     <property name="target" type="file" value="wilderness.tmx"/>
     <property name="targetX" value="88"/>
     <property name="targetY" value="16"/>
-    <property name="text" value="Will you exit Vygurn Tower?"/>
-    <property name="transitionType" value="outdoor"/>
    </properties>
   </object>
   <object id="2" class="block" x="48" y="144" width="16" height="16" visible="0">
@@ -60,8 +58,6 @@
     <property name="target" type="file" value="tower2.tmx"/>
     <property name="targetX" value="3"/>
     <property name="targetY" value="15"/>
-    <property name="text" value="Ascend to the second level of the tower?"/>
-    <property name="transitionType" value="up"/>
    </properties>
   </object>
  </objectgroup>

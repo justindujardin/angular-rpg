@@ -33,8 +33,6 @@
     <property name="target" type="file" value="wilderness.tmx"/>
     <property name="targetX" value="31"/>
     <property name="targetY" value="27"/>
-    <property name="text" value="Climb down the steep path back to the Wilderness?"/>
-    <property name="transitionType" value="outdoor"/>
    </properties>
   </object>
   <object id="2" name="Elder" class="DialogFeatureComponent" x="96" y="128" width="16" height="16">

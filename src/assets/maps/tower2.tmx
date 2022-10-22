@@ -35,8 +35,6 @@
     <property name="target" type="file" value="tower1.tmx"/>
     <property name="targetX" value="7"/>
     <property name="targetY" value="16"/>
-    <property name="text" value="Return to the first level of the tower?"/>
-    <property name="transitionType" value="down"/>
    </properties>
   </object>
   <object id="2" name="iceGolem.png" class="CombatFeatureComponent" x="144" y="144" width="16" height="16">
@@ -76,8 +74,6 @@
     <property name="target" type="file" value="tower3.tmx"/>
     <property name="targetX" value="1"/>
     <property name="targetY" value="1"/>
-    <property name="text" value="Climb to the top level of the tower?"/>
-    <property name="transitionType" value="up"/>
    </properties>
   </object>
  </objectgroup>

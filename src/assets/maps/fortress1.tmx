@@ -47,8 +47,6 @@
     <property name="target" type="file" value="wilderness.tmx"/>
     <property name="targetX" value="23"/>
     <property name="targetY" value="12"/>
-    <property name="text" value="Will you slip out of the Goblin Fortress and return to the Nothian Forest?"/>
-    <property name="transitionType" value="outdoor"/>
    </properties>
   </object>
   <object id="2" class="block" x="368" y="240" width="16" height="16" visible="0">
@@ -96,8 +94,6 @@
     <property name="target" type="file" value="fortress2.tmx"/>
     <property name="targetX" value="23"/>
     <property name="targetY" value="12"/>
-    <property name="text" value="Unspeakable sounds and smells fill the air as you peer down a long staircase. Dare you descend?"/>
-    <property name="transitionType" value="down"/>
    </properties>
   </object>
   <object id="9" name="chest.png" class="TreasureFeatureComponent" x="192" y="16" width="16" height="16">
@@ -122,7 +118,6 @@
     <property name="target" type="file" value="fortress2.tmx"/>
     <property name="targetX" value="8"/>
     <property name="targetY" value="23"/>
-    <property name="transitionType" value="fortress2"/>
    </properties>
   </object>
  </objectgroup>

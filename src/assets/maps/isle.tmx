@@ -29,11 +29,8 @@
    <properties>
     <property name="icon" value="bridgeVertical.png"/>
     <property name="target" type="file" value="wilderness.tmx"/>
-    <property name="target2" type="file" value=""/>
     <property name="targetX" value="83"/>
     <property name="targetY" value="46"/>
-    <property name="text" value="Will you weigh anchor and set sail again upon the Wandering Sea?"/>
-    <property name="transitionType" value="outdoor"/>
    </properties>
   </object>
   <object id="2" name="Pirate" class="DialogFeatureComponent" x="224" y="160" width="16" height="16">

@@ -66,9 +66,6 @@
     <property name="target" type="file" value="wilderness.tmx"/>
     <property name="targetX" value="51"/>
     <property name="targetY" value="5"/>
-    <property name="text" value="Will you escape from Vezu's foul lair?"/>
-    <property name="transitionType" value="outdoor"/>
-    <property name="type" value="transition"/>
    </properties>
   </object>
   <object id="2" class="block" x="224" y="752" width="16" height="16">

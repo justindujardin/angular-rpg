@@ -37,8 +37,6 @@
     <property name="target" type="file" value="wilderness.tmx"/>
     <property name="targetX" value="10"/>
     <property name="targetY" value="24"/>
-    <property name="text" value="Exit Port Artha and return to the Nothian Forest?"/>
-    <property name="transitionType" value="outdoor"/>
    </properties>
   </object>
   <object id="2" class="block" x="320" y="48" width="16" height="16" visible="0">

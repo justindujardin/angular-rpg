@@ -37,8 +37,6 @@
     <property name="target" type="file" value="wilderness.tmx"/>
     <property name="targetX" value="16"/>
     <property name="targetY" value="51"/>
-    <property name="text" value="Will you exit the safety of Bryarlake and explore the great Wildernesse?"/>
-    <property name="transitionType" value="outdoor"/>
    </properties>
   </object>
   <object id="2" class="block" x="192" y="48" width="16" height="16" visible="0">

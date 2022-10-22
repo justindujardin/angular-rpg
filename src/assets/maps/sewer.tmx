@@ -57,7 +57,6 @@
     <property name="target" type="file" value="ruins.tmx"/>
     <property name="targetX" value="14"/>
     <property name="targetY" value="9"/>
-    <property name="transitionType" value="town"/>
    </properties>
   </object>
   <object id="2" name="kobold-sewers" class="CombatFeatureComponent" x="320" y="464" width="16" height="16">
@@ -116,7 +115,6 @@
     <property name="target" type="file" value="ruins.tmx"/>
     <property name="targetX" value="7"/>
     <property name="targetY" value="9"/>
-    <property name="transitionType" value="town"/>
    </properties>
   </object>
   <object id="10" name="LockedGate" class="DoorFeatureComponent" x="64" y="32" width="16" height="16">

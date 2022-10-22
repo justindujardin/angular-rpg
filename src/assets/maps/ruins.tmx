@@ -78,9 +78,6 @@
     <property name="target" type="file" value="wilderness.tmx"/>
     <property name="targetX" value="17"/>
     <property name="targetY" value="43"/>
-    <property name="text" value="Exit the ruins and return to the Wildernesse?"/>
-    <property name="transitionType" value="outdoor"/>
-    <property name="type" value="transition"/>
    </properties>
   </object>
   <object id="2" class="block" x="240" y="336" width="16" height="16">
@@ -105,9 +102,6 @@
     <property name="target" type="file" value="sewer.tmx"/>
     <property name="targetX" value="21"/>
     <property name="targetY" value="1"/>
-    <property name="text" value="You see a doorway here leading down into the sewers below the town. Dare you explore them?"/>
-    <property name="transitionType" value="dungeon"/>
-    <property name="type" value="transition"/>
    </properties>
   </object>
   <object id="7" name="hidden entrance" class="PortalFeatureComponent" x="112" y="144" width="16" height="16">
@@ -118,8 +112,6 @@
     <property name="target" type="file" value="sewer.tmx"/>
     <property name="targetX" value="4"/>
     <property name="targetY" value="2"/>
-    <property name="transitionType" value="dungeon"/>
-    <property name="type" value="transition"/>
    </properties>
   </object>
  </objectgroup>

@@ -97,10 +97,6 @@
     <property name="target" type="file" value="fortress1.tmx"/>
     <property name="targetX" value="3"/>
     <property name="targetY" value="3"/>
-    <property name="text" value="Return to the lower level of the fortess?"/>
-    <property name="transitionType" value="down"/>
-    <property name="type" value="transition"/>
-    <property name="y" value="12"/>
    </properties>
   </object>
   <object id="5" name="DungeonExitPortal" class="PortalFeatureComponent" x="128" y="368" width="16" height="16">
@@ -111,7 +107,6 @@
     <property name="target" type="file" value="fortress1.tmx"/>
     <property name="targetX" value="8"/>
     <property name="targetY" value="27"/>
-    <property name="transitionType" value="town"/>
    </properties>
   </object>
  </objectgroup>
