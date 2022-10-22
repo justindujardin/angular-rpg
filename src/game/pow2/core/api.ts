@@ -23,7 +23,10 @@ export const NAME: string = 'core';
 export const GAME_ROOT: string = 'assets/';
 
 export function getMapUrl(name: string): string {
-  return `${GAME_ROOT}maps/${name}.tmx`;
+  if (!name.endsWith('.tmx')) {
+    name = `${name}.tmx`;
+  }
+  return `${GAME_ROOT}maps/${name}`;
 }
 
 export function getSoundEffectUrl(name: string, extension: string = 'wav'): string {

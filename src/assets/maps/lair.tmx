@@ -63,7 +63,7 @@
   <object id="1" name="wilderness" class="PortalFeatureComponent" x="224" y="736" width="16" height="16">
    <properties>
     <property name="icon" value="darkDoor.png"/>
-    <property name="target" value="wilderness"/>
+    <property name="target" type="file" value="wilderness.tmx"/>
     <property name="targetX" value="51"/>
     <property name="targetY" value="5"/>
     <property name="text" value="Will you escape from Vezu's foul lair?"/>

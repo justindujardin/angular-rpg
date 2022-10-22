@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="29" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="16">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="29" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="19">
  <properties>
   <property name="combatZone" value="world-forest"/>
  </properties>
@@ -34,7 +34,7 @@
   <object id="1" name="wilderness" class="PortalFeatureComponent" x="320" y="64" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
-    <property name="target" value="wilderness"/>
+    <property name="target" type="file" value="wilderness.tmx"/>
     <property name="targetX" value="10"/>
     <property name="targetY" value="24"/>
     <property name="text" value="Exit Port Artha and return to the Nothian Forest?"/>

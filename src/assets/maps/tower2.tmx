@@ -32,7 +32,7 @@
   <object id="1" name="tower1" class="PortalFeatureComponent" x="48" y="240" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
-    <property name="target" value="tower1"/>
+    <property name="target" type="file" value="tower1.tmx"/>
     <property name="targetX" value="7"/>
     <property name="targetY" value="16"/>
     <property name="text" value="Return to the first level of the tower?"/>
@@ -73,7 +73,7 @@
   <object id="5" name="tower3" class="PortalFeatureComponent" x="16" y="80" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
-    <property name="target" value="tower3"/>
+    <property name="target" type="file" value="tower3.tmx"/>
     <property name="targetX" value="1"/>
     <property name="targetY" value="1"/>
     <property name="text" value="Climb to the top level of the tower?"/>

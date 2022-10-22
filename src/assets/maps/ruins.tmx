@@ -75,7 +75,7 @@
   <object id="1" name="wilderness" class="PortalFeatureComponent" x="224" y="336" width="16" height="16">
    <properties>
     <property name="icon" value="doorInWall.png"/>
-    <property name="target" value="wilderness"/>
+    <property name="target" type="file" value="wilderness.tmx"/>
     <property name="targetX" value="17"/>
     <property name="targetY" value="43"/>
     <property name="text" value="Exit the ruins and return to the Wildernesse?"/>
@@ -102,7 +102,7 @@
   <object id="5" name="sewer" class="PortalFeatureComponent" x="224" y="144" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
-    <property name="target" value="sewer"/>
+    <property name="target" type="file" value="sewer.tmx"/>
     <property name="targetX" value="21"/>
     <property name="targetY" value="1"/>
     <property name="text" value="You see a doorway here leading down into the sewers below the town. Dare you explore them?"/>
@@ -115,7 +115,7 @@
     <property name="after" value="sewers-alt-entrance-open"/>
     <property name="icon" value="doorway.png"/>
     <property name="id" value="sewers-alt-entrance-feature"/>
-    <property name="target" value="sewer"/>
+    <property name="target" type="file" value="sewer.tmx"/>
     <property name="targetX" value="4"/>
     <property name="targetY" value="2"/>
     <property name="transitionType" value="dungeon"/>

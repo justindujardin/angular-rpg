@@ -312,7 +312,7 @@
   <object id="1" name="town" class="PortalFeatureComponent" x="256" y="816" width="16" height="16">
    <properties>
     <property name="icon" value="city.png"/>
-    <property name="target" value="town"/>
+    <property name="target" type="file" value="town.tmx"/>
     <property name="targetX" value="12"/>
     <property name="targetY" value="4"/>
     <property name="text" value="Enter the town of Bryarlake?"/>
@@ -322,7 +322,7 @@
   <object id="2" name="ruins" class="PortalFeatureComponent" x="272" y="688" width="16" height="16">
    <properties>
     <property name="icon" value="city.png"/>
-    <property name="target" value="ruins"/>
+    <property name="target" type="file" value="ruins.tmx"/>
     <property name="targetX" value="14"/>
     <property name="targetY" value="21"/>
     <property name="text" value="The once-beautiful city gates of Kinstown Harbor are now tarnished and crumbling. Will you enter the ruins?"/>
@@ -332,7 +332,7 @@
   <object id="3" name="village" class="PortalFeatureComponent" x="496" y="432" width="16" height="16">
    <properties>
     <property name="icon" value="city.png"/>
-    <property name="target" value="village"/>
+    <property name="target" type="file" value="village.tmx"/>
     <property name="targetX" value="4"/>
     <property name="targetY" value="10"/>
     <property name="text" value="Climb up to the cliffside village of Moorhaven?"/>
@@ -342,7 +342,7 @@
   <object id="4" name="port" class="PortalFeatureComponent" x="160" y="384" width="16" height="16">
    <properties>
     <property name="icon" value="city.png"/>
-    <property name="target" value="port"/>
+    <property name="target" type="file" value="port.tmx"/>
     <property name="targetX" value="20"/>
     <property name="targetY" value="4"/>
     <property name="text" value="Will you enter the Elvish town of Port Artha?"/>
@@ -352,7 +352,7 @@
   <object id="5" name="fortress1" class="PortalFeatureComponent" x="368" y="192" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
-    <property name="target" value="fortress1"/>
+    <property name="target" type="file" value="fortress1.tmx"/>
     <property name="targetX" value="22"/>
     <property name="targetY" value="15"/>
     <property name="text" value="You stand at the entrance of the Goblin's Mountain Fortress. Horrific sights and smells await within, dare you enter?"/>
@@ -368,7 +368,7 @@
   <object id="7" name="castle" class="PortalFeatureComponent" x="1216" y="976" width="16" height="16">
    <properties>
     <property name="icon" value="palaceCenter.png"/>
-    <property name="target" value="castle"/>
+    <property name="target" type="file" value="castle.tmx"/>
     <property name="targetX" value="16"/>
     <property name="targetY" value="11"/>
     <property name="text" value="You stand before Castle Bashgar, the capital of the Suvian Kingdom. Will you enter?"/>
@@ -384,7 +384,7 @@
   <object id="9" name="crypt" class="PortalFeatureComponent" x="1168" y="912" width="16" height="16">
    <properties>
     <property name="icon" value="dome.png"/>
-    <property name="target" value="crypt"/>
+    <property name="target" type="file" value="crypt.tmx"/>
     <property name="targetX" value="4"/>
     <property name="targetY" value="28"/>
     <property name="text" value="The sacred grounds of Ashvari have served as the burial grounds for the Suvian Kings for centuries. Dare you explore the Ashvari Crypts?"/>
@@ -394,7 +394,7 @@
   <object id="10" name="keep" class="PortalFeatureComponent" x="1216" y="112" width="16" height="16">
    <properties>
     <property name="icon" value="keep.png"/>
-    <property name="target" value="keep"/>
+    <property name="target" type="file" value="keep.tmx"/>
     <property name="targetX" value="11"/>
     <property name="targetY" value="17"/>
     <property name="text" value="Through the swirling snow you perceive a large keep with tall, sheer walls coated in ice. Will you enter Rogaard Keep, last refuge of the Dwarves?"/>
@@ -404,7 +404,7 @@
   <object id="11" name="tower1" class="PortalFeatureComponent" x="1408" y="256" width="16" height="16">
    <properties>
     <property name="icon" value="tower.png"/>
-    <property name="target" value="tower1"/>
+    <property name="target" type="file" value="tower1.tmx"/>
     <property name="targetX" value="4"/>
     <property name="targetY" value="9"/>
     <property name="text" value="You stand before the mighty Vygurn Tower, a place of great mystery and intrigue. You are astonished to see that it is protected by no door, nor any guards. Step into Vygurn Tower?"/>
@@ -414,7 +414,7 @@
   <object id="12" name="isle" class="PortalFeatureComponent" x="1328" y="736" width="16" height="16">
    <properties>
     <property name="icon" value="city.png"/>
-    <property name="target" value="isle"/>
+    <property name="target" type="file" value="isle.tmx"/>
     <property name="targetX" value="17"/>
     <property name="targetY" value="10"/>
     <property name="text" value="On this island you find a bustling village, mostly occupied by merchants, sailors and buccaneers. Will you warily enter and peruse their wares?"/>
@@ -447,7 +447,7 @@
   <object id="16" name="lair" class="PortalFeatureComponent" x="816" y="80" width="16" height="16">
    <properties>
     <property name="icon" value="volcano.png"/>
-    <property name="target" value="lair"/>
+    <property name="target" type="file" value="lair.tmx"/>
     <property name="targetX" value="14"/>
     <property name="targetY" value="46"/>
     <property name="text" value="At the base of Mount Vezu, you find an entrance to a cavern. A sulfurous odor wells up from within. Will you steel your nerves and enter?"/>
@@ -482,7 +482,7 @@
   </object>
   <object id="21" name="town-secret" class="PortalFeatureComponent" x="272" y="848" width="16" height="16">
    <properties>
-    <property name="target" value="town"/>
+    <property name="target" type="file" value="town.tmx"/>
     <property name="targetX" value="22"/>
     <property name="targetY" value="21"/>
    </properties>

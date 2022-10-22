@@ -44,7 +44,7 @@
   <object id="1" name="wilderness" class="PortalFeatureComponent" x="352" y="240" width="16" height="16">
    <properties>
     <property name="icon" value="dungeonGate.png"/>
-    <property name="target" value="wilderness"/>
+    <property name="target" type="file" value="wilderness.tmx"/>
     <property name="targetX" value="23"/>
     <property name="targetY" value="12"/>
     <property name="text" value="Will you slip out of the Goblin Fortress and return to the Nothian Forest?"/>
@@ -93,7 +93,7 @@
   <object id="8" name="fortress2" class="PortalFeatureComponent" x="48" y="48" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
-    <property name="target" value="fortress2"/>
+    <property name="target" type="file" value="fortress2.tmx"/>
     <property name="targetX" value="23"/>
     <property name="targetY" value="12"/>
     <property name="text" value="Unspeakable sounds and smells fill the air as you peer down a long staircase. Dare you descend?"/>
@@ -119,7 +119,7 @@
     <property name="after" value="goblin-king"/>
     <property name="icon" value="doorway.png"/>
     <property name="id" value="fortress-exit"/>
-    <property name="target" value="fortress2"/>
+    <property name="target" type="file" value="fortress2.tmx"/>
     <property name="targetX" value="8"/>
     <property name="targetY" value="23"/>
     <property name="transitionType" value="fortress2"/>

@@ -94,7 +94,7 @@
   <object id="3" name="fortress1" class="PortalFeatureComponent" x="368" y="192" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
-    <property name="target" value="fortress1"/>
+    <property name="target" type="file" value="fortress1.tmx"/>
     <property name="targetX" value="3"/>
     <property name="targetY" value="3"/>
     <property name="text" value="Return to the lower level of the fortess?"/>
@@ -108,7 +108,7 @@
     <property name="after" value="goblin-king"/>
     <property name="icon" value="doorway.png"/>
     <property name="id" value="fortress-exit"/>
-    <property name="target" value="fortress1"/>
+    <property name="target" type="file" value="fortress1.tmx"/>
     <property name="targetX" value="8"/>
     <property name="targetY" value="27"/>
     <property name="transitionType" value="town"/>

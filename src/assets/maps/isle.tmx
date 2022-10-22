@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="25" height="19" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="6">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="25" height="19" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="7">
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <layer id="1" name="Terrain" width="25" height="19">
   <data encoding="csv">
@@ -28,7 +28,8 @@
   <object id="1" name="wilderness" class="PortalFeatureComponent" x="272" y="160" width="16" height="16">
    <properties>
     <property name="icon" value="bridgeVertical.png"/>
-    <property name="target" value="wilderness"/>
+    <property name="target" type="file" value="wilderness.tmx"/>
+    <property name="target2" type="file" value=""/>
     <property name="targetX" value="83"/>
     <property name="targetY" value="46"/>
     <property name="text" value="Will you weigh anchor and set sail again upon the Wandering Sea?"/>
@@ -68,5 +69,6 @@
     <property name="y" value="11"/>
    </properties>
   </object>
+  <object id="6" gid="4" x="359" y="62.6667" width="16" height="16"/>
  </objectgroup>
 </map>

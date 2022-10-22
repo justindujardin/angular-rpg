@@ -32,7 +32,7 @@
   <object id="1" name="wilderness" class="PortalFeatureComponent" x="176" y="272" width="16" height="16">
    <properties>
     <property name="icon" value="dungeonGate.png"/>
-    <property name="target" value="wilderness"/>
+    <property name="target" type="file" value="wilderness.tmx"/>
     <property name="targetX" value="76"/>
     <property name="targetY" value="7"/>
     <property name="text" value="Will you exit Rogaard Keep and return to the Warvish Tundralands?"/>

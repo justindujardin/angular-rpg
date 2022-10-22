@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="27" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="15">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="27" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="15">
  <properties>
   <property name="music" value="assets/music/TownTheme"/>
  </properties>
@@ -34,7 +34,7 @@
   <object id="1" name="wilderness" class="PortalFeatureComponent" x="192" y="64" width="16" height="16">
    <properties>
     <property name="icon" value="doorInWall.png"/>
-    <property name="target" value="wilderness"/>
+    <property name="target" type="file" value="wilderness.tmx"/>
     <property name="targetX" value="16"/>
     <property name="targetY" value="51"/>
     <property name="text" value="Will you exit the safety of Bryarlake and explore the great Wildernesse?"/>
@@ -104,7 +104,7 @@
   </object>
   <object id="10" name="wilderness-secret" class="PortalFeatureComponent" x="352" y="336" width="16" height="16">
    <properties>
-    <property name="target" value="wilderness"/>
+    <property name="target" type="file" value="wilderness.tmx"/>
     <property name="targetX" value="17"/>
     <property name="targetY" value="53"/>
    </properties>

@@ -54,7 +54,7 @@
   <object id="1" name="ruins" class="PortalFeatureComponent" x="336" y="16" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
-    <property name="target" value="ruins"/>
+    <property name="target" type="file" value="ruins.tmx"/>
     <property name="targetX" value="14"/>
     <property name="targetY" value="9"/>
     <property name="transitionType" value="town"/>
@@ -113,7 +113,7 @@
     <property name="after" value="sewers-alt-entrance-open"/>
     <property name="icon" value="doorway.png"/>
     <property name="id" value="sewers-alt-exit"/>
-    <property name="target" value="ruins"/>
+    <property name="target" type="file" value="ruins.tmx"/>
     <property name="targetX" value="7"/>
     <property name="targetY" value="9"/>
     <property name="transitionType" value="town"/>

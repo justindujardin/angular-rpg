@@ -52,7 +52,7 @@
   <object id="1" name="wilderness" class="PortalFeatureComponent" x="64" y="448" width="16" height="16">
    <properties>
     <property name="icon" value="dungeonGate.png"/>
-    <property name="target" value="wilderness"/>
+    <property name="target" type="file" value="wilderness.tmx"/>
     <property name="targetX" value="73"/>
     <property name="targetY" value="57"/>
     <property name="text" value="Will you escape the Ashvari Crypts and return to the land of the living?"/>
