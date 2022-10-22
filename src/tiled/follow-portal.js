@@ -28,11 +28,8 @@ const followWarp = tiled.registerAction("FollowPortal", function (/* action */) 
     return;
   }
 
-  const mapsPath = map.fileName.substr(0, map.fileName.indexOf("maps/") + 5);
-  const destinationMapFile = mapsPath + target + ".tmx";
-
   /** @type TileMap */
-  const destinationMap = tiled.open(destinationMapFile);
+  const destinationMap = tiled.open(target);
   if (!destinationMap) {
     return;
   }
