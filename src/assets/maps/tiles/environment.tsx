@@ -404,6 +404,7 @@
   <tile id="45">
     <image width="16" height="16" source="../../../art/sprites/environment/grass.png" />
     <properties>
+      <property name="isPath" value="true" />
       <property name="passable" value="true" />
       <property name="shipPassable" value="false" />
     </properties>
