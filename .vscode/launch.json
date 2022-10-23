@@ -31,6 +31,16 @@
       "sourceMaps": true,
       "cwd": "${workspaceRoot}",
       "protocol": "inspector",
+    },
+    {
+      "name": "Sprite Sheets",
+      "type": "node",
+      "runtimeExecutable": "ng",
+      "request": "launch",
+      "runtimeArgs": [
+        "serve"
+      ],
+      "cwd": "${workspaceRoot}"
     }
   ]
 }
