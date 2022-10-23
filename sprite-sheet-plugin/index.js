@@ -43,7 +43,11 @@ SpriteSheetPlugin.prototype.apply = function (compiler) {
           // No items left, output index file
           if (!item) {
             const indexJson = JSON.stringify(outputs, null, 2);
-            compilation.emitAsset(self.options.indexFile, new RawSource(indexJson));
+            if (compilation.assets[self.options.indexFile]) {
+              compilation.updateAsset(self.options.indexFile, new RawSource(indexJson));
+            } else {
+              compilation.emitAsset(self.options.indexFile, new RawSource(indexJson));
+            }
             // Tell webpack that we're done.
             callback();
             return;
@@ -61,12 +65,20 @@ SpriteSheetPlugin.prototype.apply = function (compiler) {
 
               // Write the image file for the given output base name
               const png = item.output + ".png";
-              compilation.emitAsset(png, new RawSource(results.file));
+              if (compilation.assets[png]) {
+                compilation.updateAsset(png, new RawSource(results.file));
+              } else {
+                compilation.emitAsset(png, new RawSource(results.file));
+              }
 
               // Write the metadata JSON file for the given output base name
               const json = item.output + ".json";
               const jsonData = JSON.stringify(results.meta, null, 2);
-              compilation.emitAsset(json, new RawSource(jsonData));
+              if (compilation.assets[json]) {
+                compilation.updateAsset(json, new RawSource(jsonData));
+              } else {
+                compilation.emitAsset(json, new RawSource(jsonData));
+              }
 
               // Process the next input
               processInput();
