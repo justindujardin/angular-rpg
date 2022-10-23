@@ -9,7 +9,7 @@
 
 /* global tiled */
 
-const followWarp = tiled.registerAction("FollowPortal", function (/* action */) {
+const followWarp = tiled.registerAction('FollowPortal', function (/* action */) {
   /** @type TileMap */
   const map = tiled.activeAsset;
   if (!map.isTileMap) {
@@ -21,9 +21,9 @@ const followWarp = tiled.registerAction("FollowPortal", function (/* action */) 
     return;
   }
 
-  const target = selectedObject.property("target");
-  const targetX = parseInt(selectedObject.property("targetX"), 10) * 16;
-  const targetY = parseInt(selectedObject.property("targetY"), 10) * 16;
+  const target = selectedObject.property('target');
+  const targetX = parseInt(selectedObject.property('targetX'), 10) * 16;
+  const targetY = parseInt(selectedObject.property('targetY'), 10) * 16;
   if (!target) {
     return;
   }
@@ -36,7 +36,7 @@ const followWarp = tiled.registerAction("FollowPortal", function (/* action */) 
 
   tiled.mapEditor.currentMapView.centerOn(targetX, targetY);
 });
-followWarp.text = "Follow Portal";
-followWarp.shortcut = "Ctrl+F";
+followWarp.text = 'Follow Portal';
+followWarp.shortcut = 'Ctrl+F';
 
-tiled.extendMenu("Map", [{ separator: true }, { action: "FollowPortal" }]);
+tiled.extendMenu('Map', [{ separator: true }, { action: 'FollowPortal' }]);
