@@ -53,7 +53,7 @@ export class CombatEncounterBehaviorComponent extends SceneObjectBehavior {
       return;
     }
     const terrain = this.tileMap.getTerrain('Terrain', move.to.x, move.to.y);
-    const isDangerous: boolean = terrain && terrain.isDangerous;
+    const isDangerous: boolean = terrain?.properties?.isDangerous;
     const dangerValue: number = isDangerous ? 10 : 6;
     this.battleCounter$.pipe(take(1)).subscribe((currentCounter: number) => {
       const newCounter: number = currentCounter - dangerValue;

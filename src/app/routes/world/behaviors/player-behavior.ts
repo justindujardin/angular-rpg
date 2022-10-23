@@ -79,7 +79,7 @@ export class PlayerBehaviorComponent extends BasePlayerComponent {
           continue;
         }
         for (let j = 0; j < this.passableKeys.length; j++) {
-          if (terrain[this.passableKeys[j]] === false) {
+          if (terrain.properties[this.passableKeys[j]] === false) {
             return true;
           }
         }

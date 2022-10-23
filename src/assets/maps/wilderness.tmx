@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="96" height="72" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="27">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="96" height="72" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="27">
  <properties>
   <property name="combat" value="true"/>
  </properties>
@@ -349,24 +349,12 @@
     <property name="targetY" value="15"/>
    </properties>
   </object>
-  <object id="6" name="palaceLeft.png" class="sign" x="1200" y="976" width="16" height="16">
-   <properties>
-    <property name="icon" value="palaceLeft.png"/>
-    <property name="type" value="sign"/>
-   </properties>
-  </object>
   <object id="7" name="castle" class="PortalFeatureComponent" x="1216" y="976" width="16" height="16">
    <properties>
     <property name="icon" value="palaceCenter.png"/>
     <property name="target" type="file" value="castle.tmx"/>
     <property name="targetX" value="16"/>
     <property name="targetY" value="11"/>
-   </properties>
-  </object>
-  <object id="8" name="palaceRight.png" class="sign" x="1232" y="976" width="16" height="16">
-   <properties>
-    <property name="icon" value="palaceRight.png"/>
-    <property name="type" value="sign"/>
    </properties>
   </object>
   <object id="9" name="crypt" class="PortalFeatureComponent" x="1168" y="912" width="16" height="16">

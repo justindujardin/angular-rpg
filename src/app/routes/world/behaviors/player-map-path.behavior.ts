@@ -58,10 +58,10 @@ export class PlayerMapPathBehaviorComponent extends TileMapPathBehavior {
 
           // Check to see if any layer has a passable attribute set to false,
           // if so block the path.
-          if (terrain.passable === false) {
+          if (terrain.properties?.passable === false) {
             weight = 1000;
             blocked = true;
-          } else if (terrain.isPath === true) {
+          } else if (terrain.properties?.isPath === true) {
             weight = 1;
           }
         }

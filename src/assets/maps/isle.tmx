@@ -66,6 +66,5 @@
     <property name="y" value="11"/>
    </properties>
   </object>
-  <object id="6" gid="4" x="359" y="62.6667" width="16" height="16"/>
  </objectgroup>
 </map>

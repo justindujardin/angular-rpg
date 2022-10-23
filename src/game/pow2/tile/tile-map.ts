@@ -19,14 +19,17 @@ import * as _ from 'underscore';
 import { Rect } from '../../pow-core/rect';
 import { ITileInstanceMeta } from '../../pow-core/resources/tiled/tiled';
 import { TiledTMXResource } from '../../pow-core/resources/tiled/tiled-tmx.resource';
-import { TiledTSXResource } from '../../pow-core/resources/tiled/tiled-tsx.resource';
+import {
+  TiledTSXResource,
+  TilesetTile,
+} from '../../pow-core/resources/tiled/tiled-tsx.resource';
 import { ITiledLayer } from '../../pow-core/resources/tiled/tiled.model';
 import { Scene } from '../scene/scene';
 import { SceneObject } from '../scene/scene-object';
 
 export class TileMap extends SceneObject {
   map: TiledTMXResource;
-  tiles: any = []; // TODO: TilesetProperties
+  tiles: any[] = []; // TODO: TilesetProperties
   scene: Scene;
   features: any;
   zones: any;
@@ -78,7 +81,12 @@ export class TileMap extends SceneObject {
       while (this.tiles.length < tiles.firstgid) {
         this.tiles.push(null);
       }
-      this.tiles = this.tiles.concat(tiles.tiles);
+      Object.values(tiles.tiles).forEach((tile: TilesetTile) => {
+        while (this.tiles.length < tile.id) {
+          this.tiles.push(null);
+        }
+        this.tiles[tiles.firstgid + tile.id] = tile;
+      });
     });
     this.features = _.where(this.map.layers, { name: 'Features' })[0] || [];
     this.zones = _.where(this.map.layers, { name: 'Zones' })[0] || [];

@@ -9,7 +9,9 @@ describe('TiledTSXResource', () => {
     new TiledTSXResource()
       .fetch('assets/test/example.tsx')
       .then((resource: TiledTSXResource) => {
-        expect(resource.name).toBe('example');
+        // Name must reference a loadable sprite sheet image
+        expect(resource.name).toBe('vezu.png');
+        expect(resource.tiles[1].properties.passable).toBe(false);
         done();
       });
   });
@@ -33,7 +35,7 @@ describe('TiledTSXResource', () => {
         .then((resource: TiledTSXResource) => {
           const meta: ITileInstanceMeta = resource.getTileMeta(1);
           expect(meta).not.toBeNull();
-          expect(meta.url).toContain('vezu.png');
+          expect(meta.properties?.passable).toBeFalse();
           done();
         });
     });

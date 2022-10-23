@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="33" height="17" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="22">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="33" height="17" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="22">
  <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <tileset firstgid="72" source="tiles/entities.tsx"/>
  <layer id="1" name="Terrain" width="33" height="17">
   <data encoding="csv">
 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,

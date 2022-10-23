@@ -2,30 +2,13 @@
 <tileset
   version="1.9"
   tiledversion="1.9.2"
-  name="../../images/environment.png"
+  name="tiles"
   tilewidth="16"
   tileheight="16"
+  tilecount="69"
+  columns="0"
 >
-  <tile id="0">
-    <image
-      width="16"
-      height="16"
-      source="../../../art/sprites/environment/bigCastleCenter.png"
-    />
-    <properties>
-      <property name="icon" type="file" value="bigCastleCenter.png" />
-    </properties>
-  </tile>
-  <tile id="1">
-    <image
-      width="16"
-      height="16"
-      source="../../../art/sprites/environment/bigCastleLeft.png"
-    />
-    <properties>
-      <property name="icon" type="file" value="bigCastleLeft.png" />
-    </properties>
-  </tile>
+  <grid orientation="orthogonal" width="1" height="1" />
   <tile id="2">
     <image
       width="16"
@@ -63,9 +46,9 @@
     <properties>
       <property name="color" value="#8e6464" />
       <property name="icon" value="darkBridgeVertical.png" />
-      <property name="isPath" value="true" />
       <property name="opaque" value="false" />
       <property name="passable" value="true" />
+      <property name="isPath" value="true" />
       <property name="shipPassable" value="false" />
     </properties>
   </tile>
@@ -83,26 +66,6 @@
       <property name="shipPassable" value="false" />
     </properties>
   </tile>
-  <tile id="6">
-    <image
-      width="16"
-      height="16"
-      source="../../../art/sprites/environment/iceGateCenter.png"
-    />
-    <properties>
-      <property name="icon" type="file" value="iceGateCenter.png" />
-    </properties>
-  </tile>
-  <tile id="7">
-    <image
-      width="16"
-      height="16"
-      source="../../../art/sprites/environment/plaque.png"
-    />
-    <properties>
-      <property name="icon" type="file" value="plaque.png" />
-    </properties>
-  </tile>
   <tile id="8">
     <image width="16" height="16" source="../../../art/sprites/environment/wall.png" />
     <properties>
@@ -111,26 +74,6 @@
       <property name="opaque" value="true" />
       <property name="passable" value="false" />
       <property name="shipPassable" value="false" />
-    </properties>
-  </tile>
-  <tile id="9">
-    <image
-      width="16"
-      height="16"
-      source="../../../art/sprites/environment/bigCastleRight.png"
-    />
-    <properties>
-      <property name="icon" type="file" value="bigCastleRight.png" />
-    </properties>
-  </tile>
-  <tile id="10">
-    <image
-      width="16"
-      height="16"
-      source="../../../art/sprites/environment/blueBannerDoor.png"
-    />
-    <properties>
-      <property name="icon" type="file" value="blueBannerDoor.png" />
     </properties>
   </tile>
   <tile id="11">
@@ -175,26 +118,6 @@
       <property name="shipPassable" value="false" />
     </properties>
   </tile>
-  <tile id="14">
-    <image
-      width="16"
-      height="16"
-      source="../../../art/sprites/environment/doorway.png"
-    />
-    <properties>
-      <property name="icon" type="file" value="doorway.png" />
-    </properties>
-  </tile>
-  <tile id="15">
-    <image
-      width="16"
-      height="16"
-      source="../../../art/sprites/environment/iceGateLeft.png"
-    />
-    <properties>
-      <property name="icon" type="file" value="iceGateLeft.png" />
-    </properties>
-  </tile>
   <tile id="16">
     <image width="16" height="16" source="../../../art/sprites/environment/pool.png" />
     <properties>
@@ -219,42 +142,6 @@
       <property name="shipPassable" value="true" />
     </properties>
   </tile>
-  <tile id="18">
-    <image
-      width="16"
-      height="16"
-      source="../../../art/sprites/environment/carpetN.png"
-    />
-    <properties>
-      <property name="icon" type="file" value="carpetN.png" />
-    </properties>
-  </tile>
-  <tile id="19">
-    <image
-      width="16"
-      height="16"
-      source="../../../art/sprites/environment/carpetNS.png"
-    />
-    <properties>
-      <property name="icon" type="file" value="carpetNS.png" />
-    </properties>
-  </tile>
-  <tile id="20">
-    <image
-      width="16"
-      height="16"
-      source="../../../art/sprites/environment/carpetS.png"
-    />
-    <properties>
-      <property name="icon" type="file" value="carpetS.png" />
-    </properties>
-  </tile>
-  <tile id="21">
-    <image width="16" height="16" source="../../../art/sprites/environment/chest.png" />
-    <properties>
-      <property name="icon" type="file" value="chest.png" />
-    </properties>
-  </tile>
   <tile id="22">
     <image
       width="16"
@@ -264,9 +151,9 @@
     <properties>
       <property name="color" value="#8e8e8e" />
       <property name="icon" value="darkFloor.png" />
-      <property name="isPath" value="true" />
       <property name="opaque" value="false" />
       <property name="passable" value="true" />
+      <property name="isPath" value="true" />
       <property name="shipPassable" value="false" />
     </properties>
   </tile>
@@ -298,12 +185,6 @@
       <property name="shipPassable" value="false" />
     </properties>
   </tile>
-  <tile id="25">
-    <image width="16" height="16" source="../../../art/sprites/environment/prism.png" />
-    <properties>
-      <property name="icon" type="file" value="prism.png" />
-    </properties>
-  </tile>
   <tile id="26">
     <image
       width="16"
@@ -316,22 +197,6 @@
       <property name="opaque" value="true" />
       <property name="passable" value="false" />
       <property name="shipPassable" value="false" />
-    </properties>
-  </tile>
-  <tile id="27">
-    <image width="16" height="16" source="../../../art/sprites/environment/city.png" />
-    <properties>
-      <property name="icon" type="file" value="city.png" />
-    </properties>
-  </tile>
-  <tile id="28">
-    <image
-      width="16"
-      height="16"
-      source="../../../art/sprites/environment/column.png"
-    />
-    <properties>
-      <property name="icon" type="file" value="column.png" />
     </properties>
   </tile>
   <tile id="29">
@@ -381,9 +246,9 @@
     <properties>
       <property name="color" value="#8e8e8e" />
       <property name="icon" value="floor.png" />
-      <property name="isPath" value="true" />
       <property name="opaque" value="false" />
       <property name="passable" value="true" />
+      <property name="isPath" value="true" />
       <property name="shipPassable" value="false" />
     </properties>
   </tile>
@@ -409,12 +274,6 @@
       <property name="opaque" value="false" />
       <property name="passable" value="false" />
       <property name="shipPassable" value="true" />
-    </properties>
-  </tile>
-  <tile id="35">
-    <image width="16" height="16" source="../../../art/sprites/environment/well.png" />
-    <properties>
-      <property name="icon" type="file" value="well.png" />
     </properties>
   </tile>
   <tile id="36">
@@ -467,18 +326,6 @@
       <property name="opaque" value="true" />
       <property name="passable" value="false" />
       <property name="shipPassable" value="false" />
-    </properties>
-  </tile>
-  <tile id="40">
-    <image width="16" height="16" source="../../../art/sprites/environment/dome.png" />
-    <properties>
-      <property name="icon" type="file" value="dome.png" />
-    </properties>
-  </tile>
-  <tile id="41">
-    <image width="16" height="16" source="../../../art/sprites/environment/gold.png" />
-    <properties>
-      <property name="icon" type="file" value="gold.png" />
     </properties>
   </tile>
   <tile id="42">
@@ -566,9 +413,9 @@
     <properties>
       <property name="color" value="#a8c4dd" />
       <property name="icon" value="iceFloor.png" />
-      <property name="isPath" value="true" />
       <property name="opaque" value="false" />
       <property name="passable" value="true" />
+      <property name="isPath" value="true" />
       <property name="shipPassable" value="false" />
     </properties>
   </tile>
@@ -580,32 +427,6 @@
       <property name="opaque" value="false" />
       <property name="passable" value="false" />
       <property name="shipPassable" value="false" />
-    </properties>
-  </tile>
-  <tile id="50">
-    <image
-      width="16"
-      height="16"
-      source="../../../art/sprites/environment/iceFloor.png"
-    />
-    <properties>
-      <property name="icon" type="file" value="iceFloor.png" />
-    </properties>
-  </tile>
-  <tile id="51">
-    <image width="16" height="16" source="../../../art/sprites/environment/keep.png" />
-    <properties>
-      <property name="icon" type="file" value="keep.png" />
-    </properties>
-  </tile>
-  <tile id="52">
-    <image
-      width="16"
-      height="16"
-      source="../../../art/sprites/environment/shipStatic.png"
-    />
-    <properties>
-      <property name="icon" type="file" value="shipStatic.png" />
     </properties>
   </tile>
   <tile id="55">
@@ -650,36 +471,6 @@
       <property name="shipPassable" value="false" />
     </properties>
   </tile>
-  <tile id="57">
-    <image
-      width="16"
-      height="16"
-      source="../../../art/sprites/environment/palaceCenter.png"
-    />
-    <properties>
-      <property name="icon" type="file" value="palaceCenter.png" />
-    </properties>
-  </tile>
-  <tile id="58">
-    <image
-      width="16"
-      height="16"
-      source="../../../art/sprites/environment/palaceLeft.png"
-    />
-    <properties>
-      <property name="icon" type="file" value="palaceLeft.png" />
-    </properties>
-  </tile>
-  <tile id="59">
-    <image
-      width="16"
-      height="16"
-      source="../../../art/sprites/environment/palaceRight.png"
-    />
-    <properties>
-      <property name="icon" type="file" value="palaceRight.png" />
-    </properties>
-  </tile>
   <tile id="65">
     <image width="16" height="16" source="../../../art/sprites/environment/stump.png" />
     <properties>
@@ -688,24 +479,6 @@
       <property name="opaque" value="false" />
       <property name="passable" value="true" />
       <property name="shipPassable" value="false" />
-    </properties>
-  </tile>
-  <tile id="61">
-    <image width="16" height="16" source="../../../art/sprites/environment/shop.png" />
-    <properties>
-      <property name="icon" type="file" value="shop.png" />
-    </properties>
-  </tile>
-  <tile id="63">
-    <image width="16" height="16" source="../../../art/sprites/environment/sigil.png" />
-    <properties>
-      <property name="icon" type="file" value="sigil.png" />
-    </properties>
-  </tile>
-  <tile id="64">
-    <image width="16" height="16" source="../../../art/sprites/environment/skull.png" />
-    <properties>
-      <property name="icon" type="file" value="skull.png" />
     </properties>
   </tile>
   <tile id="68">
@@ -717,26 +490,10 @@
     <properties>
       <property name="color" value="#008c00" />
       <property name="icon" value="treeAlt.png" />
-      <property name="isDangerous" value="true" />
       <property name="opaque" value="true" />
       <property name="passable" value="true" />
+      <property name="isDangerous" value="true" />
       <property name="shipPassable" value="false" />
-    </properties>
-  </tile>
-  <tile id="66">
-    <image
-      width="16"
-      height="16"
-      source="../../../art/sprites/environment/temple.png"
-    />
-    <properties>
-      <property name="icon" type="file" value="temple.png" />
-    </properties>
-  </tile>
-  <tile id="67">
-    <image width="16" height="16" source="../../../art/sprites/environment/tower.png" />
-    <properties>
-      <property name="icon" type="file" value="tower.png" />
     </properties>
   </tile>
   <tile id="69">
@@ -771,10 +528,9 @@
     <image
       width="16"
       height="16"
-      source="../../../art/sprites/environment/zTransparentMountain.png"
+      source="../../../art/sprites/environment/bigCastleCenter.png"
     />
     <properties>
-      <property name="icon" type="file" value="zTransparentMountain.png" />
       <property name="passable" value="false" />
       <property name="shipPassable" value="false" />
     </properties>

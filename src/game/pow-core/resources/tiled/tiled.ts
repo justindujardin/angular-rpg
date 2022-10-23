@@ -9,7 +9,7 @@ export interface ITileInstanceMeta {
   y: number;
   width: number;
   height: number;
-  data?: any;
+  properties?: any;
 }
 
 // Tiled object XML reading utilities.

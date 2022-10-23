@@ -19,12 +19,14 @@ import { XMLResource } from '../xml.resource';
 import { compactUrl, ITileInstanceMeta, readTiledProperties } from './tiled';
 
 export class TilesetTile {
-  id: number;
-  properties: any = {};
+  public properties: any = {};
 
-  constructor(id: number) {
-    this.id = id;
-  }
+  constructor(
+    public id: number,
+    public image: string,
+    public width: number,
+    public height: number
+  ) {}
 }
 /**
  * A Tiled TSX tileset resource
@@ -38,9 +40,10 @@ export class TiledTSXResource extends XMLResource {
   image: ImageResource = null;
   url: string;
   firstgid: number = -1;
-  tiles: any[] = [];
-  relativeTo: string = null;
+  tiles: { [gid: string]: TilesetTile } | null = null;
+  maxgid: number = -1;
   imageUrl: string = null;
+  relativeTo: string = null;
   literal: string = null; // The literal source path specified in xml
   load(data?: any): Promise<TiledTSXResource> {
     this.data = data || this.data;
@@ -54,21 +57,30 @@ export class TiledTSXResource extends XMLResource {
         : '';
 
       // Load tiles and custom properties.
+      const tilesArray = [];
       const tiles = this.getChildren(tileSet, 'tile');
       _.each(tiles, (ts: any) => {
         const id: number = parseInt(this.getElAttribute(ts, 'id'), 10);
-        const tile: TilesetTile = new TilesetTile(id);
+        if (id > this.maxgid) {
+          this.maxgid = id;
+        }
+        const sourceImage = this.getChild(ts, 'image');
+        if (!sourceImage) {
+          throw new Error(
+            'tileset tiles must be image collections that reference the soruce sprite image'
+          );
+        }
+        // extract only the filename from the source image path
+        let image: string = this.getElAttribute(sourceImage, 'source');
+        image = image.substring(image.lastIndexOf('/') + 1);
+        const width = parseInt(this.getElAttribute(sourceImage, 'width'), 10);
+        const height = parseInt(this.getElAttribute(sourceImage, 'height'), 10);
+        const tile: TilesetTile = new TilesetTile(id, image, width, height);
         tile.properties = readTiledProperties(ts);
-        this.tiles.push(tile);
+        tilesArray.push(tile);
       });
 
-      const image: any = this.getChild(tileSet, 'image');
-      if (!image || image.length === 0) {
-        return resolve(this);
-      }
-      const source = this.getElAttribute(image, 'source');
-      this.imageWidth = parseInt(this.getElAttribute(image, 'width') || '0', 10);
-      this.imageHeight = parseInt(this.getElAttribute(image, 'height') || '0', 10);
+      const source = this.name;
       this.imageUrl = compactUrl(
         this.relativeTo ? this.relativeTo : relativePath,
         source
@@ -82,17 +94,10 @@ export class TiledTSXResource extends XMLResource {
           this.imageWidth = this.image.data.width;
           this.imageHeight = this.image.data.height;
 
-          // Finally, build an expanded tileset from the known image w/h and the
-          // tiles with properties that are specified in the form of <tile> objects.
-          const xUnits = this.imageWidth / this.tilewidth;
-          const yUnits = this.imageHeight / this.tileheight;
-          const tileCount = xUnits * yUnits;
-          const tileLookup = new Array(tileCount);
-          for (let i = 0; i < tileCount; i++) {
-            tileLookup[i] = false;
-          }
-          _.each(this.tiles, (tile) => {
-            tileLookup[tile.id] = tile.properties;
+          // Finally, build a tile lookup table
+          const tileLookup = {};
+          _.each(tilesArray, (tile) => {
+            tileLookup[tile.id] = tile;
           });
           this.tiles = tileLookup;
 
@@ -106,9 +111,7 @@ export class TiledTSXResource extends XMLResource {
 
   hasGid(gid: number): boolean {
     return (
-      this.firstgid !== -1 &&
-      gid >= this.firstgid &&
-      gid < this.firstgid + this.tiles.length
+      this.firstgid !== -1 && gid >= this.firstgid && gid < this.firstgid + this.maxgid
     );
   }
 
@@ -118,9 +121,9 @@ export class TiledTSXResource extends XMLResource {
     const tilesX = this.imageWidth / this.tilewidth;
     const x = index % tilesX;
     const y = Math.floor((index - x) / tilesX);
-    return _.extend(this.tiles[index] || {}, {
+    const tile = this.tiles[index];
+    return _.extend(tile || {}, {
       image: this.image,
-      url: this.imageUrl,
       x: x * this.tilewidth,
       y: y * this.tileheight,
       width: this.tilewidth,
