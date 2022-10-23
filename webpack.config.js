@@ -1,5 +1,5 @@
 const { merge } = require("webpack-merge");
-const SpriteSheetPlugin = require("./sprite-sheet-plugin");
+const SpriteSheetPlugin = require("./src/webpack/sprite-sheet-plugin");
 
 // Config parameter is Angular default configurations.
 module.exports = function (angularConfig) {
