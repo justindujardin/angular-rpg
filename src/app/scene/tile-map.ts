@@ -33,10 +33,10 @@ import { SceneObject } from './scene-object';
 
 export class TileMap extends SceneObject {
   map: TiledTMXResource;
-  tiles: any[] = []; // TODO: TilesetProperties
+  tiles: TilesetTile[] = [];
   scene: Scene;
-  features: any;
-  zones: any;
+  features: ITiledLayer | null;
+  zones: ITiledLayer | null;
   bounds: Rect = new Rect(0, 0, 10, 10);
   dirtyLayers: boolean = false;
   musicUrl: string;
@@ -99,8 +99,8 @@ export class TileMap extends SceneObject {
         this.tiles[tileId] = tile;
       });
     });
-    this.features = _.where(this.map.layers, { name: 'Features' })[0] || [];
-    this.zones = _.where(this.map.layers, { name: 'Zones' })[0] || [];
+    this.features = _.where(this.map.layers, { name: 'Features' })[0] || null;
+    this.zones = _.where(this.map.layers, { name: 'Zones' })[0] || null;
     this.loaded();
     return true;
   }

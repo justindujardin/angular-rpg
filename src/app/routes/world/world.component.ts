@@ -202,7 +202,7 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
       for (let y = clipYMin; y <= clipYMax; y++) {
         this.map.getLayers().forEach((layer) => {
           const tile = this.map.getTerrain(layer.name, x, y);
-          if (tile && !tile.passable) {
+          if (tile && tile.properties?.passable === false) {
             const screenTile: Rect = this.worldToScreen(
               new Rect(new Point(x - 0.5, y - 0.5), new Point(1, 1))
             );
