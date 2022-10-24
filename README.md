@@ -39,13 +39,17 @@ Thanks goes to these people for their wonderful contributions ([emoji key](https
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 <table>
-  <tr>
-    <td align="center"><a href="https://mathy.ai"><img src="https://avatars0.githubusercontent.com/u/101493?v=4" width="100px;" alt=""/><br /><sub><b>Justin DuJardin</b></sub></a><br /><a href="https://github.com/justindujardin/angular-rpg/commits?author=justindujardin" title="Documentation">📖</a> <a href="https://github.com/justindujardin/angular-rpg/commits?author=justindujardin" title="Code">💻</a> <a href="#design-justindujardin" title="Design">🎨</a> <a href="#ideas-justindujardin" title="Ideas, Planning, & Feedback">🤔</a></td>
-  </tr>
+  <tbody>
+    <tr>
+      <td align="center"><a href="https://mathy.ai"><img src="https://avatars0.githubusercontent.com/u/101493?v=4?s=100" width="100px;" alt="Justin DuJardin"/><br /><sub><b>Justin DuJardin</b></sub></a><br /><a href="https://github.com/justindujardin/angular-rpg/commits?author=justindujardin" title="Documentation">📖</a> <a href="https://github.com/justindujardin/angular-rpg/commits?author=justindujardin" title="Code">💻</a> <a href="#design-justindujardin" title="Design">🎨</a> <a href="#ideas-justindujardin" title="Ideas, Planning, & Feedback">🤔</a></td>
+      <td align="center"><a href="https://github.com/Tokelin"><img src="https://avatars.githubusercontent.com/u/67515444?v=4?s=100" width="100px;" alt="Tokelin"/><br /><sub><b>Tokelin</b></sub></a><br /><a href="https://github.com/justindujardin/angular-rpg/commits?author=Tokelin" title="Code">💻</a></td>
+    </tr>
+  </tbody>
 </table>
 
-<!-- markdownlint-enable -->
+<!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
