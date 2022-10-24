@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="25" height="25" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="25" height="25" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
  <properties>
   <property name="combat" value="true"/>
   <property name="combatZone" value="zone-goblin-fortress"/>
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <tileset firstgid="72" source="tiles/creatures.tsx"/>
+ <tileset firstgid="157" source="tiles/objects.tsx"/>
  <layer id="1" name="Terrain" width="25" height="25">
   <data encoding="csv">
 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
@@ -64,7 +66,7 @@
 </data>
  </layer>
  <objectgroup id="3" name="Features">
-  <object id="1" name="goblinArcher.png" class="CombatFeatureComponent" x="256" y="48" width="16" height="16">
+  <object id="1" name="goblinArcher.png" class="CombatFeatureComponent" gid="94" x="256" y="48" width="16" height="16">
    <properties>
     <property name="creatures" value=""/>
     <property name="icon" value="goblinArcher.png"/>
@@ -73,7 +75,7 @@
     <property name="type" value="encounter"/>
    </properties>
   </object>
-  <object id="2" name="chest.png" class="CombatFeatureComponent" x="288" y="320" width="16" height="16">
+  <object id="2" name="chest.png" class="CombatFeatureComponent" gid="160" x="288" y="320" width="16" height="16">
    <properties>
     <property name="ambushed" value="true"/>
     <property name="creatures" value=""/>
@@ -85,13 +87,13 @@
     <property name="type" value="encounter"/>
    </properties>
   </object>
-  <object id="3" name="goblinKing.png" class="CombatFeatureComponent" x="128" y="368" width="16" height="16">
+  <object id="3" name="goblinKing.png" class="CombatFeatureComponent" gid="95" x="128" y="368" width="16" height="16">
    <properties>
     <property name="icon" value="goblinKing.png"/>
     <property name="id" value="goblin-king"/>
    </properties>
   </object>
-  <object id="3" name="fortress1" class="PortalFeatureComponent" x="368" y="192" width="16" height="16">
+  <object id="3" name="fortress1" class="PortalFeatureComponent" gid="163" x="368" y="192" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
     <property name="target" type="file" value="fortress1.tmx"/>
@@ -99,7 +101,7 @@
     <property name="targetY" value="3"/>
    </properties>
   </object>
-  <object id="5" name="DungeonExitPortal" class="PortalFeatureComponent" x="128" y="368" width="16" height="16">
+  <object id="5" name="DungeonExitPortal" class="PortalFeatureComponent" gid="163" x="128" y="368" width="16" height="16">
    <properties>
     <property name="after" value="goblin-king"/>
     <property name="icon" value="doorway.png"/>

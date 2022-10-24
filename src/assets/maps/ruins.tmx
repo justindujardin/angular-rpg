@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="19" height="29" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="8">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="19" height="29" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="8">
  <properties>
   <property name="combat" value="true"/>
   <property name="combatZone" value="world-plains"/>
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <tileset firstgid="72" source="tiles/objects.tsx"/>
  <layer id="1" name="Terrain" width="19" height="29">
   <data encoding="csv">
 18,18,18,18,18,18,18,18,18,18,18,18,46,46,46,46,46,46,46,
@@ -72,7 +73,7 @@
 </data>
  </layer>
  <objectgroup id="3" name="Features">
-  <object id="1" name="wilderness" class="PortalFeatureComponent" x="224" y="336" width="16" height="16">
+  <object id="1" name="wilderness" class="PortalFeatureComponent" gid="77" x="224" y="336" width="16" height="16">
    <properties>
     <property name="icon" value="doorInWall.png"/>
     <property name="target" type="file" value="wilderness.tmx"/>
@@ -85,7 +86,7 @@
     <property name="type" value="block"/>
    </properties>
   </object>
-  <object id="4" name="LockedGate" class="DoorFeatureComponent" x="192" y="336" width="16" height="16">
+  <object id="4" name="LockedGate" class="DoorFeatureComponent" gid="79" x="192" y="336" width="16" height="16">
    <properties>
     <property name="icon" value="dungeonGate.png"/>
     <property name="id" value="bryarlake-front-gate"/>
@@ -96,7 +97,7 @@
     <property name="until" value="bryarlake-front-gate"/>
    </properties>
   </object>
-  <object id="5" name="sewer" class="PortalFeatureComponent" x="224" y="144" width="16" height="16">
+  <object id="5" name="sewer" class="PortalFeatureComponent" gid="78" x="224" y="144" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
     <property name="target" type="file" value="sewer.tmx"/>
@@ -104,7 +105,7 @@
     <property name="targetY" value="1"/>
    </properties>
   </object>
-  <object id="7" name="hidden entrance" class="PortalFeatureComponent" x="112" y="144" width="16" height="16">
+  <object id="7" name="hidden entrance" class="PortalFeatureComponent" gid="78" x="112" y="144" width="16" height="16">
    <properties>
     <property name="after" value="sewers-alt-entrance-open"/>
     <property name="icon" value="doorway.png"/>

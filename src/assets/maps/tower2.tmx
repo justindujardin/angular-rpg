@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="19" height="19" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="6">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="19" height="19" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="6">
  <properties>
   <property name="combat" value="true"/>
   <property name="combatZone" value="zone-ice-tower"/>
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <tileset firstgid="72" source="tiles/objects.tsx"/>
+ <tileset firstgid="88" source="tiles/creatures.tsx"/>
  <layer id="1" name="Terrain" width="19" height="19">
   <data encoding="csv">
 34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,
@@ -29,7 +31,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="Features">
-  <object id="1" name="tower1" class="PortalFeatureComponent" x="48" y="240" width="16" height="16">
+  <object id="1" name="tower1" class="PortalFeatureComponent" gid="78" x="48" y="240" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
     <property name="target" type="file" value="tower1.tmx"/>
@@ -37,7 +39,7 @@
     <property name="targetY" value="16"/>
    </properties>
   </object>
-  <object id="2" name="iceGolem.png" class="CombatFeatureComponent" x="144" y="144" width="16" height="16">
+  <object id="2" name="iceGolem.png" class="CombatFeatureComponent" gid="118" x="144" y="144" width="16" height="16">
    <properties>
     <property name="creatures" value=""/>
     <property name="gold" value="8"/>
@@ -47,7 +49,7 @@
     <property name="text" value="Two handlers release the bonds on a hulking monstrosity made entirely of ice! It lurches towards you!"/>
    </properties>
   </object>
-  <object id="3" name="iceTroll.png" class="CombatFeatureComponent" x="80" y="48" width="16" height="16">
+  <object id="3" name="iceTroll.png" class="CombatFeatureComponent" gid="120" x="80" y="48" width="16" height="16">
    <properties>
     <property name="ambushed" value="true"/>
     <property name="creatures" value=""/>
@@ -68,7 +70,7 @@
     <property name="until" value="bagOfHolding"/>
    </properties>
   </object>
-  <object id="5" name="tower3" class="PortalFeatureComponent" x="16" y="80" width="16" height="16">
+  <object id="5" name="tower3" class="PortalFeatureComponent" gid="78" x="16" y="80" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
     <property name="target" type="file" value="tower3.tmx"/>

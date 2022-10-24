@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="23" height="41" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="11">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="23" height="41" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="11">
  <properties>
   <property name="combat" value="true"/>
   <property name="combatZone" value="zone-sewer"/>
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <tileset firstgid="72" source="tiles/objects.tsx"/>
+ <tileset firstgid="88" source="tiles/creatures.tsx"/>
  <layer id="1" name="Terrain" width="23" height="41">
   <data encoding="csv">
 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,35,9,9,9,9,
@@ -51,7 +53,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="Features">
-  <object id="1" name="ruins" class="PortalFeatureComponent" x="336" y="16" width="16" height="16">
+  <object id="1" name="ruins" class="PortalFeatureComponent" gid="78" x="336" y="16" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
     <property name="target" type="file" value="ruins.tmx"/>
@@ -59,55 +61,55 @@
     <property name="targetY" value="9"/>
    </properties>
   </object>
-  <object id="2" name="kobold-sewers" class="CombatFeatureComponent" x="320" y="464" width="16" height="16">
+  <object id="2" name="kobold-sewers" class="CombatFeatureComponent" gid="125" x="320" y="464" width="16" height="16">
    <properties>
     <property name="icon" value="koboldSwordsman.png"/>
     <property name="id" value="sewer-kobolds"/>
    </properties>
   </object>
-  <object id="3" name="impTalisman.png" class="TreasureFeatureComponent" x="96" y="32" width="16" height="16">
+  <object id="3" name="impTalisman.png" class="TreasureFeatureComponent" gid="75" x="96" y="32" width="16" height="16">
    <properties>
     <property name="icon" value="chest.png"/>
     <property name="id" value="sewers-treasure-2"/>
     <property name="item" value="apprentice-hat"/>
    </properties>
   </object>
-  <object id="4" name="kobold-sewers-elite" class="CombatFeatureComponent" x="64" y="544" width="16" height="16">
+  <object id="4" name="kobold-sewers-elite" class="CombatFeatureComponent" gid="124" x="64" y="544" width="16" height="16">
    <properties>
     <property name="icon" value="koboldShaman.png"/>
     <property name="id" value="sewer-kobolds-elite"/>
     <property name="sets" value="ruinsDone"/>
    </properties>
   </object>
-  <object id="5" name="shield treasure" class="TreasureFeatureComponent" x="256" y="512" width="16" height="16">
+  <object id="5" name="shield treasure" class="TreasureFeatureComponent" gid="75" x="256" y="512" width="16" height="16">
    <properties>
     <property name="icon" value="chest.png"/>
     <property name="id" value="sewers-armory-two"/>
     <property name="item" value="leather-shield"/>
    </properties>
   </object>
-  <object id="6" name="short bow treasure" class="TreasureFeatureComponent" x="256" y="544" width="16" height="16">
+  <object id="6" name="short bow treasure" class="TreasureFeatureComponent" gid="75" x="256" y="544" width="16" height="16">
    <properties>
     <property name="icon" value="chest.png"/>
     <property name="id" value="sewers-armory-three"/>
     <property name="item" value="short-bow"/>
    </properties>
   </object>
-  <object id="7" name="gold treasure" class="TreasureFeatureComponent" x="320" y="528" width="16" height="16">
+  <object id="7" name="gold treasure" class="TreasureFeatureComponent" gid="75" x="320" y="528" width="16" height="16">
    <properties>
     <property name="gold" value="50"/>
     <property name="icon" value="chest.png"/>
     <property name="id" value="sewers-armory-one"/>
    </properties>
   </object>
-  <object id="8" name="potion treasure" class="TreasureFeatureComponent" x="320" y="560" width="16" height="16">
+  <object id="8" name="potion treasure" class="TreasureFeatureComponent" gid="75" x="320" y="560" width="16" height="16">
    <properties>
     <property name="icon" value="chest.png"/>
     <property name="id" value="sewers-armory-four"/>
     <property name="item" value="potion"/>
    </properties>
   </object>
-  <object id="9" name="ruins_alt" class="PortalFeatureComponent" x="64" y="32" width="16" height="16">
+  <object id="9" name="ruins_alt" class="PortalFeatureComponent" gid="78" x="64" y="32" width="16" height="16">
    <properties>
     <property name="after" value="sewers-alt-entrance-open"/>
     <property name="icon" value="doorway.png"/>
@@ -117,7 +119,7 @@
     <property name="targetY" value="9"/>
    </properties>
   </object>
-  <object id="10" name="LockedGate" class="DoorFeatureComponent" x="64" y="32" width="16" height="16">
+  <object id="10" name="LockedGate" class="DoorFeatureComponent" gid="79" x="64" y="32" width="16" height="16">
    <properties>
     <property name="icon" value="dungeonGate.png"/>
     <property name="id" value="sewers-alt-entrance-open"/>

@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="28" height="31" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="15">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="28" height="31" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="15">
  <properties>
   <property name="combat" value="true"/>
   <property name="combatZone" value="zone-goblin-fortress"/>
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <tileset firstgid="72" source="tiles/objects.tsx"/>
+ <tileset firstgid="88" source="tiles/creatures.tsx"/>
  <layer id="1" name="Terrain" width="28" height="31">
   <data encoding="csv">
 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,57,57,57,57,57,
 9,9,9,9,9,9,9,9,9,9,9,9,33,33,33,33,33,9,9,9,9,9,9,57,57,57,57,57,
-9,9,9,9,9,9,9,9,9,9,9,33,33,33,9,9,24,9,9,9,9,9,9,57,57,57,57,57,
+9,9,9,9,9,9,9,9,9,9,9,33,33,33,9,9,77,9,9,9,9,9,9,57,57,57,57,57,
 9,9,33,33,33,9,9,9,9,9,9,9,33,33,9,9,33,33,33,9,9,9,9,57,57,57,57,57,
 9,9,33,33,33,9,9,9,9,9,9,9,9,9,9,9,33,33,33,9,9,9,9,57,57,57,57,57,
 9,9,33,33,33,9,9,9,9,33,33,33,9,9,9,9,33,33,33,9,9,9,9,57,57,57,57,57,
-9,9,9,24,9,9,9,9,9,33,9,33,9,9,9,9,9,33,9,9,9,9,9,57,57,57,57,57,
-9,9,9,33,9,9,9,9,9,33,9,33,9,9,9,9,9,24,9,9,9,9,9,57,57,57,57,57,
+9,9,9,33,9,9,9,9,9,33,9,33,9,9,9,9,9,33,9,9,9,9,9,57,57,57,57,57,
+9,9,9,33,9,9,9,9,9,33,9,33,9,9,9,9,9,77,9,9,9,9,9,57,57,57,57,57,
 9,9,9,33,33,9,9,9,9,33,9,33,9,46,46,46,46,46,46,46,46,46,9,57,57,57,57,57,
 9,9,9,9,33,9,9,9,9,33,9,33,9,46,46,46,46,46,46,46,46,46,9,57,57,57,57,57,
 9,9,9,9,33,9,9,9,9,33,9,33,9,46,46,46,46,46,46,46,46,46,9,57,57,57,57,57,
@@ -28,20 +30,20 @@
 9,9,33,33,9,9,9,33,33,33,9,9,9,46,46,46,46,37,46,46,46,9,9,57,57,57,57,57,
 9,9,33,9,9,9,9,33,9,9,9,9,9,46,46,46,46,46,46,46,46,46,9,57,57,57,57,57,
 9,9,33,9,9,9,9,33,9,9,9,9,9,46,46,46,46,46,46,46,46,46,9,57,57,57,57,57,
-9,9,33,9,9,9,9,24,9,9,9,9,9,46,46,46,46,46,46,46,46,46,9,57,57,57,57,57,
+9,9,33,9,9,9,9,77,9,9,9,9,9,46,46,46,46,46,46,46,46,46,9,57,57,57,57,57,
 9,9,33,9,9,33,33,33,33,9,9,9,9,46,46,46,46,46,46,46,46,46,9,57,57,57,57,57,
 9,9,33,9,9,33,33,33,33,9,9,9,9,9,9,9,9,33,9,9,9,9,9,57,57,57,57,57,
 9,9,33,9,9,33,33,33,33,9,9,9,9,9,9,9,9,33,9,9,9,9,9,57,57,57,57,57,
-9,9,33,33,24,33,33,33,33,9,9,9,9,9,9,9,9,33,9,9,9,9,9,57,57,57,57,57,
+9,9,33,33,77,33,33,33,33,9,9,9,9,9,9,9,9,33,9,9,9,9,9,57,57,57,57,57,
 9,9,9,9,9,9,9,9,9,9,9,9,33,33,33,33,33,33,9,9,9,9,9,57,57,57,57,57,
 9,9,9,9,9,9,9,9,33,33,33,9,33,9,9,9,9,9,9,9,9,9,9,57,57,57,57,57,
 9,9,9,9,9,9,9,9,33,33,33,9,33,9,9,9,9,9,9,9,9,9,9,57,57,57,57,57,
-9,9,9,9,9,9,9,9,33,33,33,24,33,9,9,9,9,9,9,9,9,9,9,57,57,57,57,57,
+9,9,9,9,9,9,9,9,33,33,33,77,33,9,9,9,9,9,9,9,9,9,9,57,57,57,57,57,
 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,57,57,57,57,57
 </data>
  </layer>
  <objectgroup id="2" name="Features">
-  <object id="1" name="wilderness" class="PortalFeatureComponent" x="352" y="240" width="16" height="16">
+  <object id="1" name="wilderness" class="PortalFeatureComponent" gid="79" x="352" y="240" width="16" height="16">
    <properties>
     <property name="icon" value="dungeonGate.png"/>
     <property name="target" type="file" value="wilderness.tmx"/>
@@ -54,30 +56,19 @@
     <property name="type" value="block"/>
    </properties>
   </object>
-  <object id="3" name="goblin7.png" class="CombatFeatureComponent" x="208" y="240" width="16" height="16">
+  <object id="3" name="goblin7.png" class="CombatFeatureComponent" gid="109" x="208" y="240" width="16" height="16">
    <properties>
     <property name="icon" value="goblin7.png"/>
     <property name="id" value="fortress-guard"/>
    </properties>
   </object>
-  <object id="4" name="goblinScout.png" class="CombatFeatureComponent" x="384" y="176" width="16" height="16">
-   <properties>
-    <property name="ambushed" value="true"/>
-    <property name="creatures" value=""/>
-    <property name="gold" value="6"/>
-    <property name="icon" value="goblinScout.png"/>
-    <property name="id" value="goblinScouts"/>
-    <property name="items" value=""/>
-    <property name="text" value="You are suddenly confronted by nasty and quick-moving Goblins!"/>
-   </properties>
-  </object>
-  <object id="5" name="goblinWizard.png" class="CombatFeatureComponent" x="48" y="80" width="16" height="16">
+  <object id="5" name="goblinWizard.png" class="CombatFeatureComponent" gid="113" x="48" y="80" width="16" height="16">
    <properties>
     <property name="icon" value="goblinWizard.png"/>
     <property name="id" value="fortress-wizard"/>
    </properties>
   </object>
-  <object id="7" name="LockedGate" class="DoorFeatureComponent" x="304" y="240" width="16" height="16">
+  <object id="7" name="LockedGate" class="DoorFeatureComponent" gid="79" x="304" y="240" width="16" height="16">
    <properties>
     <property name="icon" value="dungeonGate.png"/>
     <property name="id" value="goblin-fortress-front-gate"/>
@@ -88,7 +79,7 @@
     <property name="until" value="goblin-fortress-front-gate"/>
    </properties>
   </object>
-  <object id="8" name="fortress2" class="PortalFeatureComponent" x="48" y="48" width="16" height="16">
+  <object id="8" name="fortress2" class="PortalFeatureComponent" gid="78" x="48" y="48" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
     <property name="target" type="file" value="fortress2.tmx"/>
@@ -96,21 +87,21 @@
     <property name="targetY" value="12"/>
    </properties>
   </object>
-  <object id="9" name="chest.png" class="TreasureFeatureComponent" x="192" y="16" width="16" height="16">
+  <object id="9" name="chest.png" class="TreasureFeatureComponent" gid="75" x="192" y="16" width="16" height="16">
    <properties>
     <property name="icon" value="chest.png"/>
     <property name="id" value="fortress-floor1-chest"/>
     <property name="item" value="short-sword"/>
    </properties>
   </object>
-  <object id="10" name="chest.png" class="TreasureFeatureComponent" x="144" y="448" width="16" height="16">
+  <object id="10" name="chest.png" class="TreasureFeatureComponent" gid="75" x="144" y="448" width="16" height="16">
    <properties>
     <property name="gold" value="50"/>
     <property name="icon" value="chest.png"/>
     <property name="id" value="forstress-floor1-money"/>
    </properties>
   </object>
-  <object id="16" name="DungeonExitPortal" class="PortalFeatureComponent" x="128" y="432" width="16" height="16">
+  <object id="16" name="DungeonExitPortal" class="PortalFeatureComponent" gid="78" x="128" y="432" width="16" height="16">
    <properties>
     <property name="after" value="goblin-king"/>
     <property name="icon" value="doorway.png"/>

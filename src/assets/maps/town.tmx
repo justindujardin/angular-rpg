@@ -5,19 +5,19 @@
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <tileset firstgid="72" source="tiles/objects.tsx"/>
- <tileset firstgid="88" source="tiles/entities.tsx"/>
+ <tileset firstgid="88" source="tiles/creatures.tsx"/>
  <layer id="1" name="Terrain" width="27" height="22">
   <data encoding="csv">
 46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,
 46,46,46,46,46,46,46,46,46,46,46,69,46,69,46,46,46,46,46,46,46,46,46,18,18,18,18,
 46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,
 46,46,46,46,46,46,46,46,46,46,69,69,46,69,69,46,46,46,46,46,46,46,46,18,18,18,18,
-46,46,46,9,9,9,9,9,9,9,9,9,6,9,9,9,9,9,9,9,9,9,9,18,18,18,18,
+46,46,46,9,9,9,9,9,9,9,9,9,33,9,9,9,9,9,9,9,9,9,9,18,18,18,18,
 46,46,46,9,46,46,46,69,46,46,46,9,33,9,46,46,46,69,69,69,69,69,69,18,18,18,18,
 46,46,46,9,46,69,46,69,46,69,46,33,33,33,46,46,46,46,46,69,69,69,69,18,18,18,18,
 46,46,46,9,66,46,46,46,46,46,46,46,33,46,46,46,46,46,46,46,69,69,18,18,18,18,18,
 46,46,46,9,46,69,33,46,46,46,46,33,33,33,46,46,46,69,46,46,69,69,18,18,18,18,18,
-46,46,46,9,46,46,33,33,33,33,33,33,17,33,33,33,33,46,69,46,46,69,18,18,18,18,18,
+46,46,46,9,46,46,33,33,33,33,33,33,17,33,33,33,33,33,69,46,46,69,18,18,18,18,18,
 46,46,46,9,69,46,33,46,46,46,46,33,33,33,46,46,46,69,46,46,46,18,18,18,18,18,18,
 46,46,46,9,46,69,46,46,46,46,46,46,46,46,69,69,18,46,46,46,46,18,18,18,18,18,18,
 46,46,46,9,46,46,46,69,46,69,46,46,69,69,69,18,18,18,46,46,46,46,18,18,18,18,18,
@@ -33,7 +33,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="Features">
-  <object id="1" name="wilderness" class="PortalFeatureComponent" x="192" y="64" width="16" height="16">
+  <object id="1" name="wilderness" class="PortalFeatureComponent" gid="6" x="192" y="64" width="16" height="16">
    <properties>
     <property name="icon" value="doorInWall.png"/>
     <property name="target" type="file" value="wilderness.tmx"/>
@@ -46,7 +46,7 @@
     <property name="type" value="block"/>
    </properties>
   </object>
-  <object id="3" name="Guard" class="DialogFeatureComponent" x="176" y="96" width="16" height="16">
+  <object id="3" name="Guard" class="DialogFeatureComponent" gid="154" x="176" y="96" width="16" height="16">
    <properties>
     <property name="icon" value="soldier.png"/>
     <property name="text" value="Don't forget to equip basic weapons and armor before wandering too far from town."/>
@@ -54,7 +54,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object id="4" name="Guard" class="DialogFeatureComponent" x="208" y="96" width="16" height="16">
+  <object id="4" name="Guard" class="DialogFeatureComponent" gid="154" x="208" y="96" width="16" height="16">
    <properties>
     <property name="icon" value="soldier.png"/>
     <property name="text" value="Be careful exploring heavily forested areas as they contain more monsters than the open fields."/>
@@ -62,7 +62,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object id="5" name="Citizen" class="DialogFeatureComponent" x="128" y="256" width="16" height="16">
+  <object id="5" name="Citizen" class="DialogFeatureComponent" gid="126" x="128" y="256" width="16" height="16">
    <properties>
     <property name="icon" value="man.png"/>
     <property name="text" value="I hear the Kobolds have an armory in the sewers beneath the ruins north of here.  It's well-guarded, and for good reason. I bet they have some nice weapons in there."/>
@@ -70,13 +70,13 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object id="6" name="temple.png" class="TempleFeatureComponent" x="256" y="208" width="16" height="16">
+  <object id="6" name="temple.png" class="TempleFeatureComponent" gid="85" x="256" y="208" width="16" height="16">
    <properties>
     <property name="cost" value="15"/>
     <property name="icon" value="temple.png"/>
    </properties>
   </object>
-  <object id="7" name="Weapons" class="StoreFeatureComponent" x="96" y="112" width="16" height="16">
+  <object id="7" name="Weapons" class="StoreFeatureComponent" gid="84" x="96" y="112" width="16" height="16">
    <properties>
     <property name="category" value="weapons"/>
     <property name="groups" value="default"/>
@@ -86,7 +86,7 @@
     <property name="sellRate" value="35"/>
    </properties>
   </object>
-  <object id="8" name="Armors" class="StoreFeatureComponent" x="96" y="176" width="16" height="16">
+  <object id="8" name="Armors" class="StoreFeatureComponent" gid="84" x="96" y="176" width="16" height="16">
    <properties>
     <property name="category" value="armor"/>
     <property name="groups" value="default"/>
@@ -95,7 +95,7 @@
     <property name="name" value="Armors"/>
    </properties>
   </object>
-  <object id="9" name="chest.png" class="TreasureFeatureComponent" x="368" y="304" width="16" height="16">
+  <object id="9" name="chest.png" class="TreasureFeatureComponent" gid="75" x="368" y="304" width="16" height="16">
    <properties>
     <property name="gold" value="5000"/>
     <property name="icon" value="chest.png"/>
@@ -109,7 +109,7 @@
     <property name="targetY" value="53"/>
    </properties>
   </object>
-  <object id="11" name="Items" class="StoreFeatureComponent" x="272" y="144" width="16" height="16">
+  <object id="11" name="Items" class="StoreFeatureComponent" gid="84" x="272" y="144" width="16" height="16">
    <properties>
     <property name="category" value="magic"/>
     <property name="groups" value="default"/>

@@ -5,6 +5,8 @@
   <property name="combatZone" value="zone-crypt"/>
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <tileset firstgid="72" source="tiles/objects.tsx"/>
+ <tileset firstgid="88" source="tiles/creatures.tsx"/>
  <layer id="1" name="Terrain" width="25" height="39">
   <data encoding="csv">
 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
@@ -49,7 +51,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="Features">
-  <object id="1" name="wilderness" class="PortalFeatureComponent" x="64" y="448" width="16" height="16">
+  <object id="1" name="wilderness" class="PortalFeatureComponent" gid="79" x="64" y="448" width="16" height="16">
    <properties>
     <property name="icon" value="dungeonGate.png"/>
     <property name="target" type="file" value="wilderness.tmx"/>
@@ -62,19 +64,19 @@
     <property name="type" value="block"/>
    </properties>
   </object>
-  <object id="3" name="column.png" class="sign" x="48" y="432" width="16" height="16">
+  <object id="3" name="column.png" class="sign" gid="29" x="48" y="432" width="16" height="16">
    <properties>
     <property name="icon" value="column.png"/>
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object id="4" name="column.png" class="sign" x="48" y="464" width="16" height="16">
+  <object id="4" name="column.png" class="sign" gid="29" x="48" y="464" width="16" height="16">
    <properties>
     <property name="icon" value="column.png"/>
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object id="5" name="skeletonGuard.png" class="CombatFeatureComponent" x="128" y="528" width="16" height="16">
+  <object id="5" name="skeletonGuard.png" class="CombatFeatureComponent" gid="150" x="128" y="528" width="16" height="16">
    <properties>
     <property name="creatures" value=""/>
     <property name="gold" value="12"/>
@@ -85,7 +87,7 @@
     <property name="type" value="encounter"/>
    </properties>
   </object>
-  <object id="6" name="ghoul.png" class="CombatFeatureComponent" x="304" y="560" width="16" height="16">
+  <object id="6" name="ghoul.png" class="CombatFeatureComponent" gid="101" x="304" y="560" width="16" height="16">
    <properties>
     <property name="ambushed" value="true"/>
     <property name="creatures" value=""/>
@@ -97,7 +99,7 @@
     <property name="type" value="encounter"/>
    </properties>
   </object>
-  <object id="7" name="phantom2.png" class="CombatFeatureComponent" x="224" y="352" width="16" height="16">
+  <object id="7" name="phantom2.png" class="CombatFeatureComponent" gid="143" x="224" y="352" width="16" height="16">
    <properties>
     <property name="creatures" value=""/>
     <property name="gold" value="9"/>
@@ -108,7 +110,7 @@
     <property name="type" value="encounter"/>
    </properties>
   </object>
-  <object id="8" name="ship.png" class="ShipFeatureComponent" x="128" y="224" width="16" height="16">
+  <object id="8" name="ship.png" class="ShipFeatureComponent" gid="87" x="128" y="224" width="16" height="16">
    <properties>
     <property name="icon" value="ship.png"/>
     <property name="id" value="cryptsShip"/>
@@ -116,7 +118,7 @@
     <property name="type" value="ship"/>
    </properties>
   </object>
-  <object id="9" name="skeletonWizard.png" class="CombatFeatureComponent" x="160" y="32" width="16" height="16">
+  <object id="9" name="skeletonWizard.png" class="CombatFeatureComponent" gid="151" x="160" y="32" width="16" height="16">
    <properties>
     <property name="ambushed" value="true"/>
     <property name="creatures" value=""/>

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="11" height="11" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="5">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="11" height="11" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="5">
  <properties>
   <property name="combat" value="true"/>
   <property name="combatZone" value="zone-ice-tower"/>
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <tileset firstgid="72" source="tiles/objects.tsx"/>
+ <tileset firstgid="88" source="tiles/creatures.tsx"/>
  <layer id="1" name="Terrain" width="11" height="11">
   <data encoding="csv">
 34,34,34,34,34,34,34,34,34,34,34,
@@ -21,7 +23,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="Features">
-  <object id="1" name="tower2" class="PortalFeatureComponent" x="16" y="16" width="16" height="16">
+  <object id="1" name="tower2" class="PortalFeatureComponent" gid="78" x="16" y="16" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
     <property name="target" type="file" value="tower2.tmx"/>
@@ -29,7 +31,7 @@
     <property name="targetY" value="5"/>
    </properties>
   </object>
-  <object id="2" name="iceMage.png" class="CombatFeatureComponent" x="80" y="128" width="16" height="16">
+  <object id="2" name="iceMage.png" class="CombatFeatureComponent" gid="119" x="80" y="128" width="16" height="16">
    <properties>
     <property name="creatures" value=""/>
     <property name="gold" value="47"/>
@@ -39,7 +41,7 @@
     <property name="text" value="A group of Ice Magi block your passage! &quot;The power in the chamber beyond is no match for your feeble minds!&quot; They attack!"/>
    </properties>
   </object>
-  <object id="3" name="Podium" class="DialogFeatureComponent" x="32" y="128" width="16" height="16">
+  <object id="3" name="Podium" class="DialogFeatureComponent" gid="8" x="32" y="128" width="16" height="16">
    <properties>
     <property name="action" value="LOOK"/>
     <property name="icon" value="plaque.png"/>
@@ -49,7 +51,7 @@
     <property name="until" value="towerStart"/>
    </properties>
   </object>
-  <object id="4" name="Podium" class="DialogFeatureComponent" x="32" y="128" width="16" height="16">
+  <object id="4" name="Podium" class="DialogFeatureComponent" gid="8" x="32" y="128" width="16" height="16">
    <properties>
     <property name="action" value="PRISM"/>
     <property name="after" value="towerStart"/>
