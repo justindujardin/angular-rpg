@@ -23,11 +23,11 @@ import { map, switchMap } from 'rxjs/operators';
 import { TiledTMXResource } from '../../../../game/pow-core/resources/tiled/tiled-tmx.resource';
 import { ITiledObject } from '../../../../game/pow-core/resources/tiled/tiled.model';
 import { Scene } from '../../../../game/pow2/scene/scene';
-import { TileObject } from '../../../../game/pow2/tile/tile-object';
-import { TileObjectBehavior } from '../../../../game/pow2/tile/tile-object-behavior';
 import { AppState } from '../../../app.model';
 import { getGameKey, getGameKeyData } from '../../../models/selectors';
 import { GameFeatureObject } from '../../../scene/game-feature-object';
+import { TileObject } from '../../../scene/tile-object';
+import { TileObjectBehavior } from '../../../scene/tile-object-behavior';
 import { GameWorld } from '../../../services/game-world';
 
 /**

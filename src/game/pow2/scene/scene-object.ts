@@ -14,10 +14,10 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
+import { SceneObjectBehavior } from '../../../app/behaviors/scene-object-behavior';
 import { BehaviorHost } from '../../pow-core/behavior-host';
 import { IPoint, Point } from '../../pow-core/point';
 import { Scene } from './scene';
-import { SceneObjectBehavior } from './scene-object-behavior';
 /**
  * An object that may exist in a `Scene` and receives time updates.
  */

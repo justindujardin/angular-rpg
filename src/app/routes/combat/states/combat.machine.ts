@@ -28,7 +28,6 @@ import * as _ from 'underscore';
 import { IState } from '../../../../game/pow2/core/state';
 import { StateMachine } from '../../../../game/pow2/core/state-machine';
 import { Scene } from '../../../../game/pow2/scene/scene';
-import { TileMapView } from '../../../../game/pow2/tile/tile-map-view';
 import { AppState } from '../../../app.model';
 import { CombatEncounter } from '../../../models/combat/combat.model';
 import { CombatService } from '../../../models/combat/combat.service';
@@ -41,6 +40,7 @@ import {
 import { Item } from '../../../models/item';
 import { getGameInventory } from '../../../models/selectors';
 import { GameEntityObject } from '../../../scene/game-entity-object';
+import { TileMapView } from '../../../scene/tile-map-view';
 import { GameWorld } from '../../../services/game-world';
 import { CombatEnemyComponent } from '../combat-enemy.entity';
 import { CombatPlayerComponent } from '../combat-player.entity';

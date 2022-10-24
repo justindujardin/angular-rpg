@@ -15,10 +15,11 @@
  */
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { TileObject } from '../../../../../game/pow2/tile/tile-object';
 import { AppState } from '../../../../app.model';
 import { GameStateTravelAction } from '../../../../models/game-state/game-state.actions';
+import { TileObject } from '../../../../scene/tile-object';
 import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
+
 @Component({
   selector: 'portal-feature',
   template: ` <ng-content></ng-content>`,

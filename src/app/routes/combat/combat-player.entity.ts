@@ -8,7 +8,7 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { Scene } from '../../../game/pow2/scene/scene';
-import { SceneObjectBehavior } from '../../../game/pow2/scene/scene-object-behavior';
+import { SceneObjectBehavior } from '../../behaviors/scene-object-behavior';
 import { IPartyMember } from '../../models/base-entity';
 import { GameEntityObject } from '../../scene/game-entity-object';
 import { CombatPlayerRenderBehaviorComponent } from './behaviors/combat-player-render.behavior';

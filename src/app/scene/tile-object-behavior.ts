@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { SceneObjectBehavior } from '../scene/scene-object-behavior';
+import { SceneObjectBehavior } from '../behaviors/scene-object-behavior';
 import { TileMap } from './tile-map';
 import { TileObject } from './tile-object';
 export class TileObjectBehavior extends SceneObjectBehavior {

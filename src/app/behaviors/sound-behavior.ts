@@ -14,9 +14,9 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import { GameWorld } from '../../../../app/services/game-world';
-import { AudioResource } from '../../../pow-core/resources/audio.resource';
-import { SceneObjectBehavior } from '../scene-object-behavior';
+import { AudioResource } from '../../game/pow-core';
+import { GameWorld } from '../services/game-world';
+import { SceneObjectBehavior } from './scene-object-behavior';
 
 export interface SoundComponentOptions {
   url: string;

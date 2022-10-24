@@ -18,11 +18,8 @@ import { TiledTMXResource } from '../../../game/pow-core/resources/tiled/tiled-t
 import { Scene } from '../../../game/pow2/scene/scene';
 import { SceneView } from '../../../game/pow2/scene/scene-view';
 import { ISceneViewRenderer } from '../../../game/pow2/scene/scene.model';
-import { SpriteComponent } from '../../../game/pow2/tile/behaviors/sprite.behavior';
-import { TileMapRenderer } from '../../../game/pow2/tile/render/tile-map-renderer';
-import { TileObjectRenderer } from '../../../game/pow2/tile/render/tile-object-renderer';
-import { TileMapView } from '../../../game/pow2/tile/tile-map-view';
 import { AppState } from '../../app.model';
+import { SpriteComponent } from '../../behaviors/sprite.behavior';
 import { LoadingService } from '../../components/loading/loading.service';
 import { CombatantTypes, IEnemy, IPartyMember } from '../../models/base-entity';
 import { CombatState } from '../../models/combat/combat.model';
@@ -33,6 +30,9 @@ import {
   sliceCombatState,
 } from '../../models/selectors';
 import { GameTileMap } from '../../scene/game-tile-map';
+import { TileMapRenderer } from '../../scene/tile-map-renderer';
+import { TileMapView } from '../../scene/tile-map-view';
+import { TileObjectRenderer } from '../../scene/tile-object-renderer';
 import { CombatCameraBehaviorComponent } from './behaviors/combat-camera.behavior';
 import { CombatEnemyComponent } from './combat-enemy.entity';
 import { CombatPlayerComponent } from './combat-player.entity';

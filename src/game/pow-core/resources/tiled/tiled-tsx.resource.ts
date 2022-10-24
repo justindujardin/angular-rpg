@@ -104,7 +104,7 @@ export class TiledTSXResource extends XMLResource {
           resolve(this);
         })
         .catch((e) => {
-          reject(`Failed to load required TileMap image: ${source} - ${e}`);
+          reject(`Failed to load required tile map image: ${source} - ${e}`);
         });
     });
   }

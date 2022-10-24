@@ -16,7 +16,7 @@
 import { Component } from '@angular/core';
 import { Rect } from '../../game/pow-core/rect';
 import { SceneObject } from '../../game/pow2/scene/scene-object';
-import { SceneObjectBehavior } from '../../game/pow2/scene/scene-object-behavior';
+import { SceneObjectBehavior } from './scene-object-behavior';
 
 @Component({
   selector: 'collision-behavior',

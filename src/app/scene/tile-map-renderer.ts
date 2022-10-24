@@ -14,12 +14,12 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import { Rect } from '../../../pow-core/rect';
-import { ITileInstanceMeta } from '../../../pow-core/resources/tiled/tiled';
-import { ITiledLayer } from '../../../pow-core/resources/tiled/tiled.model';
-import { SceneObjectRenderer } from '../../scene/scene-object-renderer';
-import { TileMap } from '../tile-map';
-import { TileMapView } from '../tile-map-view';
+import { Rect } from '../../game/pow-core/rect';
+import { ITileInstanceMeta } from '../../game/pow-core/resources/tiled/tiled';
+import { ITiledLayer } from '../../game/pow-core/resources/tiled/tiled.model';
+import { SceneObjectRenderer } from '../../game/pow2/scene/scene-object-renderer';
+import { TileMap } from './tile-map';
+import { TileMapView } from './tile-map-view';
 export class TileMapRenderer extends SceneObjectRenderer {
   buffer: HTMLCanvasElement[][] = null; // A 2d grid of rendered canvas textures.
   bufferMapName: string = null; // The name of the rendered map.  If the map name changes, the buffer is re-rendered.
@@ -77,7 +77,12 @@ export class TileMapRenderer extends SceneObjectRenderer {
                   const gid: number = object.getTileGid(l.name, x, y);
                   const meta: ITileInstanceMeta = object.getTileMeta(gid);
                   if (meta) {
-                    const image: HTMLImageElement = (meta.image as any).data;
+                    // The problem is that the sprite registry goes by base filename, and chest.png is in both
+                    // environment and object spritesheets.
+                    // TODO: add error if sprite with same name shows up in two sheets
+                    // TODO: remove chest and friends from environment
+
+                    const image: HTMLImageElement = meta.sheet.data;
                     if (!image || !image.complete) {
                       this.bufferComplete = false;
                       return;

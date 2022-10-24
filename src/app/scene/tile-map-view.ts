@@ -13,12 +13,16 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { Point } from '../../pow-core';
-import { IRect } from '../../pow-core/rect';
-import { CameraBehavior } from '../scene/behaviors/camera-behavior';
-import { SceneView } from '../scene/scene-view';
-import { TileMapRenderer } from './render/tile-map-renderer';
+import { Point } from '../../game/pow-core';
+import { IRect } from '../../game/pow-core/rect';
+import { SceneView } from '../../game/pow2/scene/scene-view';
+import { CameraBehavior } from '../behaviors/camera-behavior';
 import { TileMap } from './tile-map';
+import { TileMapRenderer } from './tile-map-renderer';
+
+// TODO: move the pow2 core classes into the app. This will reduce cognitive overhead of looking through
+// many classes to find the right bits, and also allow us to assume that the tilemap has access to things
+// like the GameWorld and other services that only exist in the src/app folder
 
 export class TileMapView extends SceneView {
   mapRenderer: TileMapRenderer = new TileMapRenderer();

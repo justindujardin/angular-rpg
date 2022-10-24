@@ -16,8 +16,9 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Animator } from '../../../../game/pow2/core/animator';
-import { TickedBehavior } from '../../../../game/pow2/scene/behaviors/ticked-behavior';
-import { TileObject } from '../../../../game/pow2/tile/tile-object';
+import { TickedBehavior } from '../../../behaviors/ticked-behavior';
+import { TileObject } from '../../../scene/tile-object';
+
 export enum MoveFrames {
   LEFT = 10,
   RIGHT = 4,

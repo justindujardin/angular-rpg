@@ -18,18 +18,19 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
 import { Point } from '../../../../../game/pow-core/point';
-import { TileObject } from '../../../../../game/pow2/tile/tile-object';
 import { AppState } from '../../../../app.model';
 import { GameStateBoardShipAction } from '../../../../models/game-state/game-state.actions';
 import { PointRecord } from '../../../../models/records';
 import { getGameBoardedShip, getGameShipPosition } from '../../../../models/selectors';
 import { GameFeatureObject } from '../../../../scene/game-feature-object';
+import { TileObject } from '../../../../scene/tile-object';
 import { PlayerBehaviorComponent } from '../../behaviors/player-behavior';
 import {
   MapFeatureComponent,
   TiledFeatureComponent,
   TiledMapFeatureData,
 } from '../map-feature.component';
+
 @Component({
   selector: 'ship-feature',
   template: '<ng-content></ng-content>',

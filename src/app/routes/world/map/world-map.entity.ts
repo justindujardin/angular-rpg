@@ -17,11 +17,10 @@ import { IPoint, Point } from '../../../../game/pow-core/point';
 import { ResourceManager } from '../../../../game/pow-core/resource-manager';
 import { TiledTMXResource } from '../../../../game/pow-core/resources/tiled/tiled-tmx.resource';
 import { Scene } from '../../../../game/pow2/scene/scene';
-import { SceneObjectBehavior } from '../../../../game/pow2/scene/scene-object-behavior';
 import { SceneView } from '../../../../game/pow2/scene/scene-view';
 import { ISceneViewRenderer } from '../../../../game/pow2/scene/scene.model';
-import { TileObjectRenderer } from '../../../../game/pow2/tile/render/tile-object-renderer';
 import { AppState } from '../../../app.model';
+import { SceneObjectBehavior } from '../../../behaviors/scene-object-behavior';
 import { LoadingService } from '../../../components/loading/loading.service';
 import { Entity } from '../../../models/entity/entity.model';
 import { GameStateService } from '../../../models/game-state/game-state.service';
@@ -31,6 +30,7 @@ import {
   getGamePartyPosition,
 } from '../../../models/selectors';
 import { GameTileMap } from '../../../scene/game-tile-map';
+import { TileObjectRenderer } from '../../../scene/tile-object-renderer';
 import { MapFeatureInputBehaviorComponent } from '../behaviors/map-feature-input.behavior';
 import { MapFeatureComponent, TiledMapFeatureData } from './map-feature.component';
 import { WorldPlayerComponent } from './world-player.entity';

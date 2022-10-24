@@ -18,8 +18,8 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { ImageResource } from '../../game/pow-core/resources/image.resource';
 import { ISpriteMeta } from '../../game/pow2/core/api';
-import { SceneObjectBehavior } from '../../game/pow2/scene/scene-object-behavior';
 import { GameWorld } from '../services/game-world';
+import { SceneObjectBehavior } from './scene-object-behavior';
 
 @Component({
   selector: 'sprite-render-behavior',

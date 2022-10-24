@@ -13,9 +13,10 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { IPoint, Point } from '../../../pow-core/point';
-import { ISpriteMeta } from '../../core/api';
-import { SceneView } from '../../scene/scene-view';
+
+import { IPoint, Point } from '../../game/pow-core';
+import { ISpriteMeta } from '../../game/pow2/core/api';
+import { SceneView } from '../../game/pow2/scene/scene-view';
 
 export interface TileRenderable {
   icon: string;

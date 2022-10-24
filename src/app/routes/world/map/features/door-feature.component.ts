@@ -13,7 +13,7 @@ import { AppState } from '../../../../../app/app.model';
 import { GameStateSetKeyDataAction } from '../../../../../app/models/game-state/game-state.actions';
 import { getGameKey } from '../../../../../app/models/selectors';
 import { IScene } from '../../../../../game/pow2/scene/scene.model';
-import { TileObject } from '../../../../../game/pow2/tile/tile-object';
+import { TileObject } from '../../../../scene/tile-object';
 import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
 
 export interface IDoorFeatureTiledProperties {

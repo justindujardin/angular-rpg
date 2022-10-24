@@ -13,9 +13,10 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { CameraBehavior } from '../../scene/behaviors/camera-behavior';
-import { SceneView } from '../../scene/scene-view';
-import { TileMap } from '../tile-map';
+import { SceneView } from '../../game/pow2/scene/scene-view';
+import { TileMap } from '../scene/tile-map';
+import { CameraBehavior } from './camera-behavior';
+
 export class TileMapCameraComponent extends CameraBehavior {
   host: TileMap;
 

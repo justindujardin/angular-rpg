@@ -30,6 +30,9 @@
       "logger": [
         "util/logger"
       ],
+      "@mapeditor/tiled-api": [
+        "src/.sink.d.ts"
+      ]
     },
   },
   "angularCompilerOptions": {

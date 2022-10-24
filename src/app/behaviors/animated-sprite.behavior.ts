@@ -14,9 +14,9 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import { TickedBehavior } from '../../scene/behaviors/ticked-behavior';
-import { TileObject } from '../tile-object';
+import { TileObject } from '../scene/tile-object';
 import { SpriteComponent } from './sprite.behavior';
+import { TickedBehavior } from './ticked-behavior';
 export interface AnimatedSpriteComponentOptions {
   lengthMS?: number;
   spriteName: string;

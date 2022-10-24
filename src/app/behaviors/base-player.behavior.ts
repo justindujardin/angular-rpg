@@ -16,18 +16,15 @@
 import * as _ from 'underscore';
 import { Point } from '../../game/pow-core/point';
 import { ITiledLayer } from '../../game/pow-core/resources/tiled/tiled.model';
-import {
-  IMoveDescription,
-  MovableBehavior,
-} from '../../game/pow2/scene/behaviors/movable-behavior';
 import { SceneObject } from '../../game/pow2/scene/scene-object';
-import { TileMap } from '../../game/pow2/tile/tile-map';
-import { TileObject } from '../../game/pow2/tile/tile-object';
-import { TileObjectBehavior } from '../../game/pow2/tile/tile-object-behavior';
 import {
   Headings,
   PlayerRenderBehaviorComponent,
 } from '../routes/world/behaviors/player-render.behavior';
+import { TileMap } from '../scene/tile-map';
+import { TileObject } from '../scene/tile-object';
+import { TileObjectBehavior } from '../scene/tile-object-behavior';
+import { IMoveDescription, MovableBehavior } from './movable-behavior';
 
 export class BasePlayerComponent extends MovableBehavior {
   // TODO: Pass in collide types during entity creation, and assert on invalid types.

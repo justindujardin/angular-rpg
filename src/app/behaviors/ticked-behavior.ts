@@ -13,19 +13,24 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { Point } from '../../../pow-core/point';
-import { SceneObjectBehavior } from '../scene-object-behavior';
-import { SceneView } from '../scene-view';
+import { SceneObjectBehavior } from './scene-object-behavior';
+/**
+ * A behavior that receives tick and interpolateTick callbacks
+ */
+export class TickedBehavior extends SceneObjectBehavior {
+  tickRateMS: number = 300;
 
-export class CameraBehavior extends SceneObjectBehavior {
-  process(view: SceneView) {
-    view.camera.point.set(this.host.point);
-    view.cameraScale = view.context.canvas.width > 768 ? 4 : 2;
-    const screenPoint = new Point(
-      view.context.canvas.width,
-      view.context.canvas.height
-    );
-    const canvasSize = view.screenToWorld(screenPoint, view.cameraScale);
-    view.camera.extent.set(canvasSize);
+  /**
+   * Update the component at a tick interval.
+   */
+  tick(elapsed: number) {
+    // nothing
+  }
+
+  /**
+   * Interpolate component state between ticks.
+   */
+  interpolateTick(elapsed: number) {
+    // nothing
   }
 }

@@ -14,10 +14,10 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import { ImageResource } from '../../../pow-core/resources/image.resource';
-import { ISpriteMeta } from '../../core/api';
-import { SceneObjectBehavior } from '../../scene/scene-object-behavior';
-import { TileObject } from '../tile-object';
+import { ImageResource } from '../../game/pow-core';
+import { ISpriteMeta } from '../../game/pow2/core/api';
+import { TileObject } from '../scene/tile-object';
+import { SceneObjectBehavior } from './scene-object-behavior';
 
 export interface SpriteComponentOptions {
   icon: string;

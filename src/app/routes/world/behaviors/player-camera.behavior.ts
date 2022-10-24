@@ -15,8 +15,8 @@
  */
 import { Component } from '@angular/core';
 import { Point } from '../../../../game/pow-core/point';
-import { CameraBehavior } from '../../../../game/pow2/scene/behaviors/camera-behavior';
 import { SceneView } from '../../../../game/pow2/scene/scene-view';
+import { CameraBehavior } from '../../../behaviors/camera-behavior';
 import { GameEntityObject } from '../../../scene/game-entity-object';
 
 @Component({

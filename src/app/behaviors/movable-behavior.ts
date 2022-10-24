@@ -13,10 +13,10 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { CollisionBehaviorComponent } from '../../../../app/behaviors/collision.behavior';
-import { Point } from '../../../pow-core/point';
-import { KeyCode } from '../../core/input';
-import { SceneObject } from '../scene-object';
+import { Point } from '../../game/pow-core';
+import { KeyCode } from '../../game/pow2/core/input';
+import { SceneObject } from '../../game/pow2/scene/scene-object';
+import { CollisionBehaviorComponent } from './collision.behavior';
 import { TickedBehavior } from './ticked-behavior';
 /**
  * Describe a move from one point to another.
