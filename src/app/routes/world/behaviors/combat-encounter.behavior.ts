@@ -17,8 +17,8 @@ import { instantiateEntity } from '../../../models/game-data/game-data.model';
 import { GameStateSetBattleCounterAction } from '../../../models/game-state/game-state.actions';
 import { getGameBattleCounter, getGameParty } from '../../../models/selectors';
 import { GameEntityObject } from '../../../scene/game-entity-object';
-import { GameTileMap } from '../../../scene/game-tile-map';
 import { Scene } from '../../../scene/scene';
+import { TileMap } from '../../../scene/tile-map';
 import { PlayerBehaviorComponent } from './player-behavior';
 
 /**
@@ -35,7 +35,7 @@ import { PlayerBehaviorComponent } from './player-behavior';
 })
 export class CombatEncounterBehaviorComponent extends SceneObjectBehavior {
   @Input() scene: Scene;
-  @Input() tileMap: GameTileMap;
+  @Input() tileMap: TileMap;
   @Input() player: GameEntityObject;
 
   battleCounter$: Observable<number> = this.store.select(getGameBattleCounter);

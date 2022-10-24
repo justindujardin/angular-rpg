@@ -16,7 +16,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import * as _ from 'underscore';
 import { ITiledLayer } from '../../../../app/core/resources/tiled/tiled.model';
-import { GameTileMap } from '../../../../app/scene/game-tile-map';
+import { TileMap } from '../../../../app/scene/tile-map';
 import { BasePlayerComponent } from '../../../behaviors/base-player.behavior';
 import { IMoveDescription } from '../../../behaviors/movable-behavior';
 import { GameStateMoveAction } from '../../../models/game-state/game-state.actions';
@@ -30,7 +30,7 @@ import { SceneObject } from '../../../scene/scene-object';
 })
 export class PlayerBehaviorComponent extends BasePlayerComponent {
   host: GameEntityObject;
-  map: GameTileMap = null;
+  map: TileMap = null;
 
   static COLLIDE_TYPES: string[] = [
     'TempleFeatureComponent',
@@ -51,7 +51,7 @@ export class PlayerBehaviorComponent extends BasePlayerComponent {
    */
   collideMove(x: number, y: number, results: SceneObject[] = []): boolean {
     if (this.host.scene && !this.map) {
-      this.map = this.host.scene.objectByType(GameTileMap) as GameTileMap;
+      this.map = this.host.scene.objectByType(TileMap) as TileMap;
     }
     let i = 0;
 

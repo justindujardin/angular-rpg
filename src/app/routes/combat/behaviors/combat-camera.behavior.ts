@@ -16,18 +16,18 @@
 import { Component } from '@angular/core';
 import { Rect } from '../../../../app/core/rect';
 import { CameraBehavior } from '../../../behaviors/camera-behavior';
-import { GameTileMap } from '../../../scene/game-tile-map';
 import { SceneView } from '../../../scene/scene-view';
+import { TileMap } from '../../../scene/tile-map';
 
 @Component({
   selector: 'combat-camera-behavior',
   template: `<ng-content></ng-content>`,
 })
 export class CombatCameraBehaviorComponent extends CameraBehavior {
-  host: GameTileMap;
+  host: TileMap;
 
   connectBehavior(): boolean {
-    return super.connectBehavior() && this.host instanceof GameTileMap;
+    return super.connectBehavior() && this.host instanceof TileMap;
   }
 
   process(view: SceneView) {

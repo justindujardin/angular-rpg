@@ -18,12 +18,16 @@
 import * as _ from 'underscore';
 import { ITiledLayer } from '../../app/core/resources/tiled/tiled.model';
 import {
+  IPoint,
   ITileInstanceMeta,
+  Point,
   Rect,
   TiledTMXResource,
   TiledTSXResource,
   TilesetTile,
 } from '../core';
+import { IZoneMatch } from '../models/combat/combat.model';
+import { GameWorld } from '../services/game-world';
 import { Scene } from './scene';
 import { SceneObject } from './scene-object';
 
@@ -35,6 +39,7 @@ export class TileMap extends SceneObject {
   zones: any;
   bounds: Rect = new Rect(0, 0, 10, 10);
   dirtyLayers: boolean = false;
+  musicUrl: string;
   private _loaded: boolean = false;
 
   static Events: any = {
@@ -53,6 +58,11 @@ export class TileMap extends SceneObject {
     if (this.scene) {
       this.scene.trigger(TileMap.Events.MAP_LOADED, this);
     }
+    this.musicUrl = '';
+    if (this.map.properties && this.map.properties.music) {
+      this.musicUrl = this.map.properties.music;
+    }
+
     this._loaded = true;
   }
 
@@ -125,6 +135,69 @@ export class TileMap extends SceneObject {
     return terrain.data[terrainIndex];
   }
 
+  destroy(): void {
+    this.unloaded();
+    return super.destroy();
+  }
+
+  getFeature(name: string) {
+    return _.find(this.features.objects, (feature: any) => {
+      return feature.name === name;
+    });
+  }
+
+  getEntryPoint(): Point {
+    // If no point is specified, use the position of the first Portal on the current map
+    const portal: any = _.where(this.features.objects, {
+      type: 'PortalFeatureComponent',
+    })[0];
+    if (portal) {
+      return new Point(portal.x / portal.width, portal.y / portal.height);
+    }
+    return new Point(-1, -1);
+  }
+
+  /**
+   * Enumerate the map and target combat zones for a given position on this map.
+   * @param at The position to check for a sub-zone in the map
+   * @returns {IZoneMatch} The map and target zones that are null if they don't exist
+   */
+  getCombatZones(at: IPoint): IZoneMatch {
+    const result: IZoneMatch = {
+      map: null,
+      target: null,
+      targetPoint: at,
+    };
+    if (this.map && this.map.properties && this.map.properties) {
+      if (typeof this.map.properties.combatZone !== 'undefined') {
+        result.map = this.map.properties.combatZone;
+      }
+    }
+    // Determine which zone and combat type
+    const invTileSize = 1 / this.map.tilewidth;
+    const zones: any[] = _.map(this.zones.objects, (z: any) => {
+      const x = z.x * invTileSize;
+      const y = z.y * invTileSize;
+      const w = z.width * invTileSize;
+      const h = z.height * invTileSize;
+      return {
+        bounds: new Rect(x, y, w, h),
+        name: z.name,
+      };
+    });
+    // TODO: This will always get the first zone.  What about overlapping zones?
+    const zone = _.find(zones, (z: any) => {
+      return z.bounds.pointInRect(at) && z.name;
+    });
+    if (zone) {
+      result.target = zone.name;
+    }
+    return result;
+  }
+
+  toString() {
+    return this.map ? this.map.url : 'no-data';
+  }
   getTileMeta(gid: number): ITileInstanceMeta {
     if (this.tiles.length <= gid) {
       return null;
@@ -135,6 +208,14 @@ export class TileMap extends SceneObject {
     if (!source) {
       return null;
     }
-    return source.getTileMeta(gid);
+
+    const meta = source.getTileMeta(gid);
+    // Derive x/y values from sprite registry metadata for spritesheets
+    const f = GameWorld.get().sprites.getSpriteMeta(meta.image);
+    return {
+      ...meta,
+      x: f.x,
+      y: f.y,
+    };
   }
 }

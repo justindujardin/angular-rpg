@@ -26,10 +26,10 @@ import {
   getGameParty,
   getGamePartyPosition,
 } from '../../../models/selectors';
-import { GameTileMap } from '../../../scene/game-tile-map';
 import { Scene } from '../../../scene/scene';
 import { SceneView } from '../../../scene/scene-view';
 import { ISceneViewRenderer } from '../../../scene/scene.model';
+import { TileMap } from '../../../scene/tile-map';
 import { TileObjectRenderer } from '../../../scene/tile-object-renderer';
 import { MapFeatureInputBehaviorComponent } from '../behaviors/map-feature-input.behavior';
 import { MapFeatureComponent, TiledMapFeatureData } from './map-feature.component';
@@ -41,7 +41,7 @@ import { WorldPlayerComponent } from './world-player.entity';
   templateUrl: 'world-map.entity.html',
 })
 export class WorldMapComponent
-  extends GameTileMap
+  extends TileMap
   implements AfterViewInit, OnDestroy, ISceneViewRenderer
 {
   /** For referencing in template */

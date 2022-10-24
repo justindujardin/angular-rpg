@@ -18,7 +18,7 @@ import * as _ from 'underscore';
 import { ITiledLayer } from '../../../../app/core/resources/tiled/tiled.model';
 import { BasePlayerComponent } from '../../../behaviors/base-player.behavior';
 import { TileMapPathBehavior } from '../../../behaviors/tile-map-path.behavior';
-import { GameTileMap } from '../../../scene/game-tile-map';
+import { TileMap } from '../../../scene/tile-map';
 
 /**
  * Build Astar paths with GameFeatureObject tilemaps.
@@ -28,7 +28,7 @@ import { GameTileMap } from '../../../scene/game-tile-map';
   template: ` <ng-content></ng-content>`,
 })
 export class PlayerMapPathBehaviorComponent extends TileMapPathBehavior {
-  @Input() tileMap: GameTileMap;
+  @Input() tileMap: TileMap;
 
   buildWeightedGraph(): number[][] {
     let x: number;

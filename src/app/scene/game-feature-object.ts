@@ -15,11 +15,11 @@
  */
 import * as _ from 'underscore';
 import { GameWorld } from '../services/game-world';
-import { GameTileMap } from './game-tile-map';
+import { TileMap } from './tile-map';
 import { TileObject } from './tile-object';
 
 export class GameFeatureObject extends TileObject {
-  tileMap: GameTileMap;
+  tileMap: TileMap;
   world: GameWorld;
   feature: any; // TODO: Feature Interface
   class: string; // TODO: enum?

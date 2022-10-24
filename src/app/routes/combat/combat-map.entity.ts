@@ -26,10 +26,10 @@ import {
   getCombatEncounterParty,
   sliceCombatState,
 } from '../../models/selectors';
-import { GameTileMap } from '../../scene/game-tile-map';
 import { Scene } from '../../scene/scene';
 import { SceneView } from '../../scene/scene-view';
 import { ISceneViewRenderer } from '../../scene/scene.model';
+import { TileMap } from '../../scene/tile-map';
 import { TileMapRenderer } from '../../scene/tile-map-renderer';
 import { TileMapView } from '../../scene/tile-map-view';
 import { TileObjectRenderer } from '../../scene/tile-object-renderer';
@@ -43,7 +43,7 @@ import { CombatPlayerComponent } from './combat-player.entity';
   templateUrl: './combat-map.entity.html',
 })
 export class CombatMapComponent
-  extends GameTileMap
+  extends TileMap
   implements AfterViewInit, OnDestroy, ISceneViewRenderer
 {
   private _tileRenderer: TileMapRenderer = new TileMapRenderer();

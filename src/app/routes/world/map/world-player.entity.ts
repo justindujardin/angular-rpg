@@ -15,10 +15,10 @@ import { SceneObjectBehavior } from '../../../behaviors/scene-object-behavior';
 import { Entity } from '../../../models/entity/entity.model';
 import { GameEntityObject } from '../../../scene/game-entity-object';
 import { GameFeatureObject } from '../../../scene/game-feature-object';
-import { GameTileMap } from '../../../scene/game-tile-map';
 import { Scene } from '../../../scene/scene';
 import { SceneView } from '../../../scene/scene-view';
 import { ISceneViewRenderer } from '../../../scene/scene.model';
+import { TileMap } from '../../../scene/tile-map';
 import { TileObjectRenderer } from '../../../scene/tile-object-renderer';
 import { CombatEncounterBehaviorComponent } from '../behaviors/combat-encounter.behavior';
 import { PlayerBehaviorComponent } from '../behaviors/player-behavior';
@@ -62,7 +62,7 @@ export class WorldPlayerComponent
   behaviors: QueryList<SceneObjectBehavior>;
   @Input() model: Entity;
   @Input() scene: Scene;
-  @Input() map: GameTileMap;
+  @Input() map: TileMap;
   @Input() point: Point;
 
   /** For referencing in template */
