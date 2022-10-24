@@ -5,6 +5,8 @@
 
 export interface ITiledBase {
   name: string;
+  gid?: number;
+  class?: string;
   x: number;
   y: number;
   width: number;

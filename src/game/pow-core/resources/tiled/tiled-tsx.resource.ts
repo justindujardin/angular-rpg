@@ -41,7 +41,7 @@ export class TiledTSXResource extends XMLResource {
   url: string;
   firstgid: number = -1;
   tiles: { [gid: string]: TilesetTile } | null = null;
-  maxgid: number = -1;
+  maxLocalId: number = -1;
   imageUrl: string = null;
   relativeTo: string = null;
   literal: string = null; // The literal source path specified in xml
@@ -61,8 +61,8 @@ export class TiledTSXResource extends XMLResource {
       const tiles = this.getChildren(tileSet, 'tile');
       _.each(tiles, (ts: any) => {
         const id: number = parseInt(this.getElAttribute(ts, 'id'), 10);
-        if (id > this.maxgid) {
-          this.maxgid = id;
+        if (id > this.maxLocalId) {
+          this.maxLocalId = id;
         }
         const sourceImage = this.getChild(ts, 'image');
         if (!sourceImage) {
@@ -111,21 +111,18 @@ export class TiledTSXResource extends XMLResource {
 
   hasGid(gid: number): boolean {
     return (
-      this.firstgid !== -1 && gid >= this.firstgid && gid < this.firstgid + this.maxgid
+      this.firstgid !== -1 &&
+      gid >= this.firstgid &&
+      gid < this.firstgid + (this.maxLocalId - 1)
     );
   }
 
   getTileMeta(gidOrIndex: number): ITileInstanceMeta {
     const index: number =
       this.firstgid !== -1 ? gidOrIndex - this.firstgid : gidOrIndex;
-    const tilesX = this.imageWidth / this.tilewidth;
-    const x = index % tilesX;
-    const y = Math.floor((index - x) / tilesX);
     const tile = this.tiles[index];
     return _.extend(tile || {}, {
-      image: this.image,
-      x: x * this.tilewidth,
-      y: y * this.tileheight,
+      sheet: this.image,
       width: this.tilewidth,
       height: this.tileheight,
     });

@@ -1,9 +1,11 @@
 /*! Copyright (c) 2013-2017 Justin DuJardin and Contributors. MIT License. */
 import * as $ from 'jquery';
 import * as _ from 'underscore';
+import { ImageResource } from '../image.resource';
 import { ITiledBase, ITiledLayerBase, ITiledObject } from './tiled.model';
 export interface ITileInstanceMeta {
-  image: HTMLImageElement;
+  image: string;
+  sheet: ImageResource;
   url: string;
   x: number;
   y: number;
@@ -16,6 +18,8 @@ export interface ITileInstanceMeta {
 export function readITiledBase(el: any): ITiledBase {
   return {
     name: getElAttribute(el, 'name'),
+    class: getElAttribute(el, 'class'),
+    gid: parseInt(getElAttribute(el, 'gid'), 10),
     x: parseInt(getElAttribute(el, 'x') || '0', 10),
     y: parseInt(getElAttribute(el, 'y') || '0', 10),
     width: parseInt(getElAttribute(el, 'width') || '0', 10),

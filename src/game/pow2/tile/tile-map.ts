@@ -82,10 +82,11 @@ export class TileMap extends SceneObject {
         this.tiles.push(null);
       }
       Object.values(tiles.tiles).forEach((tile: TilesetTile) => {
-        while (this.tiles.length < tile.id) {
+        const tileId = tiles.firstgid + tile.id;
+        while (this.tiles.length < tileId) {
           this.tiles.push(null);
         }
-        this.tiles[tiles.firstgid + tile.id] = tile;
+        this.tiles[tileId] = tile;
       });
     });
     this.features = _.where(this.map.layers, { name: 'Features' })[0] || [];
@@ -117,7 +118,7 @@ export class TileMap extends SceneObject {
 
   getTileGid(layer: string, x: number, y: number): number {
     const terrain: ITiledLayer = this.getLayer(layer);
-    if (!this.map || !terrain || !terrain.data || !this.bounds.pointInRect(x, y)) {
+    if (!this.map || !terrain?.data || !this.bounds.pointInRect(x, y)) {
       return null;
     }
     const terrainIndex = y * this.map.width + x;

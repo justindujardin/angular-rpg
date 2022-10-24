@@ -15,9 +15,9 @@
  */
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ARMOR_DATA, getArmorById } from 'app/models/game-data/armors';
-import { CLASSES_DATA, getClassById } from 'app/models/game-data/classes';
-import { getWeaponById, WEAPONS_DATA } from 'app/models/game-data/weapons';
+import { getArmorById } from 'app/models/game-data/armors';
+import { getClassById } from 'app/models/game-data/classes';
+import { getWeaponById } from 'app/models/game-data/weapons';
 import * as Immutable from 'immutable';
 import * as _ from 'underscore';
 import { ResourceManager } from '../../game/pow-core/resource-manager';
@@ -131,10 +131,6 @@ export class RPGGame {
         resolve(false);
         return;
       }
-      const classes = CLASSES_DATA;
-      const weapons = WEAPONS_DATA;
-      const armors = ARMOR_DATA;
-
       const warrior = this.create('warrior', 'Warrior');
       const ranger = this.create('ranger', 'Ranger');
       const healer = this.create('healer', 'Mage');

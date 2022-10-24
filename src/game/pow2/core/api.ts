@@ -69,9 +69,7 @@ export const data = {
  */
 export function registerSprites(name: string, value: Object) {
   for (let prop in value) {
-    if (value.hasOwnProperty(prop)) {
-      data.sprites[prop] = _.defaults(data.sprites[prop] || {}, value[prop]);
-    }
+    data.sprites[prop] = _.defaults(data.sprites[prop] || {}, value[prop]);
   }
 }
 

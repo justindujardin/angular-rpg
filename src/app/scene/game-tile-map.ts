@@ -14,10 +14,12 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
+import { ITileInstanceMeta } from '../../game/pow-core';
 import { IPoint, Point } from '../../game/pow-core/point';
 import { Rect } from '../../game/pow-core/rect';
 import { TileMap } from '../../game/pow2/tile/tile-map';
 import { IZoneMatch } from '../models/combat/combat.model';
+import { GameWorld } from '../services/game-world';
 
 /**
  * A tile map that supports game feature objects and map.
@@ -95,6 +97,19 @@ export class GameTileMap extends TileMap {
       result.target = zone.name;
     }
     return result;
+  }
+  getTileMeta(gid: number): ITileInstanceMeta {
+    const meta: ITileInstanceMeta = super.getTileMeta(gid);
+    if (!meta) {
+      return null;
+    }
+    // Derive x/y values from sprite registry metadata for spritesheets
+    const f = GameWorld.get().sprites.getSpriteMeta(meta.image);
+    return {
+      ...meta,
+      x: f.x,
+      y: f.y,
+    };
   }
 
   toString() {
