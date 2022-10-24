@@ -14,11 +14,14 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import { Point, Rect } from '../core';
+import { CameraBehavior } from '../behaviors/camera-behavior';
+import { IRect, Point, Rect } from '../core';
 import { Scene } from './scene';
 import { SceneObject } from './scene-object';
-import { SceneViewComponent } from './scene-view-component';
 import { ISceneView } from './scene.model';
+import { TileMap } from './tile-map';
+import { TileMapRenderer } from './tile-map-renderer';
+
 /**
  * A view that renders a `Scene` through a given HTMLCanvasElement.
  *
@@ -38,6 +41,8 @@ export class SceneView extends SceneObject implements ISceneView {
   cameraScale: number;
   unitSize: number;
   scene: Scene = null;
+  mapRenderer: TileMapRenderer = new TileMapRenderer();
+  map: TileMap;
 
   get canvas(): HTMLCanvasElement {
     return this._canvas;
@@ -78,27 +83,92 @@ export class SceneView extends SceneObject implements ISceneView {
     return buffer;
   }
 
-  // Render a frame. Subclass this to do your specific rendering.
-  renderFrame(elapsed: number) {
-    _.each(this._connectedBehaviors, (o: any) => {
-      if (o instanceof SceneViewComponent) {
-        o.renderFrame(this, elapsed);
-      }
-    });
+  /**
+   * The map view bounds in world space.
+   */
+  protected _bounds: Point = new Point();
+
+  public _onResize(event?: Event) {
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
+    this._bounds.set(this.canvas.width, this.canvas.height);
+    this._bounds = this.screenToWorld(this._bounds);
+    const context: any = this.context;
+    context.webkitImageSmoothingEnabled = false;
+    context.mozImageSmoothingEnabled = false;
+    context.imageSmoothingEnabled = false;
   }
 
-  // Render post effects
-  renderPost() {
-    // nothing
+  /*
+   * Get the camera clip rectangle.
+   * @returns {Rect}
+   */
+  getCameraClip() {
+    if (!this.map) {
+      return this.camera;
+    }
+    const clipGrow = this.camera.clone();
+    clipGrow.point.round();
+    clipGrow.extent.round();
+
+    // Clamp to tilemap bounds.
+    const rect: IRect = this.map.bounds;
+    if (clipGrow.point.x < rect.point.x) {
+      clipGrow.point.x += rect.point.x - clipGrow.point.x;
+    }
+    if (clipGrow.point.y < rect.point.y) {
+      clipGrow.point.y += rect.point.y - clipGrow.point.y;
+    }
+    if (clipGrow.point.x + clipGrow.extent.x > rect.point.x + rect.extent.x) {
+      clipGrow.point.x -=
+        clipGrow.point.x + clipGrow.extent.x - (rect.point.x + rect.extent.x);
+    }
+    if (clipGrow.point.y + clipGrow.extent.y > rect.point.y + rect.extent.y) {
+      clipGrow.point.y -=
+        clipGrow.point.y + clipGrow.extent.y - (rect.point.y + rect.extent.y);
+    }
+    return clipGrow;
   }
 
-  // Set the render state for this scene view.
+  /*
+   * Set the pre-render canvas state.
+   */
   setRenderState() {
     if (!this.context) {
       return;
     }
     this.context.save();
     this.context.scale(this.cameraScale, this.cameraScale);
+    if (!this.camera || !this.context || !this.map) {
+      return;
+    }
+    let worldCameraPos = this.worldToScreen(this.camera.point);
+    let worldTilePos = this.worldToScreen(this.map.bounds.point);
+    worldTilePos.x = parseFloat(worldTilePos.x.toFixed(2));
+    worldTilePos.y = parseFloat(worldTilePos.y.toFixed(2));
+    worldCameraPos.x = parseFloat(worldCameraPos.x.toFixed(2));
+    worldCameraPos.y = parseFloat(worldCameraPos.y.toFixed(2));
+    this.context.translate(
+      worldTilePos.x - worldCameraPos.x,
+      worldTilePos.y - worldCameraPos.y
+    );
+  }
+
+  /*
+   * Render the tile $map, and any features it has.
+   */
+  renderFrame(elapsed: number) {
+    this.clearRect();
+    if (!this.map) {
+      return;
+    }
+    this.mapRenderer.render(this.map, this);
+    return this;
+  }
+
+  // Render post effects
+  renderPost() {
+    // nothing
   }
 
   // Restore the render state to what it was before a call to setRenderState.
@@ -119,30 +189,31 @@ export class SceneView extends SceneObject implements ISceneView {
   _render(elapsed: number) {
     this.processCamera();
     this.setRenderState();
-    _.each(this._connectedBehaviors, (o: any) => {
-      if (o instanceof SceneViewComponent) {
-        o.beforeFrame(this, elapsed);
-      }
-    });
     this.renderFrame(elapsed);
     this.renderAnimations();
     this.renderPost();
-    _.each(this._connectedBehaviors, (o: any) => {
-      if (o instanceof SceneViewComponent) {
-        o.afterFrame(this, elapsed);
-      }
-    });
     this.restoreRenderState();
   }
 
   // Scene Camera updates
   // -----------------------------------------------------------------------------
+  /*
+   * Update the camera for this frame.
+   */
   processCamera() {
+    this.cameraComponent = this.findBehavior(CameraBehavior) as CameraBehavior;
+    if (!this.cameraComponent && this.map) {
+      this.cameraComponent = this.map.findBehavior(CameraBehavior) as CameraBehavior;
+    }
+    if (!this.cameraComponent) {
+      this.cameraComponent = this.scene.componentByType(
+        CameraBehavior
+      ) as CameraBehavior;
+    }
     if (this.cameraComponent) {
       this.cameraComponent.process(this);
     }
   }
-
   // Scene rendering utilities
   // -----------------------------------------------------------------------------
 

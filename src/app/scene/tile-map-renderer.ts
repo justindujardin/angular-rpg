@@ -17,20 +17,18 @@ import * as _ from 'underscore';
 import { Rect } from '../../app/core/rect';
 import { ITileInstanceMeta } from '../../app/core/resources/tiled/tiled';
 import { ITiledLayer } from '../../app/core/resources/tiled/tiled.model';
-import { SceneObjectRenderer } from './scene-object-renderer';
+import { SceneView } from './scene-view';
 import { TileMap } from './tile-map';
-import { TileMapView } from './tile-map-view';
-export class TileMapRenderer extends SceneObjectRenderer {
-  buffer: HTMLCanvasElement[][] = null; // A 2d grid of rendered canvas textures.
-  bufferMapName: string = null; // The name of the rendered map.  If the map name changes, the buffer is re-rendered.
-  bufferComplete: boolean = false; // True if the entire map was rendered with all textures loaded and ready.
-
+export class TileMapRenderer {
+  private buffer: HTMLCanvasElement[][] = null; // A 2d grid of rendered canvas textures.
+  private bufferMapName: string = null; // The name of the rendered map.  If the map name changes, the buffer is re-rendered.
+  private bufferComplete: boolean = false; // True if the entire map was rendered with all textures loaded and ready.
   private _clipRect: Rect = new Rect();
   private _renderRect: Rect = new Rect();
 
   // TODO: only render tiles that are in the clipRect.  This can be expensive at initial
   // load for expansive maps like the Browser Quest tmx.
-  render(object: TileMap, view: TileMapView) {
+  public render(object: TileMap, view: SceneView): void {
     let row: number;
     let col: number;
     let rows;

@@ -17,7 +17,7 @@ import * as astar from 'javascript-astar';
 import * as _ from 'underscore';
 import { Point } from '../core';
 import { TileMap } from '../scene/tile-map';
-import { TileObjectBehavior } from '../scene/tile-object-behavior';
+import { TileObjectBehavior } from './tile-object-behavior';
 
 /**
  * A component that can calculate A-star paths.

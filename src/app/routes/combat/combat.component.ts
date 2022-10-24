@@ -17,7 +17,7 @@ import { NamedMouseElement, PowInput } from '../../core/input';
 import { GameEntityObject } from '../../scene/game-entity-object';
 import { Scene } from '../../scene/scene';
 import { SceneObject } from '../../scene/scene-object';
-import { TileMapView } from '../../scene/tile-map-view';
+import { SceneView } from '../../scene/scene-view';
 import { Animate } from '../../services/animate';
 import { GameWorld } from '../../services/game-world';
 import { RPGGame } from '../../services/rpg-game';
@@ -56,7 +56,7 @@ export interface CombatAttackSummary {
  * Render and provide input for a combat encounter.
  */
 export class CombatComponent
-  extends TileMapView
+  extends SceneView
   implements IProcessObject, OnDestroy, AfterViewInit
 {
   combat: CombatComponent = this;

@@ -23,8 +23,8 @@ import {
 import { SceneObject } from '../scene/scene-object';
 import { TileMap } from '../scene/tile-map';
 import { TileObject } from '../scene/tile-object';
-import { TileObjectBehavior } from '../scene/tile-object-behavior';
 import { IMoveDescription, MovableBehavior } from './movable-behavior';
+import { TileObjectBehavior } from './tile-object-behavior';
 
 export class BasePlayerComponent extends MovableBehavior {
   // TODO: Pass in collide types during entity creation, and assert on invalid types.

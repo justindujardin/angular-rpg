@@ -22,7 +22,6 @@ import { GameFeatureObject } from '../../scene/game-feature-object';
 import { Scene } from '../../scene/scene';
 import { SceneView } from '../../scene/scene-view';
 import { TileMap } from '../../scene/tile-map';
-import { TileMapView } from '../../scene/tile-map-view';
 import { GameWorld } from '../../services/game-world';
 import { RPGGame } from '../../services/rpg-game';
 import { PlayerBehaviorComponent } from './behaviors/player-behavior';
@@ -40,7 +39,7 @@ import { WorldMapComponent } from './map/world-map.entity';
     '[style.color]': 'styleBackground',
   },
 })
-export class WorldComponent extends TileMapView implements AfterViewInit, OnDestroy {
+export class WorldComponent extends SceneView implements AfterViewInit, OnDestroy {
   @ViewChild('worldCanvas') canvasElementRef: ElementRef;
   @ViewChild(PartyMenuComponent) partyMenu: PartyMenuComponent;
 

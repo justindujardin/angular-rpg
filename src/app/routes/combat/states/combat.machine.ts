@@ -40,7 +40,7 @@ import { Item } from '../../../models/item';
 import { getGameInventory } from '../../../models/selectors';
 import { GameEntityObject } from '../../../scene/game-entity-object';
 import { Scene } from '../../../scene/scene';
-import { TileMapView } from '../../../scene/tile-map-view';
+import { SceneView } from '../../../scene/scene-view';
 import { GameWorld } from '../../../services/game-world';
 import { CombatEnemyComponent } from '../combat-enemy.entity';
 import { CombatPlayerComponent } from '../combat-player.entity';
@@ -132,7 +132,7 @@ export class CombatStateMachineComponent
   @Input() party: QueryList<CombatPlayerComponent>;
   @Input() enemies: QueryList<CombatEnemyComponent>;
 
-  @Input() view: TileMapView;
+  @Input() view: SceneView;
 
   @ViewChildren('start,beginTurn,chooseAction,endTurn,defeat,victory,escape')
   childStates: QueryList<CombatMachineState>;

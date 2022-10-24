@@ -13,9 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { SceneObjectBehavior } from '../behaviors/scene-object-behavior';
-import { TileMap } from './tile-map';
-import { TileObject } from './tile-object';
+import { TileMap } from '../scene/tile-map';
+import { TileObject } from '../scene/tile-object';
+import { SceneObjectBehavior } from './scene-object-behavior';
 export class TileObjectBehavior extends SceneObjectBehavior {
   host: TileObject;
   isEntered: boolean;

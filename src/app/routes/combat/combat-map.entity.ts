@@ -31,7 +31,6 @@ import { SceneView } from '../../scene/scene-view';
 import { ISceneViewRenderer } from '../../scene/scene.model';
 import { TileMap } from '../../scene/tile-map';
 import { TileMapRenderer } from '../../scene/tile-map-renderer';
-import { TileMapView } from '../../scene/tile-map-view';
 import { TileObjectRenderer } from '../../scene/tile-object-renderer';
 import { CombatCameraBehaviorComponent } from './behaviors/combat-camera.behavior';
 import { CombatEnemyComponent } from './combat-enemy.entity';
@@ -136,7 +135,7 @@ export class CombatMapComponent
   /**
    * Render all of the map feature components
    */
-  renderFrame(view: TileMapView, elapsed: number) {
+  renderFrame(view: SceneView, elapsed: number) {
     this._tileRenderer.render(this, view);
     this.party.forEach((component: CombatPlayerComponent) => {
       this.objectRenderer.render(
