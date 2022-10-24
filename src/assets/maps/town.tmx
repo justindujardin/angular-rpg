@@ -4,6 +4,8 @@
   <property name="music" value="assets/music/TownTheme"/>
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <tileset firstgid="72" source="tiles/objects.tsx"/>
+ <tileset firstgid="88" source="tiles/entities.tsx"/>
  <layer id="1" name="Terrain" width="27" height="22">
   <data encoding="csv">
 46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,
