@@ -12,6 +12,10 @@ module.exports = function (angularConfig) {
       new SpriteSheetPlugin(
         [
           {
+            inputs: "src/art/sprites/objects/*.png",
+            output: "assets/images/objects",
+          },
+          {
             inputs: "src/art/sprites/creatures/*.png",
             output: "assets/images/creatures",
           },
