@@ -3,8 +3,12 @@
 interface IPruneTilesetTool extends Tool {
   isActive: boolean;
   getMaps(): string[];
+  getTilesetPaths(): string[];
   analyzeMaps: () => void;
   analyzeMap: (map: TileMap) => any;
+  convertMap: (map: TileMap) => any;
+  findTileForIcon: (map: TileMap, icon: string) => Tile | null;
+  getAllTilesets: () => Tileset[];
 }
 
 var tool = tiled.registerTool('PruneTileset', {
@@ -26,7 +30,65 @@ var tool = tiled.registerTool('PruneTileset', {
       if (button == 1) {
         this.analyzeMap(tiled.activeAsset as TileMap);
       } else {
-        this.analyzeMaps();
+        // this.analyzeMaps();
+        this.convertMap(tiled.activeAsset as TileMap);
+      }
+    }
+  },
+
+  getAllTilesets: function (): Tileset[] {
+    return tiled.openAssets.filter((asset) => asset.isTileset) as Tileset[];
+  },
+  findTileForIcon: function (map: TileMap, icon: string): Tile | null {
+    const allTilesets: Tileset[] = this.getAllTilesets();
+    for (let i = 0; i < allTilesets.length; i++) {
+      const tileSet: Tileset = allTilesets[i];
+      for (let j = 0; j < tileSet.tiles.length; j++) {
+        const tile: Tile = tileSet.tiles[j];
+        if (!tile) {
+          continue;
+        }
+        const tilePath = tile.imageFileName;
+        // tiled.log(tile.imageFileName);
+        const tileIcon = tilePath.substring(tilePath.lastIndexOf('/') + 1);
+        if (tileIcon === icon) {
+          tiled.log(
+            `-- found gid ${tile.id} for icon ${icon} in tileset ${tileSet.name}`
+          );
+          return tile;
+        }
+      }
+    }
+    return null;
+  },
+  /** Convert a map from Rect features to Tile features */
+  convertMap: function (map: TileMap) {
+    const activeMap = tiled.activeAsset as TileMap;
+    this.getTilesetPaths().forEach((filePath: string) => {
+      tiled.open(filePath);
+    });
+    tiled.open(activeMap.fileName);
+
+    for (let i = 0; i < map.layerCount; i++) {
+      let layer = map.layerAt(i) as ObjectGroup;
+      if (!layer.isObjectLayer) {
+        continue;
+      }
+
+      for (let obj = 0; obj < layer.objectCount; ++obj) {
+        const feature: MapObject = layer.objectAt(obj);
+        if (!feature.tile) {
+          const targetIcon = `${feature.properties().icon}`;
+          if (!targetIcon) {
+            continue;
+          }
+          // tiled.log(targetIcon);
+          feature.tile = this.findTileForIcon(map, targetIcon);
+          // this.findTileForIcon(map, targetIcon);
+          // tiled.log(`Converting: ${feature.name}`);
+        } else {
+          // tiled.log(`Skipping: ${feature.name}`);
+        }
       }
     }
   },
@@ -91,5 +153,16 @@ var tool = tiled.registerTool('PruneTileset', {
     return files
       .filter((val) => val.endsWith('.tmx'))
       .map((filename) => mapsPath + filename);
+  },
+  getTilesetPaths: function (): string[] {
+    const mapsPath = tiled.activeAsset.fileName.substr(
+      0,
+      tiled.activeAsset.fileName.indexOf('maps/') + 5
+    );
+    const tileSetsPath = `${mapsPath}tiles/`;
+    const files: string[] = File.directoryEntries(tileSetsPath);
+    return files
+      .filter((val) => val.endsWith('.tsx'))
+      .map((filename) => tileSetsPath + filename);
   },
 } as IPruneTilesetTool);
