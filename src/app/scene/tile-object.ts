@@ -137,7 +137,8 @@ export class TileObject extends SceneObject implements TileObjectOptions {
 
   _updateIcon(icon: string) {
     const world = GameWorld.get();
-    if (!world) {
+    if (!world || !icon) {
+      this.image = null;
       return;
     }
     const meta = world.sprites.getSpriteMeta(icon);
