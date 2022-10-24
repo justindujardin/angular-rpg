@@ -14,7 +14,7 @@ import { AppState } from '../../app.model';
 import { LoadingService } from '../../components/loading/loading.service';
 import { NotificationService } from '../../components/notification/notification.service';
 import { NamedMouseElement, PowInput } from '../../core/input';
-import { GameEntityObject } from '../../scene/game-entity-object';
+import { GameEntityObject } from '../../scene/objects/game-entity-object';
 import { Scene } from '../../scene/scene';
 import { SceneObject } from '../../scene/scene-object';
 import { SceneView } from '../../scene/scene-view';

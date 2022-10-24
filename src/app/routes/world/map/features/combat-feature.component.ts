@@ -30,7 +30,7 @@ import {
   ITemplateFixedEncounter,
 } from '../../../../models/game-data/game-data.model';
 import { getGameParty } from '../../../../models/selectors';
-import { GameEntityObject } from '../../../../scene/game-entity-object';
+import { GameEntityObject } from '../../../../scene/objects/game-entity-object';
 import { PlayerBehaviorComponent } from '../../behaviors/player-behavior';
 import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
 

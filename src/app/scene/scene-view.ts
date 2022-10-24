@@ -16,11 +16,11 @@
 import * as _ from 'underscore';
 import { CameraBehavior } from '../behaviors/camera-behavior';
 import { IRect, Point, Rect } from '../core';
+import { TileMapRenderer } from './render/tile-map-renderer';
 import { Scene } from './scene';
 import { SceneObject } from './scene-object';
 import { ISceneView } from './scene.model';
 import { TileMap } from './tile-map';
-import { TileMapRenderer } from './tile-map-renderer';
 
 /**
  * A view that renders a `Scene` through a given HTMLCanvasElement.

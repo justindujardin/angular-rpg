@@ -20,7 +20,7 @@ import {
   getCombatEntityEquipment,
   getGameInventory,
 } from '../../../../../app/models/selectors';
-import { GameEntityObject } from '../../../../../app/scene/game-entity-object';
+import { GameEntityObject } from '../../../../../app/scene/objects/game-entity-object';
 import { GameWorld } from '../../../../../app/services/game-world';
 import { AnimatedSpriteBehavior } from '../../../../behaviors/animated-sprite.behavior';
 import { DamageComponent } from '../../../../behaviors/damage.behavior';

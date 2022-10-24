@@ -1,5 +1,5 @@
-import { IPartyMember } from '../models/base-entity';
-import { entityId } from '../models/game-data/game-data.model';
+import { IPartyMember } from '../../models/base-entity';
+import { entityId } from '../../models/game-data/game-data.model';
 import { GameEntityObject } from './game-entity-object';
 
 describe('GameEntityObject', () => {

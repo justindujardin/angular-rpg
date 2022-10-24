@@ -20,8 +20,8 @@ import { TileMap } from '../../../../app/scene/tile-map';
 import { BasePlayerComponent } from '../../../behaviors/base-player.behavior';
 import { IMoveDescription } from '../../../behaviors/movable-behavior';
 import { GameStateMoveAction } from '../../../models/game-state/game-state.actions';
-import { GameEntityObject } from '../../../scene/game-entity-object';
-import { GameFeatureObject } from '../../../scene/game-feature-object';
+import { GameEntityObject } from '../../../scene/objects/game-entity-object';
+import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
 import { SceneObject } from '../../../scene/scene-object';
 
 @Component({

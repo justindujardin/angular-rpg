@@ -14,9 +14,9 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import { GameWorld } from '../services/game-world';
-import { TileMap } from './tile-map';
-import { TileObject } from './tile-object';
+import { GameWorld } from '../../services/game-world';
+import { TileMap } from '../tile-map';
+import { TileObject } from '../tile-object';
 
 export class GameFeatureObject extends TileObject {
   tileMap: TileMap;

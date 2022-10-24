@@ -25,7 +25,7 @@ import { ITiledObject } from '../../../../app/core/resources/tiled/tiled.model';
 import { AppState } from '../../../app.model';
 import { TileObjectBehavior } from '../../../behaviors/tile-object-behavior';
 import { getGameKey, getGameKeyData } from '../../../models/selectors';
-import { GameFeatureObject } from '../../../scene/game-feature-object';
+import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
 import { Scene } from '../../../scene/scene';
 import { TileObject } from '../../../scene/tile-object';
 import { GameWorld } from '../../../services/game-world';

@@ -16,7 +16,7 @@ import { Entity } from '../../../models/entity/entity.model';
 import { instantiateEntity } from '../../../models/game-data/game-data.model';
 import { GameStateSetBattleCounterAction } from '../../../models/game-state/game-state.actions';
 import { getGameBattleCounter, getGameParty } from '../../../models/selectors';
-import { GameEntityObject } from '../../../scene/game-entity-object';
+import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { Scene } from '../../../scene/scene';
 import { TileMap } from '../../../scene/tile-map';
 import { PlayerBehaviorComponent } from './player-behavior';

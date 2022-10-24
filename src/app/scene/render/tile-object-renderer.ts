@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
-import { IPoint, Point } from '../core';
-import { ISpriteMeta } from '../core/api';
-import { SceneView } from './scene-view';
+import { IPoint, Point } from '../../core';
+import { ISpriteMeta } from '../../core/api';
+import { SceneView } from '../scene-view';
 
 export interface TileRenderable {
   icon: string;

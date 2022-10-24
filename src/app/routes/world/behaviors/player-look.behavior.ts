@@ -16,7 +16,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CollisionBehaviorComponent } from '../../../behaviors/collision.behavior';
 import { TickedBehavior } from '../../../behaviors/ticked-behavior';
-import { GameFeatureObject } from '../../../scene/game-feature-object';
+import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
 import { TileObject } from '../../../scene/tile-object';
 import { PlayerBehaviorComponent } from './player-behavior';
 

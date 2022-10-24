@@ -18,7 +18,7 @@ import { LoadingService } from '../../components/loading/loading.service';
 import { NotificationService } from '../../components/notification/notification.service';
 import { PartyMenuComponent } from '../../components/party-menu/party-menu.component';
 import { NamedMouseElement, PowInput } from '../../core/input';
-import { GameFeatureObject } from '../../scene/game-feature-object';
+import { GameFeatureObject } from '../../scene/objects/game-feature-object';
 import { Scene } from '../../scene/scene';
 import { SceneView } from '../../scene/scene-view';
 import { TileMap } from '../../scene/tile-map';

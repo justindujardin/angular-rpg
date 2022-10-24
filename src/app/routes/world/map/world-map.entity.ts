@@ -26,11 +26,11 @@ import {
   getGameParty,
   getGamePartyPosition,
 } from '../../../models/selectors';
+import { TileObjectRenderer } from '../../../scene/render/tile-object-renderer';
 import { Scene } from '../../../scene/scene';
 import { SceneView } from '../../../scene/scene-view';
 import { ISceneViewRenderer } from '../../../scene/scene.model';
 import { TileMap } from '../../../scene/tile-map';
-import { TileObjectRenderer } from '../../../scene/tile-object-renderer';
 import { MapFeatureInputBehaviorComponent } from '../behaviors/map-feature-input.behavior';
 import { MapFeatureComponent, TiledMapFeatureData } from './map-feature.component';
 import { WorldPlayerComponent } from './world-player.entity';

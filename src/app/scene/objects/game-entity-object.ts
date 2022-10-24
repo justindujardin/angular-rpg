@@ -14,11 +14,11 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import { CombatantTypes, EntityType } from '../models/base-entity';
-import { Entity } from '../models/entity/entity.model';
-import { ITemplateMagic } from '../models/game-data/game-data.model';
-import { GameWorld } from '../services/game-world';
-import { TileObject } from './tile-object';
+import { CombatantTypes, EntityType } from '../../models/base-entity';
+import { Entity } from '../../models/entity/entity.model';
+import { ITemplateMagic } from '../../models/game-data/game-data.model';
+import { GameWorld } from '../../services/game-world';
+import { TileObject } from '../tile-object';
 
 export class GameEntityObject extends TileObject {
   model: CombatantTypes;

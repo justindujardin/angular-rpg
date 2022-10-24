@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { GameEntityObject } from '../scene/game-entity-object';
+import { GameEntityObject } from '../scene/objects/game-entity-object';
 import { AnimatedSpriteBehavior } from './animated-sprite.behavior';
 import { SceneObjectBehavior } from './scene-object-behavior';
 import { SoundBehavior } from './sound-behavior';

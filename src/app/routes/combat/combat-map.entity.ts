@@ -26,12 +26,12 @@ import {
   getCombatEncounterParty,
   sliceCombatState,
 } from '../../models/selectors';
+import { TileMapRenderer } from '../../scene/render/tile-map-renderer';
+import { TileObjectRenderer } from '../../scene/render/tile-object-renderer';
 import { Scene } from '../../scene/scene';
 import { SceneView } from '../../scene/scene-view';
 import { ISceneViewRenderer } from '../../scene/scene.model';
 import { TileMap } from '../../scene/tile-map';
-import { TileMapRenderer } from '../../scene/tile-map-renderer';
-import { TileObjectRenderer } from '../../scene/tile-object-renderer';
 import { CombatCameraBehaviorComponent } from './behaviors/combat-camera.behavior';
 import { CombatEnemyComponent } from './combat-enemy.entity';
 import { CombatPlayerComponent } from './combat-player.entity';

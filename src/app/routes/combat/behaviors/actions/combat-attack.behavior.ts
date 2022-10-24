@@ -15,7 +15,7 @@ import { CombatAttack } from '../../../../models/combat/combat.model';
 import { CombatService } from '../../../../models/combat/combat.service';
 import { Entity, EntityWithEquipment } from '../../../../models/entity/entity.model';
 import { getCombatEntityEquipment } from '../../../../models/selectors';
-import { GameEntityObject } from '../../../../scene/game-entity-object';
+import { GameEntityObject } from '../../../../scene/objects/game-entity-object';
 import { GameWorld } from '../../../../services/game-world';
 import { CombatAttackSummary, CombatComponent } from '../../combat.component';
 import { IPlayerActionCallback } from '../../states/combat.machine';

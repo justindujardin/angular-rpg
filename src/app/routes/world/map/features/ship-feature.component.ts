@@ -22,7 +22,7 @@ import { AppState } from '../../../../app.model';
 import { GameStateBoardShipAction } from '../../../../models/game-state/game-state.actions';
 import { PointRecord } from '../../../../models/records';
 import { getGameBoardedShip, getGameShipPosition } from '../../../../models/selectors';
-import { GameFeatureObject } from '../../../../scene/game-feature-object';
+import { GameFeatureObject } from '../../../../scene/objects/game-feature-object';
 import { TileObject } from '../../../../scene/tile-object';
 import { PlayerBehaviorComponent } from '../../behaviors/player-behavior';
 import {

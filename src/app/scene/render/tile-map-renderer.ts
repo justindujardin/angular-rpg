@@ -14,11 +14,11 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import { Rect } from '../../app/core/rect';
-import { ITileInstanceMeta } from '../../app/core/resources/tiled/tiled';
-import { ITiledLayer } from '../../app/core/resources/tiled/tiled.model';
-import { SceneView } from './scene-view';
-import { TileMap } from './tile-map';
+import { Rect } from '../../core/rect';
+import { ITileInstanceMeta } from '../../core/resources/tiled/tiled';
+import { ITiledLayer } from '../../core/resources/tiled/tiled.model';
+import { SceneView } from '../scene-view';
+import { TileMap } from '../tile-map';
 export class TileMapRenderer {
   private buffer: HTMLCanvasElement[][] = null; // A 2d grid of rendered canvas textures.
   private bufferMapName: string = null; // The name of the rendered map.  If the map name changes, the buffer is re-rendered.

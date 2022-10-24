@@ -18,7 +18,7 @@ import * as _ from 'underscore';
 import { Rect } from '../../../../app/core/rect';
 import { TickedBehavior } from '../../../behaviors/ticked-behavior';
 import { NamedMouseElement } from '../../../core/input';
-import { GameFeatureObject } from '../../../scene/game-feature-object';
+import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
 import { Scene } from '../../../scene/scene';
 import { TileObject } from '../../../scene/tile-object';
 

@@ -7,7 +7,7 @@ import { AppState } from '../../app.model';
 import { LoadingService } from '../../components/loading/loading.service';
 import { IPartyMember } from '../../models/base-entity';
 import { getCombatEncounterParty } from '../../models/selectors';
-import { GameEntityObject } from '../../scene/game-entity-object';
+import { GameEntityObject } from '../../scene/objects/game-entity-object';
 import { Scene } from '../../scene/scene';
 
 @Component({

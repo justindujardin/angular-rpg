@@ -29,7 +29,7 @@ import { distinctUntilChanged } from 'rxjs/operators';
 import * as _ from 'underscore';
 import { Point } from '../../../../app/core/point';
 import { ITemplateBaseItem } from '../../../../app/models/game-data/game-data.model';
-import { GameEntityObject } from '../../../scene/game-entity-object';
+import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { ChooseActionStateMachine } from '../behaviors/choose-action.machine';
 import { CombatActionBehavior } from '../behaviors/combat-action.behavior';
 import { CombatComponent } from '../combat.component';

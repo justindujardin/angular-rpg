@@ -38,7 +38,7 @@ import {
 } from '../../../models/game-data/game-data.model';
 import { Item } from '../../../models/item';
 import { getGameInventory } from '../../../models/selectors';
-import { GameEntityObject } from '../../../scene/game-entity-object';
+import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { Scene } from '../../../scene/scene';
 import { SceneView } from '../../../scene/scene-view';
 import { GameWorld } from '../../../services/game-world';

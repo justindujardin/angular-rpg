@@ -16,7 +16,7 @@
 import { SceneObjectBehavior } from '../../../behaviors/scene-object-behavior';
 import { ITemplateMagic } from '../../../models/game-data/game-data.model';
 import { Item } from '../../../models/item';
-import { GameEntityObject } from '../../../scene/game-entity-object';
+import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { IPlayerAction, IPlayerActionCallback } from '../states/combat.machine';
 
 export class CombatActionBehavior extends SceneObjectBehavior implements IPlayerAction {

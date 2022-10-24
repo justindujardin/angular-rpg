@@ -8,7 +8,7 @@ import { SpriteComponent } from '../../../../behaviors/sprite.behavior';
 import { CombatAttackAction } from '../../../../models/combat/combat.actions';
 import { CombatAttack } from '../../../../models/combat/combat.model';
 import { GameStateRemoveInventoryAction } from '../../../../models/game-state/game-state.actions';
-import { GameEntityObject } from '../../../../scene/game-entity-object';
+import { GameEntityObject } from '../../../../scene/objects/game-entity-object';
 import { CombatComponent } from '../../combat.component';
 import { CombatEndTurnStateComponent } from '../../states/combat-end-turn.state';
 import { IPlayerActionCallback } from '../../states/combat.machine';

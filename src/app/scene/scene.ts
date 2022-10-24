@@ -17,8 +17,8 @@ import * as _ from 'underscore';
 import { IBehavior, IProcessObject, IWorld, IWorldObject } from '../core';
 import { Events } from '../core/events';
 import { GameWorld } from '../services/game-world';
-import { SceneSpatialDatabase } from './scene-spatial-database';
 import { IScene, ISceneObject, ISceneView } from './scene.model';
+import { SceneSpatialDatabase } from './spatial-database';
 
 export class Scene extends Events implements IScene, IProcessObject, IWorldObject {
   private static sceneCount: number = 0;

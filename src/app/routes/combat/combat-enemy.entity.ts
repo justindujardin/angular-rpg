@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { SpriteRenderBehaviorComponent } from '../../behaviors/sprite-render.behavior';
 import { IEnemy } from '../../models/base-entity';
-import { GameEntityObject } from '../../scene/game-entity-object';
+import { GameEntityObject } from '../../scene/objects/game-entity-object';
 import { Scene } from '../../scene/scene';
 import { CombatAttackBehaviorComponent } from './behaviors/actions/combat-attack.behavior';
 
