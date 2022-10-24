@@ -125,6 +125,6 @@ export class SpriteRender {
 
   getSpriteMeta(name: string): ISpriteMeta {
     const desc = data.sprites[name];
-    return desc;
+    return { ...desc, image: name };
   }
 }

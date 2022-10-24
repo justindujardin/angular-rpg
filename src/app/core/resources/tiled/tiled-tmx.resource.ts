@@ -88,7 +88,7 @@ export class TiledTMXResource extends XMLResource {
         dataElement.attr('encoding', 'csv');
         dataElement.text(layer.data.join(','));
         layerElement.append(dataElement);
-      } else if (typeof layer.objects !== 'undefined') {
+      } else if (layer.objects) {
         layerElement = $('<objectgroup/>');
         _.each(layer.objects, (obj: ITiledObject) => {
           const objectElement = $('<object/>');
@@ -161,12 +161,6 @@ export class TiledTMXResource extends XMLResource {
             );
           }
           tileLayer.data = JSON.parse('[' + $.trim(layerData.text()) + ']');
-        }
-
-        // Any custom color for this layer?
-        const color: string = this.getElAttribute(layer, 'color');
-        if (color) {
-          tileLayer.color = color;
         }
 
         // Read any child objects

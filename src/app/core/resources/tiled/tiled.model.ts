@@ -5,7 +5,6 @@
 
 export interface ITiledBase {
   name: string;
-  gid?: number;
   class?: string;
   x: number;
   y: number;
@@ -18,11 +17,10 @@ export interface ITiledBase {
 // <layer>, <objectgroup>
 export interface ITiledLayerBase extends ITiledBase {
   opacity: number; // 0-1
-  properties?: any;
+  properties?: { [key: string]: any };
 }
 export interface ITiledLayer extends ITiledLayerBase {
-  data?: any;
-  color?: string;
+  data?: number[];
   objects?: ITiledObject[];
 }
 

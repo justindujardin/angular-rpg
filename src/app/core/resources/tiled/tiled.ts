@@ -19,7 +19,6 @@ export function readITiledBase(el: any): ITiledBase {
   return {
     name: getElAttribute(el, 'name'),
     class: getElAttribute(el, 'class'),
-    gid: parseInt(getElAttribute(el, 'gid'), 10),
     x: parseInt(getElAttribute(el, 'x') || '0', 10),
     y: parseInt(getElAttribute(el, 'y') || '0', 10),
     width: parseInt(getElAttribute(el, 'width') || '0', 10),
@@ -57,6 +56,10 @@ export function writeITiledObjectBase(el: any, data: ITiledObject) {
 export function readITiledObject(el: any): ITiledObject {
   // Base layer properties
   const result: ITiledObject = readITiledLayerBase(el);
+  const gid = parseInt(getElAttribute(el, 'gid'), 10);
+  if (!isNaN(gid)) {
+    result.gid = gid;
+  }
   const className: string = getElAttribute(el, 'class');
   if (className) {
     result.class = className;

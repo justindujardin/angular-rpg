@@ -45,6 +45,8 @@ export interface ISpriteMeta {
   readonly frames: number;
   /** The spritesheet source map */
   readonly source: string;
+  /** The source icon for this image */
+  readonly image: string;
   /** */
   readonly index: number | null;
   /** Pixel offset x in the sprite sheet. */

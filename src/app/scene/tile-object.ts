@@ -23,9 +23,11 @@ import { Scene } from './scene';
 import { SceneObject } from './scene-object';
 import { TileMap } from './tile-map';
 
+// TODO: Refactor to extend ITiledObject and update usage in code base (e.g. .point.x -> .x)
 export interface TileObjectOptions {
   point?: IPoint;
   renderPoint?: IPoint;
+  gid?: number;
   image?: HTMLImageElement;
   scale?: number;
   visible?: boolean;
@@ -54,6 +56,7 @@ export const DEFAULTS: TileObjectOptions = {
 export class TileObject extends SceneObject implements TileObjectOptions {
   point: IPoint;
   renderPoint: Point;
+  gid?: number;
   image: HTMLImageElement;
   visible: boolean;
   enabled: boolean;
@@ -101,8 +104,16 @@ export class TileObject extends SceneObject implements TileObjectOptions {
    */
   onAddToScene(scene: Scene) {
     super.onAddToScene(scene);
+    // Load a sprite given the source icon name
     if (this.icon) {
       this.setSprite(this.icon);
+    }
+    // Load a sprite from a given gid (Tile objects in Tiled)
+    if (this.gid !== undefined) {
+      const meta = this.tileMap.getTileMeta(this.gid);
+      if (meta) {
+        this.setSprite(meta.image);
+      }
     }
     if (!this.tileMap) {
       this.tileMap = this.scene.objectByType(TileMap) as TileMap;

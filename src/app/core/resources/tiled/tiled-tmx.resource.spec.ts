@@ -46,7 +46,6 @@ describe('TiledTMXResource', () => {
       .then((resource: TiledTMXResource) => {
         const objectLayer: ITiledLayer = resource.layers[1];
         expect(objectLayer.objects.length).toBe(2);
-        expect(objectLayer.color).toBe('#000000');
         const object: ITiledObject = objectLayer.objects[0];
         expect(object.properties).toBeDefined();
         expect(object.properties.result).toBe('OK');
@@ -65,7 +64,6 @@ describe('TiledTMXResource', () => {
         const l1: ITiledLayer = resource.layers[1];
         const o1: ITiledObject = l1.objects[0];
 
-        expect(l1.color).toBe('#000000');
         expect(o1.properties).toBeDefined();
         expect(o1.properties.result).toBe('OK');
         expect(o1.name).toBe('example');
@@ -86,7 +84,6 @@ describe('TiledTMXResource', () => {
             const o2: ITiledObject = l2.objects[0];
 
             expect(l1.objects.length).toBe(l2.objects.length);
-            expect(l1.color).toBe(l2.color);
 
             expect(o2.properties).toBeDefined();
             expect(o2.properties.result).toBe(o1.properties.result);

@@ -27,6 +27,7 @@ import { TileObjectBehavior } from '../../../behaviors/tile-object-behavior';
 import { getGameKey, getGameKeyData } from '../../../models/selectors';
 import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
 import { Scene } from '../../../scene/scene';
+import { TileMap } from '../../../scene/tile-map';
 import { TileObject } from '../../../scene/tile-object';
 import { GameWorld } from '../../../services/game-world';
 
@@ -114,6 +115,7 @@ export class MapFeatureComponent
   }
 
   @Input() tiledMap: TiledTMXResource;
+  @Input() tileMap: TileMap;
 
   get feature(): TiledMapFeatureData {
     return this._feature$.value;
@@ -143,11 +145,12 @@ export class MapFeatureComponent
       if (!data || !this.tiledMap) {
         return null;
       }
-      const options = Object.assign({}, data.properties || {}, {
-        class: data.class,
+      const options = {
+        ...data,
+        tileMap: this.tileMap,
         x: Math.round(data.x / this.tiledMap.tilewidth),
         y: Math.round(data.y / this.tiledMap.tileheight),
-      });
+      };
       const result = new GameFeatureObject(options);
       result.addBehavior(component);
       return result;
