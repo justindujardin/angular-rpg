@@ -16,7 +16,7 @@ canvas {
 }
 
 .ebp {
-  font-family: "GraphicPixel", sans-serif;
+  font-family: $pixelFont;
   @include eight-bit-panel(6px);
 }
 

@@ -29,29 +29,33 @@
 </mat-toolbar>
 
 <mat-card class="mat-elevation-z3" [@card]="open" *ngIf="open == true">
-  <party-inventory *ngIf="page == 'inventory'"></party-inventory>
+  <mat-card-title>
+    <span class="flex" *ngIf="page == 'party'">Party</span>
+    <span class="flex" *ngIf="page == 'inventory'">Settings</span>
+    <span class="flex" *ngIf="page == 'settings'">Inventory</span>
+    <span>Party Gold: {{ partyGold$ | async }}</span>
+  </mat-card-title>
 
-  <mat-card-title *ngIf="page == 'party'"
-    >Party Gold: {{ partyGold$ | async }}</mat-card-title
-  >
+  <party-inventory
+    *ngIf="page == 'inventory'"
+    class="inventory-content"
+  ></party-inventory>
   <mat-card-content
     *ngIf="page == 'party'"
     fxLayout="row"
     fxLayoutWrap
     fxLayoutAlign="space-around center"
+    class="party-content"
   >
     <player-card *ngFor="let member of party$ | async" [model]="member"></player-card>
   </mat-card-content>
-
-  <mat-card-title *ngIf="page == 'settings'">Game Save</mat-card-title>
-  <mat-card-actions *ngIf="page == 'settings'">
+  <mat-card-content *ngIf="page == 'settings'" class="settings-content">
     <button mat-button color="warn" (click)="resetGame()">Reset Game</button>
+    <mat-slide-toggle [checked]="isChecked" (change)="onSlideToggle($event)"
+      >Auto Save</mat-slide-toggle
+    >
     <button mat-button (click)="saveGame()">Save Game</button>
-    <mat-slide-toggle
-      [checked]="isChecked"
-      (change)="onSlideToggle($event)"
-      >Auto Save</mat-slide-toggle>
-  </mat-card-actions>
+  </mat-card-content>
 </mat-card>
 <button mat-fab color="accent" (click)="open = !open" [@fab]="open">
   <mat-icon>{{ open ? "close" : "menu" }}</mat-icon>

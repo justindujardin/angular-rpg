@@ -240,7 +240,7 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
     // Debug strings
     const fontSize = 6;
     this.context.save();
-    this.context.font = `bold ${fontSize}px GraphicPixel`;
+    this.context.font = `bold ${fontSize}px Roboto`;
     const renderPos = this.worldToScreen(clipRect.point);
     let textX = renderPos.x + 10;
     let textY = renderPos.y + 10;
