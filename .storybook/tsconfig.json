@@ -12,7 +12,7 @@
     "../projects/**/*.spec.ts"
   ],
   "include": [
-    "../src/**/*",
+    "../src/app/**/*",
     "../projects/**/*"
   ],
   "files": [

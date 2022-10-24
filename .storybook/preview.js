@@ -14,7 +14,7 @@ import { ServicesModule } from "../src/app/services";
 import { CombatModule } from "../src/app/routes/combat";
 import { WorldModule } from "../src/app/routes/world";
 import docJson from "../src/documentation.json";
-import { PowCoreModule } from "../src/game/pow-core";
+import { PowCoreModule } from "../src/app/core";
 import { RouterModule } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
 import { MatGridListModule } from "@angular/material/grid-list";

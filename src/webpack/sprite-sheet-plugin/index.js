@@ -10,9 +10,49 @@ const defaults = {
   scale: 1,
 };
 
-function SpriteSheetPlugin(files, options) {
-  this.files = files;
-  this.options = _.defaults({}, options, defaults);
+function SpriteSheetPlugin() {
+  this.files = [
+    {
+      inputs: "src/art/sprites/objects/*.png",
+      output: "assets/images/objects",
+    },
+    {
+      inputs: "src/art/sprites/creatures/*.png",
+      output: "assets/images/creatures",
+    },
+    {
+      inputs: "src/art/sprites/vehicles/*.png",
+      output: "assets/images/vehicles",
+    },
+    {
+      inputs: "src/art/sprites/environment/*.png",
+      output: "assets/images/environment",
+    },
+    {
+      inputs: "src/art/sprites/characters/punch/*.png",
+      output: "assets/images/punch",
+    },
+    {
+      inputs: "src/art/sprites/characters/magic/*.png",
+      output: "assets/images/magic",
+    },
+    {
+      inputs: "src/art/sprites/characters/*.png",
+      output: "assets/images/characters",
+    },
+    {
+      inputs: "src/art/sprites/animation/*.png",
+      output: "assets/images/animation",
+    },
+    {
+      inputs: "src/art/sprites/equipment/*.png",
+      output: "assets/images/equipment",
+    },
+    { inputs: "src/art/sprites/items/*.png", output: "assets/images/items" },
+  ];
+  this.options = {
+    indexFile: "assets/images/index.json",
+  };
 }
 
 const PLUGIN_NAME = "spritesheets";
