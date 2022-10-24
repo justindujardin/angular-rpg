@@ -47,6 +47,7 @@ var tool = tiled.registerTool('PruneTileset', {
     tiled.log(`============================ ${mapShort} ============================`);
     const allIds = {};
     const allImages = {};
+    const allTilesets = {};
 
     for (let i = 0; i < map.layerCount; i++) {
       const layer = map.layerAt(i) as TileLayer;
@@ -61,6 +62,7 @@ var tool = tiled.registerTool('PruneTileset', {
           if (!tileAt) {
             continue;
           }
+          allTilesets[tileAt.tileset.name] = true;
           foundIds[tileAt.id] = true;
           allIds[tileAt.id] = true;
           allImages[tileAt.imageFileName] = true;
@@ -75,6 +77,10 @@ var tool = tiled.registerTool('PruneTileset', {
       image.substring(image.lastIndexOf('/') + 1)
     );
     tiled.log(`Images: [${images.join(', ')}]`);
+    const tilesets = Object.keys(allTilesets).map((tileset) =>
+      tileset.substring(tileset.lastIndexOf('/') + 1)
+    );
+    tiled.log(`Tilesets: [${tilesets.join(', ')}]`);
   },
   getMaps: function (): string[] {
     const mapsPath = tiled.activeAsset.fileName.substr(
