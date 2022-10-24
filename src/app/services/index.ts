@@ -25,14 +25,12 @@ import { Animate } from './animate';
 import { GameWorld } from './game-world';
 import { RPGGame } from './rpg-game';
 import { SpriteRender } from './sprite-render';
-import { Visibility } from './visibility';
 
 export const SERVICE_PROVIDERS = [
   Animate,
   RPGGame,
   GameWorld,
   SpriteRender,
-  Visibility,
   NotificationService,
   CombatService,
   SpritesService,
