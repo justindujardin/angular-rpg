@@ -15,12 +15,12 @@
  */
 import { EventEmitter } from '@angular/core';
 import * as _ from 'underscore';
-import { ImageResource, IPoint, Point } from '../../game/pow-core';
-import { ISpriteMeta } from '../../game/pow2/core/api';
-import { Scene } from '../../game/pow2/scene/scene';
-import { SceneObject } from '../../game/pow2/scene/scene-object';
 import { MovableBehavior } from '../behaviors/movable-behavior';
+import { ImageResource, IPoint, Point } from '../core';
+import { ISpriteMeta } from '../core/api';
 import { GameWorld } from '../services/game-world';
+import { Scene } from './scene';
+import { SceneObject } from './scene-object';
 import { TileMap } from './tile-map';
 
 export interface TileObjectOptions {

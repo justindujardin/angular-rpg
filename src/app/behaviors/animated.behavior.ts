@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import * as _ from 'underscore';
-import { Point } from '../../game/pow-core/point';
+import { Point } from '../../app/core/point';
 import { TileObject } from '../scene/tile-object';
 import { TickedBehavior } from './ticked-behavior';
 

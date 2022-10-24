@@ -15,9 +15,9 @@
  */
 import * as $ from 'jquery';
 import * as _ from 'underscore';
-import { Point } from '../../pow-core/point';
-import { IWorld, IWorldObject } from '../../pow-core/world';
 import { SceneView } from '../scene/scene-view';
+import { Point } from './point';
+import { IWorld, IWorldObject } from './world';
 
 export enum KeyCode {
   UP = 38,

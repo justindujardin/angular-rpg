@@ -10,17 +10,17 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Point } from '../../../game/pow-core/point';
-import { Rect } from '../../../game/pow-core/rect';
-import { NamedMouseElement, PowInput } from '../../../game/pow2/core/input';
-import { Scene } from '../../../game/pow2/scene/scene';
-import { SceneView } from '../../../game/pow2/scene/scene-view';
+import { Point } from '../../../app/core/point';
+import { Rect } from '../../../app/core/rect';
 import { AppState } from '../../app.model';
 import { TileMapPathBehavior } from '../../behaviors/tile-map-path.behavior';
 import { LoadingService } from '../../components/loading/loading.service';
 import { NotificationService } from '../../components/notification/notification.service';
 import { PartyMenuComponent } from '../../components/party-menu/party-menu.component';
+import { NamedMouseElement, PowInput } from '../../core/input';
 import { GameFeatureObject } from '../../scene/game-feature-object';
+import { Scene } from '../../scene/scene';
+import { SceneView } from '../../scene/scene-view';
 import { TileMap } from '../../scene/tile-map';
 import { TileMapView } from '../../scene/tile-map-view';
 import { GameWorld } from '../../services/game-world';

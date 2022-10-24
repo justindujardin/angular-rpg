@@ -14,8 +14,7 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import { Point } from '../../pow-core/point';
-import { Rect } from '../../pow-core/rect';
+import { Point, Rect } from '../core';
 import { Scene } from './scene';
 import { SceneObject } from './scene-object';
 import { SceneViewComponent } from './scene-view-component';

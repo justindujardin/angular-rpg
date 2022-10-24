@@ -20,7 +20,7 @@ import { getClassById } from 'app/models/game-data/classes';
 import { getWeaponById } from 'app/models/game-data/weapons';
 import * as Immutable from 'immutable';
 import * as _ from 'underscore';
-import { ResourceManager } from '../../game/pow-core/resource-manager';
+import { ResourceManager } from '../../app/core/resource-manager';
 import { AppState } from '../app.model';
 import { EntityType, IPartyMember } from '../models/base-entity';
 import {

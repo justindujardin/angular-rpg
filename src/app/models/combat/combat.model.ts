@@ -1,5 +1,5 @@
 import * as Immutable from 'immutable';
-import { IPoint } from '../../../game/pow-core/point';
+import { IPoint } from '../../../app/core/point';
 import { CombatantTypes, IEnemy, IPartyMember } from '../base-entity';
 
 /** Valid combat types */

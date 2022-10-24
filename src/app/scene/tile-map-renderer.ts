@@ -14,10 +14,10 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import { Rect } from '../../game/pow-core/rect';
-import { ITileInstanceMeta } from '../../game/pow-core/resources/tiled/tiled';
-import { ITiledLayer } from '../../game/pow-core/resources/tiled/tiled.model';
-import { SceneObjectRenderer } from '../../game/pow2/scene/scene-object-renderer';
+import { Rect } from '../../app/core/rect';
+import { ITileInstanceMeta } from '../../app/core/resources/tiled/tiled';
+import { ITiledLayer } from '../../app/core/resources/tiled/tiled.model';
+import { SceneObjectRenderer } from './scene-object-renderer';
 import { TileMap } from './tile-map';
 import { TileMapView } from './tile-map-view';
 export class TileMapRenderer extends SceneObjectRenderer {

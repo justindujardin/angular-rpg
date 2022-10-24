@@ -15,7 +15,7 @@
  */
 import { Component, Input } from '@angular/core';
 import * as _ from 'underscore';
-import { ITiledLayer } from '../../../../game/pow-core/resources/tiled/tiled.model';
+import { ITiledLayer } from '../../../../app/core/resources/tiled/tiled.model';
 import { BasePlayerComponent } from '../../../behaviors/base-player.behavior';
 import { TileMapPathBehavior } from '../../../behaviors/tile-map-path.behavior';
 import { GameTileMap } from '../../../scene/game-tile-map';

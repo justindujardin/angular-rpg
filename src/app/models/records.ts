@@ -1,5 +1,5 @@
 import { TypedRecord } from 'typed-immutable-record';
-import { IPoint } from '../../game/pow-core/point';
+import { IPoint } from '../../app/core/point';
 import { Entity } from './entity/entity.model';
 import { makeRecordFactory } from './util';
 

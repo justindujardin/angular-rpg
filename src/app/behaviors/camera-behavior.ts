@@ -13,8 +13,8 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { Point } from '../../game/pow-core/point';
-import { SceneView } from '../../game/pow2/scene/scene-view';
+import { Point } from '../../app/core/point';
+import { SceneView } from '../scene/scene-view';
 import { SceneObjectBehavior } from './scene-object-behavior';
 
 export class CameraBehavior extends SceneObjectBehavior {

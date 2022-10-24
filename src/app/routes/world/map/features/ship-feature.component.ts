@@ -17,7 +17,7 @@ import { AfterViewInit, Component, Host, Input, OnDestroy } from '@angular/core'
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
-import { Point } from '../../../../../game/pow-core/point';
+import { Point } from '../../../../../app/core/point';
 import { AppState } from '../../../../app.model';
 import { GameStateBoardShipAction } from '../../../../models/game-state/game-state.actions';
 import { PointRecord } from '../../../../models/records';

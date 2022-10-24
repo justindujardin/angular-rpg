@@ -11,7 +11,7 @@ import { AppState } from 'app/app.model';
 import { GameStateSetKeyDataAction } from 'app/models/game-state/game-state.actions';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IScene } from '../../../../../game/pow2/scene/scene.model';
+import { IScene } from '../../../../scene/scene.model';
 import { TileObject } from '../../../../scene/tile-object';
 import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
 

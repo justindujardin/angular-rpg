@@ -14,9 +14,9 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import { ITileInstanceMeta } from '../../game/pow-core';
-import { IPoint, Point } from '../../game/pow-core/point';
-import { Rect } from '../../game/pow-core/rect';
+import { IPoint, Point } from '../../app/core/point';
+import { Rect } from '../../app/core/rect';
+import { ITileInstanceMeta } from '../core';
 import { IZoneMatch } from '../models/combat/combat.model';
 import { GameWorld } from '../services/game-world';
 import { TileMap } from './tile-map';

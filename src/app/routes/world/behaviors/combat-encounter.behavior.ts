@@ -7,7 +7,6 @@ import { List } from 'immutable';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { IEnemy } from '../../../../app/models/base-entity';
-import { Scene } from '../../../../game/pow2/scene/scene';
 import { AppState } from '../../../app.model';
 import { IMoveDescription } from '../../../behaviors/movable-behavior';
 import { SceneObjectBehavior } from '../../../behaviors/scene-object-behavior';
@@ -19,6 +18,7 @@ import { GameStateSetBattleCounterAction } from '../../../models/game-state/game
 import { getGameBattleCounter, getGameParty } from '../../../models/selectors';
 import { GameEntityObject } from '../../../scene/game-entity-object';
 import { GameTileMap } from '../../../scene/game-tile-map';
+import { Scene } from '../../../scene/scene';
 import { PlayerBehaviorComponent } from './player-behavior';
 
 /**

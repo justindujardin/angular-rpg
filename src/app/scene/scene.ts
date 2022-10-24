@@ -14,11 +14,9 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import { GameWorld } from '../../../app/services/game-world';
-import { IBehavior } from '../../pow-core/behavior';
-import { Events } from '../../pow-core/events';
-import { IProcessObject } from '../../pow-core/time';
-import { IWorld, IWorldObject } from '../../pow-core/world';
+import { IBehavior, IProcessObject, IWorld, IWorldObject } from '../core';
+import { Events } from '../core/events';
+import { GameWorld } from '../services/game-world';
 import { SceneSpatialDatabase } from './scene-spatial-database';
 import { IScene, ISceneObject, ISceneView } from './scene.model';
 

@@ -20,12 +20,12 @@ import {
   Subscription,
 } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { TiledTMXResource } from '../../../../game/pow-core/resources/tiled/tiled-tmx.resource';
-import { ITiledObject } from '../../../../game/pow-core/resources/tiled/tiled.model';
-import { Scene } from '../../../../game/pow2/scene/scene';
+import { TiledTMXResource } from '../../../../app/core/resources/tiled/tiled-tmx.resource';
+import { ITiledObject } from '../../../../app/core/resources/tiled/tiled.model';
 import { AppState } from '../../../app.model';
 import { getGameKey, getGameKeyData } from '../../../models/selectors';
 import { GameFeatureObject } from '../../../scene/game-feature-object';
+import { Scene } from '../../../scene/scene';
 import { TileObject } from '../../../scene/tile-object';
 import { TileObjectBehavior } from '../../../scene/tile-object-behavior';
 import { GameWorld } from '../../../services/game-world';

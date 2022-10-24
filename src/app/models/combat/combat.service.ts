@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { from, Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ResourceManager } from '../../../game/pow-core/resource-manager';
-import { TiledTMXResource } from '../../../game/pow-core/resources/tiled/tiled-tmx.resource';
-import { ITiledLayer } from '../../../game/pow-core/resources/tiled/tiled.model';
-import { getMapUrl } from '../../../game/pow2/core/api';
+import { ResourceManager } from '../../../app/core/resource-manager';
+import { TiledTMXResource } from '../../../app/core/resources/tiled/tiled-tmx.resource';
+import { ITiledLayer } from '../../../app/core/resources/tiled/tiled.model';
+import { getMapUrl } from '../../core/api';
 import { CombatantTypes } from '../base-entity';
 import { EntityWithEquipment } from '../entity/entity.model';
 import {

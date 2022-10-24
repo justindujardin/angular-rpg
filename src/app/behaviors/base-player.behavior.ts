@@ -14,13 +14,13 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import { Point } from '../../game/pow-core/point';
-import { ITiledLayer } from '../../game/pow-core/resources/tiled/tiled.model';
-import { SceneObject } from '../../game/pow2/scene/scene-object';
+import { Point } from '../../app/core/point';
+import { ITiledLayer } from '../../app/core/resources/tiled/tiled.model';
 import {
   Headings,
   PlayerRenderBehaviorComponent,
 } from '../routes/world/behaviors/player-render.behavior';
+import { SceneObject } from '../scene/scene-object';
 import { TileMap } from '../scene/tile-map';
 import { TileObject } from '../scene/tile-object';
 import { TileObjectBehavior } from '../scene/tile-object-behavior';

@@ -15,7 +15,6 @@ import { WEAPONS_DATA } from 'app/models/game-data/weapons';
 import * as Immutable from 'immutable';
 import { BehaviorSubject, from, Observable, Subject } from 'rxjs';
 import { combineLatest, map, withLatestFrom } from 'rxjs/operators';
-import { IScene } from '../../../../../game/pow2/scene/scene.model';
 import { AppState } from '../../../../app.model';
 import { NotificationService } from '../../../../components/notification/notification.service';
 import {
@@ -41,6 +40,7 @@ import {
   getGamePartyGold,
   sliceGameState,
 } from '../../../../models/selectors';
+import { IScene } from '../../../../scene/scene.model';
 import { RPGGame } from '../../../../services/rpg-game';
 import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
 

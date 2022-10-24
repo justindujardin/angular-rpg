@@ -13,12 +13,12 @@ import * as Immutable from 'immutable';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
 import * as _ from 'underscore';
-import { IScene } from '../../../../../game/pow2/scene/scene.model';
 import { AppState } from '../../../../app.model';
 import { NotificationService } from '../../../../components/notification/notification.service';
 import { Entity } from '../../../../models/entity/entity.model';
 import { GameStateHealPartyAction } from '../../../../models/game-state/game-state.actions';
 import { getGameParty, getGamePartyGold } from '../../../../models/selectors';
+import { IScene } from '../../../../scene/scene.model';
 import { RPGGame } from '../../../../services/rpg-game';
 import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
 

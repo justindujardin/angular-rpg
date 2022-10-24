@@ -16,8 +16,8 @@
 import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { ImageResource } from '../../game/pow-core/resources/image.resource';
-import { ISpriteMeta } from '../../game/pow2/core/api';
+import { ImageResource } from '../../app/core/resources/image.resource';
+import { ISpriteMeta } from '../core/api';
 import { GameWorld } from '../services/game-world';
 import { SceneObjectBehavior } from './scene-object-behavior';
 

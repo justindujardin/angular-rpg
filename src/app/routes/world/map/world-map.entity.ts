@@ -12,13 +12,10 @@ import { Store } from '@ngrx/store';
 import * as Immutable from 'immutable';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { Behavior } from '../../../../game/pow-core/behavior';
-import { IPoint, Point } from '../../../../game/pow-core/point';
-import { ResourceManager } from '../../../../game/pow-core/resource-manager';
-import { TiledTMXResource } from '../../../../game/pow-core/resources/tiled/tiled-tmx.resource';
-import { Scene } from '../../../../game/pow2/scene/scene';
-import { SceneView } from '../../../../game/pow2/scene/scene-view';
-import { ISceneViewRenderer } from '../../../../game/pow2/scene/scene.model';
+import { Behavior } from '../../../../app/core/behavior';
+import { IPoint, Point } from '../../../../app/core/point';
+import { ResourceManager } from '../../../../app/core/resource-manager';
+import { TiledTMXResource } from '../../../../app/core/resources/tiled/tiled-tmx.resource';
 import { AppState } from '../../../app.model';
 import { SceneObjectBehavior } from '../../../behaviors/scene-object-behavior';
 import { LoadingService } from '../../../components/loading/loading.service';
@@ -30,6 +27,9 @@ import {
   getGamePartyPosition,
 } from '../../../models/selectors';
 import { GameTileMap } from '../../../scene/game-tile-map';
+import { Scene } from '../../../scene/scene';
+import { SceneView } from '../../../scene/scene-view';
+import { ISceneViewRenderer } from '../../../scene/scene.model';
 import { TileObjectRenderer } from '../../../scene/tile-object-renderer';
 import { MapFeatureInputBehaviorComponent } from '../behaviors/map-feature-input.behavior';
 import { MapFeatureComponent, TiledMapFeatureData } from './map-feature.component';

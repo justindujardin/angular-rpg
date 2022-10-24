@@ -9,16 +9,16 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Point } from '../../../../game/pow-core/point';
-import { Rect } from '../../../../game/pow-core/rect';
-import { Scene } from '../../../../game/pow2/scene/scene';
-import { SceneView } from '../../../../game/pow2/scene/scene-view';
-import { ISceneViewRenderer } from '../../../../game/pow2/scene/scene.model';
+import { Point } from '../../../../app/core/point';
+import { Rect } from '../../../../app/core/rect';
 import { SceneObjectBehavior } from '../../../behaviors/scene-object-behavior';
 import { Entity } from '../../../models/entity/entity.model';
 import { GameEntityObject } from '../../../scene/game-entity-object';
 import { GameFeatureObject } from '../../../scene/game-feature-object';
 import { GameTileMap } from '../../../scene/game-tile-map';
+import { Scene } from '../../../scene/scene';
+import { SceneView } from '../../../scene/scene-view';
+import { ISceneViewRenderer } from '../../../scene/scene.model';
 import { TileObjectRenderer } from '../../../scene/tile-object-renderer';
 import { CombatEncounterBehaviorComponent } from '../behaviors/combat-encounter.behavior';
 import { PlayerBehaviorComponent } from '../behaviors/player-behavior';

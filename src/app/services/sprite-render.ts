@@ -14,10 +14,10 @@
  limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { Rect } from '../../game/pow-core/rect';
-import { ResourceManager } from '../../game/pow-core/resource-manager';
-import { ImageResource } from '../../game/pow-core/resources/image.resource';
-import { data, ISpriteMeta } from '../../game/pow2/core/api';
+import { Rect } from '../../app/core/rect';
+import { ResourceManager } from '../../app/core/resource-manager';
+import { ImageResource } from '../../app/core/resources/image.resource';
+import { data, ISpriteMeta } from '../core/api';
 
 @Injectable()
 export class SpriteRender {

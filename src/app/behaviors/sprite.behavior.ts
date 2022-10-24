@@ -14,8 +14,8 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import { ImageResource } from '../../game/pow-core';
-import { ISpriteMeta } from '../../game/pow2/core/api';
+import { ImageResource } from '../core';
+import { ISpriteMeta } from '../core/api';
 import { TileObject } from '../scene/tile-object';
 import { SceneObjectBehavior } from './scene-object-behavior';
 

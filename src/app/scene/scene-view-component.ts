@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { SceneObjectBehavior } from '../../../app/behaviors/scene-object-behavior';
+import { SceneObjectBehavior } from '../behaviors/scene-object-behavior';
 import { ISceneView, ISceneViewRenderer } from './scene.model';
 /**
  * A component that can be added to a [[SceneView]] to add additional

@@ -1,5 +1,5 @@
 import { ElementRef } from '@angular/core';
-import { Point } from '../../../game/pow-core';
+import { Point } from '../../core';
 import { GameEntityObject } from '../../scene/game-entity-object';
 
 /**

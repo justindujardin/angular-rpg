@@ -15,14 +15,14 @@
  */
 import { Component, EventEmitter, Output } from '@angular/core';
 import * as _ from 'underscore';
+import { ITiledLayer } from '../../../../app/core/resources/tiled/tiled.model';
 import { GameTileMap } from '../../../../app/scene/game-tile-map';
-import { ITiledLayer } from '../../../../game/pow-core/resources/tiled/tiled.model';
-import { SceneObject } from '../../../../game/pow2/scene/scene-object';
 import { BasePlayerComponent } from '../../../behaviors/base-player.behavior';
 import { IMoveDescription } from '../../../behaviors/movable-behavior';
 import { GameStateMoveAction } from '../../../models/game-state/game-state.actions';
 import { GameEntityObject } from '../../../scene/game-entity-object';
 import { GameFeatureObject } from '../../../scene/game-feature-object';
+import { SceneObject } from '../../../scene/scene-object';
 
 @Component({
   selector: 'player-behavior',

@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { from, interval, Observable, ReplaySubject } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-import { ResourceManager } from '../../../game/pow-core/resource-manager';
-import { TiledTMXResource } from '../../../game/pow-core/resources/tiled/tiled-tmx.resource';
-import { getMapUrl } from '../../../game/pow2/core/api';
+import { ResourceManager } from '../../../app/core/resource-manager';
+import { TiledTMXResource } from '../../../app/core/resources/tiled/tiled-tmx.resource';
 import { AppState } from '../../app.model';
+import { getMapUrl } from '../../core/api';
 
 @Injectable()
 export class GameStateService {

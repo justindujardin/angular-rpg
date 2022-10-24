@@ -13,12 +13,19 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { IBehavior, IBehaviorHost, IObject } from '../../pow-core/behavior';
-import { IEvents } from '../../pow-core/events';
-import { IPoint, Point } from '../../pow-core/point';
-import { Rect } from '../../pow-core/rect';
-import { IProcessObject } from '../../pow-core/time';
-import { IWorld } from '../../pow-core/world';
+
+import {
+  IBehavior,
+  IBehaviorHost,
+  IObject,
+  IPoint,
+  IProcessObject,
+  IWorld,
+  Point,
+  Rect,
+} from '../core';
+import { IEvents } from '../core/events';
+
 /**
  * SceneObject interface
  */

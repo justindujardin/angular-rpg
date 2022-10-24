@@ -1,6 +1,6 @@
 import * as Immutable from 'immutable';
 import { TypedRecord } from 'typed-immutable-record';
-import { registerSprites } from '../../../game/pow2/core/api';
+import { registerSprites } from '../../core/api';
 import { exhaustiveCheck, makeRecordFactory } from '../util';
 import {
   SpriteActions,

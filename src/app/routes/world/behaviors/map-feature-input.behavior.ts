@@ -15,11 +15,11 @@
  */
 import { Component, Input } from '@angular/core';
 import * as _ from 'underscore';
-import { Rect } from '../../../../game/pow-core/rect';
-import { NamedMouseElement } from '../../../../game/pow2/core/input';
-import { Scene } from '../../../../game/pow2/scene/scene';
+import { Rect } from '../../../../app/core/rect';
 import { TickedBehavior } from '../../../behaviors/ticked-behavior';
+import { NamedMouseElement } from '../../../core/input';
 import { GameFeatureObject } from '../../../scene/game-feature-object';
+import { Scene } from '../../../scene/scene';
 import { TileObject } from '../../../scene/tile-object';
 
 @Component({

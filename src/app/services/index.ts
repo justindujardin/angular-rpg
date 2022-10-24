@@ -16,7 +16,7 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { PowCoreModule } from '../../game/pow-core/index';
+import { PowCoreModule } from '../../app/core/index';
 import { NotificationService } from '../components/notification/notification.service';
 import { CombatService } from '../models/combat/combat.service';
 import { GameStateService } from '../models/game-state/game-state.service';

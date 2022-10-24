@@ -13,10 +13,10 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { Point } from '../../game/pow-core';
-import { IRect } from '../../game/pow-core/rect';
-import { SceneView } from '../../game/pow2/scene/scene-view';
+import { IRect } from '../../app/core/rect';
 import { CameraBehavior } from '../behaviors/camera-behavior';
+import { Point } from '../core';
+import { SceneView } from './scene-view';
 import { TileMap } from './tile-map';
 import { TileMapRenderer } from './tile-map-renderer';
 

@@ -14,7 +14,7 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import { AudioResource } from '../../game/pow-core';
+import { AudioResource } from '../core';
 import { GameWorld } from '../services/game-world';
 import { SceneObjectBehavior } from './scene-object-behavior';
 

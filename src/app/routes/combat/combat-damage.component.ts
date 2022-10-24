@@ -29,7 +29,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { Point } from '../../../game/pow-core/point';
+import { Point } from '../../../app/core/point';
 import { Animate } from '../../services/animate';
 
 export interface ICombatDamageInputs {

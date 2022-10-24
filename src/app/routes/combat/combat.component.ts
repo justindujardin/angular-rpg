@@ -8,15 +8,15 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Point } from '../../../game/pow-core/point';
-import { IProcessObject } from '../../../game/pow-core/time';
-import { NamedMouseElement, PowInput } from '../../../game/pow2/core/input';
-import { Scene } from '../../../game/pow2/scene/scene';
-import { SceneObject } from '../../../game/pow2/scene/scene-object';
+import { Point } from '../../../app/core/point';
+import { IProcessObject } from '../../../app/core/time';
 import { AppState } from '../../app.model';
 import { LoadingService } from '../../components/loading/loading.service';
 import { NotificationService } from '../../components/notification/notification.service';
+import { NamedMouseElement, PowInput } from '../../core/input';
 import { GameEntityObject } from '../../scene/game-entity-object';
+import { Scene } from '../../scene/scene';
+import { SceneObject } from '../../scene/scene-object';
 import { TileMapView } from '../../scene/tile-map-view';
 import { Animate } from '../../services/animate';
 import { GameWorld } from '../../services/game-world';

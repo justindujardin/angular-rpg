@@ -16,16 +16,16 @@
 // TODO: TileMap isn't getting added to Spatial DB properly.  Can't query for it!
 // Scene assuming something about the spatial properties on objects?
 import * as _ from 'underscore';
+import { ITiledLayer } from '../../app/core/resources/tiled/tiled.model';
 import {
   ITileInstanceMeta,
   Rect,
   TiledTMXResource,
   TiledTSXResource,
   TilesetTile,
-} from '../../game/pow-core';
-import { ITiledLayer } from '../../game/pow-core/resources/tiled/tiled.model';
-import { Scene } from '../../game/pow2/scene/scene';
-import { SceneObject } from '../../game/pow2/scene/scene-object';
+} from '../core';
+import { Scene } from './scene';
+import { SceneObject } from './scene-object';
 
 export class TileMap extends SceneObject {
   map: TiledTMXResource;

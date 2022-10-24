@@ -22,12 +22,12 @@ import {
 } from '../../../../../app/models/selectors';
 import { GameEntityObject } from '../../../../../app/scene/game-entity-object';
 import { GameWorld } from '../../../../../app/services/game-world';
-import { ImageResource } from '../../../../../game/pow-core';
-import { getSoundEffectUrl, ISpriteMeta } from '../../../../../game/pow2/core/api';
 import { AnimatedSpriteBehavior } from '../../../../behaviors/animated-sprite.behavior';
 import { DamageComponent } from '../../../../behaviors/damage.behavior';
 import { SoundBehavior } from '../../../../behaviors/sound-behavior';
 import { SpriteComponent } from '../../../../behaviors/sprite.behavior';
+import { ImageResource } from '../../../../core';
+import { getSoundEffectUrl, ISpriteMeta } from '../../../../core/api';
 import { IMagicTargetDelta } from '../../../../models/mechanics';
 import { CombatEndTurnStateComponent, IPlayerActionCallback } from '../../states';
 import { CombatActionBehavior } from '../combat-action.behavior';

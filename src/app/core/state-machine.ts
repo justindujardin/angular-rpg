@@ -16,7 +16,7 @@
 // State Machine Interfaces
 // -------------------------------------------------------------------------
 import * as _ from 'underscore';
-import { Events, IEvents } from '../../pow-core/events';
+import { Events, IEvents } from './events';
 import { IState } from './state';
 
 export interface IStateMachine<TStateMachineStateNames extends string> extends IEvents {

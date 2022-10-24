@@ -14,10 +14,10 @@
  limitations under the License.
  */
 import { Component } from '@angular/core';
-import { Rect } from '../../../../game/pow-core/rect';
-import { SceneView } from '../../../../game/pow2/scene/scene-view';
+import { Rect } from '../../../../app/core/rect';
 import { CameraBehavior } from '../../../behaviors/camera-behavior';
 import { GameTileMap } from '../../../scene/game-tile-map';
+import { SceneView } from '../../../scene/scene-view';
 
 @Component({
   selector: 'combat-camera-behavior',

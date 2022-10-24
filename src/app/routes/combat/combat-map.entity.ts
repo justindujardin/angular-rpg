@@ -12,12 +12,9 @@ import { Store } from '@ngrx/store';
 import { List } from 'immutable';
 import { Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { IPoint, Point } from '../../../game/pow-core/point';
-import { ResourceManager } from '../../../game/pow-core/resource-manager';
-import { TiledTMXResource } from '../../../game/pow-core/resources/tiled/tiled-tmx.resource';
-import { Scene } from '../../../game/pow2/scene/scene';
-import { SceneView } from '../../../game/pow2/scene/scene-view';
-import { ISceneViewRenderer } from '../../../game/pow2/scene/scene.model';
+import { IPoint, Point } from '../../../app/core/point';
+import { ResourceManager } from '../../../app/core/resource-manager';
+import { TiledTMXResource } from '../../../app/core/resources/tiled/tiled-tmx.resource';
 import { AppState } from '../../app.model';
 import { SpriteComponent } from '../../behaviors/sprite.behavior';
 import { LoadingService } from '../../components/loading/loading.service';
@@ -30,6 +27,9 @@ import {
   sliceCombatState,
 } from '../../models/selectors';
 import { GameTileMap } from '../../scene/game-tile-map';
+import { Scene } from '../../scene/scene';
+import { SceneView } from '../../scene/scene-view';
+import { ISceneViewRenderer } from '../../scene/scene.model';
 import { TileMapRenderer } from '../../scene/tile-map-renderer';
 import { TileMapView } from '../../scene/tile-map-view';
 import { TileObjectRenderer } from '../../scene/tile-object-renderer';
