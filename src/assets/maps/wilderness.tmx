@@ -5,7 +5,7 @@
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <tileset firstgid="72" source="tiles/objects.tsx"/>
- <tileset firstgid="88" source="tiles/creatures.tsx"/>
+ <tileset firstgid="89" source="tiles/creatures.tsx"/>
  <layer id="1" name="Terrain" width="96" height="72">
   <data encoding="csv">
 46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,39,39,55,39,18,18,18,18,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,
@@ -235,6 +235,15 @@
 </data>
  </layer>
  <objectgroup id="5" name="Features">
+  <object id="19" name="ship.png" class="ShipFeatureComponent" gid="87" x="112" y="368" width="16" height="16">
+   <properties>
+    <property name="after" value="goblin-king"/>
+    <property name="icon" value="ship.png"/>
+    <property name="id" value="portShip"/>
+    <property name="passable" value="true"/>
+   </properties>
+  </object>
+
   <object id="1" name="town" class="PortalFeatureComponent" gid="76" x="256" y="816" width="16" height="16">
    <properties>
     <property name="icon" value="city.png"/>
@@ -344,15 +353,7 @@
     <property name="icon" value="temple.png"/>
    </properties>
   </object>
-  <object id="19" name="ship.png" class="ShipFeatureComponent" gid="87" x="112" y="368" width="16" height="16">
-   <properties>
-    <property name="after" value="castleStart"/>
-    <property name="icon" value="ship.png"/>
-    <property name="id" value="portShip"/>
-    <property name="passable" value="true"/>
-   </properties>
-  </object>
-  <object id="20" name="world-plains-snake" class="CombatFeatureComponent" gid="152" x="320" y="544" width="16" height="16">
+  <object id="20" name="world-plains-snake" class="CombatFeatureComponent" gid="153" x="320" y="544" width="16" height="16">
    <properties>
     <property name="icon" value="snake.png"/>
     <property name="id" value="world-plains-snakes"/>
@@ -374,9 +375,9 @@
   </object>
  </objectgroup>
  <objectgroup id="6" name="Zones" visible="0">
-  <object id="22" name="world-plains" class="danger-zone" x="98" y="483" width="525" height="446"/>
-  <object id="23" name="world-forest" class="danger-zone" x="28" y="42" width="665" height="440"/>
-  <object id="24" name="world-sand" class="danger-zone" x="548" y="770" width="779" height="333"/>
-  <object id="25" name="world-ice" class="danger-zone" x="935" y="82" width="575" height="429"/>
+  <object id="22" name="world-plains" class="CombatZoneClass" x="98" y="483" width="525" height="446"/>
+  <object id="23" name="world-forest" class="CombatZoneClass" x="28" y="42" width="665" height="440"/>
+  <object id="24" name="world-sand" class="CombatZoneClass" x="548" y="770" width="779" height="333"/>
+  <object id="25" name="world-ice" class="CombatZoneClass" x="935" y="82" width="575" height="429"/>
  </objectgroup>
 </map>

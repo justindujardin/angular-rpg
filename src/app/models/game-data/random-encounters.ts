@@ -13,8 +13,14 @@ export const RANDOM_ENCOUNTERS_DATA: ITemplateRandomEncounter[] = [
   },
   {
     id: 'world-plains-duo',
-    zones: ['world-plains', 'zone-sewer'],
+    zones: ['world-plains'],
     enemies: ['snake', 'imp', 'imp'],
+  },
+  { id: 'world-sewer', zones: ['zone-sewer'], enemies: ['snake', 'kobold', 'kobold'] },
+  {
+    id: 'world-sewer-2',
+    zones: ['zone-sewer'],
+    enemies: ['huge-spider', 'kobold', 'kobold'],
   },
   {
     id: 'world-forest-single',

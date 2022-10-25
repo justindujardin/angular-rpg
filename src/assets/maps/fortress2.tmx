@@ -113,6 +113,6 @@
   </object>
  </objectgroup>
  <objectgroup id="4" name="Zones" visible="0">
-  <object id="5" name="zone-dungeon" class="danger-zone" x="0" y="0" width="400" height="400"/>
+  <object id="5" name="zone-dungeon" class="combat-zone" x="0" y="0" width="400" height="400"/>
  </objectgroup>
 </map>

@@ -164,7 +164,7 @@
   </object>
  </objectgroup>
  <objectgroup id="3" name="Zones" visible="0">
-  <object id="13" name="zone-cave" class="danger-zone" x="0" y="0" width="400" height="272"/>
-  <object id="14" name="zone-dungeon" class="danger-zone" x="0" y="272" width="400" height="352"/>
+  <object id="13" name="zone-cave" class="combat-zone" x="0" y="0" width="400" height="272"/>
+  <object id="14" name="zone-dungeon" class="combat-zone" x="0" y="272" width="400" height="352"/>
  </objectgroup>
 </map>

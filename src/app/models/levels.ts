@@ -21,7 +21,7 @@ import { IPartyMember, PartyMemberStatNames } from './base-entity';
  * to advance to the next level. In this way the value of 0 for index 0 ensures that you will
  * always immediately advance to level 1 as a new character.
  */
-const LEVEL_EXPERIENCE = [0, 12, 32, 64, 96, 208, 400, 672, 1056, 1552, 2184, 2976];
+const LEVEL_EXPERIENCE = [0, 12, 48, 96, 208, 400, 672, 1056, 1552, 2184, 2976];
 
 export function getXPForLevel(level: number) {
   return LEVEL_EXPERIENCE[level === 0 ? level : level - 1];

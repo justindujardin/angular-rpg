@@ -113,7 +113,7 @@ export class TiledTSXResource extends XMLResource {
     return (
       this.firstgid !== -1 &&
       gid >= this.firstgid &&
-      gid < this.firstgid + (this.maxLocalId - 1)
+      gid < this.firstgid + this.maxLocalId
     );
   }
 

@@ -1,5 +1,6 @@
 <map-feature-input-behavior [scene]="scene" #input></map-feature-input-behavior>
 <map-feature
+  [class]="feature.class"
   *ngFor="let feature of activeFeatures$ | async"
   [tiledMap]="resource$ | async"
   [tileMap]="this"

@@ -6,7 +6,7 @@
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <tileset firstgid="72" source="tiles/objects.tsx"/>
- <tileset firstgid="88" source="tiles/creatures.tsx"/>
+ <tileset firstgid="89" source="tiles/creatures.tsx"/>
  <layer id="1" name="Terrain" width="28" height="31">
   <data encoding="csv">
 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,57,57,57,57,57,
@@ -56,13 +56,13 @@
     <property name="type" value="block"/>
    </properties>
   </object>
-  <object id="3" name="goblin7.png" class="CombatFeatureComponent" gid="109" x="208" y="240" width="16" height="16">
+  <object id="3" name="goblin7.png" class="CombatFeatureComponent" gid="110" x="208" y="240" width="16" height="16">
    <properties>
     <property name="icon" value="goblin7.png"/>
     <property name="id" value="fortress-guard"/>
    </properties>
   </object>
-  <object id="5" name="goblinWizard.png" class="CombatFeatureComponent" gid="113" x="48" y="80" width="16" height="16">
+  <object id="5" name="goblinWizard.png" class="CombatFeatureComponent" gid="114" x="48" y="80" width="16" height="16">
    <properties>
     <property name="icon" value="goblinWizard.png"/>
     <property name="id" value="fortress-wizard"/>
@@ -113,9 +113,9 @@
   </object>
  </objectgroup>
  <objectgroup id="3" name="Zones" visible="0">
-  <object id="11" name="world-plains" class="danger-zone" x="208" y="128" width="144" height="240"/>
-  <object id="12" name="zone-dungeon" class="danger-zone" x="0" y="0" width="352" height="128"/>
-  <object id="13" name="zone-dungeon" class="danger-zone" x="0" y="128" width="208" height="368"/>
-  <object id="14" name="zone-dungeon" class="danger-zone" x="208" y="368" width="144" height="128"/>
+  <object id="11" name="world-plains" class="CombatZoneClass" x="208" y="128" width="144" height="240"/>
+  <object id="12" name="zone-dungeon" class="CombatZoneClass" x="0" y="0" width="352" height="128"/>
+  <object id="13" name="zone-dungeon" class="CombatZoneClass" x="0" y="128" width="208" height="368"/>
+  <object id="14" template="templates/combat-zone.tx" name="zone-dungeon" class="CombatZoneClass" x="208" y="368"/>
  </objectgroup>
 </map>

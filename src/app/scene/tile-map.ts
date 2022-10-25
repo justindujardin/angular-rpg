@@ -35,8 +35,8 @@ export class TileMap extends SceneObject {
   map: TiledTMXResource;
   tiles: TilesetTile[] = [];
   scene: Scene;
-  features: ITiledLayer | null;
-  zones: ITiledLayer | null;
+  features?: ITiledLayer;
+  zones?: ITiledLayer;
   bounds: Rect = new Rect(0, 0, 10, 10);
   dirtyLayers: boolean = false;
   musicUrl: string;
@@ -59,7 +59,7 @@ export class TileMap extends SceneObject {
       this.scene.trigger(TileMap.Events.MAP_LOADED, this);
     }
     this.musicUrl = '';
-    if (this.map.properties && this.map.properties.music) {
+    if (this.map?.properties?.music) {
       this.musicUrl = this.map.properties.music;
     }
 
@@ -87,7 +87,7 @@ export class TileMap extends SceneObject {
       return o.firstgid;
     });
     this.tiles.length = 0;
-    _.each(idSortedSets, (tiles: TiledTSXResource) => {
+    idSortedSets.forEach((tiles: TiledTSXResource) => {
       while (this.tiles.length < tiles.firstgid) {
         this.tiles.push(null);
       }
@@ -168,14 +168,14 @@ export class TileMap extends SceneObject {
       target: null,
       targetPoint: at,
     };
-    if (this.map && this.map.properties && this.map.properties) {
-      if (typeof this.map.properties.combatZone !== 'undefined') {
+    if (this.map?.properties) {
+      if (this.map.properties.combatZone) {
         result.map = this.map.properties.combatZone;
       }
     }
     // Determine which zone and combat type
     const invTileSize = 1 / this.map.tilewidth;
-    const zones: any[] = _.map(this.zones.objects, (z: any) => {
+    const zones: any[] = _.map(this.zones?.objects, (z: any) => {
       const x = z.x * invTileSize;
       const y = z.y * invTileSize;
       const w = z.width * invTileSize;
@@ -203,7 +203,8 @@ export class TileMap extends SceneObject {
       return null;
     }
     const source = _.find(this.map.tilesets, (t: TiledTSXResource) => {
-      return t.hasGid(gid);
+      const hasGid = t.hasGid(gid);
+      return hasGid;
     });
     if (!source) {
       return null;

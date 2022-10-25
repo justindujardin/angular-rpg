@@ -240,11 +240,8 @@ export class SceneView extends SceneObject implements ISceneView {
   // Convert a Rect/Point/Number from world coordinates (game units) to
   // screen coordinates (pixels)
   worldToScreen(value: Point, scale?): Point;
-
   worldToScreen(value: Rect, scale?): Rect;
-
   worldToScreen(value: number, scale?): number;
-
   worldToScreen(value: any, scale = 1): any {
     if (value instanceof Rect) {
       const result: Rect = new Rect(value);
@@ -260,11 +257,8 @@ export class SceneView extends SceneObject implements ISceneView {
   // Convert a Rect/Point/Number from screen coordinates (pixels) to
   // game world coordinates (game unit sizes)
   screenToWorld(value: Point, scale?): Point;
-
   screenToWorld(value: Rect, scale?): Rect;
-
   screenToWorld(value: number, scale?): number;
-
   screenToWorld(value: any, scale = 1): any {
     if (value instanceof Rect) {
       const result: Rect = new Rect(value);
