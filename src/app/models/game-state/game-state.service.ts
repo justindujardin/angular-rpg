@@ -61,7 +61,12 @@ export class GameStateService {
     return this.store.pipe(
       first(),
       map((state: AppState) => {
-        const jsonData: string = JSON.stringify(state);
+        const most = {
+          ...state,
+          sprites: {},
+        };
+        const jsonData: string = JSON.stringify(most);
+
         localStorage.setItem(GameStateService.STATE_KEY, jsonData);
         return state;
       })

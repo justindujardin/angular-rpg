@@ -23,6 +23,11 @@ export const RANDOM_ENCOUNTERS_DATA: ITemplateRandomEncounter[] = [
     enemies: ['huge-spider', 'kobold', 'kobold'],
   },
   {
+    id: 'world-ocean-1-1',
+    zones: ['world-ocean-1'],
+    enemies: ['kobold', 'kobold', 'kobold-shaman'],
+  },
+  {
     id: 'world-forest-single',
     zones: ['world-forest'],
     enemies: ['huge-spider', 'kobold', 'kobold'],

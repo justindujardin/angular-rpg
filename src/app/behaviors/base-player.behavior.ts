@@ -108,7 +108,7 @@ export class BasePlayerComponent extends MovableBehavior {
    * @returns {boolean} True if the passable attribute was found and set to false.
    */
   collideWithMap(at: Point, passableAttribute: string): boolean {
-    let map = <TileMap>this.host.scene.objectByType(TileMap);
+    let map = <TileMap>this.host.scene?.objectByType(TileMap);
     if (map) {
       const layers: ITiledLayer[] = map.getLayers();
       for (let i = 0; i < layers.length; i++) {
@@ -116,7 +116,7 @@ export class BasePlayerComponent extends MovableBehavior {
         if (!terrain) {
           continue;
         }
-        if (terrain[passableAttribute] === false) {
+        if (terrain.properties && terrain.properties[passableAttribute] === false) {
           return true;
         }
       }

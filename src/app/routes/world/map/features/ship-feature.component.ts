@@ -94,7 +94,6 @@ export class ShipFeatureComponent
       .subscribe((p: PointRecord) => {
         this.host.setPoint({ x: p.x, y: p.y });
       });
-
     return true;
   }
 
@@ -129,10 +128,8 @@ export class ShipFeatureComponent
     this.host.enabled = false;
     object.setSprite(this.host.icon, 0);
     this._tickInterval = setInterval(() => {
-      if (
-        Point.equal(this.partyObject.point, this.party.targetPoint) &&
-        !this.party.heading.isZero()
-      ) {
+      const partyTarget = Point.equal(this.partyObject.point, this.party.targetPoint);
+      if (partyTarget && !this.party.heading.isZero()) {
         const from: Point = new Point(this.partyObject.point);
         const to: Point = from.clone().add(this.party.heading);
         if (

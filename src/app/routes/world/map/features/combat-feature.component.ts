@@ -22,6 +22,7 @@ import { List } from 'immutable';
 import { map, take } from 'rxjs/operators';
 import { IEnemy } from '../../../../../app/models/base-entity';
 import { AppState } from '../../../../app.model';
+import { Point } from '../../../../core';
 import { CombatEncounterAction } from '../../../../models/combat/combat.actions';
 import { CombatEncounter, IZoneMatch } from '../../../../models/combat/combat.model';
 import { Entity } from '../../../../models/entity/entity.model';
@@ -76,7 +77,9 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
     object.setPoint(object.point);
 
     // Find the combat zone and launch a fixed encounter.
-    const zone: IZoneMatch = this.party.map.getCombatZones(this.party.host.point);
+    const zone: IZoneMatch = this.party.map.getCombatZones(
+      new Point(this.party.host.point)
+    );
 
     this.store
       .select(getGameParty)
@@ -95,7 +98,7 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
             type: 'fixed',
             id: encounter.id,
             enemies: List<IEnemy>(encounter.enemies.map(toCombatant)),
-            zone: zone.target || zone.map,
+            zone: zone.targets[0].name || zone.map,
             message: List<string>(encounter.message),
             party: List<Entity>(party),
           };

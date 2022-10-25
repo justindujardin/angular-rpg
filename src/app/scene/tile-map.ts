@@ -16,9 +16,8 @@
 // TODO: TileMap isn't getting added to Spatial DB properly.  Can't query for it!
 // Scene assuming something about the spatial properties on objects?
 import * as _ from 'underscore';
-import { ITiledLayer } from '../../app/core/resources/tiled/tiled.model';
+import { ITiledLayer, ITiledObject } from '../../app/core/resources/tiled/tiled.model';
 import {
-  IPoint,
   ITileInstanceMeta,
   Point,
   Rect,
@@ -26,7 +25,7 @@ import {
   TiledTSXResource,
   TilesetTile,
 } from '../core';
-import { IZoneMatch } from '../models/combat/combat.model';
+import { IZoneMatch, IZoneTarget } from '../models/combat/combat.model';
 import { GameWorld } from '../services/game-world';
 import { Scene } from './scene';
 import { SceneObject } from './scene-object';
@@ -162,10 +161,10 @@ export class TileMap extends SceneObject {
    * @param at The position to check for a sub-zone in the map
    * @returns {IZoneMatch} The map and target zones that are null if they don't exist
    */
-  getCombatZones(at: IPoint): IZoneMatch {
+  getCombatZones(at: Point): IZoneMatch {
     const result: IZoneMatch = {
       map: null,
-      target: null,
+      targets: [],
       targetPoint: at,
     };
     if (this.map?.properties) {
@@ -175,7 +174,7 @@ export class TileMap extends SceneObject {
     }
     // Determine which zone and combat type
     const invTileSize = 1 / this.map.tilewidth;
-    const zones: any[] = _.map(this.zones?.objects, (z: any) => {
+    const zones: IZoneTarget[] = _.map(this.zones?.objects, (z: ITiledObject) => {
       const x = z.x * invTileSize;
       const y = z.y * invTileSize;
       const w = z.width * invTileSize;
@@ -183,15 +182,12 @@ export class TileMap extends SceneObject {
       return {
         bounds: new Rect(x, y, w, h),
         name: z.name,
+        water: z.properties?.water || false,
       };
     });
-    // TODO: This will always get the first zone.  What about overlapping zones?
-    const zone = _.find(zones, (z: any) => {
+    result.targets = zones.filter((z: IZoneTarget) => {
       return z.bounds.pointInRect(at) && z.name;
     });
-    if (zone) {
-      result.target = zone.name;
-    }
     return result;
   }
 

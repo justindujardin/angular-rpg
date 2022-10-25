@@ -6,7 +6,7 @@
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <tileset firstgid="72" source="tiles/objects.tsx"/>
- <tileset firstgid="88" source="tiles/creatures.tsx"/>
+ <tileset firstgid="89" source="tiles/creatures.tsx"/>
  <layer id="1" name="Terrain" width="25" height="39">
   <data encoding="csv">
 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
@@ -26,19 +26,19 @@
 32,32,55,55,55,55,32,55,55,23,23,23,32,23,23,32,23,23,32,32,32,32,23,23,32,
 32,32,55,32,32,32,32,55,55,55,32,23,23,23,32,32,32,32,32,32,32,32,32,23,32,
 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,23,32,
-9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,6,9,
+9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,0,9,
 9,9,9,9,9,9,9,9,9,9,9,33,33,9,9,9,9,33,33,9,33,9,33,33,9,
 9,9,9,9,9,9,9,33,33,9,9,33,33,9,9,9,9,33,33,9,33,9,33,9,9,
-9,33,33,33,33,33,24,33,33,6,33,33,33,9,9,9,9,9,24,9,24,9,24,9,9,
+9,33,33,33,33,33,24,33,33,0,33,33,33,9,9,9,9,9,24,9,24,9,24,9,9,
 9,33,9,9,9,9,9,33,33,9,9,9,9,9,33,9,33,33,33,33,33,33,33,33,9,
-9,33,33,33,33,9,9,9,9,9,9,9,33,33,33,6,33,33,33,33,33,33,33,33,9,
+9,33,33,33,33,9,9,9,9,9,9,9,33,33,33,0,33,33,33,33,33,33,33,33,9,
 9,9,9,9,33,33,9,9,9,9,9,9,33,9,33,9,33,33,33,33,33,33,33,33,9,
 40,40,40,9,9,33,9,9,9,9,9,9,33,9,9,9,9,9,24,9,24,9,24,9,9,
 39,39,40,40,9,33,9,9,9,9,9,9,33,9,9,9,9,33,33,9,33,9,33,9,9,
 39,39,39,39,9,33,9,9,9,9,9,9,33,9,9,9,9,33,33,9,33,9,33,9,9,
-39,39,39,39,9,6,9,9,33,33,33,9,33,9,9,9,9,9,9,9,9,9,9,9,9,
-39,39,39,39,24,33,6,33,33,17,33,9,33,33,33,9,9,9,9,9,9,9,9,9,9,
-39,39,39,39,9,6,9,9,33,33,33,9,9,9,33,33,9,9,9,9,9,9,9,9,9,
+39,39,39,39,9,0,9,9,33,33,33,9,33,9,9,9,9,9,9,9,9,9,9,9,9,
+39,39,39,39,24,33,0,33,33,17,33,9,33,33,33,9,9,9,9,9,9,9,9,9,9,
+39,39,39,39,9,0,9,9,33,33,33,9,9,9,33,33,9,9,9,9,9,9,9,9,9,
 39,39,39,39,9,33,9,9,9,9,9,9,9,9,9,33,33,9,9,9,9,9,9,9,9,
 39,39,40,40,9,33,9,9,9,9,9,9,9,9,9,9,33,33,33,33,33,33,33,33,9,
 40,9,9,9,9,33,9,9,33,9,9,9,9,9,9,9,9,9,9,9,9,9,9,33,9,
@@ -76,7 +76,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object id="5" name="skeletonGuard.png" class="CombatFeatureComponent" gid="150" x="128" y="528" width="16" height="16">
+  <object id="5" name="skeletonGuard.png" class="CombatFeatureComponent" gid="151" x="128" y="528" width="16" height="16">
    <properties>
     <property name="creatures" value=""/>
     <property name="gold" value="12"/>
@@ -87,7 +87,7 @@
     <property name="type" value="encounter"/>
    </properties>
   </object>
-  <object id="6" name="ghoul.png" class="CombatFeatureComponent" gid="101" x="304" y="560" width="16" height="16">
+  <object id="6" name="ghoul.png" class="CombatFeatureComponent" gid="102" x="304" y="560" width="16" height="16">
    <properties>
     <property name="ambushed" value="true"/>
     <property name="creatures" value=""/>
@@ -99,7 +99,7 @@
     <property name="type" value="encounter"/>
    </properties>
   </object>
-  <object id="7" name="phantom2.png" class="CombatFeatureComponent" gid="143" x="224" y="352" width="16" height="16">
+  <object id="7" name="phantom2.png" class="CombatFeatureComponent" gid="144" x="224" y="352" width="16" height="16">
    <properties>
     <property name="creatures" value=""/>
     <property name="gold" value="9"/>
@@ -118,7 +118,7 @@
     <property name="type" value="ship"/>
    </properties>
   </object>
-  <object id="9" name="skeletonWizard.png" class="CombatFeatureComponent" gid="151" x="160" y="32" width="16" height="16">
+  <object id="9" name="skeletonWizard.png" class="CombatFeatureComponent" gid="152" x="160" y="32" width="16" height="16">
    <properties>
     <property name="ambushed" value="true"/>
     <property name="creatures" value=""/>

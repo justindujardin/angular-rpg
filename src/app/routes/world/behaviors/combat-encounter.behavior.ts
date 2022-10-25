@@ -5,17 +5,25 @@ import { RANDOM_ENCOUNTERS_DATA } from 'app/models/game-data/random-encounters';
 import * as Immutable from 'immutable';
 import { List } from 'immutable';
 import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { take, withLatestFrom } from 'rxjs/operators';
 import { IEnemy } from '../../../../app/models/base-entity';
 import { AppState } from '../../../app.model';
 import { IMoveDescription } from '../../../behaviors/movable-behavior';
 import { SceneObjectBehavior } from '../../../behaviors/scene-object-behavior';
 import { CombatEncounterAction } from '../../../models/combat/combat.actions';
-import { CombatEncounter, IZoneMatch } from '../../../models/combat/combat.model';
+import {
+  CombatEncounter,
+  IZoneMatch,
+  IZoneTarget,
+} from '../../../models/combat/combat.model';
 import { Entity } from '../../../models/entity/entity.model';
 import { instantiateEntity } from '../../../models/game-data/game-data.model';
 import { GameStateSetBattleCounterAction } from '../../../models/game-state/game-state.actions';
-import { getGameBattleCounter, getGameParty } from '../../../models/selectors';
+import {
+  getGameBattleCounter,
+  getGameBoardedShip,
+  getGameParty,
+} from '../../../models/selectors';
 import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { Scene } from '../../../scene/scene';
 import { TileMap } from '../../../scene/tile-map';
@@ -93,37 +101,48 @@ export class CombatEncounterBehaviorComponent extends SceneObjectBehavior {
     this.store
       .select(getGameParty)
       .pipe(
-        map((party: Immutable.List<Entity>) => {
-          const viableEncounters = RANDOM_ENCOUNTERS_DATA.filter((enc: any) => {
-            return (
-              enc.zones.indexOf(zone.map) !== -1 ||
-              enc.zones.indexOf(zone.target) !== -1
-            );
-          });
-          if (viableEncounters.length === 0) {
-            throw new Error('no valid encounters for this zone');
-          }
-          const max = viableEncounters.length - 1;
-          const min = 0;
-          const encounter =
-            viableEncounters[Math.floor(Math.random() * (max - min + 1)) + min];
-          const toCombatant = (id: string): IEnemy => {
-            const itemTemplate: IEnemy = getEnemyById(id) as any;
-            return instantiateEntity<IEnemy>(itemTemplate, {
-              maxhp: itemTemplate.hp,
+        withLatestFrom(
+          this.store.select(getGameBoardedShip),
+          (party: Immutable.List<Entity>, onShip: boolean) => {
+            const zoneTarget = zone.targets.find((zoneTarget: IZoneTarget) => {
+              if (onShip) {
+                return zoneTarget.water;
+              } else {
+                return !zoneTarget.water;
+              }
             });
-          };
 
-          const payload: CombatEncounter = {
-            type: 'random',
-            id: encounter.id,
-            enemies: List<IEnemy>(encounter.enemies.map(toCombatant)),
-            zone: zone.target || zone.map,
-            message: List<string>(encounter.message),
-            party: List<Entity>(party),
-          };
-          this.store.dispatch(new CombatEncounterAction(payload));
-        }),
+            const viableEncounters = RANDOM_ENCOUNTERS_DATA.filter((enc: any) => {
+              return (
+                enc.zones.indexOf(zone.map) !== -1 ||
+                enc.zones.indexOf(zoneTarget.name) !== -1
+              );
+            });
+            if (viableEncounters.length === 0) {
+              throw new Error(`no valid encounters for zone: ${zoneTarget.name}`);
+            }
+            const max = viableEncounters.length - 1;
+            const min = 0;
+            const encounter =
+              viableEncounters[Math.floor(Math.random() * (max - min + 1)) + min];
+            const toCombatant = (id: string): IEnemy => {
+              const itemTemplate: IEnemy = getEnemyById(id) as any;
+              return instantiateEntity<IEnemy>(itemTemplate, {
+                maxhp: itemTemplate.hp,
+              });
+            };
+
+            const payload: CombatEncounter = {
+              type: 'random',
+              id: encounter.id,
+              enemies: List<IEnemy>(encounter.enemies.map(toCombatant)),
+              zone: zoneTarget?.name || zone.map,
+              message: List<string>(encounter.message),
+              party: List<Entity>(party),
+            };
+            this.store.dispatch(new CombatEncounterAction(payload));
+          }
+        ),
         take(1)
       )
       .subscribe();

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.9" tiledversion="1.9.2" name="../../images/environment.png" tilewidth="16" tileheight="16" tilecount="52" columns="0" objectalignment="topleft">
+<tileset version="1.9" tiledversion="1.9.2" name="../../images/environment.png" tilewidth="16" tileheight="16" tilecount="51" columns="0" objectalignment="topleft">
  <tile id="2">
   <properties>
    <property name="color" value="#63390e"/>
@@ -30,16 +30,6 @@
    <property name="shipPassable" value="false"/>
   </properties>
   <image width="16" height="16" source="../../../art/sprites/environment/darkBridgeVertical.png"/>
- </tile>
- <tile id="5">
-  <properties>
-   <property name="color" value="#631c0e"/>
-   <property name="icon" value="doorInWall.png"/>
-   <property name="opaque" value="true"/>
-   <property name="passable" value="true"/>
-   <property name="shipPassable" value="false"/>
-  </properties>
-  <image width="16" height="16" source="../../../art/sprites/environment/doorInWall.png"/>
  </tile>
  <tile id="6">
   <properties>
@@ -240,6 +230,7 @@
  <tile id="35">
   <properties>
    <property name="icon" value="well.png"/>
+   <property name="passable" type="bool" value="false"/>
   </properties>
   <image width="16" height="16" source="../../../art/sprites/environment/well.png"/>
  </tile>
