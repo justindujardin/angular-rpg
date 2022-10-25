@@ -12,17 +12,17 @@
 32,32,32,32,55,32,32,55,55,32,23,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
 32,32,32,55,55,55,55,55,23,23,23,23,23,32,32,32,32,32,32,32,32,32,32,32,32,
 32,32,55,55,55,55,55,55,55,23,23,23,23,32,32,32,32,32,32,32,32,32,32,32,32,
-32,55,55,55,55,55,55,55,55,55,55,55,55,55,32,23,23,23,23,32,32,32,32,32,32,
-32,55,55,23,23,23,55,55,55,55,55,55,55,32,32,23,32,32,23,32,32,32,32,32,32,
-32,55,55,23,23,55,55,55,55,55,55,55,55,55,32,23,32,23,23,32,32,32,32,32,32,
-32,55,55,55,55,55,55,55,55,55,55,55,55,32,32,23,32,23,32,32,23,23,23,23,32,
-32,32,55,55,55,55,23,23,55,55,55,23,23,32,23,23,32,23,32,32,23,32,32,23,32,
-32,32,32,32,55,55,55,23,23,55,55,23,23,32,23,32,32,23,32,32,23,32,23,23,32,
-32,32,32,55,55,55,55,55,55,55,55,23,32,32,23,32,32,23,32,32,23,32,23,32,32,
-32,32,55,55,55,55,55,55,32,32,32,32,32,32,23,32,32,23,32,32,23,32,23,32,32,
-32,32,32,32,55,55,55,55,55,55,32,32,32,32,23,32,23,23,32,32,23,32,23,32,32,
-32,32,32,32,32,55,55,55,55,55,32,32,32,32,23,32,23,23,23,23,23,32,23,32,32,
-32,32,55,55,55,55,32,55,55,23,23,23,32,23,23,32,23,23,32,32,32,32,23,23,32,
+32,55,55,55,55,55,55,55,55,55,23,55,55,55,32,23,23,23,23,32,32,32,32,32,32,
+32,55,55,55,55,55,55,55,55,55,23,55,55,32,32,23,32,32,23,32,32,32,32,32,32,
+32,55,55,55,55,55,55,55,55,55,23,55,55,55,32,23,32,23,23,32,32,32,32,32,32,
+32,55,55,55,55,55,55,55,55,23,23,23,55,32,32,23,32,23,32,32,23,23,23,23,32,
+32,32,55,55,55,55,55,23,23,23,23,23,23,32,23,23,32,23,32,32,23,32,32,23,32,
+32,32,32,32,55,55,23,23,23,23,23,23,23,32,23,32,32,23,32,32,23,32,23,23,32,
+32,32,32,55,55,55,23,23,23,23,23,23,32,32,23,32,32,23,32,32,23,32,23,32,32,
+32,32,55,55,55,55,23,23,32,32,32,32,32,32,23,32,32,23,32,32,23,32,23,32,32,
+32,32,32,32,55,55,23,23,23,23,32,32,32,32,23,32,23,23,32,32,23,32,23,32,32,
+32,32,32,32,32,55,55,23,23,23,32,32,32,32,23,32,23,23,23,23,23,32,23,32,32,
+32,32,55,55,55,55,55,55,23,23,23,23,32,23,23,32,23,23,32,32,32,32,23,23,32,
 32,32,55,32,32,32,32,55,55,55,32,23,23,23,32,32,32,32,32,32,23,32,32,23,32,
 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,23,23,32,23,32,32,23,32,
 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,23,23,32,23,32,32,23,32,
@@ -109,14 +109,6 @@
     <property name="type" value="encounter"/>
    </properties>
   </object>
-  <object id="8" name="Ship" class="ShipFeatureComponent" gid="87" x="128" y="224" width="16" height="16">
-   <properties>
-    <property name="icon" value="ship.png"/>
-    <property name="id" value="cryptsShip"/>
-    <property name="passable" value="true"/>
-    <property name="type" value="ship"/>
-   </properties>
-  </object>
   <object id="9" name="skeletonWizard.png" class="CombatFeatureComponent" gid="153" x="160" y="32" width="16" height="16">
    <properties>
     <property name="ambushed" value="true"/>
@@ -129,36 +121,14 @@
     <property name="type" value="encounter"/>
    </properties>
   </object>
-  <object id="10" name="Tablet" class="DialogFeatureComponent" x="160" y="16" width="16" height="16">
+  <object id="10" name="Tablet" class="DialogFeatureComponent" gid="8" x="160" y="16" width="16" height="16">
    <properties>
     <property name="action" value="LOOK"/>
-    <property name="icon" value="dragonStone.png"/>
+    <property name="icon" value="plaque.png"/>
     <property name="sets" value="cryptsDone"/>
     <property name="text" value="You see here a tablet bearing a depiction of the dragon Vezu. You must inform the King that the Crypts are somehow linked to the dragon!"/>
     <property name="title" value="Tablet"/>
     <property name="type" value="sign"/>
-   </properties>
-  </object>
-  <object id="11" name="Locked" class="barrier" x="368" y="272" width="16" height="16">
-   <properties>
-    <property name="icon" value="lockedDoor.png"/>
-    <property name="text" value="There is an unusual-looking, narrow door here, but is locked!"/>
-    <property name="title" value="Locked"/>
-    <property name="type" value="barrier"/>
-    <property name="until" value="cryptsStart"/>
-   </properties>
-  </object>
-  <object id="12" name="Unlocked" class="alert" x="368" y="272" width="16" height="16">
-   <properties>
-    <property name="after" value="cryptsStart"/>
-    <property name="altIcon" value="ancientKey.png"/>
-    <property name="icon" value="lockedDoor.png"/>
-    <property name="sets" value="alertCryptsKey"/>
-    <property name="text" value="You use the ancient key provided by the King to open the narrow door."/>
-    <property name="title" value="Unlocked"/>
-    <property name="type" value="alert"/>
-    <property name="until" value="alertCryptsKey"/>
-    <property name="y" value="17"/>
    </properties>
   </object>
   <object id="15" name="LockedGate" class="DoorFeatureComponent" gid="79" x="368" y="272" width="16" height="16">
