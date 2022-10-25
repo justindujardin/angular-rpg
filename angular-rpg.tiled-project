@@ -8,6 +8,23 @@
     ],
     "propertyTypes": [
         {
+            "color": "#ffa420a4",
+            "id": 13,
+            "members": [
+                {
+                    "name": "passable",
+                    "type": "bool",
+                    "value": true
+                }
+            ],
+            "name": "BlockFeatureComponent",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ]
+        },
+        {
             "color": "#ffff0000",
             "id": 5,
             "members": [
@@ -44,28 +61,60 @@
             "id": 9,
             "members": [
                 {
-                    "name": "name",
-                    "type": "string",
-                    "value": ""
-                },
-                {
                     "name": "water",
                     "type": "bool",
                     "value": false
+                },
+                {
+                    "name": "zone",
+                    "propertyType": "DataRandomEncounters",
+                    "type": "string",
+                    "value": ""
                 }
             ],
             "name": "CombatZoneClass",
             "type": "class",
             "useAs": [
-                "property",
-                "map",
-                "layer",
-                "object",
-                "tile",
-                "tileset",
-                "wangcolor",
-                "wangset"
+                "object"
             ]
+        },
+        {
+            "id": 11,
+            "name": "DataFixedEncounters",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "sewer-kobolds",
+                "sewer-kobolds-elite",
+                "world-plains-snakes",
+                "fortress-guard",
+                "goblin-archers",
+                "fortress-wizard",
+                "goblin-king"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "id": 12,
+            "name": "DataRandomEncounters",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "none",
+                "world-forest",
+                "world-ice",
+                "world-ocean-1",
+                "world-ocean-2",
+                "world-ocean-3",
+                "world-ocean-4",
+                "world-plains",
+                "world-sand",
+                "zone-crypt",
+                "zone-goblin-fortress",
+                "zone-sewer",
+                "zone-village"
+            ],
+            "valuesAsFlags": false
         },
         {
             "color": "#ffffffff",
@@ -165,6 +214,18 @@
                 "object",
                 "tile"
             ]
+        },
+        {
+            "id": 10,
+            "name": "Encounters",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "One",
+                "Two",
+                "Three"
+            ],
+            "valuesAsFlags": false
         },
         {
             "color": "#ff55007f",
@@ -275,13 +336,8 @@
             "name": "TempleFeatureComponent",
             "type": "class",
             "useAs": [
-                "map",
-                "layer",
                 "object",
-                "tile",
-                "tileset",
-                "wangcolor",
-                "wangset"
+                "tile"
             ]
         },
         {

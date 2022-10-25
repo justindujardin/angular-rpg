@@ -27,15 +27,6 @@ import { IMoveDescription, MovableBehavior } from './movable-behavior';
 import { TileObjectBehavior } from './tile-object-behavior';
 
 export class BasePlayerComponent extends MovableBehavior {
-  // TODO: Pass in collide types during entity creation, and assert on invalid types.
-  static COLLIDE_TYPES: string[] = [
-    'TempleFeatureComponent',
-    'StoreFeatureComponent',
-    'DialogFeatureComponent',
-    'DoorFeatureComponent',
-    'sign',
-  ];
-
   static Events: any = {
     MOVE_BEGIN: 'move:begin',
     MOVE_END: 'move:end',

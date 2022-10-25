@@ -35,6 +35,7 @@ import { GameWorld } from '../../../services/game-world';
  * An enumeration of the serialized names used to refer to map feature map from within a TMX file
  */
 export type TiledMapFeatureTypes =
+  | 'BlockFeatureComponent'
   | 'PortalFeatureComponent'
   | 'CombatFeatureComponent'
   | 'ShipFeatureComponent'

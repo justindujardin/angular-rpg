@@ -1,4 +1,5 @@
 import { MapFeatureComponent } from '../map-feature.component';
+import { BlockFeatureComponent } from './block-feature.component';
 import { CombatFeatureComponent } from './combat-feature.component';
 import { DialogFeatureComponent } from './dialog-feature.component';
 import { DoorFeatureComponent } from './door-feature.component';
@@ -21,6 +22,7 @@ export const WORLD_MAP_FEATURES = [
   DoorFeatureComponent,
   CombatFeatureComponent,
   DialogFeatureComponent,
+  BlockFeatureComponent,
   PortalFeatureComponent,
   ShipFeatureComponent,
   StoreFeatureComponent,

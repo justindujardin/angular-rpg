@@ -33,6 +33,7 @@ export class PlayerBehaviorComponent extends BasePlayerComponent {
   map: TileMap = null;
 
   static COLLIDE_TYPES: string[] = [
+    'BlockFeatureComponent',
     'TempleFeatureComponent',
     'StoreFeatureComponent',
     'DialogFeatureComponent',

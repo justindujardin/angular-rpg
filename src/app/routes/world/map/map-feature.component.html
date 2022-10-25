@@ -4,6 +4,11 @@
   #comp
   *ngIf="(class$ | async) === 'PortalFeatureComponent' && (enabled$ | async)"
 ></portal-feature>
+<portal-feature
+  [feature]="feature$ | async"
+  #comp
+  *ngIf="(class$ | async) === 'BlockFeatureComponent' && (enabled$ | async)"
+></portal-feature>
 <dialog-feature
   [feature]="feature$ | async"
   (onClose)="onClose.emit(featureQuery.first)"

@@ -15,10 +15,13 @@
  */
 import { Component, Input } from '@angular/core';
 import * as _ from 'underscore';
-import { ITiledLayer } from '../../../../app/core/resources/tiled/tiled.model';
-import { BasePlayerComponent } from '../../../behaviors/base-player.behavior';
+import {
+  ITiledLayer,
+  ITiledObject,
+} from '../../../../app/core/resources/tiled/tiled.model';
 import { TileMapPathBehavior } from '../../../behaviors/tile-map-path.behavior';
 import { TileMap } from '../../../scene/tile-map';
+import { PlayerBehaviorComponent } from './player-behavior';
 
 /**
  * Build Astar paths with GameFeatureObject tilemaps.
@@ -71,21 +74,20 @@ export class PlayerMapPathBehaviorComponent extends TileMapPathBehavior {
     }
 
     // TOOD: Tiled Editor format is KILLIN' me.
-    _.each(this.tileMap.features.objects, (o: any) => {
-      const obj: any = o.properties;
+    _.each(this.tileMap.features.objects, (obj: ITiledObject) => {
       if (!obj) {
         return;
       }
-      const collideTypes: string[] = BasePlayerComponent.COLLIDE_TYPES;
-      if (obj.passable === true || !obj.type) {
+      const collideTypes: string[] = PlayerBehaviorComponent.COLLIDE_TYPES;
+      if (obj.properties?.passable === true || !obj.class) {
         return;
       }
-      if (_.indexOf(collideTypes, obj.type) !== -1) {
+      if (_.indexOf(collideTypes, obj.class) !== -1) {
         /* tslint:disable */
-        const xPos: number = (o.x / o.width) | 0;
-        const yPos: number = (o.y / o.height) | 0;
+        const xPos: number = (obj.x / obj.width) | 0;
+        const yPos: number = (obj.y / obj.height) | 0;
         /* tslint:enable */
-        if (!obj.passable && this.tileMap.bounds.pointInRect(xPos, yPos)) {
+        if (this.tileMap.bounds.pointInRect(xPos, yPos)) {
           grid[xPos][yPos] = 100;
         }
       }
