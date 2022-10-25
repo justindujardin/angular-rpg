@@ -38,6 +38,13 @@
     <property name="type" value="block"/>
    </properties>
   </object>
+  <object id="1" name="wilderness" gid="77" class="PortalFeatureComponent" x="192" y="64" width="16" height="16">
+   <properties>
+    <property name="target" value="wilderness"/>
+    <property name="targetX" value="16"/>
+    <property name="targetY" value="51"/>
+   </properties>
+  </object>  
   <object id="3" name="Guard" class="DialogFeatureComponent" gid="155" x="176" y="96" width="16" height="16">
    <properties>
     <property name="icon" value="soldier.png"/>
