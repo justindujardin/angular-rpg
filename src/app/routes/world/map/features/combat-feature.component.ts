@@ -22,6 +22,7 @@ import { List } from 'immutable';
 import { map, take } from 'rxjs/operators';
 import { IEnemy } from '../../../../../app/models/base-entity';
 import { AppState } from '../../../../app.model';
+import { NotificationService } from '../../../../components/notification/notification.service';
 import { Point } from '../../../../core';
 import { CombatEncounterAction } from '../../../../models/combat/combat.actions';
 import { CombatEncounter, IZoneMatch } from '../../../../models/combat/combat.model';
@@ -52,7 +53,7 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
   // @ts-ignore
   @Input() feature: TiledMapFeatureData;
 
-  constructor(public store: Store<AppState>) {
+  constructor(public store: Store<AppState>, public notify: NotificationService) {
     super();
   }
 
@@ -88,6 +89,15 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
           const encounter: ITemplateFixedEncounter = getFixedEncounterById(
             this.properties.id
           );
+
+          if (!encounter) {
+            this.notify.show(
+              `There is no encounter named: ${this.properties.id}.`,
+              null,
+              0
+            );
+            return;
+          }
           const toCombatant = (id: string): IEnemy => {
             const itemTemplate: IEnemy = getEnemyById(id) as any;
             return instantiateEntity<IEnemy>(itemTemplate, {
