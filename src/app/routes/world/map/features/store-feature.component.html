@@ -1,6 +1,11 @@
 <div layout="column" class="store" layout-padding *ngIf="active$ | async">
-  <h1>{{ actionVerb$ | async }} {{ name$ | async }}</h1>
-  <span>Gold: {{ partyGold$ | async }}</span>
+  <div class="title">
+    <h1>{{ actionVerb$ | async }} {{ name$ | async }}</h1>
+    <div class="money">
+      <rpg-sprite width="32" height="32" class="icon" name="gold.png"></rpg-sprite>
+      <span>{{ partyGold$ | async }}</span>
+    </div>
+  </div>
 
   <div class="inventory" layout-padding flex>
     <ul *ngIf="isBuying$ | async">

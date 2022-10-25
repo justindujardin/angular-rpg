@@ -10,6 +10,26 @@ store-feature {
     text-align: center;
     color: white;
     display: block;
+
+    .title {
+      display: block;
+      position: relative;
+      @include hr();
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      .money {
+        position: absolute;
+        left: 8px;
+        top: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        span {
+          margin-left: 4px;
+        }
+      }
+    }
+
     .inventory {
       min-height: 200px;
       overflow-y: auto;
@@ -34,6 +54,8 @@ store-feature {
       li.item {
         margin: rem(1);
         cursor: pointer;
+        display: flex;
+        justify-content: center;
         border: 1px solid transparent;
         * {
           pointer-events: none;
@@ -41,6 +63,7 @@ store-feature {
         .item-name {
           white-space: nowrap;
           text-overflow: ellipsis;
+          width: 200px;
         }
         &:hover {
           * {

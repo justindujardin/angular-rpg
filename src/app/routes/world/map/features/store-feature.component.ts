@@ -194,14 +194,10 @@ export class StoreFeatureComponent extends TiledFeatureComponent implements OnDe
   partyInventory$: Observable<Immutable.List<Item>> = this.store
     .select(getGameInventory)
     .pipe(
-      combineLatest(
-        [this.category$],
-        (inventory: Immutable.List<Item>, category: string) => {
-          const result = inventory.filter((i) => i && i.category === category).toList();
-          return result;
-        }
-      ),
-      combineLatest(this.groups$, sellItemsFilter)
+      map((inventory: Immutable.List<Item>) => {
+        const result = inventory.toList();
+        return result;
+      })
     );
 
   /**

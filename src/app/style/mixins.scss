@@ -90,6 +90,10 @@
   padding: 0px;
 }
 
+@mixin hr() {
+  border-bottom: 3px solid rgba(255, 255, 255, 0.34);
+}
+
 @mixin btn() {
   /* General button style (reset) */
   border: none;
