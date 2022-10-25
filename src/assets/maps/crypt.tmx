@@ -164,7 +164,15 @@
   </object>
  </objectgroup>
  <objectgroup id="3" name="Zones" visible="0">
-  <object id="13" name="zone-cave" class="combat-zone" x="0" y="0" width="400" height="272"/>
-  <object id="14" name="zone-dungeon" class="combat-zone" x="0" y="272" width="400" height="352"/>
+  <object id="13" name="zone-cave" class="CombatZoneClass" x="0" y="0" width="400" height="272">
+   <properties>
+    <property name="zone" propertytype="DataRandomEncounters" value="zone-crypt"/>
+   </properties>
+  </object>
+  <object id="14" name="zone-dungeon" class="CombatZoneClass" x="0" y="272" width="400" height="352">
+   <properties>
+    <property name="zone" propertytype="DataRandomEncounters" value="zone-crypt"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

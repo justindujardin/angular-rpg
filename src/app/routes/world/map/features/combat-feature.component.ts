@@ -98,7 +98,7 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
             type: 'fixed',
             id: encounter.id,
             enemies: List<IEnemy>(encounter.enemies.map(toCombatant)),
-            zone: zone.targets[0].name || zone.map,
+            zone: zone.targets[0].zone || zone.map,
             message: List<string>(encounter.message),
             party: List<Entity>(party),
           };

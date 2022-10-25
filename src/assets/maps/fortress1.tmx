@@ -113,9 +113,10 @@
   </object>
  </objectgroup>
  <objectgroup id="3" name="Zones" visible="0">
-  <object id="11" name="world-plains" class="CombatZoneClass" x="208" y="128" width="144" height="240"/>
-  <object id="12" name="zone-dungeon" class="CombatZoneClass" x="0" y="0" width="352" height="128"/>
-  <object id="13" name="zone-dungeon" class="CombatZoneClass" x="0" y="128" width="208" height="368"/>
-  <object id="14" template="templates/combat-zone.tx" name="zone-dungeon" class="CombatZoneClass" x="208" y="368"/>
+  <object id="14" name="main" class="CombatZoneClass" x="1" y="1" width="366.5" height="495">
+   <properties>
+    <property name="zone" propertytype="DataRandomEncounters" value="zone-goblin-fortress"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

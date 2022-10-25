@@ -115,11 +115,11 @@ export class CombatEncounterBehaviorComponent extends SceneObjectBehavior {
             const viableEncounters = RANDOM_ENCOUNTERS_DATA.filter((enc: any) => {
               return (
                 enc.zones.indexOf(zone.map) !== -1 ||
-                enc.zones.indexOf(zoneTarget.name) !== -1
+                enc.zones.indexOf(zoneTarget.zone) !== -1
               );
             });
             if (viableEncounters.length === 0) {
-              throw new Error(`no valid encounters for zone: ${zoneTarget.name}`);
+              throw new Error(`no valid encounters for zone: ${zoneTarget.zone}`);
             }
             const max = viableEncounters.length - 1;
             const min = 0;
@@ -136,7 +136,7 @@ export class CombatEncounterBehaviorComponent extends SceneObjectBehavior {
               type: 'random',
               id: encounter.id,
               enemies: List<IEnemy>(encounter.enemies.map(toCombatant)),
-              zone: zoneTarget?.name || zone.map,
+              zone: zoneTarget?.zone || zone.map,
               message: List<string>(encounter.message),
               party: List<Entity>(party),
             };

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="19" height="29" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="9">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="19" height="29" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="10">
  <properties>
   <property name="combat" value="true"/>
   <property name="combatZone" value="world-plains"/>
@@ -116,7 +116,11 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="4" name="Zones">
-  <object id="8" template="templates/combat-zone.tx" name="world-plains" class="CombatZoneClass" x="49.4604" y="62.9847" width="228.466" height="305.748"/>
+ <objectgroup id="4" name="Zones" visible="0">
+  <object id="8" name="main" class="CombatZoneClass" x="49.4604" y="62.9847" width="228.466" height="305.748">
+   <properties>
+    <property name="zone" propertytype="DataRandomEncounters" value="world-plains"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

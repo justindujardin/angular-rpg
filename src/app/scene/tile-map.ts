@@ -181,12 +181,12 @@ export class TileMap extends SceneObject {
       const h = z.height * invTileSize;
       return {
         bounds: new Rect(x, y, w, h),
-        name: z.name,
+        zone: z.properties?.zone,
         water: z.properties?.water || false,
       };
     });
     result.targets = zones.filter((z: IZoneTarget) => {
-      return z.bounds.pointInRect(at) && z.name;
+      return z.bounds.pointInRect(at) && z.zone;
     });
     return result;
   }

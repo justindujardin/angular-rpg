@@ -8,7 +8,7 @@ export type CombatType = 'none' | 'fixed' | 'random';
 
 export interface IZoneTarget {
   /** The zone name */
-  name: string;
+  zone: string;
   /** Is ship zone */
   water: boolean;
   bounds: Rect;
