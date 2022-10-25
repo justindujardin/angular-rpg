@@ -357,7 +357,7 @@
    <property name="icon" value="lava.png"/>
    <property name="opaque" value="false"/>
    <property name="passable" value="false"/>
-   <property name="shipPassable" value="false"/>
+   <property name="shipPassable" value="true"/>
   </properties>
   <image width="16" height="16" source="../../../art/sprites/environment/lava.png"/>
  </tile>

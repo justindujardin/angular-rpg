@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <tileset firstgid="1" source="../tiles/objects.tsx"/>
+ <object name="LockedGate" class="DoorFeatureComponent" gid="8" width="16" height="16">
+  <properties>
+   <property name="id" value="unique-door-id"/>
+   <property name="until" value="unique-door-id"/>
+   <property name="requiredKey" value="unique-door-key"/>
+   <property name="title" value="Locked Door"/>
+   <property name="lockedText" value="You encounter a locked door, but don't have the key. You walk away looking sad."/>
+   <property name="unlockText" value="You unlocked the door!"/>
+  </properties>
+ </object>
+</template>

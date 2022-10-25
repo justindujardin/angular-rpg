@@ -25,6 +25,11 @@
 </data>
  </layer>
  <objectgroup id="2" name="Features">
+  <object id="21" name="well" class="BlockFeatureComponent" gid="36" x="448" y="128" width="16" height="16">
+   <properties>
+    <property name="passable" type="bool" value="false"/>
+   </properties>
+  </object>
   <object id="1" name="wilderness" class="PortalFeatureComponent" gid="164" x="256" y="176" width="16" height="16">
    <properties>
     <property name="icon" value="dungeonGate.png"/>
@@ -107,7 +112,7 @@
     <property name="until" value="castleDone"/>
    </properties>
   </object>
-  <object id="11" name="Suvian Viceroy" class="dispatch" gid="126" x="240" y="16" width="16" height="16">
+  <object id="11" name="Suvian Viceroy" class="DialogFeatureComponent" gid="126" x="240" y="16" width="16" height="16">
    <properties>
     <property name="after" value="castleDone"/>
     <property name="altIcon" value="ancientKey.png"/>
@@ -199,11 +204,6 @@
    <properties>
     <property name="cost" value="40"/>
     <property name="icon" value="temple.png"/>
-   </properties>
-  </object>
-  <object id="21" name="well.png" class="sign" gid="36" x="448" y="128" width="16" height="16">
-   <properties>
-    <property name="icon" value="well.png"/>
    </properties>
   </object>
  </objectgroup>

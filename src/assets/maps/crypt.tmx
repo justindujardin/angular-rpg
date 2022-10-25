@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="25" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="15">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="25" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="17">
  <properties>
-  <property name="combat" value="true"/>
-  <property name="combatZone" value="zone-crypt"/>
+  <property name="combat" type="bool" value="true"/>
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <tileset firstgid="72" source="tiles/objects.tsx"/>
- <tileset firstgid="89" source="tiles/creatures.tsx"/>
+ <tileset firstgid="90" source="tiles/creatures.tsx"/>
  <layer id="1" name="Terrain" width="25" height="39">
   <data encoding="csv">
 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
@@ -24,30 +23,30 @@
 32,32,32,32,55,55,55,55,55,55,32,32,32,32,23,32,23,23,32,32,23,32,23,32,32,
 32,32,32,32,32,55,55,55,55,55,32,32,32,32,23,32,23,23,23,23,23,32,23,32,32,
 32,32,55,55,55,55,32,55,55,23,23,23,32,23,23,32,23,23,32,32,32,32,23,23,32,
-32,32,55,32,32,32,32,55,55,55,32,23,23,23,32,32,32,32,32,32,32,32,32,23,32,
-32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,23,32,
-9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,0,9,
-9,9,9,9,9,9,9,9,9,9,9,33,33,9,9,9,9,33,33,9,33,9,33,33,9,
-9,9,9,9,9,9,9,33,33,9,9,33,33,9,9,9,9,33,33,9,33,9,33,9,9,
-9,33,33,33,33,33,24,33,33,0,33,33,33,9,9,9,9,9,24,9,24,9,24,9,9,
-9,33,9,9,9,9,9,33,33,9,9,9,9,9,33,9,33,33,33,33,33,33,33,33,9,
-9,33,33,33,33,9,9,9,9,9,9,9,33,33,33,0,33,33,33,33,33,33,33,33,9,
-9,9,9,9,33,33,9,9,9,9,9,9,33,9,33,9,33,33,33,33,33,33,33,33,9,
-40,40,40,9,9,33,9,9,9,9,9,9,33,9,9,9,9,9,24,9,24,9,24,9,9,
-39,39,40,40,9,33,9,9,9,9,9,9,33,9,9,9,9,33,33,9,33,9,33,9,9,
-39,39,39,39,9,33,9,9,9,9,9,9,33,9,9,9,9,33,33,9,33,9,33,9,9,
-39,39,39,39,9,0,9,9,33,33,33,9,33,9,9,9,9,9,9,9,9,9,9,9,9,
-39,39,39,39,24,33,0,33,33,17,33,9,33,33,33,9,9,9,9,9,9,9,9,9,9,
-39,39,39,39,9,0,9,9,33,33,33,9,9,9,33,33,9,9,9,9,9,9,9,9,9,
-39,39,39,39,9,33,9,9,9,9,9,9,9,9,9,33,33,9,9,9,9,9,9,9,9,
-39,39,40,40,9,33,9,9,9,9,9,9,9,9,9,9,33,33,33,33,33,33,33,33,9,
-40,9,9,9,9,33,9,9,33,9,9,9,9,9,9,9,9,9,9,9,9,9,9,33,9,
-9,9,33,33,24,33,9,33,33,33,9,33,9,9,9,9,9,9,9,9,9,9,9,33,9,
-9,9,33,33,9,33,9,33,33,33,9,33,9,9,9,9,9,9,9,33,33,9,9,33,9,
-9,9,9,9,9,33,9,9,24,9,9,24,9,9,33,33,33,33,24,33,33,33,9,33,9,
-9,9,33,33,24,33,33,33,33,33,33,33,33,33,33,9,9,9,9,33,33,33,9,33,9,
-9,9,33,33,9,9,9,9,9,9,9,9,9,9,33,33,33,33,9,9,9,33,33,33,9,
-9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9
+32,32,55,32,32,32,32,55,55,55,32,23,23,23,32,32,32,32,32,32,23,32,32,23,32,
+32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,23,23,32,23,32,32,23,32,
+32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,23,23,32,23,32,32,23,32,
+32,32,32,32,32,32,32,32,32,32,32,23,23,32,32,32,32,23,23,32,23,32,23,23,32,
+32,32,32,32,32,32,32,23,23,32,32,23,23,32,32,32,32,23,23,32,23,32,23,32,32,
+32,23,23,23,23,23,23,23,23,23,23,23,23,32,32,32,32,32,23,32,23,32,23,32,32,
+32,23,32,32,32,32,32,23,23,32,32,32,32,32,23,32,23,23,23,23,23,23,23,23,32,
+32,23,23,23,23,32,32,32,32,32,32,32,23,23,23,23,23,23,23,23,23,23,23,23,32,
+32,32,32,32,23,23,32,32,32,32,32,32,23,32,23,32,23,23,23,23,23,23,23,23,32,
+40,40,40,32,32,23,32,32,32,32,32,32,23,32,32,32,32,23,23,23,23,23,23,32,32,
+39,39,40,40,32,23,32,32,32,32,32,32,23,32,32,32,32,23,23,23,23,23,23,32,32,
+39,39,39,39,32,23,32,32,32,32,32,32,23,32,32,32,32,23,23,23,23,23,23,32,32,
+39,39,39,39,32,23,32,32,23,23,23,32,23,32,32,32,32,32,32,32,32,32,32,32,32,
+39,39,39,39,24,23,23,23,23,23,23,32,23,23,23,32,32,32,32,32,32,32,32,32,32,
+39,39,39,39,32,23,32,32,23,23,23,32,32,32,23,23,32,32,32,32,32,32,32,32,32,
+39,39,39,39,32,23,32,32,32,32,32,32,32,32,32,23,23,32,32,32,32,32,32,32,32,
+39,39,40,40,32,23,32,32,32,32,32,32,32,32,32,32,23,23,23,23,23,23,23,23,32,
+40,32,32,32,32,23,32,32,23,32,32,32,32,32,32,32,32,32,32,32,32,32,32,23,32,
+32,32,23,23,23,23,32,23,23,23,32,23,32,32,32,32,32,32,32,32,32,32,32,23,32,
+32,32,23,23,32,23,32,23,23,23,32,23,32,32,32,32,32,32,32,23,23,32,32,23,32,
+32,32,32,32,32,23,32,32,23,32,32,23,32,32,23,23,23,23,23,23,23,23,32,23,32,
+32,32,23,23,23,23,23,23,23,23,23,23,23,23,23,32,32,32,32,23,23,23,32,23,32,
+32,32,23,23,32,32,32,32,32,32,32,32,32,32,23,23,23,23,32,32,32,23,23,23,32,
+32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32
 </data>
  </layer>
  <objectgroup id="2" name="Features">
@@ -76,7 +75,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object id="5" name="skeletonGuard.png" class="CombatFeatureComponent" gid="151" x="128" y="528" width="16" height="16">
+  <object id="5" name="skeletonGuard.png" class="CombatFeatureComponent" gid="152" x="128" y="528" width="16" height="16">
    <properties>
     <property name="creatures" value=""/>
     <property name="gold" value="12"/>
@@ -87,7 +86,7 @@
     <property name="type" value="encounter"/>
    </properties>
   </object>
-  <object id="6" name="ghoul.png" class="CombatFeatureComponent" gid="102" x="304" y="560" width="16" height="16">
+  <object id="6" name="ghoul.png" class="CombatFeatureComponent" gid="103" x="304" y="560" width="16" height="16">
    <properties>
     <property name="ambushed" value="true"/>
     <property name="creatures" value=""/>
@@ -99,7 +98,7 @@
     <property name="type" value="encounter"/>
    </properties>
   </object>
-  <object id="7" name="phantom2.png" class="CombatFeatureComponent" gid="144" x="224" y="352" width="16" height="16">
+  <object id="7" name="phantom2.png" class="CombatFeatureComponent" gid="145" x="224" y="352" width="16" height="16">
    <properties>
     <property name="creatures" value=""/>
     <property name="gold" value="9"/>
@@ -110,7 +109,7 @@
     <property name="type" value="encounter"/>
    </properties>
   </object>
-  <object id="8" name="ship.png" class="ShipFeatureComponent" gid="87" x="128" y="224" width="16" height="16">
+  <object id="8" name="Ship" class="ShipFeatureComponent" gid="87" x="128" y="224" width="16" height="16">
    <properties>
     <property name="icon" value="ship.png"/>
     <property name="id" value="cryptsShip"/>
@@ -118,7 +117,7 @@
     <property name="type" value="ship"/>
    </properties>
   </object>
-  <object id="9" name="skeletonWizard.png" class="CombatFeatureComponent" gid="152" x="160" y="32" width="16" height="16">
+  <object id="9" name="skeletonWizard.png" class="CombatFeatureComponent" gid="153" x="160" y="32" width="16" height="16">
    <properties>
     <property name="ambushed" value="true"/>
     <property name="creatures" value=""/>
@@ -160,6 +159,17 @@
     <property name="type" value="alert"/>
     <property name="until" value="alertCryptsKey"/>
     <property name="y" value="17"/>
+   </properties>
+  </object>
+  <object id="15" name="LockedGate" class="DoorFeatureComponent" gid="79" x="368" y="272" width="16" height="16">
+   <properties>
+    <property name="icon" value="ancientKey.png"/>
+    <property name="id" value="zone-crypts-gate"/>
+    <property name="lockedText" value="There is an unusual-looking, narrow door here, but is locked!"/>
+    <property name="requiredKey" value="cryptsStart"/>
+    <property name="title" value="Locked"/>
+    <property name="unlockText" value="You use the ancient key provided by the King to open the narrow door."/>
+    <property name="until" value="zone-crypts-gate"/>
    </properties>
   </object>
  </objectgroup>
