@@ -1,0 +1,28 @@
+@import "../../style/variables";
+@import "../../style/mixins";
+
+:host {
+  *:not(mat-icon):not([mat-icon-button]):not([mat-fab]) {
+    font-family: $pixelFont;
+    @include stroke-text(1px, #000);
+  }
+  background-color: rgba(0, 0, 0, 0.54);
+  color: white;
+  mat-select {
+    max-width: 200px;
+  }
+  mat-toolbar {
+    position: fixed;
+    top: 0;
+    border-bottom: 6px solid white;
+    h1 {
+      line-height: 28px;
+      height: 32px;
+      margin: 0;
+      a {
+        color: white;
+        text-decoration: none;
+      }
+    }
+  }
+}

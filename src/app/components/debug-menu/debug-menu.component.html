@@ -1,0 +1,10 @@
+<mat-toolbar class="mat-elevation-z4" *ngIf="open == true" [@toolbar]="open">
+  <mat-select (selectionChange)="travel($event)" [value]="map$ | async">
+    <mat-option *ngFor="let loc of locations" [value]="loc.map">
+      {{ loc.map }}
+    </mat-option>
+  </mat-select>
+  <span fxFlex></span>
+
+  <button mat-button (click)="levelUp()">Level Up</button>
+</mat-toolbar>

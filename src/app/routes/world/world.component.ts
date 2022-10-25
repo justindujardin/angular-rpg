@@ -10,18 +10,17 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Point } from '../../../app/core/point';
-import { Rect } from '../../../app/core/rect';
 import { AppState } from '../../app.model';
 import { TileMapPathBehavior } from '../../behaviors/tile-map-path.behavior';
+import { DebugMenuComponent } from '../../components/debug-menu/debug-menu.component';
 import { LoadingService } from '../../components/loading/loading.service';
 import { NotificationService } from '../../components/notification/notification.service';
 import { PartyMenuComponent } from '../../components/party-menu/party-menu.component';
+import { Point, Rect } from '../../core';
 import { NamedMouseElement, PowInput } from '../../core/input';
 import { GameFeatureObject } from '../../scene/objects/game-feature-object';
 import { Scene } from '../../scene/scene';
 import { SceneView } from '../../scene/scene-view';
-import { TileMap } from '../../scene/tile-map';
 import { GameWorld } from '../../services/game-world';
 import { RPGGame } from '../../services/rpg-game';
 import { PlayerBehaviorComponent } from './behaviors/player-behavior';
@@ -42,6 +41,7 @@ import { WorldMapComponent } from './map/world-map.entity';
 export class WorldComponent extends SceneView implements AfterViewInit, OnDestroy {
   @ViewChild('worldCanvas') canvasElementRef: ElementRef;
   @ViewChild(PartyMenuComponent) partyMenu: PartyMenuComponent;
+  @ViewChild(DebugMenuComponent) debugMenu: DebugMenuComponent;
 
   /**
    * Whether to render debug view information
@@ -63,6 +63,8 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
       }
     } else if (event.key === '1') {
       this.debug = !this.debug;
+    } else if (event.key === '2') {
+      this.debugMenu.open = !this.debugMenu.open;
     }
   }
 
