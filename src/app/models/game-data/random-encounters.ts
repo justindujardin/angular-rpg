@@ -12,6 +12,11 @@ export const RANDOM_ENCOUNTERS_DATA: ITemplateRandomEncounter[] = [
     enemies: ['black-spider', 'black-spider', 'black-spider', 'black-spider'],
   },
   {
+    id: 'world-ice',
+    zones: ['world-ice'],
+    enemies: ['black-spider', 'black-spider', 'black-spider', 'black-spider'],
+  },
+  {
     id: 'world-plains-duo',
     zones: ['world-plains'],
     enemies: ['snake', 'imp', 'imp'],
@@ -25,6 +30,21 @@ export const RANDOM_ENCOUNTERS_DATA: ITemplateRandomEncounter[] = [
   {
     id: 'world-ocean-1-1',
     zones: ['world-ocean-1'],
+    enemies: ['kobold', 'kobold', 'kobold-shaman'],
+  },
+  {
+    id: 'world-ocean-2-1',
+    zones: ['world-ocean-2'],
+    enemies: ['kobold', 'kobold', 'kobold-shaman'],
+  },
+  {
+    id: 'world-ocean-3-1',
+    zones: ['world-ocean-3'],
+    enemies: ['kobold', 'kobold', 'kobold-shaman'],
+  },
+  {
+    id: 'world-ocean-4-1',
+    zones: ['world-ocean-4'],
     enemies: ['kobold', 'kobold', 'kobold-shaman'],
   },
   {
