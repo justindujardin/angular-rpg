@@ -40,6 +40,34 @@
             ]
         },
         {
+            "color": "#ffa49b59",
+            "id": 9,
+            "members": [
+                {
+                    "name": "name",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "water",
+                    "type": "bool",
+                    "value": false
+                }
+            ],
+            "name": "CombatZoneClass",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset"
+            ]
+        },
+        {
             "color": "#ffffffff",
             "id": 1,
             "members": [
