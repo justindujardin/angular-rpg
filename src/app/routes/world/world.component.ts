@@ -21,6 +21,7 @@ import { NamedMouseElement, PowInput } from '../../core/input';
 import { GameFeatureObject } from '../../scene/objects/game-feature-object';
 import { Scene } from '../../scene/scene';
 import { SceneView } from '../../scene/scene-view';
+import { TileMap } from '../../scene/tile-map';
 import { GameWorld } from '../../services/game-world';
 import { RPGGame } from '../../services/rpg-game';
 import { PlayerBehaviorComponent } from './behaviors/player-behavior';

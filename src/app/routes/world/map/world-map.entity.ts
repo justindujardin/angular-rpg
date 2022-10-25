@@ -12,13 +12,16 @@ import { Store } from '@ngrx/store';
 import * as Immutable from 'immutable';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { Behavior } from '../../../../app/core/behavior';
-import { IPoint, Point } from '../../../../app/core/point';
-import { ResourceManager } from '../../../../app/core/resource-manager';
-import { TiledTMXResource } from '../../../../app/core/resources/tiled/tiled-tmx.resource';
 import { AppState } from '../../../app.model';
 import { SceneObjectBehavior } from '../../../behaviors/scene-object-behavior';
 import { LoadingService } from '../../../components/loading/loading.service';
+import {
+  Behavior,
+  IPoint,
+  Point,
+  ResourceManager,
+  TiledTMXResource,
+} from '../../../core';
 import { Entity } from '../../../models/entity/entity.model';
 import { GameStateService } from '../../../models/game-state/game-state.service';
 import {
