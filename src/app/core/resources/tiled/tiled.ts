@@ -19,6 +19,7 @@ export function readITiledBase(el: any): ITiledBase {
   return {
     name: getElAttribute(el, 'name'),
     class: getElAttribute(el, 'class'),
+    template: getElAttribute(el, 'template'),
     x: parseInt(getElAttribute(el, 'x') || '0', 10),
     y: parseInt(getElAttribute(el, 'y') || '0', 10),
     width: parseInt(getElAttribute(el, 'width') || '0', 10),

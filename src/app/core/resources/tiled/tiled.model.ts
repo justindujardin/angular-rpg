@@ -6,6 +6,7 @@
 export interface ITiledBase {
   name: string;
   class?: string;
+  template?: string;
   x: number;
   y: number;
   width: number;
