@@ -8,6 +8,7 @@
   width: 100%;
   min-height: 100%;
   position: fixed;
+  display: flex;
   background-color: transparent;
   z-index: $zCanvasAlert;
   text-align: center;
@@ -31,17 +32,14 @@
       visibility: hidden;
     }
     @include no-select();
-    top: 45%;
-    left: 0;
-    right: 0;
     background-color: rgba(0, 0, 0, 0.8);
     border: none;
     box-shadow: none;
     margin: auto;
-    position: absolute;
     padding: 25px 10px;
     font-size: 1em;
     color: #fff;
+    width: 100%;
     @include stroke-text(1px, #000);
     @media (min-width: $layout-breakpoint-sm) {
       font-size: 2.2em;
