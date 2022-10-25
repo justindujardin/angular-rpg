@@ -15,11 +15,8 @@
  */
 import { Component, Input } from '@angular/core';
 import * as _ from 'underscore';
-import {
-  ITiledLayer,
-  ITiledObject,
-} from '../../../../app/core/resources/tiled/tiled.model';
 import { TileMapPathBehavior } from '../../../behaviors/tile-map-path.behavior';
+import { ITiledLayer, ITiledObject } from '../../../core/resources/tiled/tiled.model';
 import { TileMap } from '../../../scene/tile-map';
 import { PlayerBehaviorComponent } from './player-behavior';
 

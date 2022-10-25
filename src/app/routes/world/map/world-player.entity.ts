@@ -9,9 +9,8 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Point } from '../../../../app/core/point';
-import { Rect } from '../../../../app/core/rect';
 import { SceneObjectBehavior } from '../../../behaviors/scene-object-behavior';
+import { Point, Rect } from '../../../core';
 import { Entity } from '../../../models/entity/entity.model';
 import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
@@ -19,7 +18,6 @@ import { TileObjectRenderer } from '../../../scene/render/tile-object-renderer';
 import { Scene } from '../../../scene/scene';
 import { SceneView } from '../../../scene/scene-view';
 import { ISceneViewRenderer } from '../../../scene/scene.model';
-import { TileMap } from '../../../scene/tile-map';
 import { CombatEncounterBehaviorComponent } from '../behaviors/combat-encounter.behavior';
 import { PlayerBehaviorComponent } from '../behaviors/player-behavior';
 import { PlayerCameraBehaviorComponent } from '../behaviors/player-camera.behavior';

@@ -20,10 +20,10 @@ import {
   Subscription,
 } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { TiledTMXResource } from '../../../../app/core/resources/tiled/tiled-tmx.resource';
-import { ITiledObject } from '../../../../app/core/resources/tiled/tiled.model';
 import { AppState } from '../../../app.model';
 import { TileObjectBehavior } from '../../../behaviors/tile-object-behavior';
+import { TiledTMXResource } from '../../../core';
+import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
 import { getGameKey, getGameKeyData } from '../../../models/selectors';
 import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
 import { Scene } from '../../../scene/scene';

@@ -16,7 +16,6 @@
 // TODO: TileMap isn't getting added to Spatial DB properly.  Can't query for it!
 // Scene assuming something about the spatial properties on objects?
 import * as _ from 'underscore';
-import { ITiledLayer, ITiledObject } from '../../app/core/resources/tiled/tiled.model';
 import {
   ITileInstanceMeta,
   Point,
@@ -25,6 +24,7 @@ import {
   TiledTSXResource,
   TilesetTile,
 } from '../core';
+import { ITiledLayer, ITiledObject } from '../core/resources/tiled/tiled.model';
 import { IZoneMatch, IZoneTarget } from '../models/combat/combat.model';
 import { GameWorld } from '../services/game-world';
 import { Scene } from './scene';

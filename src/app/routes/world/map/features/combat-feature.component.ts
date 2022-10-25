@@ -48,7 +48,7 @@ import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.compo
   template: ` <ng-content></ng-content>`,
 })
 export class CombatFeatureComponent extends TiledFeatureComponent {
-  party: PlayerBehaviorComponent = null;
+  party: PlayerBehaviorComponent | null = null;
 
   // @ts-ignore
   @Input() feature: TiledMapFeatureData;
@@ -66,9 +66,7 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
   }
 
   enter(object: GameEntityObject): boolean {
-    this.party = object.findBehavior(
-      PlayerBehaviorComponent
-    ) as PlayerBehaviorComponent;
+    this.party = object.findBehavior<PlayerBehaviorComponent>(PlayerBehaviorComponent);
     if (!this.party) {
       return false;
     }
