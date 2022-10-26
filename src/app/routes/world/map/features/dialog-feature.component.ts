@@ -48,6 +48,14 @@ export class DialogFeatureComponent extends TiledFeatureComponent {
   /** The icon to display for the dialog speaker */
   icon$: Observable<string> = this.feature$.pipe(
     map((f: TiledMapFeatureData) => {
+      // Resolve tile images from their gid
+      if (f.gid && this.host?.tileMap) {
+        const meta = this.host.tileMap.getTileMeta(f.gid);
+        if (meta?.image) {
+          return meta?.image;
+        }
+      }
+      // Fallback to using the "icon" custom property
       return f.properties.icon;
     })
   );
