@@ -5,7 +5,7 @@
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <tileset firstgid="72" source="tiles/objects.tsx"/>
- <tileset firstgid="89" source="tiles/creatures.tsx"/>
+ <tileset firstgid="91" source="tiles/creatures.tsx"/>
  <layer id="1" name="Terrain" width="96" height="72">
   <data encoding="csv">
 46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,39,39,55,39,18,18,18,18,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,
@@ -263,8 +263,8 @@
    <properties>
     <property name="icon" value="city.png"/>
     <property name="target" type="file" value="village.tmx"/>
-    <property name="targetX" value="4"/>
-    <property name="targetY" value="10"/>
+    <property name="targetX" value="1"/>
+    <property name="targetY" value="9"/>
    </properties>
   </object>
   <object id="4" name="port" class="PortalFeatureComponent" gid="76" x="160" y="384" width="16" height="16">
@@ -352,7 +352,7 @@
     <property name="icon" value="temple.png"/>
    </properties>
   </object>
-  <object id="20" name="world-plains-snake" class="CombatFeatureComponent" gid="153" x="320" y="544" width="16" height="16">
+  <object id="20" name="world-plains-snake" class="CombatFeatureComponent" gid="155" x="320" y="544" width="16" height="16">
    <properties>
     <property name="icon" value="snake.png"/>
     <property name="id" value="world-plains-snakes"/>
