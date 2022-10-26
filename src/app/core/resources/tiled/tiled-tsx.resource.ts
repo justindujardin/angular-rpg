@@ -110,11 +110,8 @@ export class TiledTSXResource extends XMLResource {
   }
 
   hasGid(gid: number): boolean {
-    return (
-      this.firstgid !== -1 &&
-      gid >= this.firstgid &&
-      gid < this.firstgid + this.maxLocalId
-    );
+    const localId = this.firstgid !== -1 ? gid - this.firstgid : gid;
+    return gid >= this.firstgid && localId <= this.maxLocalId;
   }
 
   getTileMeta(gidOrIndex: number): ITileInstanceMeta {
