@@ -1,5 +1,9 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, Input } from '@angular/core';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Store } from '@ngrx/store';
 import {
   awardExperience,
@@ -16,12 +20,23 @@ import {
   CombatVictorySummary,
 } from '../../models/combat/combat.actions';
 import { Entity } from '../../models/entity/entity.model';
+import { ARMOR_DATA } from '../../models/game-data/armors';
+import { ENEMIES_DATA } from '../../models/game-data/enemies';
+import {
+  ITemplateBaseItem,
+  ITemplateEnemy,
+} from '../../models/game-data/game-data.model';
+import { ITEMS_DATA } from '../../models/game-data/items';
+import { MAGIC_DATA } from '../../models/game-data/magic';
+import { WEAPONS_DATA } from '../../models/game-data/weapons';
 import { GameStateTravelAction } from '../../models/game-state/game-state.actions';
 import { GameStateService } from '../../models/game-state/game-state.service';
 import { getXPForLevel } from '../../models/levels';
-import { getGameParty } from '../../models/selectors';
+import { getGameMap, getGameParty } from '../../models/selectors';
 import { RPGGame } from '../../services/rpg-game';
 import { NotificationService } from '../notification/notification.service';
+
+type DataSourceTypes = ITemplateBaseItem | ITemplateEnemy;
 
 @Component({
   selector: 'debug-menu',
@@ -38,33 +53,86 @@ import { NotificationService } from '../notification/notification.service';
         animate('110ms', style({ transform: 'translateY(-100%)' })),
       ]),
     ]),
+    trigger('table', [
+      transition(':enter', [
+        style({ bottom: '-2000px' }),
+        animate('110ms', style({ bottom: '0' })),
+      ]),
+      transition(':leave', [
+        style({ bottom: '0' }),
+        animate('110ms', style({ bottom: '-2000px' })),
+      ]),
+    ]),
   ],
 })
-export class DebugMenuComponent {
+export class DebugMenuComponent implements AfterViewInit {
   @Input()
   open: boolean = false;
 
   /** Possible locations for travel */
   locations: { map: string; x?: number; y?: number }[] = [
-    { map: 'castle' },
-    { map: 'crypt' },
+    { map: 'castle', x: 16, y: 9 },
+    { map: 'crypt', x: 5, y: 28 },
     { map: 'fortress1', x: 21, y: 15 },
-    { map: 'fortress2' },
+    { map: 'fortress2', x: 22, y: 12 },
     { map: 'isle', x: 14, y: 7 },
-    { map: 'keep' },
-    { map: 'lair' },
-    { map: 'port' },
+    { map: 'keep', x: 11, y: 16 },
+    { map: 'lair', x: 14, y: 45 },
+    { map: 'port', x: 20, y: 5 },
     { map: 'ruins', x: 13, y: 20 },
-    { map: 'sewer' },
-    { map: 'tower1' },
-    { map: 'tower2' },
-    { map: 'tower3' },
-    { map: 'town' },
+    { map: 'sewer', x: 20, y: 1 },
+    { map: 'tower1', x: 6, y: 9 },
+    { map: 'tower2', x: 4, y: 15 },
+    { map: 'tower3', x: 2, y: 1 },
+    { map: 'town', x: 12, y: 5 },
     { map: 'village', x: 5, y: 10 },
-    { map: 'wilderness' },
+    { map: 'wilderness', x: 19, y: 46 },
   ];
   party$: Observable<Immutable.List<Entity>> = this.store.select(getGameParty);
+  gameMap$: Observable<string> = this.store.select(getGameMap);
+  displayedColumns: string[] = [];
+  dataSource: MatTableDataSource<DataSourceTypes> | null = null;
 
+  @ViewChild(MatSort) sort: MatSort;
+
+  ngAfterViewInit() {
+    const currentData = WEAPONS_DATA;
+    this.dataSource = new MatTableDataSource(currentData);
+    this.displayedColumns = Object.keys(currentData[0]);
+    this.dataSource.sort = this.sort;
+  }
+  tabChange(event: MatTabChangeEvent) {
+    let data: DataSourceTypes[] = [];
+    switch (event.tab.textLabel.toLowerCase()) {
+      case 'armors':
+        data = ARMOR_DATA;
+        break;
+      case 'items':
+        data = ITEMS_DATA;
+        break;
+      case 'magics':
+        data = MAGIC_DATA;
+        break;
+      case 'weapons':
+        data = WEAPONS_DATA;
+        break;
+      case 'enemies':
+        data = ENEMIES_DATA;
+        break;
+    }
+    this.dataSource = new MatTableDataSource(data);
+    this.dataSource.sort = this.sort;
+    this.displayedColumns = Object.keys(data[0]);
+  }
+
+  /** Announce the change in sort state for assistive technology. */
+  announceSortChange(sortState: Sort) {
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
+  }
   /** Award level ups to each character in the party */
   levelUp() {
     this.party$
@@ -117,6 +185,7 @@ export class DebugMenuComponent {
     public game: RPGGame,
     public store: Store<AppState>,
     public gameStateService: GameStateService,
-    public notify: NotificationService
+    public notify: NotificationService,
+    private _liveAnnouncer: LiveAnnouncer
   ) {}
 }

@@ -1,5 +1,5 @@
 <mat-toolbar class="mat-elevation-z4" *ngIf="open == true" [@toolbar]="open">
-  <mat-select (selectionChange)="travel($event)" [value]="map$ | async">
+  <mat-select (selectionChange)="travel($event)" [value]="gameMap$ | async">
     <mat-option *ngFor="let loc of locations" [value]="loc.map">
       {{ loc.map }}
     </mat-option>
@@ -8,3 +8,43 @@
 
   <button mat-button (click)="levelUp()">Level Up</button>
 </mat-toolbar>
+
+<section [style.visibility]="open ? 'visible' : 'hidden'" [@table]="open">
+  <mat-tab-group
+    mat-stretch-tabs
+    *ngIf="open"
+    animationDuration="0ms"
+    color="accent"
+    (selectedTabChange)="tabChange($event)"
+  >
+    <mat-tab label="Weapons"></mat-tab>
+    <mat-tab label="Armors"></mat-tab>
+    <mat-tab label="Magics"></mat-tab>
+    <mat-tab label="Items"></mat-tab>
+    <mat-tab label="Enemies"></mat-tab>
+  </mat-tab-group>
+  <div>
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      (matSortChange)="announceSortChange($event)"
+      matSort
+      class="mat-elevation-z8"
+    >
+      <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by {{ column }}"
+        >
+          {{ column }}
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+      </ng-container>
+
+      <tr mat-header-row sticky *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+</section>

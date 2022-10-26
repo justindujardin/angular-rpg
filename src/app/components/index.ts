@@ -26,7 +26,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RPG_DEBUG_MENU_EXPORTS } from './debug-menu/index';
+import { RPG_DEBUG_MENU_EXPORTS, RPG_DEBUG_MENU_IMPORTS } from './debug-menu/index';
 import { RPG_HEALTH_BAR_EXPORTS } from './health-bar/index';
 import { RPG_LOADING_EXPORTS, RPG_LOADING_PROVIDERS } from './loading/index';
 import {
@@ -84,6 +84,7 @@ export const APP_COMPONENTS_PROVIDERS = [
     MatProgressBarModule,
     MatToolbarModule,
     MatButtonModule,
+    ...RPG_DEBUG_MENU_IMPORTS,
   ],
 })
 export class AppComponentsModule {
