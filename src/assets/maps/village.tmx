@@ -36,10 +36,9 @@
     <property name="targetY" value="27"/>
    </properties>
   </object>
-  <object id="2" name="Elder" class="DialogFeatureComponent" gid="141" x="128" y="64" width="16" height="16">
+  <object id="2" name="Elder" class="DialogFeatureComponent" gid="141" x="96" y="112" width="16" height="16">
    <properties>
-    <property name="icon" value=""/>
-    <property name="text" value="Ho ho, you found me.  Good for you."/>
+    <property name="text" value="Ho ho, you found us.  Good for you!"/>
     <property name="title" value="Elder"/>
     <property name="type" value="sign"/>
    </properties>

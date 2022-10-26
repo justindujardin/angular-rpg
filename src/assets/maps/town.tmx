@@ -5,7 +5,7 @@
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <tileset firstgid="72" source="tiles/objects.tsx"/>
- <tileset firstgid="90" source="tiles/creatures.tsx"/>
+ <tileset firstgid="93" source="tiles/creatures.tsx"/>
  <layer id="1" name="Terrain" width="27" height="22">
   <data encoding="csv">
 46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,
@@ -45,7 +45,7 @@
     <property name="targetY" value="51"/>
    </properties>
   </object>
-  <object id="3" name="Guard" class="DialogFeatureComponent" gid="156" x="176" y="96" width="16" height="16">
+  <object id="3" name="Guard" class="DialogFeatureComponent" gid="159" x="176" y="96" width="16" height="16">
    <properties>
     <property name="icon" value="soldier.png"/>
     <property name="text" value="Don't forget to equip basic weapons and armor before wandering too far from town."/>
@@ -53,7 +53,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object id="4" name="Guard" class="DialogFeatureComponent" gid="156" x="208" y="96" width="16" height="16">
+  <object id="4" name="Guard" class="DialogFeatureComponent" gid="159" x="208" y="96" width="16" height="16">
    <properties>
     <property name="icon" value="soldier.png"/>
     <property name="text" value="Be careful exploring heavily forested areas as they contain more monsters than the open fields."/>
@@ -61,7 +61,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object id="5" name="Citizen" class="DialogFeatureComponent" gid="128" x="128" y="256" width="16" height="16">
+  <object id="5" name="Citizen" class="DialogFeatureComponent" gid="131" x="128" y="256" width="16" height="16">
    <properties>
     <property name="icon" value="man.png"/>
     <property name="text" value="I hear the Kobolds have an armory in the sewers beneath the ruins north of here.  It's well-guarded, and for good reason. I bet they have some nice weapons in there."/>
