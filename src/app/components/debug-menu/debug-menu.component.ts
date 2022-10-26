@@ -60,7 +60,7 @@ export class DebugMenuComponent {
     { map: 'tower2' },
     { map: 'tower3' },
     { map: 'town' },
-    { map: 'village' },
+    { map: 'village', x: 5, y: 10 },
     { map: 'wilderness' },
   ];
   party$: Observable<Immutable.List<Entity>> = this.store.select(getGameParty);
