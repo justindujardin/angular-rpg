@@ -1,13 +1,9 @@
 @import "../../style/variables";
 @import "../../style/mixins";
 
-$menu-bg: rgba(0, 0, 0);
+$menu-bg: $gameBlue;
 
 :host {
-  *:not(mat-icon):not([mat-icon-button]):not([mat-fab]) {
-    font-family: $pixelFont;
-    @include stroke-text(1px, #000);
-  }
   background-color: $menu-bg;
   color: white;
   mat-select {
@@ -16,6 +12,7 @@ $menu-bg: rgba(0, 0, 0);
   mat-toolbar {
     position: fixed;
     top: 0;
+    background-color: $menu-bg;
     border-bottom: 6px solid white;
     h1 {
       line-height: 28px;
@@ -39,10 +36,6 @@ $menu-bg: rgba(0, 0, 0);
     height: 80%;
     padding: 0;
     border-top: 6px solid white;
-    .mat-tab-group.mat-primary .mat-ink-bar,
-    .mat-tab-nav-bar.mat-primary .mat-ink-bar {
-      background: yellow !important;
-    }
     > div {
       display: flex;
       overflow-y: auto;

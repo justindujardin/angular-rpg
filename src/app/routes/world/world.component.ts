@@ -58,14 +58,23 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
       // Escape out of any feature the player is currently in
       if (this.map.player && this.map.player.feature) {
         this.map.player.escapeFeature();
+      } else if (this.debugMenu.open) {
+        // Otherwise toggle the party menu
+        this.debugMenu.open = false;
       } else if (this.partyMenu) {
         // Otherwise toggle the party menu
         this.partyMenu.open = !this.partyMenu.open;
+        if (this.partyMenu.open) {
+          this.debugMenu.open = false;
+        }
       }
     } else if (event.key === '1') {
       this.debug = !this.debug;
     } else if (event.key === '2') {
       this.debugMenu.open = !this.debugMenu.open;
+      if (this.debugMenu.open) {
+        this.partyMenu.open = false;
+      }
     }
   }
 

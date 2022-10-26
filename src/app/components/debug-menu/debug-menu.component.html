@@ -9,7 +9,7 @@
   <button mat-button (click)="levelUp()">Level Up</button>
 </mat-toolbar>
 
-<section [style.visibility]="open ? 'visible' : 'hidden'" [@table]="open">
+<section *ngIf="open" [@table]="open">
   <mat-tab-group
     mat-stretch-tabs
     *ngIf="open"
@@ -29,7 +29,6 @@
       [dataSource]="dataSource"
       (matSortChange)="announceSortChange($event)"
       matSort
-      class="mat-elevation-z8"
     >
       <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
         <th
