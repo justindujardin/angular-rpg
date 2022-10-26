@@ -35,11 +35,13 @@ export class PlayerBehaviorComponent extends BasePlayerComponent {
   static COLLIDE_TYPES: string[] = [
     'BlockFeatureComponent',
     'TempleFeatureComponent',
-    'StoreFeatureComponent',
+    'ArmorsStoreFeatureComponent',
+    'ItemsStoreFeatureComponent',
+    'MagicsStoreFeatureComponent',
+    'WeaponsStoreFeatureComponent',
     'DialogFeatureComponent',
     'DoorFeatureComponent',
     'CombatFeatureComponent',
-    'sign',
   ];
 
   /**

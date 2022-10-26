@@ -43,6 +43,10 @@ export type TiledMapFeatureTypes =
   | 'DoorFeatureComponent'
   | 'DialogFeatureComponent'
   | 'StoreFeatureComponent'
+  | 'ArmorsStoreFeatureComponent'
+  | 'ItemsStoreFeatureComponent'
+  | 'MagicsStoreFeatureComponent'
+  | 'WeaponsStoreFeatureComponent'
   | 'TempleFeatureComponent';
 
 export type TiledMapFeatureData<PropertiesType = any> = ITiledObject<PropertiesType>;

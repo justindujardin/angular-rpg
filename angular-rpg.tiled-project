@@ -1,7 +1,6 @@
 {
     "automappingRulesFile": "",
-    "commands": [
-    ],
+    "commands": [],
     "extensionsPath": "src/tiled",
     "folders": [
         "src"
@@ -79,6 +78,29 @@
             ]
         },
         {
+            "id": 15,
+            "name": "DataArmors",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "clothes",
+                "cloak",
+                "leather-helm",
+                "leather-boots",
+                "leather-shield",
+                "leather-armor",
+                "apprentice-hat",
+                "coral-helm",
+                "iron-shield",
+                "studded-armor",
+                "chain-mail-armor",
+                "merman-shield",
+                "elvish-cloak",
+                "seaweed-armor"
+            ],
+            "valuesAsFlags": true
+        },
+        {
             "id": 11,
             "name": "DataFixedEncounters",
             "storageType": "string",
@@ -90,9 +112,35 @@
                 "fortress-guard",
                 "goblin-archers",
                 "fortress-wizard",
-                "goblin-king"
+                "goblin-king",
+                "crypt-skeletons",
+                "crypt-ghouls",
+                "crypt-phantoms",
+                "crypt-wizard"
             ],
             "valuesAsFlags": false
+        },
+        {
+            "id": 16,
+            "name": "DataItems",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "potion",
+                "ether"
+            ],
+            "valuesAsFlags": true
+        },
+        {
+            "id": 17,
+            "name": "DataMagics",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "push",
+                "heal"
+            ],
+            "valuesAsFlags": true
         },
         {
             "id": 12,
@@ -115,6 +163,34 @@
                 "zone-village"
             ],
             "valuesAsFlags": false
+        },
+        {
+            "id": 14,
+            "name": "DataWeapons",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "club",
+                "slingshot",
+                "short-sword",
+                "short-staff",
+                "kobold-staff",
+                "scimitar",
+                "short-bow",
+                "goblin-crossbow",
+                "long-sword",
+                "long-bow",
+                "long-staff",
+                "magic-sword",
+                "broadsword",
+                "heavy-axe",
+                "fine-bow",
+                "heavy-crossbow",
+                "long-oak-staff",
+                "coral-staff",
+                "narwhal-sword"
+            ],
+            "valuesAsFlags": true
         },
         {
             "color": "#ffffffff",
@@ -228,6 +304,23 @@
             "valuesAsFlags": false
         },
         {
+            "id": 18,
+            "name": "MagicsStoreFeatureComponent",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ],
+            "members": [
+                {
+                    "name": "inventory",
+                    "propertyType": "DataMagics",
+                    "type": "string",
+                    "value": ""
+                }
+            ]
+        },
+        {
             "color": "#ff55007f",
             "id": 7,
             "members": [
@@ -272,8 +365,7 @@
         {
             "color": "#ffff55ff",
             "id": 8,
-            "members": [
-            ],
+            "members": [],
             "name": "ShipFeatureComponent",
             "type": "class",
             "useAs": [
@@ -380,6 +472,57 @@
             "useAs": [
                 "object",
                 "tile"
+            ]
+        },
+        {
+            "id": 19,
+            "name": "WeaponsStoreFeatureComponent",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ],
+            "members": [
+                {
+                    "name": "inventory",
+                    "propertyType": "DataWeapons",
+                    "type": "string",
+                    "value": ""
+                }
+            ]
+        },
+        {
+            "id": 20,
+            "name": "ArmorsStoreFeatureComponent",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ],
+            "members": [
+                {
+                    "name": "inventory",
+                    "propertyType": "DataArmors",
+                    "type": "string",
+                    "value": ""
+                }
+            ]
+        },
+        {
+            "id": 21,
+            "name": "ItemsStoreFeatureComponent",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ],
+            "members": [
+                {
+                    "name": "inventory",
+                    "propertyType": "DataItems",
+                    "type": "string",
+                    "value": ""
+                }
             ]
         }
     ]

@@ -45,32 +45,6 @@ import { RPGGame } from '../../../../services/rpg-game';
 import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
 
 /**
- * Given a list of potential items, filter it to only ones that can be bartered in this store.
- * @param items The list of items to filter
- * @param groups The item groups that are supported by this store
- * @param level The level of items that are sold in this store
- * @returns {ITemplateBaseItem[]} The filtered item list
- */
-export function storeItemsFilter(
-  items: Immutable.List<ITemplateBaseItem>,
-  groups: string[],
-  level: number
-): Immutable.List<ITemplateBaseItem> {
-  return <any>items.filter((i: ITemplateBaseItem) => {
-    const levelMatch: boolean = typeof i.level === 'undefined' || i.level === level;
-    return levelMatch && itemInGroups(i, groups);
-  });
-}
-
-//
-//
-//
-// TODO: Maps need to be updated to change "category" for stores to a list of item types
-// because currently all stores show nothing to sell.
-//
-//
-
-/**
  * Given a list of potential items to sell, filter to only ones that can be bartered in this store.
  * @param items The list of items to filter
  * @param groups The item groups that are supported by this store
@@ -124,7 +98,13 @@ export type StoreInventoryCategories = 'weapons' | 'armor' | 'magic' | 'misc';
   styleUrls: ['./store-feature.component.scss'],
   templateUrl: './store-feature.component.html',
 })
-export class StoreFeatureComponent extends TiledFeatureComponent implements OnDestroy {
+export abstract class StoreFeatureComponent
+  extends TiledFeatureComponent
+  implements OnDestroy
+{
+  /** The store items category must be set in a subclass */
+  abstract category: StoreInventoryCategories;
+
   // @ts-ignore
   @Input() feature: TiledMapFeatureData;
   @Input() scene: IScene;
@@ -172,13 +152,6 @@ export class StoreFeatureComponent extends TiledFeatureComponent implements OnDe
   );
 
   /**
-   * The category of store as determined by its map feature.
-   */
-  category$: Observable<StoreInventoryCategories> = this.feature$.pipe(
-    map(getFeatureProperty('category'))
-  );
-
-  /**
    * The amount of gold the party has to spend
    */
   partyGold$: Observable<number> = this.store.select(getGamePartyGold);
@@ -203,26 +176,36 @@ export class StoreFeatureComponent extends TiledFeatureComponent implements OnDe
   /**
    * Calculate the inventory for the store. Filter by category, item grouping, and player level.
    */
-  inventory$: Observable<Immutable.List<ITemplateBaseItem>> = this._weapons$.pipe(
+  inventory$: Observable<ITemplateBaseItem[]> = this._weapons$.pipe(
     combineLatest(
-      [this._armors$, this._items$, this._magics$, this.category$],
-      (weapons, armors, items, magics, cat: StoreInventoryCategories) => {
-        switch (cat) {
+      [this._armors$, this._items$, this._magics$, this._feature$],
+      (
+        weapons: ITemplateWeapon[],
+        armors: ITemplateArmor[],
+        items: ITemplateBaseItem[],
+        magics: ITemplateMagic[],
+        feature: TiledMapFeatureData
+      ) => {
+        const inventory: string = feature.properties?.inventory || '';
+        const inventoryIds = inventory.split(',');
+        const inventoryIdMap = {};
+        inventoryIds.forEach((id) => (inventoryIdMap[id] = true));
+
+        switch (this.category) {
           case 'magic':
-            return magics.concat(items);
+            return magics.filter((item) => inventoryIdMap[item.id]);
           case 'misc':
-            return items;
+            return items.filter((item) => inventoryIdMap[item.id]);
           case 'weapons':
-            return weapons;
+            return weapons.filter((item) => inventoryIdMap[item.id]);
           case 'armor':
-            return armors;
+            return armors.filter((item) => inventoryIdMap[item.id]);
           default:
             // If there is no category, the vendor can sell all types.
             return items.concat(weapons).concat(armors);
         }
       }
-    ),
-    combineLatest(this.groups$, this.level$, storeItemsFilter)
+    )
   );
 
   /** Determine if the UI is in a selling state. */

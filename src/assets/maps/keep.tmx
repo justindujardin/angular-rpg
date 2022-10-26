@@ -154,7 +154,7 @@
     <property name="text" value="The Warvish citizenry have gathered together their wealth to support you in your great quest to defeat Vezu!"/>
    </properties>
   </object>
-  <object id="14" name="Dwarven Armors" class="StoreFeatureComponent" gid="84" x="112" y="96" width="16" height="16">
+  <object id="14" name="Dwarven Armors" class="ArmorsStoreFeatureComponent" gid="84" x="112" y="96" width="16" height="16">
    <properties>
     <property name="buyRate" value="125"/>
     <property name="category" value="armor"/>
@@ -165,7 +165,7 @@
     <property name="sellRate" value="28"/>
    </properties>
   </object>
-  <object id="15" name="Dwarven Arms" class="StoreFeatureComponent" gid="84" x="240" y="96" width="16" height="16">
+  <object id="15" name="Dwarven Arms" class="WeaponsStoreFeatureComponent" gid="84" x="240" y="96" width="16" height="16">
    <properties>
     <property name="buyRate" value="125"/>
     <property name="category" value="weapons"/>
@@ -176,7 +176,7 @@
     <property name="sellRate" value="28"/>
    </properties>
   </object>
-  <object id="16" name="Warvian Antiquities" class="StoreFeatureComponent" gid="84" x="112" y="160" width="16" height="16">
+  <object id="16" name="Warvian Antiquities" class="ItemsStoreFeatureComponent" gid="84" x="112" y="160" width="16" height="16">
    <properties>
     <property name="buyRate" value="125"/>
     <property name="category" value="misc"/>
@@ -187,7 +187,7 @@
     <property name="sellRate" value="25"/>
    </properties>
   </object>
-  <object id="17" name="Potions and Elixirs" class="StoreFeatureComponent" gid="84" x="240" y="160" width="16" height="16">
+  <object id="17" name="Potions and Elixirs" class="MagicsStoreFeatureComponent" gid="84" x="240" y="160" width="16" height="16">
    <properties>
     <property name="buyRate" value="115"/>
     <property name="category" value="misc"/>

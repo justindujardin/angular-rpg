@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="14" height="21" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="4">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="14" height="21" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="5">
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <tileset firstgid="72" source="tiles/objects.tsx"/>
- <tileset firstgid="88" source="tiles/creatures.tsx"/>
+ <tileset firstgid="90" source="tiles/creatures.tsx"/>
  <layer id="1" name="Terrain" width="14" height="21">
   <data encoding="csv">
 57,57,57,57,57,57,57,18,18,18,18,18,18,18,
 57,57,57,57,57,57,57,18,18,18,18,18,18,18,
-57,57,57,57,57,57,57,57,18,18,18,18,18,18,
-57,57,57,57,57,57,57,57,57,57,18,18,18,18,
-57,57,57,57,57,57,57,69,69,57,18,18,18,18,
-57,57,57,57,57,57,69,69,69,69,18,18,18,18,
-57,57,57,57,57,69,69,46,46,18,18,18,18,18,
-57,57,57,57,57,46,46,46,46,18,18,18,18,18,
+57,57,57,46,69,46,57,57,18,18,18,18,18,18,
+57,57,46,69,46,69,46,57,57,57,18,18,18,18,
+57,57,46,46,46,46,46,69,69,57,18,18,18,18,
+57,57,46,46,46,46,46,46,69,69,18,18,18,18,
+57,57,46,46,46,46,46,46,46,18,18,18,18,18,
+57,57,57,46,46,46,46,46,46,18,18,18,18,18,
 57,57,57,57,57,46,46,46,18,18,18,18,18,18,
 57,57,57,57,57,46,12,46,18,18,18,18,18,18,
 57,57,57,57,46,46,12,46,18,18,18,18,18,18,
@@ -37,7 +37,7 @@
     <property name="targetY" value="27"/>
    </properties>
   </object>
-  <object id="2" name="Elder" class="DialogFeatureComponent" gid="137" x="96" y="128" width="16" height="16">
+  <object id="2" name="Elder" class="DialogFeatureComponent" gid="139" x="96" y="128" width="16" height="16">
    <properties>
     <property name="icon" value="oldMan2.png"/>
     <property name="text" value="Ho ho, you found me.  Good for you."/>
@@ -49,6 +49,11 @@
    <properties>
     <property name="cost" value="10"/>
     <property name="icon" value="temple.png"/>
+   </properties>
+  </object>
+  <object id="4" class="ArmorsStoreFeatureComponent" gid="84" x="64" y="48" width="16" height="16">
+   <properties>
+    <property name="inventory" propertytype="DataArmors" value="leather-shield,leather-armor,apprentice-hat"/>
    </properties>
   </object>
  </objectgroup>

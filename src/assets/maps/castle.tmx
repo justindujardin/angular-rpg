@@ -159,45 +159,46 @@
     <property name="title" value="Citizen"/>
    </properties>
   </object>
-  <object id="16" name="Suvian Armors" class="StoreFeatureComponent" gid="169" x="480" y="64" width="16" height="16">
+  <object id="16" name="Suvian Armors" class="ArmorsStoreFeatureComponent" gid="169" x="480" y="64" width="16" height="16">
    <properties>
     <property name="buyRate" value="120"/>
     <property name="category" value="armor"/>
     <property name="groups" value="default"/>
     <property name="icon" value="shop.png"/>
+    <property name="inventory" propertytype="DataArmors" value="leather-helm,leather-boots,leather-shield,leather-armor,apprentice-hat,iron-shield,studded-armor"/>
     <property name="level" value="2"/>
     <property name="name" value="Suvian Armors"/>
     <property name="sellRate" value="30"/>
    </properties>
   </object>
-  <object id="17" name="Suvian Arms" class="StoreFeatureComponent" gid="169" x="416" y="64" width="16" height="16">
+  <object id="17" name="Suvian Arms" class="WeaponsStoreFeatureComponent" gid="169" x="416" y="64" width="16" height="16">
    <properties>
     <property name="buyRate" value="120"/>
     <property name="category" value="weapons"/>
     <property name="groups" value="default"/>
     <property name="icon" value="shop.png"/>
+    <property name="inventory" propertytype="DataWeapons" value="goblin-crossbow,long-sword,long-bow,broadsword"/>
     <property name="level" value="2"/>
     <property name="name" value="Suvian Arms"/>
     <property name="sellRate" value="30"/>
    </properties>
   </object>
-  <object id="18" name="Suvian Artifacts" class="StoreFeatureComponent" gid="169" x="448" y="32" width="16" height="16">
+  <object id="18" name="Suvian Artifacts" class="MagicsStoreFeatureComponent" gid="169" x="448" y="32" width="16" height="16">
    <properties>
     <property name="buyRate" value="120"/>
     <property name="category" value="accessories"/>
     <property name="groups" value="default"/>
     <property name="icon" value="shop.png"/>
+    <property name="inventory" propertytype="DataMagics" value="push,heal"/>
     <property name="level" value="2"/>
     <property name="name" value="Suvian Artifacts"/>
     <property name="sellRate" value="20"/>
    </properties>
   </object>
-  <object id="19" name="Ashvari Apothecary" class="StoreFeatureComponent" gid="169" x="64" y="128" width="16" height="16">
+  <object id="19" name="Ashvari Magics" class="ItemsStoreFeatureComponent" gid="169" x="64" y="128" width="16" height="16">
    <properties>
-    <property name="category" value="magic"/>
-    <property name="groups" value="default"/>
-    <property name="level" value="2"/>
-    <property name="name" value="Ashvari Apothecary"/>
+    <property name="inventory" propertytype="DataItems" value="potion"/>
+    <property name="name" value="Ashvari Magics"/>
    </properties>
   </object>
   <object id="20" name="temple.png" class="TempleFeatureComponent" gid="170" x="64" y="32" width="16" height="16">

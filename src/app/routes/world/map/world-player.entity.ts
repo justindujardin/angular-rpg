@@ -18,6 +18,7 @@ import { TileObjectRenderer } from '../../../scene/render/tile-object-renderer';
 import { Scene } from '../../../scene/scene';
 import { SceneView } from '../../../scene/scene-view';
 import { ISceneViewRenderer } from '../../../scene/scene.model';
+import { TileMap } from '../../../scene/tile-map';
 import { CombatEncounterBehaviorComponent } from '../behaviors/combat-encounter.behavior';
 import { PlayerBehaviorComponent } from '../behaviors/player-behavior';
 import { PlayerCameraBehaviorComponent } from '../behaviors/player-camera.behavior';

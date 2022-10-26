@@ -28,12 +28,6 @@
   #comp
   *ngIf="(class$ | async) === 'TempleFeatureComponent' && (enabled$ | async)"
 ></temple-feature>
-<store-feature
-  [feature]="feature$ | async"
-  (onClose)="onClose.emit(featureQuery.first)"
-  #comp
-  *ngIf="(class$ | async) === 'StoreFeatureComponent' && (enabled$ | async)"
-></store-feature>
 <ship-feature
   [feature]="feature$ | async"
   #comp
@@ -49,3 +43,28 @@
   #comp
   *ngIf="(class$ | async) === 'CombatFeatureComponent' && (enabled$ | async)"
 ></combat-feature>
+<!-- Stores -->
+<armors-store-feature
+  [feature]="feature$ | async"
+  (onClose)="onClose.emit(featureQuery.first)"
+  #comp
+  *ngIf="(class$ | async) === 'ArmorsStoreFeatureComponent' && (enabled$ | async)"
+></armors-store-feature>
+<items-store-feature
+  [feature]="feature$ | async"
+  (onClose)="onClose.emit(featureQuery.first)"
+  #comp
+  *ngIf="(class$ | async) === 'ItemsStoreFeatureComponent' && (enabled$ | async)"
+></items-store-feature>
+<magics-store-feature
+  [feature]="feature$ | async"
+  (onClose)="onClose.emit(featureQuery.first)"
+  #comp
+  *ngIf="(class$ | async) === 'MagicsStoreFeatureComponent' && (enabled$ | async)"
+></magics-store-feature>
+<weapons-store-feature
+  [feature]="feature$ | async"
+  (onClose)="onClose.emit(featureQuery.first)"
+  #comp
+  *ngIf="(class$ | async) === 'WeaponsStoreFeatureComponent' && (enabled$ | async)"
+></weapons-store-feature>
