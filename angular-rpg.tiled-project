@@ -306,6 +306,7 @@
         {
             "id": 18,
             "name": "MagicsStoreFeatureComponent",
+            "color": "#ffa41341",
             "type": "class",
             "useAs": [
                 "object",
@@ -477,6 +478,7 @@
         {
             "id": 19,
             "name": "WeaponsStoreFeatureComponent",
+            "color": "#ffa41341",
             "type": "class",
             "useAs": [
                 "object",
@@ -494,6 +496,7 @@
         {
             "id": 20,
             "name": "ArmorsStoreFeatureComponent",
+            "color": "#ffa41341",
             "type": "class",
             "useAs": [
                 "object",
@@ -511,6 +514,7 @@
         {
             "id": 21,
             "name": "ItemsStoreFeatureComponent",
+            "color": "#ffa41341",
             "type": "class",
             "useAs": [
                 "object",

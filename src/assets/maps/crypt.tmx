@@ -43,7 +43,7 @@
 40,32,32,32,32,23,32,32,23,32,32,32,32,32,32,32,32,32,32,32,32,32,32,23,32,
 32,32,23,23,23,23,32,23,23,23,32,23,32,32,32,32,32,32,32,32,32,32,32,23,32,
 32,32,23,23,32,23,32,23,23,23,32,23,32,32,32,32,32,32,32,23,23,32,32,23,32,
-32,32,32,32,32,23,32,32,23,32,32,23,32,32,23,23,23,23,23,23,23,23,32,23,32,
+32,32,32,32,32,23,32,32,23,32,32,23,32,32,23,23,23,23,77,23,23,23,32,23,32,
 32,32,23,23,23,23,23,23,23,23,23,23,23,23,23,32,32,32,32,23,23,23,32,23,32,
 32,32,23,23,32,32,32,32,32,32,32,32,32,32,23,23,23,23,32,32,32,23,23,23,32,
 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32
@@ -80,7 +80,7 @@
     <property name="creatures" value=""/>
     <property name="gold" value="12"/>
     <property name="icon" value="skeletonGuard.png"/>
-    <property name="id" value="cryptsSkeletons"/>
+    <property name="id" value="crypt-skeletons"/>
     <property name="items" value=""/>
     <property name="text" value="A squadron of Skeletons attack!"/>
     <property name="type" value="encounter"/>
@@ -92,7 +92,7 @@
     <property name="creatures" value=""/>
     <property name="gold" value="19"/>
     <property name="icon" value="ghoul.png"/>
-    <property name="id" value="cryptsGhoul"/>
+    <property name="id" value="crypt-ghouls"/>
     <property name="items" value=""/>
     <property name="text" value="As you pass through the door, you are ambushed by horrific, frightening creatures!"/>
     <property name="type" value="encounter"/>
@@ -100,13 +100,7 @@
   </object>
   <object id="7" name="phantom2.png" class="CombatFeatureComponent" gid="145" x="224" y="352" width="16" height="16">
    <properties>
-    <property name="creatures" value=""/>
-    <property name="gold" value="9"/>
-    <property name="icon" value="phantom2.png"/>
-    <property name="id" value="cryptsPhantom"/>
-    <property name="items" value=""/>
-    <property name="text" value="Two phantasmal forms emerge, seemingly only partially present in this realm."/>
-    <property name="type" value="encounter"/>
+    <property name="id" value="crypt-phantoms"/>
    </properties>
   </object>
   <object id="9" name="skeletonWizard.png" class="CombatFeatureComponent" gid="153" x="160" y="32" width="16" height="16">
@@ -115,7 +109,7 @@
     <property name="creatures" value=""/>
     <property name="gold" value="37"/>
     <property name="icon" value="skeletonWizard.png"/>
-    <property name="id" value="cryptsWizard"/>
+    <property name="id" value="crypt-wizard"/>
     <property name="items" value=""/>
     <property name="text" value="A Skeleton Wizard shrieks, &quot;With Vezu's power, we can convert the dead into an an unstoppable army against the living!&quot; It and its minions attack!"/>
     <property name="type" value="encounter"/>

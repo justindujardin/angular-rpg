@@ -70,6 +70,43 @@ export const FIXED_ENCOUNTERS_DATA: ITemplateFixedEncounter[] = [
       'He is enormous and flanked by well-equipped soldiers.',
     ],
   },
+  // Crypt
+  {
+    id: 'crypt-skeletons',
+    enemies: ['skeleton', 'skeleton', 'skeleton', 'skeleton', 'skeleton', 'skeleton'],
+    experience: 500,
+    gold: 400,
+    message: ['A squadron of Skeletons attack!'],
+  },
+  {
+    id: 'crypt-ghouls',
+    enemies: ['ghoul', 'ghoul'],
+    experience: 200,
+    gold: 100,
+    message: [
+      'As you pass through the door, you are ambushed by horrific, frightening creatures!',
+    ],
+  },
+  {
+    id: 'crypt-phantoms',
+    enemies: ['goblin-archer'],
+    experience: 0,
+    gold: 0,
+    message: [
+      'Two phantasmal forms emerge, seemingly only partially present in this realm.',
+    ],
+  },
+  {
+    id: 'crypt-wizard',
+    enemies: ['goblin-archer'],
+    experience: 0,
+    gold: 0,
+    message: [
+      'A Skeleton Wizard shrieks!',
+      'With my power, we can convert the dead into an an unstoppable army against the living!',
+      'It and its minions attack!',
+    ],
+  },
 ];
 
 /** Get a fixed encounter descriptor given its id value */

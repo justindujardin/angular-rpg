@@ -195,10 +195,10 @@
     <property name="sellRate" value="20"/>
    </properties>
   </object>
-  <object id="19" name="Ashvari Magics" class="ItemsStoreFeatureComponent" gid="169" x="64" y="128" width="16" height="16">
+  <object id="19" name="Ashvari Apothecary" class="ItemsStoreFeatureComponent" gid="169" x="64" y="128" width="16" height="16">
    <properties>
     <property name="inventory" propertytype="DataItems" value="potion"/>
-    <property name="name" value="Ashvari Magics"/>
+    <property name="name" value="Ashvari Apothecary"/>
    </properties>
   </object>
   <object id="20" name="temple.png" class="TempleFeatureComponent" gid="170" x="64" y="32" width="16" height="16">

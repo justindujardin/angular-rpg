@@ -71,6 +71,7 @@ const data: PropertyTypes[] = [
   },
   {
     name: 'WeaponsStoreFeatureComponent',
+    color: '#ffa41341',
     type: 'class',
     useAs: ['object', 'tile'],
     members: [
@@ -91,6 +92,7 @@ const data: PropertyTypes[] = [
   },
   {
     name: 'ArmorsStoreFeatureComponent',
+    color: '#ffa41341',
     type: 'class',
     useAs: ['object', 'tile'],
     members: [
@@ -111,6 +113,7 @@ const data: PropertyTypes[] = [
   },
   {
     name: 'ItemsStoreFeatureComponent',
+    color: '#ffa41341',
     type: 'class',
     useAs: ['object', 'tile'],
     members: [
@@ -131,6 +134,7 @@ const data: PropertyTypes[] = [
   },
   {
     name: 'MagicsStoreFeatureComponent',
+    color: '#ffa41341',
     type: 'class',
     useAs: ['object', 'tile'],
     members: [

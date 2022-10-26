@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.9" tiledversion="1.9.2" name="../../images/objects.png" tilewidth="16" tileheight="16" tilecount="19" columns="0" objectalignment="topleft">
+<tileset version="1.9" tiledversion="1.9.2" name="../../images/objects.png" tilewidth="16" tileheight="16" tilecount="20" columns="0" objectalignment="topleft">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image width="16" height="16" source="../../../art/sprites/objects/bigCastleCenter.png"/>
@@ -57,5 +57,8 @@
  </tile>
  <tile id="18">
   <image width="16" height="16" source="../../../art/sprites/objects/woodenDoor.png"/>
+ </tile>
+ <tile id="20">
+  <image width="16" height="16" source="../../../art/sprites/objects/transparent.png"/>
  </tile>
 </tileset>
