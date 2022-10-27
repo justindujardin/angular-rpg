@@ -21,7 +21,17 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 Run `npm run storybook` to run the local storybook UI development server. Navigate to `http://localhost:6006/`. The app will automatically reload if you change any of the source files.
 
-![World Map](.data/storybook.png)
+![Storybook](.data/storybook.png)
+
+## Map Editor 🎨
+
+Use the free [Tiled map editor](https://mapeditor.org) to edit existing maps and create new adventures.
+
+Download and run the Tiled editor, then choose "Open File or Project" from the "File" menu, and select the `angular-rpg.tiled-project` file in the root of this project.
+
+You should now be viewing the town map, and any changes you make will be shown when you refresh the page on your dev server.
+
+![Tiled Editor](.data/tiled.png)
 
 ## Build 🔨
 
