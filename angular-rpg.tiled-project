@@ -1,12 +1,28 @@
 {
     "automappingRulesFile": "",
-    "commands": [
-    ],
+    "commands": [],
     "extensionsPath": "src/tiled",
     "folders": [
         "src"
     ],
     "propertyTypes": [
+        {
+            "color": "#ffa420a4",
+            "id": 13,
+            "members": [
+                {
+                    "name": "passable",
+                    "type": "bool",
+                    "value": true
+                }
+            ],
+            "name": "BlockFeatureComponent",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ]
+        },
         {
             "color": "#ffff0000",
             "id": 5,
@@ -38,6 +54,143 @@
                 "object",
                 "tile"
             ]
+        },
+        {
+            "color": "#ffa49b59",
+            "id": 9,
+            "members": [
+                {
+                    "name": "water",
+                    "type": "bool",
+                    "value": false
+                },
+                {
+                    "name": "zone",
+                    "propertyType": "DataRandomEncounters",
+                    "type": "string",
+                    "value": ""
+                }
+            ],
+            "name": "CombatZoneClass",
+            "type": "class",
+            "useAs": [
+                "object"
+            ]
+        },
+        {
+            "id": 15,
+            "name": "DataArmors",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "clothes",
+                "cloak",
+                "leather-helm",
+                "leather-boots",
+                "leather-shield",
+                "leather-armor",
+                "apprentice-hat",
+                "coral-helm",
+                "iron-shield",
+                "studded-armor",
+                "chain-mail-armor",
+                "merman-shield",
+                "elvish-cloak",
+                "seaweed-armor"
+            ],
+            "valuesAsFlags": true
+        },
+        {
+            "id": 11,
+            "name": "DataFixedEncounters",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "sewer-kobolds",
+                "sewer-kobolds-elite",
+                "world-plains-snakes",
+                "fortress-guard",
+                "goblin-archers",
+                "fortress-wizard",
+                "goblin-king",
+                "crypt-skeletons",
+                "crypt-ghouls",
+                "crypt-phantoms",
+                "crypt-wizard"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "id": 16,
+            "name": "DataItems",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "potion",
+                "ether"
+            ],
+            "valuesAsFlags": true
+        },
+        {
+            "id": 17,
+            "name": "DataMagics",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "push",
+                "heal"
+            ],
+            "valuesAsFlags": true
+        },
+        {
+            "id": 12,
+            "name": "DataRandomEncounters",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "none",
+                "world-forest",
+                "world-ice",
+                "world-ocean-1",
+                "world-ocean-2",
+                "world-ocean-3",
+                "world-ocean-4",
+                "world-plains",
+                "world-sand",
+                "zone-crypt",
+                "zone-goblin-fortress",
+                "zone-sewer",
+                "zone-village"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "id": 14,
+            "name": "DataWeapons",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "club",
+                "slingshot",
+                "short-sword",
+                "short-staff",
+                "kobold-staff",
+                "scimitar",
+                "short-bow",
+                "goblin-crossbow",
+                "long-sword",
+                "long-bow",
+                "long-staff",
+                "magic-sword",
+                "broadsword",
+                "heavy-axe",
+                "fine-bow",
+                "heavy-crossbow",
+                "long-oak-staff",
+                "coral-staff",
+                "narwhal-sword"
+            ],
+            "valuesAsFlags": true
         },
         {
             "color": "#ffffffff",
@@ -139,6 +292,36 @@
             ]
         },
         {
+            "id": 10,
+            "name": "Encounters",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "One",
+                "Two",
+                "Three"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "id": 18,
+            "name": "MagicsStoreFeatureComponent",
+            "color": "#ffa41341",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ],
+            "members": [
+                {
+                    "name": "inventory",
+                    "propertyType": "DataMagics",
+                    "type": "string",
+                    "value": ""
+                }
+            ]
+        },
+        {
             "color": "#ff55007f",
             "id": 7,
             "members": [
@@ -154,7 +337,7 @@
                 },
                 {
                     "name": "target",
-                    "type": "string",
+                    "type": "file",
                     "value": ""
                 },
                 {
@@ -183,8 +366,7 @@
         {
             "color": "#ffff55ff",
             "id": 8,
-            "members": [
-            ],
+            "members": [],
             "name": "ShipFeatureComponent",
             "type": "class",
             "useAs": [
@@ -247,13 +429,8 @@
             "name": "TempleFeatureComponent",
             "type": "class",
             "useAs": [
-                "map",
-                "layer",
                 "object",
-                "tile",
-                "tileset",
-                "wangcolor",
-                "wangset"
+                "tile"
             ]
         },
         {
@@ -296,6 +473,60 @@
             "useAs": [
                 "object",
                 "tile"
+            ]
+        },
+        {
+            "id": 19,
+            "name": "WeaponsStoreFeatureComponent",
+            "color": "#ffa41341",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ],
+            "members": [
+                {
+                    "name": "inventory",
+                    "propertyType": "DataWeapons",
+                    "type": "string",
+                    "value": ""
+                }
+            ]
+        },
+        {
+            "id": 20,
+            "name": "ArmorsStoreFeatureComponent",
+            "color": "#ffa41341",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ],
+            "members": [
+                {
+                    "name": "inventory",
+                    "propertyType": "DataArmors",
+                    "type": "string",
+                    "value": ""
+                }
+            ]
+        },
+        {
+            "id": 21,
+            "name": "ItemsStoreFeatureComponent",
+            "color": "#ffa41341",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ],
+            "members": [
+                {
+                    "name": "inventory",
+                    "propertyType": "DataItems",
+                    "type": "string",
+                    "value": ""
+                }
             ]
         }
     ]

@@ -27,9 +27,9 @@ import {
 import { BehaviorSubject, interval, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import * as _ from 'underscore';
+import { Point } from '../../../../app/core/point';
 import { ITemplateBaseItem } from '../../../../app/models/game-data/game-data.model';
-import { Point } from '../../../../game/pow-core/point';
-import { GameEntityObject } from '../../../scene/game-entity-object';
+import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { ChooseActionStateMachine } from '../behaviors/choose-action.machine';
 import { CombatActionBehavior } from '../behaviors/combat-action.behavior';
 import { CombatComponent } from '../combat.component';

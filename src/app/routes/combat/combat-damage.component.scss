@@ -8,7 +8,7 @@
     pointer-events: none;
     position: absolute;
     z-index: $zCanvasGui;
-    font-family: "GraphicPixel", sans-serif;
+    font-family: $pixelFont;
     font-size: 3em;
     color: #f00;
     // transition: opacity 1s ease-out, transform 1s cubic-bezier(0.19, 1, 0.22, 1);

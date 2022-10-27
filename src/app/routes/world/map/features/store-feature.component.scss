@@ -1,52 +1,75 @@
 @import "../../../../style/variables";
 @import "../../../../style/mixins";
 
-store-feature {
-  .store {
-    max-width: 600px;
-    min-width: 320px;
-    z-index: $zCanvasGui;
-    @include pow-dialog();
+.rpg-game-store {
+  max-width: 600px;
+  min-width: 320px;
+  z-index: $zCanvasGui;
+  @include pow-dialog();
+  color: white;
+  display: block;
+  h1 {
+    margin: auto;
+  }
+  .title {
     text-align: center;
-    color: white;
     display: block;
-    .inventory {
-      min-height: 200px;
-      overflow-y: auto;
-      text-align: center;
-      .item-price {
-        color: $gameGold;
-      }
-    }
+    position: relative;
+    margin-bottom: 0;
+    padding-bottom: 15px;
+  }
 
-    .btn-group {
-      text-align: center;
-      button {
-        @include btn-flat();
+  .inventory {
+    display: flex;
+    overflow-y: auto;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    align-items: stretch;
+    min-height: 250px;
+    .item-price {
+      color: $gameGold;
+    }
+    table {
+      background-color: $gameBlue;
+      tr.selected {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+      tr > td.mat-cell {
+        font-size: 1em;
+      }
+      tr {
+        text-align: center;
       }
     }
-    ul {
-      padding: 0;
-      margin: 0;
-      text-align: center;
-      list-style-type: none;
-      max-width: 100%;
-      li.item {
-        margin: rem(1);
-        cursor: pointer;
-        border: 1px solid transparent;
-        * {
-          pointer-events: none;
-        }
-        .item-name {
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-        &:hover {
-          * {
-            color: #0ff !important;
-          }
-        }
+    .item-icon {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      rpg-sprite {
+        margin-right: 12px;
+      }
+    }
+  }
+
+  footer.actions {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    padding-left: 12px;
+    padding-right: 12px;
+    button {
+      @include btn-flat();
+    }
+    .money {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      span {
+        margin-left: 4px;
       }
     }
   }

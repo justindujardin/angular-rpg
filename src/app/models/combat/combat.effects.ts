@@ -12,7 +12,10 @@ import {
 } from 'rxjs/operators';
 import { AppState } from '../../app.model';
 import { NotificationService } from '../../components/notification/notification.service';
-import { GameStateSaveAction, GameStateSetKeyDataAction } from '../game-state/game-state.actions';
+import {
+  GameStateSaveAction,
+  GameStateSetKeyDataAction,
+} from '../game-state/game-state.actions';
 import { Item } from '../item';
 import { IPartyStatsDiff } from '../mechanics';
 import { getGameMap } from '../selectors';
@@ -99,27 +102,34 @@ export class CombatEffects {
         this.notificationService.show(`Gained ${data.exp} experience!`, null, 0);
         // Party Level ups
 
-        const notifyStat = (statName: string, statValue: number) => {
-          if (statValue > 0) {
-            this.notificationService.show(
-              `${statName} went up by ${statValue}!`,
-              null,
-              0
-            );
-          }
-        };
         data.levels.forEach((entityDiff: IPartyStatsDiff) => {
           this.notificationService.show(
             `${entityDiff.name} reached level ${entityDiff.level}!`,
             null,
             0
           );
-          notifyStat('HP', entityDiff.hp);
-          notifyStat('MP', entityDiff.mp);
-          notifyStat('Strength', entityDiff.strength);
-          notifyStat('Agility', entityDiff.agility);
-          notifyStat('Intelligence', entityDiff.intelligence);
-          notifyStat('Luck', entityDiff.luck);
+          let note = '\n';
+          if (entityDiff.hp > 0) {
+            note += `HP went up by ${entityDiff.hp}\n\n`;
+          }
+          if (entityDiff.mp > 0) {
+            note += `MP went up by ${entityDiff.mp}\n\n`;
+          }
+          if (entityDiff.strength > 0) {
+            note += `Strength went up by ${entityDiff.strength}\n\n`;
+          }
+          if (entityDiff.agility > 0) {
+            note += `Agility went up by ${entityDiff.agility}\n\n`;
+          }
+          if (entityDiff.intelligence > 0) {
+            note += `Intelligence went up by ${entityDiff.intelligence}\n\n`;
+          }
+          if (entityDiff.luck > 0) {
+            note += `Luck went up by ${entityDiff.luck}\n\n`;
+          }
+          if (note !== '\n') {
+            this.notificationService.show(note, null, 0);
+          }
         });
         // Fin.
         this.notificationService.show('Enemies Defeated!', () => {

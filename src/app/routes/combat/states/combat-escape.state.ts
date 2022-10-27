@@ -17,7 +17,7 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../app/app.model';
 import { CombatEscapeAction } from '../../../../app/models/combat/combat.actions';
-import { GameEntityObject } from '../../../scene/game-entity-object';
+import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { CombatMachineState } from './combat-base.state';
 import { CombatStateMachineComponent } from './combat.machine';
 import { CombatStateNames } from './states';

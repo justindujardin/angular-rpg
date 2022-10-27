@@ -9,17 +9,16 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Point } from '../../../../game/pow-core/point';
-import { Rect } from '../../../../game/pow-core/rect';
-import { Scene } from '../../../../game/pow2/scene/scene';
-import { SceneObjectBehavior } from '../../../../game/pow2/scene/scene-object-behavior';
-import { SceneView } from '../../../../game/pow2/scene/scene-view';
-import { ISceneViewRenderer } from '../../../../game/pow2/scene/scene.model';
-import { TileObjectRenderer } from '../../../../game/pow2/tile/render/tile-object-renderer';
+import { SceneObjectBehavior } from '../../../behaviors/scene-object-behavior';
+import { Point, Rect } from '../../../core';
 import { Entity } from '../../../models/entity/entity.model';
-import { GameEntityObject } from '../../../scene/game-entity-object';
-import { GameFeatureObject } from '../../../scene/game-feature-object';
-import { GameTileMap } from '../../../scene/game-tile-map';
+import { GameEntityObject } from '../../../scene/objects/game-entity-object';
+import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
+import { TileObjectRenderer } from '../../../scene/render/tile-object-renderer';
+import { Scene } from '../../../scene/scene';
+import { SceneView } from '../../../scene/scene-view';
+import { ISceneViewRenderer } from '../../../scene/scene.model';
+import { TileMap } from '../../../scene/tile-map';
 import { CombatEncounterBehaviorComponent } from '../behaviors/combat-encounter.behavior';
 import { PlayerBehaviorComponent } from '../behaviors/player-behavior';
 import { PlayerCameraBehaviorComponent } from '../behaviors/player-camera.behavior';
@@ -62,7 +61,7 @@ export class WorldPlayerComponent
   behaviors: QueryList<SceneObjectBehavior>;
   @Input() model: Entity;
   @Input() scene: Scene;
-  @Input() map: GameTileMap;
+  @Input() map: TileMap;
   @Input() point: Point;
 
   /** For referencing in template */

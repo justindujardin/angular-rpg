@@ -25,11 +25,9 @@ import * as Immutable from 'immutable';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as _ from 'underscore';
-import { IState } from '../../../../game/pow2/core/state';
-import { StateMachine } from '../../../../game/pow2/core/state-machine';
-import { Scene } from '../../../../game/pow2/scene/scene';
-import { TileMapView } from '../../../../game/pow2/tile/tile-map-view';
 import { AppState } from '../../../app.model';
+import { IState } from '../../../core/state';
+import { StateMachine } from '../../../core/state-machine';
 import { CombatEncounter } from '../../../models/combat/combat.model';
 import { CombatService } from '../../../models/combat/combat.service';
 import { EntityItemTypes } from '../../../models/entity/entity.reducer';
@@ -40,7 +38,9 @@ import {
 } from '../../../models/game-data/game-data.model';
 import { Item } from '../../../models/item';
 import { getGameInventory } from '../../../models/selectors';
-import { GameEntityObject } from '../../../scene/game-entity-object';
+import { GameEntityObject } from '../../../scene/objects/game-entity-object';
+import { Scene } from '../../../scene/scene';
+import { SceneView } from '../../../scene/scene-view';
 import { GameWorld } from '../../../services/game-world';
 import { CombatEnemyComponent } from '../combat-enemy.entity';
 import { CombatPlayerComponent } from '../combat-player.entity';
@@ -132,7 +132,7 @@ export class CombatStateMachineComponent
   @Input() party: QueryList<CombatPlayerComponent>;
   @Input() enemies: QueryList<CombatEnemyComponent>;
 
-  @Input() view: TileMapView;
+  @Input() view: SceneView;
 
   @ViewChildren('start,beginTurn,chooseAction,endTurn,defeat,victory,escape')
   childStates: QueryList<CombatMachineState>;

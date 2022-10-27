@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, Input, OnDestroy, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { Scene } from '../../../game/pow2/scene/scene';
 import { SpriteRenderBehaviorComponent } from '../../behaviors/sprite-render.behavior';
 import { IEnemy } from '../../models/base-entity';
-import { GameEntityObject } from '../../scene/game-entity-object';
+import { GameEntityObject } from '../../scene/objects/game-entity-object';
+import { Scene } from '../../scene/scene';
 import { CombatAttackBehaviorComponent } from './behaviors/actions/combat-attack.behavior';
 
 @Component({

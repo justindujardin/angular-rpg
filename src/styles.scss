@@ -14,10 +14,12 @@ canvas {
 }
 
 * {
-  font-family: "GraphicPixel", sans-serif;
+  font-family: $pixelFont;
+  font-weight: normal;
+  font-style: normal;
 }
 
 .ebp {
-  font-family: "GraphicPixel", sans-serif;
+  font-family: $pixelFont;
   @include eight-bit-panel(6px);
 }

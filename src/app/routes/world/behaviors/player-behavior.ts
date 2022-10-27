@@ -15,14 +15,14 @@
  */
 import { Component, EventEmitter, Output } from '@angular/core';
 import * as _ from 'underscore';
-import { GameTileMap } from '../../../../app/scene/game-tile-map';
-import { ITiledLayer } from '../../../../game/pow-core/resources/tiled/tiled.model';
-import { IMoveDescription } from '../../../../game/pow2/scene/behaviors/movable-behavior';
-import { SceneObject } from '../../../../game/pow2/scene/scene-object';
 import { BasePlayerComponent } from '../../../behaviors/base-player.behavior';
+import { IMoveDescription } from '../../../behaviors/movable-behavior';
+import { ITiledLayer } from '../../../core/resources/tiled/tiled.model';
 import { GameStateMoveAction } from '../../../models/game-state/game-state.actions';
-import { GameEntityObject } from '../../../scene/game-entity-object';
-import { GameFeatureObject } from '../../../scene/game-feature-object';
+import { GameEntityObject } from '../../../scene/objects/game-entity-object';
+import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
+import { SceneObject } from '../../../scene/scene-object';
+import { TileMap } from '../../../scene/tile-map';
 
 @Component({
   selector: 'player-behavior',
@@ -30,15 +30,18 @@ import { GameFeatureObject } from '../../../scene/game-feature-object';
 })
 export class PlayerBehaviorComponent extends BasePlayerComponent {
   host: GameEntityObject;
-  map: GameTileMap = null;
+  map: TileMap = null;
 
   static COLLIDE_TYPES: string[] = [
+    'BlockFeatureComponent',
     'TempleFeatureComponent',
-    'StoreFeatureComponent',
+    'ArmorsStoreFeatureComponent',
+    'ItemsStoreFeatureComponent',
+    'MagicsStoreFeatureComponent',
+    'WeaponsStoreFeatureComponent',
     'DialogFeatureComponent',
     'DoorFeatureComponent',
     'CombatFeatureComponent',
-    'sign',
   ];
 
   /**
@@ -51,7 +54,7 @@ export class PlayerBehaviorComponent extends BasePlayerComponent {
    */
   collideMove(x: number, y: number, results: SceneObject[] = []): boolean {
     if (this.host.scene && !this.map) {
-      this.map = this.host.scene.objectByType(GameTileMap) as GameTileMap;
+      this.map = this.host.scene.objectByType(TileMap) as TileMap;
     }
     let i = 0;
 
@@ -79,7 +82,10 @@ export class PlayerBehaviorComponent extends BasePlayerComponent {
           continue;
         }
         for (let j = 0; j < this.passableKeys.length; j++) {
-          if (terrain[this.passableKeys[j]] === false) {
+          if (
+            terrain.properties &&
+            terrain.properties[this.passableKeys[j]] === false
+          ) {
             return true;
           }
         }

@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="14" height="21" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="4">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="14" height="21" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="5">
  <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <tileset firstgid="72" source="tiles/objects.tsx"/>
+ <tileset firstgid="93" source="tiles/creatures.tsx"/>
  <layer id="1" name="Terrain" width="14" height="21">
   <data encoding="csv">
 57,57,57,57,57,57,57,18,18,18,18,18,18,18,
 57,57,57,57,57,57,57,18,18,18,18,18,18,18,
-57,57,57,57,57,57,57,57,18,18,18,18,18,18,
-57,57,57,57,57,57,57,57,57,57,18,18,18,18,
-57,57,57,57,57,57,57,69,69,57,18,18,18,18,
-57,57,57,57,57,57,69,69,69,69,18,18,18,18,
-57,57,57,57,57,69,69,46,46,18,18,18,18,18,
-57,57,57,57,57,46,46,46,46,18,18,18,18,18,
-57,57,57,57,57,46,46,46,18,18,18,18,18,18,
-57,57,57,57,57,46,12,46,18,18,18,18,18,18,
-57,57,57,57,46,46,12,46,18,18,18,18,18,18,
-57,57,57,57,57,46,12,46,18,18,18,18,18,18,
-57,57,57,57,57,46,12,69,18,18,18,18,18,18,
-57,57,57,57,57,69,12,46,18,18,18,18,18,18,
-57,57,57,57,69,69,46,69,69,18,18,18,18,18,
+57,57,57,46,69,46,57,57,18,18,18,18,18,18,
+57,57,46,69,46,69,46,57,57,57,18,18,18,18,
+57,37,46,46,33,46,46,69,69,57,18,18,18,18,
+57,57,46,46,33,46,46,46,69,69,18,18,18,18,
+57,57,46,46,33,46,46,46,46,18,18,18,18,18,
+57,57,46,46,33,33,33,46,46,18,18,18,18,18,
+57,57,57,46,33,17,33,46,18,18,18,18,18,18,
+46,46,46,46,33,33,33,46,18,18,18,18,18,18,
+57,57,57,46,46,46,33,46,18,18,18,18,18,18,
+57,57,57,57,57,46,33,46,18,18,18,18,18,18,
+57,57,57,57,57,46,33,69,18,18,18,18,18,18,
+57,57,57,57,57,69,33,46,18,18,18,18,18,18,
+57,57,57,57,69,69,33,69,69,18,18,18,18,18,
 57,57,57,57,57,69,69,69,18,18,18,18,18,18,
 57,57,57,57,57,57,69,57,57,18,18,18,18,18,
 57,57,57,18,57,57,57,57,18,18,18,18,18,18,
@@ -27,28 +29,29 @@
 </data>
  </layer>
  <objectgroup id="2" name="Features">
-  <object id="1" name="wilderness" class="PortalFeatureComponent" x="64" y="160" width="16" height="16">
+  <object id="1" name="exit" class="PortalFeatureComponent" gid="92" x="0" y="144" width="16" height="16">
    <properties>
-    <property name="icon" value="doorway.png"/>
-    <property name="target" value="wilderness"/>
+    <property name="target" type="file" value="wilderness.tmx"/>
     <property name="targetX" value="31"/>
     <property name="targetY" value="27"/>
-    <property name="text" value="Climb down the steep path back to the Wilderness?"/>
-    <property name="transitionType" value="outdoor"/>
    </properties>
   </object>
-  <object id="2" name="Elder" class="DialogFeatureComponent" x="96" y="128" width="16" height="16">
+  <object id="2" name="Elder" class="DialogFeatureComponent" gid="141" x="96" y="112" width="16" height="16">
    <properties>
-    <property name="icon" value="oldMan2.png"/>
-    <property name="text" value="Ho ho, you found me.  Good for you."/>
+    <property name="text" value="Ho ho, you found us.  Good for you!"/>
     <property name="title" value="Elder"/>
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object id="3" name="temple.png" class="TempleFeatureComponent" x="96" y="224" width="16" height="16">
+  <object id="3" name="temple.png" class="TempleFeatureComponent" gid="85" x="96" y="224" width="16" height="16">
    <properties>
     <property name="cost" value="10"/>
     <property name="icon" value="temple.png"/>
+   </properties>
+  </object>
+  <object id="4" name="armors" class="ArmorsStoreFeatureComponent" gid="84" x="64" y="48" width="16" height="16">
+   <properties>
+    <property name="inventory" propertytype="DataArmors" value="leather-shield,leather-armor,apprentice-hat"/>
    </properties>
   </object>
  </objectgroup>

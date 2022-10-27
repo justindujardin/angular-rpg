@@ -12,17 +12,11 @@ import { Store } from '@ngrx/store';
 import { List } from 'immutable';
 import { Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { IPoint, Point } from '../../../game/pow-core/point';
-import { ResourceManager } from '../../../game/pow-core/resource-manager';
-import { TiledTMXResource } from '../../../game/pow-core/resources/tiled/tiled-tmx.resource';
-import { Scene } from '../../../game/pow2/scene/scene';
-import { SceneView } from '../../../game/pow2/scene/scene-view';
-import { ISceneViewRenderer } from '../../../game/pow2/scene/scene.model';
-import { SpriteComponent } from '../../../game/pow2/tile/behaviors/sprite.behavior';
-import { TileMapRenderer } from '../../../game/pow2/tile/render/tile-map-renderer';
-import { TileObjectRenderer } from '../../../game/pow2/tile/render/tile-object-renderer';
-import { TileMapView } from '../../../game/pow2/tile/tile-map-view';
+import { IPoint, Point } from '../../../app/core/point';
+import { ResourceManager } from '../../../app/core/resource-manager';
+import { TiledTMXResource } from '../../../app/core/resources/tiled/tiled-tmx.resource';
 import { AppState } from '../../app.model';
+import { SpriteComponent } from '../../behaviors/sprite.behavior';
 import { LoadingService } from '../../components/loading/loading.service';
 import { CombatantTypes, IEnemy, IPartyMember } from '../../models/base-entity';
 import { CombatState } from '../../models/combat/combat.model';
@@ -32,7 +26,12 @@ import {
   getCombatEncounterParty,
   sliceCombatState,
 } from '../../models/selectors';
-import { GameTileMap } from '../../scene/game-tile-map';
+import { TileMapRenderer } from '../../scene/render/tile-map-renderer';
+import { TileObjectRenderer } from '../../scene/render/tile-object-renderer';
+import { Scene } from '../../scene/scene';
+import { SceneView } from '../../scene/scene-view';
+import { ISceneViewRenderer } from '../../scene/scene.model';
+import { TileMap } from '../../scene/tile-map';
 import { CombatCameraBehaviorComponent } from './behaviors/combat-camera.behavior';
 import { CombatEnemyComponent } from './combat-enemy.entity';
 import { CombatPlayerComponent } from './combat-player.entity';
@@ -43,7 +42,7 @@ import { CombatPlayerComponent } from './combat-player.entity';
   templateUrl: './combat-map.entity.html',
 })
 export class CombatMapComponent
-  extends GameTileMap
+  extends TileMap
   implements AfterViewInit, OnDestroy, ISceneViewRenderer
 {
   private _tileRenderer: TileMapRenderer = new TileMapRenderer();
@@ -136,7 +135,7 @@ export class CombatMapComponent
   /**
    * Render all of the map feature components
    */
-  renderFrame(view: TileMapView, elapsed: number) {
+  renderFrame(view: SceneView, elapsed: number) {
     this._tileRenderer.render(this, view);
     this.party.forEach((component: CombatPlayerComponent) => {
       this.objectRenderer.render(

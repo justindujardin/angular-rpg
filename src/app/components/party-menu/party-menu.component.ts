@@ -62,7 +62,7 @@ export class PartyMenuComponent {
   isChecked: boolean;
   partyGold$: Observable<number> = this.store.select(getGamePartyGold);
   party$: Observable<Immutable.List<Entity>> = this.store.select(getGameParty);
-  
+
   ngOnInit() {
     this.isChecked = localStorage.getItem('autoSave') === 'true';
   }
@@ -73,8 +73,9 @@ export class PartyMenuComponent {
 
   saveGame() {
     this.store.dispatch(new GameStateSaveAction());
+    this.notify.show('Game state saved!  Nice.');
   }
-  
+
   onSlideToggle($event) {
     localStorage.setItem('autoSave', $event.checked);
   }

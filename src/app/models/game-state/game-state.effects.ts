@@ -55,14 +55,6 @@ export class GameStateEffects {
     })
   );
 
-  /** When the game has been saved, notify the user. */
-  @Effect({ dispatch: false }) saveGameSuccess$ = this.actions$.pipe(
-    ofType(GameStateSaveSuccessAction.typeId),
-    tap(() => {
-      this.notify.show('Game state saved!  Nice.');
-    })
-  );
-
   /**
    * When a delete action is dispatched, remove the saved state in localstorage.
    */

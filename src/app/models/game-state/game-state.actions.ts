@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
-import { IPoint } from '../../../game/pow-core';
 import { AppState } from '../../app.model';
+import { IPoint } from '../../core';
 import { EntitySlots } from '../entity/entity.model';
 import { Item } from '../item';
 import { type } from '../util';

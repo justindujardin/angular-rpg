@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { moduleMetadata } from '@storybook/angular';
 import { Meta, Story } from '@storybook/angular/types-6-0';
-import { Point } from '../../../game/pow-core';
+import { Point } from '../../core';
 import { CombatDamageComponent, ICombatDamageInputs } from './combat-damage.component';
 /**
  * Returns a random integer between min (inclusive) and max (inclusive).

@@ -12,10 +12,12 @@
     "../projects/**/*.spec.ts"
   ],
   "include": [
-    "../src/**/*",
+    "../src/app/**/*",
     "../projects/**/*"
   ],
   "files": [
+    "../src/main.ts",
+    "../src/polyfills.ts",
     "./typings.d.ts"
   ]
 }

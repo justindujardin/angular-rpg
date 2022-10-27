@@ -38,6 +38,53 @@
     bottom: 12px;
     right: 12px;
   }
+  mat-card-title {
+    padding-bottom: 20px;
+    @include hr();
+    display: flex;
+    .flex {
+      flex-grow: 1;
+    }
+    @media (min-width: 961px) {
+      font-size: 1.9em;
+    }
+  }
+
+  .inventory-content {
+    font-size: 1em;
+    @media (min-width: 961px) {
+      font-size: 1.5em;
+    }
+  }
+
+  mat-card-content.settings-content {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: center;
+
+    min-height: 200px;
+    button {
+      @include btn-flat();
+      font-size: 1.5em;
+    }
+    mat-slide-button {
+      font-size: 1.5em;
+    }
+    @media (min-width: 961px) {
+      flex-direction: row;
+    }
+  }
+
+  mat-card-content.party-content {
+    player-card {
+      @media (min-width: 961px) {
+        font-size: 1.5em;
+      }
+    }
+  }
 
   mat-card {
     @include eight-bit-panel();
@@ -49,6 +96,14 @@
     padding-bottom: 36px; // normal 24px plus 12 for the negative bottom
     left: 24px;
     max-width: 600px;
+    max-height: 500px;
     overflow-y: auto;
+    transition: max-width 0.2s ease-out 0.2s, max-height 0.2s ease-out 0.2s,
+      font-size 0.2s ease-in 0.1s;
+    @media (min-width: 961px) {
+      /* tablet, landscape iPad, lo-res laptops ands desktops */
+      max-width: 1000px;
+      max-height: 800px;
+    }
   }
 }

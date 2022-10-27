@@ -16,7 +16,7 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { PowCoreModule } from '../../game/pow-core/index';
+import { PowCoreModule } from '../../app/core/index';
 import { NotificationService } from '../components/notification/notification.service';
 import { CombatService } from '../models/combat/combat.service';
 import { GameStateService } from '../models/game-state/game-state.service';
@@ -25,14 +25,12 @@ import { Animate } from './animate';
 import { GameWorld } from './game-world';
 import { RPGGame } from './rpg-game';
 import { SpriteRender } from './sprite-render';
-import { Visibility } from './visibility';
 
 export const SERVICE_PROVIDERS = [
   Animate,
   RPGGame,
   GameWorld,
   SpriteRender,
-  Visibility,
   NotificationService,
   CombatService,
   SpritesService,

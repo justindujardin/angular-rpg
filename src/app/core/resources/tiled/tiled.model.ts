@@ -1,0 +1,43 @@
+// -------------------------------------------------------------------------
+// Implement a subset of the Tiled editor format:
+//
+// https://github.com/bjorn/tiled/wiki/TMX-Map-Format
+
+export interface ITiledBase {
+  name: string;
+  class?: string;
+  template?: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  visible: boolean;
+  _xml?: any;
+}
+
+// <layer>, <objectgroup>
+export interface ITiledLayerBase extends ITiledBase {
+  opacity: number; // 0-1
+  properties?: { [key: string]: any };
+}
+export interface ITiledLayer extends ITiledLayerBase {
+  data?: number[];
+  objects?: ITiledObject[];
+}
+
+// <object>
+export interface ITiledObject<PropertiesType = any> extends ITiledBase {
+  properties?: PropertiesType;
+  rotation?: number;
+  class?: string;
+  gid?: number;
+  color?: string;
+  sets?: string;
+}
+
+export interface ITileSetDependency {
+  source?: string; // Path to URL source from which to load data.
+  data?: any; // Data instead of source.
+  firstgid: number; // First global id.
+  literal?: string; // The literal string representing the source as originally specified in xml
+}

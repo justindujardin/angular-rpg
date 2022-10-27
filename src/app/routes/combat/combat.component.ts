@@ -8,16 +8,16 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Point } from '../../../game/pow-core/point';
-import { IProcessObject } from '../../../game/pow-core/time';
-import { NamedMouseElement, PowInput } from '../../../game/pow2/core/input';
-import { Scene } from '../../../game/pow2/scene/scene';
-import { SceneObject } from '../../../game/pow2/scene/scene-object';
-import { TileMapView } from '../../../game/pow2/tile/tile-map-view';
+import { Point } from '../../../app/core/point';
+import { IProcessObject } from '../../../app/core/time';
 import { AppState } from '../../app.model';
 import { LoadingService } from '../../components/loading/loading.service';
 import { NotificationService } from '../../components/notification/notification.service';
-import { GameEntityObject } from '../../scene/game-entity-object';
+import { NamedMouseElement, PowInput } from '../../core/input';
+import { GameEntityObject } from '../../scene/objects/game-entity-object';
+import { Scene } from '../../scene/scene';
+import { SceneObject } from '../../scene/scene-object';
+import { SceneView } from '../../scene/scene-view';
 import { Animate } from '../../services/animate';
 import { GameWorld } from '../../services/game-world';
 import { RPGGame } from '../../services/rpg-game';
@@ -56,7 +56,7 @@ export interface CombatAttackSummary {
  * Render and provide input for a combat encounter.
  */
 export class CombatComponent
-  extends TileMapView
+  extends SceneView
   implements IProcessObject, OnDestroy, AfterViewInit
 {
   combat: CombatComponent = this;

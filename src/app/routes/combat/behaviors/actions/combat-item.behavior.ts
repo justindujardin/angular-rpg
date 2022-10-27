@@ -1,14 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CombatPlayerRenderBehaviorComponent } from '..';
-import { SoundBehavior } from '../../../../../game/pow2/scene/behaviors/sound-behavior';
-import { AnimatedSpriteBehavior } from '../../../../../game/pow2/tile/behaviors/animated-sprite.behavior';
-import { SpriteComponent } from '../../../../../game/pow2/tile/behaviors/sprite.behavior';
 import { AppState } from '../../../../app.model';
+import { AnimatedSpriteBehavior } from '../../../../behaviors/animated-sprite.behavior';
+import { SoundBehavior } from '../../../../behaviors/sound-behavior';
+import { SpriteComponent } from '../../../../behaviors/sprite.behavior';
 import { CombatAttackAction } from '../../../../models/combat/combat.actions';
 import { CombatAttack } from '../../../../models/combat/combat.model';
 import { GameStateRemoveInventoryAction } from '../../../../models/game-state/game-state.actions';
-import { GameEntityObject } from '../../../../scene/game-entity-object';
+import { GameEntityObject } from '../../../../scene/objects/game-entity-object';
 import { CombatComponent } from '../../combat.component';
 import { CombatEndTurnStateComponent } from '../../states/combat-end-turn.state';
 import { IPlayerActionCallback } from '../../states/combat.machine';

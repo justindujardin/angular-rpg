@@ -5,7 +5,7 @@
 @import "../../../style/icons";
 
 :host {
-  font-family: "GraphicPixel", sans-serif;
+  font-family: $pixelFont;
   .action-menu,
   .targets-menu,
   .spells-menu {

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import * as _ from 'underscore';
-import { Point } from '../../game/pow-core/point';
-import { TickedBehavior } from '../../game/pow2/scene/behaviors/ticked-behavior';
-import { TileObject } from '../../game/pow2/tile/tile-object';
+import { Point } from '../../app/core/point';
+import { TileObject } from '../scene/tile-object';
+import { TickedBehavior } from './ticked-behavior';
 
 export interface IAnimationConfig {
   /**

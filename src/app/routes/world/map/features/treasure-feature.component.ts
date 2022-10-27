@@ -18,7 +18,6 @@ import { Store } from '@ngrx/store';
 import { getArmorById } from 'app/models/game-data/armors';
 import { getItemById } from 'app/models/game-data/items';
 import { getWeaponById } from 'app/models/game-data/weapons';
-import { TileObject } from '../../../../../game/pow2/tile/tile-object';
 import { AppState } from '../../../../app.model';
 import { NotificationService } from '../../../../components/notification/notification.service';
 import { EntityAddItemAction } from '../../../../models/entity/entity.actions';
@@ -32,6 +31,7 @@ import {
   GameStateSetKeyDataAction,
 } from '../../../../models/game-state/game-state.actions';
 import { Item } from '../../../../models/item';
+import { TileObject } from '../../../../scene/tile-object';
 import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
 
 @Component({

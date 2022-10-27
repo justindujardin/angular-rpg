@@ -1,9 +1,18 @@
 import * as Immutable from 'immutable';
-import { IPoint } from '../../../game/pow-core/point';
+import { IPoint } from '../../../app/core/point';
+import { Rect } from '../../core';
 import { CombatantTypes, IEnemy, IPartyMember } from '../base-entity';
 
 /** Valid combat types */
 export type CombatType = 'none' | 'fixed' | 'random';
+
+export interface IZoneTarget {
+  /** The zone name */
+  zone: string;
+  /** Is ship zone */
+  water: boolean;
+  bounds: Rect;
+}
 
 /**
  * Describe a set of combat zones for a given point on a map.
@@ -14,9 +23,9 @@ export interface IZoneMatch {
    */
   map: string;
   /**
-   * The zone name for the target location on the map
+   * The zone names for the target location on the map
    */
-  target: string;
+  targets: IZoneTarget[];
   /**
    * The point that target refers to.
    */

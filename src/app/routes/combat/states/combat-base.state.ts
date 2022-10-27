@@ -13,7 +13,8 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { State } from '../../../../game/pow2/core/state';
+
+import { State } from '../../../core/state';
 import { CombatStateNames } from './states';
 
 /**

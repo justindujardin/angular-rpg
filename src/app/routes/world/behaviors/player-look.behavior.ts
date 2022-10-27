@@ -14,10 +14,10 @@
  limitations under the License.
  */
 import { Component, EventEmitter, Output } from '@angular/core';
-import { TickedBehavior } from '../../../../game/pow2/scene/behaviors/ticked-behavior';
-import { TileObject } from '../../../../game/pow2/tile/tile-object';
 import { CollisionBehaviorComponent } from '../../../behaviors/collision.behavior';
-import { GameFeatureObject } from '../../../scene/game-feature-object';
+import { TickedBehavior } from '../../../behaviors/ticked-behavior';
+import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
+import { TileObject } from '../../../scene/tile-object';
 import { PlayerBehaviorComponent } from './player-behavior';
 
 /**

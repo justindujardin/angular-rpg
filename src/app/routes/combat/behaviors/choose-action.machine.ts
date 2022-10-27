@@ -1,12 +1,12 @@
 import * as Immutable from 'immutable';
 import * as _ from 'underscore';
-import { Point } from '../../../../game/pow-core/point';
-import { State } from '../../../../game/pow2/core/state';
-import { StateMachine } from '../../../../game/pow2/core/state-machine';
-import { Scene } from '../../../../game/pow2/scene/scene';
+import { Point } from '../../../../app/core/point';
+import { State } from '../../../core/state';
+import { StateMachine } from '../../../core/state-machine';
 import { ITemplateMagic } from '../../../models/game-data/game-data.model';
 import { Item } from '../../../models/item';
-import { GameEntityObject } from '../../../scene/game-entity-object';
+import { GameEntityObject } from '../../../scene/objects/game-entity-object';
+import { Scene } from '../../../scene/scene';
 import { GameWorld } from '../../../services/game-world';
 import { CombatActionBehavior } from '../behaviors/combat-action.behavior';
 import { CombatPlayerRenderBehaviorComponent } from '../behaviors/combat-player-render.behavior';

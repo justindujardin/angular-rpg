@@ -17,19 +17,20 @@ import { AfterViewInit, Component, Host, Input, OnDestroy } from '@angular/core'
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
-import { Point } from '../../../../../game/pow-core/point';
-import { TileObject } from '../../../../../game/pow2/tile/tile-object';
 import { AppState } from '../../../../app.model';
+import { Point } from '../../../../core';
 import { GameStateBoardShipAction } from '../../../../models/game-state/game-state.actions';
 import { PointRecord } from '../../../../models/records';
 import { getGameBoardedShip, getGameShipPosition } from '../../../../models/selectors';
-import { GameFeatureObject } from '../../../../scene/game-feature-object';
+import { GameFeatureObject } from '../../../../scene/objects/game-feature-object';
+import { TileObject } from '../../../../scene/tile-object';
 import { PlayerBehaviorComponent } from '../../behaviors/player-behavior';
 import {
   MapFeatureComponent,
   TiledFeatureComponent,
   TiledMapFeatureData,
 } from '../map-feature.component';
+
 @Component({
   selector: 'ship-feature',
   template: '<ng-content></ng-content>',
@@ -93,7 +94,6 @@ export class ShipFeatureComponent
       .subscribe((p: PointRecord) => {
         this.host.setPoint({ x: p.x, y: p.y });
       });
-
     return true;
   }
 
@@ -128,10 +128,8 @@ export class ShipFeatureComponent
     this.host.enabled = false;
     object.setSprite(this.host.icon, 0);
     this._tickInterval = setInterval(() => {
-      if (
-        Point.equal(this.partyObject.point, this.party.targetPoint) &&
-        !this.party.heading.isZero()
-      ) {
+      const partyTarget = Point.equal(this.partyObject.point, this.party.targetPoint);
+      if (partyTarget && !this.party.heading.isZero()) {
         const from: Point = new Point(this.partyObject.point);
         const to: Point = from.clone().add(this.party.heading);
         if (

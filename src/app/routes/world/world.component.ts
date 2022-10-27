@@ -10,19 +10,18 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Point } from '../../../game/pow-core/point';
-import { Rect } from '../../../game/pow-core/rect';
-import { NamedMouseElement, PowInput } from '../../../game/pow2/core/input';
-import { Scene } from '../../../game/pow2/scene/scene';
-import { SceneView } from '../../../game/pow2/scene/scene-view';
-import { TileMapPathBehavior } from '../../../game/pow2/tile/behaviors/tile-map-path.behavior';
-import { TileMap } from '../../../game/pow2/tile/tile-map';
-import { TileMapView } from '../../../game/pow2/tile/tile-map-view';
 import { AppState } from '../../app.model';
+import { TileMapPathBehavior } from '../../behaviors/tile-map-path.behavior';
+import { DebugMenuComponent } from '../../components/debug-menu/debug-menu.component';
 import { LoadingService } from '../../components/loading/loading.service';
 import { NotificationService } from '../../components/notification/notification.service';
 import { PartyMenuComponent } from '../../components/party-menu/party-menu.component';
-import { GameFeatureObject } from '../../scene/game-feature-object';
+import { Point, Rect } from '../../core';
+import { NamedMouseElement, PowInput } from '../../core/input';
+import { GameFeatureObject } from '../../scene/objects/game-feature-object';
+import { Scene } from '../../scene/scene';
+import { SceneView } from '../../scene/scene-view';
+import { TileMap } from '../../scene/tile-map';
 import { GameWorld } from '../../services/game-world';
 import { RPGGame } from '../../services/rpg-game';
 import { PlayerBehaviorComponent } from './behaviors/player-behavior';
@@ -40,9 +39,10 @@ import { WorldMapComponent } from './map/world-map.entity';
     '[style.color]': 'styleBackground',
   },
 })
-export class WorldComponent extends TileMapView implements AfterViewInit, OnDestroy {
+export class WorldComponent extends SceneView implements AfterViewInit, OnDestroy {
   @ViewChild('worldCanvas') canvasElementRef: ElementRef;
   @ViewChild(PartyMenuComponent) partyMenu: PartyMenuComponent;
+  @ViewChild(DebugMenuComponent) debugMenu: DebugMenuComponent;
 
   /**
    * Whether to render debug view information
@@ -58,12 +58,23 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
       // Escape out of any feature the player is currently in
       if (this.map.player && this.map.player.feature) {
         this.map.player.escapeFeature();
+      } else if (this.debugMenu.open) {
+        // Otherwise toggle the party menu
+        this.debugMenu.open = false;
       } else if (this.partyMenu) {
         // Otherwise toggle the party menu
         this.partyMenu.open = !this.partyMenu.open;
+        if (this.partyMenu.open) {
+          this.debugMenu.open = false;
+        }
       }
     } else if (event.key === '1') {
       this.debug = !this.debug;
+    } else if (event.key === '2') {
+      this.debugMenu.open = !this.debugMenu.open;
+      if (this.debugMenu.open) {
+        this.partyMenu.open = false;
+      }
     }
   }
 
@@ -203,7 +214,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
       for (let y = clipYMin; y <= clipYMax; y++) {
         this.map.getLayers().forEach((layer) => {
           const tile = this.map.getTerrain(layer.name, x, y);
-          if (tile && !tile.passable) {
+          if (tile && tile.properties?.passable === false) {
             const screenTile: Rect = this.worldToScreen(
               new Rect(new Point(x - 0.5, y - 0.5), new Point(1, 1))
             );
@@ -241,7 +252,7 @@ export class WorldComponent extends TileMapView implements AfterViewInit, OnDest
     // Debug strings
     const fontSize = 6;
     this.context.save();
-    this.context.font = `bold ${fontSize}px GraphicPixel`;
+    this.context.font = `bold ${fontSize}px Roboto`;
     const renderPos = this.worldToScreen(clipRect.point);
     let textX = renderPos.x + 10;
     let textY = renderPos.y + 10;

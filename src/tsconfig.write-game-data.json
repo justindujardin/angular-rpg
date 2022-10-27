@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2017"
+  },
+  "files": [
+    "write-game-data.ts"
+  ]
+}

@@ -13,11 +13,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { SoundBehavior } from '../../game/pow2/scene/behaviors/sound-behavior';
-import { SceneObjectBehavior } from '../../game/pow2/scene/scene-object-behavior';
-import { AnimatedSpriteBehavior } from '../../game/pow2/tile/behaviors/animated-sprite.behavior';
-import { SpriteComponent } from '../../game/pow2/tile/behaviors/sprite.behavior';
-import { GameEntityObject } from '../scene/game-entity-object';
+import { GameEntityObject } from '../scene/objects/game-entity-object';
+import { AnimatedSpriteBehavior } from './animated-sprite.behavior';
+import { SceneObjectBehavior } from './scene-object-behavior';
+import { SoundBehavior } from './sound-behavior';
+import { SpriteComponent } from './sprite.behavior';
 
 export class DamageComponent extends SceneObjectBehavior {
   host: GameEntityObject;

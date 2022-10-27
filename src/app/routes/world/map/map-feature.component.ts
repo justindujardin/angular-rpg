@@ -20,20 +20,22 @@ import {
   Subscription,
 } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { TiledTMXResource } from '../../../../game/pow-core/resources/tiled/tiled-tmx.resource';
-import { ITiledObject } from '../../../../game/pow-core/resources/tiled/tiled.model';
-import { Scene } from '../../../../game/pow2/scene/scene';
-import { TileObject } from '../../../../game/pow2/tile/tile-object';
-import { TileObjectBehavior } from '../../../../game/pow2/tile/tile-object-behavior';
 import { AppState } from '../../../app.model';
+import { TileObjectBehavior } from '../../../behaviors/tile-object-behavior';
+import { TiledTMXResource } from '../../../core';
+import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
 import { getGameKey, getGameKeyData } from '../../../models/selectors';
-import { GameFeatureObject } from '../../../scene/game-feature-object';
+import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
+import { Scene } from '../../../scene/scene';
+import { TileMap } from '../../../scene/tile-map';
+import { TileObject } from '../../../scene/tile-object';
 import { GameWorld } from '../../../services/game-world';
 
 /**
  * An enumeration of the serialized names used to refer to map feature map from within a TMX file
  */
 export type TiledMapFeatureTypes =
+  | 'BlockFeatureComponent'
   | 'PortalFeatureComponent'
   | 'CombatFeatureComponent'
   | 'ShipFeatureComponent'
@@ -41,6 +43,10 @@ export type TiledMapFeatureTypes =
   | 'DoorFeatureComponent'
   | 'DialogFeatureComponent'
   | 'StoreFeatureComponent'
+  | 'ArmorsStoreFeatureComponent'
+  | 'ItemsStoreFeatureComponent'
+  | 'MagicsStoreFeatureComponent'
+  | 'WeaponsStoreFeatureComponent'
   | 'TempleFeatureComponent';
 
 export type TiledMapFeatureData<PropertiesType = any> = ITiledObject<PropertiesType>;
@@ -114,6 +120,7 @@ export class MapFeatureComponent
   }
 
   @Input() tiledMap: TiledTMXResource;
+  @Input() tileMap: TileMap;
 
   get feature(): TiledMapFeatureData {
     return this._feature$.value;
@@ -143,11 +150,12 @@ export class MapFeatureComponent
       if (!data || !this.tiledMap) {
         return null;
       }
-      const options = Object.assign({}, data.properties || {}, {
-        class: data.class,
+      const options = {
+        ...data,
+        tileMap: this.tileMap,
         x: Math.round(data.x / this.tiledMap.tilewidth),
         y: Math.round(data.y / this.tiledMap.tileheight),
-      });
+      };
       const result = new GameFeatureObject(options);
       result.addBehavior(component);
       return result;

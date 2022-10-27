@@ -14,31 +14,19 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
-import { Point } from '../../game/pow-core/point';
-import { ITiledLayer } from '../../game/pow-core/resources/tiled/tiled.model';
-import {
-  IMoveDescription,
-  MovableBehavior,
-} from '../../game/pow2/scene/behaviors/movable-behavior';
-import { SceneObject } from '../../game/pow2/scene/scene-object';
-import { TileMap } from '../../game/pow2/tile/tile-map';
-import { TileObject } from '../../game/pow2/tile/tile-object';
-import { TileObjectBehavior } from '../../game/pow2/tile/tile-object-behavior';
+import { Point } from '../../app/core/point';
+import { ITiledLayer } from '../../app/core/resources/tiled/tiled.model';
 import {
   Headings,
   PlayerRenderBehaviorComponent,
 } from '../routes/world/behaviors/player-render.behavior';
+import { SceneObject } from '../scene/scene-object';
+import { TileMap } from '../scene/tile-map';
+import { TileObject } from '../scene/tile-object';
+import { IMoveDescription, MovableBehavior } from './movable-behavior';
+import { TileObjectBehavior } from './tile-object-behavior';
 
 export class BasePlayerComponent extends MovableBehavior {
-  // TODO: Pass in collide types during entity creation, and assert on invalid types.
-  static COLLIDE_TYPES: string[] = [
-    'TempleFeatureComponent',
-    'StoreFeatureComponent',
-    'DialogFeatureComponent',
-    'DoorFeatureComponent',
-    'sign',
-  ];
-
   static Events: any = {
     MOVE_BEGIN: 'move:begin',
     MOVE_END: 'move:end',
@@ -111,7 +99,7 @@ export class BasePlayerComponent extends MovableBehavior {
    * @returns {boolean} True if the passable attribute was found and set to false.
    */
   collideWithMap(at: Point, passableAttribute: string): boolean {
-    let map = <TileMap>this.host.scene.objectByType(TileMap);
+    let map = <TileMap>this.host.scene?.objectByType(TileMap);
     if (map) {
       const layers: ITiledLayer[] = map.getLayers();
       for (let i = 0; i < layers.length; i++) {
@@ -119,7 +107,7 @@ export class BasePlayerComponent extends MovableBehavior {
         if (!terrain) {
           continue;
         }
-        if (terrain[passableAttribute] === false) {
+        if (terrain.properties && terrain.properties[passableAttribute] === false) {
           return true;
         }
       }

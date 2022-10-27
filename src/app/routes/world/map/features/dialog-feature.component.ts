@@ -11,8 +11,8 @@ import { AppState } from 'app/app.model';
 import { GameStateSetKeyDataAction } from 'app/models/game-state/game-state.actions';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IScene } from '../../../../../game/pow2/scene/scene.model';
-import { TileObject } from '../../../../../game/pow2/tile/tile-object';
+import { IScene } from '../../../../scene/scene.model';
+import { TileObject } from '../../../../scene/tile-object';
 import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
 
 @Component({
@@ -48,6 +48,14 @@ export class DialogFeatureComponent extends TiledFeatureComponent {
   /** The icon to display for the dialog speaker */
   icon$: Observable<string> = this.feature$.pipe(
     map((f: TiledMapFeatureData) => {
+      // Resolve tile images from their gid
+      if (f.gid && this.host?.tileMap) {
+        const meta = this.host.tileMap.getTileMeta(f.gid);
+        if (meta?.image) {
+          return meta?.image;
+        }
+      }
+      // Fallback to using the "icon" custom property
       return f.properties.icon;
     })
   );

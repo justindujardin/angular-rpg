@@ -12,9 +12,40 @@ export const RANDOM_ENCOUNTERS_DATA: ITemplateRandomEncounter[] = [
     enemies: ['black-spider', 'black-spider', 'black-spider', 'black-spider'],
   },
   {
+    id: 'world-ice',
+    zones: ['world-ice'],
+    enemies: ['black-spider', 'black-spider', 'black-spider', 'black-spider'],
+  },
+  {
     id: 'world-plains-duo',
-    zones: ['world-plains', 'zone-sewer'],
+    zones: ['world-plains'],
     enemies: ['snake', 'imp', 'imp'],
+  },
+  { id: 'world-sewer', zones: ['zone-sewer'], enemies: ['snake', 'kobold', 'kobold'] },
+  {
+    id: 'world-sewer-2',
+    zones: ['zone-sewer'],
+    enemies: ['huge-spider', 'kobold', 'kobold'],
+  },
+  {
+    id: 'world-ocean-1-1',
+    zones: ['world-ocean-1'],
+    enemies: ['kobold', 'kobold', 'kobold-shaman'],
+  },
+  {
+    id: 'world-ocean-2-1',
+    zones: ['world-ocean-2'],
+    enemies: ['kobold', 'kobold', 'kobold-shaman'],
+  },
+  {
+    id: 'world-ocean-3-1',
+    zones: ['world-ocean-3'],
+    enemies: ['kobold', 'kobold', 'kobold-shaman'],
+  },
+  {
+    id: 'world-ocean-4-1',
+    zones: ['world-ocean-4'],
+    enemies: ['kobold', 'kobold', 'kobold-shaman'],
   },
   {
     id: 'world-forest-single',

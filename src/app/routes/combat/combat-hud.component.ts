@@ -2,13 +2,13 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { List } from 'immutable';
 import { Observable } from 'rxjs';
-import { ResourceManager } from '../../../game/pow-core/resource-manager';
-import { Scene } from '../../../game/pow2/scene/scene';
+import { ResourceManager } from '../../../app/core/resource-manager';
 import { AppState } from '../../app.model';
 import { LoadingService } from '../../components/loading/loading.service';
 import { IPartyMember } from '../../models/base-entity';
 import { getCombatEncounterParty } from '../../models/selectors';
-import { GameEntityObject } from '../../scene/game-entity-object';
+import { GameEntityObject } from '../../scene/objects/game-entity-object';
+import { Scene } from '../../scene/scene';
 
 @Component({
   selector: 'combat-hud',

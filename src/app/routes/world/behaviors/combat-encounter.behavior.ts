@@ -5,20 +5,28 @@ import { RANDOM_ENCOUNTERS_DATA } from 'app/models/game-data/random-encounters';
 import * as Immutable from 'immutable';
 import { List } from 'immutable';
 import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { take, withLatestFrom } from 'rxjs/operators';
 import { IEnemy } from '../../../../app/models/base-entity';
-import { IMoveDescription } from '../../../../game/pow2/scene/behaviors/movable-behavior';
-import { Scene } from '../../../../game/pow2/scene/scene';
-import { SceneObjectBehavior } from '../../../../game/pow2/scene/scene-object-behavior';
 import { AppState } from '../../../app.model';
+import { IMoveDescription } from '../../../behaviors/movable-behavior';
+import { SceneObjectBehavior } from '../../../behaviors/scene-object-behavior';
 import { CombatEncounterAction } from '../../../models/combat/combat.actions';
-import { CombatEncounter, IZoneMatch } from '../../../models/combat/combat.model';
+import {
+  CombatEncounter,
+  IZoneMatch,
+  IZoneTarget,
+} from '../../../models/combat/combat.model';
 import { Entity } from '../../../models/entity/entity.model';
 import { instantiateEntity } from '../../../models/game-data/game-data.model';
 import { GameStateSetBattleCounterAction } from '../../../models/game-state/game-state.actions';
-import { getGameBattleCounter, getGameParty } from '../../../models/selectors';
-import { GameEntityObject } from '../../../scene/game-entity-object';
-import { GameTileMap } from '../../../scene/game-tile-map';
+import {
+  getGameBattleCounter,
+  getGameBoardedShip,
+  getGameParty,
+} from '../../../models/selectors';
+import { GameEntityObject } from '../../../scene/objects/game-entity-object';
+import { Scene } from '../../../scene/scene';
+import { TileMap } from '../../../scene/tile-map';
 import { PlayerBehaviorComponent } from './player-behavior';
 
 /**
@@ -35,7 +43,7 @@ import { PlayerBehaviorComponent } from './player-behavior';
 })
 export class CombatEncounterBehaviorComponent extends SceneObjectBehavior {
   @Input() scene: Scene;
-  @Input() tileMap: GameTileMap;
+  @Input() tileMap: TileMap;
   @Input() player: GameEntityObject;
 
   battleCounter$: Observable<number> = this.store.select(getGameBattleCounter);
@@ -53,7 +61,7 @@ export class CombatEncounterBehaviorComponent extends SceneObjectBehavior {
       return;
     }
     const terrain = this.tileMap.getTerrain('Terrain', move.to.x, move.to.y);
-    const isDangerous: boolean = terrain && terrain.isDangerous;
+    const isDangerous: boolean = terrain?.properties?.isDangerous;
     const dangerValue: number = isDangerous ? 10 : 6;
     this.battleCounter$.pipe(take(1)).subscribe((currentCounter: number) => {
       const newCounter: number = currentCounter - dangerValue;
@@ -93,37 +101,48 @@ export class CombatEncounterBehaviorComponent extends SceneObjectBehavior {
     this.store
       .select(getGameParty)
       .pipe(
-        map((party: Immutable.List<Entity>) => {
-          const viableEncounters = RANDOM_ENCOUNTERS_DATA.filter((enc: any) => {
-            return (
-              enc.zones.indexOf(zone.map) !== -1 ||
-              enc.zones.indexOf(zone.target) !== -1
-            );
-          });
-          if (viableEncounters.length === 0) {
-            throw new Error('no valid encounters for this zone');
-          }
-          const max = viableEncounters.length - 1;
-          const min = 0;
-          const encounter =
-            viableEncounters[Math.floor(Math.random() * (max - min + 1)) + min];
-          const toCombatant = (id: string): IEnemy => {
-            const itemTemplate: IEnemy = getEnemyById(id) as any;
-            return instantiateEntity<IEnemy>(itemTemplate, {
-              maxhp: itemTemplate.hp,
+        withLatestFrom(
+          this.store.select(getGameBoardedShip),
+          (party: Immutable.List<Entity>, onShip: boolean) => {
+            const zoneTarget = zone.targets.find((zoneTarget: IZoneTarget) => {
+              if (onShip) {
+                return zoneTarget.water;
+              } else {
+                return !zoneTarget.water;
+              }
             });
-          };
 
-          const payload: CombatEncounter = {
-            type: 'random',
-            id: encounter.id,
-            enemies: List<IEnemy>(encounter.enemies.map(toCombatant)),
-            zone: zone.target || zone.map,
-            message: List<string>(encounter.message),
-            party: List<Entity>(party),
-          };
-          this.store.dispatch(new CombatEncounterAction(payload));
-        }),
+            const viableEncounters = RANDOM_ENCOUNTERS_DATA.filter((enc: any) => {
+              return (
+                enc.zones.indexOf(zone.map) !== -1 ||
+                enc.zones.indexOf(zoneTarget.zone) !== -1
+              );
+            });
+            if (viableEncounters.length === 0) {
+              throw new Error(`no valid encounters for zone: ${zoneTarget.zone}`);
+            }
+            const max = viableEncounters.length - 1;
+            const min = 0;
+            const encounter =
+              viableEncounters[Math.floor(Math.random() * (max - min + 1)) + min];
+            const toCombatant = (id: string): IEnemy => {
+              const itemTemplate: IEnemy = getEnemyById(id) as any;
+              return instantiateEntity<IEnemy>(itemTemplate, {
+                maxhp: itemTemplate.hp,
+              });
+            };
+
+            const payload: CombatEncounter = {
+              type: 'random',
+              id: encounter.id,
+              enemies: List<IEnemy>(encounter.enemies.map(toCombatant)),
+              zone: zoneTarget?.zone || zone.map,
+              message: List<string>(encounter.message),
+              party: List<Entity>(party),
+            };
+            this.store.dispatch(new CombatEncounterAction(payload));
+          }
+        ),
         take(1)
       )
       .subscribe();

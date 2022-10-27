@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="29" height="51" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="9">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="29" height="51" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="9">
  <properties>
   <property name="combat" value="true"/>
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <tileset firstgid="72" source="tiles/creatures.tsx"/>
+ <tileset firstgid="157" source="tiles/objects.tsx"/>
  <layer id="1" name="Terrain" width="29" height="51">
   <data encoding="csv">
 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
@@ -42,17 +44,17 @@
 9,9,9,9,9,23,9,55,55,55,9,23,23,23,55,23,23,23,9,9,9,23,23,55,55,55,55,55,9,
 9,9,9,9,23,23,23,55,55,55,9,9,23,23,23,23,23,9,9,9,9,9,23,23,23,55,55,55,9,
 9,9,9,9,23,23,23,9,55,9,9,9,9,9,23,9,9,9,9,9,9,9,9,9,23,9,9,9,9,
-9,9,9,9,9,14,9,9,55,9,9,9,9,9,23,9,9,9,9,9,9,9,9,9,23,9,9,9,9,
+9,9,9,9,9,162,9,9,55,9,9,9,9,9,23,9,9,9,9,9,9,9,9,9,23,9,9,9,9,
 9,23,23,23,23,23,9,9,55,9,9,9,9,9,23,9,9,9,9,9,9,9,9,9,23,23,23,9,9,
 9,23,9,9,9,9,9,9,55,55,9,9,9,23,23,23,9,9,23,23,23,23,23,9,9,9,23,9,9,
 9,23,9,9,9,9,9,9,9,55,55,9,23,23,55,23,23,9,23,9,9,9,23,9,9,9,23,9,9,
 9,23,9,23,23,23,23,9,23,23,31,23,23,23,23,23,23,23,23,9,9,9,23,9,9,9,23,9,9,
 9,23,9,23,9,9,23,9,23,9,55,9,23,23,55,23,23,9,9,9,9,23,23,23,23,9,23,9,9,
 9,23,9,23,9,23,23,9,23,9,55,9,9,23,23,23,9,9,9,9,9,23,55,55,23,9,23,9,9,
-9,23,23,23,9,23,9,9,23,9,55,9,9,9,14,9,9,9,9,9,9,23,23,23,23,23,23,9,9,
+9,23,23,23,9,23,9,9,23,9,55,9,9,9,162,9,9,9,9,9,9,23,23,23,23,23,23,9,9,
 9,9,9,23,9,23,9,9,23,9,55,55,9,9,23,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
 9,9,9,9,9,23,23,23,23,9,55,55,9,9,23,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
-9,9,9,9,9,9,9,9,9,9,55,55,55,9,14,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,55,55,55,9,162,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
 9,9,9,9,9,9,9,9,9,9,55,55,55,55,5,55,55,9,9,55,9,9,9,9,9,9,9,9,9,
 39,39,39,39,39,39,39,39,39,55,55,55,55,55,39,55,55,55,55,55,39,39,39,39,39,39,39,39,39,
 39,39,39,39,39,39,39,39,55,55,55,55,39,39,39,39,39,55,55,55,55,39,39,39,39,39,39,39,39,
@@ -63,12 +65,9 @@
   <object id="1" name="wilderness" class="PortalFeatureComponent" x="224" y="736" width="16" height="16">
    <properties>
     <property name="icon" value="darkDoor.png"/>
-    <property name="target" value="wilderness"/>
+    <property name="target" type="file" value="wilderness.tmx"/>
     <property name="targetX" value="51"/>
     <property name="targetY" value="5"/>
-    <property name="text" value="Will you escape from Vezu's foul lair?"/>
-    <property name="transitionType" value="outdoor"/>
-    <property name="type" value="transition"/>
    </properties>
   </object>
   <object id="2" class="block" x="224" y="752" width="16" height="16">
@@ -76,7 +75,7 @@
     <property name="type" value="block"/>
    </properties>
   </object>
-  <object id="3" name="spectre.png" class="CombatFeatureComponent" x="224" y="672" width="16" height="16">
+  <object id="3" name="spectre.png" class="CombatFeatureComponent" gid="139" x="224" y="672" width="16" height="16">
    <properties>
     <property name="ambushed" value="true"/>
     <property name="creatures" value=""/>
@@ -88,7 +87,7 @@
     <property name="type" value="encounter"/>
    </properties>
   </object>
-  <object id="4" name="cyclops.png" class="CombatFeatureComponent" x="80" y="544" width="16" height="16">
+  <object id="4" name="cyclops.png" class="CombatFeatureComponent" gid="78" x="80" y="544" width="16" height="16">
    <properties>
     <property name="ambushed" value="true"/>
     <property name="creatures" value=""/>
@@ -100,7 +99,7 @@
     <property name="type" value="encounter"/>
    </properties>
   </object>
-  <object id="5" name="wraith2.png" class="CombatFeatureComponent" x="128" y="304" width="16" height="16">
+  <object id="5" name="wraith2.png" class="CombatFeatureComponent" gid="150" x="128" y="304" width="16" height="16">
    <properties>
     <property name="creatures" value=""/>
     <property name="gold" value="37"/>
@@ -111,7 +110,7 @@
     <property name="type" value="encounter"/>
    </properties>
   </object>
-  <object id="6" name="rockGolem.png" class="CombatFeatureComponent" x="384" y="80" width="16" height="16">
+  <object id="6" name="rockGolem.png" class="CombatFeatureComponent" gid="132" x="384" y="80" width="16" height="16">
    <properties>
     <property name="creatures" value=""/>
     <property name="gold" value="15"/>
@@ -122,7 +121,7 @@
     <property name="type" value="encounter"/>
    </properties>
   </object>
-  <object id="7" name="vezu.png" class="CombatFeatureComponent" x="48" y="48" width="16" height="16">
+  <object id="7" name="vezu.png" class="CombatFeatureComponent" gid="147" x="48" y="48" width="16" height="16">
    <properties>
     <property name="creatures" value=""/>
     <property name="gold" value="0"/>
@@ -134,7 +133,7 @@
     <property name="type" value="encounter"/>
    </properties>
   </object>
-  <object id="8" name="chest.png" class="CombatFeatureComponent" x="48" y="16" width="16" height="16">
+  <object id="8" name="chest.png" class="CombatFeatureComponent" gid="160" x="48" y="16" width="16" height="16">
    <properties>
     <property name="creatures" value=""/>
     <property name="gold" value="275"/>

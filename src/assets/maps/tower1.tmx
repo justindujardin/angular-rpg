@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="23" height="19" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="5">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="23" height="19" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="5">
  <properties>
   <property name="combat" value="true"/>
   <property name="combatZone" value="zone-ice-tower"/>
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <tileset firstgid="72" source="tiles/creatures.tsx"/>
+ <tileset firstgid="157" source="tiles/objects.tsx"/>
  <layer id="1" name="Terrain" width="23" height="19">
   <data encoding="csv">
 25,25,25,49,25,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,
@@ -29,14 +31,12 @@
 </data>
  </layer>
  <objectgroup id="2" name="Features">
-  <object id="1" name="wilderness" class="PortalFeatureComponent" x="64" y="144" width="16" height="16">
+  <object id="1" name="wilderness" class="PortalFeatureComponent" gid="50" x="64" y="144" width="16" height="16">
    <properties>
     <property name="icon" value="iceFloor.png"/>
-    <property name="target" value="wilderness"/>
+    <property name="target" type="file" value="wilderness.tmx"/>
     <property name="targetX" value="88"/>
     <property name="targetY" value="16"/>
-    <property name="text" value="Will you exit Vygurn Tower?"/>
-    <property name="transitionType" value="outdoor"/>
    </properties>
   </object>
   <object id="2" class="block" x="48" y="144" width="16" height="16" visible="0">
@@ -44,7 +44,7 @@
     <property name="type" value="block"/>
    </properties>
   </object>
-  <object id="3" name="drowElf.png" class="CombatFeatureComponent" x="128" y="256" width="16" height="16">
+  <object id="3" name="drowElf.png" class="CombatFeatureComponent" gid="79" x="128" y="256" width="16" height="16">
    <properties>
     <property name="creatures" value=""/>
     <property name="gold" value="25"/>
@@ -54,14 +54,12 @@
     <property name="text" value="Drow Elves and Snow Ogres approach you. &quot;You will regret setting foot in this tower!&quot;"/>
    </properties>
   </object>
-  <object id="4" name="tower2" class="PortalFeatureComponent" x="112" y="256" width="16" height="16">
+  <object id="4" name="tower2" class="PortalFeatureComponent" gid="163" x="112" y="256" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
-    <property name="target" value="tower2"/>
+    <property name="target" type="file" value="tower2.tmx"/>
     <property name="targetX" value="3"/>
     <property name="targetY" value="15"/>
-    <property name="text" value="Ascend to the second level of the tower?"/>
-    <property name="transitionType" value="up"/>
    </properties>
   </object>
  </objectgroup>

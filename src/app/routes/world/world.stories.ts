@@ -3,9 +3,9 @@ import { Store } from '@ngrx/store';
 import { moduleMetadata } from '@storybook/angular';
 import { Meta, Story } from '@storybook/angular/types-6-0';
 import * as Immutable from 'immutable';
-import { IPoint } from '../../../game/pow-core';
 import { AppState } from '../../app.model';
 import { LoadingService } from '../../components/loading';
+import { IPoint } from '../../core';
 import { EntityAddBeingAction } from '../../models/entity/entity.actions';
 import {
   GameStateNewAction,

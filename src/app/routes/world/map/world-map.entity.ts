@@ -12,17 +12,16 @@ import { Store } from '@ngrx/store';
 import * as Immutable from 'immutable';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { Behavior } from '../../../../game/pow-core/behavior';
-import { IPoint, Point } from '../../../../game/pow-core/point';
-import { ResourceManager } from '../../../../game/pow-core/resource-manager';
-import { TiledTMXResource } from '../../../../game/pow-core/resources/tiled/tiled-tmx.resource';
-import { Scene } from '../../../../game/pow2/scene/scene';
-import { SceneObjectBehavior } from '../../../../game/pow2/scene/scene-object-behavior';
-import { SceneView } from '../../../../game/pow2/scene/scene-view';
-import { ISceneViewRenderer } from '../../../../game/pow2/scene/scene.model';
-import { TileObjectRenderer } from '../../../../game/pow2/tile/render/tile-object-renderer';
 import { AppState } from '../../../app.model';
+import { SceneObjectBehavior } from '../../../behaviors/scene-object-behavior';
 import { LoadingService } from '../../../components/loading/loading.service';
+import {
+  Behavior,
+  IPoint,
+  Point,
+  ResourceManager,
+  TiledTMXResource,
+} from '../../../core';
 import { Entity } from '../../../models/entity/entity.model';
 import { GameStateService } from '../../../models/game-state/game-state.service';
 import {
@@ -30,7 +29,11 @@ import {
   getGameParty,
   getGamePartyPosition,
 } from '../../../models/selectors';
-import { GameTileMap } from '../../../scene/game-tile-map';
+import { TileObjectRenderer } from '../../../scene/render/tile-object-renderer';
+import { Scene } from '../../../scene/scene';
+import { SceneView } from '../../../scene/scene-view';
+import { ISceneViewRenderer } from '../../../scene/scene.model';
+import { TileMap } from '../../../scene/tile-map';
 import { MapFeatureInputBehaviorComponent } from '../behaviors/map-feature-input.behavior';
 import { MapFeatureComponent, TiledMapFeatureData } from './map-feature.component';
 import { WorldPlayerComponent } from './world-player.entity';
@@ -41,7 +44,7 @@ import { WorldPlayerComponent } from './world-player.entity';
   templateUrl: 'world-map.entity.html',
 })
 export class WorldMapComponent
-  extends GameTileMap
+  extends TileMap
   implements AfterViewInit, OnDestroy, ISceneViewRenderer
 {
   /** For referencing in template */

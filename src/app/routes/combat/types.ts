@@ -1,6 +1,6 @@
 import { ElementRef } from '@angular/core';
-import { Point } from '../../../game/pow-core';
-import { GameEntityObject } from '../../scene/game-entity-object';
+import { Point } from '../../core';
+import { GameEntityObject } from '../../scene/objects/game-entity-object';
 
 /**
  * Attach an HTML element to the position of a game object.

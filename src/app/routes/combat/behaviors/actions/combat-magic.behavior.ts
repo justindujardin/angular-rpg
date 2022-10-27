@@ -20,14 +20,14 @@ import {
   getCombatEntityEquipment,
   getGameInventory,
 } from '../../../../../app/models/selectors';
-import { GameEntityObject } from '../../../../../app/scene/game-entity-object';
+import { GameEntityObject } from '../../../../../app/scene/objects/game-entity-object';
 import { GameWorld } from '../../../../../app/services/game-world';
-import { ImageResource } from '../../../../../game/pow-core';
-import { getSoundEffectUrl, ISpriteMeta } from '../../../../../game/pow2/core/api';
-import { SoundBehavior } from '../../../../../game/pow2/scene/behaviors/sound-behavior';
-import { AnimatedSpriteBehavior } from '../../../../../game/pow2/tile/behaviors/animated-sprite.behavior';
-import { SpriteComponent } from '../../../../../game/pow2/tile/behaviors/sprite.behavior';
+import { AnimatedSpriteBehavior } from '../../../../behaviors/animated-sprite.behavior';
 import { DamageComponent } from '../../../../behaviors/damage.behavior';
+import { SoundBehavior } from '../../../../behaviors/sound-behavior';
+import { SpriteComponent } from '../../../../behaviors/sprite.behavior';
+import { ImageResource } from '../../../../core';
+import { getSoundEffectUrl, ISpriteMeta } from '../../../../core/api';
 import { IMagicTargetDelta } from '../../../../models/mechanics';
 import { CombatEndTurnStateComponent, IPlayerActionCallback } from '../../states';
 import { CombatActionBehavior } from '../combat-action.behavior';

@@ -1,3 +1,5 @@
+@import "../../style/variables.scss";
+
 :host {
   .loading {
     position: absolute;
@@ -22,7 +24,7 @@
   }
 
   .hero-container > * {
-    font-family: "GraphicPixel", "AdvoCut", sans-serif;
+    font-family: $pixelFont;
     text-align: center;
     color: #fff;
   }

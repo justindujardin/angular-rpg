@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import * as _ from 'underscore';
-import { Point } from '../../../../game/pow-core/point';
-import { TickedBehavior } from '../../../../game/pow2/scene/behaviors/ticked-behavior';
+import { Point } from '../../../../app/core/point';
 import {
   AnimatedBehaviorComponent,
   IAnimationConfig,
 } from '../../../behaviors/animated.behavior';
+import { TickedBehavior } from '../../../behaviors/ticked-behavior';
 import { CombatService } from '../../../models/combat/combat.service';
-import { GameEntityObject } from '../../../scene/game-entity-object';
+import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { Headings } from '../../world/behaviors/player-render.behavior';
 export enum StateFrames {
   DEFAULT = 10,

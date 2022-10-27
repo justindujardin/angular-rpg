@@ -22,6 +22,8 @@ import { List } from 'immutable';
 import { map, take } from 'rxjs/operators';
 import { IEnemy } from '../../../../../app/models/base-entity';
 import { AppState } from '../../../../app.model';
+import { NotificationService } from '../../../../components/notification/notification.service';
+import { Point } from '../../../../core';
 import { CombatEncounterAction } from '../../../../models/combat/combat.actions';
 import { CombatEncounter, IZoneMatch } from '../../../../models/combat/combat.model';
 import { Entity } from '../../../../models/entity/entity.model';
@@ -30,7 +32,7 @@ import {
   ITemplateFixedEncounter,
 } from '../../../../models/game-data/game-data.model';
 import { getGameParty } from '../../../../models/selectors';
-import { GameEntityObject } from '../../../../scene/game-entity-object';
+import { GameEntityObject } from '../../../../scene/objects/game-entity-object';
 import { PlayerBehaviorComponent } from '../../behaviors/player-behavior';
 import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
 
@@ -46,12 +48,12 @@ import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.compo
   template: ` <ng-content></ng-content>`,
 })
 export class CombatFeatureComponent extends TiledFeatureComponent {
-  party: PlayerBehaviorComponent = null;
+  party: PlayerBehaviorComponent | null = null;
 
   // @ts-ignore
   @Input() feature: TiledMapFeatureData;
 
-  constructor(public store: Store<AppState>) {
+  constructor(public store: Store<AppState>, public notify: NotificationService) {
     super();
   }
 
@@ -64,9 +66,7 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
   }
 
   enter(object: GameEntityObject): boolean {
-    this.party = object.findBehavior(
-      PlayerBehaviorComponent
-    ) as PlayerBehaviorComponent;
+    this.party = object.findBehavior<PlayerBehaviorComponent>(PlayerBehaviorComponent);
     if (!this.party) {
       return false;
     }
@@ -76,7 +76,9 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
     object.setPoint(object.point);
 
     // Find the combat zone and launch a fixed encounter.
-    const zone: IZoneMatch = this.party.map.getCombatZones(this.party.host.point);
+    const zone: IZoneMatch = this.party.map.getCombatZones(
+      new Point(this.party.host.point)
+    );
 
     this.store
       .select(getGameParty)
@@ -85,6 +87,15 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
           const encounter: ITemplateFixedEncounter = getFixedEncounterById(
             this.properties.id
           );
+
+          if (!encounter) {
+            this.notify.show(
+              `There is no encounter named: ${this.properties.id}.`,
+              null,
+              0
+            );
+            return;
+          }
           const toCombatant = (id: string): IEnemy => {
             const itemTemplate: IEnemy = getEnemyById(id) as any;
             return instantiateEntity<IEnemy>(itemTemplate, {
@@ -95,7 +106,7 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
             type: 'fixed',
             id: encounter.id,
             enemies: List<IEnemy>(encounter.enemies.map(toCombatant)),
-            zone: zone.target || zone.map,
+            zone: zone.targets[0].zone || zone.map,
             message: List<string>(encounter.message),
             party: List<Entity>(party),
           };
