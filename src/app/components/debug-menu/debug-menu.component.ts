@@ -29,7 +29,10 @@ import {
 import { ITEMS_DATA } from '../../models/game-data/items';
 import { MAGIC_DATA } from '../../models/game-data/magic';
 import { WEAPONS_DATA } from '../../models/game-data/weapons';
-import { GameStateTravelAction } from '../../models/game-state/game-state.actions';
+import {
+  GameStateAddGoldAction,
+  GameStateTravelAction,
+} from '../../models/game-state/game-state.actions';
 import { GameStateService } from '../../models/game-state/game-state.service';
 import { getXPForLevel } from '../../models/levels';
 import { getGameMap, getGameParty } from '../../models/selectors';
@@ -133,6 +136,12 @@ export class DebugMenuComponent implements AfterViewInit {
       this._liveAnnouncer.announce('Sorting cleared');
     }
   }
+
+  /** Give the player some gold */
+  giveGold() {
+    this.store.dispatch(new GameStateAddGoldAction(1000));
+  }
+
   /** Award level ups to each character in the party */
   levelUp() {
     this.party$
