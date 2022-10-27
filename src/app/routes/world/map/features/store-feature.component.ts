@@ -14,16 +14,18 @@ import { MAGIC_DATA } from 'app/models/game-data/magic';
 import { WEAPONS_DATA } from 'app/models/game-data/weapons';
 import * as Immutable from 'immutable';
 import { BehaviorSubject, from, Observable } from 'rxjs';
-import { combineLatest, first, map } from 'rxjs/operators';
+import { combineLatest, first, map, withLatestFrom } from 'rxjs/operators';
 import { AppState } from '../../../../app.model';
 import { NotificationService } from '../../../../components/notification/notification.service';
-import { IPartyMember } from '../../../../models/base-entity';
+import { IEntityObject, IPartyMember } from '../../../../models/base-entity';
 import {
   EntityAddItemAction,
   EntityRemoveItemAction,
 } from '../../../../models/entity/entity.actions';
 import { EntityWithEquipment } from '../../../../models/entity/entity.model';
 import {
+  EquipmentSlotTypes,
+  EQUIPMENT_SLOTS,
   instantiateEntity,
   ITemplateArmor,
   ITemplateBaseItem,
@@ -33,7 +35,9 @@ import {
 import {
   GameStateAddGoldAction,
   GameStateAddInventoryAction,
+  GameStateEquipItemAction,
   GameStateRemoveInventoryAction,
+  GameStateUnequipItemAction,
 } from '../../../../models/game-state/game-state.actions';
 import { GameState } from '../../../../models/game-state/game-state.model';
 import { Item } from '../../../../models/item';
@@ -340,28 +344,79 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
       .select(sliceGameState)
       .pipe(
         first(),
-        map((state: GameState) => {
-          const items: Item[] = [...this._selected$.value];
-          const totalCost: number = items.reduce(
-            (prev: number, current: Item) => prev + current.value,
-            0
-          );
-          if (totalCost > state.gold) {
-            this.notify.show("You don't have enough money");
-            return;
+        withLatestFrom(
+          this.partyWithEquipment$,
+          (state: GameState, party: Immutable.List<EntityWithEquipment>) => {
+            const items: Item[] = [...this._selected$.value];
+            const totalCost: number = items.reduce(
+              (prev: number, current: Item) => prev + current.value,
+              0
+            );
+            if (totalCost > state.gold) {
+              this.notify.show("You don't have enough money");
+              return;
+            }
+
+            let toEquipItem: Item = null;
+            items.forEach((item) => {
+              const itemInstance = instantiateEntity<Item>(item);
+              this.store.dispatch(new EntityAddItemAction(itemInstance));
+              this.store.dispatch(new GameStateAddInventoryAction(itemInstance));
+              if (items.length === 1) {
+                toEquipItem = itemInstance;
+              }
+            });
+            this.store.dispatch(new GameStateAddGoldAction(-totalCost));
+
+            // Equip newly purchased items if there's only one and it can only be
+            // wielded by one class.
+            const types: EquipmentSlotTypes[] = [...EQUIPMENT_SLOTS];
+            if (items.length === 1 && types.indexOf(toEquipItem.type)) {
+              const toEquip = party.find((p) => {
+                // If anyone can equip it, the first player always gets it (sad)
+                if (toEquipItem.usedby.length === 0) {
+                  return true;
+                }
+                return toEquipItem.usedby.indexOf(p.type) !== -1;
+              });
+              // Found equip target
+              if (toEquip) {
+                // Unequip anything that's already there
+                if (toEquip[toEquipItem.type]) {
+                  const oldItem: IEntityObject = toEquip[toEquipItem.type];
+                  this.store.dispatch(
+                    new GameStateUnequipItemAction({
+                      entityId: toEquip.eid,
+                      slot: toEquipItem.type,
+                      itemId: oldItem.eid,
+                    })
+                  );
+                }
+                this.store.dispatch(
+                  new GameStateEquipItemAction({
+                    entityId: toEquip.eid,
+                    slot: toEquipItem.type,
+                    itemId: toEquipItem.eid,
+                  })
+                );
+              }
+              this.notify.show(
+                `Purchased ${toEquipItem.name} for ${totalCost} gold and equipped it on ${toEquip.name}.`,
+                null,
+                5000
+              );
+              return;
+            }
+
+            const itemText =
+              items.length === 1 ? `${items[0].name}` : `${items.length} items`;
+            this.notify.show(
+              `Purchased ${itemText} items for ${totalCost} gold.`,
+              null,
+              1500
+            );
           }
-          items.forEach((item) => {
-            const itemInstance = instantiateEntity<Item>(item);
-            this.store.dispatch(new EntityAddItemAction(itemInstance));
-            this.store.dispatch(new GameStateAddInventoryAction(itemInstance));
-          });
-          this.store.dispatch(new GameStateAddGoldAction(-totalCost));
-          this.notify.show(
-            `Purchased ${items.length} items for ${totalCost} gold.`,
-            null,
-            1500
-          );
-        })
+        )
       )
       .subscribe();
   }

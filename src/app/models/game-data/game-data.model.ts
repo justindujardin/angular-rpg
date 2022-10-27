@@ -13,6 +13,22 @@ export type ItemGroups = 'default' | 'rare' | 'magic';
 
 export type ItemElements = 'holy' | 'water' | 'wind' | 'heal';
 
+/** Array of valid equipment slot names on a party member */
+export const EQUIPMENT_SLOTS = [
+  'armor',
+  'helm',
+  'boots',
+  'shield',
+  'accessory',
+  'weapon',
+  'spell',
+] as const;
+
+/** Valid equipment slot strings type */
+export type EquipmentSlotTypes = typeof EQUIPMENT_SLOTS[number];
+
+export type ItemWeaponType = 'weapon';
+
 export type ItemArmorType = 'armor' | 'helm' | 'boots' | 'shield' | 'accessory';
 
 export interface ITemplateId {
@@ -67,7 +83,7 @@ export interface ITemplateItem extends ITemplateBaseItem {
 }
 
 export interface ITemplateWeapon extends ITemplateBaseItem {
-  readonly type: 'weapon';
+  readonly type: ItemWeaponType;
   /**
    * The attack value for this weapon.
    */
