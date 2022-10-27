@@ -6,7 +6,7 @@
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <tileset firstgid="72" source="tiles/objects.tsx"/>
- <tileset firstgid="89" source="tiles/creatures.tsx"/>
+ <tileset firstgid="93" source="tiles/creatures.tsx"/>
  <layer id="1" name="Terrain" width="23" height="41">
   <data encoding="csv">
 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,35,9,9,9,9,
@@ -15,7 +15,7 @@
 9,9,9,9,33,33,33,33,9,9,9,9,9,9,9,35,9,9,9,9,33,9,9,
 9,9,9,9,33,33,33,33,9,9,9,9,9,9,9,35,9,9,33,33,33,9,9,
 9,9,9,9,33,33,33,33,9,9,9,9,9,33,35,35,35,33,33,33,33,33,9,
-9,9,9,9,9,0,9,9,9,9,9,9,9,33,35,35,35,33,33,9,9,33,9,
+9,9,9,9,9,77,9,9,9,9,9,9,9,33,35,35,35,33,33,9,9,33,9,
 9,9,9,9,9,33,9,9,9,9,9,9,9,33,35,35,35,33,9,9,9,33,9,
 9,9,9,9,9,33,9,9,9,9,9,9,9,33,33,35,35,33,9,9,9,33,9,
 9,9,9,9,9,33,9,9,33,33,33,33,33,33,33,35,33,33,9,9,9,33,9,
@@ -61,7 +61,7 @@
     <property name="targetY" value="9"/>
    </properties>
   </object>
-  <object id="2" name="sewer-kobolds" class="CombatFeatureComponent" gid="126" x="320" y="464" width="16" height="16">
+  <object id="2" name="sewer-kobolds" class="CombatFeatureComponent" gid="130" x="320" y="464" width="16" height="16">
    <properties>
     <property name="icon" value="koboldSwordsman.png"/>
     <property name="id" value="sewer-kobolds"/>
@@ -82,7 +82,7 @@
     <property name="targetY" type="int" value="9"/>
    </properties>
   </object>
-  <object id="4" name="sewer-kobolds-elite" class="CombatFeatureComponent" gid="125" x="64" y="544" width="16" height="16">
+  <object id="4" name="sewer-kobolds-elite" class="CombatFeatureComponent" gid="129" x="64" y="544" width="16" height="16">
    <properties>
     <property name="icon" value="koboldShaman.png"/>
     <property name="id" value="sewer-kobolds-elite"/>

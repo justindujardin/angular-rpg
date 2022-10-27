@@ -5,7 +5,7 @@
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <tileset firstgid="72" source="tiles/objects.tsx"/>
- <tileset firstgid="90" source="tiles/creatures.tsx"/>
+ <tileset firstgid="93" source="tiles/creatures.tsx"/>
  <layer id="1" name="Terrain" width="25" height="39">
   <data encoding="csv">
 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
@@ -75,7 +75,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object id="5" name="skeletonGuard.png" class="CombatFeatureComponent" gid="152" x="128" y="528" width="16" height="16">
+  <object id="5" name="skeletonGuard.png" class="CombatFeatureComponent" gid="155" x="128" y="528" width="16" height="16">
    <properties>
     <property name="creatures" value=""/>
     <property name="gold" value="12"/>
@@ -86,7 +86,7 @@
     <property name="type" value="encounter"/>
    </properties>
   </object>
-  <object id="6" name="ghoul.png" class="CombatFeatureComponent" gid="103" x="304" y="560" width="16" height="16">
+  <object id="6" name="ghoul.png" class="CombatFeatureComponent" gid="106" x="304" y="560" width="16" height="16">
    <properties>
     <property name="ambushed" value="true"/>
     <property name="creatures" value=""/>
@@ -98,12 +98,12 @@
     <property name="type" value="encounter"/>
    </properties>
   </object>
-  <object id="7" name="phantom2.png" class="CombatFeatureComponent" gid="145" x="224" y="352" width="16" height="16">
+  <object id="7" name="phantom2.png" class="CombatFeatureComponent" gid="148" x="224" y="352" width="16" height="16">
    <properties>
     <property name="id" value="crypt-phantoms"/>
    </properties>
   </object>
-  <object id="9" name="skeletonWizard.png" class="CombatFeatureComponent" gid="153" x="160" y="32" width="16" height="16">
+  <object id="9" name="skeletonWizard.png" class="CombatFeatureComponent" gid="156" x="160" y="32" width="16" height="16">
    <properties>
     <property name="ambushed" value="true"/>
     <property name="creatures" value=""/>

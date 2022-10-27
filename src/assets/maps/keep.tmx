@@ -2,7 +2,7 @@
 <map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="23" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="19">
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <tileset firstgid="72" source="tiles/objects.tsx"/>
- <tileset firstgid="89" source="tiles/creatures.tsx"/>
+ <tileset firstgid="93" source="tiles/creatures.tsx"/>
  <layer id="1" name="Terrain" width="23" height="23">
   <data encoding="csv">
 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
@@ -44,7 +44,7 @@
     <property name="type" value="block"/>
    </properties>
   </object>
-  <object id="3" name="Guard" class="barrier" gid="99" x="208" y="272" width="16" height="16">
+  <object id="3" name="Guard" class="barrier" gid="103" x="208" y="272" width="16" height="16">
    <properties>
     <property name="icon" value="dwarfGuard.png"/>
     <property name="text" value="During times of war, the Keep is off duty to all but those with Royal Decree!"/>
@@ -53,7 +53,7 @@
     <property name="until" value="keepStart"/>
    </properties>
   </object>
-  <object id="4" name="Guard" class="alert" gid="99" x="144" y="272" width="16" height="16">
+  <object id="4" name="Guard" class="alert" gid="103" x="144" y="272" width="16" height="16">
    <properties>
     <property name="after" value="keepStart"/>
     <property name="altIcon" value="sigil.png"/>
@@ -65,7 +65,7 @@
     <property name="until" value="keepDone"/>
    </properties>
   </object>
-  <object id="5" name="Guard" class="DialogFeatureComponent" gid="99" x="208" y="272" width="16" height="16">
+  <object id="5" name="Guard" class="DialogFeatureComponent" gid="103" x="208" y="272" width="16" height="16">
    <properties>
     <property name="after" value="alertKeepSigil"/>
     <property name="icon" value="dwarfGuard.png"/>
@@ -74,7 +74,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object id="6" name="Chieftain" class="dispatch" gid="100" x="176" y="16" width="16" height="16">
+  <object id="6" name="Chieftain" class="dispatch" gid="104" x="176" y="16" width="16" height="16">
    <properties>
     <property name="altIcon" value="prism.png"/>
     <property name="icon" value="dwarfKing.png"/>
@@ -85,7 +85,7 @@
     <property name="until" value="towerStart"/>
    </properties>
   </object>
-  <object id="7" name="Chieftain" class="DialogFeatureComponent" gid="100" x="176" y="16" width="16" height="16">
+  <object id="7" name="Chieftain" class="DialogFeatureComponent" gid="104" x="176" y="16" width="16" height="16">
    <properties>
     <property name="after" value="towerStart"/>
     <property name="icon" value="dwarfKing.png"/>
@@ -95,7 +95,7 @@
     <property name="until" value="towerDone"/>
    </properties>
   </object>
-  <object id="8" name="Chieftain" class="dispatch" gid="100" x="176" y="16" width="16" height="16">
+  <object id="8" name="Chieftain" class="dispatch" gid="104" x="176" y="16" width="16" height="16">
    <properties>
     <property name="after" value="towerDone"/>
     <property name="icon" value="dwarfKing.png"/>
@@ -106,7 +106,7 @@
     <property name="until" value="vezuStart"/>
    </properties>
   </object>
-  <object id="9" name="Chieftain" class="DialogFeatureComponent" gid="100" x="176" y="16" width="16" height="16">
+  <object id="9" name="Chieftain" class="DialogFeatureComponent" gid="104" x="176" y="16" width="16" height="16">
    <properties>
     <property name="after" value="vezuStart"/>
     <property name="icon" value="dwarfKing.png"/>
@@ -116,7 +116,7 @@
     <property name="until" value="gameOver"/>
    </properties>
   </object>
-  <object id="10" name="Chieftain" class="DialogFeatureComponent" gid="100" x="176" y="16" width="16" height="16">
+  <object id="10" name="Chieftain" class="DialogFeatureComponent" gid="104" x="176" y="16" width="16" height="16">
    <properties>
     <property name="after" value="gameOver"/>
     <property name="icon" value="dwarfKing.png"/>
@@ -125,7 +125,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object id="11" name="Dwarf Elder" class="DialogFeatureComponent" gid="98" x="160" y="176" width="16" height="16">
+  <object id="11" name="Dwarf Elder" class="DialogFeatureComponent" gid="102" x="160" y="176" width="16" height="16">
    <properties>
     <property name="icon" value="dwarf2.png"/>
     <property name="text" value="Vezu must be defeated, yet he has barricaded himself until his strength reaches its peak. We must find a way to break that barricade before he sallies forth on his on accord..."/>
@@ -134,7 +134,7 @@
     <property name="until" value="towerStart"/>
    </properties>
   </object>
-  <object id="12" name="Dwarf Elder" class="DialogFeatureComponent" gid="98" x="160" y="176" width="16" height="16">
+  <object id="12" name="Dwarf Elder" class="DialogFeatureComponent" gid="102" x="160" y="176" width="16" height="16">
    <properties>
     <property name="after" value="towerStart"/>
     <property name="icon" value="dwarf2.png"/>

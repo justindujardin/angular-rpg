@@ -5,14 +5,14 @@
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <tileset firstgid="72" source="tiles/objects.tsx"/>
- <tileset firstgid="90" source="tiles/creatures.tsx"/>
+ <tileset firstgid="93" source="tiles/creatures.tsx"/>
  <layer id="1" name="Terrain" width="29" height="22">
   <data encoding="csv">
 18,18,18,18,18,18,18,69,18,18,69,69,69,69,69,69,69,69,69,46,46,46,69,69,69,69,69,69,69,
 18,18,18,18,18,18,18,69,18,69,69,69,69,69,69,69,69,69,69,46,46,46,69,69,69,69,69,69,69,
 18,18,18,18,69,69,18,18,18,69,69,69,69,69,69,69,69,69,69,69,46,69,69,69,69,69,69,69,69,
 18,18,18,18,18,18,18,18,69,69,69,69,69,69,69,69,69,69,69,69,46,69,69,69,69,69,69,69,69,
-18,18,18,18,18,18,18,18,9,9,9,9,9,9,9,9,9,9,9,9,0,9,9,9,9,9,69,69,69,
+18,18,18,18,18,18,18,18,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,69,69,69,
 18,18,18,18,18,69,18,69,69,69,69,69,69,69,69,69,69,69,9,69,33,69,9,69,69,9,69,69,69,
 18,18,18,18,18,18,18,69,69,69,69,69,69,69,69,69,69,69,9,46,33,46,9,69,69,9,69,69,69,
 18,18,18,69,46,18,69,69,69,69,69,69,69,69,69,69,69,69,9,69,33,69,9,69,69,9,69,69,69,
@@ -46,7 +46,7 @@
     <property name="type" value="block"/>
    </properties>
   </object>
-  <object id="3" name="Elvish Guard" class="DialogFeatureComponent" gid="106" x="304" y="96" width="16" height="16">
+  <object id="3" name="Elvish Guard" class="DialogFeatureComponent" gid="109" x="304" y="96" width="16" height="16">
    <properties>
     <property name="icon" value="gnome3.png"/>
     <property name="text" value="Welcome, travellers from the South."/>
@@ -54,7 +54,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object id="4" name="Elvish Guard" class="DialogFeatureComponent" gid="106" x="336" y="96" width="16" height="16">
+  <object id="4" name="Elvish Guard" class="DialogFeatureComponent" gid="109" x="336" y="96" width="16" height="16">
    <properties>
     <property name="icon" value="gnome3.png"/>
     <property name="text" value="May your stay in Port Artha be peaceful and restful, despite the difficulty of these times."/>
@@ -62,7 +62,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object id="5" name="Elf" class="DialogFeatureComponent" gid="104" x="112" y="224" width="16" height="16">
+  <object id="5" name="Elf" class="DialogFeatureComponent" gid="107" x="112" y="224" width="16" height="16">
    <properties>
     <property name="icon" value="gnome.png"/>
     <property name="text" value="We once sailed dozens of boats from this port. We traded with our kin, the Merfolk. But they have since become distrustful and aggressive, attacking all vessels that sail the Wandering Sea."/>
@@ -70,7 +70,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object id="7" name="Elvish Elder" class="DialogFeatureComponent" gid="105" x="256" y="272" width="16" height="16">
+  <object id="7" name="Elvish Elder" class="DialogFeatureComponent" gid="108" x="256" y="272" width="16" height="16">
    <properties>
     <property name="icon" value="gnome2.png"/>
     <property name="text" value="We are struggling under the weight of endless Goblin assaults! It is believed that a powerful and ambitious Goblin King in the Eastern edge of the forest is behind the attacks."/>
@@ -79,7 +79,7 @@
     <property name="until" value="goblin-king"/>
    </properties>
   </object>
-  <object id="8" name="Elvish Elder" class="DialogFeatureComponent" gid="105" x="256" y="272" width="16" height="16">
+  <object id="8" name="Elvish Elder" class="DialogFeatureComponent" gid="108" x="256" y="272" width="16" height="16">
    <properties>
     <property name="after" value="goblin-king"/>
     <property name="icon" value="gnome2.png"/>
@@ -88,7 +88,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object id="9" name="Elvish Councillor" class="DialogFeatureComponent" gid="107" x="240" y="272" width="16" height="16">
+  <object id="9" name="Elvish Councillor" class="DialogFeatureComponent" gid="110" x="240" y="272" width="16" height="16">
    <properties>
     <property name="altIcon" value="goldKey.png"/>
     <property name="icon" value="gnomeKing.png"/>
@@ -98,7 +98,7 @@
     <property name="until" value="goblin-fortress-key"/>
    </properties>
   </object>
-  <object id="10" name="Elvish Councillor" class="DialogFeatureComponent" gid="107" x="240" y="272" width="16" height="16">
+  <object id="10" name="Elvish Councillor" class="DialogFeatureComponent" gid="110" x="240" y="272" width="16" height="16">
    <properties>
     <property name="after" value="goblin-fortress-key"/>
     <property name="icon" value="gnomeKing.png"/>
@@ -108,7 +108,7 @@
     <property name="until" value="goblin-king"/>
    </properties>
   </object>
-  <object id="11" name="Elvish Councillor" class="DialogFeatureComponent" gid="107" x="240" y="272" width="16" height="16">
+  <object id="11" name="Elvish Councillor" class="DialogFeatureComponent" gid="110" x="240" y="272" width="16" height="16">
    <properties>
     <property name="after" value="goblin-king"/>
     <property name="altIcon" value="rolledScroll.png"/>
@@ -119,7 +119,7 @@
     <property name="until" value="castleStart"/>
    </properties>
   </object>
-  <object id="12" name="Elvish Councillor" class="DialogFeatureComponent" gid="107" x="240" y="272" width="16" height="16">
+  <object id="12" name="Elvish Councillor" class="DialogFeatureComponent" gid="110" x="240" y="272" width="16" height="16">
    <properties>
     <property name="after" value="castleStart"/>
     <property name="icon" value="gnomeKing.png"/>
@@ -129,7 +129,7 @@
     <property name="until" value="castleDone"/>
    </properties>
   </object>
-  <object id="13" name="Elvish Councillor" class="DialogFeatureComponent" gid="107" x="240" y="272" width="16" height="16">
+  <object id="13" name="Elvish Councillor" class="DialogFeatureComponent" gid="110" x="240" y="272" width="16" height="16">
    <properties>
     <property name="after" value="castleDone"/>
     <property name="icon" value="gnomeKing.png"/>
