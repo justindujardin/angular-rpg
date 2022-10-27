@@ -1,3 +1,10 @@
+## [0.1.11](https://github.com/justindujardin/angular-rpg/compare/v0.1.10...v0.1.11) (2022-10-27)
+
+
+### Bug Fixes
+
+* **inventory:** allow swapping equipment without unequipping first ([73dd417](https://github.com/justindujardin/angular-rpg/commit/73dd41785ad4baa72229ca8c830777ee1e50db81))
+
 ## [0.1.10](https://github.com/justindujardin/angular-rpg/compare/v0.1.9...v0.1.10) (2022-10-27)
 
 
