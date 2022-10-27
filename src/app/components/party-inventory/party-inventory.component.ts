@@ -17,7 +17,7 @@ import { Component, Input, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as Immutable from 'immutable';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
-import { combineLatest, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { combineLatest, switchMap, take, withLatestFrom } from 'rxjs/operators';
 import { AppState } from '../../app.model';
 import { CombatService } from '../../models/combat/combat.service';
 import {
@@ -26,6 +26,7 @@ import {
   EntityWithEquipment,
 } from '../../models/entity/entity.model';
 import { EntityItemTypes } from '../../models/entity/entity.reducer';
+import { EQUIPMENT_SLOTS } from '../../models/game-data/game-data.model';
 import {
   GameStateEquipItemAction,
   GameStateUnequipItemAction,
@@ -55,19 +56,6 @@ export class PartyInventoryComponent implements OnDestroy {
   active: boolean = false;
 
   party$: Observable<Immutable.List<Entity>> = this.store.select(getGameParty);
-
-  /** Stream of all inventory excluding items */
-  inventory$: Observable<Immutable.List<EntityItemTypes>> = this.store
-    .select(getGameInventory)
-    .pipe(
-      map((inventory: Immutable.List<EntityItemTypes>) => {
-        return inventory
-          .filter((i: EntityItemTypes) => {
-            return i.type !== 'item';
-          })
-          .toList();
-      })
-    );
 
   /**
    * Emit on this subject to update the current index.
@@ -112,7 +100,31 @@ export class PartyInventoryComponent implements OnDestroy {
       return this.store.select(getEntityEquipment(entity?.eid));
     })
   );
-
+  /** Stream of inventory that the currentEntity$ can equip */
+  inventory$: Observable<Immutable.List<EntityItemTypes>> = this.store
+    .select(getGameInventory)
+    .pipe(
+      combineLatest(
+        this.currentEntity$,
+        (inventory: Immutable.List<EntityItemTypes>, member: EntityWithEquipment) => {
+          return inventory
+            .filter((i: EntityItemTypes) => {
+              // Is an item with a known equipment slot
+              if (EQUIPMENT_SLOTS.indexOf(i.type) !== -1) {
+                // If usedby is empty, anyone can use it
+                if ((i.usedby || []).length === 0) {
+                  return true;
+                }
+                // If the player type is in the usedby array
+                if (i.usedby.includes(member.type)) {
+                  return true;
+                }
+              }
+            })
+            .toList();
+        }
+      )
+    );
   /** Action generator from equip stream */
   private _equipSubscription: Subscription = this.doEquip$
     .pipe(
