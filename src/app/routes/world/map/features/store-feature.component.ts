@@ -3,18 +3,18 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnDestroy,
   Output,
   ViewEncapsulation,
 } from '@angular/core';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Store } from '@ngrx/store';
 import { ARMOR_DATA } from 'app/models/game-data/armors';
 import { ITEMS_DATA } from 'app/models/game-data/items';
 import { MAGIC_DATA } from 'app/models/game-data/magic';
 import { WEAPONS_DATA } from 'app/models/game-data/weapons';
 import * as Immutable from 'immutable';
-import { BehaviorSubject, from, Observable, Subject } from 'rxjs';
-import { combineLatest, map, withLatestFrom } from 'rxjs/operators';
+import { BehaviorSubject, from, Observable } from 'rxjs';
+import { combineLatest, first, map } from 'rxjs/operators';
 import { AppState } from '../../../../app.model';
 import { NotificationService } from '../../../../components/notification/notification.service';
 import {
@@ -98,10 +98,7 @@ export type StoreInventoryCategories = 'weapons' | 'armor' | 'magic' | 'misc';
   styleUrls: ['./store-feature.component.scss'],
   templateUrl: './store-feature.component.html',
 })
-export abstract class StoreFeatureComponent
-  extends TiledFeatureComponent
-  implements OnDestroy
-{
+export abstract class StoreFeatureComponent extends TiledFeatureComponent {
   /** The store items category must be set in a subclass */
   abstract category: StoreInventoryCategories;
 
@@ -119,11 +116,6 @@ export abstract class StoreFeatureComponent
     public store: Store<AppState>
   ) {
     super();
-  }
-
-  ngOnDestroy(): void {
-    this._doActionSubscription$.unsubscribe();
-    this._doToggleActionSubscription$.unsubscribe();
   }
 
   /** @internal */
@@ -178,32 +170,49 @@ export abstract class StoreFeatureComponent
    */
   inventory$: Observable<ITemplateBaseItem[]> = this._weapons$.pipe(
     combineLatest(
-      [this._armors$, this._items$, this._magics$, this._feature$],
+      [
+        this._armors$,
+        this._items$,
+        this._magics$,
+        this._feature$,
+        this._selling$,
+        this.partyInventory$,
+      ],
       (
         weapons: ITemplateWeapon[],
         armors: ITemplateArmor[],
         items: ITemplateBaseItem[],
         magics: ITemplateMagic[],
-        feature: TiledMapFeatureData
+        feature: TiledMapFeatureData,
+        selling: boolean,
+        partyInventory: Immutable.List<Item>
       ) => {
+        if (selling) {
+          return partyInventory.toJS();
+        }
         const inventory: string = feature.properties?.inventory || '';
         const inventoryIds = inventory.split(',');
         const inventoryIdMap = {};
         inventoryIds.forEach((id) => (inventoryIdMap[id] = true));
-
+        let data = [];
         switch (this.category) {
           case 'magic':
-            return magics.filter((item) => inventoryIdMap[item.id]);
+            data = magics.filter((item) => inventoryIdMap[item.id]);
+            break;
           case 'misc':
-            return items.filter((item) => inventoryIdMap[item.id]);
+            data = items.filter((item) => inventoryIdMap[item.id]);
+            break;
           case 'weapons':
-            return weapons.filter((item) => inventoryIdMap[item.id]);
+            data = weapons.filter((item) => inventoryIdMap[item.id]);
+            break;
           case 'armor':
-            return armors.filter((item) => inventoryIdMap[item.id]);
+            data = armors.filter((item) => inventoryIdMap[item.id]);
+            break;
           default:
             // If there is no category, the vendor can sell all types.
-            return items.concat(weapons).concat(armors);
+            data = items.concat(weapons).concat(armors);
         }
+        return data;
       }
     )
   );
@@ -212,19 +221,19 @@ export abstract class StoreFeatureComponent
   selling$: Observable<boolean> = this._selling$;
 
   /** @internal */
-  _selected$ = new BehaviorSubject<Item>(null);
+  _selected$ = new BehaviorSubject<Set<Item>>(new Set());
   /** The selected item to purchase/sell. */
-  selected$: Observable<Item> = this._selected$;
+  selected$: Observable<Set<Item>> = this._selected$;
 
   isBuying$: Observable<boolean> = this.selected$.pipe(
-    combineLatest([this.selling$], (selected: Item, selling: boolean) => {
-      return !selected && !selling;
+    combineLatest([this.selling$], (selected: Set<Item>, selling: boolean) => {
+      return !selected.size && !selling;
     })
   );
 
   isSelling$: Observable<boolean> = this.selected$.pipe(
-    combineLatest([this.selling$], (selected: Item, selling: boolean) => {
-      return !selected && selling;
+    combineLatest([this.selling$], (selected: Set<Item>, selling: boolean) => {
+      return !selected.size && selling;
     })
   );
 
@@ -235,62 +244,78 @@ export abstract class StoreFeatureComponent
     })
   );
 
-  /** @internal */
-  _onAction$ = new Subject<void>();
-  /** @internal */
-  _onToggleAction$ = new Subject<Item>();
+  close() {
+    this.onClose.next();
+    this._selected$.next(new Set());
+    this._selling$.next(false);
+  }
 
-  private _doToggleActionSubscription$ = this._onToggleAction$
-    .pipe(
-      withLatestFrom(this.partyInventory$, (evt, inventory: Item[]) => {
-        let selling = this._selling$.value;
-        if (!selling) {
-          if (inventory.length === 0) {
-            this.notify.show(
-              "You don't have any inventory of this type to sell.",
-              null,
-              1500
-            );
-            this._selling$.next(false);
+  toggleRowSelection(row) {
+    if (this._selected$.value.has(row)) {
+      this._selected$.value.delete(row);
+    } else {
+      this._selected$.value.add(row);
+    }
+    this._selected$.next(this._selected$.value);
+  }
+
+  sellItems() {
+    const items: Item[] = [...this._selected$.value];
+    const totalCost: number = items.reduce(
+      (prev: number, current: Item) => prev + current.value,
+      0
+    );
+    this._selected$.next(new Set());
+    items.forEach((item) => {
+      this.store.dispatch(new GameStateRemoveInventoryAction(item));
+      this.store.dispatch(new EntityRemoveItemAction(item.eid));
+    });
+    this.store.dispatch(new GameStateAddGoldAction(totalCost));
+    this.notify.show(`Sold ${items.length} items for ${totalCost} gold.`, null, 1500);
+  }
+  buyItems() {
+    const items = this._selected$.value;
+    this.store
+      .select(sliceGameState)
+      .pipe(
+        first(),
+        map((state: GameState) => {
+          const items: Item[] = [...this._selected$.value];
+          const totalCost: number = items.reduce(
+            (prev: number, current: Item) => prev + current.value,
+            0
+          );
+          if (totalCost > state.gold) {
+            this.notify.show("You don't have enough money");
             return;
           }
-        }
-        this._selling$.next(!selling);
-      })
-    )
-    .subscribe();
+          this._selected$.next(new Set());
+          items.forEach((item) => {
+            const itemInstance = instantiateEntity<Item>(item);
+            this.store.dispatch(new EntityAddItemAction(itemInstance));
+            this.store.dispatch(new GameStateAddInventoryAction(itemInstance));
+          });
+          this.store.dispatch(new GameStateAddGoldAction(-totalCost));
+          this.notify.show(
+            `Purchased ${items.length} items for ${totalCost} gold.`,
+            null,
+            1500
+          );
+        })
+      )
+      .subscribe();
+  }
 
-  /** Stream of clicks on the actionable button */
-  private _doActionSubscription$ = this._onAction$
-    .pipe(
-      withLatestFrom(this.store.select(sliceGameState), (evt, model: GameState) => {
-        if (!this._selected$.value) {
-          return;
-        }
-        const item = this._selected$.value;
-        const isSelling = this._selling$.value;
-        const value: number = item.value;
-        if (!isSelling && value > model.gold) {
-          this.notify.show("You don't have enough money");
-          return;
-        }
-
-        this._selected$.next(null);
-        this._selling$.next(false);
-
-        if (isSelling) {
-          this.notify.show(`Sold ${item.name} for ${item.value} gold.`, null, 1500);
-          this.store.dispatch(new GameStateRemoveInventoryAction(item));
-          this.store.dispatch(new EntityRemoveItemAction(item.eid));
-          this.store.dispatch(new GameStateAddGoldAction(value));
-        } else {
-          const itemInstance = instantiateEntity<Item>(item);
-          this.notify.show(`Purchased ${item.name}.`, null, 1500);
-          this.store.dispatch(new GameStateAddGoldAction(-value));
-          this.store.dispatch(new EntityAddItemAction(itemInstance));
-          this.store.dispatch(new GameStateAddInventoryAction(itemInstance));
-        }
-      })
-    )
-    .subscribe();
+  tabChange(event: MatTabChangeEvent) {
+    const isSelling = this._selling$.value;
+    const newTab = event.tab.textLabel;
+    if (newTab === 'Buy' && isSelling) {
+      this._selling$.next(false);
+    } else if (newTab === 'Sell' && !isSelling) {
+      this._selling$.next(true);
+    } else {
+      return;
+    }
+    this._selected$.next(new Set());
+  }
 }

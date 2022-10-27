@@ -1,64 +1,75 @@
 <div layout="column" class="rpg-game-store" layout-padding *ngIf="active$ | async">
   <div class="title">
-    <h1>{{ actionVerb$ | async }} {{ name$ | async }}</h1>
+    <h1>{{ name$ | async }}</h1>
+  </div>
+
+  <div class="inventory" layout-padding flex>
+    <mat-tab-group
+      mat-stretch-tabs
+      animationDuration="0ms"
+      color="accent"
+      (selectedTabChange)="tabChange($event)"
+    >
+      <mat-tab label="Buy"></mat-tab>
+      <mat-tab label="Sell"></mat-tab>
+    </mat-tab-group>
+    <table mat-table [dataSource]="inventory$ | async">
+      <ng-container matColumnDef="icon">
+        <th mat-header-cell *matHeaderCellDef>Item</th>
+        <td mat-cell *matCellDef="let item">
+          <div class="item-icon">
+            <rpg-sprite
+              width="32"
+              height="32"
+              class="icon"
+              [name]="item.icon"
+            ></rpg-sprite>
+            <span flex class="item-name" [innerText]="item.name"></span>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="value">
+        <th mat-header-cell *matHeaderCellDef>Value</th>
+        <td mat-cell *matCellDef="let item">
+          <span class="item-price" [innerText]="item.value"></span>
+        </td>
+      </ng-container>
+
+      <tr
+        mat-row
+        class="item-value"
+        *matRowDef="let row; columns: ['icon', 'value']"
+        (click)="toggleRowSelection(row)"
+        [class.selected]="(selected$ | async).has(row)"
+      ></tr>
+    </table>
+    <h1 *ngIf="!(inventory$ | async).length">No Items</h1>
+  </div>
+
+  <footer class="actions">
+    <button mat-raised-button (click)="close()" color="primary">Exit</button>
     <div class="money">
       <rpg-sprite width="32" height="32" class="icon" name="gold.png"></rpg-sprite>
       <span>{{ partyGold$ | async }}</span>
     </div>
-  </div>
-
-  <div class="inventory" layout-padding flex>
-    <ul *ngIf="isBuying$ | async">
-      <li
-        class="item"
-        *ngFor="let item of inventory$ | async"
-        (click)="_selected$.next(item)"
-        layout="row"
-      >
-        <rpg-sprite width="32" height="32" class="icon" [name]="item.icon"></rpg-sprite>
-        <span flex class="item-name" [innerText]="item.name"></span>
-        <span class="item-price" [innerText]="item.value"></span>
-      </li>
-    </ul>
-
-    <ul *ngIf="isSelling$ | async">
-      <li
-        class="item"
-        *ngFor="let item of partyInventory$ | async"
-        (click)="_selected$.next(item)"
-        layout="row"
-      >
-        <rpg-sprite width="32" height="32" class="icon" [name]="item.icon"></rpg-sprite>
-        <span flex class="item-name" [innerText]="item.name"></span>
-        <span class="item-price" [innerText]="item.value"></span>
-      </li>
-    </ul>
-    <ul *ngIf="selected$ | async">
-      <li class="item selected" layout="row">
-        <rpg-sprite
-          width="32"
-          height="32"
-          class="icon"
-          [name]="(selected$ | async)?.icon"
-        ></rpg-sprite>
-        <span flex class="item-name" [innerText]="(selected$ | async)?.name"></span>
-        <span class="item-price" [innerText]="(selected$ | async)?.value"></span>
-      </li>
-    </ul>
-  </div>
-
-  <div class="prompt btn-group" *ngIf="selected$ | async">
-    <button (click)="_selected$.next(null)">Back</button>
     <button
-      (click)="_onAction$.next()"
-      [innerText]="(selling$ | async) ? 'Sell' : 'Buy'"
-    ></button>
-  </div>
-  <div class="prompt btn-group" *ngIf="!(selected$ | async)">
-    <button (click)="onClose.next($event)">Done</button>
+      mat-raised-button
+      (click)="buyItems()"
+      [disabled]="!(selected$ | async).size"
+      *ngIf="!(selling$ | async)"
+      color="accent"
+    >
+      Buy
+    </button>
     <button
-      (click)="_onToggleAction$.next()"
-      [innerText]="(selling$ | async) ? 'Back' : 'Sell'"
-    ></button>
-  </div>
+      mat-raised-button
+      (click)="sellItems()"
+      [disabled]="!(selected$ | async).size"
+      *ngIf="selling$ | async"
+      color="accent"
+    >
+      Sell
+    </button>
+  </footer>
 </div>

@@ -121,7 +121,6 @@
     transition: all 0.3s;
   }
   &:before {
-    speak: none;
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
@@ -137,9 +136,9 @@
   border: 3px solid #fff;
   color: #fff;
   /* Button 1a */
-  &:hover,
-  &:active,
-  &.ng-click-active {
+  &:hover:enabled,
+  &:active:enabled,
+  &.ng-click-active:enabled {
     color: #0e83cd;
     background: #fff;
   }
@@ -155,12 +154,12 @@
   transition: none;
 
   border-radius: 0 0 5px 5px;
-  &:hover {
+  &:hover:enabled {
     box-shadow: 0 4px #ab3c3c;
     top: 2px;
   }
-  &:active,
-  &.ng-click-active {
+  &:active:enabled,
+  &.ng-click-active:enabled {
     box-shadow: 0 0 #ab3c3c;
     top: 6px;
   }
