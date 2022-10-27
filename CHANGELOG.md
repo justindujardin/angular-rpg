@@ -1,3 +1,10 @@
+## [0.1.13](https://github.com/justindujardin/angular-rpg/compare/v0.1.12...v0.1.13) (2022-10-27)
+
+
+### Features
+
+* **tiled:** add template Tiled editor project ([cf689b2](https://github.com/justindujardin/angular-rpg/commit/cf689b265f03ca212158ae95107591aa6f4968f4))
+
 ## [0.1.12](https://github.com/justindujardin/angular-rpg/compare/v0.1.11...v0.1.12) (2022-10-27)
 
 
