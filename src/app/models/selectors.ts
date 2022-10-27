@@ -214,3 +214,28 @@ export const getGameInventory = createSelector(
       .toList();
   }
 );
+
+/** Get game Party with equipment objects resolved */
+export const getGamePartyWithEquipment = createSelector(
+  getGameParty,
+  getEntityItemById,
+  (party: Immutable.List<Entity>, items: Immutable.Map<string, EntityItemTypes>) => {
+    return party
+      .map((entity) => {
+        if (!entity) {
+          return null;
+        }
+        const result: Partial<EntityWithEquipment> = {
+          armor: items.get(entity.armor) as ITemplateArmor,
+          helm: items.get(entity.helm) as ITemplateArmor,
+          shield: items.get(entity.shield) as ITemplateArmor,
+          accessory: items.get(entity.accessory) as ITemplateArmor,
+          boots: items.get(entity.boots) as ITemplateArmor,
+          weapon: items.get(entity.weapon) as ITemplateWeapon,
+        };
+        return Object.assign({}, entity, result) as EntityWithEquipment;
+      })
+      .filter((r) => r !== null)
+      .toList();
+  }
+);

@@ -17,10 +17,12 @@ import { BehaviorSubject, from, Observable } from 'rxjs';
 import { combineLatest, first, map } from 'rxjs/operators';
 import { AppState } from '../../../../app.model';
 import { NotificationService } from '../../../../components/notification/notification.service';
+import { IPartyMember } from '../../../../models/base-entity';
 import {
   EntityAddItemAction,
   EntityRemoveItemAction,
 } from '../../../../models/entity/entity.actions';
+import { EntityWithEquipment } from '../../../../models/entity/entity.model';
 import {
   instantiateEntity,
   ITemplateArmor,
@@ -38,6 +40,7 @@ import { Item } from '../../../../models/item';
 import {
   getGameInventory,
   getGamePartyGold,
+  getGamePartyWithEquipment,
   sliceGameState,
 } from '../../../../models/selectors';
 import { IScene } from '../../../../scene/scene.model';
@@ -91,6 +94,14 @@ export function itemInGroups(item: ITemplateBaseItem, groups: string[]): boolean
  */
 export type StoreInventoryCategories = 'weapons' | 'armor' | 'magic' | 'misc';
 
+type StoreComparableTypes = ITemplateWeapon | ITemplateArmor | ITemplateMagic;
+
+interface IEquipmentDifference {
+  member: IPartyMember;
+  difference: number;
+  diff: string;
+}
+
 @Component({
   selector: 'store-feature',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -119,8 +130,6 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
   }
 
   /** @internal */
-  private _level$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
-  /** @internal */
   private _weapons$: Observable<ITemplateWeapon[]> = from([WEAPONS_DATA]);
   /** @internal */
   private _armors$: Observable<ITemplateArmor[]> = from([ARMOR_DATA]);
@@ -137,21 +146,9 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
   name$: Observable<string> = this.feature$.pipe(map(getFeatureProperty('name')));
 
   /**
-   * The item groups that this vendor sells
-   */
-  groups$: Observable<string[]> = this.feature$.pipe(
-    map(getFeatureProperty('groups', []))
-  );
-
-  /**
    * The amount of gold the party has to spend
    */
   partyGold$: Observable<number> = this.store.select(getGamePartyGold);
-
-  /**
-   * The level of items available at this store
-   */
-  level$: Observable<number> = this._level$;
 
   /**
    * The items that the party has available to sell to the merchant
@@ -224,6 +221,59 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
   _selected$ = new BehaviorSubject<Set<Item>>(new Set());
   /** The selected item to purchase/sell. */
   selected$: Observable<Set<Item>> = this._selected$;
+  /** The currently selected player entity with its equipment resolved to items rather than item ids */
+  partyWithEquipment$: Observable<Immutable.List<EntityWithEquipment>> =
+    this.store.select(getGamePartyWithEquipment);
+
+  differences$: Observable<IEquipmentDifference[]> = this.selected$.pipe(
+    combineLatest(
+      [this.partyWithEquipment$],
+      (
+        selected: Set<Item>,
+        party: Immutable.List<EntityWithEquipment>
+      ): IEquipmentDifference[] => {
+        let results: IEquipmentDifference[] = [];
+        if (selected.size != 1) {
+          results = party.map((pm) => ({ member: pm, difference: 0, diff: '' })).toJS();
+        } else {
+          const compareItem = [...selected][0];
+          results = party
+            .map((pm: EntityWithEquipment) => {
+              // TODO: the item types here aren't quite right.
+              const weapon: ITemplateWeapon = compareItem as any;
+              const armor: ITemplateArmor = compareItem as any;
+
+              // Only compare items we can wield
+              const usedBy = compareItem.usedby || [];
+              if (usedBy.indexOf(pm.type) !== -1 || usedBy.length === 0) {
+                if (pm.weapon && weapon.attack !== undefined) {
+                  return { member: pm, difference: weapon.attack - pm.weapon.attack };
+                } else if (pm[armor.type] && armor.defense !== undefined) {
+                  return {
+                    member: pm,
+                    difference: armor.defense - pm[armor.type].defense,
+                  };
+                }
+              }
+              return { member: pm, difference: 0, diff: '' };
+            })
+            .toJS();
+        }
+        return results.map((r) => {
+          if (!r.hasOwnProperty('diff')) {
+            if (r.difference > 0) {
+              r.diff = `+${r.difference}`;
+            } else if (r.difference < 0) {
+              r.diff = `-${r.difference}`;
+            } else {
+              r.diff = '0';
+            }
+          }
+          return r;
+        });
+      }
+    )
+  );
 
   isBuying$: Observable<boolean> = this.selected$.pipe(
     combineLatest([this.selling$], (selected: Set<Item>, selling: boolean) => {
@@ -249,14 +299,26 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
     this._selected$.next(new Set());
     this._selling$.next(false);
   }
-
-  toggleRowSelection(row) {
-    if (this._selected$.value.has(row)) {
-      this._selected$.value.delete(row);
+  trackByEid(index, item) {
+    return item.member.id;
+  }
+  toggleRowSelection(event, row) {
+    // Shift for multiple selection
+    if (event.shiftKey) {
+      if (this._selected$.value.has(row)) {
+        this._selected$.value.delete(row);
+      } else {
+        this._selected$.value.add(row);
+      }
+      this._selected$.next(this._selected$.value);
     } else {
-      this._selected$.value.add(row);
+      // Toggle selection state
+      if (this._selected$.value.has(row)) {
+        this._selected$.next(new Set([]));
+      } else {
+        this._selected$.next(new Set([row]));
+      }
     }
-    this._selected$.next(this._selected$.value);
   }
 
   sellItems() {
@@ -274,7 +336,6 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
     this.notify.show(`Sold ${items.length} items for ${totalCost} gold.`, null, 1500);
   }
   buyItems() {
-    const items = this._selected$.value;
     this.store
       .select(sliceGameState)
       .pipe(

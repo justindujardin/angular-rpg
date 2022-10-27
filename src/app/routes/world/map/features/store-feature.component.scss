@@ -8,6 +8,7 @@
   @include pow-dialog();
   color: white;
   display: block;
+  user-select: none;
   h1 {
     margin: auto;
   }
@@ -17,6 +18,33 @@
     position: relative;
     margin-bottom: 0;
     padding-bottom: 15px;
+  }
+  .differences {
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    > div {
+      position: relative;
+      padding-top: 15px;
+      rpg-sprite {
+        display: block;
+        &.disabled {
+          opacity: 0.4;
+        }
+      }
+      > strong {
+        position: absolute;
+        right: -10px;
+        top: 0px;
+        &.upgrade {
+          color: $gameGold;
+        }
+        &.downgrade {
+          color: #ab3c3c;
+        }
+      }
+    }
   }
 
   .inventory {
