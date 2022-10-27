@@ -6,8 +6,10 @@
   min-width: 320px;
   z-index: $zCanvasGui;
   @include pow-dialog();
+  overflow-y: auto;
   color: white;
   display: block;
+  user-select: none;
   h1 {
     margin: auto;
   }
@@ -17,6 +19,33 @@
     position: relative;
     margin-bottom: 0;
     padding-bottom: 15px;
+  }
+  .differences {
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    > div {
+      position: relative;
+      padding-top: 15px;
+      rpg-sprite {
+        display: block;
+        &.disabled {
+          opacity: 0.4;
+        }
+      }
+      > strong {
+        position: absolute;
+        right: -10px;
+        top: 0px;
+        &.upgrade {
+          color: $gameGold;
+        }
+        &.downgrade {
+          color: #ab3c3c;
+        }
+      }
+    }
   }
 
   .inventory {
@@ -71,6 +100,18 @@
       span {
         margin-left: 4px;
       }
+    }
+  }
+
+  // Fit dialog to full screen and remove margins
+  @media (max-height: 600px) {
+    font-size: inherit;
+    // margin: 0;
+    padding: 4px;
+    max-height: 100%;
+    box-sizing: border-box;
+    .title {
+      padding: 4px;
     }
   }
 }

@@ -14,14 +14,18 @@ import { MAGIC_DATA } from 'app/models/game-data/magic';
 import { WEAPONS_DATA } from 'app/models/game-data/weapons';
 import * as Immutable from 'immutable';
 import { BehaviorSubject, from, Observable } from 'rxjs';
-import { combineLatest, first, map } from 'rxjs/operators';
+import { combineLatest, first, map, withLatestFrom } from 'rxjs/operators';
 import { AppState } from '../../../../app.model';
 import { NotificationService } from '../../../../components/notification/notification.service';
+import { IEntityObject, IPartyMember } from '../../../../models/base-entity';
 import {
   EntityAddItemAction,
   EntityRemoveItemAction,
 } from '../../../../models/entity/entity.actions';
+import { EntityWithEquipment } from '../../../../models/entity/entity.model';
 import {
+  EquipmentSlotTypes,
+  EQUIPMENT_SLOTS,
   instantiateEntity,
   ITemplateArmor,
   ITemplateBaseItem,
@@ -31,13 +35,16 @@ import {
 import {
   GameStateAddGoldAction,
   GameStateAddInventoryAction,
+  GameStateEquipItemAction,
   GameStateRemoveInventoryAction,
+  GameStateUnequipItemAction,
 } from '../../../../models/game-state/game-state.actions';
 import { GameState } from '../../../../models/game-state/game-state.model';
 import { Item } from '../../../../models/item';
 import {
   getGameInventory,
   getGamePartyGold,
+  getGamePartyWithEquipment,
   sliceGameState,
 } from '../../../../models/selectors';
 import { IScene } from '../../../../scene/scene.model';
@@ -91,6 +98,14 @@ export function itemInGroups(item: ITemplateBaseItem, groups: string[]): boolean
  */
 export type StoreInventoryCategories = 'weapons' | 'armor' | 'magic' | 'misc';
 
+type StoreComparableTypes = ITemplateWeapon | ITemplateArmor | ITemplateMagic;
+
+interface IEquipmentDifference {
+  member: IPartyMember;
+  difference: number;
+  diff: string;
+}
+
 @Component({
   selector: 'store-feature',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -119,8 +134,6 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
   }
 
   /** @internal */
-  private _level$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
-  /** @internal */
   private _weapons$: Observable<ITemplateWeapon[]> = from([WEAPONS_DATA]);
   /** @internal */
   private _armors$: Observable<ITemplateArmor[]> = from([ARMOR_DATA]);
@@ -137,21 +150,9 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
   name$: Observable<string> = this.feature$.pipe(map(getFeatureProperty('name')));
 
   /**
-   * The item groups that this vendor sells
-   */
-  groups$: Observable<string[]> = this.feature$.pipe(
-    map(getFeatureProperty('groups', []))
-  );
-
-  /**
    * The amount of gold the party has to spend
    */
   partyGold$: Observable<number> = this.store.select(getGamePartyGold);
-
-  /**
-   * The level of items available at this store
-   */
-  level$: Observable<number> = this._level$;
 
   /**
    * The items that the party has available to sell to the merchant
@@ -224,6 +225,76 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
   _selected$ = new BehaviorSubject<Set<Item>>(new Set());
   /** The selected item to purchase/sell. */
   selected$: Observable<Set<Item>> = this._selected$;
+  /** The currently selected player entity with its equipment resolved to items rather than item ids */
+  partyWithEquipment$: Observable<Immutable.List<EntityWithEquipment>> =
+    this.store.select(getGamePartyWithEquipment);
+
+  differences$: Observable<IEquipmentDifference[]> = this.selected$.pipe(
+    combineLatest(
+      [this.partyWithEquipment$],
+      (
+        selected: Set<Item>,
+        party: Immutable.List<EntityWithEquipment>
+      ): IEquipmentDifference[] => {
+        let results: IEquipmentDifference[] = [];
+        if (selected.size != 1) {
+          results = party.map((pm) => ({ member: pm, difference: 0, diff: '' })).toJS();
+        } else {
+          const compareItem = [...selected][0];
+          results = party
+            .map((pm: EntityWithEquipment) => {
+              // TODO: the item types here aren't quite right.
+              const weapon: ITemplateWeapon = compareItem as any;
+              const armor: ITemplateArmor = compareItem as any;
+
+              // Only compare items we can wield
+              const usedBy = compareItem.usedby || [];
+              if (usedBy.indexOf(pm.type) !== -1 || usedBy.length === 0) {
+                if (weapon.attack !== undefined) {
+                  // Compare to current weapon
+                  if (pm.weapon) {
+                    return { member: pm, difference: weapon.attack - pm.weapon.attack };
+                  }
+                  // Has no current weapon
+                  return {
+                    member: pm,
+                    difference: weapon.attack,
+                  };
+                } else if (armor.defense !== undefined) {
+                  // Compare to current armor piece
+                  if (pm[armor.type]) {
+                    return {
+                      member: pm,
+                      difference: armor.defense - pm[armor.type].defense,
+                    };
+                  }
+                  // Has no current armor piece
+                  return {
+                    member: pm,
+                    difference: armor.defense,
+                  };
+                }
+              }
+              // Cannot be equipped
+              return { member: pm, difference: 0, diff: '' };
+            })
+            .toJS();
+        }
+        return results.map((r) => {
+          if (!r.hasOwnProperty('diff')) {
+            if (r.difference > 0) {
+              r.diff = `+${r.difference}`;
+            } else if (r.difference < 0) {
+              r.diff = `-${r.difference}`;
+            } else {
+              r.diff = '=';
+            }
+          }
+          return r;
+        });
+      }
+    )
+  );
 
   isBuying$: Observable<boolean> = this.selected$.pipe(
     combineLatest([this.selling$], (selected: Set<Item>, selling: boolean) => {
@@ -249,14 +320,26 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
     this._selected$.next(new Set());
     this._selling$.next(false);
   }
-
-  toggleRowSelection(row) {
-    if (this._selected$.value.has(row)) {
-      this._selected$.value.delete(row);
+  trackByEid(index, item) {
+    return item.member.id;
+  }
+  toggleRowSelection(event, row) {
+    // Shift for multiple selection
+    if (event.shiftKey) {
+      if (this._selected$.value.has(row)) {
+        this._selected$.value.delete(row);
+      } else {
+        this._selected$.value.add(row);
+      }
+      this._selected$.next(this._selected$.value);
     } else {
-      this._selected$.value.add(row);
+      // Toggle selection state
+      if (this._selected$.value.has(row)) {
+        this._selected$.next(new Set([]));
+      } else {
+        this._selected$.next(new Set([row]));
+      }
     }
-    this._selected$.next(this._selected$.value);
   }
 
   sellItems() {
@@ -274,33 +357,83 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
     this.notify.show(`Sold ${items.length} items for ${totalCost} gold.`, null, 1500);
   }
   buyItems() {
-    const items = this._selected$.value;
     this.store
       .select(sliceGameState)
       .pipe(
         first(),
-        map((state: GameState) => {
-          const items: Item[] = [...this._selected$.value];
-          const totalCost: number = items.reduce(
-            (prev: number, current: Item) => prev + current.value,
-            0
-          );
-          if (totalCost > state.gold) {
-            this.notify.show("You don't have enough money");
-            return;
+        withLatestFrom(
+          this.partyWithEquipment$,
+          (state: GameState, party: Immutable.List<EntityWithEquipment>) => {
+            const items: Item[] = [...this._selected$.value];
+            const totalCost: number = items.reduce(
+              (prev: number, current: Item) => prev + current.value,
+              0
+            );
+            if (totalCost > state.gold) {
+              this.notify.show("You don't have enough money");
+              return;
+            }
+
+            let toEquipItem: Item = null;
+            items.forEach((item) => {
+              const itemInstance = instantiateEntity<Item>(item);
+              this.store.dispatch(new EntityAddItemAction(itemInstance));
+              this.store.dispatch(new GameStateAddInventoryAction(itemInstance));
+              if (items.length === 1) {
+                toEquipItem = itemInstance;
+              }
+            });
+            this.store.dispatch(new GameStateAddGoldAction(-totalCost));
+
+            // Equip newly purchased items if there's only one and it can only be
+            // wielded by one class.
+            const types: EquipmentSlotTypes[] = [...EQUIPMENT_SLOTS];
+            if (items.length === 1 && types.indexOf(toEquipItem.type)) {
+              const toEquip = party.find((p) => {
+                // If anyone can equip it, the first player always gets it (sad)
+                if (toEquipItem.usedby.length === 0) {
+                  return true;
+                }
+                return toEquipItem.usedby.indexOf(p.type) !== -1;
+              });
+              // Found equip target
+              if (toEquip) {
+                // Unequip anything that's already there
+                if (toEquip[toEquipItem.type]) {
+                  const oldItem: IEntityObject = toEquip[toEquipItem.type];
+                  this.store.dispatch(
+                    new GameStateUnequipItemAction({
+                      entityId: toEquip.eid,
+                      slot: toEquipItem.type,
+                      itemId: oldItem.eid,
+                    })
+                  );
+                }
+                this.store.dispatch(
+                  new GameStateEquipItemAction({
+                    entityId: toEquip.eid,
+                    slot: toEquipItem.type,
+                    itemId: toEquipItem.eid,
+                  })
+                );
+              }
+              this.notify.show(
+                `Purchased ${toEquipItem.name} for ${totalCost} gold and equipped it on ${toEquip.name}.`,
+                null,
+                5000
+              );
+              return;
+            }
+
+            const itemText =
+              items.length === 1 ? `${items[0].name}` : `${items.length} items`;
+            this.notify.show(
+              `Purchased ${itemText} items for ${totalCost} gold.`,
+              null,
+              1500
+            );
           }
-          items.forEach((item) => {
-            const itemInstance = instantiateEntity<Item>(item);
-            this.store.dispatch(new EntityAddItemAction(itemInstance));
-            this.store.dispatch(new GameStateAddInventoryAction(itemInstance));
-          });
-          this.store.dispatch(new GameStateAddGoldAction(-totalCost));
-          this.notify.show(
-            `Purchased ${items.length} items for ${totalCost} gold.`,
-            null,
-            1500
-          );
-        })
+        )
       )
       .subscribe();
   }

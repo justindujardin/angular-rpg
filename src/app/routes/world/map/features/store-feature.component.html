@@ -40,12 +40,31 @@
         mat-row
         class="item-value"
         *matRowDef="let row; columns: ['icon', 'value']"
-        (click)="toggleRowSelection(row)"
+        (click)="toggleRowSelection($event, row)"
         [class.selected]="(selected$ | async).has(row)"
       ></tr>
     </table>
     <h1 *ngIf="!(inventory$ | async).length">No Items</h1>
   </div>
+
+  <section class="differences">
+    <div *ngFor="let diff of differences$ | async; trackBy: trackByEid">
+      <rpg-sprite
+        [class.disabled]="
+          diff.diff == '' && !(selling$ | async) && (selected$ | async).size > 0
+        "
+        class="image"
+        [name]="diff.member.icon"
+        frame="7"
+      ></rpg-sprite>
+      <strong
+        *ngIf="diff.diff != '' && !(selling$ | async)"
+        [class.upgrade]="diff.difference > 0"
+        [class.downgrade]="diff.difference < 0"
+        >{{ diff.diff }}</strong
+      >
+    </div>
+  </section>
 
   <footer class="actions">
     <button mat-raised-button (click)="close()" color="primary">Exit</button>
