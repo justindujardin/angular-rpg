@@ -15,12 +15,16 @@ module.exports = function (config) {
     client: {
       clearContext: false, // leave Jasmine Spec Runner output visible in browser
     },
-    coverageIstanbulReporter: {
+    coverageReporter: {
       dir: require("path").join(__dirname, "./coverage/angular-rpg"),
-      reports: ["html", "lcovonly", "text-summary"],
+      reporters: [
+        { type: "html", subdir: "report-html" },
+        { type: "lcov", subdir: "report-lcov" },
+        { type: "text-summary" },
+      ],
       fixWebpackSourcePaths: true,
     },
-    reporters: ["progress", "kjhtml"],
+    reporters: ["progress", "kjhtml", "coverage"],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
