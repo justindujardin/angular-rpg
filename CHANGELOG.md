@@ -1,3 +1,32 @@
+## [0.1.10](https://github.com/justindujardin/angular-rpg/compare/v0.1.9...v0.1.10) (2022-10-27)
+
+
+### Bug Fixes
+
+* **crypt:** make it possible to get to the boss ([4353387](https://github.com/justindujardin/angular-rpg/commit/4353387c9ed3cc81bf95bb7ea82dcf9364ab91db))
+* **crypts:** add encounters and fix path to boss ([c83a040](https://github.com/justindujardin/angular-rpg/commit/c83a040f2cef65bef4c4d37ef8d5318ba00347ae))
+* **quests:** castle to crypt quest fixes ([1a6c4d1](https://github.com/justindujardin/angular-rpg/commit/1a6c4d1994339908da62ed78c620dd2be4d6a1b5))
+* **store:** bug preventing the sale of inventory items ([cbaff8a](https://github.com/justindujardin/angular-rpg/commit/cbaff8a24e67ebf7192d815d1634e018e2f30aa3))
+
+
+### Features
+
+* add BlockFeatureComponent for static blocks ([e17d795](https://github.com/justindujardin/angular-rpg/commit/e17d795ca5b1e6e7530f112a4158aba9b77b9a55))
+* **combat:** add ocean specific combat zones ([1ec920c](https://github.com/justindujardin/angular-rpg/commit/1ec920c7e797d8eaa81381ce27b97e918ba35dc6))
+* **combat:** add UI notificaiton if an enemy has no encounter data ([b6b3617](https://github.com/justindujardin/angular-rpg/commit/b6b3617fe61ddde6e59a2003ddbb7ae0ea01e8ab))
+* **combat:** fix combat in bryarlake/sewers ([7da7ca3](https://github.com/justindujardin/angular-rpg/commit/7da7ca33ea810472241d9428dd7f885e6559547c))
+* **debug-menu:** add "give gold" button that gives 1000 gold ([4d2144d](https://github.com/justindujardin/angular-rpg/commit/4d2144d87394e5f62b1a1471daabbdefb299dfd8))
+* **debug-menu:** add dev menu for easier testing ([eb454ce](https://github.com/justindujardin/angular-rpg/commit/eb454ce191d41b41560df3f7daa056e4f63d13db))
+* **debug-menu:** add table for game data sources ([3681fde](https://github.com/justindujardin/angular-rpg/commit/3681fdeac696f238f1802610494ed38a44912469))
+* **Dialogs:** resolve dialog icon from tile gid if set ([73b0e90](https://github.com/justindujardin/angular-rpg/commit/73b0e909ff8be839d90409ef0b70a9272fa23868))
+* **level-up:** combine stat increases into one notification ([c0c29ff](https://github.com/justindujardin/angular-rpg/commit/c0c29ff6e719c4b9172bdecbab6b9a918ad0e282))
+* **store:** don't deselect after purchase to allow repeated buys ([3ec3ed6](https://github.com/justindujardin/angular-rpg/commit/3ec3ed6bddea4bd09ff991d05603519107ddeaee))
+* **stores:** set store inventory in Tiled editor ([1433933](https://github.com/justindujardin/angular-rpg/commit/1433933d636ce6217cd8d2df04565992de088d54))
+* **store:** support buying/selling multiple items at once ([86e2122](https://github.com/justindujardin/angular-rpg/commit/86e21223e7f074422d5c38e793c9c70942b43ab2))
+* **tiled:** select target for portals with file picker ([28cc738](https://github.com/justindujardin/angular-rpg/commit/28cc73870cc93c13829d93f9fbf2caa2bd3b01b9))
+* **tiled:** write game data to Tiled enums automatically ([59a9c33](https://github.com/justindujardin/angular-rpg/commit/59a9c336cdde5021c5eddf33af3b9ed05e6494cf))
+* **village:** add a shop ([daa17d5](https://github.com/justindujardin/angular-rpg/commit/daa17d5ed1da73e697d17877515bee483828346b))
+
 ## [0.1.9](https://github.com/justindujardin/angular-rpg/compare/v0.1.8...v0.1.9) (2022-10-14)
 
 
