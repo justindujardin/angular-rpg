@@ -8,7 +8,9 @@
   @include pow-dialog();
   color: white;
   display: block;
-
+  h1 {
+    margin: auto;
+  }
   .title {
     text-align: center;
     display: block;
