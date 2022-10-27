@@ -3,7 +3,7 @@
     "commands": [],
     "extensionsPath": "src/tiled",
     "folders": [
-        "src"
+        "src/assets/maps/"
     ],
     "propertyTypes": [
         {
@@ -127,6 +127,7 @@
             "type": "enum",
             "values": [
                 "potion",
+                "potion-large",
                 "ether"
             ],
             "valuesAsFlags": true

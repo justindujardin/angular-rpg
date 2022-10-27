@@ -1,0 +1,38 @@
+{
+    "activeFile": "src/assets/maps/town.tmx",
+    "expandedProjectPaths": [
+        "src",
+        "src/assets/maps/templates",
+        "src/art/sprites/characters/punch",
+        "src/assets/maps",
+        "src/art/sprites",
+        "src/tiled/createdialogtool",
+        ".",
+        "src/art",
+        "src/tiled",
+        "src/assets/maps/tiles",
+        "src/art/sprites/characters/magic",
+        "src/assets/test",
+        "src/assets"
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {},
+    "openFiles": [
+        "src/assets/maps/town.tmx"
+    ],
+    "project": "angular-rpg.tiled-project",
+    "recentFiles": [
+        "src/assets/maps/town.tmx",
+        "src/assets/maps/castle.tmx",
+        "src/assets/maps/village.tmx",
+        "src/assets/maps/isle.tmx",
+        "src/assets/maps/combat.tmx",
+        "src/assets/maps/ruins.tmx",
+        "src/assets/maps/wilderness.tmx",
+        "src/assets/maps/lair.tmx",
+        "src/assets/maps/port.tmx",
+        "src/assets/maps/sewer.tmx",
+        "src/assets/maps/tower1.tmx",
+        "src/assets/maps/tower2.tmx"
+    ]
+}
