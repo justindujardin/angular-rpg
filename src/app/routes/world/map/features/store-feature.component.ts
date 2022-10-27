@@ -289,7 +289,6 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
             this.notify.show("You don't have enough money");
             return;
           }
-          this._selected$.next(new Set());
           items.forEach((item) => {
             const itemInstance = instantiateEntity<Item>(item);
             this.store.dispatch(new EntityAddItemAction(itemInstance));
