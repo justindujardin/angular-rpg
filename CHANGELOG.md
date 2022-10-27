@@ -1,3 +1,13 @@
+## [0.1.12](https://github.com/justindujardin/angular-rpg/compare/v0.1.11...v0.1.12) (2022-10-27)
+
+
+### Features
+
+* **inventory:** only show equippable items for each player ([8c7d3e6](https://github.com/justindujardin/angular-rpg/commit/8c7d3e6ce6d635b5ecd44e4d2d0395fffc310b46))
+* **store:** automatically equip single item purchases ([033b8d5](https://github.com/justindujardin/angular-rpg/commit/033b8d5ccc4fda1ea3fc706c174c9743cac0fceb))
+* **store:** make mobile responsive and scrollable ([8608f8a](https://github.com/justindujardin/angular-rpg/commit/8608f8af4de75477adf2168b723639276b909ff9))
+* **store:** show party stat changes from selected items ([a1bdf9f](https://github.com/justindujardin/angular-rpg/commit/a1bdf9fe508cb9b813d63ee59a0a3a0a1fd311cc))
+
 ## [0.1.11](https://github.com/justindujardin/angular-rpg/compare/v0.1.10...v0.1.11) (2022-10-27)
 
 
