@@ -250,15 +250,32 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
               // Only compare items we can wield
               const usedBy = compareItem.usedby || [];
               if (usedBy.indexOf(pm.type) !== -1 || usedBy.length === 0) {
-                if (pm.weapon && weapon.attack !== undefined) {
-                  return { member: pm, difference: weapon.attack - pm.weapon.attack };
-                } else if (pm[armor.type] && armor.defense !== undefined) {
+                if (weapon.attack !== undefined) {
+                  // Compare to current weapon
+                  if (pm.weapon) {
+                    return { member: pm, difference: weapon.attack - pm.weapon.attack };
+                  }
+                  // Has no current weapon
                   return {
                     member: pm,
-                    difference: armor.defense - pm[armor.type].defense,
+                    difference: weapon.attack,
+                  };
+                } else if (armor.defense !== undefined) {
+                  // Compare to current armor piece
+                  if (pm[armor.type]) {
+                    return {
+                      member: pm,
+                      difference: armor.defense - pm[armor.type].defense,
+                    };
+                  }
+                  // Has no current armor piece
+                  return {
+                    member: pm,
+                    difference: armor.defense,
                   };
                 }
               }
+              // Cannot be equipped
               return { member: pm, difference: 0, diff: '' };
             })
             .toJS();
