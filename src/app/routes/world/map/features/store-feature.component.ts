@@ -287,7 +287,7 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
             } else if (r.difference < 0) {
               r.diff = `-${r.difference}`;
             } else {
-              r.diff = '0';
+              r.diff = '=';
             }
           }
           return r;
