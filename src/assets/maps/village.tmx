@@ -2,7 +2,7 @@
 <map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="14" height="21" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="5">
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <tileset firstgid="72" source="tiles/objects.tsx"/>
- <tileset firstgid="93" source="tiles/creatures.tsx"/>
+ <tileset firstgid="98" source="tiles/creatures.tsx"/>
  <layer id="1" name="Terrain" width="14" height="21">
   <data encoding="csv">
 57,57,57,57,57,57,57,18,18,18,18,18,18,18,
@@ -36,7 +36,7 @@
     <property name="targetY" value="27"/>
    </properties>
   </object>
-  <object id="2" name="Elder" class="DialogFeatureComponent" gid="141" x="96" y="112" width="16" height="16">
+  <object id="2" name="Elder" class="DialogFeatureComponent" gid="146" x="96" y="112" width="16" height="16">
    <properties>
     <property name="text" value="Ho ho, you found us.  Good for you!"/>
     <property name="title" value="Elder"/>
@@ -49,7 +49,7 @@
     <property name="icon" value="temple.png"/>
    </properties>
   </object>
-  <object id="4" name="armors" class="ArmorsStoreFeatureComponent" gid="84" x="64" y="48" width="16" height="16">
+  <object id="4" name="armors" class="ArmorsStoreFeatureComponent" gid="97" x="64" y="48" width="16" height="16">
    <properties>
     <property name="inventory" propertytype="DataArmors" value="leather-shield,leather-armor,apprentice-hat"/>
    </properties>

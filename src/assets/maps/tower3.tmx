@@ -6,7 +6,7 @@
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <tileset firstgid="72" source="tiles/objects.tsx"/>
- <tileset firstgid="93" source="tiles/creatures.tsx"/>
+ <tileset firstgid="98" source="tiles/creatures.tsx"/>
  <layer id="1" name="Terrain" width="11" height="11">
   <data encoding="csv">
 34,34,34,34,34,34,34,34,34,34,34,
@@ -31,7 +31,7 @@
     <property name="targetY" value="5"/>
    </properties>
   </object>
-  <object id="2" name="iceMage.png" class="CombatFeatureComponent" gid="124" x="80" y="128" width="16" height="16">
+  <object id="2" name="iceMage.png" class="CombatFeatureComponent" gid="129" x="80" y="128" width="16" height="16">
    <properties>
     <property name="creatures" value=""/>
     <property name="gold" value="47"/>
