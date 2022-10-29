@@ -142,10 +142,6 @@ export class CombatEffects {
           this.store.dispatch(new GameStateSetKeyDataAction(data.id, true));
         }
 
-        // Save game
-        if (localStorage.getItem('autoSave') === 'true') {
-          this.store.dispatch(new GameStateSaveAction());
-        }
         return () => {
           // No cleanup
         };
@@ -163,6 +159,10 @@ export class CombatEffects {
     switchMap(() => this.store.select(getGameMap)),
     map((targetMap: string) => {
       assertTrue(map, 'cannot return to invalid map from combat');
+      // Save game
+      if (localStorage.getItem('autoSave') === 'true') {
+        this.store.dispatch(new GameStateSaveAction());
+      }
       return this.router.navigate(['world', targetMap]);
     })
   );
