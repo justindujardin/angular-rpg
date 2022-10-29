@@ -38,6 +38,14 @@ export class TileMap extends SceneObject {
   zones?: ITiledLayer;
   bounds: Rect = new Rect(0, 0, 10, 10);
   dirtyLayers: boolean = false;
+  /**
+   * Whether this map should render with a limited visibilty vignette
+   */
+  dark: boolean = false;
+  /**
+   * The URL of a music track to play while this map is loaded. Specified
+   * by the "music" custom property on a Tiled map.
+   */
   musicUrl: string;
   private _loaded: boolean = false;
 
@@ -60,6 +68,10 @@ export class TileMap extends SceneObject {
     this.musicUrl = '';
     if (this.map?.properties?.music) {
       this.musicUrl = this.map.properties.music;
+    }
+    this.dark = false;
+    if (this.map?.properties?.dark) {
+      this.dark = true;
     }
 
     this._loaded = true;

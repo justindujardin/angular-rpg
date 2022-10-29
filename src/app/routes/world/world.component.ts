@@ -124,7 +124,7 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
   //
   onAddToScene(scene: Scene) {
     super.onAddToScene(scene);
-    this.mouse = this.world.input.mouseHook(<SceneView>this, 'world');
+    this.mouse = this.world.input.mouseHook(this, 'world');
 
     //
     // TODO: Consider how to remove these event listeners and replace with strongly typed observables

@@ -3,6 +3,7 @@
  <properties>
   <property name="combat" value="true"/>
   <property name="combatZone" value="zone-sewer"/>
+  <property name="dark" type="bool" value="true"/>
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <tileset firstgid="72" source="tiles/objects.tsx"/>

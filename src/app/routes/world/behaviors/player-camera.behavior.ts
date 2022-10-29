@@ -36,6 +36,7 @@ export class PlayerCameraBehaviorComponent extends CameraBehavior {
 
     // Center on player object
     view.camera.setCenter(this.host.renderPoint || this.host.point);
+    view.focusPoint.set(this.host.renderPoint || this.host.point);
 
     // Clamp to tile map if it is present.
     if (this.host.tileMap) {
