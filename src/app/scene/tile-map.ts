@@ -74,7 +74,7 @@ export class TileMap extends SceneObject {
   }
 
   setMap(map: TiledTMXResource) {
-    if (!map /* || !map.isReady() */) {
+    if (!map /* || !map.isReady() */ || this.map?.url === map.url) {
       return false;
     }
     if (this.map) {
