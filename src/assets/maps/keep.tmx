@@ -156,21 +156,25 @@
   </object>
   <object id="14" name="Dwarven Armors" class="ArmorsStoreFeatureComponent" gid="97" x="112" y="96" width="16" height="16">
    <properties>
+    <property name="inventory" propertytype="DataArmors" value="coral-helm,chain-mail-armor,merman-shield,seaweed-armor"/>
     <property name="name" value="Dwarven Armors"/>
    </properties>
   </object>
   <object id="15" name="Dwarven Arms" class="WeaponsStoreFeatureComponent" gid="93" x="240" y="96" width="16" height="16">
    <properties>
+    <property name="inventory" propertytype="DataWeapons" value="magic-sword,heavy-axe,fine-bow,long-oak-staff"/>
     <property name="name" value="Dwarven Arms"/>
    </properties>
   </object>
-  <object id="16" name="Warvian Antiquities" class="ItemsStoreFeatureComponent" gid="96" x="112" y="160" width="16" height="16">
+  <object id="16" name="Warvian Antiquities" class="MagicsStoreFeatureComponent" gid="96" x="112" y="160" width="16" height="16">
    <properties>
+    <property name="inventory" propertytype="DataMagics" value="push,heal"/>
     <property name="name" value="Warvian Antiquities"/>
    </properties>
   </object>
-  <object id="17" name="Potions and Elixirs" class="MagicsStoreFeatureComponent" gid="95" x="240" y="160" width="16" height="16">
+  <object id="17" name="Potions and Elixirs" class="ItemsStoreFeatureComponent" gid="95" x="240" y="160" width="16" height="16">
    <properties>
+    <property name="inventory" propertytype="DataItems" value="potion,potion-large,ether"/>
     <property name="name" value="Potions and Elixirs"/>
    </properties>
   </object>

@@ -56,6 +56,7 @@
     <property name="buyRate" value="130"/>
     <property name="groups" value="[&quot;default&quot;,&quot;water&quot;]"/>
     <property name="icon" value="shop.png"/>
+    <property name="inventory" propertytype="DataWeapons" value="coral-staff,narwhal-sword"/>
     <property name="level" value="5"/>
     <property name="name" value="Buccaneer's Bazaar"/>
     <property name="sellRate" value="25"/>
