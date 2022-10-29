@@ -15,7 +15,7 @@
  */
 import * as _ from 'underscore';
 import { CameraBehavior } from '../behaviors/camera-behavior';
-import { IRect, Point, Rect } from '../core';
+import { Point, Rect } from '../core';
 import { TileMapRenderer } from './render/tile-map-renderer';
 import { Scene } from './scene';
 import { SceneObject } from './scene-object';
@@ -112,25 +112,6 @@ export class SceneView extends SceneObject implements ISceneView {
     const clipGrow = this.camera.clone();
     clipGrow.point.round();
     clipGrow.extent.round();
-
-    // Clamp to tilemap bounds.
-    const rect: IRect = this.map.bounds;
-    if (clipGrow.point.x < rect.point.x) {
-      // NOTE: -1 here because the rendering is offset by half a tile (center origin)
-      clipGrow.point.x += rect.point.x - 1 - clipGrow.point.x;
-    }
-    if (clipGrow.point.y < rect.point.y) {
-      // NOTE: -1 here because the rendering is offset by half a tile (center origin)
-      clipGrow.point.y += rect.point.y - 1 - clipGrow.point.y;
-    }
-    if (clipGrow.point.x + clipGrow.extent.x > rect.point.x + rect.extent.x) {
-      clipGrow.point.x -=
-        clipGrow.point.x + clipGrow.extent.x - (rect.point.x + rect.extent.x);
-    }
-    if (clipGrow.point.y + clipGrow.extent.y > rect.point.y + rect.extent.y) {
-      clipGrow.point.y -=
-        clipGrow.point.y + clipGrow.extent.y - (rect.point.y + rect.extent.y);
-    }
     return clipGrow;
   }
 

@@ -54,12 +54,12 @@ export const RANDOM_ENCOUNTERS_DATA: ITemplateRandomEncounter[] = [
   },
   {
     id: 'world-fortress-archer',
-    zones: ['zone-goblin-fortress'],
+    zones: ['zone-dungeon'],
     enemies: ['goblin-archer', 'goblin-archer'],
   },
   {
     id: 'world-fortress-spear',
-    zones: ['zone-goblin-fortress'],
+    zones: ['zone-dungeon'],
     enemies: ['goblin-spear', 'goblin'],
   },
 ];
