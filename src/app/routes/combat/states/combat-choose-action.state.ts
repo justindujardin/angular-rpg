@@ -58,24 +58,7 @@ export interface ICombatMenuItem {
 @Component({
   selector: 'combat-choose-action-state',
   styleUrls: ['./combat-choose-action.state.scss'],
-  template: `<ul *ngIf="items.length > 0" class="ebp action-menu">
-      <li
-        *ngFor="let item of items"
-        [attr.data-sectionvalue]="item"
-        [class.selected]="pointAt?._uid == item.source?._uid"
-        (click)="item.select()"
-        (mouseover)="pointAtItem(item)"
-        [innerText]="item.label"
-      ></li>
-    </ul>
-    <span
-      #combatPointer
-      class="point-to-player"
-      [class.hidden]="!pointAt"
-      [style.left]="(pointerPosition$ | async)?.x + 'px'"
-      [style.top]="(pointerPosition$ | async)?.y + 'px'"
-    ></span>
-    <ng-content></ng-content>`,
+  templateUrl: './combat-choose-action.state.html',
 })
 export class CombatChooseActionStateComponent
   extends CombatMachineState

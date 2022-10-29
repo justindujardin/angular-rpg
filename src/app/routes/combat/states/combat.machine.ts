@@ -65,18 +65,7 @@ export interface IPlayerAction {
 
 @Component({
   selector: 'combat-state-machine',
-  template: `
-    <combat-start-state #start></combat-start-state>
-    <combat-begin-turn-state #beginTurn></combat-begin-turn-state>
-    <combat-choose-action-state
-      [pointAt]="current"
-      #chooseAction
-    ></combat-choose-action-state>
-    <combat-end-turn-state #endTurn></combat-end-turn-state>
-    <combat-defeat-state #defeat></combat-defeat-state>
-    <combat-victory-state #victory></combat-victory-state>
-    <combat-escape-state #escape></combat-escape-state>
-  `,
+  templateUrl: './combat.machine.html',
 })
 export class CombatStateMachineComponent
   extends StateMachine<CombatStateNames>
