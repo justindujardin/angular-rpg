@@ -159,7 +159,7 @@
                 "world-plains",
                 "world-sand",
                 "zone-crypt",
-                "zone-goblin-fortress",
+                "zone-dungeon",
                 "zone-sewer",
                 "zone-village"
             ],
@@ -379,26 +379,6 @@
             "color": "#ffa41341",
             "id": 2,
             "members": [
-                {
-                    "name": "category",
-                    "type": "string",
-                    "value": ""
-                },
-                {
-                    "name": "groups",
-                    "type": "string",
-                    "value": ""
-                },
-                {
-                    "name": "icon",
-                    "type": "string",
-                    "value": ""
-                },
-                {
-                    "name": "level",
-                    "type": "int",
-                    "value": 0
-                },
                 {
                     "name": "name",
                     "type": "string",
