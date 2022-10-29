@@ -1,3 +1,11 @@
+## [0.1.15](https://github.com/justindujardin/angular-rpg/compare/v0.1.14...v0.1.15) (2022-10-29)
+
+
+### Features
+
+* **map:** add 'dark' for dungeon maps ([cde4d5b](https://github.com/justindujardin/angular-rpg/commit/cde4d5b34b575957aca757103e21de75cba3a6ec))
+* **maps:** add music property for background music ([89bd42f](https://github.com/justindujardin/angular-rpg/commit/89bd42f414f01ab339ce5f7062c1093c19dfc659))
+
 ## [0.1.14](https://github.com/justindujardin/angular-rpg/compare/v0.1.13...v0.1.14) (2022-10-29)
 
 
