@@ -1,3 +1,10 @@
+## [0.1.14](https://github.com/justindujardin/angular-rpg/compare/v0.1.13...v0.1.14) (2022-10-29)
+
+
+### Features
+
+* **store:** add custom icons for each store type ([5763d73](https://github.com/justindujardin/angular-rpg/commit/5763d7387b3f42d3d6b200f03b1bdea8b16a8150))
+
 ## [0.1.13](https://github.com/justindujardin/angular-rpg/compare/v0.1.12...v0.1.13) (2022-10-27)
 
 
