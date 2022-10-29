@@ -159,7 +159,7 @@
     <property name="title" value="Citizen"/>
    </properties>
   </object>
-  <object id="16" name="Suvian Armors" class="ArmorsStoreFeatureComponent" gid="169" x="480" y="64" width="16" height="16">
+  <object id="16" name="Suvian Armors" class="ArmorsStoreFeatureComponent" gid="182" x="480" y="64" width="16" height="16">
    <properties>
     <property name="buyRate" value="120"/>
     <property name="category" value="armor"/>
@@ -171,7 +171,7 @@
     <property name="sellRate" value="30"/>
    </properties>
   </object>
-  <object id="17" name="Suvian Arms" class="WeaponsStoreFeatureComponent" gid="169" x="416" y="64" width="16" height="16">
+  <object id="17" name="Suvian Arms" class="WeaponsStoreFeatureComponent" gid="178" x="416" y="64" width="16" height="16">
    <properties>
     <property name="buyRate" value="120"/>
     <property name="category" value="weapons"/>
@@ -183,7 +183,7 @@
     <property name="sellRate" value="30"/>
    </properties>
   </object>
-  <object id="18" name="Suvian Artifacts" class="MagicsStoreFeatureComponent" gid="169" x="448" y="32" width="16" height="16">
+  <object id="18" name="Suvian Artifacts" class="MagicsStoreFeatureComponent" gid="181" x="448" y="32" width="16" height="16">
    <properties>
     <property name="buyRate" value="120"/>
     <property name="category" value="accessories"/>
@@ -195,7 +195,7 @@
     <property name="sellRate" value="20"/>
    </properties>
   </object>
-  <object id="19" name="Ashvari Apothecary" class="ItemsStoreFeatureComponent" gid="169" x="64" y="128" width="16" height="16">
+  <object id="19" name="Ashvari Apothecary" class="ItemsStoreFeatureComponent" gid="180" x="64" y="128" width="16" height="16">
    <properties>
     <property name="inventory" propertytype="DataItems" value="potion"/>
     <property name="name" value="Ashvari Apothecary"/>

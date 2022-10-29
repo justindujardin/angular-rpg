@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="27" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="15">
- <properties>
-  <property name="music" value="assets/music/TownTheme"/>
- </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <tileset firstgid="72" source="tiles/objects.tsx"/>
- <tileset firstgid="93" source="tiles/creatures.tsx"/>
+ <tileset firstgid="98" source="tiles/creatures.tsx"/>
  <layer id="1" name="Terrain" width="27" height="22">
   <data encoding="csv">
 46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,
@@ -45,7 +42,7 @@
     <property name="targetY" value="51"/>
    </properties>
   </object>
-  <object id="3" name="Guard" class="DialogFeatureComponent" gid="159" x="176" y="96" width="16" height="16">
+  <object id="3" name="Guard" class="DialogFeatureComponent" gid="164" x="176" y="96" width="16" height="16">
    <properties>
     <property name="icon" value="soldier.png"/>
     <property name="text" value="Don't forget to equip basic weapons and armor before wandering too far from town."/>
@@ -53,7 +50,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object id="4" name="Guard" class="DialogFeatureComponent" gid="159" x="208" y="96" width="16" height="16">
+  <object id="4" name="Guard" class="DialogFeatureComponent" gid="164" x="208" y="96" width="16" height="16">
    <properties>
     <property name="icon" value="soldier.png"/>
     <property name="text" value="Be careful exploring heavily forested areas as they contain more monsters than the open fields."/>
@@ -61,7 +58,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object id="5" name="Citizen" class="DialogFeatureComponent" gid="131" x="128" y="256" width="16" height="16">
+  <object id="5" name="Citizen" class="DialogFeatureComponent" gid="136" x="128" y="256" width="16" height="16">
    <properties>
     <property name="icon" value="man.png"/>
     <property name="text" value="I hear the Kobolds have an armory in the sewers beneath the ruins north of here.  It's well-guarded, and for good reason. I bet they have some nice weapons in there."/>
@@ -75,7 +72,7 @@
     <property name="icon" value="temple.png"/>
    </properties>
   </object>
-  <object id="7" name="Weapons" class="WeaponsStoreFeatureComponent" gid="84" x="96" y="112" width="16" height="16">
+  <object id="7" name="Weapons" class="WeaponsStoreFeatureComponent" gid="93" x="96" y="112" width="16" height="16">
    <properties>
     <property name="category" value="weapons"/>
     <property name="groups" value="default"/>
@@ -86,7 +83,7 @@
     <property name="sellRate" value="35"/>
    </properties>
   </object>
-  <object id="8" name="Armors" class="ArmorsStoreFeatureComponent" gid="84" x="96" y="176" width="16" height="16">
+  <object id="8" name="Armors" class="ArmorsStoreFeatureComponent" gid="97" x="96" y="176" width="16" height="16">
    <properties>
     <property name="category" value="armor"/>
     <property name="groups" value="default"/>
@@ -110,7 +107,7 @@
     <property name="targetY" value="53"/>
    </properties>
   </object>
-  <object id="11" name="Items" class="ItemsStoreFeatureComponent" gid="84" x="272" y="144" width="16" height="16">
+  <object id="11" name="Items" class="ItemsStoreFeatureComponent" gid="95" x="272" y="144" width="16" height="16">
    <properties>
     <property name="category" value="magic"/>
     <property name="groups" value="default"/>

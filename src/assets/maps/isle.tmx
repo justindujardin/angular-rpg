@@ -51,7 +51,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object id="4" name="Buccaneer's Bazaar" class="WeaponsStoreFeatureComponent" gid="169" x="128" y="112" width="16" height="16">
+  <object id="4" name="Buccaneer's Bazaar" class="WeaponsStoreFeatureComponent" gid="178" x="128" y="112" width="16" height="16">
    <properties>
     <property name="buyRate" value="130"/>
     <property name="groups" value="[&quot;default&quot;,&quot;water&quot;]"/>
