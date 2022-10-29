@@ -6,7 +6,6 @@ import {
   CombatClearStatusAction,
   CombatSetStatusAction,
 } from '../../../../models/combat/combat.actions';
-import { Entity } from '../../../../models/entity/entity.model';
 import { CombatComponent } from '../../combat.component';
 import { CombatMachineState } from '../../states/combat-base.state';
 import {
@@ -47,7 +46,6 @@ export class CombatGuardBehavior extends CombatActionBehavior {
       this.enterState,
       this
     );
-    const model = this.from.model as Entity;
     this.store.dispatch(
       new CombatSetStatusAction({ target: this.from.model, classes: ['guarding'] })
     );

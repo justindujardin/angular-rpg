@@ -182,7 +182,7 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
     const animations: IAnimationConfig[] = _.map(
       animation,
       (anim: IAnimationConfig) => {
-        const result = _.extend({}, anim);
+        const result = { ...anim };
         if (typeof result.move !== 'undefined') {
           result.move = result.move.clone();
         }
@@ -205,7 +205,7 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
     const animations: IAnimationConfig[] = _.map(
       attackAnimation,
       (anim: IAnimationConfig) => {
-        const result = _.extend({}, anim);
+        const result = { ...anim };
         if (typeof result.move !== 'undefined') {
           result.move = result.move.clone();
         }
