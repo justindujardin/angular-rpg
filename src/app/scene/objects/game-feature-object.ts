@@ -25,7 +25,6 @@ export class GameFeatureObject extends TileObject {
   class: string; // TODO: enum?
   passable: boolean;
   groups: any[];
-  category: any;
   frame: number;
 
   constructor(options: any) {

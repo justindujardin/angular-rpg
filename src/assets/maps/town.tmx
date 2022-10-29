@@ -74,22 +74,13 @@
   </object>
   <object id="7" name="Weapons" class="WeaponsStoreFeatureComponent" gid="93" x="96" y="112" width="16" height="16">
    <properties>
-    <property name="category" value="weapons"/>
-    <property name="groups" value="default"/>
-    <property name="icon" value="shop.png"/>
     <property name="inventory" propertytype="DataWeapons" value="club,slingshot,short-sword,short-staff"/>
-    <property name="level" value="1"/>
     <property name="name" value="Weapons"/>
-    <property name="sellRate" value="35"/>
    </properties>
   </object>
   <object id="8" name="Armors" class="ArmorsStoreFeatureComponent" gid="97" x="96" y="176" width="16" height="16">
    <properties>
-    <property name="category" value="armor"/>
-    <property name="groups" value="default"/>
-    <property name="icon" value="shop.png"/>
     <property name="inventory" propertytype="DataArmors" value="clothes,cloak,leather-helm,leather-boots"/>
-    <property name="level" value="1"/>
     <property name="name" value="Armors"/>
    </properties>
   </object>
@@ -109,12 +100,7 @@
   </object>
   <object id="11" name="Items" class="ItemsStoreFeatureComponent" gid="95" x="272" y="144" width="16" height="16">
    <properties>
-    <property name="category" value="magic"/>
-    <property name="groups" value="default"/>
-    <property name="icon" value="shop.png"/>
     <property name="inventory" propertytype="DataItems" value="potion"/>
-    <property name="level" value="1"/>
-    <property name="name" value="Items"/>
    </properties>
   </object>
   <object id="14" name="block" class="BlockFeatureComponent" x="192" y="48" width="16" height="16"/>
