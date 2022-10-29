@@ -68,9 +68,9 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
     //
     const attacker: GameEntityObject = this.from;
     const defender: GameEntityObject = this.to;
-    const playerRender = attacker.findBehavior(
+    const playerRender = attacker.findBehavior<CombatPlayerRenderBehaviorComponent>(
       CombatPlayerRenderBehaviorComponent
-    ) as CombatPlayerRenderBehaviorComponent;
+    );
     const attack = () => {
       const attEquip = this.store.select(getCombatEntityEquipment(attacker.model.eid));
       const defEquip = this.store.select(getCombatEntityEquipment(defender.model.eid));

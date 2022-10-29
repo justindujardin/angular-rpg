@@ -36,6 +36,16 @@ export interface ICombatMenuItem {
   label: string;
 }
 
+export interface ICombatDamageSummary {
+  timeout: number;
+  value: number;
+  classes: {
+    miss: boolean;
+    heal: boolean;
+  };
+  position: Point;
+}
+
 /** Description of a combat entity attack */
 export interface CombatAttackSummary {
   damage: number;
@@ -81,7 +91,7 @@ export class CombatComponent
    * Damages displaying on screen.
    * @type {Array}
    */
-  @Input() damages: any[] = [];
+  @Input() damages: ICombatDamageSummary[] = [];
 
   /**
    * Mouse hook for capturing input with world and screen coordinates.

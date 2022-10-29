@@ -33,8 +33,8 @@ export class DamageComponent extends SceneObjectBehavior {
     this.animation = <AnimatedSpriteBehavior>(
       this.host.findBehavior(AnimatedSpriteBehavior)
     );
-    this.sprite = <SpriteComponent>this.host.findBehavior(SpriteComponent);
-    this.sound = <SoundBehavior>this.host.findBehavior(SoundBehavior);
+    this.sprite = this.host.findBehavior<SpriteComponent>(SpriteComponent);
+    this.sound = this.host.findBehavior<SoundBehavior>(SoundBehavior);
     const ok = !!(this.animation && this.sprite);
     if (!this.started && ok) {
       this.started = true;
