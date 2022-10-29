@@ -56,8 +56,8 @@ export class CombatEncounterBehaviorComponent extends SceneObjectBehavior {
     if (!this.tileMap) {
       return;
     }
-    const map = this.tileMap.map;
-    if (!map || !map.properties || !map.properties.combat) {
+    const zone: IZoneMatch = this.tileMap.getCombatZones(move.to);
+    if (!zone) {
       return;
     }
     const terrain = this.tileMap.getTerrain('Terrain', move.to.x, move.to.y);

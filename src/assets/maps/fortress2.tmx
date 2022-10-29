@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="25" height="25" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
  <properties>
-  <property name="combat" value="true"/>
-  <property name="combatZone" value="zone-goblin-fortress"/>
+  <property name="dark" type="bool" value="true"/>
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <tileset firstgid="72" source="tiles/creatures.tsx"/>
@@ -112,9 +111,9 @@
   </object>
  </objectgroup>
  <objectgroup id="4" name="Zones" visible="0">
-  <object id="5" name="zone-dungeon" class="CombatZoneClass" x="0" y="0" width="400" height="400">
+  <object id="5" name="main" class="CombatZoneClass" x="0" y="0" width="400" height="400">
    <properties>
-    <property name="zone" propertytype="DataRandomEncounters" value="zone-goblin-fortress"/>
+    <property name="zone" propertytype="DataRandomEncounters" value="zone-dungeon"/>
    </properties>
   </object>
  </objectgroup>

@@ -15,7 +15,7 @@
  */
 import * as _ from 'underscore';
 import { CameraBehavior } from '../behaviors/camera-behavior';
-import { IRect, Point, Rect } from '../core';
+import { Point, Rect } from '../core';
 import { TileMapRenderer } from './render/tile-map-renderer';
 import { Scene } from './scene';
 import { SceneObject } from './scene-object';
@@ -43,6 +43,8 @@ export class SceneView extends SceneObject implements ISceneView {
   scene: Scene = null;
   mapRenderer: TileMapRenderer = new TileMapRenderer();
   map: TileMap;
+  /** Tell the view where the player is at. Useful for rendering. */
+  focusPoint: Point = new Point();
 
   get canvas(): HTMLCanvasElement {
     return this._canvas;
@@ -110,23 +112,6 @@ export class SceneView extends SceneObject implements ISceneView {
     const clipGrow = this.camera.clone();
     clipGrow.point.round();
     clipGrow.extent.round();
-
-    // Clamp to tilemap bounds.
-    const rect: IRect = this.map.bounds;
-    if (clipGrow.point.x < rect.point.x) {
-      clipGrow.point.x += rect.point.x - clipGrow.point.x;
-    }
-    if (clipGrow.point.y < rect.point.y) {
-      clipGrow.point.y += rect.point.y - clipGrow.point.y;
-    }
-    if (clipGrow.point.x + clipGrow.extent.x > rect.point.x + rect.extent.x) {
-      clipGrow.point.x -=
-        clipGrow.point.x + clipGrow.extent.x - (rect.point.x + rect.extent.x);
-    }
-    if (clipGrow.point.y + clipGrow.extent.y > rect.point.y + rect.extent.y) {
-      clipGrow.point.y -=
-        clipGrow.point.y + clipGrow.extent.y - (rect.point.y + rect.extent.y);
-    }
     return clipGrow;
   }
 
@@ -168,6 +153,27 @@ export class SceneView extends SceneObject implements ISceneView {
 
   // Render post effects
   renderPost() {
+    const clip = this.worldToScreen(this.getCameraClip());
+    const center = this.worldToScreen(this.focusPoint);
+
+    if (this.map.dark) {
+      this.context.rect(clip.point.x, clip.point.y, clip.extent.x, clip.extent.y);
+      // create radial gradient
+      const outerRadius = 100;
+      const innerRadius = 10;
+      const gradient = this.context.createRadialGradient(
+        center.x,
+        center.y,
+        innerRadius,
+        center.x,
+        center.y,
+        outerRadius
+      );
+      gradient.addColorStop(0, 'rgba(0,0,0,0)');
+      gradient.addColorStop(1, 'rgba(0,0,0,1)');
+      this.context.fillStyle = gradient;
+      this.context.fill();
+    }
     // nothing
   }
 

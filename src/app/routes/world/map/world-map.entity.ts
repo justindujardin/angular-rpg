@@ -34,6 +34,7 @@ import { Scene } from '../../../scene/scene';
 import { SceneView } from '../../../scene/scene-view';
 import { ISceneViewRenderer } from '../../../scene/scene.model';
 import { TileMap } from '../../../scene/tile-map';
+import { GameWorld } from '../../../services/game-world';
 import { MapFeatureInputBehaviorComponent } from '../behaviors/map-feature-input.behavior';
 import { MapFeatureComponent, TiledMapFeatureData } from './map-feature.component';
 import { WorldPlayerComponent } from './world-player.entity';
@@ -124,7 +125,8 @@ export class WorldMapComponent
     public gameStateService: GameStateService,
     public store: Store<AppState>,
     public loadingService: LoadingService,
-    public loader: ResourceManager
+    public loader: ResourceManager,
+    public world: GameWorld
   ) {
     super();
   }
@@ -159,6 +161,11 @@ export class WorldMapComponent
     this._subscriptions.forEach((s) => s.unsubscribe());
     this._subscriptions.length = 0;
     this.destroy();
+  }
+
+  loaded() {
+    super.loaded();
+    this.world.setMusic(this.musicUrl);
   }
 
   //

@@ -2,6 +2,7 @@
 <map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="29" height="51" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="9">
  <properties>
   <property name="combat" value="true"/>
+  <property name="dark" type="bool" value="true"/>
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <tileset firstgid="72" source="tiles/creatures.tsx"/>
