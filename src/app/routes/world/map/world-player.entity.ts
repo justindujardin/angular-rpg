@@ -108,8 +108,8 @@ export class WorldPlayerComponent
       event.findBehavior(TiledFeatureComponent);
     if (feature) {
       feature.exit(this);
-      this.feature = null;
     }
+    this.feature = null;
   }
 
   private _featureComponent$ = new BehaviorSubject<TiledFeatureComponent | null>(null);

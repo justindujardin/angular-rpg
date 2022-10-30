@@ -175,10 +175,6 @@ export const ARMOR_DATA: ITemplateArmor[] = [
 ];
 
 /** Get an armor descriptor given its id value */
-export function getArmorById(id: string): ITemplateArmor {
-  const template = ARMOR_DATA.find((item) => item.id === id);
-  if (!template) {
-    throw new Error(`getArmorById: invalid template id ${id}`);
-  }
-  return template;
+export function getArmorById(id: string): ITemplateArmor | null {
+  return ARMOR_DATA.find((item) => item.id === id) || null;
 }

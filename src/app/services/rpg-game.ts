@@ -109,7 +109,7 @@ export class RPGGame {
 
   giveItemToPlayer(
     player: IPartyMember,
-    templateItem: ITemplateBaseItem,
+    templateItem: ITemplateBaseItem | null,
     equipSlot: keyof EntitySlots
   ) {
     if (!templateItem) {

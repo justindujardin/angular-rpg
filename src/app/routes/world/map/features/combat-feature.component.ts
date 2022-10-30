@@ -86,7 +86,7 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
       .select(getGameParty)
       .pipe(
         map((party: Immutable.List<Entity>) => {
-          const encounter: ITemplateFixedEncounter = getFixedEncounterById(
+          const encounter: ITemplateFixedEncounter | null = getFixedEncounterById(
             this.properties.id
           );
 
