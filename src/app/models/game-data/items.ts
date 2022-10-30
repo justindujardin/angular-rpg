@@ -32,10 +32,6 @@ export const ITEMS_DATA: ITemplateItem[] = [
 ];
 
 /** Get an item descriptor given its id value */
-export function getItemById(id: string): ITemplateItem {
-  const template = ITEMS_DATA.find((item) => item.id === id);
-  if (!template) {
-    throw new Error(`getItemById: invalid template id ${id}`);
-  }
-  return template;
+export function getItemById(id: string): ITemplateItem | null {
+  return ITEMS_DATA.find((item) => item.id === id) || null;
 }

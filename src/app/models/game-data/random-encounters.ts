@@ -65,10 +65,6 @@ export const RANDOM_ENCOUNTERS_DATA: ITemplateRandomEncounter[] = [
 ];
 
 /** Get a random encounter descriptor given its id value */
-export function getRandomEncounterById(id: string): ITemplateRandomEncounter {
-  const template = RANDOM_ENCOUNTERS_DATA.find((item) => item.id === id);
-  if (!template) {
-    throw new Error(`getRandomEncounterById: invalid template id ${id}`);
-  }
-  return template;
+export function getRandomEncounterById(id: string): ITemplateRandomEncounter | null {
+  return RANDOM_ENCOUNTERS_DATA.find((item) => item.id === id) || null;
 }
