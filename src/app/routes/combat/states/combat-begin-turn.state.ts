@@ -16,10 +16,12 @@
 import { Component } from '@angular/core';
 import * as _ from 'underscore';
 import { CombatService } from '../../../models/combat/combat.service';
+import { assertTrue } from '../../../models/util';
 import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { CombatAttackBehaviorComponent } from '../behaviors/actions/combat-attack.behavior';
+import { IPlayerAction } from '../combat.types';
 import { CombatMachineState } from './combat-base.state';
-import { CombatStateMachineComponent, IPlayerAction } from './combat.machine';
+import { CombatStateMachineComponent } from './combat.machine';
 import { CombatStateNames } from './states';
 
 // Combat Begin
@@ -41,6 +43,7 @@ export class CombatBeginTurnStateComponent extends CombatMachineState {
     super.enter(machine);
     this.machine = machine;
     machine.currentDone = false;
+    assertTrue(machine.current, 'invalid current combat entity!');
     machine.current.scale = 1.25;
     this.current = machine.current;
 
@@ -49,9 +52,9 @@ export class CombatBeginTurnStateComponent extends CombatMachineState {
     }
 
     machine.trigger('combat:beginTurn', machine.current);
-    let choice: IPlayerAction = null;
+    let choice: IPlayerAction | null = null;
     if (machine.isFriendlyTurn()) {
-      console.log(`TURN: ${machine.current.model.name}`);
+      console.log(`TURN: ${machine.current?.model?.name}`);
       choice = machine.playerChoices[machine.current._uid];
     } else {
       choice = machine.current.findBehavior(
@@ -70,11 +73,13 @@ export class CombatBeginTurnStateComponent extends CombatMachineState {
       choice.to = machine.getRandomEnemy();
     }
     _.defer(() => {
-      choice.act((act: IPlayerAction, error?: any) => {
-        if (error) {
-          console.error(error);
-        }
-      });
+      if (choice) {
+        choice.act((act: IPlayerAction, error?: any) => {
+          if (error) {
+            console.error(error);
+          }
+        });
+      }
     });
   }
 

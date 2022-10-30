@@ -6,9 +6,18 @@ export const ITEMS_DATA: ITemplateItem[] = [
     type: 'item',
     name: 'Potion',
     level: 1,
-    icon: 'redPotion.png',
+    icon: 'redSalve.png',
     effects: ['heal(50)'],
     value: 50,
+  },
+  {
+    id: 'potion-large',
+    type: 'item',
+    name: 'Large Potion',
+    level: 1,
+    icon: 'redPotion.png',
+    effects: ['heal(200)'],
+    value: 200,
   },
   {
     id: 'ether',
@@ -18,11 +27,15 @@ export const ITEMS_DATA: ITemplateItem[] = [
     icon: 'bluePotion2.png',
     effects: ['magic(100)'],
     value: 1500,
-    usedby: null,
+    usedby: [],
   },
 ];
 
 /** Get an item descriptor given its id value */
-export function getItemById(id: string): ITemplateItem | null {
-  return ITEMS_DATA.find((item) => item.id === id);
+export function getItemById(id: string): ITemplateItem {
+  const template = ITEMS_DATA.find((item) => item.id === id);
+  if (!template) {
+    throw new Error(`getItemById: invalid template id ${id}`);
+  }
+  return template;
 }

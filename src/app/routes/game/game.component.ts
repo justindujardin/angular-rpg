@@ -22,7 +22,7 @@ export class GameComponent implements OnInit {
       .then((newGame: boolean) => {
         if (newGame) {
           const msgs: string[] = ['Click, Touch, or use the Arrow Keys.'];
-          msgs.forEach((m: string) => this.notify.show(m, null, 0));
+          msgs.forEach((m: string) => this.notify.show(m, undefined, 0));
         }
       })
       .catch(console.error.bind(console));

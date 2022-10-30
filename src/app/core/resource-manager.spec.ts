@@ -85,7 +85,7 @@ describe('ResourceManager', () => {
         });
     });
     it('should reject with error if not given a source', (done) => {
-      loader.loadAsType<MockResource>(null, MockResource).catch((err) => {
+      loader.loadAsType<MockResource>('', MockResource).catch((err) => {
         expect(err).toBeDefined();
         done();
       });

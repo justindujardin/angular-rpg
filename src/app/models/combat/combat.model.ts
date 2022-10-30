@@ -21,7 +21,7 @@ export interface IZoneMatch {
   /**
    * The zone name for the current map
    */
-  map: string;
+  map: string | null;
   /**
    * The zone names for the target location on the map
    */
@@ -31,18 +31,6 @@ export interface IZoneMatch {
    */
   targetPoint: IPoint;
 }
-
-// /** A combatant in a combat encounter */
-// export interface Combatant extends IEntityObject {
-//   /** The hyphenated-lower-case-unique-id of the combatant */
-//   readonly id?: string;
-//   /** The name of the combatant */
-//   readonly name?: string;
-//   /** The experience awarded for defeating this combatant */
-//   readonly exp?: number;
-//   /** The gold that can be looted aftefor defeating this combatant */
-//   readonly gold?: number;
-// }
 
 /**
  * A Combat encounter descriptor.  Used to describe the configuration of combat.
@@ -68,7 +56,7 @@ export interface CombatEncounter {
   /** Any items (by template id) to award the party after a victory */
   readonly items?: string[];
   /** The combat zone name, e.g. 'world-plains', 'sewer', ... */
-  readonly zone?: string;
+  readonly zone: string | null;
   /** unique id in spreadsheet https://goo.gl/JUPn00 */
   readonly id?: string;
 }

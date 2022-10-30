@@ -76,9 +76,11 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
     object.setPoint(object.point);
 
     // Find the combat zone and launch a fixed encounter.
-    const zone: IZoneMatch = this.party.map.getCombatZones(
-      new Point(this.party.host.point)
-    );
+    const zone: IZoneMatch | null =
+      this.party?.map?.getCombatZones(new Point(this.party.host.point)) || null;
+    if (!zone) {
+      return false;
+    }
 
     this.store
       .select(getGameParty)
@@ -91,7 +93,7 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
           if (!encounter) {
             this.notify.show(
               `There is no encounter named: ${this.properties.id}.`,
-              null,
+              undefined,
               0
             );
             return;
@@ -107,7 +109,7 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
             id: encounter.id,
             enemies: List<IEnemy>(encounter.enemies.map(toCombatant)),
             zone: zone.targets[0].zone || zone.map,
-            message: List<string>(encounter.message),
+            message: List<string>(encounter.message || []),
             party: List<Entity>(party),
           };
           this.store.dispatch(new CombatEncounterAction(payload));

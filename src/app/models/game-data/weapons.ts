@@ -154,7 +154,7 @@ export const WEAPONS_DATA: ITemplateWeapon[] = [
     icon: 'sword2.png',
     attack: 21,
     hit: 0,
-    value: 600,
+    value: 1600,
     usedby: ['warrior'],
     groups: ['default'],
   },
@@ -234,6 +234,10 @@ export const WEAPONS_DATA: ITemplateWeapon[] = [
   },
 ];
 /** Get a weapon descriptor given its id value */
-export function getWeaponById(id: string): ITemplateWeapon | null {
-  return WEAPONS_DATA.find((item) => item.id === id);
+export function getWeaponById(id: string): ITemplateWeapon {
+  const template = WEAPONS_DATA.find((item) => item.id === id);
+  if (!template) {
+    throw new Error(`getWeaponById: invalid template id ${id}`);
+  }
+  return template;
 }

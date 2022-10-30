@@ -35,28 +35,28 @@ export class SceneView extends SceneObject implements ISceneView {
   static UNIT: number = 16;
 
   animations: any[] = [];
-  context: CanvasRenderingContext2D;
+  context: CanvasRenderingContext2D | null = null;
   camera: Rect;
   cameraComponent: any = null; // TODO: ICameraComponent
   cameraScale: number;
   unitSize: number;
-  scene: Scene = null;
+  scene: Scene | null = null;
   mapRenderer: TileMapRenderer = new TileMapRenderer();
   map: TileMap;
   /** Tell the view where the player is at. Useful for rendering. */
   focusPoint: Point = new Point();
 
-  get canvas(): HTMLCanvasElement {
+  get canvas(): HTMLCanvasElement | null {
     return this._canvas;
   }
 
-  set canvas(value: HTMLCanvasElement) {
+  set canvas(value: HTMLCanvasElement | null) {
     this._canvas = value;
     if (!value) {
       this.context = this.canvas = null;
       return;
     }
-    this.context = value.getContext('2d');
+    this.context = value.getContext('2d') || null;
     if (!this.context) {
       throw new Error('SceneView: could not retrieve 2d Canvas context');
     }
@@ -68,12 +68,16 @@ export class SceneView extends SceneObject implements ISceneView {
     this.unitSize = SceneView.UNIT;
   }
 
-  private _canvas: HTMLCanvasElement = null;
+  private _canvas: HTMLCanvasElement | null = null;
 
   // Scene rendering interfaces
   // -----------------------------------------------------------------------------
 
-  renderToCanvas(width, height, renderFunction) {
+  renderToCanvas(
+    width: number,
+    height: number,
+    renderFunction: (ctx: CanvasRenderingContext2D) => void
+  ) {
     const buffer = document.createElement('canvas');
     buffer.width = width;
     buffer.height = height;
@@ -91,6 +95,9 @@ export class SceneView extends SceneObject implements ISceneView {
   protected _bounds: Point = new Point();
 
   public _onResize(event?: Event) {
+    if (!this.canvas) {
+      return;
+    }
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
     this._bounds.set(this.canvas.width, this.canvas.height);
@@ -153,6 +160,9 @@ export class SceneView extends SceneObject implements ISceneView {
 
   // Render post effects
   renderPost() {
+    if (!this.context) {
+      return;
+    }
     const clip = this.worldToScreen(this.getCameraClip());
     const center = this.worldToScreen(this.focusPoint);
 
@@ -211,10 +221,8 @@ export class SceneView extends SceneObject implements ISceneView {
     if (!this.cameraComponent && this.map) {
       this.cameraComponent = this.map.findBehavior(CameraBehavior) as CameraBehavior;
     }
-    if (!this.cameraComponent) {
-      this.cameraComponent = this.scene.componentByType(
-        CameraBehavior
-      ) as CameraBehavior;
+    if (!this.cameraComponent && this.scene) {
+      this.cameraComponent = this.scene.componentByType<CameraBehavior>(CameraBehavior);
     }
     if (this.cameraComponent) {
       this.cameraComponent.process(this);
@@ -223,7 +231,10 @@ export class SceneView extends SceneObject implements ISceneView {
   // Scene rendering utilities
   // -----------------------------------------------------------------------------
 
-  clearRect() {
+  clearRect(): void {
+    if (!this.context) {
+      return;
+    }
     let renderPos;
     let x = 0;
     let y = 0;
@@ -245,9 +256,9 @@ export class SceneView extends SceneObject implements ISceneView {
 
   // Convert a Rect/Point/Number from world coordinates (game units) to
   // screen coordinates (pixels)
-  worldToScreen(value: Point, scale?): Point;
-  worldToScreen(value: Rect, scale?): Rect;
-  worldToScreen(value: number, scale?): number;
+  worldToScreen(value: Point, scale?: number): Point;
+  worldToScreen(value: Rect, scale?: number): Rect;
+  worldToScreen(value: number, scale?: number): number;
   worldToScreen(value: any, scale = 1): any {
     if (value instanceof Rect) {
       const result: Rect = new Rect(value);
@@ -262,9 +273,9 @@ export class SceneView extends SceneObject implements ISceneView {
 
   // Convert a Rect/Point/Number from screen coordinates (pixels) to
   // game world coordinates (game unit sizes)
-  screenToWorld(value: Point, scale?): Point;
-  screenToWorld(value: Rect, scale?): Rect;
-  screenToWorld(value: number, scale?): number;
+  screenToWorld(value: Point, scale?: number): Point;
+  screenToWorld(value: Rect, scale?: number): Rect;
+  screenToWorld(value: number, scale?: number): number;
   screenToWorld(value: any, scale = 1): any {
     if (value instanceof Rect) {
       const result: Rect = new Rect(value);
@@ -318,9 +329,14 @@ export class SceneView extends SceneObject implements ISceneView {
   // Animations
   // -----------------------------------------------------------------------------
   renderAnimations() {
+    if (!this.scene) {
+      return;
+    }
+    // TODO: is this code used? I can't find any references to animations being set
     const len: number = this.animations.length;
     for (let i = 0; i < len; i++) {
       let animation = this.animations[i];
+      console.log('Running animation');
       animation.done = animation.fn(animation.frame);
       if (this.scene.time >= animation.time) {
         animation.frame += 1;

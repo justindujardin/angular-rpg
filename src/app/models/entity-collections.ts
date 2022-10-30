@@ -73,7 +73,7 @@ export function removeEntityFromCollection(
   const index = collection.allIds.indexOf(entityId);
   assertTrue(index !== -1, `item (${entityId}) does not exist in collection`);
   collection = collection.updateIn(['allIds'], (allIds) =>
-    allIds.filter((id) => id !== entityId)
+    allIds.filter((id: string) => id !== entityId)
   );
   return collection.updateIn(['byId'], (byId: Immutable.Map<string, IEntityObject>) =>
     byId.remove(entityId)

@@ -63,6 +63,7 @@ export class Events implements IEvents {
     var self = this;
     var once: any = _.once(function () {
       self.off(name, once);
+      // @ts-ignore
       callback.apply(this, arguments);
     });
     once._callback = callback;
@@ -128,7 +129,7 @@ var eventSplitter = /\s+/;
 // Implement fancy features of the Events API such as multiple event
 // names `"change blur"` and jQuery-style event maps `{change: action}`
 // in terms of the existing API.
-var eventsApi = function (obj, action, name, rest) {
+var eventsApi = function (obj: any, action: any, name: any, rest: any) {
   if (!name) return true;
 
   // Handle event maps.
@@ -154,7 +155,7 @@ var eventsApi = function (obj, action, name, rest) {
 // A difficult-to-believe, but optimized internal dispatch function for
 // triggering events. Tries to keep the usual cases speedy (most internal
 // Backbone events have 3 arguments).
-var triggerEvents = function (events, args) {
+var triggerEvents = function (events: any, args: any) {
   var ev,
     i = -1,
     l = events.length,

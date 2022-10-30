@@ -91,7 +91,8 @@ export class DebugMenuComponent implements AfterViewInit {
     { map: 'village', x: 5, y: 10 },
     { map: 'wilderness', x: 19, y: 46 },
   ];
-  party$: Observable<Immutable.List<Entity>> = this.store.select(getGameParty);
+  party$: Observable<Immutable.List<Entity | undefined>> =
+    this.store.select(getGameParty);
   gameMap$: Observable<string> = this.store.select(getGameMap);
   displayedColumns: string[] = [];
   dataSource: MatTableDataSource<DataSourceTypes> | null = null;
@@ -181,7 +182,8 @@ export class DebugMenuComponent implements AfterViewInit {
 
   /** Travel to a given location in the game */
   travel(event: any) {
-    const { map, x = 12, y = 5 } = this.locations.find((l) => l.map === event.value);
+    const data = this.locations.find((l) => l.map === event.value);
+    const { map = '', x = 12, y = 5 } = data || {};
     this.store.dispatch(
       new GameStateTravelAction({
         location: map,

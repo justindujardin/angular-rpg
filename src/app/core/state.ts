@@ -19,9 +19,9 @@ import { IStateMachine } from './state-machine';
 
 export interface IState<TStateNames extends string> {
   name: TStateNames;
-  enter(machine: IStateMachine<TStateNames>);
-  exit(machine: IStateMachine<TStateNames>);
-  update(machine: IStateMachine<TStateNames>);
+  enter(machine: IStateMachine<TStateNames>): void;
+  exit(machine: IStateMachine<TStateNames>): void;
+  update(machine: IStateMachine<TStateNames>): void;
 }
 
 export interface IStateTransition<TStateTransitionNames extends string> {

@@ -19,7 +19,6 @@ import { getArmorById } from 'app/models/game-data/armors';
 import { getClassById } from 'app/models/game-data/classes';
 import { getWeaponById } from 'app/models/game-data/weapons';
 import * as Immutable from 'immutable';
-import * as _ from 'underscore';
 import { ResourceManager } from '../../app/core/resource-manager';
 import { AppState } from '../app.model';
 import { EntityType, IPartyMember } from '../models/base-entity';
@@ -27,7 +26,7 @@ import {
   EntityAddBeingAction,
   EntityAddItemAction,
 } from '../models/entity/entity.actions';
-import { Entity, EntitySlots } from '../models/entity/entity.model';
+import { EntitySlots } from '../models/entity/entity.model';
 import {
   instantiateEntity,
   ITemplateBaseItem,
@@ -47,8 +46,8 @@ import { Item } from '../models/item';
 export class RPGGame {
   constructor(public loader: ResourceManager, private store: Store<AppState>) {}
 
-  public create(type: EntityType, name: string): Entity {
-    const HERO_DEFAULTS: Partial<Entity> = {
+  public create(type: EntityType, name: string): IPartyMember {
+    const HERO_DEFAULTS: Partial<IPartyMember> = {
       eid: 'invalid-hero',
       status: [],
       type,
@@ -57,44 +56,55 @@ export class RPGGame {
       exp: 0,
     };
     const classDetails = getClassById(type);
-    let character: Entity = null;
+    if (!classDetails) {
+      throw new Error(`RPGGame.create - unknown class type: ${type}`);
+    }
+    let character: Partial<IPartyMember> | null = null;
     switch (type) {
       case 'warrior':
-        character = _.extend({}, HERO_DEFAULTS, {
+        character = {
+          ...HERO_DEFAULTS,
           eid: 'warrior-123',
           ...classDetails,
           icon: 'warrior-male.png',
-        });
+          maxhp: classDetails.hp,
+          maxmp: classDetails.mp,
+        };
         break;
       case 'healer':
-        character = _.extend({}, HERO_DEFAULTS, {
+        character = {
+          ...HERO_DEFAULTS,
           eid: 'lifemage-123',
           ...classDetails,
           icon: 'magician-female.png',
-        });
+          maxhp: classDetails.hp,
+          maxmp: classDetails.mp,
+        };
         break;
       case 'ranger':
-        character = _.extend({}, HERO_DEFAULTS, {
+        character = {
+          ...HERO_DEFAULTS,
           eid: 'ranger-123',
           ...classDetails,
           icon: 'ranger-female.png',
-        });
+          maxhp: classDetails.hp,
+          maxmp: classDetails.mp,
+        };
         break;
       case 'mage':
-        character = _.extend({}, HERO_DEFAULTS, {
+        character = {
+          ...HERO_DEFAULTS,
           eid: 'deathmage-123',
           ...classDetails,
           icon: 'magician-male.png',
-        });
+          maxhp: classDetails.hp,
+          maxmp: classDetails.mp,
+        };
         break;
       default:
         throw new Error('Unknown character class: ' + type);
     }
-    character = _.extend(character, {
-      maxhp: character.hp,
-      maxmp: character.mp,
-    });
-    return character;
+    return character as IPartyMember;
   }
 
   giveItemToPlayer(

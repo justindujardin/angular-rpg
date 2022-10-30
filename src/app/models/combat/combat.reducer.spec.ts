@@ -20,15 +20,13 @@ function attack(from: CombatantTypes, to: CombatantTypes, value: number): Combat
 }
 
 function encounter(values?: Partial<CombatEncounter>): CombatEncounter {
-  return Object.assign(
-    {},
-    {
-      type: 'fixed',
-      party: [],
-      enemies: [],
-    },
-    values || {}
-  );
+  return {
+    type: 'fixed',
+    party: Immutable.List<any>([]),
+    enemies: Immutable.List<any>([]),
+    zone: null,
+    ...(values || {}),
+  };
 }
 
 function combatant(values?: Partial<CombatantTypes>): CombatantTypes {

@@ -18,7 +18,6 @@ import {
   IBehavior,
   IBehaviorHost,
   IObject,
-  IPoint,
   IProcessObject,
   IWorld,
   Point,
@@ -30,16 +29,16 @@ import { IEvents } from '../core/events';
  * SceneObject interface
  */
 export interface ISceneObject extends IObject, IProcessObject, IBehaviorHost {
-  scene: IScene;
+  scene: IScene | null;
   enabled: boolean;
-  point: IPoint;
-  size: IPoint;
-  onAddToScene?(scene: IScene);
+  point: Point;
+  size: Point;
+  onAddToScene?(scene: IScene): void;
 }
 
 export interface IScene extends IEvents {
   name: string;
-  world: IWorld;
+  world: IWorld | null;
   fps: number;
   time: number;
 
@@ -53,17 +52,17 @@ export interface IScene extends IEvents {
   // -----------------------------------------------------------------------------
   addObject(object: ISceneObject): boolean;
   removeObject(object: ISceneObject, destroy: boolean): boolean;
-  findObject(object): boolean;
+  findObject(object: ISceneObject): boolean;
 
   // Component and object lookups
-  componentByType<T extends IBehavior>(type: Function): T;
+  componentByType<T extends IBehavior>(type: Function): T | null;
   componentsByType<T extends IBehavior>(type: Function): T[];
   objectsByName<T extends ISceneObject>(name: string): T[];
-  objectByName<T extends ISceneObject>(name: string): T;
+  objectByName<T extends ISceneObject>(name: string): T | null;
   objectsByType<T extends ISceneObject>(type: Function): T[];
-  objectByType<T extends ISceneObject>(type: Function): T;
+  objectByType<T extends ISceneObject>(type: Function): T | null;
   objectsByComponent<T extends ISceneObject>(type: Function): T[];
-  objectByComponent<T extends ISceneObject>(type: Function): T;
+  objectByComponent<T extends ISceneObject>(type: Function): T | null;
 }
 
 /**
@@ -82,17 +81,21 @@ export interface ISceneViewRenderer {
  * Renders a scene to a Canvas object.
  */
 export interface ISceneView {
-  canvas: HTMLCanvasElement;
-  context: CanvasRenderingContext2D;
+  canvas: HTMLCanvasElement | null;
+  context: CanvasRenderingContext2D | null;
   camera: Rect;
   cameraComponent: any; // TODO: ICameraComponent
   cameraScale: number;
   unitSize: number;
-  scene: IScene;
+  scene: IScene | null;
 
   // Scene rendering interfaces
   // -----------------------------------------------------------------------------
-  renderToCanvas(width, height, renderFunction);
+  renderToCanvas(
+    width: number,
+    height: number,
+    renderFunction: (ctx: CanvasRenderingContext2D) => void
+  ): void;
 
   // Render a frame. Subclass this to do your specific rendering.
   renderFrame(elapsed: number): void;
@@ -125,16 +128,16 @@ export interface ISceneView {
 
   // Convert a Rect/Point/Number from world coordinates (game units) to
   // screen coordinates (pixels)
-  worldToScreen(value: Point, scale?): Point;
-  worldToScreen(value: Rect, scale?): Rect;
-  worldToScreen(value: number, scale?): number;
+  worldToScreen(value: Point, scale?: number): Point;
+  worldToScreen(value: Rect, scale?: number): Rect;
+  worldToScreen(value: number, scale?: number): number;
   worldToScreen(value: any, scale: number): any;
 
   // Convert a Rect/Point/Number from screen coordinates (pixels) to
   // game world coordinates (game unit sizes)
-  screenToWorld(value: Point, scale?): Point;
-  screenToWorld(value: Rect, scale?): Rect;
-  screenToWorld(value: number, scale?): number;
+  screenToWorld(value: Point, scale?: number): Point;
+  screenToWorld(value: Rect, scale?: number): Rect;
+  screenToWorld(value: number, scale?: number): number;
   screenToWorld(value: any, scale: number): any;
 
   // Fast world to screen conversion, for high-volume usage situations.

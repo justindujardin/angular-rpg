@@ -5,17 +5,18 @@ import { State } from '../../../core/state';
 import { StateMachine } from '../../../core/state-machine';
 import { ITemplateMagic } from '../../../models/game-data/game-data.model';
 import { Item } from '../../../models/item';
+import { assertTrue } from '../../../models/util';
 import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { Scene } from '../../../scene/scene';
 import { GameWorld } from '../../../services/game-world';
 import { CombatActionBehavior } from '../behaviors/combat-action.behavior';
 import { CombatPlayerRenderBehaviorComponent } from '../behaviors/combat-player-render.behavior';
 import { CombatPlayerComponent } from '../combat-player.entity';
+import { ICombatMenuItem, IPlayerAction } from '../combat.types';
 import {
   CombatChooseActionStateComponent,
   IChooseActionEvent,
 } from '../states/combat-choose-action.state';
-import { IPlayerAction } from '../states/combat.machine';
 
 /**
  * The enumeration of states used in the Combat choose action state machine.
@@ -45,12 +46,12 @@ export type CombatChooseActionStateNames =
  * point the implementation may do whatever it wants.
  */
 export class ChooseActionStateMachine extends StateMachine<CombatChooseActionStateNames> {
-  current: GameEntityObject = null;
-  target: GameEntityObject = null;
-  player: CombatPlayerRenderBehaviorComponent = null;
-  action: CombatActionBehavior = null;
-  spell: ITemplateMagic = null;
-  item: Item = null;
+  current: GameEntityObject | null = null;
+  target: GameEntityObject | null = null;
+  player: CombatPlayerRenderBehaviorComponent | null = null;
+  action: CombatActionBehavior | null = null;
+  spell: ITemplateMagic | null = null;
+  item: Item | null = null;
   world: GameWorld = GameWorld.get();
 
   constructor(
@@ -170,9 +171,10 @@ export class ChooseMagicSpell extends State<CombatChooseActionStateNames> {
           machine.setCurrentState(ChooseActionSubmit.NAME);
       }
     };
-    const spells: Immutable.List<ITemplateMagic> = machine.parent.machine.spells;
+    const spells: Immutable.List<ITemplateMagic> =
+      machine.parent.machine?.spells || Immutable.List<ITemplateMagic>();
     machine.parent.items = spells
-      .map((a: ITemplateMagic) => {
+      .map((a: ITemplateMagic): ICombatMenuItem => {
         return <any>{
           select: selectSpell.bind(this, a),
           label: a.magicname,
@@ -180,7 +182,7 @@ export class ChooseMagicSpell extends State<CombatChooseActionStateNames> {
         };
       })
       .toList()
-      .toJS();
+      .toJS() as ICombatMenuItem[];
     machine.scene.on('click', clickSelect);
   }
 
@@ -207,13 +209,13 @@ export class ChooseUsableItem extends State<CombatChooseActionStateNames> {
     };
     machine.parent.items = parent.items
       .map((a: Item) => {
-        return <any>{
+        return {
           select: selectItem.bind(this, a),
           label: a.name,
         };
       })
       .toList()
-      .toJS();
+      .toJS() as ICombatMenuItem[];
   }
 
   exit(machine: ChooseActionStateMachine) {
@@ -232,12 +234,12 @@ export class ChooseActionTarget extends State<CombatChooseActionStateNames> {
     const enemies: GameEntityObject[] = machine.data.enemies;
 
     const p: GameEntityObject = machine.target || enemies[0];
-    machine.parent.addPointerClass(machine.action.getActionName());
+    machine.parent.addPointerClass(machine.action?.getActionName() || '');
     if (!p) {
       machine.parent.hidePointer();
       return;
     }
-    let clickTarget;
+    let clickTarget: (mouse: any, hits: GameEntityObject[]) => void;
     const selectTarget = (target: GameEntityObject) => {
       if (machine.target && machine.target._uid === target._uid) {
         machine.target = target;
@@ -262,7 +264,7 @@ export class ChooseActionTarget extends State<CombatChooseActionStateNames> {
     machine.parent.items = _.map(targets, (a: GameEntityObject) => {
       return {
         select: selectTarget.bind(this, a),
-        label: a.model.name,
+        label: a.model?.name || '',
         source: a,
       };
     });
@@ -296,8 +298,9 @@ export class ChooseActionSubmit extends State<CombatChooseActionStateNames> {
     if (machine.action.canTarget() && !machine.target) {
       throw new Error('Invalid target');
     }
-    machine.player.moveBackward(() => {
+    machine.player?.moveBackward(() => {
       machine.parent.hidePointer();
+      assertTrue(machine.action, 'invalid choose action!');
       machine.action.from = machine.current;
       machine.action.to = machine.target;
       machine.action.spell = machine.spell;

@@ -20,8 +20,8 @@ import { ITiledLayer } from '../../core/resources/tiled/tiled.model';
 import { SceneView } from '../scene-view';
 import { TileMap } from '../tile-map';
 export class TileMapRenderer {
-  private buffer: HTMLCanvasElement[][] = null; // A 2d grid of rendered canvas textures.
-  private bufferMapName: string = null; // The name of the rendered map.  If the map name changes, the buffer is re-rendered.
+  private buffer: HTMLCanvasElement[][] | null = null; // A 2d grid of rendered canvas textures.
+  private bufferMapName: string | null = null; // The name of the rendered map.  If the map name changes, the buffer is re-rendered.
   private bufferComplete: boolean = false; // True if the entire map was rendered with all textures loaded and ready.
   private _clipRect: Rect = new Rect();
   private _renderRect: Rect = new Rect();
@@ -34,7 +34,7 @@ export class TileMapRenderer {
     let rows;
     const squareUnits = 8;
     const squareSize = squareUnits * view.unitSize;
-    if (!object.isLoaded()) {
+    if (!object.isLoaded() || !view.context) {
       return;
     }
     if (object.dirtyLayers) {
@@ -64,56 +64,63 @@ export class TileMapRenderer {
           const xEnd = xOffset + tileUnitSize;
           const yOffset = row * tileUnitSize;
           const yEnd = yOffset + tileUnitSize;
-          this.buffer[col][row] = view.renderToCanvas(squareSize, squareSize, (ctx) => {
-            for (let x = xOffset; x < xEnd; x++) {
-              for (let y = yOffset; y < yEnd; y++) {
-                // Each layer
-                _.each(layers, (l: ITiledLayer) => {
-                  if (!l.visible) {
-                    return;
-                  }
-                  const gid: number = object.getTileGid(l.name, x, y);
-                  const meta: ITileInstanceMeta = object.getTileMeta(gid);
-                  if (meta) {
-                    // The problem is that the sprite registry goes by base filename, and chest.png is in both
-                    // environment and object spritesheets.
-                    // TODO: add error if sprite with same name shows up in two sheets
-                    // TODO: remove chest and friends from environment
-
-                    const image: HTMLImageElement = meta.sheet.data;
-                    if (!image || !image.complete) {
-                      this.bufferComplete = false;
+          this.buffer[col][row] = view.renderToCanvas(
+            squareSize,
+            squareSize,
+            (ctx: CanvasRenderingContext2D) => {
+              for (let x = xOffset; x < xEnd; x++) {
+                for (let y = yOffset; y < yEnd; y++) {
+                  // Each layer
+                  _.each(layers, (l: ITiledLayer) => {
+                    if (!l.visible) {
                       return;
                     }
-                    const srcX: number = meta.x;
-                    const srcY: number = meta.y;
-                    const srcW: number = meta.width;
-                    const srcH: number = meta.height;
-                    const dstX: number = (x - xOffset) * view.unitSize;
-                    const dstY: number = (y - yOffset) * view.unitSize;
-                    const dstW: number = view.unitSize;
-                    const dstH: number = view.unitSize;
-                    ctx.drawImage(
-                      image,
-                      srcX,
-                      srcY,
-                      srcW,
-                      srcH,
-                      dstX,
-                      dstY,
-                      dstW,
-                      dstH
-                    );
-                  }
-                });
-              }
-            }
-            // Append chunks to body (DEBUG HACKS)
+                    const gid: number | null = object.getTileGid(l.name, x, y);
+                    if (gid === null) {
+                      return;
+                    }
+                    const meta: ITileInstanceMeta | null = object.getTileMeta(gid);
+                    if (meta) {
+                      // The problem is that the sprite registry goes by base filename, and chest.png is in both
+                      // environment and object spritesheets.
+                      // TODO: add error if sprite with same name shows up in two sheets
+                      // TODO: remove chest and friends from environment
 
-            // var dataImage = new Image();
-            // dataImage.src = ctx.canvas.toDataURL();
-            // $('body').append(dataImage);
-          });
+                      const image: HTMLImageElement = meta.sheet.data;
+                      if (!image || !image.complete) {
+                        this.bufferComplete = false;
+                        return;
+                      }
+                      const srcX: number = meta.x;
+                      const srcY: number = meta.y;
+                      const srcW: number = meta.width;
+                      const srcH: number = meta.height;
+                      const dstX: number = (x - xOffset) * view.unitSize;
+                      const dstY: number = (y - yOffset) * view.unitSize;
+                      const dstW: number = view.unitSize;
+                      const dstH: number = view.unitSize;
+                      ctx.drawImage(
+                        image,
+                        srcX,
+                        srcY,
+                        srcW,
+                        srcH,
+                        dstX,
+                        dstY,
+                        dstW,
+                        dstH
+                      );
+                    }
+                  });
+                }
+              }
+              // Append chunks to body (DEBUG HACKS)
+
+              // var dataImage = new Image();
+              // dataImage.src = ctx.canvas.toDataURL();
+              // $('body').append(dataImage);
+            }
+          );
         }
       }
       this.bufferMapName = object.map.url;

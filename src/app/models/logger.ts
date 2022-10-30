@@ -20,7 +20,7 @@ class DeferredValue {
   constructor(value: DeferredValueTypes) {
     // If it's immutable, toJS it once, and cache the value
     if (!Immutable.Map.isMap(value) || Immutable.List.isList(value)) {
-      let cached;
+      let cached: any;
       this._lazy = () => {
         return cached || (cached = value.toJS());
       };

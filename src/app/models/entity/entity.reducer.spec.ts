@@ -41,7 +41,6 @@ describe('Entity', () => {
       status: [],
       type: 'item',
       eid: testId,
-      category: 'item',
       id: 'test-item',
       name: 'Test Item',
       level: 1,

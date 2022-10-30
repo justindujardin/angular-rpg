@@ -28,7 +28,7 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
   private _renderFrame: number = 3;
   state: string = '';
   animating: boolean = false;
-  animator: AnimatedBehaviorComponent = null;
+  animator: AnimatedBehaviorComponent | null = null;
   attackDirection: Headings = Headings.WEST;
   host: GameEntityObject;
 
@@ -37,9 +37,9 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
   }
 
   syncBehavior(): boolean {
-    this.animator = this.host.findBehavior(
+    this.animator = this.host.findBehavior<AnimatedBehaviorComponent>(
       AnimatedBehaviorComponent
-    ) as AnimatedBehaviorComponent;
+    );
     return super.syncBehavior();
   }
 
@@ -82,7 +82,7 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
       {
         name: 'Prep Animation',
         callback: () => {
-          this.host.setSprite(this.host.icon.replace('.png', '-magic.png'), 19);
+          this.host.setSprite(this.host.icon?.replace('.png', '-magic.png'), 19);
         },
       },
       {
@@ -102,13 +102,13 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
         duration: 1000,
         frames: [15, 16, 17, 18, 19],
         callback: () => {
-          this.host.setSprite(this.host.icon.replace('-magic.png', '.png'), 10);
+          this.host.setSprite(this.host.icon?.replace('-magic.png', '.png'), 10);
         },
       },
     ];
   }
 
-  getAttackAnimation(strikeCb: () => any) {
+  getAttackAnimation(strikeCb: () => any): any[] {
     return [
       {
         name: 'Move Forward for Attack',
@@ -117,7 +117,7 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
         frames: this.getForwardFrames(),
         move: new Point(this.getForwardDirection(), 0),
         callback: () => {
-          const attackAnimationsSource = this.host.icon.replace('.png', '-attack.png');
+          const attackAnimationsSource = this.host.icon?.replace('.png', '-attack.png');
           if (this.host.world.sprites.getSpriteMeta(attackAnimationsSource)) {
             this.host.setSprite(attackAnimationsSource, 12);
           }
@@ -129,7 +129,7 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
         duration: 100,
         frames: this.getAttackFrames(),
         callback: () => {
-          this.host.setSprite(this.host.icon.replace('-attack.png', '.png'), 10);
+          this.host.setSprite(this.host.icon?.replace('-attack.png', '.png'), 10);
           if (strikeCb) {
             strikeCb();
           }
@@ -175,14 +175,14 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
     );
   }
 
-  _playAnimation(animation: IAnimationConfig[], then: () => any) {
+  _playAnimation(animation: IAnimationConfig[], then?: () => any) {
     if (!this.animator || this.animating) {
       return;
     }
     const animations: IAnimationConfig[] = _.map(
       animation,
       (anim: IAnimationConfig) => {
-        const result = _.extend({}, anim);
+        const result = { ...anim };
         if (typeof result.move !== 'undefined') {
           result.move = result.move.clone();
         }
@@ -198,14 +198,14 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
     });
   }
 
-  _attack(cb: () => void, attackAnimation: any) {
+  _attack(cb: (() => void) | undefined, attackAnimation: any) {
     if (!this.animator || this.animating) {
       return;
     }
     const animations: IAnimationConfig[] = _.map(
       attackAnimation,
       (anim: IAnimationConfig) => {
-        const result = _.extend({}, anim);
+        const result = { ...anim };
         if (typeof result.move !== 'undefined') {
           result.move = result.move.clone();
         }

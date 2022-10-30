@@ -18,6 +18,7 @@
   "files": [
     "../src/main.ts",
     "../src/polyfills.ts",
-    "./typings.d.ts"
+    "./typings.d.ts",
+    "../src/typings.d.ts",
   ]
 }

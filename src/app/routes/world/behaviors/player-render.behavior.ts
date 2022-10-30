@@ -50,7 +50,7 @@ export class PlayerRenderBehaviorComponent extends TickedBehavior {
   animating: boolean = false;
   private _sourceAnimsFor: string = '';
 
-  private _changeSubscription: Subscription;
+  private _changeSubscription: Subscription | null;
 
   connectBehavior(): boolean {
     if (!super.connectBehavior()) {
@@ -74,8 +74,9 @@ export class PlayerRenderBehaviorComponent extends TickedBehavior {
 
   setHeading(direction: Headings, animating: boolean) {
     if (!this._animator.sourceAnims || this._sourceAnimsFor !== this.host.icon) {
-      this._animator.setAnimationSource(this.host.icon);
-      this._sourceAnimsFor = this.host.icon;
+      const icon = this.host.icon || '';
+      this._animator.setAnimationSource(icon);
+      this._sourceAnimsFor = icon;
     }
     this.heading = direction;
     switch (this.heading) {

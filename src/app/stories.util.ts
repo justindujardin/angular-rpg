@@ -5,7 +5,7 @@
  *
  */
 export const sbComponentWrapper =
-  (templateFn: (content: string) => string) => (storyFn) => {
+  (templateFn: (content: string) => string) => (storyFn: () => any) => {
     const story = storyFn();
 
     const selector: string = story.component.__annotations__[0].selector;

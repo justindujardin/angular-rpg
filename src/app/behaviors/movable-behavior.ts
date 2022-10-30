@@ -40,7 +40,7 @@ export class MovableBehavior extends TickedBehavior {
   workPoint: Point = new Point(0, 0);
   host: SceneObject;
   collider: CollisionBehaviorComponent;
-  currentMove: IMoveDescription = null;
+  currentMove: IMoveDescription | null = null;
 
   connectBehavior(): boolean {
     this.host.point = new Point(this.host.point).round();
@@ -160,8 +160,10 @@ export class MovableBehavior extends TickedBehavior {
 
     // Zero and have a path, shift the next tile and move there.
     if (zero) {
-      const next: Point = this.path.shift();
-      this.velocity.set(next.x - this.host.point.x, next.y - this.host.point.y);
+      const next: Point | undefined = this.path.shift();
+      if (next) {
+        this.velocity.set(next.x - this.host.point.x, next.y - this.host.point.y);
+      }
     } else {
       // Clear path is moving manually.
       this.path.length = 0;

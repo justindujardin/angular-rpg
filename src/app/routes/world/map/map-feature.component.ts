@@ -59,19 +59,19 @@ export class TiledFeatureComponent<
   /**
    * Write-only feature input.
    */
-  set feature(value: T) {
+  set feature(value: T | null) {
     this._feature$.next(value);
   }
-  get feature(): T {
+  get feature(): T | null {
     return this._feature$.value;
   }
 
-  protected _feature$: BehaviorSubject<T> = new BehaviorSubject(null);
+  protected _feature$: BehaviorSubject<T | null> = new BehaviorSubject(null);
 
   /**
    * Observable of feature data.
    */
-  feature$: Observable<TiledMapFeatureData> = this._feature$;
+  feature$: Observable<TiledMapFeatureData | null> = this._feature$;
 
   get properties(): any {
     return this._feature$.value?.properties || {};
@@ -115,36 +115,31 @@ export class MapFeatureComponent
   extends TileObjectBehavior
   implements AfterViewInit, OnDestroy
 {
-  @Input() set feature(value: TiledMapFeatureData) {
-    this._feature$.next(value);
-  }
-
   @Input() tiledMap: TiledTMXResource;
   @Input() tileMap: TileMap;
-
-  get feature(): TiledMapFeatureData {
+  @Input() scene: Scene;
+  @ViewChildren('comp') featureQuery: QueryList<TiledFeatureComponent>;
+  @Output() onClose: EventEmitter<TiledFeatureComponent> = new EventEmitter();
+  @Input() set feature(value: TiledMapFeatureData | null) {
+    this._feature$.next(value);
+  }
+  get feature(): TiledMapFeatureData | null {
     return this._feature$.value;
   }
-
-  @Input() scene: Scene;
-
-  @ViewChildren('comp') featureQuery: QueryList<TiledFeatureComponent>;
-
-  @Output() onClose: EventEmitter<TiledFeatureComponent> = new EventEmitter();
 
   private _featureComponent$: Subject<TiledFeatureComponent> =
     new ReplaySubject<TiledFeatureComponent>(1);
 
-  private _feature$: BehaviorSubject<TiledMapFeatureData> =
-    new BehaviorSubject<TiledMapFeatureData>(null);
+  private _feature$: BehaviorSubject<TiledMapFeatureData | null> =
+    new BehaviorSubject<TiledMapFeatureData | null>(null);
 
-  feature$: Observable<TiledMapFeatureData> = this._feature$;
+  feature$: Observable<TiledMapFeatureData | null> = this._feature$;
 
   class$: Observable<TiledMapFeatureTypes> = this.feature$.pipe(
-    map((f) => f.class as TiledMapFeatureTypes)
+    map((f) => (f?.class || '') as TiledMapFeatureTypes)
   );
 
-  gameFeatureObject$: Observable<GameFeatureObject> = combineLatest(
+  gameFeatureObject$: Observable<GameFeatureObject | null> = combineLatest(
     [this.feature$, this._featureComponent$],
     (data: TiledMapFeatureData, component: TiledFeatureComponent) => {
       if (!data || !this.tiledMap) {
@@ -162,7 +157,7 @@ export class MapFeatureComponent
     }
   );
 
-  host: GameFeatureObject;
+  host: GameFeatureObject | null;
 
   /**
    * Observable of whether this feature is hidden/inactive by its unique ID
@@ -224,7 +219,7 @@ export class MapFeatureComponent
     return super.toString();
   }
 
-  private _hostSubscription: Subscription;
+  private _hostSubscription: Subscription | null;
 
   ngAfterViewInit(): void {
     if (this.featureQuery.length > 0) {

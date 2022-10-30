@@ -18,6 +18,7 @@ import { TiledTMXResource } from '../../../app/core/resources/tiled/tiled-tmx.re
 import { AppState } from '../../app.model';
 import { SpriteComponent } from '../../behaviors/sprite.behavior';
 import { LoadingService } from '../../components/loading/loading.service';
+import { ITiledObject } from '../../core/resources/tiled/tiled.model';
 import { CombatantTypes, IEnemy, IPartyMember } from '../../models/base-entity';
 import { CombatState } from '../../models/combat/combat.model';
 import { CombatService } from '../../models/combat/combat.service';
@@ -27,7 +28,10 @@ import {
   sliceCombatState,
 } from '../../models/selectors';
 import { TileMapRenderer } from '../../scene/render/tile-map-renderer';
-import { TileObjectRenderer } from '../../scene/render/tile-object-renderer';
+import {
+  TileObjectRenderer,
+  TileRenderable,
+} from '../../scene/render/tile-object-renderer';
 import { Scene } from '../../scene/scene';
 import { SceneView } from '../../scene/scene-view';
 import { ISceneViewRenderer } from '../../scene/scene.model';
@@ -72,9 +76,9 @@ export class CombatMapComponent
   );
 
   /** Features can be derived after a new map resource has been loaded */
-  features$: Observable<any> = this.resource$.pipe(
+  features$: Observable<ITiledObject[]> = this.resource$.pipe(
     map(() => {
-      return this.features.objects;
+      return this.features?.objects || [];
     })
   );
 
@@ -91,7 +95,7 @@ export class CombatMapComponent
    * @internal used to make `resource$` observable hot. Can be removed if the template references an
    * async binding for this at any point.
    */
-  private _resourceSubscription: Subscription;
+  private _resourceSubscription: Subscription | null;
 
   ngAfterViewInit(): void {
     this.scene.addObject(this);
@@ -117,7 +121,7 @@ export class CombatMapComponent
   }
 
   ngOnDestroy(): void {
-    this._resourceSubscription.unsubscribe();
+    this._resourceSubscription?.unsubscribe();
     this.scene.removeObject(this);
     this.removeBehavior(this.camera);
     this.destroy();
@@ -146,7 +150,12 @@ export class CombatMapComponent
       );
       const sprites = component.findBehaviors(SpriteComponent) as SpriteComponent[];
       sprites.forEach((sprite: SpriteComponent) => {
-        this.objectRenderer.render(sprite, sprite.host.point, view, sprite.meta);
+        this.objectRenderer.render(
+          sprite as TileRenderable,
+          sprite.host.point,
+          view,
+          sprite.meta
+        );
       });
     });
     this.enemies.forEach((component: CombatEnemyComponent) => {
@@ -158,7 +167,12 @@ export class CombatMapComponent
       );
       const sprites: SpriteComponent[] = component.findBehaviors(SpriteComponent);
       sprites.forEach((sprite: SpriteComponent) => {
-        this.objectRenderer.render(sprite, sprite.host.point, view, sprite.meta);
+        this.objectRenderer.render(
+          sprite as TileRenderable,
+          sprite.host.point,
+          view,
+          sprite.meta
+        );
       });
     });
   }

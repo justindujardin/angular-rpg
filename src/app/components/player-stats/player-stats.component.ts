@@ -47,8 +47,8 @@ export class PlayerStatsComponent {
     this._showHP$.next(value);
   }
 
-  private _model$: Subject<Entity> = new BehaviorSubject<Entity>(null);
-  model$: Observable<Entity> = this._model$;
+  private _model$: Subject<Entity | null> = new BehaviorSubject<Entity | null>(null);
+  model$: Observable<Entity | null> = this._model$;
 
   /**
    * Set the source entity to render stats for

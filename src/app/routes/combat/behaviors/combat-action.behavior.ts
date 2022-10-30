@@ -17,14 +17,14 @@ import { SceneObjectBehavior } from '../../../behaviors/scene-object-behavior';
 import { ITemplateMagic } from '../../../models/game-data/game-data.model';
 import { Item } from '../../../models/item';
 import { GameEntityObject } from '../../../scene/objects/game-entity-object';
-import { IPlayerAction, IPlayerActionCallback } from '../states/combat.machine';
+import { IPlayerAction, IPlayerActionCallback } from '../combat.types';
 
 export class CombatActionBehavior extends SceneObjectBehavior implements IPlayerAction {
   name: string = 'default';
-  from: GameEntityObject = null;
-  to: GameEntityObject = null;
-  spell: ITemplateMagic = null;
-  item: Item = null;
+  from: GameEntityObject | null = null;
+  to: GameEntityObject | null = null;
+  spell: ITemplateMagic | null = null;
+  item: Item | null = null;
 
   getActionName(): string {
     return this.name;

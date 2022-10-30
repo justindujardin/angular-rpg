@@ -51,7 +51,7 @@ export class Rect implements IRect {
 
   set(rect: IRect): Rect;
   set(point: Point, extent: Point): Rect;
-  set(x: number, y: number, width: number, height: number);
+  set(x: number, y: number, width: number, height: number): Rect;
   set(rectOrPointOrX: any, extentOrY?: any, width?: number, height?: number): Rect {
     if (rectOrPointOrX instanceof Rect) {
       this.point.set(rectOrPointOrX.point);
@@ -135,7 +135,7 @@ export class Rect implements IRect {
       x = pointOrX;
     }
     this.point.x = parseFloat((x - this.extent.x * 0.5).toFixed(2));
-    this.point.y = parseFloat((y - this.extent.y * 0.5).toFixed(2));
+    this.point.y = parseFloat(((y as number) - this.extent.y * 0.5).toFixed(2));
     return this;
   }
 

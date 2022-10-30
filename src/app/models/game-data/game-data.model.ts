@@ -14,15 +14,7 @@ export type ItemGroups = 'default' | 'rare' | 'magic';
 export type ItemElements = 'holy' | 'water' | 'wind' | 'heal';
 
 /** Array of valid equipment slot names on a party member */
-export const EQUIPMENT_SLOTS = [
-  'armor',
-  'helm',
-  'boots',
-  'shield',
-  'accessory',
-  'weapon',
-  'spell',
-] as const;
+export const EQUIPMENT_SLOTS = ['armor', 'helm', 'boots', 'shield', 'weapon'] as const;
 
 /** Valid equipment slot strings type */
 export type EquipmentSlotTypes = typeof EQUIPMENT_SLOTS[number];
@@ -40,7 +32,7 @@ export interface ITemplateId {
 
 export interface ITemplateBaseItem extends ITemplateId {
   /** Each type specifies this */
-  readonly type: any;
+  readonly type: string;
 
   /**
    * The sprite icon name to use to render the item, e.g. "shortSword.png", "bluePotion.png".

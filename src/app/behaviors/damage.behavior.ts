@@ -20,21 +20,21 @@ import { SoundBehavior } from './sound-behavior';
 import { SpriteComponent } from './sprite.behavior';
 
 export class DamageComponent extends SceneObjectBehavior {
-  host: GameEntityObject;
-  animation: AnimatedSpriteBehavior;
-  sprite: SpriteComponent;
-  sound: SoundBehavior;
+  host: GameEntityObject | null;
+  animation: AnimatedSpriteBehavior | null;
+  sprite: SpriteComponent | null;
+  sound: SoundBehavior | null;
   started: boolean = false;
 
   syncBehavior(): boolean {
-    if (!super.syncBehavior()) {
+    if (!super.syncBehavior() || !this.host) {
       return false;
     }
     this.animation = <AnimatedSpriteBehavior>(
       this.host.findBehavior(AnimatedSpriteBehavior)
     );
-    this.sprite = <SpriteComponent>this.host.findBehavior(SpriteComponent);
-    this.sound = <SoundBehavior>this.host.findBehavior(SoundBehavior);
+    this.sprite = this.host.findBehavior<SpriteComponent>(SpriteComponent);
+    this.sound = this.host.findBehavior<SoundBehavior>(SoundBehavior);
     const ok = !!(this.animation && this.sprite);
     if (!this.started && ok) {
       this.started = true;

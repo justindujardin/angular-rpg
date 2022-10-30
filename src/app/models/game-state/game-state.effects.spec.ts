@@ -74,7 +74,7 @@ describe('GameState', () => {
         const { effects } = setup();
         actions$ = of(new GameStateLoadSuccessAction(fakeAppState));
         effects.afterLoadTravelToCurrentLocation$.subscribe((result) => {
-          expect(result.type).toBe(GameStateTravelAction.typeId);
+          expect(result?.type).toBe(GameStateTravelAction.typeId);
           done();
         });
       });

@@ -28,7 +28,7 @@ export class Animate {
     return new Promise<void>((resolve) => {
       el.classList.add(cssClass);
       const duration = this.getTransitionDuration(el, true);
-      let callTimeout;
+      let callTimeout: any;
       const done = () => {
         clearTimeout(callTimeout);
         el.removeEventListener(this.eventName, done);
@@ -42,7 +42,7 @@ export class Animate {
   leave(el: HTMLElement, cssClass: string): Promise<void> {
     return new Promise<void>((resolve) => {
       const duration = this.getTransitionDuration(el, true);
-      let callTimeout;
+      let callTimeout: any;
       const done = () => {
         clearTimeout(callTimeout);
         el.removeEventListener(this.eventName, done);
@@ -102,5 +102,6 @@ export class Animate {
         return transitions[t];
       }
     }
+    throw new Error('No valid transition event found!');
   }
 }

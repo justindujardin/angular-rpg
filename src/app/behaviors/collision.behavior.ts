@@ -16,6 +16,7 @@
 import { Component } from '@angular/core';
 import { Rect } from '../../app/core/rect';
 import { SceneObject } from '../scene/scene-object';
+import { ISceneObject } from '../scene/scene.model';
 import { SceneObjectBehavior } from './scene-object-behavior';
 
 @Component({
@@ -26,7 +27,12 @@ export class CollisionBehaviorComponent extends SceneObjectBehavior {
   collideBox: Rect = new Rect(0, 0, 1, 1);
   resultsArray: any[] = [];
 
-  collide(x: number, y: number, type: Function = SceneObject, results = []): boolean {
+  collide<T extends ISceneObject = ISceneObject>(
+    x: number,
+    y: number,
+    type: Function = SceneObject,
+    results: T[] = []
+  ): boolean {
     if (!this.host || !this.host.scene) {
       return false;
     }
@@ -35,7 +41,7 @@ export class CollisionBehaviorComponent extends SceneObjectBehavior {
     return this.host.scene.db.queryRect(this.collideBox, type, results);
   }
 
-  collideFirst(x: number, y: number, type: Function = SceneObject): SceneObject {
+  collideFirst(x: number, y: number, type: Function = SceneObject): SceneObject | null {
     if (!this.host || !this.host.scene) {
       return null;
     }

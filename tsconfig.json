@@ -10,6 +10,9 @@
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "importHelpers": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "strictFunctionTypes": false,
     "target": "es2020",
     "module": "es2020",
     "lib": [

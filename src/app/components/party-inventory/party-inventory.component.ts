@@ -26,7 +26,10 @@ import {
   EntityWithEquipment,
 } from '../../models/entity/entity.model';
 import { EntityItemTypes } from '../../models/entity/entity.reducer';
-import { EQUIPMENT_SLOTS } from '../../models/game-data/game-data.model';
+import {
+  EquipmentSlotTypes,
+  EQUIPMENT_SLOTS,
+} from '../../models/game-data/game-data.model';
 import {
   GameStateEquipItemAction,
   GameStateUnequipItemAction,
@@ -55,7 +58,8 @@ export class PartyInventoryComponent implements OnDestroy {
   @Input()
   active: boolean = false;
 
-  party$: Observable<Immutable.List<Entity>> = this.store.select(getGameParty);
+  party$: Observable<Immutable.List<Entity | undefined>> =
+    this.store.select(getGameParty);
 
   /**
    * Emit on this subject to update the current index.
@@ -92,12 +96,12 @@ export class PartyInventoryComponent implements OnDestroy {
   );
 
   /** The currently selected player entity with its equipment resolved to items rather than item ids */
-  currentEntity$: Observable<EntityWithEquipment> = this.currentIndex$.pipe(
+  currentEntity$: Observable<EntityWithEquipment | null> = this.currentIndex$.pipe(
     combineLatest(this.party$, (index: number, party: Immutable.List<Entity>) => {
       return party.get(index);
     }),
     switchMap((entity?: Entity) => {
-      return this.store.select(getEntityEquipment(entity?.eid));
+      return this.store.select(getEntityEquipment(entity?.eid || 'invalid'));
     })
   );
   /** Stream of inventory that the currentEntity$ can equip */
@@ -108,18 +112,22 @@ export class PartyInventoryComponent implements OnDestroy {
         this.currentEntity$,
         (inventory: Immutable.List<EntityItemTypes>, member: EntityWithEquipment) => {
           return inventory
-            .filter((i: EntityItemTypes) => {
+            .filter((i?: EntityItemTypes) => {
               // Is an item with a known equipment slot
-              if (EQUIPMENT_SLOTS.indexOf(i.type) !== -1) {
+              if (!i) {
+                return false;
+              }
+              if (EQUIPMENT_SLOTS.indexOf(i.type as EquipmentSlotTypes) !== -1) {
                 // If usedby is empty, anyone can use it
                 if ((i.usedby || []).length === 0) {
                   return true;
                 }
                 // If the player type is in the usedby array
-                if (i.usedby.includes(member.type)) {
+                if (i.usedby && i.usedby.includes(member.type)) {
                   return true;
                 }
               }
+              return false;
             })
             .toList();
         }

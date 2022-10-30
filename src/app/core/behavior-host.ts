@@ -23,7 +23,7 @@ export class BehaviorHost extends Events implements IBehaviorHost {
     this._connectedBehaviors.length = 0;
   }
 
-  findBehavior<T extends IBehavior>(type: Function): T {
+  findBehavior<T extends IBehavior>(type: Function): T | null {
     const values: any[] = this._connectedBehaviors;
     const l: number = this._connectedBehaviors.length;
     for (let i = 0; i < l; i++) {
@@ -50,7 +50,7 @@ export class BehaviorHost extends Events implements IBehaviorHost {
     return results;
   }
 
-  findBehaviorByName(name: string): IBehavior {
+  findBehaviorByName(name: string): IBehavior | null {
     const values: any[] = this._connectedBehaviors;
     const l: number = this._connectedBehaviors.length;
     for (let i = 0; i < l; i++) {
@@ -79,7 +79,7 @@ export class BehaviorHost extends Events implements IBehaviorHost {
     }
     component.host = this;
     if (component.connectBehavior() === false) {
-      delete component.host;
+      component.host = null;
       return false;
     }
     this._connectedBehaviors.push(component);

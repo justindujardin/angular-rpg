@@ -91,7 +91,7 @@ export class Point implements IPoint {
       this.y += pointOrXOrValue;
     } else {
       this.x += pointOrXOrValue;
-      this.y += y;
+      this.y += y as number;
     }
     return this;
   }
@@ -108,7 +108,7 @@ export class Point implements IPoint {
       this.y -= pointOrXOrValue;
     } else {
       this.x -= pointOrXOrValue;
-      this.y -= y;
+      this.y -= y as number;
     }
     return this;
   }
@@ -125,7 +125,7 @@ export class Point implements IPoint {
       this.y *= pointOrXOrValue;
     } else {
       this.x *= pointOrXOrValue;
-      this.y *= y;
+      this.y *= y as number;
     }
     return this;
   }
@@ -151,7 +151,7 @@ export class Point implements IPoint {
         throw new Error(errors.DIVIDE_ZERO);
       }
       this.x /= pointOrXOrValue;
-      this.y /= y;
+      this.y /= y as number;
     }
     return this;
   }

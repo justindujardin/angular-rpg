@@ -16,6 +16,7 @@
 import { Injectable } from '@angular/core';
 import { IProcessObject } from '../../../app/core/time';
 import { IWorldObject } from '../../../app/core/world';
+import { assertTrue } from '../../models/util';
 import { Animate } from '../../services/animate';
 import { GameWorld } from '../../services/game-world';
 
@@ -34,7 +35,7 @@ export interface INotifyItem {
   /**
    * Elapsed time since the alert has been full shown (after any enter animations)
    */
-  elapsed?: number;
+  elapsed: number;
   /**
    * Set to dismiss.
    */
@@ -60,32 +61,32 @@ export class NotificationService implements IWorldObject, IProcessObject {
   world: GameWorld;
   paused: boolean = false;
   public animationClass: string = 'active';
-  public message: string = null;
+  public message: string | null = null;
 
   /**
    * Default timeout in Milliseconds
    */
   defaultTimeout: number = 2500;
 
-  set container(value: HTMLElement) {
-    if (this._container) {
+  set container(value: HTMLElement | null) {
+    if (this._container && this._dismissBinding) {
       this._container.removeEventListener('click', this._dismissBinding);
     }
     this._container = value;
-    if (this._container) {
+    if (this._container && this._dismissBinding) {
       this._container.addEventListener('click', this._dismissBinding);
     }
   }
 
-  get container(): HTMLElement {
+  get container(): HTMLElement | null {
     return this._container;
   }
 
-  private _container: HTMLElement = null;
+  private _container: HTMLElement | null = null;
 
-  private _current: INotifyItem = null;
+  private _current: INotifyItem | null = null;
   private _queue: INotifyItem[] = [];
-  private _dismissBinding: (e: any) => any = null;
+  private _dismissBinding: ((e: any) => any) | null = null;
 
   constructor(public animate: Animate) {
     this._dismissBinding = (e) => {
@@ -97,13 +98,14 @@ export class NotificationService implements IWorldObject, IProcessObject {
     const obj: INotifyItem = {
       message,
       done,
+      elapsed: 0,
       duration: typeof duration === 'undefined' ? this.defaultTimeout : duration,
     };
     return this.queue(obj);
   }
 
   dismiss() {
-    if (!this._current || this.paused) {
+    if (!this._current || this.paused || !this.container) {
       return;
     }
     this.paused = true;
@@ -141,7 +143,7 @@ export class NotificationService implements IWorldObject, IProcessObject {
   processFrame(elapsed: number) {
     if (this._current && this.paused !== true) {
       const c = this._current;
-      let timeout: boolean = c.duration && c.elapsed > c.duration;
+      let timeout: boolean = !!(c.duration && c.elapsed > c.duration);
       let dismissed: boolean = c.dismissed === true;
       if (!timeout && !dismissed) {
         c.elapsed += elapsed;
@@ -152,9 +154,10 @@ export class NotificationService implements IWorldObject, IProcessObject {
     if (this.paused || this._queue.length === 0) {
       return;
     }
-    this._current = this._queue.shift();
+    this._current = this._queue.shift() || null;
     this.paused = true;
-    this.message = this._current.message;
+    this.message = this._current?.message || '';
+    assertTrue(this.container, 'invalid animation container');
     this.animate.enter(this.container, this.animationClass).then(() => {
       this.paused = false;
     });

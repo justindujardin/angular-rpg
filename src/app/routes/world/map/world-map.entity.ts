@@ -73,7 +73,7 @@ export class WorldMapComponent
   /** Features can be derived after a new map resource has been loaded */
   features$: Observable<TiledMapFeatureData[]> = this.resource$.pipe(
     map(() => {
-      return this.features.objects;
+      return this.features?.objects || [];
     })
   );
 
@@ -139,7 +139,7 @@ export class WorldMapComponent
     this.mapFeatures.changes.subscribe((value: QueryList<MapFeatureComponent>) =>
       value.forEach((c) => {
         // Add behaviors that aren't already known
-        if (!this.findBehaviorByName(c.name)) {
+        if (c.name && !this.findBehaviorByName(c.name)) {
           this.addBehavior(c);
         }
         // Update the host
@@ -216,9 +216,9 @@ export class WorldMapComponent
   );
 
   /** Observable of Entity representing the player-card leader to be rendered in the world */
-  partyLeader$: Observable<Entity> = this.store.select(getGameParty).pipe(
+  partyLeader$: Observable<Entity | null> = this.store.select(getGameParty).pipe(
     map((party: Immutable.List<Entity>) => {
-      return party.get(0);
+      return party.get(0) || null;
     })
   );
 }

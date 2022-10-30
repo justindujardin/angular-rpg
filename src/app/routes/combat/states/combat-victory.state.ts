@@ -67,10 +67,10 @@ export class CombatVictoryStateComponent extends CombatMachineState {
         // Apply Fixed encounter bonus awards
         //
         if (state.type === 'fixed') {
-          if (state.gold > 0) {
+          if (state.gold && state.gold > 0) {
             gold += state.gold;
           }
-          if (state.experience > 0) {
+          if (state.experience && state.experience > 0) {
             exp += state.experience;
           }
           if (state.items && state.items.length > 0) {
@@ -113,7 +113,7 @@ export class CombatVictoryStateComponent extends CombatMachineState {
         // Dispatch victory action
         const summary: CombatVictorySummary = {
           type: machine.encounter.type,
-          id: machine.encounter.id,
+          id: machine.encounter.id || '',
           party: players,
           enemies,
           levels: levelUps,

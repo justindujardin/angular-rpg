@@ -59,12 +59,12 @@ export class TreasureFeatureComponent
 
   enter(object: TileObject): boolean {
     if (this.taken === true) {
-      return;
+      return true;
     }
     this.taken = true;
     if (typeof this.properties.gold !== 'undefined') {
       this.store.dispatch(new GameStateAddGoldAction(this.properties.gold));
-      this.notify.show(`You found ${this.properties.gold} gold!`, null, 0);
+      this.notify.show(`You found ${this.properties.gold} gold!`, undefined, 0);
     } else if (typeof this.properties.item === 'string') {
       const templateId = this.properties.item;
       let template: ITemplateBaseItem | null = getItemById(templateId);
@@ -80,9 +80,9 @@ export class TreasureFeatureComponent
       const itemInstance = instantiateEntity<Item>(template);
       this.store.dispatch(new EntityAddItemAction(itemInstance));
       this.store.dispatch(new GameStateAddInventoryAction(itemInstance));
-      this.notify.show(`You found ${template.name}!`, null, 0);
+      this.notify.show(`You found ${template.name}!`, undefined, 0);
     } else if (typeof this.properties.text === 'string') {
-      this.notify.show(`You found ${this.properties.text}!`, null, 0);
+      this.notify.show(`You found ${this.properties.text}!`, undefined, 0);
     }
     this.store.dispatch(new GameStateSetKeyDataAction(this.properties.id, true));
     return true;

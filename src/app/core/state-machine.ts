@@ -20,15 +20,15 @@ import { Events, IEvents } from './events';
 import { IState } from './state';
 
 export interface IStateMachine<TStateMachineStateNames extends string> extends IEvents {
-  update(data: any);
-  addState(state: IState<TStateMachineStateNames>);
-  addStates(states: IState<TStateMachineStateNames>[]);
-  getCurrentState(): IState<TStateMachineStateNames>;
-  getCurrentName(): TStateMachineStateNames;
-  setCurrentStateObject(newState: IState<TStateMachineStateNames>): boolean;
+  update(data: any): void;
+  addState(state: IState<TStateMachineStateNames>): void;
+  addStates(states: IState<TStateMachineStateNames>[]): void;
+  getCurrentState(): IState<TStateMachineStateNames> | null;
+  getCurrentName(): TStateMachineStateNames | null;
+  setCurrentStateObject(newState: IState<TStateMachineStateNames> | null): boolean;
   setCurrentState(name: TStateMachineStateNames): boolean;
-  getPreviousState(): IState<TStateMachineStateNames>;
-  getState(name: TStateMachineStateNames): IState<TStateMachineStateNames>;
+  getPreviousState(): IState<TStateMachineStateNames> | null;
+  getState(name: TStateMachineStateNames): IState<TStateMachineStateNames> | null;
 }
 
 export interface IResumeCallback {
@@ -69,19 +69,19 @@ export class StateMachine<StateNames extends string>
     }
   }
 
-  addState(state: IState<StateNames>) {
+  addState(state: IState<StateNames>): void {
     this.states.push(state);
   }
 
-  addStates(states: IState<StateNames>[]) {
+  addStates(states: IState<StateNames>[]): void {
     this.states = _.unique(this.states.concat(states));
   }
 
-  getCurrentState(): IState<StateNames> {
+  getCurrentState(): IState<StateNames> | null {
     return this._currentState;
   }
 
-  getCurrentName(): StateNames {
+  getCurrentName(): StateNames | null {
     return this._currentState !== null ? this._currentState.name : null;
   }
 
@@ -89,7 +89,7 @@ export class StateMachine<StateNames extends string>
    * Set the current state after the callstack unwinds.
    * @param newState A state object
    */
-  setCurrentStateObject(state: IState<StateNames>): boolean {
+  setCurrentStateObject(state: IState<StateNames> | null): boolean {
     if (!state) {
       console.error(`STATE NOT FOUND: ${state}`);
       return false;
@@ -105,7 +105,7 @@ export class StateMachine<StateNames extends string>
         state = this._pendingState;
         this._pendingState = null;
         if (!this._setCurrentState(state)) {
-          console.error(`Failed to set state: ${state.name}`);
+          console.error(`Failed to set state: ${state?.name}`);
         }
       });
     }
@@ -115,16 +115,16 @@ export class StateMachine<StateNames extends string>
    * Set the current state by name after the callstack unwinds.
    * @param name A known state name
    */
-  setCurrentState(name: StateNames): boolean {
+  setCurrentState(name: StateNames | null): boolean {
     let state = this.getState(name);
     return this.setCurrentStateObject(state);
   }
 
-  private _setCurrentState(state: IState<StateNames>) {
+  private _setCurrentState(state: IState<StateNames> | null): boolean {
     if (!state) {
       return false;
     }
-    const oldState: IState<StateNames> = this._currentState;
+    const oldState: IState<StateNames> | null = this._currentState;
     // Already in the desired state.
     if (this._currentState && state.name === this._currentState.name) {
       console.warn(
@@ -150,18 +150,20 @@ export class StateMachine<StateNames extends string>
     return true;
   }
 
-  getPreviousState(): IState<StateNames> {
+  getPreviousState(): IState<StateNames> | null {
     return this._previousState;
   }
 
-  getState(name: StateNames): IState<StateNames> {
-    return _.find(this.states, (s: IState<StateNames>) => {
-      return s.name === name;
-    });
+  getState(name: StateNames | null): IState<StateNames> | null {
+    return (
+      _.find(this.states, (s: IState<StateNames>) => {
+        return s.name === name;
+      }) || null
+    );
   }
 
   private _asyncProcessing: number = 0;
-  private _asyncCurrentCallback: IResumeCallback = null;
+  private _asyncCurrentCallback: IResumeCallback | null = null;
 
   /**
    * Notify the game UI of an event, and wait for it to be handled,

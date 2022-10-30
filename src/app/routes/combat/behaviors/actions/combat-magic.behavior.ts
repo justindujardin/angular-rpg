@@ -5,7 +5,7 @@ import { combineLatest } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import * as _ from 'underscore';
 import { CombatPlayerRenderBehaviorComponent } from '..';
-import { CombatAttackSummary, CombatComponent } from '../..';
+import { CombatComponent } from '../..';
 import { AppState } from '../../../../../app/app.model';
 import { EntityType, IPartyMember } from '../../../../../app/models/base-entity';
 import { CombatAttackAction } from '../../../../../app/models/combat/combat.actions';
@@ -28,8 +28,14 @@ import { SoundBehavior } from '../../../../behaviors/sound-behavior';
 import { SpriteComponent } from '../../../../behaviors/sprite.behavior';
 import { ImageResource } from '../../../../core';
 import { getSoundEffectUrl, ISpriteMeta } from '../../../../core/api';
+import {
+  ITemplateBaseItem,
+  ITemplateMagic,
+} from '../../../../models/game-data/game-data.model';
 import { IMagicTargetDelta } from '../../../../models/mechanics';
-import { CombatEndTurnStateComponent, IPlayerActionCallback } from '../../states';
+import { assertTrue } from '../../../../models/util';
+import { CombatAttackSummary, IPlayerActionCallback } from '../../combat.types';
+import { CombatEndTurnStateComponent } from '../../states';
 import { CombatActionBehavior } from '../combat-action.behavior';
 
 /**
@@ -86,17 +92,26 @@ export class CombatMagicBehavior extends CombatActionBehavior {
 
   healSpell(done?: (error?: any) => any) {
     //
-    const caster: GameEntityObject = this.from;
-    const target: GameEntityObject = this.to;
+    const caster: GameEntityObject | null = this.from;
+    const target: GameEntityObject | null = this.to;
+    const spell: ITemplateMagic | null = this.spell;
+    assertTrue(caster, 'CombatMagicBehavior: invalid caster source');
+    assertTrue(target, 'CombatMagicBehavior: invalid caster target');
+    assertTrue(spell, 'CombatMagicBehavior: invalid spell');
+    const casterModel: any = caster.model;
+    const targetModel: any = target.model;
+    assertTrue(casterModel, 'CombatMagicBehavior: invalid caster source model');
+    assertTrue(targetModel, 'CombatMagicBehavior: invalid caster target model');
+
     const attackerPlayer = caster.findBehavior(
       CombatPlayerRenderBehaviorComponent
     ) as CombatPlayerRenderBehaviorComponent;
 
     attackerPlayer.magic(() => {
-      var healAmount: number = -this.spell.value;
+      var healAmount: number = -spell.value;
       const healData: CombatAttack = {
-        attacker: caster.model,
-        defender: target.model,
+        attacker: casterModel,
+        defender: targetModel,
         damage: healAmount,
       };
       this.store.dispatch(new CombatAttackAction(healData));
@@ -120,8 +135,8 @@ export class CombatMagicBehavior extends CombatActionBehavior {
         target.removeComponentDictionary(behaviors);
         const data: CombatAttackSummary = {
           damage: healAmount,
-          attacker: caster,
-          defender: target,
+          attacker: casterModel,
+          defender: targetModel,
         };
         this.combat.machine.notify('combat:attackCombatant', data, done);
       });
@@ -131,29 +146,36 @@ export class CombatMagicBehavior extends CombatActionBehavior {
   }
 
   hurtSpell(done?: (error?: any) => any) {
-    //
-    const attacker: GameEntityObject = this.from;
-    const defender: GameEntityObject = this.to;
-    const attackerPlayer = attacker.findBehavior<CombatPlayerRenderBehaviorComponent>(
+    const caster: GameEntityObject | null = this.from;
+    const target: GameEntityObject | null = this.to;
+    const spell: ITemplateMagic | null = this.spell;
+    assertTrue(caster, 'CombatMagicBehavior: invalid caster source');
+    assertTrue(target, 'CombatMagicBehavior: invalid caster target');
+    assertTrue(spell, 'CombatMagicBehavior: invalid spell');
+    const casterModel: any = caster.model;
+    const targetModel: any = target.model;
+    assertTrue(casterModel, 'CombatMagicBehavior: invalid caster source model');
+    assertTrue(targetModel, 'CombatMagicBehavior: invalid caster target model');
+    const attackerPlayer = caster.findBehavior<CombatPlayerRenderBehaviorComponent>(
       CombatPlayerRenderBehaviorComponent
     );
     const castSpell = () => {
       combineLatest([
-        this.store.select(getCombatEntityEquipment(attacker.model.eid)),
-        this.store.select(getCombatEntityEquipment(defender.model.eid)),
+        this.store.select(getCombatEntityEquipment(casterModel.eid)),
+        this.store.select(getCombatEntityEquipment(targetModel.eid)),
         this.store.select(getGameInventory),
       ])
         .pipe(
           first(),
           map((args) => {
-            const equippedAttacker: EntityWithEquipment = args[0];
-            const equippedDefender: EntityWithEquipment = args[1];
+            const equippedAttacker: EntityWithEquipment | null = args[0];
+            const equippedDefender: EntityWithEquipment | null = args[1];
             const inventory: Immutable.List<Item> = args[2];
             const magicCastConfig: ICombatCastSpellConfig = {
-              caster: equippedAttacker || attacker.model,
-              spell: this.spell,
-              targets: [equippedDefender || defender.model],
-              inventory: inventory.toJS(),
+              caster: equippedAttacker || casterModel,
+              spell: spell,
+              targets: [equippedDefender || targetModel],
+              inventory: inventory.toJS() as ITemplateBaseItem[],
             };
             const magicEffects = this.combatService.castSpell(magicCastConfig);
             if (magicEffects.targets.length > 1) {
@@ -165,31 +187,35 @@ export class CombatMagicBehavior extends CombatActionBehavior {
               //       immensely.
               throw new Error('No support for multiple magic targets yet.');
             }
-            const targ: IMagicTargetDelta = magicEffects.targets[0];
+            const targ: IMagicTargetDelta | undefined = magicEffects.targets[0];
             // NOTE: This is negative because the Attack action assumes positive values
             //       are damage. We should probably have a separate action for magic effects.
-            const damage = -targ.healthDelta;
-            const didKill: boolean = defender.model.hp - damage <= 0;
+            assertTrue(targ, 'no magic effect');
+            const damage = -(targ.healthDelta || 0);
+            const didKill: boolean = targetModel.hp - damage <= 0;
             const hit: boolean = damage > 0;
-            const defending: boolean = defender.model.status.includes('guarding');
+            const defending: boolean = targetModel.status.includes('guarding');
             const hitSound: string = getSoundEffectUrl(
               didKill ? 'killed' : hit ? (defending ? 'miss' : 'hit') : 'miss'
             );
             const attackData: CombatAttack = {
-              attacker: attacker.model,
-              defender: defender.model,
+              attacker: casterModel,
+              defender: targetModel,
               damage,
             };
             this.store.dispatch(new CombatAttackAction(attackData));
             const damageAnimation: string = 'animHitSpell.png';
-            const meta: ISpriteMeta =
+            const meta: ISpriteMeta | null =
               this.gameWorld.sprites.getSpriteMeta(damageAnimation);
             if (!meta) {
               console.warn(
                 'could not find damage animation in sprites metadata: ' +
                   damageAnimation
               );
-              return done();
+              if (done) {
+                return done();
+              }
+              return;
             }
 
             this.gameWorld.sprites
@@ -213,22 +239,22 @@ export class CombatMagicBehavior extends CombatActionBehavior {
                     volume: 0.3,
                   }),
                 };
-                defender.addComponentDictionary(behaviors);
+                target.addComponentDictionary(behaviors);
                 behaviors.damage.once('damage:done', () => {
                   if (attackerPlayer) {
                     attackerPlayer.setState();
                   }
                   if (didKill) {
                     _.defer(() => {
-                      defender.destroy();
+                      target.destroy();
                     });
                   }
-                  defender.removeComponentDictionary(behaviors);
+                  target.removeComponentDictionary(behaviors);
                 });
                 const data: CombatAttackSummary = {
                   damage,
-                  attacker,
-                  defender,
+                  attacker: caster,
+                  defender: target,
                 };
                 this.combat.machine.notify('combat:attack', data, done);
               });
@@ -236,7 +262,7 @@ export class CombatMagicBehavior extends CombatActionBehavior {
         )
         .subscribe();
     };
-    attackerPlayer.magic(castSpell);
+    attackerPlayer?.magic(castSpell);
     return true;
   }
 }

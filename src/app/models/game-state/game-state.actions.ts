@@ -18,7 +18,7 @@ export class GameStateSaveAction implements Action {
 export class GameStateSaveSuccessAction implements Action {
   static typeId: 'GAME_SAVE_SUCCESS' = type('GAME_SAVE_SUCCESS');
   type = GameStateSaveSuccessAction.typeId;
-  payload: string = null;
+  payload: string | null = null;
 }
 
 export class GameStateSaveFailAction implements Action {
@@ -40,7 +40,7 @@ export class GameStateDeleteAction implements Action {
 export class GameStateDeleteSuccessAction implements Action {
   static typeId: 'GAME_SAVE_DELETE_SUCCESS' = type('GAME_SAVE_DELETE_SUCCESS');
   type = GameStateDeleteSuccessAction.typeId;
-  payload: string = null;
+  payload: string | null = null;
 }
 
 export class GameStateDeleteFailAction implements Action {

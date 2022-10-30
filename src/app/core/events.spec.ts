@@ -58,8 +58,8 @@ describe('Events', () => {
       expect(() => {
         obj.on(ev, cb);
         obj.off(null, cb);
-        obj.off(null, null, this);
-        obj.off(ev, null, null);
+        obj.off(null, undefined, this);
+        obj.off(ev, undefined, null);
       }).not.toThrow();
     });
   });

@@ -9,6 +9,7 @@ import {
   ITemplateWeapon,
 } from './game-data/game-data.model';
 import { getStatIncreaseForLevelUp, getXPForLevel } from './levels';
+import { assertTrue } from './util';
 
 /**
  * Query options used when calculating combat values
@@ -184,20 +185,22 @@ export interface ICalculateMagicEffectsConfig {
 export function calculateMagicEffects(
   config: ICalculateMagicEffectsConfig
 ): IMagicEffects {
-  const magicEffectName = config.spells[0].effect as MagicFunctionNames;
-  let spell: MagicFunction | null = SPELLS[magicEffectName];
-  if (spell === null) {
+  const magic = (config.spells ? config.spells[0] : null) as ITemplateMagic;
+  assertTrue(magic, 'invalid spell in calculateMagicEffects');
+  const magicEffectName = magic.effect as MagicFunctionNames;
+  let spell: MagicFunction = SPELLS[magicEffectName];
+  if (!spell) {
     throw new Error('Unknown magic effect: ' + magicEffectName);
   }
   // Calculate effects for each target
   const targetDeltas: IMagicTargetDelta[] = config.targets.map(
     (target: ICalculateMagicTarget) => {
-      return spell(config.caster as EntityWithEquipment, config.spells[0], target);
+      return spell(config.caster as EntityWithEquipment, magic, target);
     }
   );
 
   return {
-    magicDelta: config.spells[0].magiccost,
+    magicDelta: magic.magiccost,
     targets: targetDeltas,
   };
 }

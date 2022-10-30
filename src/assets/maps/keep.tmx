@@ -156,47 +156,26 @@
   </object>
   <object id="14" name="Dwarven Armors" class="ArmorsStoreFeatureComponent" gid="97" x="112" y="96" width="16" height="16">
    <properties>
-    <property name="buyRate" value="125"/>
-    <property name="category" value="armor"/>
-    <property name="groups" value="default"/>
-    <property name="icon" value="shop.png"/>
-    <property name="level" value="3"/>
+    <property name="inventory" propertytype="DataArmors" value="coral-helm,chain-mail-armor,merman-shield,seaweed-armor"/>
     <property name="name" value="Dwarven Armors"/>
-    <property name="sellRate" value="28"/>
    </properties>
   </object>
   <object id="15" name="Dwarven Arms" class="WeaponsStoreFeatureComponent" gid="93" x="240" y="96" width="16" height="16">
    <properties>
-    <property name="buyRate" value="125"/>
-    <property name="category" value="weapons"/>
-    <property name="groups" value="default"/>
-    <property name="icon" value="shop.png"/>
-    <property name="level" value="3"/>
+    <property name="inventory" propertytype="DataWeapons" value="magic-sword,heavy-axe,fine-bow,long-oak-staff"/>
     <property name="name" value="Dwarven Arms"/>
-    <property name="sellRate" value="28"/>
    </properties>
   </object>
-  <object id="16" name="Warvian Antiquities" class="ItemsStoreFeatureComponent" gid="96" x="112" y="160" width="16" height="16">
+  <object id="16" name="Warvian Antiquities" class="MagicsStoreFeatureComponent" gid="96" x="112" y="160" width="16" height="16">
    <properties>
-    <property name="buyRate" value="125"/>
-    <property name="category" value="misc"/>
-    <property name="groups" value="default"/>
-    <property name="icon" value="shop.png"/>
-    <property name="level" value="3"/>
+    <property name="inventory" propertytype="DataMagics" value="push,heal"/>
     <property name="name" value="Warvian Antiquities"/>
-    <property name="sellRate" value="25"/>
    </properties>
   </object>
-  <object id="17" name="Potions and Elixirs" class="MagicsStoreFeatureComponent" gid="95" x="240" y="160" width="16" height="16">
+  <object id="17" name="Potions and Elixirs" class="ItemsStoreFeatureComponent" gid="95" x="240" y="160" width="16" height="16">
    <properties>
-    <property name="buyRate" value="115"/>
-    <property name="category" value="misc"/>
-    <property name="groups" value="rare"/>
-    <property name="icon" value="shop.png"/>
-    <property name="level" value="3"/>
+    <property name="inventory" propertytype="DataItems" value="potion,potion-large,ether"/>
     <property name="name" value="Potions and Elixirs"/>
-    <property name="sellRate" value="22"/>
-    <property name="y" value="10"/>
    </properties>
   </object>
  </objectgroup>

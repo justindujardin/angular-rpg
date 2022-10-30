@@ -1,3 +1,4 @@
+import { assertTrue } from '../../../models/util';
 import { ITileInstanceMeta } from './tiled';
 import { TiledTSXResource } from './tiled-tsx.resource';
 describe('TiledTSXResource', () => {
@@ -11,6 +12,7 @@ describe('TiledTSXResource', () => {
       .then((resource: TiledTSXResource) => {
         // Name must reference a loadable sprite sheet image
         expect(resource.name).toBe('vezu.png');
+        assertTrue(resource.tiles, 'invalid tiles');
         expect(resource.tiles[1].properties.passable).toBe(false);
         done();
       });

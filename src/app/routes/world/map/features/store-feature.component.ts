@@ -22,7 +22,10 @@ import {
   EntityAddItemAction,
   EntityRemoveItemAction,
 } from '../../../../models/entity/entity.actions';
-import { EntityWithEquipment } from '../../../../models/entity/entity.model';
+import {
+  EntitySlots,
+  EntityWithEquipment,
+} from '../../../../models/entity/entity.model';
 import {
   EquipmentSlotTypes,
   EQUIPMENT_SLOTS,
@@ -47,6 +50,7 @@ import {
   getGamePartyWithEquipment,
   sliceGameState,
 } from '../../../../models/selectors';
+import { assertTrue } from '../../../../models/util';
 import { IScene } from '../../../../scene/scene.model';
 import { RPGGame } from '../../../../services/rpg-game';
 import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
@@ -62,7 +66,7 @@ export function sellItemsFilter(
   groups: string[]
 ): Immutable.List<Item> {
   return items
-    .filter((i: Item) => {
+    .filter((i?: Item) => {
       return itemInGroups(i, groups);
     })
     .toList();
@@ -80,7 +84,10 @@ export function getFeatureProperty(
 /**
  * return true if the given item belongs to at least one of the given groups
  */
-export function itemInGroups(item: ITemplateBaseItem, groups: string[]): boolean {
+export function itemInGroups(
+  item: ITemplateBaseItem | undefined,
+  groups: string[]
+): boolean {
   if (!item) {
     return false;
   }
@@ -187,13 +194,13 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
         feature: TiledMapFeatureData,
         selling: boolean,
         partyInventory: Immutable.List<Item>
-      ) => {
+      ): ITemplateBaseItem[] => {
         if (selling) {
-          return partyInventory.toJS();
+          return partyInventory.toJS() as ITemplateBaseItem[];
         }
         const inventory: string = feature.properties?.inventory || '';
         const inventoryIds = inventory.split(',');
-        const inventoryIdMap = {};
+        const inventoryIdMap: { [id: string]: boolean } = {};
         inventoryIds.forEach((id) => (inventoryIdMap[id] = true));
         let data = [];
         switch (this.category) {
@@ -238,11 +245,16 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
       ): IEquipmentDifference[] => {
         let results: IEquipmentDifference[] = [];
         if (selected.size != 1) {
-          results = party.map((pm) => ({ member: pm, difference: 0, diff: '' })).toJS();
+          results = party
+            .map((pm) => ({ member: pm, difference: 0, diff: '' }))
+            .toJS() as IEquipmentDifference[];
         } else {
           const compareItem = [...selected][0];
           results = party
-            .map((pm: EntityWithEquipment) => {
+            .map((pm?: EntityWithEquipment) => {
+              if (!pm) {
+                return;
+              }
               // TODO: the item types here aren't quite right.
               const weapon: ITemplateWeapon = compareItem as any;
               const armor: ITemplateArmor = compareItem as any;
@@ -262,10 +274,11 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
                   };
                 } else if (armor.defense !== undefined) {
                   // Compare to current armor piece
-                  if (pm[armor.type]) {
+                  const armorPiece = pm[armor.type];
+                  if (armorPiece) {
                     return {
                       member: pm,
-                      difference: armor.defense - pm[armor.type].defense,
+                      difference: armor.defense - armorPiece.defense,
                     };
                   }
                   // Has no current armor piece
@@ -278,7 +291,7 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
               // Cannot be equipped
               return { member: pm, difference: 0, diff: '' };
             })
-            .toJS();
+            .toJS() as IEquipmentDifference[];
         }
         return results.map((r) => {
           if (!r.hasOwnProperty('diff')) {
@@ -320,10 +333,10 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
     this._selected$.next(new Set());
     this._selling$.next(false);
   }
-  trackByEid(index, item) {
+  trackByEid(index: number, item: IEquipmentDifference) {
     return item.member.id;
   }
-  toggleRowSelection(event, row) {
+  toggleRowSelection(event: MouseEvent, row: Item) {
     // Shift for multiple selection
     if (event.shiftKey) {
       if (this._selected$.value.has(row)) {
@@ -354,7 +367,11 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
       this.store.dispatch(new EntityRemoveItemAction(item.eid));
     });
     this.store.dispatch(new GameStateAddGoldAction(totalCost));
-    this.notify.show(`Sold ${items.length} items for ${totalCost} gold.`, null, 1500);
+    this.notify.show(
+      `Sold ${items.length} items for ${totalCost} gold.`,
+      undefined,
+      1500
+    );
   }
   buyItems() {
     this.store
@@ -374,37 +391,43 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
               return;
             }
 
-            let toEquipItem: Item = null;
-            items.forEach((item) => {
+            let toEquipItem: Item | null = null;
+            for (let i = 0; i < items.length; i++) {
+              const item = items[i];
               const itemInstance = instantiateEntity<Item>(item);
               this.store.dispatch(new EntityAddItemAction(itemInstance));
               this.store.dispatch(new GameStateAddInventoryAction(itemInstance));
               if (items.length === 1) {
                 toEquipItem = itemInstance;
               }
-            });
+            }
             this.store.dispatch(new GameStateAddGoldAction(-totalCost));
 
             // Equip newly purchased items if there's only one and it can only be
             // wielded by one class.
             const types: EquipmentSlotTypes[] = [...EQUIPMENT_SLOTS];
-            if (items.length === 1 && types.indexOf(toEquipItem.type)) {
+            if (
+              items.length === 1 &&
+              toEquipItem &&
+              types.indexOf(toEquipItem?.type as EquipmentSlotTypes)
+            ) {
               const toEquip = party.find((p) => {
+                assertTrue(p, 'invalid player entity in party');
                 // If anyone can equip it, the first player always gets it (sad)
-                if (toEquipItem.usedby.length === 0) {
+                if (toEquipItem?.usedby?.length === 0) {
                   return true;
                 }
-                return toEquipItem.usedby.indexOf(p.type) !== -1;
+                return toEquipItem?.usedby?.indexOf(p.type) !== -1;
               });
               // Found equip target
               if (toEquip) {
                 // Unequip anything that's already there
-                if (toEquip[toEquipItem.type]) {
-                  const oldItem: IEntityObject = toEquip[toEquipItem.type];
+                if (toEquip.hasOwnProperty(toEquipItem?.type)) {
+                  const oldItem: IEntityObject = (toEquip as any)[toEquipItem?.type];
                   this.store.dispatch(
                     new GameStateUnequipItemAction({
                       entityId: toEquip.eid,
-                      slot: toEquipItem.type,
+                      slot: toEquipItem.type as keyof EntitySlots,
                       itemId: oldItem.eid,
                     })
                   );
@@ -412,14 +435,14 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
                 this.store.dispatch(
                   new GameStateEquipItemAction({
                     entityId: toEquip.eid,
-                    slot: toEquipItem.type,
+                    slot: toEquipItem.type as keyof EntitySlots,
                     itemId: toEquipItem.eid,
                   })
                 );
               }
               this.notify.show(
-                `Purchased ${toEquipItem.name} for ${totalCost} gold and equipped it on ${toEquip.name}.`,
-                null,
+                `Purchased ${toEquipItem.name} for ${totalCost} gold and equipped it on ${toEquip?.name}.`,
+                undefined,
                 5000
               );
               return;
@@ -429,7 +452,7 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
               items.length === 1 ? `${items[0].name}` : `${items.length} items`;
             this.notify.show(
               `Purchased ${itemText} items for ${totalCost} gold.`,
-              null,
+              undefined,
               1500
             );
           }

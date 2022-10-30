@@ -110,6 +110,10 @@ export const FIXED_ENCOUNTERS_DATA: ITemplateFixedEncounter[] = [
 ];
 
 /** Get a fixed encounter descriptor given its id value */
-export function getFixedEncounterById(id: string): ITemplateFixedEncounter | null {
-  return FIXED_ENCOUNTERS_DATA.find((item) => item.id === id);
+export function getFixedEncounterById(id: string): ITemplateFixedEncounter {
+  const template = FIXED_ENCOUNTERS_DATA.find((item) => item.id === id);
+  if (!template) {
+    throw new Error(`getFixedEncounterById: invalid template id ${id}`);
+  }
+  return template;
 }

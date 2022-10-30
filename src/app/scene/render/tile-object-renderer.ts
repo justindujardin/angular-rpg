@@ -19,8 +19,8 @@ import { ISpriteMeta } from '../../core/api';
 import { SceneView } from '../scene-view';
 
 export interface TileRenderable {
-  icon: string;
-  image: HTMLImageElement;
+  icon?: string;
+  image: HTMLImageElement | null;
   visible: boolean;
   scale: number;
   frame: number;
@@ -33,9 +33,9 @@ export class TileObjectRenderer {
     object: TileRenderable,
     at: IPoint,
     view: SceneView,
-    spriteMeta?: ISpriteMeta
+    spriteMeta: ISpriteMeta | null
   ) {
-    if (!object || object.visible === false || !object.image) {
+    if (!object || object.visible === false || !object.image || !view.context) {
       return;
     }
 

@@ -44,39 +44,15 @@ import { SceneView } from '../../../scene/scene-view';
 import { GameWorld } from '../../../services/game-world';
 import { CombatEnemyComponent } from '../combat-enemy.entity';
 import { CombatPlayerComponent } from '../combat-player.entity';
+import { IPlayerAction } from '../combat.types';
 import { CombatMachineState } from './combat-base.state';
 import { CombatStateNames } from './states';
-
-/**
- * Completion callback for a player action.
- */
-export type IPlayerActionCallback = (action: IPlayerAction, error?: any) => void;
-/**
- * A Player action during combat
- */
-export interface IPlayerAction {
-  name: string;
-  from: GameEntityObject;
-  to: GameEntityObject;
-  act(then?: IPlayerActionCallback): boolean;
-}
 
 // Combat State Machine
 
 @Component({
   selector: 'combat-state-machine',
-  template: `
-    <combat-start-state #start></combat-start-state>
-    <combat-begin-turn-state #beginTurn></combat-begin-turn-state>
-    <combat-choose-action-state
-      [pointAt]="current"
-      #chooseAction
-    ></combat-choose-action-state>
-    <combat-end-turn-state #endTurn></combat-end-turn-state>
-    <combat-defeat-state #defeat></combat-defeat-state>
-    <combat-victory-state #victory></combat-victory-state>
-    <combat-escape-state #escape></combat-escape-state>
-  `,
+  templateUrl: './combat.machine.html',
 })
 export class CombatStateMachineComponent
   extends StateMachine<CombatStateNames>
@@ -109,8 +85,8 @@ export class CombatStateMachineComponent
   playerChoices: {
     [id: string]: IPlayerAction;
   } = {};
-  focus: GameEntityObject;
-  current: GameEntityObject;
+  focus: GameEntityObject | null;
+  current: GameEntityObject | null;
   currentDone: boolean = false;
 
   // Use this private behavior subject to make the value sync accessible for canBeUsedBy (x_X)
@@ -174,7 +150,7 @@ export class CombatStateMachineComponent
 
   isFriendlyTurn(): boolean {
     return !!(
-      this.current && this.party.find((member) => member._uid === this.current._uid)
+      this.current && this.party.find((member) => member._uid === this.current?._uid)
     );
   }
 
@@ -190,10 +166,13 @@ export class CombatStateMachineComponent
     });
   }
 
-  getRandomPartyMember(): GameEntityObject {
+  getRandomPartyMember(): GameEntityObject | null {
     const players = _.shuffle(this.party.toArray()) as CombatPlayerComponent[];
     while (players.length > 0) {
       const p = players.shift();
+      if (!p) {
+        break;
+      }
       if (!this.combatService.isDefeated(p.model)) {
         return p;
       }
@@ -201,10 +180,13 @@ export class CombatStateMachineComponent
     return null;
   }
 
-  getRandomEnemy(): GameEntityObject {
+  getRandomEnemy(): GameEntityObject | null {
     const players = _.shuffle(this.enemies.toArray()) as CombatEnemyComponent[];
     while (players.length > 0) {
       const p = players.shift();
+      if (!p?.model) {
+        continue;
+      }
       if (!this.combatService.isDefeated(p.model)) {
         return p;
       }

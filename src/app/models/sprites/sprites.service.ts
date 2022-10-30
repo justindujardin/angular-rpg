@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { from, Observable } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
 import * as _ from 'underscore';
 import { ResourceManager } from '../../../app/core/resource-manager';
@@ -23,30 +23,31 @@ export class SpritesService {
     return this.store.select(getSpritesLoaded).pipe(
       take(1),
       switchMap((loaded: boolean) => {
-        if (!loaded) {
-          return from(
-            this.resourceLoader
-              .load(indexMetaUrl)
-              .then((res: JSONResource[]) => {
-                const jsonRes = res[0];
-                const sources = _.map(jsonRes.data, (baseName: string) => {
-                  return `${baseName}.json`;
-                });
-                return Promise.all(
-                  _.map(sources, (fileName: string) => {
-                    return this.resourceLoader
-                      .load(fileName)
-                      .then((spritesLoaded: JSONResource[]) => {
-                        const meta: SpriteDataMap = spritesLoaded[0].data;
-                        this.store.dispatch(new SpritesRegisterAction(meta));
-                        registerSprites(fileName, meta);
-                      });
-                  })
-                );
-              })
-              .then(() => Promise.resolve<void>(undefined))
-          );
+        if (loaded) {
+          return of(undefined);
         }
+        return from(
+          this.resourceLoader
+            .load(indexMetaUrl)
+            .then((res: JSONResource[]) => {
+              const jsonRes = res[0];
+              const sources = _.map(jsonRes.data, (baseName: string) => {
+                return `${baseName}.json`;
+              });
+              return Promise.all(
+                _.map(sources, (fileName: string) => {
+                  return this.resourceLoader
+                    .load(fileName)
+                    .then((spritesLoaded: JSONResource[]) => {
+                      const meta: SpriteDataMap = spritesLoaded[0].data;
+                      this.store.dispatch(new SpritesRegisterAction(meta));
+                      registerSprites(fileName, meta);
+                    });
+                })
+              );
+            })
+            .then(() => Promise.resolve<void>(undefined))
+        );
       })
     );
   }

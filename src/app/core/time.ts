@@ -18,11 +18,11 @@ import * as _ from 'underscore';
 
 export interface IProcessObject {
   _uid?: string;
-  tick?(elapsed?: number);
-  processFrame?(elapsed?: number);
+  tick?(elapsed?: number): void;
+  processFrame?(elapsed?: number): void;
 }
 
-let _shared: Time = null;
+let _shared: Time | null = null;
 
 @Injectable()
 export class Time {
@@ -47,7 +47,7 @@ export class Time {
 
   start(): Time {
     if (this.running) {
-      return;
+      return this;
     }
     this.running = true;
     const _frameCallback: FrameRequestCallback = (time: number) => {
@@ -113,13 +113,6 @@ export class Time {
 
   polyFillAnimationFrames() {
     let lastTime: number = 0;
-    const vendors: string[] = ['ms', 'moz', 'webkit', 'o'];
-    for (let i: number = 0; i < vendors.length; i++) {
-      if (window.requestAnimationFrame) {
-        return;
-      }
-      window.requestAnimationFrame = window[vendors[i] + 'RequestAnimationFrame'];
-    }
     if (!window.requestAnimationFrame) {
       window.requestAnimationFrame = (callback: FrameRequestCallback): number => {
         const currTime: number = new Date().getTime();

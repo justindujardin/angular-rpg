@@ -2,7 +2,7 @@ import { Component, Input, ViewChild } from '@angular/core';
 import { moduleMetadata } from '@storybook/angular';
 import { Meta, Story } from '@storybook/angular/types-6-0';
 import { Point } from '../../core';
-import { CombatDamageComponent, ICombatDamageInputs } from './combat-damage.component';
+import { CombatDamageComponent } from './combat-damage.component';
 /**
  * Returns a random integer between min (inclusive) and max (inclusive).
  * The value is no lower than min (or the next integer greater than min
@@ -10,7 +10,7 @@ import { CombatDamageComponent, ICombatDamageInputs } from './combat-damage.comp
  * lower than max if max isn't an integer).
  * Using Math.round() will give you a non-uniform distribution!
  */
-function getRandomInt(min, max) {
+function getRandomInt(min: number, max: number) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -64,7 +64,7 @@ export default {
   decorators: [moduleMetadata({ declarations: [DamageStoryWrapper] })],
 } as Meta;
 
-const Template: Story<ICombatDamageInputs> = (args: Partial<ICombatDamageInputs>) => ({
+const Template: Story<DamageStoryWrapper> = (args: Partial<DamageStoryWrapper>) => ({
   component: DamageStoryWrapper,
   props: args,
 });

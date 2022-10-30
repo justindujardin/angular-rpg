@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
 import * as _ from 'underscore';
+import { assertTrue } from '../../../../models/util';
 import { CombatComponent } from '../../combat.component';
+import { IPlayerActionCallback } from '../../combat.types';
 import { CombatRunSummary } from '../../states/combat-escape.state';
-import { IPlayerActionCallback } from '../../states/combat.machine';
 import { CombatActionBehavior } from '../combat-action.behavior';
 
 @Component({
@@ -22,6 +23,10 @@ export class CombatRunBehaviorComponent extends CombatActionBehavior {
       return false;
     }
     let success: boolean = this._rollEscape();
+    assertTrue(
+      this.combat.machine.current,
+      'CombatRunBehaviorComponent: invalid escape player'
+    );
     let data: CombatRunSummary = {
       success,
       player: this.combat.machine.current,

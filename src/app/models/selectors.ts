@@ -53,7 +53,7 @@ import { assertTrue } from './util';
 /**
  * Slice off the "combat" branch of the main application state.
  */
-export const sliceCombatState = (state) => state.combat;
+export const sliceCombatState = (state: AppState) => state.combat;
 
 export const getCombatLoading = createSelector(sliceCombatState, sliceCombatLoading);
 export const getCombatEncounterParty = createSelector(
@@ -72,7 +72,7 @@ export const getCombatEncounterEnemies = createSelector(
 /**
  * Slice off the "sprites" branch of the main application state.
  */
-export const sliceSpritesState = (state) => state.sprites;
+export const sliceSpritesState = (state: AppState) => state.sprites;
 
 export const getSpritesLoaded = createSelector(sliceSpritesState, sliceSpritesLoaded);
 export const getSpriteMap = createSelector(sliceSpritesState, sliceSpritesById);
@@ -84,7 +84,7 @@ export const getSpriteMap = createSelector(sliceSpritesState, sliceSpritesById);
 /**
  * Slice off the "entities" branch of the main application state.
  */
-export const sliceEntitiesState = (state) => state.entities;
+export const sliceEntitiesState = (state: AppState) => state.entities;
 
 /**
  * Given an entity "byIds" object, and its "allIds" array, return an array of the items
@@ -95,7 +95,7 @@ export const entitiesToArray = (
   object: Immutable.Map<string, IEntityObject>,
   ids: Immutable.List<string>
 ) => {
-  return ids.map((id: string) => object[id]).toArray();
+  return ids.map((id?: string) => object.get(id || '')).toArray();
 };
 
 // Beings
@@ -128,12 +128,12 @@ export const getEntityEquipment = (
       return null;
     }
     const result: Partial<EntityWithEquipment> = {
-      armor: items.get(entity.armor) as ITemplateArmor,
-      helm: items.get(entity.helm) as ITemplateArmor,
-      shield: items.get(entity.shield) as ITemplateArmor,
-      accessory: items.get(entity.accessory) as ITemplateArmor,
-      boots: items.get(entity.boots) as ITemplateArmor,
-      weapon: items.get(entity.weapon) as ITemplateWeapon,
+      armor: items.get(entity.armor || '') as ITemplateArmor,
+      helm: items.get(entity.helm || '') as ITemplateArmor,
+      shield: items.get(entity.shield || '') as ITemplateArmor,
+      accessory: items.get(entity.accessory || '') as ITemplateArmor,
+      boots: items.get(entity.boots || '') as ITemplateArmor,
+      weapon: items.get(entity.weapon || '') as ITemplateWeapon,
     };
     return Object.assign({}, entity, result) as EntityWithEquipment;
   });
@@ -144,17 +144,19 @@ export const getCombatEntityEquipment = (
   entityId: string
 ): Selector<AppState, EntityWithEquipment | null> => {
   return createSelector(getCombatEncounterParty, getEntityItemById, (party, items) => {
-    const entity: Entity = party.find((p: IPartyMember) => p.eid === entityId);
+    const entity: Entity | undefined = party.find(
+      (p?: IPartyMember) => !!(p && p.eid === entityId)
+    );
     if (!entity) {
       return null;
     }
     const result: Partial<EntityWithEquipment> = {
-      armor: items.get(entity.armor) as ITemplateArmor,
-      helm: items.get(entity.helm) as ITemplateArmor,
-      shield: items.get(entity.shield) as ITemplateArmor,
-      accessory: items.get(entity.accessory) as ITemplateArmor,
-      boots: items.get(entity.boots) as ITemplateArmor,
-      weapon: items.get(entity.weapon) as ITemplateWeapon,
+      armor: items.get(entity.armor || '') as ITemplateArmor,
+      helm: items.get(entity.helm || '') as ITemplateArmor,
+      shield: items.get(entity.shield || '') as ITemplateArmor,
+      accessory: items.get(entity.accessory || '') as ITemplateArmor,
+      boots: items.get(entity.boots || '') as ITemplateArmor,
+      weapon: items.get(entity.weapon || '') as ITemplateWeapon,
     };
     return Object.assign({}, entity, result) as EntityWithEquipment;
   });
@@ -167,7 +169,7 @@ export const getCombatEntityEquipment = (
 /**
  * Slice off the "gameState" branch of the main application state.
  */
-export const sliceGameState = (state) => state.gameState;
+export const sliceGameState = (state: AppState) => state.gameState;
 
 export const getGameInventoryIds = createSelector(sliceGameState, sliceInventoryIds);
 export const getGamePartyIds = createSelector(sliceGameState, slicePartyIds);
@@ -182,8 +184,8 @@ export const getGameKeyData = createSelector(sliceGameState, sliceGameStateKeyDa
 export const getGameParty = createSelector(
   getEntityBeingById,
   getGamePartyIds,
-  (entities, ids): Immutable.List<Entity> => {
-    return ids.map((id) => entities.get(id)).toList();
+  (entities, ids): Immutable.List<Entity | undefined> => {
+    return ids.map((id) => entities.get(id || '')).toList();
   }
 );
 /** Select just one data key from the gamesate keyData object. */
@@ -202,7 +204,7 @@ export const getGameInventory = createSelector(
   ): Immutable.List<Item> => {
     return ids
       .map((id) => {
-        const result = entities.get(id);
+        const result = entities.get(id || '');
         // Ensure that any item in the inventory has a corresponding entity. If not, throw a loud error
         // instead of crashing hard in an obscure place.
         assertTrue(
@@ -219,23 +221,24 @@ export const getGameInventory = createSelector(
 export const getGamePartyWithEquipment = createSelector(
   getGameParty,
   getEntityItemById,
-  (party: Immutable.List<Entity>, items: Immutable.Map<string, EntityItemTypes>) => {
+  (
+    party: Immutable.List<Entity>,
+    items: Immutable.Map<string, EntityItemTypes>
+  ): Immutable.List<EntityWithEquipment> => {
     return party
+      .filter((r) => !!r)
       .map((entity) => {
-        if (!entity) {
-          return null;
-        }
+        assertTrue(entity, 'invalid entity in party');
         const result: Partial<EntityWithEquipment> = {
-          armor: items.get(entity.armor) as ITemplateArmor,
-          helm: items.get(entity.helm) as ITemplateArmor,
-          shield: items.get(entity.shield) as ITemplateArmor,
-          accessory: items.get(entity.accessory) as ITemplateArmor,
-          boots: items.get(entity.boots) as ITemplateArmor,
-          weapon: items.get(entity.weapon) as ITemplateWeapon,
+          armor: items.get(entity.armor || '') as ITemplateArmor,
+          helm: items.get(entity.helm || '') as ITemplateArmor,
+          shield: items.get(entity.shield || '') as ITemplateArmor,
+          accessory: items.get(entity.accessory || '') as ITemplateArmor,
+          boots: items.get(entity.boots || '') as ITemplateArmor,
+          weapon: items.get(entity.weapon || '') as ITemplateWeapon,
         };
         return Object.assign({}, entity, result) as EntityWithEquipment;
       })
-      .filter((r) => r !== null)
       .toList();
   }
 );

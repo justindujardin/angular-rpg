@@ -8,10 +8,11 @@ import { SpriteComponent } from '../../../../behaviors/sprite.behavior';
 import { CombatAttackAction } from '../../../../models/combat/combat.actions';
 import { CombatAttack } from '../../../../models/combat/combat.model';
 import { GameStateRemoveInventoryAction } from '../../../../models/game-state/game-state.actions';
+import { assertTrue } from '../../../../models/util';
 import { GameEntityObject } from '../../../../scene/objects/game-entity-object';
 import { CombatComponent } from '../../combat.component';
+import { IPlayerActionCallback } from '../../combat.types';
 import { CombatEndTurnStateComponent } from '../../states/combat-end-turn.state';
-import { IPlayerActionCallback } from '../../states/combat.machine';
 import { CombatActionBehavior } from '../combat-action.behavior';
 
 /**
@@ -51,12 +52,20 @@ export class CombatItemBehavior extends CombatActionBehavior {
 
   useItem(done?: (error?: any) => any) {
     //
-    var user: GameEntityObject = this.from;
-    var target: GameEntityObject = this.to;
-    var userRender = user.findBehavior(
+    const user: GameEntityObject = this.from as GameEntityObject;
+    const target: GameEntityObject = this.to as GameEntityObject;
+    assertTrue(user, 'invalid item user');
+    assertTrue(target, 'invalid item target');
+    const userModel = user.model;
+    const targetModel = target.model;
+    const item = this.item;
+    assertTrue(userModel, 'invalid item user model');
+    assertTrue(targetModel, 'invalid item target model');
+    assertTrue(item, 'invalid item target model');
+    const userRender = user.findBehavior<CombatPlayerRenderBehaviorComponent>(
       CombatPlayerRenderBehaviorComponent
-    ) as CombatPlayerRenderBehaviorComponent;
-
+    );
+    assertTrue(userRender, 'item user has no render behavior');
     userRender.magic(() => {
       // TODO: We need some kind of effects registry and a way to specify which
       //       effects and their parameters each item should impart. For now this
@@ -64,12 +73,12 @@ export class CombatItemBehavior extends CombatActionBehavior {
       console.warn('Item effects need love! <3 Search this string for more info.');
       var healAmount: number = -30;
       const healData: CombatAttack = {
-        attacker: user.model,
-        defender: target.model,
+        attacker: userModel,
+        defender: targetModel,
         damage: healAmount,
       };
       this.store.dispatch(new CombatAttackAction(healData));
-      this.store.dispatch(new GameStateRemoveInventoryAction(this.item));
+      this.store.dispatch(new GameStateRemoveInventoryAction(item));
       var hitSound: string = 'sounds/heal';
       var behaviors = {
         animation: new AnimatedSpriteBehavior({
@@ -88,7 +97,9 @@ export class CombatItemBehavior extends CombatActionBehavior {
       target.addComponentDictionary(behaviors);
       behaviors.animation.once('animation:done', () => {
         target.removeComponentDictionary(behaviors);
-        done();
+        if (done) {
+          done();
+        }
       });
     });
     return true;

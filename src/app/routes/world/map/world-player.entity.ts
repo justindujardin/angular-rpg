@@ -94,7 +94,8 @@ export class WorldPlayerComponent
 
   /** The player has touched a game feature. */
   onFeatureLook(event: GameFeatureObject) {
-    const feature: TiledFeatureComponent = event.findBehavior(TiledFeatureComponent);
+    const feature: TiledFeatureComponent | null =
+      event.findBehavior(TiledFeatureComponent);
     if (feature) {
       feature.enter(this);
       this.feature = feature;
@@ -103,22 +104,23 @@ export class WorldPlayerComponent
 
   /** The player was touching a game feature, and is now leaving. */
   onFeatureLookAway(event: GameFeatureObject) {
-    const feature: TiledFeatureComponent = event.findBehavior(TiledFeatureComponent);
+    const feature: TiledFeatureComponent | null =
+      event.findBehavior(TiledFeatureComponent);
     if (feature) {
       feature.exit(this);
       this.feature = null;
     }
   }
 
-  private _featureComponent$ = new BehaviorSubject<TiledFeatureComponent>(null);
+  private _featureComponent$ = new BehaviorSubject<TiledFeatureComponent | null>(null);
 
-  featureComponent$: Observable<TiledFeatureComponent> = this._featureComponent$;
+  featureComponent$: Observable<TiledFeatureComponent | null> = this._featureComponent$;
 
-  get feature(): TiledFeatureComponent {
+  get feature(): TiledFeatureComponent | null {
     return this._featureComponent$.value;
   }
 
-  set feature(value: TiledFeatureComponent) {
+  set feature(value: TiledFeatureComponent | null) {
     this._featureComponent$.next(value);
   }
 
@@ -145,7 +147,7 @@ export class WorldPlayerComponent
     this.objectRenderer.render(this, this.renderPoint || this.point, view, this.meta);
 
     // Any path target
-    if (this.movable) {
+    if (this.movable && view.context) {
       const target = this.movable;
       if (this.movable.path && this.movable.path.length > 0) {
         view.context.save();
