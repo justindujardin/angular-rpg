@@ -1,7 +1,7 @@
 import { Behavior } from './behavior';
 
 class _NamedBehavior extends Behavior {
-  constructor(public name: string) {
+  constructor(public name: string | null) {
     super();
   }
 }

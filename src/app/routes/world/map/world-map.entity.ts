@@ -139,7 +139,7 @@ export class WorldMapComponent
     this.mapFeatures.changes.subscribe((value: QueryList<MapFeatureComponent>) =>
       value.forEach((c) => {
         // Add behaviors that aren't already known
-        if (!this.findBehaviorByName(c.name)) {
+        if (c.name && !this.findBehaviorByName(c.name)) {
           this.addBehavior(c);
         }
         // Update the host

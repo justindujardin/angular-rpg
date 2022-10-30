@@ -276,7 +276,7 @@ describe('GameState', () => {
       it('should throw if item is invalid', () => {
         const state = gameStateFactory();
         expect(() => {
-          gameStateReducer(state, new GameStateAddInventoryAction(null));
+          gameStateReducer(state, new GameStateAddInventoryAction(null as any));
         }).toThrow();
       });
       it('should throw if item is missing "id" template identifier', () => {

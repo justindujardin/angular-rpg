@@ -55,7 +55,7 @@ describe('BehaviorHost', () => {
 
   it('findBehavior finds a single component by a given type', () => {
     const e: BehaviorHost = entityWithBehaviors([new TestBehaviorNamed('comp1')]);
-    expect(e.findBehavior(TestBehaviorNamed).name).toBe('comp1');
+    expect(e.findBehavior(TestBehaviorNamed)?.name).toBe('comp1');
     expect(e.findBehavior(TestBehaviorBoolean)).toBeNull();
   });
 
@@ -84,7 +84,7 @@ describe('BehaviorHost', () => {
       const c: Behavior = new TestBehaviorBoolean(false);
       const e: BehaviorHost = entityWithBehaviors([c]);
       expect(e._connectedBehaviors.length).toBe(1);
-      expect(c.host.id).toBe(e.id);
+      expect(c.host?.id).toBe(e.id);
     });
     it('throws an error when adding the same component twice', () => {
       const c: Behavior = new TestBehaviorBoolean(false);

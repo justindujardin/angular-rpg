@@ -21,7 +21,7 @@ import { Events } from './events';
  */
 export interface IObject {
   id: string;
-  name: string;
+  name: string | null;
 }
 
 /**
@@ -75,7 +75,7 @@ export interface IBehaviorHost extends IObject {
 export class Behavior extends Events implements IBehavior {
   id: string = _.uniqueId('sc');
   host: BehaviorHost | null;
-  name: string;
+  name: string | null;
 
   connectBehavior(): boolean {
     return true;

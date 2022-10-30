@@ -45,8 +45,9 @@ describe('TiledTMXResource', () => {
       .fetch('assets/test/example.tmx')
       .then((resource: TiledTMXResource) => {
         const objectLayer: ITiledLayer = resource.layers[1];
-        expect(objectLayer.objects.length).toBe(2);
-        const object: ITiledObject = objectLayer.objects[0];
+        const objs = objectLayer.objects || [];
+        expect(objs.length).toBe(2);
+        const object: ITiledObject = objs[0];
         expect(object.properties).toBeDefined();
         expect(object.properties.result).toBe('OK');
         expect(object.name).toBe('example');
@@ -62,7 +63,7 @@ describe('TiledTMXResource', () => {
       .then((resource: TiledTMXResource) => {
         // Ensure sane data to compare.
         const l1: ITiledLayer = resource.layers[1];
-        const o1: ITiledObject = l1.objects[0];
+        const o1: ITiledObject = (l1.objects || [])[0];
 
         expect(o1.properties).toBeDefined();
         expect(o1.properties.result).toBe('OK');
@@ -81,9 +82,10 @@ describe('TiledTMXResource', () => {
 
             // Object layer comparisons
             const l2: ITiledLayer = clone.layers[1];
-            const o2: ITiledObject = l2.objects[0];
+            const l2objs = l2.objects || [];
+            const o2: ITiledObject = l2objs[0];
 
-            expect(l1.objects.length).toBe(l2.objects.length);
+            expect(l1.objects?.length).toBe(l2.objects?.length);
 
             expect(o2.properties).toBeDefined();
             expect(o2.properties.result).toBe(o1.properties.result);

@@ -87,12 +87,14 @@ describe('Time', () => {
       let olds: any = {
         requestAnimationFrame: window.requestAnimationFrame,
       };
-      const vendors = ['ms', 'moz', 'webkit', 'o'];
+      const vendors: string[] = ['ms', 'moz', 'webkit', 'o'];
+      const w: any = window;
       for (let i = 0; i < vendors.length; i++) {
-        olds = window[vendors[i] + 'RequestAnimationFrame'];
-        window[vendors[i] + 'RequestAnimationFrame'] = null;
+        olds = w[vendors[i] + 'RequestAnimationFrame'];
+        w[vendors[i] + 'RequestAnimationFrame'] = null;
       }
-      window.requestAnimationFrame = null;
+      const oldRaf = w.requestAnimationFrame;
+      w.requestAnimationFrame = null;
 
       const t: Time = new Time();
       const m: MockTimeObject = new MockTimeObject();
@@ -104,6 +106,7 @@ describe('Time', () => {
         _.each(olds, (value, key: any) => {
           (window as any)[key] = value;
         });
+        w.requestAnimationFrame = oldRaf;
         done();
       });
       t.start();

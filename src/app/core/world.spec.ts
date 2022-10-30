@@ -3,7 +3,7 @@ class WorldObject implements IWorldObject {
   world: IWorld;
 }
 class WorldObjectWithCallbacks implements IWorldObject {
-  world: IWorld = null;
+  world: IWorld | null = null;
   added: boolean = false;
 
   onAddToWorld(world: IWorld) {
@@ -49,7 +49,7 @@ describe('World', () => {
     it('does not explode with bad input', () => {
       const world = new World();
       expect(() => {
-        world.mark(null);
+        world.mark(undefined);
       }).not.toThrow();
     });
   });
@@ -74,7 +74,7 @@ describe('World', () => {
     it('does not explode with bad input', () => {
       const world = new World();
       expect(() => {
-        world.erase(null);
+        world.erase(undefined);
       }).not.toThrow();
     });
   });
