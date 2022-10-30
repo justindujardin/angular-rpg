@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as _ from 'underscore';
+import { Subscription } from 'rxjs';
 import { AppState } from '../../../../app.model';
+import { IStateChange } from '../../../../core/state-machine';
 import { CombatantTypes } from '../../../../models/base-entity';
 import {
   CombatClearStatusAction,
@@ -10,8 +11,6 @@ import {
 import { assertTrue } from '../../../../models/util';
 import { CombatComponent } from '../../combat.component';
 import { IPlayerActionCallback } from '../../combat.types';
-import { CombatMachineState } from '../../states/combat-base.state';
-import { CombatStateMachineComponent } from '../../states/combat.machine';
 import { CombatStateNames } from '../../states/states';
 import { CombatActionBehavior } from '../combat-action.behavior';
 
@@ -22,6 +21,10 @@ import { CombatActionBehavior } from '../combat-action.behavior';
 export class CombatGuardBehavior extends CombatActionBehavior {
   name: string = 'guard';
   @Input() combat: CombatComponent;
+
+  /** The state change subscription */
+  private _subscription: Subscription | null = null;
+  private _changedModel: CombatantTypes | null = null;
 
   constructor(public store: Store<AppState>) {
     super();
@@ -43,34 +46,37 @@ export class CombatGuardBehavior extends CombatActionBehavior {
   select() {
     const model: CombatantTypes = this.from?.model as CombatantTypes;
     assertTrue(model, 'invalid guard behavior model');
-    this.combat.machine.on(
-      CombatStateMachineComponent.Events.ENTER,
-      this.enterState,
-      this
+    assertTrue(this._subscription === null, 'subscription leak in guard behavior');
+    assertTrue(this._changedModel === null, 'changed model leak in guard behavior');
+    this._subscription = this.combat.machine.onEnterState$.subscribe((v) =>
+      this.enterStateHandler(v)
     );
     this.store.dispatch(
       new CombatSetStatusAction({ target: model, classes: ['guarding'] })
     );
   }
 
-  enterState(newState: CombatMachineState, oldState: CombatMachineState) {
-    const model: CombatantTypes = this.from?.model as CombatantTypes;
-    assertTrue(model, 'invalid guard behavior model');
-    var exitStates: CombatStateNames[] = [
+  enterStateHandler(change: IStateChange<CombatStateNames>) {
+    const { to } = change;
+    const exitStates: CombatStateNames[] = [
       'choose-action',
       'victory',
       'defeat',
       'escape',
     ];
-    if (_.indexOf(exitStates, newState.name) !== -1) {
+    if (exitStates.includes(to.name)) {
+      const model: CombatantTypes = this.from?.model as CombatantTypes;
+      assertTrue(model, 'invalid guard behavior model');
       this.store.dispatch(
-        new CombatClearStatusAction({ target: model, classes: ['guarding'] })
+        new CombatClearStatusAction({
+          target: model,
+          classes: ['guarding'],
+        })
       );
-      this.combat.machine.off(
-        CombatStateMachineComponent.Events.ENTER,
-        this.enterState,
-        this
-      );
+      this._changedModel = null;
+      assertTrue(this._subscription, 'unmatched subscription in guard behavior');
+      this._subscription.unsubscribe();
+      this._subscription = null;
     }
   }
 }

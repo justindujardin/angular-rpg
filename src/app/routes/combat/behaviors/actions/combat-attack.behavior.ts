@@ -168,7 +168,11 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
                   attacker,
                   defender,
                 };
-                this.combat.machine.notify('combat:attack', data, done);
+                this.combat.machine.onAttack$.emit(data).then(() => {
+                  if (done) {
+                    done();
+                  }
+                });
               });
           })
         )

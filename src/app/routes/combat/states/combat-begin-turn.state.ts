@@ -51,7 +51,8 @@ export class CombatBeginTurnStateComponent extends CombatMachineState {
       machine.focus = machine.current;
     }
 
-    machine.trigger('combat:beginTurn', machine.current);
+    machine.onBeginTurn$.emit(machine.current);
+
     let choice: IPlayerAction | null = null;
     if (machine.isFriendlyTurn()) {
       console.log(`TURN: ${machine.current?.model?.name}`);

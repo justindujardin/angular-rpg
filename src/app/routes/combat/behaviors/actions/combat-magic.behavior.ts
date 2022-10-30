@@ -138,7 +138,11 @@ export class CombatMagicBehavior extends CombatActionBehavior {
           attacker: casterModel,
           defender: targetModel,
         };
-        this.combat.machine.notify('combat:attackCombatant', data, done);
+        this.combat.machine.onAttack$.emit(data).then(() => {
+          if (done) {
+            done();
+          }
+        });
       });
     });
 
@@ -256,7 +260,11 @@ export class CombatMagicBehavior extends CombatActionBehavior {
                   attacker: caster,
                   defender: target,
                 };
-                this.combat.machine.notify('combat:attack', data, done);
+                this.combat.machine.onAttack$.emit(data).then(() => {
+                  if (done) {
+                    done();
+                  }
+                });
               });
           })
         )

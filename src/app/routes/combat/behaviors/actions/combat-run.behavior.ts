@@ -22,16 +22,16 @@ export class CombatRunBehaviorComponent extends CombatActionBehavior {
     if (!this.isCurrentTurn()) {
       return false;
     }
-    let success: boolean = this._rollEscape();
+    const success: boolean = this._rollEscape();
     assertTrue(
       this.combat.machine.current,
       'CombatRunBehaviorComponent: invalid escape player'
     );
-    let data: CombatRunSummary = {
+    const data: CombatRunSummary = {
       success,
       player: this.combat.machine.current,
     };
-    this.combat.machine.notify('combat:run', data, () => {
+    this.combat.machine.onRun$.emit(data).then(() => {
       if (success) {
         this.combat.machine.setCurrentState('escape');
       } else {

@@ -8,6 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 import { Point } from '../../../app/core/point';
 import { IProcessObject } from '../../../app/core/time';
 import { AppState } from '../../app.model';
@@ -81,6 +82,8 @@ export class CombatComponent
   @ViewChild('combatCanvas') canvasElementRef: ElementRef;
   @ViewChild(CombatMapComponent) map: CombatMapComponent;
 
+  private _subscriptions: Subscription[] = [];
+
   constructor(
     public game: RPGGame,
     public notify: NotificationService,
@@ -101,6 +104,10 @@ export class CombatComponent
     this.scene.removeView(this);
     this.pointer = null;
     this.damages = [];
+    this._subscriptions.forEach((s) => {
+      s?.unsubscribe();
+    });
+    this._subscriptions = [];
   }
 
   ngAfterViewInit(): void {
@@ -111,9 +118,49 @@ export class CombatComponent
     }
     this.scene.addView(this);
     setTimeout(() => this._onResize(), 1);
-    // this._bindRenderCombat();
     this.world.time.addObject(this);
-    this._bindRenderCombat();
+
+    const attackSub = this.machine.onAttack$.subscribe((data: CombatAttackSummary) => {
+      const _done = this.machine.notifyWait();
+      let msg: string = '';
+      const a = data.attacker.model?.name || '';
+      const b = data.defender.model?.name || '';
+      if (data.damage > 0) {
+        msg = `${a} attacked ${b} for ${data.damage} damage!`;
+      } else if (data.damage < 0) {
+        msg = `${a} healed ${b} for ${Math.abs(data.damage)} hit points`;
+      } else {
+        msg = `${a} attacked ${b}, and MISSED!`;
+      }
+      this.applyDamage(data.defender, data.damage);
+      // players taking damage shake the camera
+      if (data.damage > 0 && data.defender instanceof CombatPlayerComponent) {
+        this.shake(this.canvasElementRef.nativeElement);
+      }
+      this.notify.show(msg, _done);
+    });
+    const runSub = this.machine.onRun$.subscribe((data: CombatRunSummary) => {
+      const _done = this.machine.notifyWait();
+      let msg: string = data.player?.model?.name || '';
+      if (data.success) {
+        msg += ' bravely ran away!';
+      } else {
+        msg += ' failed to escape!';
+      }
+      this.notify.show(msg, _done);
+    });
+    const defeatSub = this.machine.onDefeat$.subscribe((data: CombatDefeatSummary) => {
+      const done = this.machine.notifyWait();
+      this.notify.show(
+        'Your party was defeated...',
+        () => {
+          this.game.initGame().then(done);
+        },
+        0
+      );
+    });
+    this._subscriptions = [attackSub, runSub, defeatSub];
+
     this.cd.detectChanges();
   }
 
@@ -228,51 +275,5 @@ export class CombatComponent
         return false;
       }
     }
-  }
-
-  /**
-   * Bind to combat events and reflect them in the UI.
-   * @private
-   */
-  private _bindRenderCombat() {
-    this.machine.on('combat:attack', (data: CombatAttackSummary) => {
-      const _done = this.machine.notifyWait();
-      let msg: string = '';
-      const a = data.attacker.model?.name || '';
-      const b = data.defender.model?.name || '';
-      if (data.damage > 0) {
-        msg = `${a} attacked ${b} for ${data.damage} damage!`;
-      } else if (data.damage < 0) {
-        msg = `${a} healed ${b} for ${Math.abs(data.damage)} hit points`;
-      } else {
-        msg = `${a} attacked ${b}, and MISSED!`;
-      }
-      this.applyDamage(data.defender, data.damage);
-      // players taking damage shake the camera
-      if (data.damage > 0 && data.defender instanceof CombatPlayerComponent) {
-        this.shake(this.canvasElementRef.nativeElement);
-      }
-      this.notify.show(msg, _done);
-    });
-    this.machine.on('combat:run', (data: CombatRunSummary) => {
-      const _done = this.machine.notifyWait();
-      let msg: string = data.player?.model?.name || '';
-      if (data.success) {
-        msg += ' bravely ran away!';
-      } else {
-        msg += ' failed to escape!';
-      }
-      this.notify.show(msg, _done);
-    });
-    this.machine.on('combat:defeat', (data: CombatDefeatSummary) => {
-      const done = this.machine.notifyWait();
-      this.notify.show(
-        'Your party was defeated...',
-        () => {
-          this.game.initGame().then(done);
-        },
-        0
-      );
-    });
   }
 }
