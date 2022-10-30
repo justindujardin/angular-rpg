@@ -112,7 +112,7 @@ export class MapFeatureComponent
   extends TileObjectBehavior
   implements AfterViewInit, OnDestroy
 {
-  @Input() tiledMap: TiledTMXResource;
+  @Input() tiledMap: TiledTMXResource | null;
   @Input() tileMap: TileMap;
   @Input() scene: Scene;
   @ViewChildren('comp') featureQuery: QueryList<TiledFeatureComponent>;
@@ -127,8 +127,7 @@ export class MapFeatureComponent
   private _featureComponent$: Subject<TiledFeatureComponent> =
     new ReplaySubject<TiledFeatureComponent>(1);
 
-  private _feature$: BehaviorSubject<ITiledObject | null> =
-    new BehaviorSubject<ITiledObject | null>(null);
+  private _feature$ = new BehaviorSubject<ITiledObject | null>(null);
 
   feature$: Observable<ITiledObject | null> = this._feature$;
 

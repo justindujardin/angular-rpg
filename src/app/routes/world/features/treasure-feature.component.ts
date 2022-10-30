@@ -45,7 +45,7 @@ export class TreasureFeatureComponent
   // Used as a recursion guard while the async treasure claiming process happens
   private taken = false;
   // @ts-ignore
-  @Input() feature: ITiledObject;
+  @Input() feature: ITiledObject | null;
 
   constructor(public store: Store<AppState>, public notify: NotificationService) {
     super();

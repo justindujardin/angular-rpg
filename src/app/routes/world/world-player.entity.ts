@@ -59,7 +59,7 @@ export class WorldPlayerComponent
 {
   @ViewChildren('render,collision,path,player,trigger,camera,encounter')
   behaviors: QueryList<SceneObjectBehavior>;
-  @Input() model: Entity;
+  @Input() model: Entity | null;
   @Input() scene: Scene;
   @Input() map: TileMap;
   @Input() point: Point;
@@ -77,7 +77,7 @@ export class WorldPlayerComponent
   @ViewChild(PlayerBehaviorComponent) movable: PlayerBehaviorComponent;
 
   ngAfterViewInit(): void {
-    this.setSprite(this.model.icon);
+    this.setSprite(this.model?.icon);
     this.scene.addObject(this);
     this.behaviors.forEach((c: SceneObjectBehavior) => {
       this.addBehavior(c);

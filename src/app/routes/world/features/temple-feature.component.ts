@@ -41,7 +41,7 @@ export class TempleFeatureComponent
   @Input() active: boolean;
   @Input() party: Entity[];
   // @ts-ignore
-  @Input() feature: ITiledObject;
+  @Input() feature: ITiledObject | null;
   active$: Observable<boolean>;
 
   partyGold$: Observable<number> = this.store.select(getGamePartyGold);

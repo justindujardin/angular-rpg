@@ -67,6 +67,8 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
    */
   @Input() debug: boolean = false;
 
+  zeroPoint: Point = new Point();
+
   /** The {@see TiledTMXResource} map at the input url */
   resource$: Observable<TiledTMXResource> = this.gameStateService.worldMap$.pipe(
     distinctUntilChanged(),

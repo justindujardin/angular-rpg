@@ -112,7 +112,7 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
   abstract category: StoreInventoryCategories;
 
   // @ts-ignore
-  @Input() feature: ITiledObject;
+  @Input() feature: ITiledObject | null;
   @Input() scene: IScene;
   // @ts-ignore
   @Input() active: boolean;

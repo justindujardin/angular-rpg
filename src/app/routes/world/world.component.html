@@ -16,7 +16,7 @@
   *ngIf="notTraveling$ | async"
   [map]="self.map"
   [scene]="scene"
-  [point]="renderPoint$ | async"
+  [point]="(renderPoint$ | async) || zeroPoint"
   [model]="partyLeader$ | async"
 ></world-player>
 
