@@ -1,3 +1,16 @@
+## [0.1.16](https://github.com/justindujardin/angular-rpg/compare/v0.1.15...v0.1.16) (2022-10-30)
+
+
+### Bug Fixes
+
+* **autosave:** don't save until combat is completed ([6a49c69](https://github.com/justindujardin/angular-rpg/commit/6a49c69cd73afa0e522b51eb748e895587ae346a))
+
+
+### Features
+
+* **store:** add large potion at castle store ([b6f8246](https://github.com/justindujardin/angular-rpg/commit/b6f8246d5917090536edcfccc3830042c6547ad2))
+* **typescript:** enable compiler strict mode ([a88fe5e](https://github.com/justindujardin/angular-rpg/commit/a88fe5eed9217cb5a511ff96ba503755b8a8c25b))
+
 ## [0.1.15](https://github.com/justindujardin/angular-rpg/compare/v0.1.14...v0.1.15) (2022-10-29)
 
 
