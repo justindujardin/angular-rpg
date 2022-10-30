@@ -92,7 +92,7 @@ export class TileObject extends SceneObject implements TileObjectOptions {
       this.renderPoint = newPoint.clone();
     }
     this.point = newPoint.clone();
-    const moveComponent = this.findBehavior(MovableBehavior) as MovableBehavior;
+    const moveComponent = this.findBehavior<MovableBehavior>(MovableBehavior);
     if (moveComponent) {
       moveComponent.targetPoint.set(newPoint);
       moveComponent.path.length = 0;

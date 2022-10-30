@@ -218,10 +218,11 @@ export class TileMap extends SceneObject {
     if (!source) {
       return null;
     }
-
+    const world = GameWorld.get();
+    assertTrue(world, 'invalid world');
     const meta = source.getTileMeta(gid);
     // Derive x/y values from sprite registry metadata for spritesheets
-    const f = GameWorld.get().sprites.getSpriteMeta(meta.image);
+    const f = world.sprites.getSpriteMeta(meta.image);
     assertTrue(f, `getTileMeta: invalid tile id ${gid}`);
     return {
       ...meta,

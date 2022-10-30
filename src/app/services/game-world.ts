@@ -10,7 +10,6 @@ import { GameStateLoadAction } from '../models/game-state/game-state.actions';
 import { GameStateService } from '../models/game-state/game-state.service';
 import { getSpritesLoaded } from '../models/selectors';
 import { SpritesLoadAction } from '../models/sprites/sprites.actions';
-import { assertTrue } from '../models/util';
 import { SpriteRender } from './sprite-render';
 
 let _sharedGameWorld: GameWorld | null = null;
@@ -46,8 +45,7 @@ export class GameWorld extends World {
     }
   }
 
-  static get(): GameWorld {
-    assertTrue(_sharedGameWorld, 'invalid game world');
+  static get(): GameWorld | null {
     return _sharedGameWorld;
   }
 

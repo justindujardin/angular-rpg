@@ -25,6 +25,7 @@ import { TileObjectBehavior } from '../../../behaviors/tile-object-behavior';
 import { TiledTMXResource } from '../../../core';
 import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
 import { getGameKey, getGameKeyData } from '../../../models/selectors';
+import { assertTrue } from '../../../models/util';
 import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
 import { Scene } from '../../../scene/scene';
 import { TileMap } from '../../../scene/tile-map';
@@ -230,7 +231,9 @@ export class MapFeatureComponent
         map((featureObject: GameFeatureObject) => {
           this.disconnectHost();
           this.host = featureObject;
-          GameWorld.get().mark(this.host);
+          const world = GameWorld.get();
+          assertTrue(world, 'invalid game world');
+          world.mark(this.host);
           this.scene.addObject(this.host);
         })
       )
@@ -242,7 +245,9 @@ export class MapFeatureComponent
       if (this.scene) {
         this.scene.removeObject(this.host);
       }
-      GameWorld.get().erase(this.host);
+      const world = GameWorld.get();
+      assertTrue(world, 'invalid world');
+      world.erase(this.host);
       this.host.destroy();
       this.host = null;
     }

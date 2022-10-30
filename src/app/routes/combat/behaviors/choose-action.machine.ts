@@ -52,7 +52,7 @@ export class ChooseActionStateMachine extends StateMachine<CombatChooseActionSta
   action: CombatActionBehavior | null = null;
   spell: ITemplateMagic | null = null;
   item: Item | null = null;
-  world: GameWorld = GameWorld.get();
+  world: GameWorld | null = GameWorld.get();
 
   constructor(
     public parent: CombatChooseActionStateComponent,
