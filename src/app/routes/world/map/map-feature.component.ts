@@ -146,13 +146,7 @@ export class MapFeatureComponent
       if (!data || !this.tiledMap) {
         return null;
       }
-      const options = {
-        ...data,
-        tileMap: this.tileMap,
-        x: Math.round(data.x / this.tiledMap.tilewidth),
-        y: Math.round(data.y / this.tiledMap.tileheight),
-      };
-      const result = new GameFeatureObject(options);
+      const result = new GameFeatureObject(data, this.tileMap);
       result.addBehavior(component);
       return result;
     }

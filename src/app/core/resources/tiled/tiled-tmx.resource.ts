@@ -45,7 +45,7 @@ export class TiledTMXResource extends XMLResource {
   tilewidth = 16;
   version = 1;
   properties: any = {};
-  tilesets: any = {};
+  tilesets: { [key: string]: TiledTSXResource } = {};
   layers: ITiledLayer[] = [];
   xmlHeader = '<?xml version="1.0" encoding="UTF-8"?>';
 

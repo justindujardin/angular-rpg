@@ -72,15 +72,6 @@ export function sellItemsFilter(
     .toList();
 }
 
-export function getFeatureProperty(
-  name: string,
-  defaultValue = null
-): (f: TiledMapFeatureData) => any {
-  return (f: TiledMapFeatureData) => {
-    return f?.properties?.[name] ? f.properties[name] : defaultValue;
-  };
-}
-
 /**
  * return true if the given item belongs to at least one of the given groups
  */
@@ -104,8 +95,6 @@ export function itemInGroups(
  * The categories of store (tied to definition of feature in TMX map
  */
 export type StoreInventoryCategories = 'weapons' | 'armor' | 'magic' | 'misc';
-
-type StoreComparableTypes = ITemplateWeapon | ITemplateArmor | ITemplateMagic;
 
 interface IEquipmentDifference {
   member: IPartyMember;
@@ -154,7 +143,9 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
   /**
    * The name of this (fine) establishment.
    */
-  name$: Observable<string> = this.feature$.pipe(map(getFeatureProperty('name')));
+  name$: Observable<string> = this.feature$.pipe(
+    map((f: TiledMapFeatureData) => f.name)
+  );
 
   /**
    * The amount of gold the party has to spend

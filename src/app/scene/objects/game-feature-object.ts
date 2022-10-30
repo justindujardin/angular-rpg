@@ -13,28 +13,26 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import * as _ from 'underscore';
+import { TiledMapFeatureData } from '../../routes/world/map/map-feature.component';
 import { GameWorld } from '../../services/game-world';
+import { SceneView } from '../scene-view';
 import { TileMap } from '../tile-map';
 import { TileObject } from '../tile-object';
 
 export class GameFeatureObject extends TileObject {
-  tileMap: TileMap;
   world: GameWorld;
-  feature: any; // TODO: Feature Interface
-  class: string; // TODO: enum?
-  passable: boolean;
-  groups: any[];
-  frame: number;
+  feature: TiledMapFeatureData;
 
-  constructor(options: any) {
+  constructor(options: TiledMapFeatureData, public tileMap: TileMap) {
     super();
-    _.extend(this, _.defaults({}, options));
     this.feature = options;
-    this.point.x = options.x;
-    this.point.y = options.y;
-    this.frame = typeof options.frame !== 'undefined' ? options.frame : 0;
-    this.groups =
-      typeof options.groups === 'string' ? options.groups.split('|') : options.groups;
+    if (options.gid) {
+      this.gid = options.gid;
+    }
+    if (options.properties?.icon) {
+      this.icon = options.properties.icon;
+    }
+    this.point.x = Math.round(options.x / SceneView.UNIT);
+    this.point.y = Math.round(options.y / SceneView.UNIT);
   }
 }
