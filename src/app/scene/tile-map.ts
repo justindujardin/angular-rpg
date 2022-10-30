@@ -15,6 +15,7 @@
  */
 // TODO: TileMap isn't getting added to Spatial DB properly.  Can't query for it!
 // Scene assuming something about the spatial properties on objects?
+import { EventEmitter } from '@angular/core';
 import * as _ from 'underscore';
 import {
   ITileInstanceMeta,
@@ -50,22 +51,15 @@ export class TileMap extends SceneObject {
   musicUrl: string;
   private _loaded: boolean = false;
 
-  static Events: any = {
-    LOADED: 'loaded',
-    UNLOADED: 'unloaded',
-    MAP_LOADED: 'map:loaded',
-    MAP_UNLOADED: 'map:unloaded',
-  };
+  onLoaded$ = new EventEmitter<TileMap>();
+  onUnloaded$ = new EventEmitter<TileMap>();
 
   isLoaded(): boolean {
     return this._loaded;
   }
 
   loaded() {
-    this.trigger(TileMap.Events.LOADED, this);
-    if (this.scene) {
-      this.scene.trigger(TileMap.Events.MAP_LOADED, this);
-    }
+    this.onLoaded$.emit(this);
     this.musicUrl = '';
     if (this.map?.properties?.music) {
       this.musicUrl = this.map.properties.music;
@@ -79,11 +73,8 @@ export class TileMap extends SceneObject {
   }
 
   unloaded() {
-    this.trigger(TileMap.Events.UNLOADED, this);
-    if (this.scene) {
-      this.scene.trigger(TileMap.Events.MAP_UNLOADED, this);
-    }
     this._loaded = false;
+    this.onUnloaded$.emit(this);
   }
 
   setMap(map: TiledTMXResource) {

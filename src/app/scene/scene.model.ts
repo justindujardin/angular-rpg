@@ -23,7 +23,6 @@ import {
   Point,
   Rect,
 } from '../core';
-import { IEvents } from '../core/events';
 
 /**
  * SceneObject interface
@@ -36,7 +35,7 @@ export interface ISceneObject extends IObject, IProcessObject, IBehaviorHost {
   onAddToScene?(scene: IScene): void;
 }
 
-export interface IScene extends IEvents {
+export interface IScene {
   name: string;
   world: IWorld | null;
   fps: number;

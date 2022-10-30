@@ -26,8 +26,8 @@ import { CombatStateNames } from './states';
  * Describe the result of a combat run action.
  */
 export interface CombatRunSummary {
-  success: boolean;
   player: GameEntityObject;
+  success: boolean;
 }
 
 @Component({
@@ -42,10 +42,6 @@ export class CombatEscapeStateComponent extends CombatMachineState {
   }
   enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
-    machine.notify('combat:escape', { player: machine.current }, () => {
-      this.store.dispatch(new CombatEscapeAction());
-      // machine.parent.world.reportEncounterResult(false);
-      // machine.parent.setCurrentState(PlayerMapState.NAME);
-    });
+    this.store.dispatch(new CombatEscapeAction());
   }
 }

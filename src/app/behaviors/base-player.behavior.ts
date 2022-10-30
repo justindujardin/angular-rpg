@@ -13,6 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+import { EventEmitter } from '@angular/core';
 import * as _ from 'underscore';
 import { Point } from '../../app/core/point';
 import { ITiledLayer } from '../../app/core/resources/tiled/tiled.model';
@@ -26,11 +27,18 @@ import { TileObject } from '../scene/tile-object';
 import { IMoveDescription, MovableBehavior } from './movable-behavior';
 import { TileObjectBehavior } from './tile-object-behavior';
 
+/** A player move event */
+export interface PlayerMoveEvent {
+  from: Point;
+  to: Point;
+  behavior: BasePlayerComponent;
+}
+
 export class BasePlayerComponent extends MovableBehavior {
-  static Events: any = {
-    MOVE_BEGIN: 'move:begin',
-    MOVE_END: 'move:end',
-  };
+  /** Emitted when a move is beginning */
+  onMoveBegin$ = new EventEmitter<PlayerMoveEvent>();
+  /** Emitted when a move is completed */
+  onMoveEnd$ = new EventEmitter<PlayerMoveEvent>();
 
   host: TileObject;
   passableKeys: string[] = ['passable'];
@@ -125,7 +133,7 @@ export class BasePlayerComponent extends MovableBehavior {
     let comp: TileObjectBehavior | null = null;
     let o: TileObject;
     let i;
-    this.host.trigger(BasePlayerComponent.Events.MOVE_BEGIN, this, move.from, move.to);
+    this.onMoveBegin$.emit({ behavior: this, from: move.from, to: move.to });
     if (!this.collider) {
       return;
     }
@@ -160,7 +168,7 @@ export class BasePlayerComponent extends MovableBehavior {
   //       to the world-map entity.
   completeMove(move: IMoveDescription) {
     let comp;
-    this.host.trigger(BasePlayerComponent.Events.MOVE_END, this, move.from, move.to);
+    this.onMoveEnd$.emit({ behavior: this, from: move.from, to: move.to });
     if (!this.collider) {
       return;
     }

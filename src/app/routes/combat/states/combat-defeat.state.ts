@@ -37,7 +37,7 @@ export class CombatDefeatStateComponent extends CombatMachineState {
       enemies: machine.enemies.toArray(),
       party: machine.party.toArray(),
     };
-    machine.notify('combat:defeat', data, () => {
+    machine.onDefeat$.emit(data).then(() => {
       window.location.reload();
     });
   }

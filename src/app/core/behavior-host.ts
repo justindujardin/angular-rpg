@@ -1,7 +1,6 @@
 import * as _ from 'underscore';
 import { IBehavior, IBehaviorHost } from './behavior';
 import { errors } from './errors';
-import { Events } from './events';
 
 /**
  * A BehaviorHost is a container for groups of components.
@@ -10,7 +9,7 @@ import { Events } from './events';
  * addition and removal of component objects.  Components may be looked up by type, and
  * may depend on siblings components for parts of their own behavior.
  */
-export class BehaviorHost extends Events implements IBehaviorHost {
+export class BehaviorHost implements IBehaviorHost {
   id: string;
   name: string;
 

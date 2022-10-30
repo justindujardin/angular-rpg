@@ -15,11 +15,11 @@
  */
 // State Machine Interfaces
 // -------------------------------------------------------------------------
+import { EventEmitter } from '@angular/core';
 import * as _ from 'underscore';
-import { Events, IEvents } from './events';
 import { IState } from './state';
 
-export interface IStateMachine<TStateMachineStateNames extends string> extends IEvents {
+export interface IStateMachine<TStateMachineStateNames extends string> {
   update(data: any): void;
   addState(state: IState<TStateMachineStateNames>): void;
   addStates(states: IState<TStateMachineStateNames>[]): void;
@@ -35,25 +35,36 @@ export interface IResumeCallback {
   (): void;
 }
 
+/** A state change description */
+export interface IStateChange<T extends string> {
+  from: IState<T> | null;
+  to: IState<T>;
+}
+
 // Implementation
 // -------------------------------------------------------------------------
 export class StateMachine<StateNames extends string>
-  extends Events
   implements IStateMachine<StateNames>
 {
   static DEBUG_STATES: boolean = true;
 
-  static Events: any = {
-    ENTER: 'enter',
-    EXIT: 'exit',
-  };
-
   defaultState: StateNames | null = null;
   states: IState<StateNames>[] = [];
+
+  /** Emits when a new state has been entered */
+  onEnterState$ = new EventEmitter<IStateChange<StateNames>>();
+  /** Emits when an existing state is about to be exited */
+  onExitState$ = new EventEmitter<IStateChange<StateNames>>();
+
   private _currentState: IState<StateNames> | null = null;
   private _previousState: IState<StateNames> | null = null;
   private _newState: boolean = false;
   private _pendingState: IState<StateNames> | null = null;
+
+  /** @internal used to assert that multiple async listeners aren't running */
+  _asyncProcessing: number = 0;
+  /** @internal user callback to invoke when async event is done */
+  _asyncCurrentCallback: IResumeCallback | null = null;
 
   update(data?: any) {
     this._newState = false;
@@ -142,11 +153,11 @@ export class StateMachine<StateNames extends string>
       );
     }
     if (oldState) {
-      this.trigger(StateMachine.Events.EXIT, oldState, state);
+      this.onExitState$.emit({ from: oldState, to: state });
       oldState.exit(this);
     }
     state.enter(this);
-    this.trigger(StateMachine.Events.ENTER, state, oldState);
+    this.onEnterState$.emit({ from: oldState, to: state });
     return true;
   }
 
@@ -162,36 +173,6 @@ export class StateMachine<StateNames extends string>
     );
   }
 
-  private _asyncProcessing: number = 0;
-  private _asyncCurrentCallback: IResumeCallback | null = null;
-
-  /**
-   * Notify the game UI of an event, and wait for it to be handled,
-   * if there is a handler.
-   */
-  notify(msg: string, data: any, callback?: () => any) {
-    if (this._asyncProcessing > 0) {
-      throw new Error('TODO: StateMachine cannot handle multiple async UI waits');
-    }
-
-    this._asyncCurrentCallback = () => {
-      this._asyncProcessing--;
-      if (this._asyncProcessing <= 0) {
-        if (callback) {
-          callback();
-        }
-        this._asyncProcessing = 0;
-      }
-    };
-    this._asyncProcessing = 0;
-    this.trigger(msg, data);
-    if (this._asyncProcessing === 0) {
-      if (callback) {
-        callback();
-      }
-    }
-  }
-
   notifyWait(): IResumeCallback {
     if (!this._asyncCurrentCallback) {
       throw new Error(
@@ -200,5 +181,35 @@ export class StateMachine<StateNames extends string>
     }
     this._asyncProcessing++;
     return this._asyncCurrentCallback;
+  }
+}
+
+/**
+ * Asyn event emitter used in combat for allowing effects and such
+ * to execute in an async manner while the machine waits to transition.
+ */
+export class StateAsyncEmitter<T> extends EventEmitter<T> {
+  constructor(private machine: StateMachine<any>) {
+    super(false);
+  }
+
+  emit(value: T): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (this.machine._asyncProcessing > 0) {
+        throw new Error('TODO: StateMachine cannot handle multiple async UI waits');
+      }
+      this.machine._asyncCurrentCallback = () => {
+        this.machine._asyncProcessing--;
+        if (this.machine._asyncProcessing <= 0) {
+          resolve();
+          this.machine._asyncProcessing = 0;
+        }
+      };
+      this.machine._asyncProcessing = 0;
+      super.emit(value);
+      if (this.machine._asyncProcessing === 0) {
+        resolve();
+      }
+    });
   }
 }

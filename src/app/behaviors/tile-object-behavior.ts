@@ -13,6 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+import { EventEmitter } from '@angular/core';
 import { TileMap } from '../scene/tile-map';
 import { TileObject } from '../scene/tile-object';
 import { SceneObjectBehavior } from './scene-object-behavior';
@@ -20,14 +21,10 @@ export class TileObjectBehavior extends SceneObjectBehavior {
   host: TileObject | null;
   isEntered: boolean;
 
-  /**
-   * Events triggered on host object for enter/exit of
-   * tiles.
-   */
-  static Events: any = {
-    ENTERED: 'tile:entered',
-    EXITED: 'tile:exited',
-  };
+  /** Emitted when a player has entered this tile */
+  onEntered$ = new EventEmitter();
+  /** Emitted when a player has exited this tile */
+  onExited$ = new EventEmitter();
 
   syncBehavior(): boolean {
     return !!(this.host?.tileMap instanceof TileMap);
@@ -42,7 +39,7 @@ export class TileObjectBehavior extends SceneObjectBehavior {
   }
 
   entered(object: TileObject) {
-    this.host?.trigger(TileObjectBehavior.Events.ENTERED, this);
+    this.onEntered$.emit(this);
     this.isEntered = true;
     return true;
   }
@@ -52,7 +49,7 @@ export class TileObjectBehavior extends SceneObjectBehavior {
   }
 
   exited(object: TileObject) {
-    this.host?.trigger(TileObjectBehavior.Events.EXITED, this);
+    this.onExited$.emit(this);
     this.isEntered = false;
     return true;
   }

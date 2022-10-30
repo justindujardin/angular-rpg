@@ -13,6 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+import { EventEmitter } from '@angular/core';
 import * as _ from 'underscore';
 import { AudioResource } from '../core';
 import { GameWorld } from '../services/game-world';
@@ -38,6 +39,11 @@ export class SoundBehavior
   volume: number;
   loop: boolean;
   audio: AudioResource;
+
+  /** Emits when the sound is done (when not looping) */
+  onDone$ = new EventEmitter<SoundBehavior>();
+  /** Emits when the sound loops */
+  onLoop$ = new EventEmitter<SoundBehavior>();
 
   constructor(options: SoundComponentOptions = DEFAULTS) {
     super();
@@ -79,9 +85,9 @@ export class SoundBehavior
           if (this.audio.data.currentTime >= this.audio.data.duration) {
             if (!this.loop) {
               this.audio.data.pause();
-              this.trigger('audio:done', this);
+              this.onDone$.emit(this);
             } else {
-              this.trigger('audio:loop', this);
+              this.onLoop$.emit(this);
             }
           }
         });

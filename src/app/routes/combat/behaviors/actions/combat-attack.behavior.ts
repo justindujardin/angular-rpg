@@ -152,7 +152,8 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
                   playerRender.setState('Moving');
                 }
                 defender.addComponentDictionary(components);
-                components.damage.once('damage:done', () => {
+                const sub = components.damage.onDone$.subscribe(() => {
+                  sub?.unsubscribe();
                   if (playerRender) {
                     playerRender.setState();
                   }
@@ -168,7 +169,11 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
                   attacker,
                   defender,
                 };
-                this.combat.machine.notify('combat:attack', data, done);
+                this.combat.machine.onAttack$.emit(data).then(() => {
+                  if (done) {
+                    done();
+                  }
+                });
               });
           })
         )

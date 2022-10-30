@@ -14,6 +14,7 @@
  limitations under the License.
  */
 import * as astar from 'javascript-astar';
+import { Subscription } from 'rxjs';
 import * as _ from 'underscore';
 import { Point } from '../core';
 import { TileMap } from '../scene/tile-map';
@@ -23,7 +24,8 @@ import { TileObjectBehavior } from './tile-object-behavior';
  * A component that can calculate A-star paths.
  */
 export class TileMapPathBehavior extends TileObjectBehavior {
-  _graph: any = null; // Astar graph object
+  private _graph: any = null; // Astar graph object
+  private _subscription: Subscription | null = null;
 
   public tileMap: TileMap;
 
@@ -32,13 +34,14 @@ export class TileMapPathBehavior extends TileObjectBehavior {
   }
 
   syncBehavior(): boolean {
-    this.tileMap.off(TileMap.Events.LOADED, this._updateGraph, this);
-    this.tileMap.on(TileMap.Events.LOADED, this._updateGraph, this);
+    this._subscription?.unsubscribe();
+    this._subscription = this.tileMap.onLoaded$.subscribe(() => this._updateGraph());
     return super.syncBehavior();
   }
 
   disconnectBehavior(): boolean {
-    this.tileMap.off(TileMap.Events.LOADED, this._updateGraph, this);
+    this._subscription?.unsubscribe();
+    this._subscription = null;
     this._graph = null;
     return super.disconnectBehavior();
   }

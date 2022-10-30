@@ -13,6 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+import { EventEmitter } from '@angular/core';
 import { GameEntityObject } from '../scene/objects/game-entity-object';
 import { AnimatedSpriteBehavior } from './animated-sprite.behavior';
 import { SceneObjectBehavior } from './scene-object-behavior';
@@ -26,6 +27,9 @@ export class DamageComponent extends SceneObjectBehavior {
   sound: SoundBehavior | null;
   started: boolean = false;
 
+  /** Emits when the damage animation is complete */
+  onDone$ = new EventEmitter<DamageComponent>();
+
   syncBehavior(): boolean {
     if (!super.syncBehavior() || !this.host) {
       return false;
@@ -38,8 +42,9 @@ export class DamageComponent extends SceneObjectBehavior {
     const ok = !!(this.animation && this.sprite);
     if (!this.started && ok) {
       this.started = true;
-      this.animation.once('animation:done', () => {
-        this.trigger('damage:done', this);
+      let sub = this.animation.onDone$.subscribe(() => {
+        sub?.unsubscribe();
+        this.onDone$.emit(this);
       });
     }
     return ok;

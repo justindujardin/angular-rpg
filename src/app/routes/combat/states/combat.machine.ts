@@ -27,7 +27,8 @@ import { map } from 'rxjs/operators';
 import * as _ from 'underscore';
 import { AppState } from '../../../app.model';
 import { IState } from '../../../core/state';
-import { StateMachine } from '../../../core/state-machine';
+import { StateAsyncEmitter, StateMachine } from '../../../core/state-machine';
+import { CombatVictorySummary } from '../../../models/combat/combat.actions';
 import { CombatEncounter } from '../../../models/combat/combat.model';
 import { CombatService } from '../../../models/combat/combat.service';
 import { EntityItemTypes } from '../../../models/entity/entity.reducer';
@@ -44,8 +45,10 @@ import { SceneView } from '../../../scene/scene-view';
 import { GameWorld } from '../../../services/game-world';
 import { CombatEnemyComponent } from '../combat-enemy.entity';
 import { CombatPlayerComponent } from '../combat-player.entity';
-import { IPlayerAction } from '../combat.types';
+import { CombatAttackSummary, CombatSceneClick, IPlayerAction } from '../combat.types';
 import { CombatMachineState } from './combat-base.state';
+import { CombatDefeatSummary } from './combat-defeat.state';
+import { CombatRunSummary } from './combat-escape.state';
 import { CombatStateNames } from './states';
 
 // Combat State Machine
@@ -58,6 +61,19 @@ export class CombatStateMachineComponent
   extends StateMachine<CombatStateNames>
   implements AfterViewInit
 {
+  /** Emitted when a new player turn is beginning */
+  onBeginTurn$ = new StateAsyncEmitter<GameEntityObject>(this);
+  /** Emitted during an attack */
+  onAttack$ = new StateAsyncEmitter<CombatAttackSummary>(this);
+  /** Emitted when the party attempts to run */
+  onRun$ = new StateAsyncEmitter<CombatRunSummary>(this);
+  /** Emitted when the party successfully defeats the enemies */
+  onVictory$ = new StateAsyncEmitter<CombatVictorySummary>(this);
+  /** Emitted when the party is defeated */
+  onDefeat$ = new StateAsyncEmitter<CombatDefeatSummary>(this);
+  /** Emitted when the user clicks on a scene object in combat */
+  onClick$ = new StateAsyncEmitter<CombatSceneClick>(this);
+
   /** The items available to the party */
   public get items(): Immutable.List<Item> {
     return this._items$.value;
