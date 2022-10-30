@@ -1,3 +1,10 @@
+## [0.2.1](https://github.com/justindujardin/angular-rpg/compare/v0.2.0...v0.2.1) (2022-10-30)
+
+
+### Bug Fixes
+
+* **treasure:** non item chests were broken ([816618c](https://github.com/justindujardin/angular-rpg/commit/816618c1b5c046b59f1863a19979275b50ed8d1e))
+
 # [0.2.0](https://github.com/justindujardin/angular-rpg/compare/v0.1.16...v0.2.0) (2022-10-30)
 
 
