@@ -17,7 +17,6 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../app/app.model';
 import { CombatEscapeAction } from '../../../../app/models/combat/combat.actions';
-import { assertTrue } from '../../../models/util';
 import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { CombatMachineState } from './combat-base.state';
 import { CombatStateMachineComponent } from './combat.machine';
@@ -43,10 +42,6 @@ export class CombatEscapeStateComponent extends CombatMachineState {
   }
   enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
-    assertTrue(machine.current, 'escaping with no current player');
-    const data: CombatRunSummary = { player: machine.current, success: true };
-    machine.onRun$.emit(data).then(() => {
-      this.store.dispatch(new CombatEscapeAction());
-    });
+    this.store.dispatch(new CombatEscapeAction());
   }
 }

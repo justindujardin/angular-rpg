@@ -45,7 +45,7 @@ import { SceneView } from '../../../scene/scene-view';
 import { GameWorld } from '../../../services/game-world';
 import { CombatEnemyComponent } from '../combat-enemy.entity';
 import { CombatPlayerComponent } from '../combat-player.entity';
-import { CombatAttackSummary, IPlayerAction } from '../combat.types';
+import { CombatAttackSummary, CombatSceneClick, IPlayerAction } from '../combat.types';
 import { CombatMachineState } from './combat-base.state';
 import { CombatDefeatSummary } from './combat-defeat.state';
 import { CombatRunSummary } from './combat-escape.state';
@@ -71,6 +71,8 @@ export class CombatStateMachineComponent
   onVictory$ = new StateAsyncEmitter<CombatVictorySummary>(this);
   /** Emitted when the party is defeated */
   onDefeat$ = new StateAsyncEmitter<CombatDefeatSummary>(this);
+  /** Emitted when the user clicks on a scene object in combat */
+  onClick$ = new StateAsyncEmitter<CombatSceneClick>(this);
 
   /** The items available to the party */
   public get items(): Immutable.List<Item> {

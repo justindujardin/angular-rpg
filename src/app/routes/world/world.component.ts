@@ -10,6 +10,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 import { AppState } from '../../app.model';
 import { TileMapPathBehavior } from '../../behaviors/tile-map-path.behavior';
 import { DebugMenuComponent } from '../../components/debug-menu/debug-menu.component';
@@ -18,10 +19,10 @@ import { NotificationService } from '../../components/notification/notification.
 import { PartyMenuComponent } from '../../components/party-menu/party-menu.component';
 import { Point, Rect } from '../../core';
 import { NamedMouseElement, PowInput } from '../../core/input';
+import { assertTrue } from '../../models/util';
 import { GameFeatureObject } from '../../scene/objects/game-feature-object';
 import { Scene } from '../../scene/scene';
 import { SceneView } from '../../scene/scene-view';
-import { TileMap } from '../../scene/tile-map';
 import { GameWorld } from '../../services/game-world';
 import { RPGGame } from '../../services/rpg-game';
 import { PlayerBehaviorComponent } from './behaviors/player-behavior';
@@ -84,6 +85,8 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
   mouse: NamedMouseElement | null = null;
   scene: Scene = new Scene();
 
+  private _subscription: Subscription | null = null;
+
   constructor(
     public game: RPGGame,
     public notify: NotificationService,
@@ -125,16 +128,16 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
   onAddToScene(scene: Scene) {
     super.onAddToScene(scene);
     this.mouse = this.world.input.mouseHook(this, 'world');
-
-    //
-    // TODO: Consider how to remove these event listeners and replace with strongly typed observables
-    //
-    scene.on(TileMap.Events.MAP_LOADED, this.syncBehaviors, this);
+    assertTrue(this.map, 'world does not have a valid tilemap');
+    assertTrue(this._subscription === null, 'leaked world tilemap subscription');
+    this._subscription = this.map.onLoaded$.subscribe(() => this.syncBehaviors());
   }
 
   onRemoveFromScene(scene: Scene) {
     this.world.input.mouseUnhook('world');
-    scene.off(TileMap.Events.MAP_LOADED, this.syncBehaviors, this);
+    assertTrue(this.map, 'world does not have a valid tilemap');
+    assertTrue(this._subscription, 'unmatched world tilemap subscription');
+    this._subscription.unsubscribe();
   }
 
   public _onClick(e: MouseEvent) {
@@ -144,12 +147,11 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
     }
 
     // TODO: Skip this scene lookup and use the player component and its path behavior.
-    const pathComponent = this.scene.componentByType(
-      TileMapPathBehavior
-    ) as TileMapPathBehavior;
-    const playerComponent = this.scene.componentByType(
+    const pathComponent =
+      this.scene.componentByType<TileMapPathBehavior>(TileMapPathBehavior);
+    const playerComponent = this.scene.componentByType<PlayerBehaviorComponent>(
       PlayerBehaviorComponent
-    ) as PlayerBehaviorComponent;
+    );
     if (pathComponent && playerComponent && this.mouse) {
       PowInput.mouseOnView(e, this.mouse.view, this.mouse);
       playerComponent.path = pathComponent.calculatePath(

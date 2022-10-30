@@ -1,4 +1,5 @@
 import * as Immutable from 'immutable';
+import { Subscription } from 'rxjs';
 import * as _ from 'underscore';
 import { Point } from '../../../../app/core/point';
 import { State } from '../../../core/state';
@@ -12,7 +13,7 @@ import { GameWorld } from '../../../services/game-world';
 import { CombatActionBehavior } from '../behaviors/combat-action.behavior';
 import { CombatPlayerRenderBehaviorComponent } from '../behaviors/combat-player-render.behavior';
 import { CombatPlayerComponent } from '../combat-player.entity';
-import { ICombatMenuItem, IPlayerAction } from '../combat.types';
+import { CombatSceneClick, ICombatMenuItem, IPlayerAction } from '../combat.types';
 import {
   CombatChooseActionStateComponent,
   IChooseActionEvent,
@@ -79,9 +80,16 @@ export class ChooseActionType extends State<CombatChooseActionStateNames> {
   name: CombatChooseActionStateNames = ChooseActionType.NAME;
 
   enter(machine: ChooseActionStateMachine) {
-    let clickSelect = (mouse: any, hits: any) => {
-      machine.scene.off('click', clickSelect);
-      machine.target = hits[0];
+    // TODO: is this reaching too far?
+    const combat = machine.parent.machine;
+    assertTrue(combat, 'invalid link to combat state machine');
+    let sub: Subscription | null = null;
+
+    let clickSelect = (click: CombatSceneClick) => {
+      sub?.unsubscribe();
+      sub = null;
+      // machine.scene.off('click', clickSelect);
+      machine.target = click.hits[0];
       machine.parent.items[0].select();
     };
     if (!machine.current) {
@@ -98,7 +106,9 @@ export class ChooseActionType extends State<CombatChooseActionStateNames> {
     // Enable menu selection of action type.
     const selectAction = (action: IPlayerAction) => {
       machine.action = action as CombatActionBehavior;
-      machine.scene.off('click', clickSelect);
+      sub?.unsubscribe();
+      sub = null;
+      // machine.scene.off('click', clickSelect);
       if (machine.action.name == 'magic') {
         machine.setCurrentState(ChooseMagicSpell.NAME);
       } else if (machine.action.name == 'item') {
@@ -131,7 +141,8 @@ export class ChooseActionType extends State<CombatChooseActionStateNames> {
     machine.player.moveForward(() => {
       machine.parent.setPointerTarget(p, 'right');
       machine.parent.showPointer();
-      machine.scene.on('click', clickSelect);
+      sub = combat.onClick$.subscribe(clickSelect);
+      // machine.scene.on('click', clickSelect);
     });
   }
 
@@ -151,13 +162,21 @@ export class ChooseMagicSpell extends State<CombatChooseActionStateNames> {
       throw new Error('Requires Current Player');
     }
 
-    const clickSelect = (mouse: any, hits: any) => {
-      machine.scene.off('click', clickSelect);
-      machine.target = hits[0];
+    const combat = machine.parent.machine;
+    assertTrue(combat, 'invalid link to combat state machine');
+    let sub: Subscription | null = null;
+
+    const clickSelect = (click: CombatSceneClick) => {
+      sub?.unsubscribe();
+      sub = null;
+      // machine.scene.off('click', clickSelect);
+      machine.target = click.hits[0];
       machine.parent.items[0].select();
     };
     const selectSpell = (spell: ITemplateMagic) => {
-      machine.scene.off('click', clickSelect);
+      sub?.unsubscribe();
+      sub = null;
+      // machine.scene.off('click', clickSelect);
       machine.spell = spell;
       if (spell.benefit) {
         machine.target = machine.current;
@@ -183,7 +202,8 @@ export class ChooseMagicSpell extends State<CombatChooseActionStateNames> {
       })
       .toList()
       .toJS() as ICombatMenuItem[];
-    machine.scene.on('click', clickSelect);
+    // machine.scene.on('click', clickSelect);
+    sub = combat.onClick$.subscribe(clickSelect);
   }
 
   exit(machine: ChooseActionStateMachine) {
@@ -232,26 +252,29 @@ export class ChooseActionTarget extends State<CombatChooseActionStateNames> {
 
   enter(machine: ChooseActionStateMachine) {
     const enemies: GameEntityObject[] = machine.data.enemies;
-
     const p: GameEntityObject = machine.target || enemies[0];
     machine.parent.addPointerClass(machine.action?.getActionName() || '');
     if (!p) {
       machine.parent.hidePointer();
       return;
     }
-    let clickTarget: (mouse: any, hits: GameEntityObject[]) => void;
+    const combat = machine.parent.machine;
+    assertTrue(combat, 'invalid link to combat state machine');
+    let sub: Subscription | null = null;
     const selectTarget = (target: GameEntityObject) => {
       if (machine.target && machine.target._uid === target._uid) {
         machine.target = target;
-        machine.scene.off('click', clickTarget);
+        sub?.unsubscribe();
+        sub = null;
+        // machine.scene.off('click', clickTarget);
         machine.setCurrentState(ChooseActionSubmit.NAME);
         return;
       }
       machine.target = target;
       machine.parent.setPointerTarget(target, 'left');
     };
-    clickTarget = (mouse: any, hits: GameEntityObject[]) => {
-      selectTarget(hits[0]);
+    const clickTarget = (click: CombatSceneClick) => {
+      selectTarget(click.hits[0]);
     };
 
     const beneficial: boolean = !!(
@@ -271,7 +294,7 @@ export class ChooseActionTarget extends State<CombatChooseActionStateNames> {
 
     machine.parent.pointerOffset = new Point(0.5, -0.25);
     machine.parent.setPointerTarget(p, 'left');
-    machine.scene.on('click', clickTarget);
+    sub = combat.onClick$.subscribe((c) => clickTarget(c));
   }
 
   exit(machine: ChooseActionStateMachine) {

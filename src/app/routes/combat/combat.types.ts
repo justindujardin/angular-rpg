@@ -1,4 +1,6 @@
+import { ElementRef } from '@angular/core';
 import { Point } from '../../core';
+import { NamedMouseElement } from '../../core/input';
 import { ITemplateBaseItem } from '../../models/game-data/game-data.model';
 import { GameEntityObject } from '../../scene/objects/game-entity-object';
 
@@ -39,4 +41,21 @@ export interface IPlayerAction {
   from: GameEntityObject | null;
   to: GameEntityObject | null;
   act(then?: IPlayerActionCallback): boolean;
+}
+
+/**
+ * Attach an HTML element to the position of a game object.
+ */
+export interface UIAttachment {
+  object: GameEntityObject;
+  offset: Point;
+  element: ElementRef;
+}
+
+/** The user clicked on the combat scene */
+export interface CombatSceneClick {
+  /** The mouse information */
+  mouse: NamedMouseElement;
+  /** The scene objects under the mouse */
+  hits: GameEntityObject[];
 }

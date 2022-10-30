@@ -28,11 +28,11 @@ import {
   CombatAttackSummary,
   ICombatDamageSummary,
   ICombatMenuItem,
+  UIAttachment,
 } from './combat.types';
 import { CombatDefeatSummary } from './states/combat-defeat.state';
 import { CombatRunSummary } from './states/combat-escape.state';
 import { CombatStateMachineComponent } from './states/combat.machine';
-import { UIAttachment } from './types';
 
 @Component({
   selector: 'rpg-combat',
@@ -270,7 +270,7 @@ export class CombatComponent
     if (this.mouse) {
       PowInput.mouseOnView(e, this, this.mouse);
       if (this.scene.db.queryPoint(this.mouse.world, GameEntityObject, hits)) {
-        this.scene.trigger('click', this.mouse, hits);
+        this.machine.onClick$.emit({ mouse: this.mouse, hits: hits });
         e.stopImmediatePropagation();
         return false;
       }

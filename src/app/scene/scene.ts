@@ -15,15 +15,11 @@
  */
 import * as _ from 'underscore';
 import { IBehavior, IProcessObject, IWorld, IWorldObject } from '../core';
-import { Events } from '../core/events';
 import { GameWorld } from '../services/game-world';
 import { IScene, ISceneObject, ISceneView } from './scene.model';
 import { SceneSpatialDatabase } from './spatial-database';
 
-export class Scene
-  extends Events
-  implements IScene, IProcessObject, IWorldObject, IScene
-{
+export class Scene implements IScene, IProcessObject, IWorldObject, IScene {
   private static sceneCount: number = 0;
   id: string = `scene-${Scene.sceneCount++}`;
   name: string;
@@ -37,7 +33,6 @@ export class Scene
   paused: boolean = false;
 
   constructor(options: any = {}) {
-    super();
     this.options = _.defaults(options || {}, {
       debugRender: false,
     });
