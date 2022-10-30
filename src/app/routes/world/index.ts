@@ -4,18 +4,20 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { BehaviorsModule } from '../../behaviors/index';
 import { AppComponentsModule } from '../../components/index';
-import { WORLD_MAP_FEATURES, WORLD_MAP_FEATURES_IMPORTS } from './map/features/index';
-import { WORLD_MAP_COMPONENTS } from './map/world-map.entity';
-import { WORLD_PLAYER_COMPONENTS } from './map/world-player.entity';
+import { MapFeatureInputBehaviorComponent } from './behaviors/map-feature-input.behavior';
+import { WORLD_MAP_FEATURES, WORLD_MAP_FEATURES_IMPORTS } from './features/index';
+import { MapFeatureComponent } from './map-feature.component';
+import { WORLD_PLAYER_COMPONENTS } from './world-player.entity';
 import { WorldComponent } from './world.component';
 import { CanActivateWorld } from './world.guards';
 
 export const WORLD_PROVIDERS = [CanActivateWorld];
 
 export const WORLD_EXPORTS = [
-  ...[WorldComponent],
+  WorldComponent,
+  MapFeatureComponent,
+  MapFeatureInputBehaviorComponent,
   ...WORLD_PLAYER_COMPONENTS,
-  ...WORLD_MAP_COMPONENTS,
   ...WORLD_MAP_FEATURES,
 ];
 

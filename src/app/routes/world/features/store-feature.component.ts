@@ -15,17 +15,15 @@ import { WEAPONS_DATA } from 'app/models/game-data/weapons';
 import * as Immutable from 'immutable';
 import { BehaviorSubject, from, Observable } from 'rxjs';
 import { combineLatest, first, map, withLatestFrom } from 'rxjs/operators';
-import { AppState } from '../../../../app.model';
-import { NotificationService } from '../../../../components/notification/notification.service';
-import { IEntityObject, IPartyMember } from '../../../../models/base-entity';
+import { AppState } from '../../../app.model';
+import { NotificationService } from '../../../components/notification/notification.service';
+import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
+import { IEntityObject, IPartyMember } from '../../../models/base-entity';
 import {
   EntityAddItemAction,
   EntityRemoveItemAction,
-} from '../../../../models/entity/entity.actions';
-import {
-  EntitySlots,
-  EntityWithEquipment,
-} from '../../../../models/entity/entity.model';
+} from '../../../models/entity/entity.actions';
+import { EntitySlots, EntityWithEquipment } from '../../../models/entity/entity.model';
 import {
   EquipmentSlotTypes,
   EQUIPMENT_SLOTS,
@@ -34,26 +32,26 @@ import {
   ITemplateBaseItem,
   ITemplateMagic,
   ITemplateWeapon,
-} from '../../../../models/game-data/game-data.model';
+} from '../../../models/game-data/game-data.model';
 import {
   GameStateAddGoldAction,
   GameStateAddInventoryAction,
   GameStateEquipItemAction,
   GameStateRemoveInventoryAction,
   GameStateUnequipItemAction,
-} from '../../../../models/game-state/game-state.actions';
-import { GameState } from '../../../../models/game-state/game-state.model';
-import { Item } from '../../../../models/item';
+} from '../../../models/game-state/game-state.actions';
+import { GameState } from '../../../models/game-state/game-state.model';
+import { Item } from '../../../models/item';
 import {
   getGameInventory,
   getGamePartyGold,
   getGamePartyWithEquipment,
   sliceGameState,
-} from '../../../../models/selectors';
-import { assertTrue } from '../../../../models/util';
-import { IScene } from '../../../../scene/scene.model';
-import { RPGGame } from '../../../../services/rpg-game';
-import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
+} from '../../../models/selectors';
+import { assertTrue } from '../../../models/util';
+import { IScene } from '../../../scene/scene.model';
+import { RPGGame } from '../../../services/rpg-game';
+import { TiledFeatureComponent } from '../map-feature.component';
 
 /**
  * Given a list of potential items to sell, filter to only ones that can be bartered in this store.
@@ -114,7 +112,7 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
   abstract category: StoreInventoryCategories;
 
   // @ts-ignore
-  @Input() feature: TiledMapFeatureData;
+  @Input() feature: ITiledObject;
   @Input() scene: IScene;
   // @ts-ignore
   @Input() active: boolean;
@@ -143,9 +141,7 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
   /**
    * The name of this (fine) establishment.
    */
-  name$: Observable<string> = this.feature$.pipe(
-    map((f: TiledMapFeatureData) => f.name)
-  );
+  name$: Observable<string> = this.feature$.pipe(map((f: ITiledObject) => f.name));
 
   /**
    * The amount of gold the party has to spend
@@ -182,7 +178,7 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
         armors: ITemplateArmor[],
         items: ITemplateBaseItem[],
         magics: ITemplateMagic[],
-        feature: TiledMapFeatureData,
+        feature: ITiledObject,
         selling: boolean,
         partyInventory: Immutable.List<Item>
       ): ITemplateBaseItem[] => {

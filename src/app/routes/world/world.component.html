@@ -1,7 +1,24 @@
 <debug-menu></debug-menu>
 <party-menu></party-menu>
 
-<world-map #map [scene]="scene"></world-map>
+<map-feature-input-behavior [scene]="scene" #input></map-feature-input-behavior>
+<map-feature
+  [class]="feature.class"
+  *ngFor="let feature of activeFeatures$ | async"
+  [tiledMap]="resource$ | async"
+  [tileMap]="self.map"
+  [scene]="scene"
+  (onClose)="player.escapeFeature()"
+  [feature]="feature"
+></map-feature>
+<world-player
+  #player
+  *ngIf="notTraveling$ | async"
+  [map]="self.map"
+  [scene]="scene"
+  [point]="renderPoint$ | async"
+  [model]="partyLeader$ | async"
+></world-player>
 
 <canvas #worldCanvas [hidden]="loadingService.loading$ | async">
   Your browser doesn't support this.

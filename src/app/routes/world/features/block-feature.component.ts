@@ -14,8 +14,9 @@
  limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-import { TileObject } from '../../../../scene/tile-object';
-import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
+import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
+import { TileObject } from '../../../scene/tile-object';
+import { TiledFeatureComponent } from '../map-feature.component';
 
 @Component({
   selector: 'block-feature',
@@ -23,7 +24,7 @@ import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.compo
 })
 export class BlockFeatureComponent extends TiledFeatureComponent {
   // @ts-ignore
-  @Input() feature: TiledMapFeatureData;
+  @Input() feature: ITiledObject | null;
 
   constructor() {
     super();

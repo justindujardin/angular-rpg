@@ -20,17 +20,17 @@ import {
   Subscription,
 } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { AppState } from '../../../app.model';
-import { TileObjectBehavior } from '../../../behaviors/tile-object-behavior';
-import { TiledTMXResource } from '../../../core';
-import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
-import { getGameKey, getGameKeyData } from '../../../models/selectors';
-import { assertTrue } from '../../../models/util';
-import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
-import { Scene } from '../../../scene/scene';
-import { TileMap } from '../../../scene/tile-map';
-import { TileObject } from '../../../scene/tile-object';
-import { GameWorld } from '../../../services/game-world';
+import { AppState } from '../../app.model';
+import { TileObjectBehavior } from '../../behaviors/tile-object-behavior';
+import { TiledTMXResource } from '../../core';
+import { ITiledObject } from '../../core/resources/tiled/tiled.model';
+import { getGameKey, getGameKeyData } from '../../models/selectors';
+import { assertTrue } from '../../models/util';
+import { GameFeatureObject } from '../../scene/objects/game-feature-object';
+import { Scene } from '../../scene/scene';
+import { TileMap } from '../../scene/tile-map';
+import { TileObject } from '../../scene/tile-object';
+import { GameWorld } from '../../services/game-world';
 
 /**
  * An enumeration of the serialized names used to refer to map feature map from within a TMX file
@@ -50,29 +50,25 @@ export type TiledMapFeatureTypes =
   | 'WeaponsStoreFeatureComponent'
   | 'TempleFeatureComponent';
 
-export type TiledMapFeatureData<PropertiesType = any> = ITiledObject<PropertiesType>;
-
-export class TiledFeatureComponent<
-  T extends TiledMapFeatureData = TiledMapFeatureData
-> extends TileObjectBehavior {
+export class TiledFeatureComponent extends TileObjectBehavior {
   host: GameFeatureObject;
 
   /**
    * Write-only feature input.
    */
-  set feature(value: T | null) {
+  set feature(value: ITiledObject | null) {
     this._feature$.next(value);
   }
-  get feature(): T | null {
+  get feature(): ITiledObject | null {
     return this._feature$.value;
   }
 
-  protected _feature$: BehaviorSubject<T | null> = new BehaviorSubject(null);
+  protected _feature$: BehaviorSubject<ITiledObject | null> = new BehaviorSubject(null);
 
   /**
    * Observable of feature data.
    */
-  feature$: Observable<TiledMapFeatureData | null> = this._feature$;
+  feature$: Observable<ITiledObject | null> = this._feature$;
 
   get properties(): any {
     return this._feature$.value?.properties || {};
@@ -121,20 +117,20 @@ export class MapFeatureComponent
   @Input() scene: Scene;
   @ViewChildren('comp') featureQuery: QueryList<TiledFeatureComponent>;
   @Output() onClose: EventEmitter<TiledFeatureComponent> = new EventEmitter();
-  @Input() set feature(value: TiledMapFeatureData | null) {
+  @Input() set feature(value: ITiledObject | null) {
     this._feature$.next(value);
   }
-  get feature(): TiledMapFeatureData | null {
+  get feature(): ITiledObject | null {
     return this._feature$.value;
   }
 
   private _featureComponent$: Subject<TiledFeatureComponent> =
     new ReplaySubject<TiledFeatureComponent>(1);
 
-  private _feature$: BehaviorSubject<TiledMapFeatureData | null> =
-    new BehaviorSubject<TiledMapFeatureData | null>(null);
+  private _feature$: BehaviorSubject<ITiledObject | null> =
+    new BehaviorSubject<ITiledObject | null>(null);
 
-  feature$: Observable<TiledMapFeatureData | null> = this._feature$;
+  feature$: Observable<ITiledObject | null> = this._feature$;
 
   class$: Observable<TiledMapFeatureTypes> = this.feature$.pipe(
     map((f) => (f?.class || '') as TiledMapFeatureTypes)
@@ -142,7 +138,7 @@ export class MapFeatureComponent
 
   gameFeatureObject$: Observable<GameFeatureObject | null> = combineLatest(
     [this.feature$, this._featureComponent$],
-    (data: TiledMapFeatureData, component: TiledFeatureComponent) => {
+    (data: ITiledObject, component: TiledFeatureComponent) => {
       if (!data || !this.tiledMap) {
         return null;
       }
@@ -166,7 +162,7 @@ export class MapFeatureComponent
       if (!args || !args[0] || !args[0].properties) {
         return of(undefined);
       }
-      const f: TiledMapFeatureData = args[0];
+      const f: ITiledObject = args[0];
       // Select the id/after values and a bool for if after is not undefined
       return combineLatest([
         this.store.select(getGameKey(f.properties.id)),

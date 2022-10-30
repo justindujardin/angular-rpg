@@ -15,10 +15,11 @@
  */
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../../../app.model';
-import { GameStateTravelAction } from '../../../../models/game-state/game-state.actions';
-import { TileObject } from '../../../../scene/tile-object';
-import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
+import { AppState } from '../../../app.model';
+import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
+import { GameStateTravelAction } from '../../../models/game-state/game-state.actions';
+import { TileObject } from '../../../scene/tile-object';
+import { TiledFeatureComponent } from '../map-feature.component';
 
 @Component({
   selector: 'portal-feature',
@@ -26,7 +27,7 @@ import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.compo
 })
 export class PortalFeatureComponent extends TiledFeatureComponent {
   // @ts-ignore
-  @Input() feature: TiledMapFeatureData;
+  @Input() feature: ITiledObject | null;
 
   constructor(private store: Store<AppState>) {
     super();

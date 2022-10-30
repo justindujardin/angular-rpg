@@ -18,22 +18,22 @@ import { Store } from '@ngrx/store';
 import { getArmorById } from 'app/models/game-data/armors';
 import { getItemById } from 'app/models/game-data/items';
 import { getWeaponById } from 'app/models/game-data/weapons';
-import { AppState } from '../../../../app.model';
-import { NotificationService } from '../../../../components/notification/notification.service';
-import { EntityAddItemAction } from '../../../../models/entity/entity.actions';
+import { AppState } from '../../../app.model';
+import { NotificationService } from '../../../components/notification/notification.service';
+import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
+import { EntityAddItemAction } from '../../../models/entity/entity.actions';
 import {
   instantiateEntity,
   ITemplateBaseItem,
-} from '../../../../models/game-data/game-data.model';
+} from '../../../models/game-data/game-data.model';
 import {
   GameStateAddGoldAction,
   GameStateAddInventoryAction,
   GameStateSetKeyDataAction,
-} from '../../../../models/game-state/game-state.actions';
-import { Item } from '../../../../models/item';
-import { TileObject } from '../../../../scene/tile-object';
-import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
-
+} from '../../../models/game-state/game-state.actions';
+import { Item } from '../../../models/item';
+import { TileObject } from '../../../scene/tile-object';
+import { TiledFeatureComponent } from '../map-feature.component';
 @Component({
   selector: 'treasure-feature',
   template: ` <ng-content></ng-content>`,
@@ -45,7 +45,7 @@ export class TreasureFeatureComponent
   // Used as a recursion guard while the async treasure claiming process happens
   private taken = false;
   // @ts-ignore
-  @Input() feature: TiledMapFeatureData;
+  @Input() feature: ITiledObject;
 
   constructor(public store: Store<AppState>, public notify: NotificationService) {
     super();

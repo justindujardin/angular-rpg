@@ -13,7 +13,8 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { TiledMapFeatureData } from '../../routes/world/map/map-feature.component';
+
+import { ITiledObject } from '../../core/resources/tiled/tiled.model';
 import { GameWorld } from '../../services/game-world';
 import { SceneView } from '../scene-view';
 import { TileMap } from '../tile-map';
@@ -21,9 +22,9 @@ import { TileObject } from '../tile-object';
 
 export class GameFeatureObject extends TileObject {
   world: GameWorld;
-  feature: TiledMapFeatureData;
+  feature: ITiledObject;
 
-  constructor(options: TiledMapFeatureData, public tileMap: TileMap) {
+  constructor(options: ITiledObject, public tileMap: TileMap) {
     super();
     this.feature = options;
     if (options.gid) {

@@ -11,9 +11,10 @@ import { AppState } from 'app/app.model';
 import { GameStateSetKeyDataAction } from 'app/models/game-state/game-state.actions';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IScene } from '../../../../scene/scene.model';
-import { TileObject } from '../../../../scene/tile-object';
-import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
+import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
+import { IScene } from '../../../scene/scene.model';
+import { TileObject } from '../../../scene/tile-object';
+import { TiledFeatureComponent } from '../map-feature.component';
 
 @Component({
   selector: 'dialog-feature',
@@ -24,8 +25,8 @@ import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.compo
 })
 export class DialogFeatureComponent extends TiledFeatureComponent {
   // @ts-ignore
-  @Input() feature: TiledMapFeatureData;
-  @Input() scene: IScene;
+  @Input() feature: ITiledObject | null;
+  @Input() scene: IScene | null;
   // @ts-ignore
   @Input() active: boolean;
   @Output() onClose = new EventEmitter();
@@ -33,21 +34,21 @@ export class DialogFeatureComponent extends TiledFeatureComponent {
 
   /** The dialog text */
   text$: Observable<string> = this.feature$.pipe(
-    map((f: TiledMapFeatureData) => {
+    map((f: ITiledObject) => {
       return f.properties.text;
     })
   );
 
   /** The dialog title */
   title$: Observable<string> = this.feature$.pipe(
-    map((f: TiledMapFeatureData) => {
+    map((f: ITiledObject) => {
       return f.properties.title;
     })
   );
 
   /** The icon to display for the dialog speaker */
   icon$: Observable<string> = this.feature$.pipe(
-    map((f: TiledMapFeatureData) => {
+    map((f: ITiledObject) => {
       // Resolve tile images from their gid
       if (f.gid && this.host?.tileMap) {
         const meta = this.host.tileMap.getTileMeta(f.gid);
@@ -62,7 +63,7 @@ export class DialogFeatureComponent extends TiledFeatureComponent {
 
   /** An optional additional icon to display for the dialog */
   altIcon$: Observable<string> = this.feature$.pipe(
-    map((f: TiledMapFeatureData) => {
+    map((f: ITiledObject) => {
       return f.properties.altIcon;
     })
   );
@@ -75,7 +76,7 @@ export class DialogFeatureComponent extends TiledFeatureComponent {
     const result = super.exit(object);
     if (result) {
       // Check to see if this dialog should set game key/value data
-      const sets = this.feature.properties?.sets;
+      const sets = this.feature?.properties?.sets;
       if (sets) {
         this.store.dispatch(new GameStateSetKeyDataAction(sets, true));
       }

@@ -17,26 +17,22 @@ import { AfterViewInit, Component, Host, Input, OnDestroy } from '@angular/core'
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
-import { AppState } from '../../../../app.model';
-import { Point } from '../../../../core';
-import { GameStateBoardShipAction } from '../../../../models/game-state/game-state.actions';
-import { PointRecord } from '../../../../models/records';
-import { getGameBoardedShip, getGameShipPosition } from '../../../../models/selectors';
-import { GameFeatureObject } from '../../../../scene/objects/game-feature-object';
-import { TileObject } from '../../../../scene/tile-object';
-import { PlayerBehaviorComponent } from '../../behaviors/player-behavior';
-import {
-  MapFeatureComponent,
-  TiledFeatureComponent,
-  TiledMapFeatureData,
-} from '../map-feature.component';
+import { AppState } from '../../../app.model';
+import { Point } from '../../../core';
+import { GameStateBoardShipAction } from '../../../models/game-state/game-state.actions';
+import { PointRecord } from '../../../models/records';
+import { getGameBoardedShip, getGameShipPosition } from '../../../models/selectors';
+import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
+import { TileObject } from '../../../scene/tile-object';
+import { PlayerBehaviorComponent } from '../behaviors/player-behavior';
+import { MapFeatureComponent, TiledFeatureComponent } from '../map-feature.component';
 
 @Component({
   selector: 'ship-feature',
   template: '<ng-content></ng-content>',
 })
 export class ShipFeatureComponent
-  extends TiledFeatureComponent<TiledMapFeatureData>
+  extends TiledFeatureComponent
   implements OnDestroy, AfterViewInit
 {
   ngOnDestroy(): void {
@@ -65,7 +61,7 @@ export class ShipFeatureComponent
   partySprite: string;
   private _tickInterval: any = -1;
   // @ts-ignore
-  @Input() feature: TiledMapFeatureData;
+  @Input() feature: ITiledObject | null;
 
   private _subscription: Subscription | null = null;
 

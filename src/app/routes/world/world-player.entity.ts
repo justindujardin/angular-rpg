@@ -9,22 +9,22 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { SceneObjectBehavior } from '../../../behaviors/scene-object-behavior';
-import { Point, Rect } from '../../../core';
-import { Entity } from '../../../models/entity/entity.model';
-import { GameEntityObject } from '../../../scene/objects/game-entity-object';
-import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
-import { TileObjectRenderer } from '../../../scene/render/tile-object-renderer';
-import { Scene } from '../../../scene/scene';
-import { SceneView } from '../../../scene/scene-view';
-import { ISceneViewRenderer } from '../../../scene/scene.model';
-import { TileMap } from '../../../scene/tile-map';
-import { CombatEncounterBehaviorComponent } from '../behaviors/combat-encounter.behavior';
-import { PlayerBehaviorComponent } from '../behaviors/player-behavior';
-import { PlayerCameraBehaviorComponent } from '../behaviors/player-camera.behavior';
-import { PlayerTriggerBehaviorComponent } from '../behaviors/player-look.behavior';
-import { PlayerMapPathBehaviorComponent } from '../behaviors/player-map-path.behavior';
-import { PlayerRenderBehaviorComponent } from '../behaviors/player-render.behavior';
+import { SceneObjectBehavior } from '../../behaviors/scene-object-behavior';
+import { Point, Rect } from '../../core';
+import { Entity } from '../../models/entity/entity.model';
+import { GameEntityObject } from '../../scene/objects/game-entity-object';
+import { GameFeatureObject } from '../../scene/objects/game-feature-object';
+import { TileObjectRenderer } from '../../scene/render/tile-object-renderer';
+import { Scene } from '../../scene/scene';
+import { SceneView } from '../../scene/scene-view';
+import { ISceneViewRenderer } from '../../scene/scene.model';
+import { TileMap } from '../../scene/tile-map';
+import { CombatEncounterBehaviorComponent } from './behaviors/combat-encounter.behavior';
+import { PlayerBehaviorComponent } from './behaviors/player-behavior';
+import { PlayerCameraBehaviorComponent } from './behaviors/player-camera.behavior';
+import { PlayerTriggerBehaviorComponent } from './behaviors/player-look.behavior';
+import { PlayerMapPathBehaviorComponent } from './behaviors/player-map-path.behavior';
+import { PlayerRenderBehaviorComponent } from './behaviors/player-render.behavior';
 import { TiledFeatureComponent } from './map-feature.component';
 
 @Component({
@@ -95,7 +95,7 @@ export class WorldPlayerComponent
   /** The player has touched a game feature. */
   onFeatureLook(event: GameFeatureObject) {
     const feature: TiledFeatureComponent | null =
-      event.findBehavior(TiledFeatureComponent);
+      event.findBehavior<TiledFeatureComponent>(TiledFeatureComponent);
     if (feature) {
       feature.enter(this);
       this.feature = feature;

@@ -13,15 +13,16 @@ import * as Immutable from 'immutable';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
 import * as _ from 'underscore';
-import { AppState } from '../../../../app.model';
-import { NotificationService } from '../../../../components/notification/notification.service';
-import { Entity } from '../../../../models/entity/entity.model';
-import { GameStateHealPartyAction } from '../../../../models/game-state/game-state.actions';
-import { getGameParty, getGamePartyGold } from '../../../../models/selectors';
-import { assertTrue } from '../../../../models/util';
-import { IScene } from '../../../../scene/scene.model';
-import { RPGGame } from '../../../../services/rpg-game';
-import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
+import { AppState } from '../../../app.model';
+import { NotificationService } from '../../../components/notification/notification.service';
+import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
+import { Entity } from '../../../models/entity/entity.model';
+import { GameStateHealPartyAction } from '../../../models/game-state/game-state.actions';
+import { getGameParty, getGamePartyGold } from '../../../models/selectors';
+import { assertTrue } from '../../../models/util';
+import { IScene } from '../../../scene/scene.model';
+import { RPGGame } from '../../../services/rpg-game';
+import { TiledFeatureComponent } from '../map-feature.component';
 
 @Component({
   selector: 'temple-feature',
@@ -40,7 +41,7 @@ export class TempleFeatureComponent
   @Input() active: boolean;
   @Input() party: Entity[];
   // @ts-ignore
-  @Input() feature: TiledMapFeatureData;
+  @Input() feature: ITiledObject;
   active$: Observable<boolean>;
 
   partyGold$: Observable<number> = this.store.select(getGamePartyGold);
@@ -48,19 +49,19 @@ export class TempleFeatureComponent
     this.store.select(getGameParty);
 
   name$: Observable<string> = this.feature$.pipe(
-    map((data: TiledMapFeatureData) => {
+    map((data: ITiledObject) => {
       return data.properties.name;
     })
   );
 
   icon$: Observable<string> = this.feature$.pipe(
-    map((data: TiledMapFeatureData) => {
+    map((data: ITiledObject) => {
       return data.properties.icon;
     })
   );
 
   cost$: Observable<number> = this.feature$.pipe(
-    map((data: TiledMapFeatureData) => {
+    map((data: ITiledObject) => {
       return parseInt(data.properties.cost, 10);
     })
   );
