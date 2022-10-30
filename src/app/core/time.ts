@@ -34,9 +34,7 @@ export class Time {
   running: boolean = false;
   objects: IProcessObject[] = [];
 
-  constructor() {
-    this.polyFillAnimationFrames();
-  }
+  constructor() {}
 
   static get(): Time {
     if (!_shared) {
@@ -109,23 +107,5 @@ export class Time {
       }
     }
     return this;
-  }
-
-  polyFillAnimationFrames() {
-    let lastTime: number = 0;
-    if (!window.requestAnimationFrame) {
-      window.requestAnimationFrame = (callback: FrameRequestCallback): number => {
-        const currTime: number = new Date().getTime();
-        const timeToCall: number = Math.max(0, 16 - (currTime - lastTime));
-        /* tslint:disable */
-        const tickListener: Function = function powRAFTimeTick() {
-          callback(currTime + timeToCall);
-        };
-        /* tslint:enable */
-        const id: number = window.setTimeout(tickListener, timeToCall);
-        lastTime = currTime + timeToCall;
-        return id;
-      };
-    }
   }
 }

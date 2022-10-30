@@ -1,14 +1,5 @@
 import * as _ from 'underscore';
-import { Events } from './events';
-import { IProcessObject, Time } from './time';
-
-class MockTimeObject extends Events implements IProcessObject {
-  _uid: string = _.uniqueId('p');
-
-  tick(elapsed: number) {
-    this.trigger('tick');
-  }
-}
+import { Time } from './time';
 
 describe('Time', () => {
   it('should be defined', () => {
@@ -17,7 +8,7 @@ describe('Time', () => {
 
   it('should expose a static instance for shared use', () => {
     const t: Time = Time.get();
-    expect(t.polyFillAnimationFrames).toBeDefined();
+    expect(t).toBeDefined();
   });
 
   describe('addObject', () => {
@@ -79,67 +70,6 @@ describe('Time', () => {
           done();
         }, 50);
       });
-    });
-  });
-
-  describe('polyFillAnimationFrames', () => {
-    it('should trigger time updates with polyfill and setInterval', (done) => {
-      let olds: any = {
-        requestAnimationFrame: window.requestAnimationFrame,
-      };
-      const vendors: string[] = ['ms', 'moz', 'webkit', 'o'];
-      const w: any = window;
-      for (let i = 0; i < vendors.length; i++) {
-        olds = w[vendors[i] + 'RequestAnimationFrame'];
-        w[vendors[i] + 'RequestAnimationFrame'] = null;
-      }
-      const oldRaf = w.requestAnimationFrame;
-      w.requestAnimationFrame = null;
-
-      const t: Time = new Time();
-      const m: MockTimeObject = new MockTimeObject();
-      t.addObject(m);
-      m.once('tick', () => {
-        t.stop();
-        t.removeObject(m);
-        expect(window.requestAnimationFrame).toBeDefined();
-        _.each(olds, (value, key: any) => {
-          (window as any)[key] = value;
-        });
-        w.requestAnimationFrame = oldRaf;
-        done();
-      });
-      t.start();
-    });
-  });
-
-  const functions = ['webkitRequestAnimationFrame', 'mozRequestAnimationFrame'];
-  functions.forEach((fnName) => {
-    const w: any = window;
-    if (!w[fnName]) {
-      return;
-    }
-    it('should apply polyfill if not present on window', () => {
-      const oldRaf: any = w.requestAnimationFrame;
-      const oldVendorRaf: any = w[fnName];
-
-      w.requestAnimationFrame = null;
-      w[fnName] = null;
-
-      let t = new Time();
-      expect(window.requestAnimationFrame).toBeDefined();
-
-      w.requestAnimationFrame = oldRaf;
-      w[fnName] = oldVendorRaf;
-    });
-    it('should be patched as requestAnimationFrame if present on window', () => {
-      if (window.hasOwnProperty(fnName)) {
-        const oldRaf: any = w.requestAnimationFrame;
-        w.requestAnimationFrame = null;
-        let t = new Time();
-        expect(window.requestAnimationFrame).toBeDefined();
-        w.requestAnimationFrame = oldRaf;
-      }
     });
   });
 });
