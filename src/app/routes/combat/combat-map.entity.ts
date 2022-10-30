@@ -95,7 +95,7 @@ export class CombatMapComponent
    * @internal used to make `resource$` observable hot. Can be removed if the template references an
    * async binding for this at any point.
    */
-  private _resourceSubscription: Subscription;
+  private _resourceSubscription: Subscription | null;
 
   ngAfterViewInit(): void {
     this.scene.addObject(this);
@@ -121,7 +121,7 @@ export class CombatMapComponent
   }
 
   ngOnDestroy(): void {
-    this._resourceSubscription.unsubscribe();
+    this._resourceSubscription?.unsubscribe();
     this.scene.removeObject(this);
     this.removeBehavior(this.camera);
     this.destroy();
