@@ -51,7 +51,7 @@ export class CombatMapComponent
 {
   private _tileRenderer: TileMapRenderer = new TileMapRenderer();
 
-  @Input() scene: Scene;
+  @Input() scene: Scene | null;
   @Input() combat: any; // _ TODO: This creates a nasty circular import situation
 
   @ViewChild(CombatCameraBehaviorComponent)
@@ -98,7 +98,7 @@ export class CombatMapComponent
   private _resourceSubscription: Subscription | null;
 
   ngAfterViewInit(): void {
-    this.scene.addObject(this);
+    this.scene?.addObject(this);
     this.addBehavior(this.camera);
     // Whenever the underlying map resource changes, update party/enemy state from latest values.
     this._resourceSubscription = this.resource$
@@ -122,7 +122,7 @@ export class CombatMapComponent
 
   ngOnDestroy(): void {
     this._resourceSubscription?.unsubscribe();
-    this.scene.removeObject(this);
+    this.scene?.removeObject(this);
     this.removeBehavior(this.camera);
     this.destroy();
   }

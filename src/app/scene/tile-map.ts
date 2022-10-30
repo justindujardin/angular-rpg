@@ -34,7 +34,7 @@ import { SceneObject } from './scene-object';
 export class TileMap extends SceneObject {
   map: TiledTMXResource;
   tiles: (TilesetTile | null)[] = [];
-  scene: Scene;
+  scene: Scene | null;
   features?: ITiledLayer;
   zones?: ITiledLayer;
   bounds: Rect = new Rect(0, 0, 10, 10);
