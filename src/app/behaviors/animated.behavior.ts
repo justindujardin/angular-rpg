@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter } from '@angular/core';
 import * as _ from 'underscore';
 import { Point } from '../../app/core/point';
 import { TileObject } from '../scene/tile-object';
@@ -33,6 +33,11 @@ export interface IAnimationTask extends IAnimationConfig {
   done?: (config: IAnimationConfig) => void;
 }
 
+export interface IAnimatedBehaviorStopped {
+  task: IAnimationTask;
+  component: AnimatedBehaviorComponent;
+}
+
 // Implementation
 // -------------------------------------------------------------------------
 @Component({
@@ -42,11 +47,8 @@ export interface IAnimationTask extends IAnimationConfig {
 export class AnimatedBehaviorComponent extends TickedBehavior {
   host: TileObject;
 
-  static EVENTS = {
-    Started: 'start',
-    Stopped: 'stop',
-    Repeated: 'repeat',
-  };
+  onStop$ = new EventEmitter<IAnimatedBehaviorStopped>();
+
   private _tasks: IAnimationTask[] = [];
   private _animationKeys: any[] = [];
   private _currentAnimation: any = null;
@@ -87,7 +89,7 @@ export class AnimatedBehaviorComponent extends TickedBehavior {
           task.callback(task);
         }
         // this.host.frame = task.startFrame;
-        this.trigger(AnimatedBehaviorComponent.EVENTS.Stopped, {
+        this.onStop$.emit({
           task,
           component: this,
         });

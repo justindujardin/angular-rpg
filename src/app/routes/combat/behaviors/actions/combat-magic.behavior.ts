@@ -131,7 +131,8 @@ export class CombatMagicBehavior extends CombatActionBehavior {
         }),
       };
       target.addComponentDictionary(behaviors);
-      behaviors.animation.once('animation:done', () => {
+      const sub = behaviors.animation.onDone$.subscribe(() => {
+        sub?.unsubscribe();
         target.removeComponentDictionary(behaviors);
         const data: CombatAttackSummary = {
           damage: healAmount,
@@ -244,7 +245,8 @@ export class CombatMagicBehavior extends CombatActionBehavior {
                   }),
                 };
                 target.addComponentDictionary(behaviors);
-                behaviors.damage.once('damage:done', () => {
+                const sub = behaviors.damage.onDone$.subscribe(() => {
+                  sub?.unsubscribe();
                   if (attackerPlayer) {
                     attackerPlayer.setState();
                   }

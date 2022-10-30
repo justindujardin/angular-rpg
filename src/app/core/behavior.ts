@@ -15,7 +15,6 @@
  */
 import * as _ from 'underscore';
 import { BehaviorHost } from './behavior-host';
-import { Events } from './events';
 /**
  * Most basic object.  Has an id and a name.
  */
@@ -72,7 +71,7 @@ export interface IBehaviorHost extends IObject {
  * time constructs, we have to have an actual implementation to instanceof.  For that
  * reason, all SceneBehaviors should derive this class.
  */
-export class Behavior extends Events implements IBehavior {
+export class Behavior implements IBehavior {
   id: string = _.uniqueId('sc');
   host: BehaviorHost | null;
   name: string | null;

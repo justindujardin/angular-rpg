@@ -95,7 +95,8 @@ export class CombatItemBehavior extends CombatActionBehavior {
         }),
       };
       target.addComponentDictionary(behaviors);
-      behaviors.animation.once('animation:done', () => {
+      const sub = behaviors.animation.onDone$.subscribe(() => {
+        sub?.unsubscribe();
         target.removeComponentDictionary(behaviors);
         if (done) {
           done();

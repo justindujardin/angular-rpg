@@ -13,6 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+import { EventEmitter } from '@angular/core';
 import * as _ from 'underscore';
 import { TileObject } from '../scene/tile-object';
 import { SpriteComponent } from './sprite.behavior';
@@ -29,6 +30,9 @@ export class AnimatedSpriteBehavior extends TickedBehavior {
   lengthMS: number = 500;
   spriteComponent: SpriteComponent;
   spriteName: string;
+
+  /** Emits when the animation is done playing */
+  onDone$ = new EventEmitter<AnimatedSpriteBehavior>();
 
   constructor(
     options: AnimatedSpriteComponentOptions = {
@@ -62,7 +66,7 @@ export class AnimatedSpriteBehavior extends TickedBehavior {
   tick(elapsed: number) {
     this._elapsed += elapsed;
     if (this._elapsed >= this.lengthMS) {
-      this.trigger('animation:done', this);
+      this.onDone$.emit(this);
       this._elapsed = this._elapsed % this.lengthMS;
     }
     super.tick(elapsed);
