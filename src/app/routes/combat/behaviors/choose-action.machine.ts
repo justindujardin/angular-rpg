@@ -80,7 +80,6 @@ export class ChooseActionType extends State<CombatChooseActionStateNames> {
   name: CombatChooseActionStateNames = ChooseActionType.NAME;
 
   enter(machine: ChooseActionStateMachine) {
-    // TODO: is this reaching too far?
     const combat = machine.parent.machine;
     assertTrue(combat, 'invalid link to combat state machine');
     let sub: Subscription | null = null;
@@ -88,7 +87,6 @@ export class ChooseActionType extends State<CombatChooseActionStateNames> {
     let clickSelect = (click: CombatSceneClick) => {
       sub?.unsubscribe();
       sub = null;
-      // machine.scene.off('click', clickSelect);
       machine.target = click.hits[0];
       machine.parent.items[0].select();
     };
@@ -108,7 +106,6 @@ export class ChooseActionType extends State<CombatChooseActionStateNames> {
       machine.action = action as CombatActionBehavior;
       sub?.unsubscribe();
       sub = null;
-      // machine.scene.off('click', clickSelect);
       if (machine.action.name == 'magic') {
         machine.setCurrentState(ChooseMagicSpell.NAME);
       } else if (machine.action.name == 'item') {
@@ -142,7 +139,6 @@ export class ChooseActionType extends State<CombatChooseActionStateNames> {
       machine.parent.setPointerTarget(p, 'right');
       machine.parent.showPointer();
       sub = combat.onClick$.subscribe(clickSelect);
-      // machine.scene.on('click', clickSelect);
     });
   }
 
@@ -169,14 +165,12 @@ export class ChooseMagicSpell extends State<CombatChooseActionStateNames> {
     const clickSelect = (click: CombatSceneClick) => {
       sub?.unsubscribe();
       sub = null;
-      // machine.scene.off('click', clickSelect);
       machine.target = click.hits[0];
       machine.parent.items[0].select();
     };
     const selectSpell = (spell: ITemplateMagic) => {
       sub?.unsubscribe();
       sub = null;
-      // machine.scene.off('click', clickSelect);
       machine.spell = spell;
       if (spell.benefit) {
         machine.target = machine.current;
@@ -202,7 +196,6 @@ export class ChooseMagicSpell extends State<CombatChooseActionStateNames> {
       })
       .toList()
       .toJS() as ICombatMenuItem[];
-    // machine.scene.on('click', clickSelect);
     sub = combat.onClick$.subscribe(clickSelect);
   }
 
@@ -266,7 +259,6 @@ export class ChooseActionTarget extends State<CombatChooseActionStateNames> {
         machine.target = target;
         sub?.unsubscribe();
         sub = null;
-        // machine.scene.off('click', clickTarget);
         machine.setCurrentState(ChooseActionSubmit.NAME);
         return;
       }
