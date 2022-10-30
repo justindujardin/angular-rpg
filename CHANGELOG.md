@@ -1,3 +1,17 @@
+# [0.2.0](https://github.com/justindujardin/angular-rpg/compare/v0.1.16...v0.2.0) (2022-10-30)
+
+
+### Features
+
+* **Events:** use strongly typed event emitters ([dbeb450](https://github.com/justindujardin/angular-rpg/commit/dbeb450372588c8ba20ca12d3e92478f5d963554))
+
+
+### BREAKING CHANGES
+
+* **Events:** This removes the string based on/off API that was present on most core game classes in favor of strongly typed event emitters that are compatible with Angular bindings.
+
+This makes the API usage simpler, and adds strong types to emitted events making them more reliable to use in the frontend.
+
 ## [0.1.16](https://github.com/justindujardin/angular-rpg/compare/v0.1.15...v0.1.16) (2022-10-30)
 
 
