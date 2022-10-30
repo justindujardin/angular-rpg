@@ -37,11 +37,13 @@ export class BasePlayerComponent extends MovableBehavior {
   private _lastFrame: number = 3;
   private _renderFrame: number = 3;
   heading: Point = new Point(0, -1);
-  sprite: PlayerRenderBehaviorComponent = null;
+  sprite: PlayerRenderBehaviorComponent | null = null;
   collideComponentType: any = TileObjectBehavior;
 
   syncBehavior(): boolean {
-    this.sprite = this.host.findBehavior(PlayerRenderBehaviorComponent);
+    this.sprite = this.host.findBehavior<PlayerRenderBehaviorComponent>(
+      PlayerRenderBehaviorComponent
+    );
     return super.syncBehavior();
   }
 
@@ -99,7 +101,7 @@ export class BasePlayerComponent extends MovableBehavior {
    * @returns {boolean} True if the passable attribute was found and set to false.
    */
   collideWithMap(at: Point, passableAttribute: string): boolean {
-    let map = <TileMap>this.host.scene?.objectByType(TileMap);
+    let map = this.host.scene?.objectByType<TileMap>(TileMap);
     if (map) {
       const layers: ITiledLayer[] = map.getLayers();
       for (let i = 0; i < layers.length; i++) {
@@ -120,7 +122,7 @@ export class BasePlayerComponent extends MovableBehavior {
   }
 
   beginMove(move: IMoveDescription) {
-    let comp: TileObjectBehavior;
+    let comp: TileObjectBehavior | null = null;
     let o: TileObject;
     let i;
     this.host.trigger(BasePlayerComponent.Events.MOVE_BEGIN, this, move.from, move.to);
@@ -128,11 +130,11 @@ export class BasePlayerComponent extends MovableBehavior {
       return;
     }
 
-    const results = [];
+    const results: TileObject[] = [];
     this.collider.collide(move.from.x, move.from.y, TileObject, results);
     for (i = 0; i < results.length; i++) {
       o = results[i];
-      comp = <TileObjectBehavior>o.findBehavior(this.collideComponentType);
+      comp = o.findBehavior<TileObjectBehavior>(this.collideComponentType);
       if (!comp || !comp.enter) {
         continue;
       }
@@ -144,7 +146,7 @@ export class BasePlayerComponent extends MovableBehavior {
     this.collider.collide(move.to.x, move.to.y, TileObject, results);
     for (i = 0; i < results.length; i++) {
       o = results[i];
-      comp = <TileObjectBehavior>o.findBehavior(this.collideComponentType);
+      comp = o.findBehavior<TileObjectBehavior>(this.collideComponentType);
       if (!comp || !comp.enter) {
         continue;
       }
@@ -166,12 +168,12 @@ export class BasePlayerComponent extends MovableBehavior {
     // Trigger exit on previous components
     const hits: TileObject[] = [];
     this.collider.collide(move.from.x, move.from.y, TileObject, hits);
-    const fromObject: TileObject = _.find(hits, (o: TileObject) => {
+    const fromObject: TileObject | undefined = _.find(hits, (o: TileObject) => {
       return o._uid !== this.host._uid;
     });
     if (fromObject) {
-      comp = <TileObjectBehavior>fromObject.findBehavior(this.collideComponentType);
-      if (comp && comp.host._uid !== this.host._uid) {
+      comp = fromObject.findBehavior<TileObjectBehavior>(this.collideComponentType);
+      if (comp?.host?._uid && comp?.host?._uid !== this.host._uid) {
         comp.exited(this.host);
       }
     }
@@ -179,12 +181,12 @@ export class BasePlayerComponent extends MovableBehavior {
     // Trigger enter on new components
     hits.length = 0;
     this.collider.collide(move.to.x, move.to.y, TileObject, hits);
-    const toObject: TileObject = _.find(hits, (o: TileObject) => {
+    const toObject: TileObject | undefined = _.find(hits, (o: TileObject) => {
       return o._uid !== this.host._uid;
     });
     if (toObject) {
-      comp = <TileObjectBehavior>toObject.findBehavior(this.collideComponentType);
-      if (comp && comp.host._uid !== this.host._uid) {
+      comp = toObject.findBehavior<TileObjectBehavior>(this.collideComponentType);
+      if (comp?.host?._uid && comp?.host?._uid !== this.host._uid) {
         comp.entered(this.host);
       }
     }

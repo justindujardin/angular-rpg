@@ -29,17 +29,12 @@ import { TileObject } from '../../../scene/tile-object';
 export class MapFeatureInputBehaviorComponent extends TickedBehavior {
   hitBox: Rect = new Rect(0, 0, 1, 1);
   hits: TileObject[] = [];
-  mouse: NamedMouseElement = null;
+  mouse: NamedMouseElement | null = null;
 
   @Input() scene: Scene;
 
   syncBehavior(): boolean {
-    if (
-      !super.syncBehavior() ||
-      !this.host.scene ||
-      !this.host.scene.world ||
-      !this.host.scene.world.input
-    ) {
+    if (!super.syncBehavior() || !this.host?.scene?.world?.input) {
       return false;
     }
     this.mouse = this.host.scene.world.input.getMouseHook('world');
@@ -48,7 +43,7 @@ export class MapFeatureInputBehaviorComponent extends TickedBehavior {
 
   tick(elapsed: number) {
     // Calculate hits in Scene for machine usage.
-    if (!this.host.scene || !this.mouse) {
+    if (!this.host?.scene || !this.mouse) {
       return;
     }
     _.each(this.hits, (tile: TileObject) => {

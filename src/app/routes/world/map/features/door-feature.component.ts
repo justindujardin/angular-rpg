@@ -44,17 +44,17 @@ export class DoorFeatureComponent extends TiledFeatureComponent {
   active$: Observable<boolean>;
   requiredKey$: Observable<string> = this.feature$.pipe(
     map((f: DoorFeatureType) => {
-      return f.properties.requiredKey;
+      return f.properties?.requiredKey || '';
     })
   );
   id$: Observable<string> = this.feature$.pipe(
     map((f: DoorFeatureType) => {
-      return f.properties.id;
+      return f.properties?.id || '';
     })
   );
   canUnlock$: Observable<boolean> = this.feature$.pipe(
     switchMap((f: DoorFeatureType) => {
-      if (!f.properties.requiredKey) {
+      if (!f.properties?.requiredKey) {
         return of(true);
       }
       return this.store.select(getGameKey(f.properties.requiredKey));
@@ -64,22 +64,22 @@ export class DoorFeatureComponent extends TiledFeatureComponent {
   cantUnlock$: Observable<boolean> = this.canUnlock$.pipe(map((value) => !value));
   icon$: Observable<string> = this.feature$.pipe(
     map((f: DoorFeatureType) => {
-      return f.properties.icon;
+      return f.properties?.icon || '';
     })
   );
   title$: Observable<string> = this.feature$.pipe(
     map((f: DoorFeatureType) => {
-      return f.properties.title;
+      return f.properties?.title || '';
     })
   );
   lockedText$: Observable<string> = this.feature$.pipe(
     map((f: DoorFeatureType) => {
-      return f.properties.lockedText;
+      return f.properties?.lockedText || '';
     })
   );
   unlockText$: Observable<string> = this.feature$.pipe(
     map((f: DoorFeatureType) => {
-      return f.properties.unlockText;
+      return f.properties?.unlockText || '';
     })
   );
 

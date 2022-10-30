@@ -12,11 +12,11 @@ import { RPGGame } from '../../services/rpg-game';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerCardComponent {
-  private _model$: Subject<Entity> = new BehaviorSubject<Entity>(null);
-  model$: Observable<Entity> = this._model$;
+  private _model$: Subject<Entity | null> = new BehaviorSubject<Entity | null>(null);
+  model$: Observable<Entity | null> = this._model$;
 
   @Input()
-  set model(value: Entity) {
+  set model(value: Entity | null) {
     this._model$.next(value);
   }
 

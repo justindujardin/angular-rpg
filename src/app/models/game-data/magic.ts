@@ -38,6 +38,10 @@ export const MAGIC_DATA: ITemplateMagic[] = [
 ];
 
 /** Get a magic descriptor given its id value */
-export function getMagicById(id: string): ITemplateMagic | null {
-  return MAGIC_DATA.find((item) => item.id === id);
+export function getMagicById(id: string): ITemplateMagic {
+  const template = MAGIC_DATA.find((item) => item.id === id);
+  if (!template) {
+    throw new Error(`getMagicById: invalid template id ${id}`);
+  }
+  return template;
 }

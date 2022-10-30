@@ -31,7 +31,7 @@ export class CombatCameraBehaviorComponent extends CameraBehavior {
   }
 
   process(view: SceneView) {
-    if (!this.host) {
+    if (!this.host || !view.context) {
       super.process(view);
       return;
     }

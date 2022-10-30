@@ -17,17 +17,18 @@ import * as _ from 'underscore';
 import { SceneObjectBehavior } from '../behaviors/scene-object-behavior';
 import { BehaviorHost, IPoint, Point } from '../core';
 import { Scene } from './scene';
+import { ISceneObject } from './scene.model';
 /**
  * An object that may exist in a `Scene` and receives time updates.
  */
-export class SceneObject extends BehaviorHost {
+export class SceneObject extends BehaviorHost implements ISceneObject {
   private static objectCount: number = 0;
   _uid: string = `scene-object-${SceneObject.objectCount++}`;
-  scene: Scene;
+  scene: Scene | null;
   enabled: boolean;
   // The object point
-  point: IPoint;
-  size: IPoint;
+  point: Point;
+  size: Point;
   // The render point that is interpolated between ticks.
   renderPoint: IPoint;
 
@@ -93,15 +94,18 @@ export class SceneObject extends BehaviorHost {
   }
 
   addComponentDictionary(components: any, silent?: boolean): boolean {
-    let failed: SceneObjectBehavior = null;
-    _.each(components, (comp: SceneObjectBehavior, key: string) => {
+    let failed: SceneObjectBehavior | null = null;
+    const keys = Object.keys(components);
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const comp = components[key];
       if (failed) {
-        return;
+        continue;
       }
       if (!this.addBehavior(comp, true)) {
         failed = comp;
       }
-    });
+    }
     if (failed) {
       console.log(
         `Failed to add component set to host. Component ${failed.toString()} failed to connect to host.`

@@ -91,21 +91,21 @@ export class CombatEffects {
       const data: CombatVictorySummary = action.payload;
       return new Observable((subject: Subscriber<CombatVictoryAction>) => {
         // Gold
-        this.notificationService.show(`Found ${data.gold} gold!`, null, 0);
+        this.notificationService.show(`Found ${data.gold} gold!`, undefined, 0);
         // Looted items
         if (data.items) {
           data.items.forEach((item: Item) => {
-            this.notificationService.show(`Found ${item.name}`, null, 0);
+            this.notificationService.show(`Found ${item.name}`, undefined, 0);
           });
         }
         // Experience
-        this.notificationService.show(`Gained ${data.exp} experience!`, null, 0);
+        this.notificationService.show(`Gained ${data.exp} experience!`, undefined, 0);
         // Party Level ups
 
         data.levels.forEach((entityDiff: IPartyStatsDiff) => {
           this.notificationService.show(
             `${entityDiff.name} reached level ${entityDiff.level}!`,
-            null,
+            undefined,
             0
           );
           let note = '\n';
@@ -128,7 +128,7 @@ export class CombatEffects {
             note += `Luck went up by ${entityDiff.luck}\n\n`;
           }
           if (note !== '\n') {
-            this.notificationService.show(note, null, 0);
+            this.notificationService.show(note, undefined, 0);
           }
         });
         // Fin.

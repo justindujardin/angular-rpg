@@ -10,15 +10,17 @@ import { DamageComponent } from '../../../../behaviors/damage.behavior';
 import { SoundBehavior } from '../../../../behaviors/sound-behavior';
 import { SpriteComponent } from '../../../../behaviors/sprite.behavior';
 import { getSoundEffectUrl, ISpriteMeta } from '../../../../core/api';
+import { CombatantTypes } from '../../../../models/base-entity';
 import { CombatAttackAction } from '../../../../models/combat/combat.actions';
 import { CombatAttack } from '../../../../models/combat/combat.model';
 import { CombatService } from '../../../../models/combat/combat.service';
 import { Entity, EntityWithEquipment } from '../../../../models/entity/entity.model';
 import { getCombatEntityEquipment } from '../../../../models/selectors';
+import { assertTrue } from '../../../../models/util';
 import { GameEntityObject } from '../../../../scene/objects/game-entity-object';
 import { GameWorld } from '../../../../services/game-world';
-import { CombatAttackSummary, CombatComponent } from '../../combat.component';
-import { IPlayerActionCallback } from '../../states/combat.machine';
+import { CombatComponent } from '../../combat.component';
+import { CombatAttackSummary, IPlayerActionCallback } from '../../combat.types';
 import { CombatActionBehavior } from '../combat-action.behavior';
 import { CombatPlayerRenderBehaviorComponent } from '../combat-player-render.behavior';
 /**
@@ -66,35 +68,44 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
     };
 
     //
-    const attacker: GameEntityObject = this.from;
-    const defender: GameEntityObject = this.to;
+    const attacker: GameEntityObject = this.from as GameEntityObject;
+    const defender: GameEntityObject = this.to as GameEntityObject;
+    assertTrue(attacker && defender, 'invalid attacker/defender in attack behavior');
+    const attackerModel: CombatantTypes = attacker.model as CombatantTypes;
+    const defenderModel: CombatantTypes = defender.model as CombatantTypes;
+    assertTrue(
+      attackerModel && defenderModel,
+      'invalid attacker/defender model attack behavior'
+    );
     const playerRender = attacker.findBehavior<CombatPlayerRenderBehaviorComponent>(
       CombatPlayerRenderBehaviorComponent
     );
     const attack = () => {
-      const attEquip = this.store.select(getCombatEntityEquipment(attacker.model.eid));
-      const defEquip = this.store.select(getCombatEntityEquipment(defender.model.eid));
+      const attEquip = this.store.select(getCombatEntityEquipment(attackerModel.eid));
+      const defEquip = this.store.select(getCombatEntityEquipment(defenderModel.eid));
       combineLatest([attEquip, defEquip])
         .pipe(
           first(),
           map((args) => {
-            const equippedAttacker: EntityWithEquipment = args[0];
-            const equippedDefender: EntityWithEquipment = args[1];
+            const equippedAttacker: EntityWithEquipment =
+              args[0] as EntityWithEquipment;
+            const equippedDefender: EntityWithEquipment =
+              args[1] as EntityWithEquipment;
             const damageOutput = this.combatService.attackCombatant(
               equippedAttacker || attacker.model,
               equippedDefender || defender.model
             );
             const damage = damageOutput.totalDamage;
-            const didKill: boolean = defender.model.hp - damage <= 0;
+            const didKill: boolean = defenderModel.hp - damage <= 0;
             const hit: boolean = damage > 0;
-            const defending: boolean = defender.model.status.includes('guarding');
+            const defending: boolean = defenderModel.status.includes('guarding');
             const hitSound: string = getSoundEffectUrl(
               didKill ? 'killed' : hit ? (defending ? 'miss' : 'hit') : 'miss'
             );
 
             const attackData: CombatAttack = {
-              attacker: attacker.model,
-              defender: defender.model,
+              attacker: attackerModel,
+              defender: defenderModel,
               damage,
             };
             this.store.dispatch(new CombatAttackAction(attackData));
@@ -106,7 +117,7 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
                 ? 'animSmoke.png'
                 : hitAnim
               : 'animMiss.png';
-            const meta: ISpriteMeta =
+            const meta: ISpriteMeta | null =
               this.gameWorld.sprites.getSpriteMeta(damageAnimation);
             if (!meta) {
               console.warn(

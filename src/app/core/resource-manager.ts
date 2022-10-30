@@ -16,8 +16,8 @@ import { XMLResource } from './resources/xml.resource';
  */
 @Injectable()
 export class ResourceManager {
-  private _cache: Object = {};
-  private _types: Object = {
+  private _cache: { [url: string]: IResource } = {};
+  private _types: { [extension: string]: any } = {
     png: ImageResource,
     json: JSONResource,
     xml: XMLResource,
@@ -65,7 +65,7 @@ export class ResourceManager {
       if (!source || !resourceType) {
         return reject(errors.INVALID_ARGUMENTS);
       }
-      let resource: T = this._cache[source];
+      let resource: T = this._cache[source] as T;
       if (resource && resource.data) {
         return resolve(resource);
       } else if (!resource) {

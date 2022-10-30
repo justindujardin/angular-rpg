@@ -25,9 +25,12 @@ export class XMLResource extends Resource {
 
   fetch(url: string): Promise<XMLResource> {
     this.url = url || this.url;
+    if (!url) {
+      return Promise.reject(`XMLResource: invalid url: ${url}`);
+    }
     return new Promise<XMLResource>((resolve, reject) => {
       const request: JQueryXHR = $.get({
-        url: this.url,
+        url: url,
         dataType: 'text',
       });
       request.done((object: string) => {
@@ -61,7 +64,7 @@ export class XMLResource extends Resource {
   getChildren<T>(el: any, tag: string): T[] {
     const list = el.find(tag);
     return _.compact(
-      _.map(list, (c) => {
+      _.map(list, (c: any) => {
         const child: any = $(c);
         return (child.parent()[0] !== el[0] ? null : child) as T;
       })

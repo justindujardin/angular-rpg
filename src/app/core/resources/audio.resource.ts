@@ -14,6 +14,7 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
+import { assertTrue } from '../../models/util';
 import { errors } from '../errors';
 import { Resource } from '../resource';
 import { Time } from '../time';
@@ -66,7 +67,7 @@ export class AudioResource extends Resource implements IAudioSource {
     if (AudioResource._context === null && ac) {
       AudioResource._context = new ac();
     }
-    if (AudioResource._types === null) {
+    if (AudioResource._types.length === 0) {
       this._types = [];
       const a = document.createElement('audio');
       // The existence of canPlayType indicates support for audio elements.
@@ -99,14 +100,13 @@ export class AudioResource extends Resource implements IAudioSource {
 
   private static _context: any = null;
 
-  private static _types: IAudioFormat[] = null;
-
-  private _source: AudioBufferSourceNode = null;
-  private _audio: HTMLAudioElement = null;
+  private static _types: IAudioFormat[] = [];
+  private _audio: HTMLAudioElement | null = null;
 
   fetch(url?: string): Promise<Resource> {
     this.url = url || this.url;
     let formats: IAudioFormat[] = AudioResource.supportedFormats();
+    assertTrue(this.url, `AudioResource.load - invalid url :${url}`);
     // If the url specifies a format, sort it to the front of the formats
     // list so it will be tried first.
     const dotIndex = this.url.lastIndexOf('.');
@@ -150,8 +150,9 @@ export class AudioResource extends Resource implements IAudioSource {
   }
 
   private _getUrlForFormat(format: IAudioFormat): string {
-    const index = this.url.lastIndexOf('.');
     let url = this.url;
+    assertTrue(url, `AudioResource.load - invalid url :${url}`);
+    const index = url.lastIndexOf('.');
     if (index !== -1) {
       url = url.substr(0, index);
     }
@@ -161,7 +162,7 @@ export class AudioResource extends Resource implements IAudioSource {
   private _loadAudioElement(formats: IAudioFormat[]): Promise<AudioResource> {
     return new Promise<AudioResource>((resolve, reject) => {
       let sources: number = formats.length;
-      let completed;
+      let completed: () => void = () => {};
       const invalid: string[] = [];
       const reference: HTMLAudioElement = document.createElement('audio');
       let timer = new Time().start().addObject({

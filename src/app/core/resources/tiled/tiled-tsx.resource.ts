@@ -14,6 +14,7 @@
  limitations under the License.
  */
 import * as _ from 'underscore';
+import { assertTrue } from '../../../models/util';
 import { ImageResource } from '../image.resource';
 import { XMLResource } from '../xml.resource';
 import { compactUrl, ITileInstanceMeta, readTiledProperties } from './tiled';
@@ -32,19 +33,19 @@ export class TilesetTile {
  * A Tiled TSX tileset resource
  */
 export class TiledTSXResource extends XMLResource {
-  name: string = null;
+  name: string | null = null;
   tilewidth: number = 16;
   tileheight: number = 16;
   imageWidth: number = 0;
   imageHeight: number = 0;
-  image: ImageResource = null;
+  image: ImageResource | null = null;
   url: string;
   firstgid: number = -1;
   tiles: { [gid: string]: TilesetTile } | null = null;
   maxLocalId: number = -1;
-  imageUrl: string = null;
-  relativeTo: string = null;
-  literal: string = null; // The literal source path specified in xml
+  imageUrl: string | null = null;
+  relativeTo: string | null = null;
+  literal: string | null = null; // The literal source path specified in xml
   load(data?: any): Promise<TiledTSXResource> {
     this.data = data || this.data;
     return new Promise<TiledTSXResource>((resolve, reject) => {
@@ -57,7 +58,7 @@ export class TiledTSXResource extends XMLResource {
         : '';
 
       // Load tiles and custom properties.
-      const tilesArray = [];
+      const tilesArray: TilesetTile[] = [];
       const tiles = this.getChildren(tileSet, 'tile');
       _.each(tiles, (ts: any) => {
         const id: number = parseInt(this.getElAttribute(ts, 'id'), 10);
@@ -81,6 +82,7 @@ export class TiledTSXResource extends XMLResource {
       });
 
       const source = this.name;
+      assertTrue(source, `invalid source name in tileset: ${source}`);
       this.imageUrl = compactUrl(
         this.relativeTo ? this.relativeTo : relativePath,
         source
@@ -90,12 +92,15 @@ export class TiledTSXResource extends XMLResource {
       new ImageResource(this.imageUrl)
         .fetch()
         .then((res?: ImageResource) => {
+          if (!res) {
+            throw new Error(`null response`);
+          }
           this.image = res;
           this.imageWidth = this.image.data.width;
           this.imageHeight = this.image.data.height;
 
           // Finally, build a tile lookup table
-          const tileLookup = {};
+          const tileLookup: { [tileId: string]: TilesetTile } = {};
           _.each(tilesArray, (tile) => {
             tileLookup[tile.id] = tile;
           });
@@ -115,6 +120,7 @@ export class TiledTSXResource extends XMLResource {
   }
 
   getTileMeta(gidOrIndex: number): ITileInstanceMeta {
+    assertTrue(this.tiles, 'null tiles array in tsx resource');
     const index: number =
       this.firstgid !== -1 ? gidOrIndex - this.firstgid : gidOrIndex;
     const tile = this.tiles[index];

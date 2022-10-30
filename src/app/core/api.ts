@@ -59,7 +59,7 @@ export interface ISpriteMeta {
   readonly cellHeight: number;
 }
 
-export const data = {
+export const data: { sprites: { [key: string]: ISpriteMeta } } = {
   sprites: {},
 };
 
@@ -69,7 +69,7 @@ export const data = {
  * it has not already been set by a call to describeSprites.
  * @deprecated TODO: remove this by updating code to reference the data in ngrx/store
  */
-export function registerSprites(name: string, value: Object) {
+export function registerSprites(name: string, value: { [key: string]: any }) {
   for (let prop in value) {
     data.sprites[prop] = _.defaults(data.sprites[prop] || {}, value[prop]);
   }

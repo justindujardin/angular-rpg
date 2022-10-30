@@ -60,14 +60,14 @@ export class ShipFeatureComponent
         }
       });
   }
-  party: PlayerBehaviorComponent;
-  partyObject: TileObject;
+  party: PlayerBehaviorComponent | null;
+  partyObject: TileObject | null;
   partySprite: string;
   private _tickInterval: any = -1;
   // @ts-ignore
   @Input() feature: TiledMapFeatureData;
 
-  private _subscription: Subscription = null;
+  private _subscription: Subscription | null = null;
 
   constructor(
     private store: Store<AppState>,
@@ -105,7 +105,7 @@ export class ShipFeatureComponent
     if (!this.party) {
       return false;
     }
-    this.partySprite = object.icon;
+    this.partySprite = object.icon || '';
     this.party.passableKeys = ['shipPassable'];
     return true;
   }
@@ -128,6 +128,9 @@ export class ShipFeatureComponent
     this.host.enabled = false;
     object.setSprite(this.host.icon, 0);
     this._tickInterval = setInterval(() => {
+      if (!this.party || !this.partyObject) {
+        return;
+      }
       const partyTarget = Point.equal(this.partyObject.point, this.party.targetPoint);
       if (partyTarget && !this.party.heading.isZero()) {
         const from: Point = new Point(this.partyObject.point);
@@ -145,10 +148,14 @@ export class ShipFeatureComponent
 
   disembark(from: Point, to: Point, heading: Point) {
     clearInterval(this._tickInterval);
-    this.partyObject.setSprite(this.partySprite);
-    this.party.targetPoint.set(to);
-    this.party.velocity.set(heading);
-    this.party.passableKeys = ['passable'];
+    if (this.partyObject) {
+      this.partyObject.setSprite(this.partySprite);
+    }
+    if (this.party) {
+      this.party.targetPoint.set(to);
+      this.party.velocity.set(heading);
+      this.party.passableKeys = ['passable'];
+    }
     this.host.point.x = from.x;
     this.host.point.y = from.y;
     this.host.visible = true;

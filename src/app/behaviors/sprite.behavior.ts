@@ -16,6 +16,7 @@
 import * as _ from 'underscore';
 import { ImageResource } from '../core';
 import { ISpriteMeta } from '../core/api';
+import { assertTrue } from '../models/util';
 import { TileObject } from '../scene/tile-object';
 import { SceneObjectBehavior } from './scene-object-behavior';
 
@@ -36,9 +37,9 @@ export class SpriteComponent extends SceneObjectBehavior {
   // Game Sprite support.
   // ----------------------------------------------------------------------
   // The sprite name, e.g. "entity.png" or "knight.png"
-  icon: string;
+  icon: string | null;
   // The sprite sheet source information
-  meta: ISpriteMeta;
+  meta: ISpriteMeta | null;
   // The sprite frame (if applicable)
   frame: number = 0;
 
@@ -63,9 +64,9 @@ export class SpriteComponent extends SceneObjectBehavior {
   /**
    * Set the current sprite name.  Returns the previous sprite name.
    */
-  setSprite(name: string, frame: number = 0): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-      if (name === this.icon && this.image && this.meta) {
+  setSprite(name: string | null = null, frame: number = 0): Promise<string | null> {
+    return new Promise<string | null>((resolve, reject) => {
+      if (name && name === this.icon && this.image && this.meta) {
         return resolve(this.icon);
       }
       this.icon = name;
@@ -74,6 +75,7 @@ export class SpriteComponent extends SceneObjectBehavior {
         return resolve(null);
       }
       this.meta = this.host.world.sprites.getSpriteMeta(name);
+      assertTrue(this.meta?.source, `invalid sprite source: ${name}`);
       this.host.world.sprites
         .getSpriteSheet(this.meta.source)
         .then((images: ImageResource[]) => {

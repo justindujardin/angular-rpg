@@ -32,7 +32,7 @@ export interface ITemplateId {
 
 export interface ITemplateBaseItem extends ITemplateId {
   /** Each type specifies this */
-  readonly type: any;
+  readonly type: string;
 
   /**
    * The sprite icon name to use to render the item, e.g. "shortSword.png", "bluePotion.png".

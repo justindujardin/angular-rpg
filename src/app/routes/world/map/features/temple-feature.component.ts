@@ -18,6 +18,7 @@ import { NotificationService } from '../../../../components/notification/notific
 import { Entity } from '../../../../models/entity/entity.model';
 import { GameStateHealPartyAction } from '../../../../models/game-state/game-state.actions';
 import { getGameParty, getGamePartyGold } from '../../../../models/selectors';
+import { assertTrue } from '../../../../models/util';
 import { IScene } from '../../../../scene/scene.model';
 import { RPGGame } from '../../../../services/rpg-game';
 import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
@@ -43,7 +44,8 @@ export class TempleFeatureComponent
   active$: Observable<boolean>;
 
   partyGold$: Observable<number> = this.store.select(getGamePartyGold);
-  party$: Observable<Immutable.List<Entity>> = this.store.select(getGameParty);
+  party$: Observable<Immutable.List<Entity | undefined>> =
+    this.store.select(getGameParty);
 
   name$: Observable<string> = this.feature$.pipe(
     map((data: TiledMapFeatureData) => {
@@ -90,7 +92,12 @@ export class TempleFeatureComponent
             } else if (alreadyHealed) {
               this.notify.show('Keep your money.\nYour party is already fully healed.');
             } else {
-              const partyIds: string[] = party.map((p) => p.eid).toArray();
+              const partyIds: string[] = party
+                .map((p) => {
+                  assertTrue(p, 'invalid player entity in party');
+                  return p.eid;
+                })
+                .toArray();
               this.store.dispatch(
                 new GameStateHealPartyAction({
                   cost,
@@ -101,7 +108,7 @@ export class TempleFeatureComponent
                 'Your party has been healed! \nYou have (' +
                 (partyGold - cost) +
                 ') monies.';
-              this.notify.show(msg, null, 5000);
+              this.notify.show(msg, undefined, 5000);
             }
             _.defer(() => {
               this.onClose.next({});

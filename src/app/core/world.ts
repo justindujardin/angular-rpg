@@ -18,14 +18,14 @@ import { Time } from './time';
 
 export interface IWorld {
   time: Time;
-  mark(object?: IWorldObject);
-  erase(object?: IWorldObject);
+  mark(object?: IWorldObject): void;
+  erase(object?: IWorldObject): void;
   setService(name: string, value: IWorldObject): IWorldObject;
 }
 export interface IWorldObject {
-  world: IWorld;
-  onAddToWorld?(world: IWorld);
-  onRemoveFromWorld?(world: IWorld);
+  world: IWorld | null;
+  onAddToWorld?(world: IWorld): void;
+  onRemoveFromWorld?(world: IWorld): void;
 }
 
 @Injectable()
@@ -34,7 +34,7 @@ export class World implements IWorld {
 
   setService(name: string, value: IWorldObject): IWorldObject {
     this.mark(value);
-    this[name] = value;
+    (this as any)[name] = value;
     return value;
   }
 
@@ -52,7 +52,7 @@ export class World implements IWorld {
       if (object.onRemoveFromWorld) {
         object.onRemoveFromWorld(this);
       }
-      delete object.world;
+      object.world = null;
     }
   }
 }

@@ -26,13 +26,14 @@ import {
 } from '../core';
 import { ITiledLayer, ITiledObject } from '../core/resources/tiled/tiled.model';
 import { IZoneMatch, IZoneTarget } from '../models/combat/combat.model';
+import { assertTrue } from '../models/util';
 import { GameWorld } from '../services/game-world';
 import { Scene } from './scene';
 import { SceneObject } from './scene-object';
 
 export class TileMap extends SceneObject {
   map: TiledTMXResource;
-  tiles: TilesetTile[] = [];
+  tiles: (TilesetTile | null)[] = [];
   scene: Scene;
   features?: ITiledLayer;
   zones?: ITiledLayer;
@@ -102,7 +103,7 @@ export class TileMap extends SceneObject {
       while (this.tiles.length < tiles.firstgid) {
         this.tiles.push(null);
       }
-      Object.values(tiles.tiles).forEach((tile: TilesetTile) => {
+      Object.values(tiles.tiles || {}).forEach((tile: TilesetTile) => {
         const tileId = tiles.firstgid + tile.id;
         while (this.tiles.length < tileId) {
           this.tiles.push(null);
@@ -137,7 +138,7 @@ export class TileMap extends SceneObject {
     return this.tiles[tileIndex];
   }
 
-  getTileGid(layer: string, x: number, y: number): number {
+  getTileGid(layer: string, x: number, y: number): number | null {
     const terrain: ITiledLayer = this.getLayer(layer);
     if (!this.map || !terrain?.data || !this.bounds.pointInRect(x, y)) {
       return null;
@@ -152,14 +153,14 @@ export class TileMap extends SceneObject {
   }
 
   getFeature(name: string) {
-    return _.find(this.features.objects, (feature: any) => {
+    return _.find(this.features?.objects || [], (feature: any) => {
       return feature.name === name;
     });
   }
 
   getEntryPoint(): Point {
     // If no point is specified, use the position of the first Portal on the current map
-    const portal: any = _.where(this.features.objects, {
+    const portal: any = _.where(this.features?.objects || [], {
       type: 'PortalFeatureComponent',
     })[0];
     if (portal) {
@@ -186,7 +187,7 @@ export class TileMap extends SceneObject {
     }
     // Determine which zone and combat type
     const invTileSize = 1 / this.map.tilewidth;
-    const zones: IZoneTarget[] = _.map(this.zones?.objects, (z: ITiledObject) => {
+    const zones: IZoneTarget[] = _.map(this.zones?.objects || [], (z: ITiledObject) => {
       const x = z.x * invTileSize;
       const y = z.y * invTileSize;
       const w = z.width * invTileSize;
@@ -204,9 +205,9 @@ export class TileMap extends SceneObject {
   }
 
   toString() {
-    return this.map ? this.map.url : 'no-data';
+    return this.map?.url || 'no-data';
   }
-  getTileMeta(gid: number): ITileInstanceMeta {
+  getTileMeta(gid: number): ITileInstanceMeta | null {
     if (this.tiles.length <= gid) {
       return null;
     }
@@ -221,6 +222,7 @@ export class TileMap extends SceneObject {
     const meta = source.getTileMeta(gid);
     // Derive x/y values from sprite registry metadata for spritesheets
     const f = GameWorld.get().sprites.getSpriteMeta(meta.image);
+    assertTrue(f, `getTileMeta: invalid tile id ${gid}`);
     return {
       ...meta,
       x: f.x,

@@ -47,7 +47,7 @@ export class GameStateService {
       first(),
       map(() => {
         const data = JSON.parse(
-          localStorage.getItem(GameStateService.STATE_KEY)
+          localStorage.getItem(GameStateService.STATE_KEY) || '{}'
         ) as AppState;
         return data;
       })

@@ -41,12 +41,12 @@ export class SceneSpatialDatabase {
     }) as ISceneObject[];
   }
 
-  queryPoint(point: Point, type, results: ISceneObject[]): boolean {
+  queryPoint(point: Point, type: any, results: ISceneObject[]): boolean {
     this._pointRect.point.set(point);
     return this.queryRect(this._pointRect, type, results);
   }
 
-  queryRect(rect: Rect, type, results: ISceneObject[]): boolean {
+  queryRect(rect: Rect, type: any, results: ISceneObject[]): boolean {
     let foundAny: boolean;
     if (!results) {
       throw new Error('Results array must be provided to query scene spatial database');

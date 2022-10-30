@@ -18,6 +18,7 @@ import { Rect } from '../../app/core/rect';
 import { ResourceManager } from '../../app/core/resource-manager';
 import { ImageResource } from '../../app/core/resources/image.resource';
 import { data, ISpriteMeta } from '../core/api';
+import { assertTrue } from '../models/util';
 
 @Injectable()
 export class SpriteRender {
@@ -27,8 +28,8 @@ export class SpriteRender {
     return `assets/images/${name}.png`;
   }
 
-  canvas: HTMLCanvasElement = null;
-  context: CanvasRenderingContext2D = null;
+  canvas: HTMLCanvasElement | null = null;
+  context: CanvasRenderingContext2D | null = null;
 
   constructor(public loader: ResourceManager) {
     this.canvas = document.createElement('canvas');
@@ -36,6 +37,9 @@ export class SpriteRender {
   }
 
   sizeCanvas(width: number, height: number) {
+    if (!this.canvas) {
+      return;
+    }
     this.canvas.width = width;
     this.canvas.height = height;
     this.context = this.canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -56,6 +60,9 @@ export class SpriteRender {
     }
     return new Promise<HTMLImageElement>((resolve, reject) => {
       this.getSpriteSheet(coords.source).then((images: ImageResource[]) => {
+        if (!this.context || !this.canvas) {
+          return;
+        }
         const image = images[0];
         const cell: Rect = this.getSpriteRect(spriteName, frame);
 
@@ -97,7 +104,8 @@ export class SpriteRender {
   }
 
   getSpriteRect(name: string, frame: number = 0) {
-    const c: ISpriteMeta = this.getSpriteMeta(name);
+    const c: ISpriteMeta | null = this.getSpriteMeta(name);
+    assertTrue(c, `getSpriteRect: invalid sprite ${name}`);
     let cx = c.x;
     let sourceWidth: number = SpriteRender.SIZE;
     let sourceHeight: number = SpriteRender.SIZE;
@@ -123,7 +131,10 @@ export class SpriteRender {
     return new Rect(cx, cy, sourceWidth, sourceHeight);
   }
 
-  getSpriteMeta(name: string): ISpriteMeta {
+  getSpriteMeta(name?: string): ISpriteMeta | null {
+    if (!name) {
+      return null;
+    }
     const desc = data.sprites[name];
     return { ...desc, image: name };
   }

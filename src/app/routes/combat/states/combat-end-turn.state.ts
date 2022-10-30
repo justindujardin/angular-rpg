@@ -36,7 +36,7 @@ export class CombatEndTurnStateComponent extends CombatMachineState {
     machine.current = null;
     // Find the next turn.
     while (machine.turnList.length > 0 && !machine.current) {
-      machine.current = machine.turnList.shift();
+      machine.current = machine.turnList.shift() || null;
       // Strip out defeated players.
       if (machine.current && this.combatService.isDefeated(machine.current.model)) {
         machine.current = null;

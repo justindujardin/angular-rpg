@@ -15,6 +15,7 @@
  */
 import * as $ from 'jquery';
 import * as _ from 'underscore';
+import { assertTrue } from '../models/util';
 import { SceneView } from '../scene/scene-view';
 import { Point } from './point';
 import { IWorld, IWorldObject } from './world';
@@ -47,7 +48,7 @@ export interface NamedMouseElement extends CanvasMouseCoords {
 
 export class PowInput implements IWorldObject {
   world: IWorld;
-  _keysDown: Object = {};
+  _keysDown: { [key: number]: any } = {};
   _mouseElements: NamedMouseElement[] = [];
 
   static mouseOnView(ev: MouseEvent, view: SceneView, coords?: CanvasMouseCoords) {
@@ -61,6 +62,7 @@ export class PowInput implements IWorldObject {
       world: new Point(),
     };
     const canoffset = $(relativeElement).offset();
+    assertTrue(canoffset, 'invalid element offset');
     const x =
       ev.clientX +
       document.body.scrollLeft +

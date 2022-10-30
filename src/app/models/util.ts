@@ -48,7 +48,10 @@ export function makeRecordFactory<E, T extends TypedRecord<T> & E>(
 /**
  * Throw errors if the given expression is falsy
  */
-export function assertTrue(expression: any, message: string) {
+export function assertTrue<T>(
+  expression: T,
+  message: string
+): asserts expression is NonNullable<T> {
   if (!expression) {
     throw new Error(`Assertion Failed: ${message}`);
   }

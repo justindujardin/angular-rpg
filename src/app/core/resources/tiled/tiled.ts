@@ -100,7 +100,7 @@ export function compactUrl(base: string, relative: string) {
   return stack.join('/');
 }
 
-export function xml2Str(xmlNode) {
+export function xml2Str(xmlNode: any) {
   try {
     // Gecko- and Webkit-based browsers (Firefox, Chrome), Opera.
     return new XMLSerializer().serializeToString(xmlNode);
@@ -124,7 +124,7 @@ export function writeITiledLayerBase(el: any, data: ITiledLayerBase) {
 export function readTiledProperties(el: any) {
   const propsObject: any = getChild(el, 'properties');
   if (propsObject && propsObject.length > 0) {
-    const properties = {};
+    const properties: { [key: string]: any } = {};
     let props = getChildren(propsObject, 'property');
     _.each(props, (p) => {
       const key = getElAttribute(p, 'name');
@@ -165,7 +165,7 @@ export function writeTiledProperties(el: any, data: any) {
 export function getChildren(el: any, tag: string): any[] {
   const list = el.find(tag);
   return _.compact(
-    _.map(list, (c) => {
+    _.map(list, (c: any) => {
       const child: any = $(c);
       return child.parent()[0] !== el[0] ? null : child;
     })

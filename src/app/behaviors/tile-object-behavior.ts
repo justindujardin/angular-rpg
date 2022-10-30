@@ -17,7 +17,7 @@ import { TileMap } from '../scene/tile-map';
 import { TileObject } from '../scene/tile-object';
 import { SceneObjectBehavior } from './scene-object-behavior';
 export class TileObjectBehavior extends SceneObjectBehavior {
-  host: TileObject;
+  host: TileObject | null;
   isEntered: boolean;
 
   /**
@@ -30,7 +30,7 @@ export class TileObjectBehavior extends SceneObjectBehavior {
   };
 
   syncBehavior(): boolean {
-    return !!this.host.tileMap && this.host.tileMap instanceof TileMap;
+    return !!(this.host?.tileMap instanceof TileMap);
   }
 
   disconnectBehavior(): boolean {
@@ -42,7 +42,7 @@ export class TileObjectBehavior extends SceneObjectBehavior {
   }
 
   entered(object: TileObject) {
-    this.host.trigger(TileObjectBehavior.Events.ENTERED, this);
+    this.host?.trigger(TileObjectBehavior.Events.ENTERED, this);
     this.isEntered = true;
     return true;
   }
@@ -52,7 +52,7 @@ export class TileObjectBehavior extends SceneObjectBehavior {
   }
 
   exited(object: TileObject) {
-    this.host.trigger(TileObjectBehavior.Events.EXITED, this);
+    this.host?.trigger(TileObjectBehavior.Events.EXITED, this);
     this.isEntered = false;
     return true;
   }

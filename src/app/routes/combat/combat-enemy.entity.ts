@@ -24,9 +24,9 @@ export class CombatEnemyComponent
 
   @ViewChild(SpriteRenderBehaviorComponent)
   render: SpriteRenderBehaviorComponent;
-  private _model$ = new BehaviorSubject<IEnemy>(null);
+  private _model$ = new BehaviorSubject<IEnemy | null>(null);
 
-  model$: Observable<IEnemy> = this._model$;
+  model$: Observable<IEnemy | null> = this._model$;
 
   // @ts-ignore
   @Input() icon: string;
@@ -34,11 +34,11 @@ export class CombatEnemyComponent
   @Input() combat: any; // CombatComponent - flirts with circular imports
 
   // @ts-ignore
-  @Input() set model(value: IEnemy) {
+  @Input() set model(value: IEnemy | null) {
     this._model$.next(value);
   }
 
-  get model(): IEnemy {
+  get model(): IEnemy | null {
     return this._model$.value;
   }
 
@@ -52,7 +52,7 @@ export class CombatEnemyComponent
       .pipe(
         distinctUntilChanged(),
         map((m: IEnemy) => {
-          this.setSprite(m ? m.icon : null);
+          this.setSprite(m.icon);
         })
       )
       .subscribe();

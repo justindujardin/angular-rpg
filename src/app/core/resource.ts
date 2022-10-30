@@ -16,8 +16,8 @@
 import { errors } from './errors';
 
 export interface IResource {
-  url: string;
-  data: any;
+  url: string | null;
+  data: any | null;
   extension: string;
   fetch(url?: string): Promise<IResource>;
   load(data?: any): Promise<IResource>;
@@ -29,7 +29,7 @@ export interface IResource {
 export class Resource implements IResource {
   extension: string;
 
-  constructor(public url: string = null, public data: any = null) {}
+  constructor(public url: string | null = null, public data: any = null) {}
 
   load(data?: any): Promise<Resource> {
     return Promise.reject(errors.CLASS_NOT_IMPLEMENTED);

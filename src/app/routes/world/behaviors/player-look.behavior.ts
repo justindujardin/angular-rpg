@@ -30,10 +30,10 @@ import { PlayerBehaviorComponent } from './player-behavior';
 })
 export class PlayerTriggerBehaviorComponent extends TickedBehavior {
   host: TileObject;
-  collider: CollisionBehaviorComponent = null;
-  player: PlayerBehaviorComponent = null;
+  collider: CollisionBehaviorComponent | null = null;
+  player: PlayerBehaviorComponent | null = null;
 
-  private featureObject: GameFeatureObject = null;
+  private featureObject: GameFeatureObject | null = null;
 
   /**
    * The player has touched a game feature.
@@ -71,7 +71,7 @@ export class PlayerTriggerBehaviorComponent extends TickedBehavior {
       results
     );
     const touched: GameFeatureObject = results[0];
-    const currentTouchId: string = this.featureObject ? this.featureObject._uid : null;
+    const currentTouchId: string | null = this.featureObject?._uid || null;
     const touchChanged: boolean = !!(touched && touched._uid !== currentTouchId);
     // No collisions for this tick
     if (!isTouching || !touched || touchChanged) {

@@ -238,6 +238,10 @@ export const ENEMIES_DATA: ITemplateEnemy[] = [
 ];
 
 /** Get an enemy descriptor given its id value */
-export function getEnemyById(id: string): ITemplateEnemy | null {
-  return ENEMIES_DATA.find((item) => item.id === id);
+export function getEnemyById(id: string): ITemplateEnemy {
+  const template = ENEMIES_DATA.find((item) => item.id === id);
+  if (!template) {
+    throw new Error(`getEnemyById: invalid template id ${id}`);
+  }
+  return template;
 }

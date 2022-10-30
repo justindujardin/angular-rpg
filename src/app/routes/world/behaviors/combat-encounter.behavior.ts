@@ -104,22 +104,24 @@ export class CombatEncounterBehaviorComponent extends SceneObjectBehavior {
         withLatestFrom(
           this.store.select(getGameBoardedShip),
           (party: Immutable.List<Entity>, onShip: boolean) => {
-            const zoneTarget = zone.targets.find((zoneTarget: IZoneTarget) => {
-              if (onShip) {
-                return zoneTarget.water;
-              } else {
-                return !zoneTarget.water;
+            const zoneTarget: IZoneTarget | undefined = zone.targets.find(
+              (target: IZoneTarget) => {
+                if (onShip) {
+                  return target.water;
+                } else {
+                  return !target.water;
+                }
               }
-            });
+            );
 
             const viableEncounters = RANDOM_ENCOUNTERS_DATA.filter((enc: any) => {
               return (
                 enc.zones.indexOf(zone.map) !== -1 ||
-                enc.zones.indexOf(zoneTarget.zone) !== -1
+                enc.zones.indexOf(zoneTarget?.zone) !== -1
               );
             });
             if (viableEncounters.length === 0) {
-              throw new Error(`no valid encounters for zone: ${zoneTarget.zone}`);
+              return;
             }
             const max = viableEncounters.length - 1;
             const min = 0;
@@ -137,7 +139,7 @@ export class CombatEncounterBehaviorComponent extends SceneObjectBehavior {
               id: encounter.id,
               enemies: List<IEnemy>(encounter.enemies.map(toCombatant)),
               zone: zoneTarget?.zone || zone.map,
-              message: List<string>(encounter.message),
+              message: List<string>(encounter.message || []),
               party: List<Entity>(party),
             };
             this.store.dispatch(new CombatEncounterAction(payload));

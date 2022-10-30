@@ -81,7 +81,7 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
   @ViewChild(WorldMapComponent) map: WorldMapComponent;
 
   styleBackground: string = 'rgba(0,0,0,1)';
-  mouse: NamedMouseElement = null;
+  mouse: NamedMouseElement | null = null;
   scene: Scene = new Scene();
 
   constructor(
@@ -150,7 +150,7 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
     const playerComponent = this.scene.componentByType(
       PlayerBehaviorComponent
     ) as PlayerBehaviorComponent;
-    if (pathComponent && playerComponent) {
+    if (pathComponent && playerComponent && this.mouse) {
       PowInput.mouseOnView(e, this.mouse.view, this.mouse);
       playerComponent.path = pathComponent.calculatePath(
         playerComponent.targetPoint,
@@ -194,6 +194,10 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
       `Clip: (${clipRect.point.x},${clipRect.point.y}) (${clipRect.extent.x},${clipRect.extent.y})`
     );
 
+    if (!this.context) {
+      return;
+    }
+
     // Render the clip rectangle
     this.context.strokeStyle = '#00ff00';
     const screenClip = this.worldToScreen(clipRect);
@@ -218,7 +222,7 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
             const screenTile: Rect = this.worldToScreen(
               new Rect(new Point(x - 0.5, y - 0.5), new Point(1, 1))
             );
-            this.context.strokeRect(
+            this.context?.strokeRect(
               screenTile.point.x,
               screenTile.point.y,
               screenTile.extent.x,
@@ -237,7 +241,7 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
       const screenTile: Rect = this.worldToScreen(
         new Rect(new Point(point.x - 0.5, point.y - 0.5), new Point(1, 1))
       );
-      this.context.strokeRect(
+      this.context?.strokeRect(
         screenTile.point.x,
         screenTile.point.y,
         screenTile.extent.x,

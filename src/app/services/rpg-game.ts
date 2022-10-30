@@ -56,7 +56,10 @@ export class RPGGame {
       exp: 0,
     };
     const classDetails = getClassById(type);
-    let character: Partial<IPartyMember> = null;
+    if (!classDetails) {
+      throw new Error(`RPGGame.create - unknown class type: ${type}`);
+    }
+    let character: Partial<IPartyMember> | null = null;
     switch (type) {
       case 'warrior':
         character = {

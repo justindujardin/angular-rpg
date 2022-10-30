@@ -30,7 +30,7 @@ import { TileMap } from '../../../scene/tile-map';
 })
 export class PlayerBehaviorComponent extends BasePlayerComponent {
   host: GameEntityObject;
-  map: TileMap = null;
+  map: TileMap | null = null;
 
   static COLLIDE_TYPES: string[] = [
     'BlockFeatureComponent',

@@ -1,7 +1,7 @@
 import * as Immutable from 'immutable';
 import { List } from 'immutable';
 import { TypedRecord } from 'typed-immutable-record';
-import { CombatantTypes, IEnemy, IPartyMember } from '../base-entity';
+import { CombatantTypes, EntityStatuses, IEnemy, IPartyMember } from '../base-entity';
 import { assertTrue, exhaustiveCheck, makeRecordFactory } from '../util';
 import {
   CombatActions,
@@ -22,7 +22,7 @@ import { CombatAttack, CombatState } from './combat.model';
  * Combat state record.
  * @internal
  */
-interface CombatStateRecord extends TypedRecord<CombatStateRecord>, CombatState {
+export interface CombatStateRecord extends TypedRecord<CombatStateRecord>, CombatState {
   // pass
 }
 
@@ -75,7 +75,7 @@ export function combatReducer(
       let stateGroup: string = 'enemies';
       let groupIndex: number = -1;
       const data: ICombatStatusPayload = action.payload;
-      const matchDefender = (c: CombatantTypes) => c.eid === data.target.eid;
+      const matchDefender = (c?: CombatantTypes) => c?.eid === data.target.eid;
 
       groupIndex = state.enemies.findIndex(matchDefender);
       if (groupIndex === -1) {
@@ -86,7 +86,7 @@ export function combatReducer(
       return state.update(stateGroup, (items: List<CombatantTypes>) => {
         const current = items.get(groupIndex);
         assertTrue(current, 'invalid target for attack action');
-        let statuses = Immutable.Set<string>(current.status.slice());
+        let statuses = Immutable.Set<string>(current?.status?.slice());
         if (isSet) {
           statuses = statuses.concat(data.classes).toSet();
         } else {
@@ -96,7 +96,7 @@ export function combatReducer(
         }
         return items.set(groupIndex, {
           ...current,
-          status: statuses.toJS(),
+          status: statuses.toJS() as EntityStatuses[],
         });
       });
     }
@@ -123,7 +123,7 @@ export function combatReducer(
     }
     case CombatAttackAction.typeId: {
       const data: CombatAttack = action.payload;
-      const matchDefender = (c: CombatantTypes) => c.eid === data.defender.eid;
+      const matchDefender = (c?: CombatantTypes) => c?.eid === data.defender.eid;
       assertTrue(state.type !== 'none', 'invalid encounter for attack action');
 
       // Attacking enemy

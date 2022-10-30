@@ -28,11 +28,11 @@ export interface TileObjectOptions {
   point?: IPoint;
   renderPoint?: IPoint;
   gid?: number;
-  image?: HTMLImageElement;
+  image: HTMLImageElement | null;
   scale?: number;
   visible?: boolean;
   enabled?: boolean;
-  tileMap: TileMap;
+  tileMap: TileMap | null;
 
   // Game Sprite support.
   // ----------------------------------------------------------------------
@@ -54,30 +54,30 @@ export const DEFAULTS: TileObjectOptions = {
 };
 
 export class TileObject extends SceneObject implements TileObjectOptions {
-  point: IPoint;
+  point: Point;
   renderPoint: Point;
   gid?: number;
-  image: HTMLImageElement;
+  image: HTMLImageElement | null;
   visible: boolean;
   enabled: boolean;
-  tileMap: TileMap;
+  tileMap: TileMap | null;
   world: GameWorld;
   scale: number;
 
   /** Emits when the object icon is changed */
   onChangeIcon: EventEmitter<string> = new EventEmitter<string>();
 
-  private _icon: string;
-  set icon(value: string) {
+  private _icon?: string;
+  set icon(value: string | undefined) {
     this._updateIcon(value);
     this._icon = value;
   }
 
-  get icon(): string {
+  get icon(): string | undefined {
     return this._icon;
   }
 
-  meta: ISpriteMeta;
+  meta: ISpriteMeta | null;
   frame: number = 0;
 
   constructor() {
@@ -110,13 +110,13 @@ export class TileObject extends SceneObject implements TileObjectOptions {
     }
     // Load a sprite from a given gid (Tile objects in Tiled)
     if (this.gid !== undefined) {
-      const meta = this.tileMap.getTileMeta(this.gid);
+      const meta = this.tileMap?.getTileMeta(this.gid);
       if (meta) {
         this.setSprite(meta.image);
       }
     }
-    if (!this.tileMap) {
-      this.tileMap = this.scene.objectByType(TileMap) as TileMap;
+    if (!this.tileMap && this.scene) {
+      this.tileMap = this.scene.objectByType<TileMap>(TileMap);
     }
   }
 
@@ -124,8 +124,8 @@ export class TileObject extends SceneObject implements TileObjectOptions {
    * Set the current sprite name.  Returns the previous sprite name.
    * TODO: Refactor to async friendly method (promise?)
    */
-  setSprite(name: string, frame: number = 0): string {
-    const oldSprite: string = this.icon;
+  setSprite(name?: string, frame: number = 0): string | undefined {
+    const oldSprite: string | undefined = this.icon;
     if (!name) {
       this.meta = null;
     }
@@ -135,7 +135,7 @@ export class TileObject extends SceneObject implements TileObjectOptions {
     return oldSprite;
   }
 
-  _updateIcon(icon: string) {
+  _updateIcon(icon?: string) {
     const world = GameWorld.get();
     if (!world || !icon) {
       this.image = null;

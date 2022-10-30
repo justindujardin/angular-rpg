@@ -13,6 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+import { assertTrue } from '../../models/util';
 import { Resource } from '../resource';
 /**
  * Use html image element to load an image resource.
@@ -23,6 +24,7 @@ export class ImageResource extends Resource {
   fetch(url?: string): Promise<ImageResource> {
     this.url = url || this.url;
     return new Promise<ImageResource>((resolve, reject) => {
+      assertTrue(this.url, `ImageResource.load - invalid url :${this.url}`);
       const reference: HTMLImageElement = new Image();
       reference.onload = () => {
         this.data = reference;

@@ -20,7 +20,10 @@ import { GameWorld } from '../services/game-world';
 import { IScene, ISceneObject, ISceneView } from './scene.model';
 import { SceneSpatialDatabase } from './spatial-database';
 
-export class Scene extends Events implements IScene, IProcessObject, IWorldObject {
+export class Scene
+  extends Events
+  implements IScene, IProcessObject, IWorldObject, IScene
+{
   private static sceneCount: number = 0;
   id: string = `scene-${Scene.sceneCount++}`;
   name: string;
@@ -28,7 +31,7 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
   options: any = {};
   private _objects: ISceneObject[] = [];
   private _views: ISceneView[] = [];
-  world: GameWorld = null;
+  world: GameWorld | null = null;
   fps: number = 0;
   time: number = 0;
   paused: boolean = false;
@@ -74,8 +77,9 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     }
     let l: number = this._objects.length;
     for (let i = 0; i < l; i++) {
-      if (this._objects[i]) {
-        this._objects[i].tick(elapsed);
+      const obj = this._objects[i];
+      if (obj?.tick) {
+        obj.tick(elapsed);
       }
     }
   }
@@ -85,7 +89,7 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     if (this.paused) {
       return;
     }
-    this.time = this.world.time.time;
+    this.time = this.world?.time?.time || -1;
     // Interpolate objects.
     let l: number = this._objects.length;
     for (i = 0; i < l; i++) {
@@ -110,7 +114,8 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     // Debugging Aid:
     // console.info(`Scene (${this.id}) - ${object._uid} = ${object}`);
     let removed: boolean = false;
-    this[property] = _.filter(this[property], (obj: any) => {
+    const target = this as any;
+    target[property] = _.filter(target[property], (obj: any) => {
       if (object && obj && obj._uid === object._uid) {
         this.db.removeSpatialObject(obj);
         if (obj.onRemoveFromScene) {
@@ -141,10 +146,11 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
 
     // Check that we're not adding this twice (though, I suspect the above
     // should make that pretty unlikely)
-    if (_.where(this[property], { _uid: object._uid }).length > 0) {
+    const target = this as any;
+    if (_.where(target[property], { _uid: object._uid }).length > 0) {
       throw new Error('Object added to scene twice');
     }
-    this[property].push(object);
+    target[property].push(object);
     // Mark it in the scene's world.
     if (this.world) {
       this.world.mark(object);
@@ -161,7 +167,8 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
   }
 
   findIt(property: string, object: any): any {
-    return _.where(this[property], { _uid: object._uid });
+    const target = this as any;
+    return _.where(target[property], { _uid: object._uid });
   }
 
   // View management
@@ -175,7 +182,7 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     return this.removeIt('_views', view);
   }
 
-  findView(view): boolean {
+  findView(view: ISceneView): boolean {
     return !!this.findIt('_views', view);
   }
 
@@ -205,12 +212,12 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     return !!this.findIt('_objects', object);
   }
 
-  componentByType<T extends IBehavior>(type: Function): T {
+  componentByType<T extends IBehavior>(type: Function): T | null {
     const values: any[] = this._objects;
     let l: number = this._objects.length;
     for (let i = 0; i < l; i++) {
       const o: ISceneObject = values[i];
-      const c: T = o.findBehavior(type);
+      const c: T | null = o.findBehavior<T>(type);
       if (c) {
         return c;
       }
@@ -245,7 +252,7 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     return results;
   }
 
-  objectByName<T extends ISceneObject>(name: string): T {
+  objectByName<T extends ISceneObject>(name: string): T | null {
     const values: any[] = this._objects;
     let l: number = this._objects.length;
     for (let i = 0; i < l; i++) {
@@ -270,7 +277,7 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     return results;
   }
 
-  objectByType<T extends ISceneObject>(type: Function): T {
+  objectByType<T extends ISceneObject>(type: Function): T | null {
     let values: any[] = this._objects;
     let l: number = this._objects.length;
     for (let i = 0; i < l; i++) {
@@ -295,7 +302,7 @@ export class Scene extends Events implements IScene, IProcessObject, IWorldObjec
     return results;
   }
 
-  objectByComponent<T extends ISceneObject>(type: Function): T {
+  objectByComponent<T extends ISceneObject>(type: Function): T | null {
     const values: any[] = this._objects;
     const l: number = this._objects.length;
     for (let i = 0; i < l; i++) {

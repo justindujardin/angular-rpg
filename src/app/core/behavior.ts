@@ -32,7 +32,7 @@ export interface IBehavior extends IObject {
   /**
    * The host object that this component belongs to.
    */
-  host: IObject;
+  host: IObject | null;
 
   /**
    * Connect this component to its host.  Initialization logic goes here.
@@ -59,12 +59,12 @@ export interface IBehaviorHost extends IObject {
   addBehavior(component: IBehavior, silent?: boolean): boolean;
   removeBehavior(component: IBehavior, silent?: boolean): boolean;
 
-  syncBehaviors();
+  syncBehaviors(): void;
 
-  findBehavior<T extends IBehavior>(type: Function): T;
+  findBehavior<T extends IBehavior>(type: Function): T | null;
   findBehaviors<T extends IBehavior>(type: Function): T[];
 
-  findBehaviorByName(name: string): IBehavior;
+  findBehaviorByName(name: string): IBehavior | null;
 }
 
 /**
@@ -74,7 +74,7 @@ export interface IBehaviorHost extends IObject {
  */
 export class Behavior extends Events implements IBehavior {
   id: string = _.uniqueId('sc');
-  host: BehaviorHost;
+  host: BehaviorHost | null;
   name: string;
 
   connectBehavior(): boolean {

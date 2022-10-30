@@ -60,6 +60,10 @@ export const CLASSES_DATA: ITemplateClass[] = [
 ];
 
 /** Get a class descriptor given its id value */
-export function getClassById(id: string): ITemplateClass | null {
-  return CLASSES_DATA.find((clazz) => clazz.id === id);
+export function getClassById(id: string): ITemplateClass {
+  const template = CLASSES_DATA.find((item) => item.id === id);
+  if (!template) {
+    throw new Error(`getClassById: invalid template id ${id}`);
+  }
+  return template;
 }

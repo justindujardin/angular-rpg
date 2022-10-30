@@ -33,14 +33,14 @@ export class SpriteRenderBehaviorComponent
     super();
   }
 
-  private _icon$: BehaviorSubject<string> = new BehaviorSubject(null);
-  icon$: Observable<string> = this._icon$;
+  private _icon$: BehaviorSubject<string | null> = new BehaviorSubject(null);
+  icon$: Observable<string | null> = this._icon$;
 
-  @Input() set icon(value: string) {
+  @Input() set icon(value: string | null) {
     this._icon$.next(value);
   }
 
-  get icon(): string {
+  get icon(): string | null {
     return this._icon$.value;
   }
 

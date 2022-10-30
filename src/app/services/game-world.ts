@@ -10,9 +10,10 @@ import { GameStateLoadAction } from '../models/game-state/game-state.actions';
 import { GameStateService } from '../models/game-state/game-state.service';
 import { getSpritesLoaded } from '../models/selectors';
 import { SpritesLoadAction } from '../models/sprites/sprites.actions';
+import { assertTrue } from '../models/util';
 import { SpriteRender } from './sprite-render';
 
-let _sharedGameWorld: GameWorld = null;
+let _sharedGameWorld: GameWorld | null = null;
 
 @Injectable()
 export class GameWorld extends World {
@@ -46,10 +47,11 @@ export class GameWorld extends World {
   }
 
   static get(): GameWorld {
+    assertTrue(_sharedGameWorld, 'invalid game world');
     return _sharedGameWorld;
   }
 
-  private _music: AudioResource = null;
+  private _music: AudioResource | null = null;
 
   /** Set the background music URL for the game */
   setMusic(musicUrl: string, loop: boolean = true, volume: number = 0.5) {

@@ -24,7 +24,7 @@ export interface IAnimationConfig {
 }
 
 export interface IAnimationTask extends IAnimationConfig {
-  elapsed?: number;
+  elapsed: number;
   start?: any; // starting value
   target?: any; // target value
   value: any; // current value

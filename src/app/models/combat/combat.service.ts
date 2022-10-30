@@ -7,6 +7,7 @@ import { ITiledLayer } from '../../../app/core/resources/tiled/tiled.model';
 import { getMapUrl } from '../../core/api';
 import { CombatantTypes } from '../base-entity';
 import { EntityWithEquipment } from '../entity/entity.model';
+import { EntityItemTypes } from '../entity/entity.reducer';
 import {
   ITemplateArmor,
   ITemplateBaseItem,
@@ -24,6 +25,7 @@ import {
   IMagicEffects,
   PartyMechanics,
 } from '../mechanics';
+import { assertTrue } from '../util';
 import { CombatEncounter } from './combat.model';
 
 export interface ICombatCastSpellConfig {
@@ -42,7 +44,7 @@ export class CombatService {
   private _combatMap$ = new ReplaySubject<TiledTMXResource>(1);
   combatMap$: Observable<TiledTMXResource> = this._combatMap$;
 
-  loadMap(combatZone: string): Observable<TiledTMXResource> {
+  loadMap(combatZone: string): Observable<TiledTMXResource | null> {
     const mapUrl = getMapUrl('combat');
     return from(
       this.resourceLoader.load(mapUrl).then((maps: TiledTMXResource[]) => {
@@ -61,6 +63,7 @@ export class CombatService {
   }
 
   loadEncounter(encounter: CombatEncounter): Observable<CombatEncounter> {
+    assertTrue(encounter.zone, `loadEncounter: invalid zone given - ${encounter.zone}`);
     return this.loadMap(encounter.zone).pipe(map(() => encounter));
   }
 
@@ -101,7 +104,7 @@ export class CombatService {
         return {
           armors: this.getArmors(entity),
           entity,
-          inventory: config.inventory.slice(),
+          inventory: config.inventory.slice() as EntityItemTypes[],
           weapons: this.getWeapons(entity),
         };
       }
@@ -141,12 +144,12 @@ export class CombatService {
     }
     return armors;
   }
-  getWeapons(member: CombatantTypes): ITemplateWeapon[] {
+  getWeapons(member: CombatantTypes | null): ITemplateWeapon[] {
     // NOTE: This only deals with a single weapon, but returns an array
     //  so it's easy to add dual-weapons later if it's desirable.
     let weapons: ITemplateWeapon[] = [];
-    const equipped = member as EntityWithEquipment;
-    if (equipped.weapon) {
+    const equipped = member as EntityWithEquipment | null;
+    if (equipped?.weapon) {
       weapons.push(equipped.weapon);
     }
     return weapons;
@@ -155,7 +158,7 @@ export class CombatService {
   // Combat API helpers
   //
 
-  isDefeated(test: CombatantTypes): boolean {
+  isDefeated(test: CombatantTypes | null): boolean {
     return !test || test.hp <= 0;
   }
 }

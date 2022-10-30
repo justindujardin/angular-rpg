@@ -27,6 +27,9 @@ export class PlayerCameraBehaviorComponent extends CameraBehavior {
   host: GameEntityObject;
 
   process(view: SceneView) {
+    if (!view.context) {
+      return;
+    }
     const w: number = view.context.canvas.width;
     view.camera.point.set(this.host.point);
     view.cameraScale = w > 1024 ? 6 : w > 768 ? 4 : w > 480 ? 3 : 2;

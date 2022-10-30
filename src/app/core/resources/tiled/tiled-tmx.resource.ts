@@ -16,6 +16,7 @@
 import 'jquery';
 import * as $ from 'jquery';
 import * as _ from 'underscore';
+import { assertTrue } from '../../../models/util';
 import { errors } from '../../errors';
 import { XMLResource } from '../xml.resource';
 import {
@@ -108,6 +109,9 @@ export class TiledTMXResource extends XMLResource {
   load(data?: any): Promise<TiledTMXResource> {
     this.data = data || this.data;
     return new Promise<TiledTMXResource>((resolve, reject) => {
+      const url = this.url;
+      assertTrue(url, `TiledTMXResource.load - invalid url :${url}`);
+
       this.$map = this.getRootNode('map');
       this.version = parseInt(this.getElAttribute(this.$map, 'version'), 10);
       this.width = parseInt(this.getElAttribute(this.$map, 'width'), 10);
@@ -118,7 +122,7 @@ export class TiledTMXResource extends XMLResource {
       this.properties = readTiledProperties(this.$map);
       const tileSetDeps: ITileSetDependency[] = [];
       const tileSets = this.getChildren(this.$map, 'tileset');
-      const relativePath: string = this.url.substr(0, this.url.lastIndexOf('/') + 1);
+      const relativePath: string = url.substr(0, url.lastIndexOf('/') + 1);
       _.each(tileSets, (ts) => {
         const source: string = this.getElAttribute(ts, 'source');
         const firstGid: number = parseInt(
@@ -168,7 +172,7 @@ export class TiledTMXResource extends XMLResource {
         if (objects) {
           tileLayer.objects = [];
           _.each(objects, (object) => {
-            tileLayer.objects.push(readITiledObject(object));
+            tileLayer.objects?.push(readITiledObject(object));
           });
         }
       });
@@ -184,23 +188,25 @@ export class TiledTMXResource extends XMLResource {
           return resolve(this);
         }
         const dep = tileSetDeps.shift();
-        if (dep.data) {
+        if (dep?.data) {
           new TiledTSXResource()
             .load(dep.data)
             .then((resource: TiledTSXResource) => {
+              assertTrue(resource.name, `Invalid tsx resource name: ${resource.name}`);
               resource.relativeTo = relativePath;
               resource.firstgid = dep.firstgid;
               this.tilesets[resource.name] = resource;
               _next();
             })
             .catch((e) => reject(e));
-        } else if (dep.source) {
+        } else if (dep?.source) {
           new TiledTSXResource()
             .fetch(dep.source)
             .then((resource: TiledTSXResource) => {
+              assertTrue(resource.name, `Invalid tsx resource name: ${resource.name}`);
               this.tilesets[resource.name] = resource;
               resource.firstgid = dep.firstgid;
-              resource.literal = dep.literal;
+              resource.literal = dep.literal || null;
               _next();
             })
             .catch((e) => reject(e));

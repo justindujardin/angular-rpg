@@ -21,7 +21,7 @@ import { GameWorld } from '../../services/game-world';
 import { TileObject } from '../tile-object';
 
 export class GameEntityObject extends TileObject {
-  model: CombatantTypes;
+  model: CombatantTypes | null;
   type = 'player';
   groups: any;
   world: GameWorld;
@@ -44,7 +44,7 @@ export class GameEntityObject extends TileObject {
     return _.filter(spells, (spell: ITemplateMagic) => {
       return (
         spell.level <= userLevel &&
-        _.indexOf<EntityType>(spell.usedby, userClass) !== -1
+        _.indexOf<EntityType>(spell.usedby || [], userClass) !== -1
       );
     });
   }

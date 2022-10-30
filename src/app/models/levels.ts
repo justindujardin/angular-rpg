@@ -132,7 +132,8 @@ export function getStatIncreaseForLevelUp(
   if (!CLASS_STAT_LEVEL_MAP.hasOwnProperty(model.type)) {
     throw new Error(`Unknown class: ${model.type}`);
   }
-  const data: IClassLevelBonuses = CLASS_STAT_LEVEL_MAP[model.type];
+  const type: keyof IClassStatLevelMap = model.type as any;
+  const data: any = CLASS_STAT_LEVEL_MAP[type];
 
   if (!data || !data.hasOwnProperty(name)) {
     throw new Error(`Invalid stat name: ${name}`);

@@ -23,35 +23,15 @@ import { GameWorld } from '../../services/game-world';
 import { RPGGame } from '../../services/rpg-game';
 import { CombatMapComponent } from './combat-map.entity';
 import { CombatPlayerComponent } from './combat-player.entity';
+import {
+  CombatAttackSummary,
+  ICombatDamageSummary,
+  ICombatMenuItem,
+} from './combat.types';
 import { CombatDefeatSummary } from './states/combat-defeat.state';
 import { CombatRunSummary } from './states/combat-escape.state';
 import { CombatStateMachineComponent } from './states/combat.machine';
 import { UIAttachment } from './types';
-
-/**
- * Describe a selectable menu item for a user input in combat.
- */
-export interface ICombatMenuItem {
-  select(): any;
-  label: string;
-}
-
-export interface ICombatDamageSummary {
-  timeout: number;
-  value: number;
-  classes: {
-    miss: boolean;
-    heal: boolean;
-  };
-  position: Point;
-}
-
-/** Description of a combat entity attack */
-export interface CombatAttackSummary {
-  damage: number;
-  attacker: GameEntityObject;
-  defender: GameEntityObject;
-}
 
 @Component({
   selector: 'rpg-combat',
@@ -76,7 +56,7 @@ export class CombatComponent
    * A pointing UI element that can be attached to `SceneObject`s to attract attention
    * @type {null}
    */
-  pointer: UIAttachment = null;
+  pointer: UIAttachment | null = null;
 
   /**
    * Available menu items for selection.
@@ -96,7 +76,7 @@ export class CombatComponent
   /**
    * Mouse hook for capturing input with world and screen coordinates.
    */
-  mouse: NamedMouseElement = null;
+  mouse: NamedMouseElement | null = null;
 
   @ViewChild('combatCanvas') canvasElementRef: ElementRef;
   @ViewChild(CombatMapComponent) map: CombatMapComponent;
@@ -240,11 +220,13 @@ export class CombatComponent
   _onClick(e: any) {
     // console.log("clicked at " + this.mouse.world);
     const hits: GameEntityObject[] = [];
-    PowInput.mouseOnView(e, this, this.mouse);
-    if (this.scene.db.queryPoint(this.mouse.world, GameEntityObject, hits)) {
-      this.scene.trigger('click', this.mouse, hits);
-      e.stopImmediatePropagation();
-      return false;
+    if (this.mouse) {
+      PowInput.mouseOnView(e, this, this.mouse);
+      if (this.scene.db.queryPoint(this.mouse.world, GameEntityObject, hits)) {
+        this.scene.trigger('click', this.mouse, hits);
+        e.stopImmediatePropagation();
+        return false;
+      }
     }
   }
 
@@ -256,8 +238,8 @@ export class CombatComponent
     this.machine.on('combat:attack', (data: CombatAttackSummary) => {
       const _done = this.machine.notifyWait();
       let msg: string = '';
-      const a = data.attacker.model.name;
-      const b = data.defender.model.name;
+      const a = data.attacker.model?.name || '';
+      const b = data.defender.model?.name || '';
       if (data.damage > 0) {
         msg = `${a} attacked ${b} for ${data.damage} damage!`;
       } else if (data.damage < 0) {
@@ -274,7 +256,7 @@ export class CombatComponent
     });
     this.machine.on('combat:run', (data: CombatRunSummary) => {
       const _done = this.machine.notifyWait();
-      let msg: string = data.player.model.name;
+      let msg: string = data.player?.model?.name || '';
       if (data.success) {
         msg += ' bravely ran away!';
       } else {

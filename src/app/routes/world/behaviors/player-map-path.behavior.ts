@@ -71,7 +71,7 @@ export class PlayerMapPathBehaviorComponent extends TileMapPathBehavior {
     }
 
     // TOOD: Tiled Editor format is KILLIN' me.
-    _.each(this.tileMap.features.objects, (obj: ITiledObject) => {
+    _.each(this.tileMap?.features?.objects || [], (obj: ITiledObject) => {
       if (!obj) {
         return;
       }

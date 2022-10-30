@@ -19,7 +19,7 @@ import { GameWorld } from '../services/game-world';
 import { SceneObjectBehavior } from './scene-object-behavior';
 
 export interface SoundComponentOptions {
-  url: string;
+  url: string | null;
   loop?: boolean;
   volume?: number;
 }

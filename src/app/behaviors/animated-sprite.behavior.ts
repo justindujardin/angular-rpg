@@ -19,7 +19,7 @@ import { SpriteComponent } from './sprite.behavior';
 import { TickedBehavior } from './ticked-behavior';
 export interface AnimatedSpriteComponentOptions {
   lengthMS?: number;
-  spriteName: string;
+  spriteName: string | null;
 }
 
 export class AnimatedSpriteBehavior extends TickedBehavior {
