@@ -1,3 +1,16 @@
+## [0.2.2](https://github.com/justindujardin/angular-rpg/compare/v0.2.1...v0.2.2) (2022-10-31)
+
+
+### Bug Fixes
+
+* **maps:** castle had an invalid tile and port had a blocked exit ([30dd9f3](https://github.com/justindujardin/angular-rpg/commit/30dd9f3d6ce93042236bddb41863f762e7bc363d))
+
+
+### Features
+
+* **angular:** enable strict template checking ([6495e24](https://github.com/justindujardin/angular-rpg/commit/6495e245e5a1db18c5599d0e5b234cca8bb03746))
+* **angular:** update templates with strict checking ([5e75a30](https://github.com/justindujardin/angular-rpg/commit/5e75a304bf0e0fdeca52f77e53bef3d0b486e9df))
+
 ## [0.2.1](https://github.com/justindujardin/angular-rpg/compare/v0.2.0...v0.2.1) (2022-10-30)
 
 
