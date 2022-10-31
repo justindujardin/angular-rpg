@@ -33,7 +33,7 @@ import { Point } from '../../../app/core/point';
 import { Animate } from '../../services/animate';
 
 export interface ICombatDamageInputs {
-  classes: string[];
+  classes: { [clazz: string]: boolean };
   value: number;
   position: Point;
 }
@@ -49,8 +49,8 @@ export interface ICombatDamageInputs {
       (@show.done)="triggerHide($event)"
       [ngClass]="classes"
       [innerText]="value"
-      [style.top]="position?.y + 'px'"
-      [style.left]="position?.x + 'px'"
+      [style.top]="position.y + 'px'"
+      [style.left]="position.x + 'px'"
     >
     </span>
   `,
@@ -69,7 +69,7 @@ export interface ICombatDamageInputs {
   styleUrls: ['./combat-damage.component.scss'],
 })
 export class CombatDamageComponent implements ICombatDamageInputs, AfterViewInit {
-  @Input() classes: string[] = [];
+  @Input() classes: { [clazz: string]: boolean } = {};
   @Input() value: number = 0;
   @Input() showFor: number = 1000;
   @Input() position: Point = new Point();

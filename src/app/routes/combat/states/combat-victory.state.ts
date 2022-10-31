@@ -111,6 +111,7 @@ export class CombatVictoryStateComponent extends CombatMachineState {
         });
 
         // Dispatch victory action
+        assertTrue(machine.encounter, 'invalid combat encounter');
         const summary: CombatVictorySummary = {
           type: machine.encounter.type,
           id: machine.encounter.id || '',

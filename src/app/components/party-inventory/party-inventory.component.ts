@@ -16,7 +16,7 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as Immutable from 'immutable';
-import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, Subject, Subscription } from 'rxjs';
 import { combineLatest, switchMap, take, withLatestFrom } from 'rxjs/operators';
 import { AppState } from '../../app.model';
 import { CombatService } from '../../models/combat/combat.service';
@@ -46,7 +46,7 @@ import { NotificationService } from '../notification/notification.service';
 /** @internal to PartyInventoryComponent */
 interface PartyInventoryEquipmentEvent {
   item: Item;
-  slot: keyof EntitySlots;
+  slot: string;
 }
 
 @Component({
@@ -96,43 +96,42 @@ export class PartyInventoryComponent implements OnDestroy {
   );
 
   /** The currently selected player entity with its equipment resolved to items rather than item ids */
-  currentEntity$: Observable<EntityWithEquipment | null> = this.currentIndex$.pipe(
+  currentEntity$: Observable<EntityWithEquipment> = this.currentIndex$.pipe(
     combineLatest(this.party$, (index: number, party: Immutable.List<Entity>) => {
       return party.get(index);
     }),
-    switchMap((entity?: Entity) => {
-      return this.store.select(getEntityEquipment(entity?.eid || 'invalid'));
+    switchMap((entity: Entity) => {
+      return entity?.eid ? this.store.select(getEntityEquipment(entity.eid)) : EMPTY;
     })
   );
   /** Stream of inventory that the currentEntity$ can equip */
-  inventory$: Observable<Immutable.List<EntityItemTypes>> = this.store
-    .select(getGameInventory)
-    .pipe(
-      combineLatest(
-        this.currentEntity$,
-        (inventory: Immutable.List<EntityItemTypes>, member: EntityWithEquipment) => {
-          return inventory
-            .filter((i?: EntityItemTypes) => {
-              // Is an item with a known equipment slot
-              if (!i) {
-                return false;
-              }
-              if (EQUIPMENT_SLOTS.indexOf(i.type as EquipmentSlotTypes) !== -1) {
-                // If usedby is empty, anyone can use it
-                if ((i.usedby || []).length === 0) {
-                  return true;
-                }
-                // If the player type is in the usedby array
-                if (i.usedby && i.usedby.includes(member.type)) {
-                  return true;
-                }
-              }
+  inventory$: Observable<EntityItemTypes[]> = this.store.select(getGameInventory).pipe(
+    combineLatest(
+      this.currentEntity$,
+      (inventory: Immutable.List<EntityItemTypes>, member: EntityWithEquipment) => {
+        return inventory
+          .filter((i?: EntityItemTypes) => {
+            // Is an item with a known equipment slot
+            if (!i) {
               return false;
-            })
-            .toList();
-        }
-      )
-    );
+            }
+            if (EQUIPMENT_SLOTS.indexOf(i.type as EquipmentSlotTypes) !== -1) {
+              // If usedby is empty, anyone can use it
+              if ((i.usedby || []).length === 0) {
+                return true;
+              }
+              // If the player type is in the usedby array
+              if (i.usedby && i.usedby.includes(member.type)) {
+                return true;
+              }
+            }
+            return false;
+          })
+          .toList()
+          .toJS();
+      }
+    )
+  );
   /** Action generator from equip stream */
   private _equipSubscription: Subscription = this.doEquip$
     .pipe(
@@ -142,12 +141,13 @@ export class PartyInventoryComponent implements OnDestroy {
           if (event.item.usedby && !event.item.usedby.find((e) => e === entity.type)) {
             return this.notify.show(`${entity.name} cannot equip this item`);
           }
-          if (entity[event.slot]) {
-            const oldItem: any = entity[event.slot];
+          const slot = event.slot as keyof EntitySlots;
+          if (entity[slot]) {
+            const oldItem: any = entity[slot];
             this.store.dispatch(
               new GameStateUnequipItemAction({
                 entityId: entity.eid,
-                slot: event.slot,
+                slot: slot,
                 itemId: oldItem.eid,
               })
             );
@@ -155,7 +155,7 @@ export class PartyInventoryComponent implements OnDestroy {
           this.store.dispatch(
             new GameStateEquipItemAction({
               entityId: entity.eid,
-              slot: event.slot,
+              slot: slot,
               itemId: event.item.eid,
             })
           );
@@ -170,10 +170,11 @@ export class PartyInventoryComponent implements OnDestroy {
       withLatestFrom(
         this.currentEntity$,
         (event: PartyInventoryEquipmentEvent, entity: Entity) => {
+          const slot = event.slot as keyof EntitySlots;
           this.store.dispatch(
             new GameStateUnequipItemAction({
               entityId: entity.eid,
-              slot: event.slot,
+              slot: slot,
               itemId: event.item.eid,
             })
           );

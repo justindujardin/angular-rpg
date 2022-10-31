@@ -13,7 +13,7 @@
       <mat-tab label="Buy"></mat-tab>
       <mat-tab label="Sell"></mat-tab>
     </mat-tab-group>
-    <table mat-table [dataSource]="inventory$ | async">
+    <table mat-table [dataSource]="data" *ngIf="dataSource$ | async as data">
       <ng-container matColumnDef="icon">
         <th mat-header-cell *matHeaderCellDef>Item</th>
         <td mat-cell *matCellDef="let item">
@@ -41,17 +41,17 @@
         class="item-value"
         *matRowDef="let row; columns: ['icon', 'value']"
         (click)="toggleRowSelection($event, row)"
-        [class.selected]="(selected$ | async).has(row)"
+        [class.selected]="(selected$ | async)?.has(row)"
       ></tr>
     </table>
-    <h1 *ngIf="!(inventory$ | async).length">No Items</h1>
+    <h1 *ngIf="!(inventory$ | async)?.length">No Items</h1>
   </div>
 
   <section class="differences">
     <div *ngFor="let diff of differences$ | async; trackBy: trackByEid">
       <rpg-sprite
         [class.disabled]="
-          diff.diff == '' && !(selling$ | async) && (selected$ | async).size > 0
+          diff.diff == '' && !(selling$ | async) && (selected$ | async)?.size
         "
         class="image"
         [name]="diff.member.icon"
@@ -75,7 +75,7 @@
     <button
       mat-raised-button
       (click)="buyItems()"
-      [disabled]="!(selected$ | async).size"
+      [disabled]="!(selected$ | async)?.size"
       *ngIf="!(selling$ | async)"
       color="accent"
     >
@@ -84,7 +84,7 @@
     <button
       mat-raised-button
       (click)="sellItems()"
-      [disabled]="!(selected$ | async).size"
+      [disabled]="!(selected$ | async)?.size"
       *ngIf="selling$ | async"
       color="accent"
     >

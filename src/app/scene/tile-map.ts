@@ -86,9 +86,12 @@ export class TileMap extends SceneObject {
     }
     this.map = map;
     this.bounds = new Rect(0, 0, this.map.width, this.map.height);
-    const idSortedSets = _.sortBy(this.map.tilesets, (o: TiledTSXResource) => {
-      return o.firstgid;
-    });
+    const idSortedSets = _.sortBy(
+      Object.values(this.map.tilesets),
+      (o: TiledTSXResource) => {
+        return o.firstgid;
+      }
+    );
     this.tiles.length = 0;
     idSortedSets.forEach((tiles: TiledTSXResource) => {
       while (this.tiles.length < tiles.firstgid) {
@@ -214,7 +217,9 @@ export class TileMap extends SceneObject {
     const meta = source.getTileMeta(gid);
     // Derive x/y values from sprite registry metadata for spritesheets
     const f = world.sprites.getSpriteMeta(meta.image);
-    assertTrue(f, `getTileMeta: invalid tile id ${gid}`);
+    if (!f) {
+      return null;
+    }
     return {
       ...meta,
       x: f.x,

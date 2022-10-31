@@ -143,7 +143,10 @@ export class BasePlayerComponent extends MovableBehavior {
     for (i = 0; i < results.length; i++) {
       o = results[i];
       comp = o.findBehavior<TileObjectBehavior>(this.collideComponentType);
-      if (!comp || !comp.enter) {
+      if (o.exit(this.host) === false) {
+        return;
+      }
+      if (!comp || !comp.exit) {
         continue;
       }
       if (comp.exit(this.host) === false) {
@@ -155,6 +158,9 @@ export class BasePlayerComponent extends MovableBehavior {
     for (i = 0; i < results.length; i++) {
       o = results[i];
       comp = o.findBehavior<TileObjectBehavior>(this.collideComponentType);
+      if (o.enter(this.host) === false) {
+        return;
+      }
       if (!comp || !comp.enter) {
         continue;
       }
@@ -183,6 +189,8 @@ export class BasePlayerComponent extends MovableBehavior {
       comp = fromObject.findBehavior<TileObjectBehavior>(this.collideComponentType);
       if (comp?.host?._uid && comp?.host?._uid !== this.host._uid) {
         comp.exited(this.host);
+      } else {
+        fromObject.exited(this.host);
       }
     }
 
@@ -196,6 +204,8 @@ export class BasePlayerComponent extends MovableBehavior {
       comp = toObject.findBehavior<TileObjectBehavior>(this.collideComponentType);
       if (comp?.host?._uid && comp?.host?._uid !== this.host._uid) {
         comp.entered(this.host);
+      } else {
+        toObject.entered(this.host);
       }
     }
   }

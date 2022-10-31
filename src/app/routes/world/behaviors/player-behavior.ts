@@ -13,15 +13,13 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { Component, EventEmitter, Output } from '@angular/core';
-import * as _ from 'underscore';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BasePlayerComponent } from '../../../behaviors/base-player.behavior';
 import { IMoveDescription } from '../../../behaviors/movable-behavior';
 import { ITiledLayer } from '../../../core/resources/tiled/tiled.model';
 import { GameStateMoveAction } from '../../../models/game-state/game-state.actions';
 import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
-import { SceneObject } from '../../../scene/scene-object';
 import { TileMap } from '../../../scene/tile-map';
 
 @Component({
@@ -30,6 +28,7 @@ import { TileMap } from '../../../scene/tile-map';
 })
 export class PlayerBehaviorComponent extends BasePlayerComponent {
   host: GameEntityObject;
+  @Input()
   map: TileMap | null = null;
 
   static COLLIDE_TYPES: string[] = [
@@ -52,21 +51,29 @@ export class PlayerBehaviorComponent extends BasePlayerComponent {
   /**
    * Collide with the rpg tile map features and obstacles.
    */
-  collideMove(x: number, y: number, results: SceneObject[] = []): boolean {
+  collideMove(x: number, y: number, results: GameFeatureObject[] = []): boolean {
     if (this.host.scene && !this.map) {
       this.map = this.host.scene.objectByType(TileMap) as TileMap;
     }
     let i = 0;
 
-    const collision: boolean =
-      this.collider && this.collider.collide(x, y, GameFeatureObject, results);
+    const collision: boolean = !!this.collider?.collide<GameFeatureObject>(
+      x,
+      y,
+      GameFeatureObject,
+      results
+    );
     if (collision) {
       for (i = 0; i < results.length; i++) {
-        const o = <GameFeatureObject>results[i];
-        if (o.passable === true || !o.class || !o.enabled) {
+        const o: GameFeatureObject = results[i];
+        if (
+          o.feature?.properties?.passable === true ||
+          !o.feature?.class ||
+          !o.enabled
+        ) {
           return false;
         }
-        if (_.indexOf(PlayerBehaviorComponent.COLLIDE_TYPES, o.class) !== -1) {
+        if (PlayerBehaviorComponent.COLLIDE_TYPES.includes(o.feature?.class)) {
           return true;
         }
       }

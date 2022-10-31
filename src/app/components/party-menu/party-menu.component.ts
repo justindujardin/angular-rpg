@@ -1,16 +1,16 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as Immutable from 'immutable';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AppState } from '../../app.model';
-import { Entity } from '../../models/entity/entity.model';
+import { EntityWithEquipment } from '../../models/entity/entity.model';
 import {
   GameStateDeleteAction,
   GameStateSaveAction,
 } from '../../models/game-state/game-state.actions';
 import { GameStateService } from '../../models/game-state/game-state.service';
-import { getGameParty, getGamePartyGold } from '../../models/selectors';
+import { getGamePartyGold, getGamePartyWithEquipment } from '../../models/selectors';
 import { RPGGame } from '../../services/rpg-game';
 import { NotificationService } from '../notification/notification.service';
 
@@ -61,8 +61,9 @@ export class PartyMenuComponent {
 
   isChecked: boolean;
   partyGold$: Observable<number> = this.store.select(getGamePartyGold);
-  party$: Observable<Immutable.List<Entity | undefined>> =
-    this.store.select(getGameParty);
+  party$: Observable<EntityWithEquipment[]> = this.store
+    .select(getGamePartyWithEquipment)
+    .pipe(map((f) => f.toJS()));
 
   ngOnInit() {
     this.isChecked = localStorage.getItem('autoSave') === 'true';

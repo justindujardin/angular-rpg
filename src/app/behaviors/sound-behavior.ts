@@ -56,6 +56,9 @@ export class SoundBehavior
     if (this.audio && this.audio.data) {
       this.audio.data.pause();
       this.audio.data.currentTime = 0;
+      if (this.audio.data.removeAllListeners) {
+        this.audio.data.removeAllListeners('timeupdate');
+      }
     }
     return super.disconnectBehavior();
   }

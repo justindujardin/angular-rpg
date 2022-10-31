@@ -13,44 +13,49 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { AfterViewInit, Component, Host, Input, OnDestroy } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
-import { AppState } from '../../../../app.model';
-import { Point } from '../../../../core';
-import { GameStateBoardShipAction } from '../../../../models/game-state/game-state.actions';
-import { PointRecord } from '../../../../models/records';
-import { getGameBoardedShip, getGameShipPosition } from '../../../../models/selectors';
-import { GameFeatureObject } from '../../../../scene/objects/game-feature-object';
-import { TileObject } from '../../../../scene/tile-object';
-import { PlayerBehaviorComponent } from '../../behaviors/player-behavior';
-import {
-  MapFeatureComponent,
-  TiledFeatureComponent,
-  TiledMapFeatureData,
-} from '../map-feature.component';
+import { Point } from '../../../core';
+import { GameStateBoardShipAction } from '../../../models/game-state/game-state.actions';
+import { PointRecord } from '../../../models/records';
+import { getGameBoardedShip, getGameShipPosition } from '../../../models/selectors';
+import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
+import { TileObject } from '../../../scene/tile-object';
+import { PlayerBehaviorComponent } from '../behaviors/player-behavior';
+import { MapFeatureComponent } from '../map-feature.component';
 
 @Component({
   selector: 'ship-feature',
   template: '<ng-content></ng-content>',
 })
 export class ShipFeatureComponent
-  extends TiledFeatureComponent<TiledMapFeatureData>
+  extends MapFeatureComponent
   implements OnDestroy, AfterViewInit
 {
   ngOnDestroy(): void {
-    // nope
+    super.ngOnDestroy();
+    this._subscription?.unsubscribe();
+    this._subscription = null;
+    clearInterval(this._tickInterval);
   }
 
   ngAfterViewInit(): void {
+    super.ngAfterViewInit();
     // Check for boarded state when the feature is initialized.
+    this._subscription = this.store
+      .select(getGameShipPosition)
+      .pipe(distinctUntilChanged())
+      .subscribe((p: PointRecord) => {
+        this.setPoint({ x: p.x, y: p.y });
+      });
+
     this.store
       .select(getGameBoardedShip)
       .pipe(debounceTime(100), first())
       .subscribe((boarded: boolean) => {
-        if (boarded && this.mapFeature.scene) {
-          const playerHost = this.mapFeature.scene.objectByComponent(
+        if (boarded && this.scene) {
+          const playerHost = this.scene.objectByComponent(
             PlayerBehaviorComponent
           ) as GameFeatureObject;
           if (playerHost) {
@@ -65,43 +70,13 @@ export class ShipFeatureComponent
   partySprite: string;
   private _tickInterval: any = -1;
   // @ts-ignore
-  @Input() feature: TiledMapFeatureData;
+  @Input() feature: ITiledObject | null;
 
   private _subscription: Subscription | null = null;
 
-  constructor(
-    private store: Store<AppState>,
-    @Host() private mapFeature: MapFeatureComponent
-  ) {
-    super();
-  }
-
-  disconnectBehavior(): boolean {
-    if (this._subscription) {
-      this._subscription.unsubscribe();
-      this._subscription = null;
-    }
-    return true;
-  }
-
-  connectBehavior(): boolean {
-    if (!super.connectBehavior()) {
-      return false;
-    }
-    this._subscription = this.store
-      .select(getGameShipPosition)
-      .pipe(distinctUntilChanged())
-      .subscribe((p: PointRecord) => {
-        this.host.setPoint({ x: p.x, y: p.y });
-      });
-    return true;
-  }
-
   enter(object: GameFeatureObject): boolean {
     // Only a player can board a ship
-    this.party = object.findBehavior(
-      PlayerBehaviorComponent
-    ) as PlayerBehaviorComponent;
+    this.party = object.findBehavior<PlayerBehaviorComponent>(PlayerBehaviorComponent);
     if (!this.party) {
       return false;
     }
@@ -124,9 +99,10 @@ export class ShipFeatureComponent
     }
     this.store.dispatch(new GameStateBoardShipAction(true));
     this.partyObject = object;
-    this.host.visible = false;
-    this.host.enabled = false;
-    object.setSprite(this.host.icon, 0);
+    this.visible = false;
+    this.enabled = false;
+    object.setSprite(this.icon, 0);
+    clearInterval(this._tickInterval);
     this._tickInterval = setInterval(() => {
       if (!this.party || !this.partyObject) {
         return;
@@ -156,10 +132,10 @@ export class ShipFeatureComponent
       this.party.velocity.set(heading);
       this.party.passableKeys = ['passable'];
     }
-    this.host.point.x = from.x;
-    this.host.point.y = from.y;
-    this.host.visible = true;
-    this.host.enabled = true;
+    this.point.x = from.x;
+    this.point.y = from.y;
+    this.visible = true;
+    this.enabled = true;
     this.partyObject = null;
     this.party = null;
     this.store.dispatch(new GameStateBoardShipAction(false));

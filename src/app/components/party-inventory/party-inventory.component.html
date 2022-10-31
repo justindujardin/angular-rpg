@@ -1,4 +1,4 @@
-<div *ngFor="let current of [currentEntity$ | async]" fxLayout="column">
+<div *ngIf="currentEntity$ | async as current" fxLayout="column">
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
     <button mat-icon-button (click)="previousCharacter()">
       <mat-icon>chevron_left</mat-icon>
@@ -6,8 +6,8 @@
 
     <section fxLayout="row" fxFlex fxLayoutAlign="space-around center">
       <div flex fxLayout="column" fxLayoutAlign="center center">
-        <rpg-sprite class="image" [name]="current.icon" frame="7"></rpg-sprite>
-        <span>{{ current.name }}</span>
+        <rpg-sprite class="image" [name]="current?.icon || null" frame="7"></rpg-sprite>
+        <span>{{ current?.name }}</span>
       </div>
       <div>
         <player-stats

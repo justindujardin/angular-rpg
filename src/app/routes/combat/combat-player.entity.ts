@@ -40,6 +40,9 @@ export class CombatPlayerComponent
   @Input() icon: string;
   @Input() scene: Scene;
   @Input() combat: any; // CombatComponent - flirts with circular imports
+  constructor() {
+    super();
+  }
 
   ngAfterViewInit(): void {
     this.scene.addObject(this);

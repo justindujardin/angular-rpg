@@ -14,36 +14,33 @@
  limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../../app.model';
-import { GameStateTravelAction } from '../../../../models/game-state/game-state.actions';
-import { TileObject } from '../../../../scene/tile-object';
-import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
+import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
+import { GameStateTravelAction } from '../../../models/game-state/game-state.actions';
+import { assertTrue } from '../../../models/util';
+import { TileObject } from '../../../scene/tile-object';
+import { MapFeatureComponent } from '../map-feature.component';
 
 @Component({
   selector: 'portal-feature',
   template: ` <ng-content></ng-content>`,
 })
-export class PortalFeatureComponent extends TiledFeatureComponent {
-  // @ts-ignore
-  @Input() feature: TiledMapFeatureData;
-
-  constructor(private store: Store<AppState>) {
-    super();
-  }
+export class PortalFeatureComponent extends MapFeatureComponent {
+  @Input() feature: ITiledObject | null;
 
   entered(object: TileObject): boolean {
     this.assertFeature();
 
-    if (!this.properties.target) {
+    assertTrue(this.feature, 'invalid feature');
+    const props = this.feature.properties || {};
+    if (!props.target) {
       return false;
     }
     this.store.dispatch(
       new GameStateTravelAction({
-        location: this.properties.target,
+        location: props.target,
         position: {
-          x: this.properties.targetX,
-          y: this.properties.targetY,
+          x: props.targetX,
+          y: props.targetY,
         },
       })
     );

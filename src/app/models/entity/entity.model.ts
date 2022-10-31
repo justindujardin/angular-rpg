@@ -1,5 +1,5 @@
 import { EntityType, IEntityObject, IPartyMember } from '../base-entity';
-import { ITemplateArmor, ITemplateWeapon } from '../game-data/game-data.model';
+import { Armor, Weapon } from '../item';
 
 /**
  * Define the slots available for equipping items on an Entity. Each slot
@@ -32,15 +32,15 @@ export interface Entity extends IEntityObject, EntitySlots, IPartyMember {
  * a store selector that returns this type.
  */
 export interface EntityWithEquipment extends IPartyMember {
-  readonly weapon?: ITemplateWeapon | null;
+  readonly weapon?: Weapon | null;
   /** Entity id for the equipped armor */
-  readonly armor?: ITemplateArmor | null;
+  readonly armor?: Armor | null;
   /** Entity id for the equipped boots */
-  readonly boots?: ITemplateArmor | null;
+  readonly boots?: Armor | null;
   /** Entity id for the equipped helm */
-  readonly helm?: ITemplateArmor | null;
+  readonly helm?: Armor | null;
   /** Entity id for the equipped shield */
-  readonly shield?: ITemplateArmor | null;
+  readonly shield?: Armor | null;
   /** Entity id for the equipped accessory */
-  readonly accessory?: ITemplateArmor | null;
+  readonly accessory?: Armor | null;
 }

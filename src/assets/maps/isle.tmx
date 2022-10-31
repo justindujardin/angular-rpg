@@ -62,11 +62,10 @@
     <property name="sellRate" value="25"/>
    </properties>
   </object>
-  <object id="5" name="ship.png" class="sign" gid="172" x="272" y="176" width="16" height="16">
+  <object id="5" name="ship.png" class="BlockFeatureComponent" gid="172" x="272" y="176" width="16" height="16">
    <properties>
     <property name="icon" value="ship.png"/>
-    <property name="type" value="sign"/>
-    <property name="y" value="11"/>
+    <property name="passable" type="bool" value="false"/>
    </properties>
   </object>
  </objectgroup>

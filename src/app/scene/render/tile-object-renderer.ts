@@ -22,7 +22,7 @@ export interface TileRenderable {
   icon?: string;
   image: HTMLImageElement | null;
   visible: boolean;
-  scale: number;
+  scale?: number;
   frame: number;
 }
 
@@ -54,8 +54,9 @@ export class TileObjectRenderer {
     }
     const objWidth = view.fastScreenToWorldNumber(sourceWidth);
     const objHeight = view.fastScreenToWorldNumber(sourceHeight);
-    point.x -= (objWidth * object.scale) / 2;
-    point.y -= (objHeight * object.scale) / 2;
+    const scale = typeof object.scale !== 'undefined' ? object.scale : 1;
+    point.x -= (objWidth * scale) / 2;
+    point.y -= (objHeight * scale) / 2;
     view.fastWorldToScreenPoint(point, point);
 
     if (object.icon && spriteMeta) {
@@ -76,16 +77,16 @@ export class TileObjectRenderer {
         sourceHeight,
         point.x,
         point.y,
-        sourceWidth * object.scale,
-        sourceHeight * object.scale
+        sourceWidth * scale,
+        sourceHeight * scale
       );
     } else {
       view.context.drawImage(
         object.image,
         point.x,
         point.y,
-        sourceWidth * object.scale,
-        sourceHeight * object.scale
+        sourceWidth * scale,
+        sourceHeight * scale
       );
     }
   }

@@ -2,12 +2,11 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input,
   Output,
   ViewEncapsulation,
 } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { Store } from '@ngrx/store';
 import { ARMOR_DATA } from 'app/models/game-data/armors';
 import { ITEMS_DATA } from 'app/models/game-data/items';
 import { MAGIC_DATA } from 'app/models/game-data/magic';
@@ -15,17 +14,13 @@ import { WEAPONS_DATA } from 'app/models/game-data/weapons';
 import * as Immutable from 'immutable';
 import { BehaviorSubject, from, Observable } from 'rxjs';
 import { combineLatest, first, map, withLatestFrom } from 'rxjs/operators';
-import { AppState } from '../../../../app.model';
-import { NotificationService } from '../../../../components/notification/notification.service';
-import { IEntityObject, IPartyMember } from '../../../../models/base-entity';
+import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
+import { IEntityObject, IPartyMember } from '../../../models/base-entity';
 import {
   EntityAddItemAction,
   EntityRemoveItemAction,
-} from '../../../../models/entity/entity.actions';
-import {
-  EntitySlots,
-  EntityWithEquipment,
-} from '../../../../models/entity/entity.model';
+} from '../../../models/entity/entity.actions';
+import { EntitySlots, EntityWithEquipment } from '../../../models/entity/entity.model';
 import {
   EquipmentSlotTypes,
   EQUIPMENT_SLOTS,
@@ -34,26 +29,24 @@ import {
   ITemplateBaseItem,
   ITemplateMagic,
   ITemplateWeapon,
-} from '../../../../models/game-data/game-data.model';
+} from '../../../models/game-data/game-data.model';
 import {
   GameStateAddGoldAction,
   GameStateAddInventoryAction,
   GameStateEquipItemAction,
   GameStateRemoveInventoryAction,
   GameStateUnequipItemAction,
-} from '../../../../models/game-state/game-state.actions';
-import { GameState } from '../../../../models/game-state/game-state.model';
-import { Item } from '../../../../models/item';
+} from '../../../models/game-state/game-state.actions';
+import { GameState } from '../../../models/game-state/game-state.model';
+import { Item } from '../../../models/item';
 import {
   getGameInventory,
   getGamePartyGold,
   getGamePartyWithEquipment,
   sliceGameState,
-} from '../../../../models/selectors';
-import { assertTrue } from '../../../../models/util';
-import { IScene } from '../../../../scene/scene.model';
-import { RPGGame } from '../../../../services/rpg-game';
-import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
+} from '../../../models/selectors';
+import { assertTrue } from '../../../models/util';
+import { MapFeatureComponent } from '../map-feature.component';
 
 /**
  * Given a list of potential items to sell, filter to only ones that can be bartered in this store.
@@ -70,15 +63,6 @@ export function sellItemsFilter(
       return itemInGroups(i, groups);
     })
     .toList();
-}
-
-export function getFeatureProperty(
-  name: string,
-  defaultValue = null
-): (f: TiledMapFeatureData) => any {
-  return (f: TiledMapFeatureData) => {
-    return f?.properties?.[name] ? f.properties[name] : defaultValue;
-  };
 }
 
 /**
@@ -105,8 +89,6 @@ export function itemInGroups(
  */
 export type StoreInventoryCategories = 'weapons' | 'armor' | 'magic' | 'misc';
 
-type StoreComparableTypes = ITemplateWeapon | ITemplateArmor | ITemplateMagic;
-
 interface IEquipmentDifference {
   member: IPartyMember;
   difference: number;
@@ -120,25 +102,12 @@ interface IEquipmentDifference {
   styleUrls: ['./store-feature.component.scss'],
   templateUrl: './store-feature.component.html',
 })
-export abstract class StoreFeatureComponent extends TiledFeatureComponent {
+export class StoreFeatureComponent extends MapFeatureComponent {
   /** The store items category must be set in a subclass */
-  abstract category: StoreInventoryCategories;
+  category: StoreInventoryCategories;
 
-  // @ts-ignore
-  @Input() feature: TiledMapFeatureData;
-  @Input() scene: IScene;
-  // @ts-ignore
-  @Input() active: boolean;
   @Output() onClose = new EventEmitter();
   active$: Observable<boolean>;
-
-  constructor(
-    public game: RPGGame,
-    public notify: NotificationService,
-    public store: Store<AppState>
-  ) {
-    super();
-  }
 
   /** @internal */
   private _weapons$: Observable<ITemplateWeapon[]> = from([WEAPONS_DATA]);
@@ -154,7 +123,7 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
   /**
    * The name of this (fine) establishment.
    */
-  name$: Observable<string> = this.feature$.pipe(map(getFeatureProperty('name')));
+  name$: Observable<string> = this.feature$.pipe(map((f: ITiledObject<any>) => f.name));
 
   /**
    * The amount of gold the party has to spend
@@ -187,14 +156,17 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
         this.partyInventory$,
       ],
       (
-        weapons: ITemplateWeapon[],
-        armors: ITemplateArmor[],
-        items: ITemplateBaseItem[],
-        magics: ITemplateMagic[],
-        feature: TiledMapFeatureData,
+        weapons: ITemplateWeapon[] | null,
+        armors: ITemplateArmor[] | null,
+        items: ITemplateBaseItem[] | null,
+        magics: ITemplateMagic[] | null,
+        feature: ITiledObject<any> | null,
         selling: boolean,
-        partyInventory: Immutable.List<Item>
+        partyInventory: Immutable.List<Item> | null
       ): ITemplateBaseItem[] => {
+        if (!weapons || !armors || !items || !magics || !feature || !partyInventory) {
+          return [];
+        }
         if (selling) {
           return partyInventory.toJS() as ITemplateBaseItem[];
         }
@@ -224,6 +196,8 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
       }
     )
   );
+
+  dataSource$ = this.inventory$.pipe(map((data) => new MatTableDataSource(data)));
 
   /** Determine if the UI is in a selling state. */
   selling$: Observable<boolean> = this._selling$;
@@ -423,14 +397,18 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
               if (toEquip) {
                 // Unequip anything that's already there
                 if (toEquip.hasOwnProperty(toEquipItem?.type)) {
-                  const oldItem: IEntityObject = (toEquip as any)[toEquipItem?.type];
-                  this.store.dispatch(
-                    new GameStateUnequipItemAction({
-                      entityId: toEquip.eid,
-                      slot: toEquipItem.type as keyof EntitySlots,
-                      itemId: oldItem.eid,
-                    })
-                  );
+                  const oldItem: IEntityObject | null = (toEquip as any)[
+                    toEquipItem?.type
+                  ];
+                  if (oldItem) {
+                    this.store.dispatch(
+                      new GameStateUnequipItemAction({
+                        entityId: toEquip.eid,
+                        slot: toEquipItem.type as keyof EntitySlots,
+                        itemId: oldItem.eid,
+                      })
+                    );
+                  }
                 }
                 this.store.dispatch(
                   new GameStateEquipItemAction({

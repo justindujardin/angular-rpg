@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { List } from 'immutable';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ResourceManager } from '../../../app/core/resource-manager';
 import { AppState } from '../../app.model';
 import { LoadingService } from '../../components/loading/loading.service';
-import { IPartyMember } from '../../models/base-entity';
+import { CombatantTypes } from '../../models/base-entity';
 import { getCombatEncounterParty } from '../../models/selectors';
-import { GameEntityObject } from '../../scene/objects/game-entity-object';
 import { Scene } from '../../scene/scene';
+import { CombatStateMachineComponent } from './states';
 
 @Component({
   selector: 'combat-hud',
@@ -18,8 +18,11 @@ import { Scene } from '../../scene/scene';
 })
 export class CombatHUDComponent {
   @Input() scene: Scene;
+  @Input() combat: CombatStateMachineComponent | null = null;
 
-  party$: Observable<List<IPartyMember>> = this.store.select(getCombatEncounterParty);
+  party$: Observable<CombatantTypes[]> = this.store
+    .select(getCombatEncounterParty)
+    .pipe(map((f) => f.toJS()));
 
   constructor(
     public store: Store<AppState>,
@@ -27,14 +30,12 @@ export class CombatHUDComponent {
     public loader: ResourceManager
   ) {}
 
-  getMemberClass(member: GameEntityObject, focused?: GameEntityObject): any {
+  getMemberClass(
+    member: CombatantTypes,
+    focused?: CombatantTypes | null
+  ): { [key: string]: boolean } {
     return {
-      focused:
-        focused &&
-        focused.model &&
-        member &&
-        member.model &&
-        member.model.name === focused.model.name,
+      focused: !!(focused && member && member.name === focused.name),
     };
   }
 }

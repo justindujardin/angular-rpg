@@ -28,7 +28,6 @@ import { BehaviorSubject, interval, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import * as _ from 'underscore';
 import { Point } from '../../../../app/core/point';
-import { ITemplateBaseItem } from '../../../models/game-data/game-data.model';
 import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { ChooseActionStateMachine } from '../behaviors/choose-action.machine';
 import { CombatActionBehavior } from '../behaviors/combat-action.behavior';
@@ -66,9 +65,7 @@ export class CombatChooseActionStateComponent
   /**
    * Available menu items for selection.
    */
-  @Input() items: ICombatMenuItem<
-    CombatActionBehavior | GameEntityObject | ITemplateBaseItem
-  >[] = [];
+  @Input() items: ICombatMenuItem[] = [];
 
   @Input()
   pointAt: GameEntityObject | null = null;

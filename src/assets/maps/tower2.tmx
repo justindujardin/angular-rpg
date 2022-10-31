@@ -60,7 +60,7 @@
     <property name="text" value="You are set upon by a group of trolls!"/>
    </properties>
   </object>
-  <object id="4" name="Bag of Holding" class="alert" x="144" y="48" width="16" height="16">
+  <object id="4" name="Bag of Holding" class="DialogFeatureComponent" x="144" y="48" width="16" height="16">
    <properties>
     <property name="icon" value="bag.png"/>
     <property name="sets" value="bagOfHolding"/>

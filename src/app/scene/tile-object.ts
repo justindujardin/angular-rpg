@@ -14,7 +14,6 @@
  limitations under the License.
  */
 import { EventEmitter } from '@angular/core';
-import * as _ from 'underscore';
 import { MovableBehavior } from '../behaviors/movable-behavior';
 import { ImageResource, IPoint, Point } from '../core';
 import { ISpriteMeta } from '../core/api';
@@ -56,14 +55,18 @@ export const DEFAULTS: TileObjectOptions = {
 export class TileObject extends SceneObject implements TileObjectOptions {
   point: Point;
   renderPoint: Point;
-  gid?: number;
   image: HTMLImageElement | null;
   visible: boolean;
   enabled: boolean;
   tileMap: TileMap | null;
   world: GameWorld;
   scale: number;
+  isEntered: boolean;
 
+  /** Emitted when a player has entered this tile */
+  onEntered$ = new EventEmitter();
+  /** Emitted when a player has exited this tile */
+  onExited$ = new EventEmitter();
   /** Emits when the object icon is changed */
   onChangeIcon: EventEmitter<string> = new EventEmitter<string>();
 
@@ -77,15 +80,44 @@ export class TileObject extends SceneObject implements TileObjectOptions {
     return this._icon;
   }
 
+  private _gid?: number;
+  set gid(value: number | undefined) {
+    this._gid = value;
+    // Load a sprite from a given gid (Tile objects in Tiled)
+    if (value !== undefined && this.tileMap) {
+      const meta = this.tileMap.getTileMeta(value);
+      if (meta) {
+        this.setSprite(meta.image);
+      }
+    }
+  }
+
+  get gid(): number | undefined {
+    return this._gid;
+  }
+
   meta: ISpriteMeta | null;
   frame: number = 0;
 
-  constructor() {
-    super({});
-    _.extend(this, _.defaults({}, DEFAULTS));
-    return this;
+  enter(object: TileObject): boolean {
+    return true;
   }
 
+  entered(object: TileObject) {
+    this.onEntered$.emit(this);
+    this.isEntered = true;
+    return true;
+  }
+
+  exit(object: TileObject): boolean {
+    return true;
+  }
+
+  exited(object: TileObject) {
+    this.onExited$.emit(this);
+    this.isEntered = false;
+    return true;
+  }
   setPoint(point: IPoint) {
     const newPoint = new Point(point).round();
     if (this.renderPoint) {

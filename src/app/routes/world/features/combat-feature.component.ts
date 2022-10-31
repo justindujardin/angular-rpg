@@ -14,28 +14,25 @@
  limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { getEnemyById } from 'app/models/game-data/enemies';
 import { getFixedEncounterById } from 'app/models/game-data/fixed-encounters';
 import * as Immutable from 'immutable';
 import { List } from 'immutable';
 import { map, take } from 'rxjs/operators';
-import { IEnemy } from '../../../../../app/models/base-entity';
-import { AppState } from '../../../../app.model';
-import { NotificationService } from '../../../../components/notification/notification.service';
-import { Point } from '../../../../core';
-import { CombatEncounterAction } from '../../../../models/combat/combat.actions';
-import { CombatEncounter, IZoneMatch } from '../../../../models/combat/combat.model';
-import { Entity } from '../../../../models/entity/entity.model';
+import { Point } from '../../../core';
+import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
+import { IEnemy } from '../../../models/base-entity';
+import { CombatEncounterAction } from '../../../models/combat/combat.actions';
+import { CombatEncounter, IZoneMatch } from '../../../models/combat/combat.model';
+import { Entity } from '../../../models/entity/entity.model';
 import {
   instantiateEntity,
   ITemplateFixedEncounter,
-} from '../../../../models/game-data/game-data.model';
-import { getGameParty } from '../../../../models/selectors';
-import { GameEntityObject } from '../../../../scene/objects/game-entity-object';
-import { PlayerBehaviorComponent } from '../../behaviors/player-behavior';
-import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
-
+} from '../../../models/game-data/game-data.model';
+import { getGameParty } from '../../../models/selectors';
+import { GameEntityObject } from '../../../scene/objects/game-entity-object';
+import { PlayerBehaviorComponent } from '../behaviors/player-behavior';
+import { MapFeatureComponent } from '../map-feature.component';
 /**
  * A map feature that represents a fixed combat encounter.
  *
@@ -47,25 +44,17 @@ import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.compo
   selector: 'combat-feature',
   template: ` <ng-content></ng-content>`,
 })
-export class CombatFeatureComponent extends TiledFeatureComponent {
+export class CombatFeatureComponent extends MapFeatureComponent {
   party: PlayerBehaviorComponent | null = null;
 
   // @ts-ignore
-  @Input() feature: TiledMapFeatureData;
+  @Input() feature: ITiledObject | null;
 
-  constructor(public store: Store<AppState>, public notify: NotificationService) {
-    super();
-  }
-
-  connectBehavior(): boolean {
-    if (!this.properties || !this.properties.id) {
+  enter(object: GameEntityObject): boolean {
+    if (!this.feature?.properties?.id) {
       console.error('Fixed encounters must have a given id so they may be hidden');
       return false;
     }
-    return super.connectBehavior();
-  }
-
-  enter(object: GameEntityObject): boolean {
     this.party = object.findBehavior<PlayerBehaviorComponent>(PlayerBehaviorComponent);
     if (!this.party) {
       return false;
@@ -87,12 +76,12 @@ export class CombatFeatureComponent extends TiledFeatureComponent {
       .pipe(
         map((party: Immutable.List<Entity>) => {
           const encounter: ITemplateFixedEncounter | null = getFixedEncounterById(
-            this.properties.id
+            this.feature?.properties.id
           );
 
           if (!encounter) {
             this.notify.show(
-              `There is no encounter named: ${this.properties.id}.`,
+              `There is no encounter named: ${this.feature?.properties.id}.`,
               undefined,
               0
             );

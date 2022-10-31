@@ -13,28 +13,43 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import * as _ from 'underscore';
+
+import { BehaviorSubject, Observable } from 'rxjs';
+import { ITiledObject } from '../../core/resources/tiled/tiled.model';
 import { GameWorld } from '../../services/game-world';
+import { SceneView } from '../scene-view';
 import { TileMap } from '../tile-map';
 import { TileObject } from '../tile-object';
 
 export class GameFeatureObject extends TileObject {
-  tileMap: TileMap;
   world: GameWorld;
-  feature: any; // TODO: Feature Interface
-  class: string; // TODO: enum?
-  passable: boolean;
-  groups: any[];
-  frame: number;
 
-  constructor(options: any) {
+  feature: ITiledObject | null;
+
+  setFeature(value: ITiledObject | null) {
+    if (value?.gid) {
+      this.gid = value.gid;
+    }
+    if (value?.properties?.icon) {
+      this.icon = value.properties.icon;
+    }
+    if (value?.x) {
+      this.point.x = Math.round(value.x / SceneView.UNIT);
+    }
+    if (value?.y) {
+      this.point.y = Math.round(value.y / SceneView.UNIT);
+    }
+    this._feature$.next(value);
+  }
+
+  protected _feature$ = new BehaviorSubject<ITiledObject | null>(null);
+  feature$: Observable<ITiledObject | null> = this._feature$;
+
+  constructor(
+    feature: ITiledObject | null = null,
+    public tileMap: TileMap | null = null
+  ) {
     super();
-    _.extend(this, _.defaults({}, options));
-    this.feature = options;
-    this.point.x = options.x;
-    this.point.y = options.y;
-    this.frame = typeof options.frame !== 'undefined' ? options.frame : 0;
-    this.groups =
-      typeof options.groups === 'string' ? options.groups.split('|') : options.groups;
+    this.feature = feature;
   }
 }

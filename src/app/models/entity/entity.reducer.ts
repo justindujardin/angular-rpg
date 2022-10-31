@@ -11,17 +11,11 @@ import {
   removeEntityFromCollection,
 } from '../entity-collections';
 import {
-  ITemplateArmor,
-  ITemplateItem,
-  ITemplateMagic,
-  ITemplateWeapon,
-} from '../game-data/game-data.model';
-import {
   GameStateEquipItemAction,
   GameStateHealPartyAction,
   GameStateUnequipItemAction,
 } from '../game-state/game-state.actions';
-import { Item } from '../item';
+import { Armor, Item, Magic, Weapon } from '../item';
 import { EntityRecord } from '../records';
 import { assertTrue, exhaustiveCheck, makeRecordFactory } from '../util';
 import {
@@ -64,12 +58,7 @@ const entityItemsCollectionFactory = makeRecordFactory<
 });
 
 /** Union type for entity items that may exist in the collection */
-export type EntityItemTypes =
-  | Item
-  | ITemplateWeapon
-  | ITemplateArmor
-  | ITemplateItem
-  | ITemplateMagic;
+export type EntityItemTypes = Item | Weapon | Armor | Item | Magic;
 
 /** Collection of Entity objects */
 export interface EntityState {

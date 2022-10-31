@@ -39,7 +39,7 @@
     },
   },
   "angularCompilerOptions": {
-    "strictTemplates": false
+    "strictTemplates": true
   },
   "exclude": [
     "editor"

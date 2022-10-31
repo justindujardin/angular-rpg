@@ -5,7 +5,7 @@ import { Point } from '../../../../app/core/point';
 import { State } from '../../../core/state';
 import { StateMachine } from '../../../core/state-machine';
 import { ITemplateMagic } from '../../../models/game-data/game-data.model';
-import { Item } from '../../../models/item';
+import { Item, Magic } from '../../../models/item';
 import { assertTrue } from '../../../models/util';
 import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { Scene } from '../../../scene/scene';
@@ -125,7 +125,7 @@ export class ChooseActionType extends State<CombatChooseActionStateNames> {
       return {
         select: selectAction.bind(this, a),
         label: a.getActionName(),
-        source: a,
+        id: a._uid,
       };
     });
 
@@ -187,11 +187,11 @@ export class ChooseMagicSpell extends State<CombatChooseActionStateNames> {
     const spells: Immutable.List<ITemplateMagic> =
       machine.parent.machine?.spells || Immutable.List<ITemplateMagic>();
     machine.parent.items = spells
-      .map((a: ITemplateMagic): ICombatMenuItem => {
-        return <any>{
+      .map((a: Magic): ICombatMenuItem => {
+        return {
           select: selectSpell.bind(this, a),
           label: a.magicname,
-          source: a,
+          id: a.eid,
         };
       })
       .toList()
@@ -281,6 +281,7 @@ export class ChooseActionTarget extends State<CombatChooseActionStateNames> {
         select: selectTarget.bind(this, a),
         label: a.model?.name || '',
         source: a,
+        id: a.model?.eid || '',
       };
     });
 

@@ -53,7 +53,7 @@ export class RPGSpriteComponent {
   }
 
   @Input()
-  set name(value: string) {
+  set name(value: string | null) {
     if (!value) {
       this._name$.next(RPGSpriteComponent.INVALID_IMAGE);
       return;

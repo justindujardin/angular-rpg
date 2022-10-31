@@ -2,19 +2,16 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input,
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { filter, first, map, switchMap } from 'rxjs/operators';
-import { AppState } from '../../../../../app/app.model';
-import { GameStateSetKeyDataAction } from '../../../../../app/models/game-state/game-state.actions';
-import { getGameKey } from '../../../../../app/models/selectors';
-import { IScene } from '../../../../scene/scene.model';
-import { TileObject } from '../../../../scene/tile-object';
-import { TiledFeatureComponent, TiledMapFeatureData } from '../map-feature.component';
+import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
+import { GameStateSetKeyDataAction } from '../../../models/game-state/game-state.actions';
+import { getGameKey } from '../../../models/selectors';
+import { TileObject } from '../../../scene/tile-object';
+import { MapFeatureComponent } from '../map-feature.component';
 
 export interface IDoorFeatureTiledProperties {
   id: string;
@@ -25,8 +22,6 @@ export interface IDoorFeatureTiledProperties {
   unlockText: string;
 }
 
-export type DoorFeatureType = TiledMapFeatureData<IDoorFeatureTiledProperties>;
-
 @Component({
   selector: 'door-feature',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,26 +29,21 @@ export type DoorFeatureType = TiledMapFeatureData<IDoorFeatureTiledProperties>;
   styleUrls: ['./door-feature.component.scss'],
   templateUrl: './door-feature.component.html',
 })
-export class DoorFeatureComponent extends TiledFeatureComponent {
-  // @ts-ignore
-  @Input() feature: DoorFeatureType;
-  @Input() scene: IScene;
-  // @ts-ignore
-  @Input() active: boolean;
+export class DoorFeatureComponent extends MapFeatureComponent {
   @Output() onClose = new EventEmitter();
   active$: Observable<boolean>;
   requiredKey$: Observable<string> = this.feature$.pipe(
-    map((f: DoorFeatureType) => {
+    map((f: ITiledObject) => {
       return f.properties?.requiredKey || '';
     })
   );
   id$: Observable<string> = this.feature$.pipe(
-    map((f: DoorFeatureType) => {
+    map((f: ITiledObject) => {
       return f.properties?.id || '';
     })
   );
   canUnlock$: Observable<boolean> = this.feature$.pipe(
-    switchMap((f: DoorFeatureType) => {
+    switchMap((f: ITiledObject) => {
       if (!f.properties?.requiredKey) {
         return of(true);
       }
@@ -63,29 +53,25 @@ export class DoorFeatureComponent extends TiledFeatureComponent {
   );
   cantUnlock$: Observable<boolean> = this.canUnlock$.pipe(map((value) => !value));
   icon$: Observable<string> = this.feature$.pipe(
-    map((f: DoorFeatureType) => {
+    map((f: ITiledObject) => {
       return f.properties?.icon || '';
     })
   );
   title$: Observable<string> = this.feature$.pipe(
-    map((f: DoorFeatureType) => {
+    map((f: ITiledObject) => {
       return f.properties?.title || '';
     })
   );
   lockedText$: Observable<string> = this.feature$.pipe(
-    map((f: DoorFeatureType) => {
+    map((f: ITiledObject) => {
       return f.properties?.lockedText || '';
     })
   );
   unlockText$: Observable<string> = this.feature$.pipe(
-    map((f: DoorFeatureType) => {
+    map((f: ITiledObject) => {
       return f.properties?.unlockText || '';
     })
   );
-
-  constructor(public store: Store<AppState>) {
-    super();
-  }
 
   enter(object: TileObject): boolean {
     if (!super.enter(object)) {
@@ -104,7 +90,9 @@ export class DoorFeatureComponent extends TiledFeatureComponent {
           if (!canUnlock) {
             return;
           }
-          this.store.dispatch(new GameStateSetKeyDataAction(this.properties.id, true));
+          this.store.dispatch(
+            new GameStateSetKeyDataAction(this.feature?.properties?.id, true)
+          );
         })
       )
       .subscribe();
