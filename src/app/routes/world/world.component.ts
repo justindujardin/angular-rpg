@@ -201,6 +201,7 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
 
   ngOnDestroy(): void {
     this.world.erase(this.scene);
+    this.scene.removeObject(this.map);
     this.scene.removeView(this);
   }
 
@@ -208,6 +209,7 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
     this.canvas = this.canvasElementRef.nativeElement;
     this.camera.point.set(-0.5, -0.5);
     this.scene.addView(this);
+    this.scene.addObject(this.map);
     setTimeout(() => this._onResize(), 1);
   }
 

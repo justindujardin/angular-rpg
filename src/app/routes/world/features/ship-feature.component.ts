@@ -34,11 +34,13 @@ export class ShipFeatureComponent
   implements OnDestroy, AfterViewInit
 {
   ngOnDestroy(): void {
+    super.ngOnDestroy();
     this._subscription?.unsubscribe();
     this._subscription = null;
   }
 
   ngAfterViewInit(): void {
+    super.ngAfterViewInit();
     // Check for boarded state when the feature is initialized.
     this._subscription = this.store
       .select(getGameShipPosition)
