@@ -4,7 +4,7 @@ import { BehaviorSubject, EMPTY, Observable, Subject } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { AppState } from '../../app.model';
 import { CombatService } from '../../models/combat/combat.service';
-import { Entity, EntityWithEquipment } from '../../models/entity/entity.model';
+import { EntityWithEquipment } from '../../models/entity/entity.model';
 import { getXPForLevel } from '../../models/levels';
 import { getEntityEquipment } from '../../models/selectors';
 import { GameWorld } from '../../services/game-world';
@@ -47,13 +47,13 @@ export class PlayerStatsComponent {
     this._showHP$.next(value);
   }
 
-  private _model$: Subject<Entity | null> = new BehaviorSubject<Entity | null>(null);
-  model$: Observable<Entity | null> = this._model$;
+  private _model$ = new BehaviorSubject<EntityWithEquipment | null>(null);
+  model$: Observable<EntityWithEquipment | null> = this._model$;
 
   /**
    * Set the source entity to render stats for
    */
-  @Input() set model(value: Entity | null) {
+  @Input() set model(value: EntityWithEquipment | null) {
     this._model$.next(value);
   }
 
@@ -62,7 +62,7 @@ export class PlayerStatsComponent {
    * access to the stats for calculating things like total attack or defense.
    */
   entityWithEquipment$ = this.model$.pipe(
-    switchMap((entity: Entity) => {
+    switchMap((entity: EntityWithEquipment) => {
       return entity?.eid ? this.store.select(getEntityEquipment(entity.eid)) : EMPTY;
     })
   );
@@ -112,7 +112,7 @@ export class PlayerStatsComponent {
    * The amount of experience needed to progress to the next level.
    */
   nextLevelExp$: Observable<number> = this.model$.pipe(
-    map((entity: Entity) => {
+    map((entity: EntityWithEquipment) => {
       return entity ? getXPForLevel(entity.level + 1) : 0;
     })
   );
@@ -121,7 +121,7 @@ export class PlayerStatsComponent {
    * Percentage of experience gathered toward progressing to the next level.
    */
   nextLevelPercentage$: Observable<number> = this.model$.pipe(
-    map((entity: Entity) => {
+    map((entity: EntityWithEquipment) => {
       if (!entity) {
         return 0;
       }
@@ -140,7 +140,7 @@ export class PlayerStatsComponent {
    * Percentage of health that this player has remaining (0-100)
    */
   healthPercentage$: Observable<number> = this.model$.pipe(
-    map((entity: Entity) => {
+    map((entity: EntityWithEquipment) => {
       return entity ? Math.round((entity.hp / entity.maxhp) * 100) : 0;
     })
   );

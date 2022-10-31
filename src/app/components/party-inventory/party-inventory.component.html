@@ -1,4 +1,4 @@
-<div *ngFor="let current of [currentEntity$ | async]" fxLayout="column">
+<div *ngIf="currentEntity$ | async as current" fxLayout="column">
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
     <button mat-icon-button (click)="previousCharacter()">
       <mat-icon>chevron_left</mat-icon>

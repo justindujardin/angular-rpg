@@ -1,7 +1,7 @@
 <div
   class="status"
   *ngFor="let member of party$ | async"
-  [ngClass]="getMemberClass(member, combat?.focus)"
+  [ngClass]="getMemberClass(member, combat?.focus?.model)"
 >
   <rpg-health-bar [model]="member"> </rpg-health-bar>
   <div class="text">

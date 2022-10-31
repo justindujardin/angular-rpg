@@ -13,6 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+import _ from 'underscore';
 import { SceneObjectBehavior } from '../../../behaviors/scene-object-behavior';
 import { ITemplateMagic } from '../../../models/game-data/game-data.model';
 import { Item } from '../../../models/item';
@@ -25,6 +26,7 @@ export class CombatActionBehavior extends SceneObjectBehavior implements IPlayer
   to: GameEntityObject | null = null;
   spell: ITemplateMagic | null = null;
   item: Item | null = null;
+  _uid: string = _.uniqueId('ca');
 
   getActionName(): string {
     return this.name;

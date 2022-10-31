@@ -120,7 +120,7 @@ export class CombatStateMachineComponent
   private _subscription?: Subscription;
 
   @Input() scene: Scene;
-  @Input() encounter: CombatEncounter;
+  @Input() encounter: CombatEncounter | null;
   @Input() party: QueryList<CombatPlayerComponent>;
   @Input() enemies: QueryList<CombatEnemyComponent>;
 
@@ -137,19 +137,14 @@ export class CombatStateMachineComponent
       .select(getGameInventory)
       .pipe(
         map((inventory: Immutable.List<EntityItemTypes>) => {
-          const items = inventory.filter((i: Item) => i.type === 'item').toList();
-          const weapons = inventory
-            .filter((i: ITemplateWeapon) => i.type === 'weapon')
-            .toList();
+          const items = inventory.filter((i) => i?.type === 'item').toList();
+          const weapons = inventory.filter((i) => i?.type === 'weapon').toList();
           const armors = inventory
-            .filter(
-              (i: ITemplateArmor) =>
-                ['helm', 'boots', 'shield', 'armor'].indexOf(i.type) !== -1
+            .filter((i?) =>
+              ['helm', 'boots', 'shield', 'armor'].includes(i?.type || '')
             )
             .toList();
-          const spells = inventory
-            .filter((i: ITemplateMagic) => i.type === 'spell')
-            .toList();
+          const spells = inventory.filter((i) => i?.type === 'spell').toList();
           return { items, weapons, armors, spells };
         })
       )

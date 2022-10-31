@@ -1,16 +1,16 @@
 import { ElementRef } from '@angular/core';
 import { Point } from '../../core';
 import { NamedMouseElement } from '../../core/input';
-import { ITemplateBaseItem } from '../../models/game-data/game-data.model';
 import { GameEntityObject } from '../../scene/objects/game-entity-object';
 
 /**
  * Describe a selectable menu item for a user input in combat.
  */
-export interface ICombatMenuItem<T = GameEntityObject | ITemplateBaseItem> {
+export interface ICombatMenuItem {
   select(): any;
   label: string;
-  source: T;
+  id: string;
+  source?: GameEntityObject;
 }
 
 export interface ICombatDamageSummary {

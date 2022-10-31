@@ -1,14 +1,14 @@
 <section
   class="hero-card"
   *ngFor="let model of [model$ | async]"
-  [class.dead]="model?.hp <= 0"
+  [class.dead]="(model?.hp || 0) <= 0"
   fxLayout="column"
   fxLayoutAlign="space-between center"
 >
-  <h3 class="name" [innerText]="model.name"></h3>
+  <h3 class="name" [innerText]="model?.name"></h3>
   <rpg-sprite
     class="image"
-    [name]="model.icon"
+    [name]="model?.icon || null"
     frame="7"
     width="64"
     height="72"

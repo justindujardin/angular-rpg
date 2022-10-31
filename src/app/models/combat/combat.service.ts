@@ -8,12 +8,8 @@ import { getMapUrl } from '../../core/api';
 import { CombatantTypes } from '../base-entity';
 import { EntityWithEquipment } from '../entity/entity.model';
 import { EntityItemTypes } from '../entity/entity.reducer';
-import {
-  ITemplateArmor,
-  ITemplateBaseItem,
-  ITemplateMagic,
-  ITemplateWeapon,
-} from '../game-data/game-data.model';
+import { ITemplateBaseItem, ITemplateMagic } from '../game-data/game-data.model';
+import { Armor, Weapon } from '../item';
 import {
   calculateDamage,
   calculateMagicEffects,
@@ -100,7 +96,7 @@ export class CombatService {
    */
   castSpell(config: ICombatCastSpellConfig): IMagicEffects {
     const magicTargets: ICalculateMagicTarget[] = config.targets.map(
-      (entity: CombatantTypes) => {
+      (entity: CombatantTypes): ICalculateMagicTarget => {
         return {
           armors: this.getArmors(entity),
           entity,
@@ -124,8 +120,8 @@ export class CombatService {
     return calculateMagicEffects(dmgConfig);
   }
 
-  getArmors(member: CombatantTypes): ITemplateArmor[] {
-    let armors: ITemplateArmor[] = [];
+  getArmors(member: CombatantTypes): Armor[] {
+    let armors: Armor[] = [];
     const equipped = member as EntityWithEquipment;
     if (equipped.shield) {
       armors.push(equipped.shield);
@@ -144,10 +140,10 @@ export class CombatService {
     }
     return armors;
   }
-  getWeapons(member: CombatantTypes | null): ITemplateWeapon[] {
+  getWeapons(member: CombatantTypes | null): Weapon[] {
     // NOTE: This only deals with a single weapon, but returns an array
     //  so it's easy to add dual-weapons later if it's desirable.
-    let weapons: ITemplateWeapon[] = [];
+    let weapons: Weapon[] = [];
     const equipped = member as EntityWithEquipment | null;
     if (equipped?.weapon) {
       weapons.push(equipped.weapon);

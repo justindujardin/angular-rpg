@@ -65,7 +65,7 @@ export class MapFeatureComponent
 
   protected assertFeature() {
     if (!this.feature?.properties) {
-      throw new Error('feature lacks valid data or properties');
+      throw new Error(`feature(${this.feature?.name}) lacks valid data or properties`);
     }
   }
 

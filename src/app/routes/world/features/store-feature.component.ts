@@ -5,6 +5,7 @@ import {
   Output,
   ViewEncapsulation,
 } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ARMOR_DATA } from 'app/models/game-data/armors';
 import { ITEMS_DATA } from 'app/models/game-data/items';
@@ -101,9 +102,9 @@ interface IEquipmentDifference {
   styleUrls: ['./store-feature.component.scss'],
   templateUrl: './store-feature.component.html',
 })
-export abstract class StoreFeatureComponent extends MapFeatureComponent {
+export class StoreFeatureComponent extends MapFeatureComponent {
   /** The store items category must be set in a subclass */
-  abstract category: StoreInventoryCategories;
+  category: StoreInventoryCategories;
 
   @Output() onClose = new EventEmitter();
   active$: Observable<boolean>;
@@ -195,6 +196,8 @@ export abstract class StoreFeatureComponent extends MapFeatureComponent {
       }
     )
   );
+
+  dataSource$ = this.inventory$.pipe(map((data) => new MatTableDataSource(data)));
 
   /** Determine if the UI is in a selling state. */
   selling$: Observable<boolean> = this._selling$;

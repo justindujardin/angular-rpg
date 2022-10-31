@@ -15,7 +15,6 @@ import {
   sliceEntityItemIds,
   sliceEntityItems,
 } from './entity/entity.reducer';
-import { ITemplateArmor, ITemplateWeapon } from './game-data/game-data.model';
 import {
   sliceBattleCounter,
   sliceBoardedShip,
@@ -28,7 +27,7 @@ import {
   slicePosition,
   sliceShipPosition,
 } from './game-state/game-state.reducer';
-import { Item } from './item';
+import { Armor, Weapon } from './item';
 import { sliceSpritesById, sliceSpritesLoaded } from './sprites/sprites.reducer';
 import { assertTrue } from './util';
 
@@ -122,18 +121,18 @@ export const getEntityItemIds = createSelector(sliceEntitiesState, sliceEntityIt
 /** Resolve equipment slots to their item entity objects for representation in the UI */
 export const getEntityEquipment = (
   entityId: string
-): Selector<AppState, EntityWithEquipment | null> => {
+): Selector<AppState, EntityWithEquipment> => {
   return createSelector(getEntityById(entityId), getEntityItemById, (entity, items) => {
     if (!entity) {
-      return null;
+      throw new Error(`getEntityEquipment: invalid entity id: ${entityId}`);
     }
     const result: Partial<EntityWithEquipment> = {
-      armor: items.get(entity.armor || '') as ITemplateArmor,
-      helm: items.get(entity.helm || '') as ITemplateArmor,
-      shield: items.get(entity.shield || '') as ITemplateArmor,
-      accessory: items.get(entity.accessory || '') as ITemplateArmor,
-      boots: items.get(entity.boots || '') as ITemplateArmor,
-      weapon: items.get(entity.weapon || '') as ITemplateWeapon,
+      armor: items.get(entity.armor || '') as Armor,
+      helm: items.get(entity.helm || '') as Armor,
+      shield: items.get(entity.shield || '') as Armor,
+      accessory: items.get(entity.accessory || '') as Armor,
+      boots: items.get(entity.boots || '') as Armor,
+      weapon: items.get(entity.weapon || '') as Weapon,
     };
     return Object.assign({}, entity, result) as EntityWithEquipment;
   });
@@ -151,12 +150,12 @@ export const getCombatEntityEquipment = (
       return null;
     }
     const result: Partial<EntityWithEquipment> = {
-      armor: items.get(entity.armor || '') as ITemplateArmor,
-      helm: items.get(entity.helm || '') as ITemplateArmor,
-      shield: items.get(entity.shield || '') as ITemplateArmor,
-      accessory: items.get(entity.accessory || '') as ITemplateArmor,
-      boots: items.get(entity.boots || '') as ITemplateArmor,
-      weapon: items.get(entity.weapon || '') as ITemplateWeapon,
+      armor: items.get(entity.armor || '') as Armor,
+      helm: items.get(entity.helm || '') as Armor,
+      shield: items.get(entity.shield || '') as Armor,
+      accessory: items.get(entity.accessory || '') as Armor,
+      boots: items.get(entity.boots || '') as Armor,
+      weapon: items.get(entity.weapon || '') as Weapon,
     };
     return Object.assign({}, entity, result) as EntityWithEquipment;
   });
@@ -201,7 +200,7 @@ export const getGameInventory = createSelector(
   (
     entities: Immutable.Map<string, EntityItemTypes>,
     ids: Immutable.List<string>
-  ): Immutable.List<Item> => {
+  ): Immutable.List<EntityItemTypes> => {
     return ids
       .map((id) => {
         const result = entities.get(id || '');
@@ -211,7 +210,7 @@ export const getGameInventory = createSelector(
           result,
           `${id} is present in inventory but not in entity collection. Did you forget to dispatch EntityAddItemAction?`
         );
-        return result as Item;
+        return result;
       })
       .toList();
   }
@@ -230,12 +229,12 @@ export const getGamePartyWithEquipment = createSelector(
       .map((entity) => {
         assertTrue(entity, 'invalid entity in party');
         const result: Partial<EntityWithEquipment> = {
-          armor: items.get(entity.armor || '') as ITemplateArmor,
-          helm: items.get(entity.helm || '') as ITemplateArmor,
-          shield: items.get(entity.shield || '') as ITemplateArmor,
-          accessory: items.get(entity.accessory || '') as ITemplateArmor,
-          boots: items.get(entity.boots || '') as ITemplateArmor,
-          weapon: items.get(entity.weapon || '') as ITemplateWeapon,
+          armor: items.get(entity.armor || '') as Armor,
+          helm: items.get(entity.helm || '') as Armor,
+          shield: items.get(entity.shield || '') as Armor,
+          accessory: items.get(entity.accessory || '') as Armor,
+          boots: items.get(entity.boots || '') as Armor,
+          weapon: items.get(entity.weapon || '') as Weapon,
         };
         return Object.assign({}, entity, result) as EntityWithEquipment;
       })

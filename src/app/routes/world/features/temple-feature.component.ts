@@ -13,9 +13,9 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
 import * as _ from 'underscore';
 import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
-import { Entity } from '../../../models/entity/entity.model';
+import { Entity, EntityWithEquipment } from '../../../models/entity/entity.model';
 import { GameStateHealPartyAction } from '../../../models/game-state/game-state.actions';
-import { getGameParty, getGamePartyGold } from '../../../models/selectors';
+import { getGamePartyGold, getGamePartyWithEquipment } from '../../../models/selectors';
 import { assertTrue } from '../../../models/util';
 import { MapFeatureComponent } from '../map-feature.component';
 
@@ -35,8 +35,9 @@ export class TempleFeatureComponent
   @Input() party: Entity[];
 
   partyGold$: Observable<number> = this.store.select(getGamePartyGold);
-  party$: Observable<Immutable.List<Entity | undefined>> =
-    this.store.select(getGameParty);
+  party$: Observable<EntityWithEquipment[]> = this.store
+    .select(getGamePartyWithEquipment)
+    .pipe(map((f) => f.toJS()));
 
   name$: Observable<string> = this.feature$.pipe(
     map((data: ITiledObject | null) => {

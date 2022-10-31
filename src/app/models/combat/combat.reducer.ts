@@ -82,10 +82,14 @@ export function combatReducer(
         stateGroup = 'party';
         groupIndex = state.party.findIndex(matchDefender);
       }
-      assertTrue(groupIndex !== -1, 'target not found in enemies or party lists');
+      if (groupIndex === -1) {
+        return state;
+      }
       return state.update(stateGroup, (items: List<CombatantTypes>) => {
         const current = items.get(groupIndex);
-        assertTrue(current, 'invalid target for attack action');
+        if (!current) {
+          return items;
+        }
         let statuses = Immutable.Set<string>(current?.status?.slice());
         if (isSet) {
           statuses = statuses.concat(data.classes).toSet();

@@ -9,7 +9,6 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { List } from 'immutable';
 import { Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { IPoint, Point } from '../../../app/core/point';
@@ -51,15 +50,19 @@ export class CombatMapComponent
 {
   private _tileRenderer: TileMapRenderer = new TileMapRenderer();
 
-  @Input() scene: Scene | null;
+  @Input() scene: Scene;
   @Input() combat: any; // _ TODO: This creates a nasty circular import situation
 
   @ViewChild(CombatCameraBehaviorComponent)
   camera: CombatCameraBehaviorComponent;
 
-  enemies$: Observable<List<IEnemy>> = this.store.select(getCombatEncounterEnemies);
+  enemies$: Observable<IEnemy[]> = this.store
+    .select(getCombatEncounterEnemies)
+    .pipe(map((f) => f.toJS()));
 
-  party$: Observable<List<IPartyMember>> = this.store.select(getCombatEncounterParty);
+  party$: Observable<IPartyMember[]> = this.store
+    .select(getCombatEncounterParty)
+    .pipe(map((f) => f.toJS()));
 
   encounter$: Observable<CombatState> = this.store.select(sliceCombatState);
 

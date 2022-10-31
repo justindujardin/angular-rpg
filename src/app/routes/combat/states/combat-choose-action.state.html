@@ -2,7 +2,7 @@
   <li
     *ngFor="let item of items"
     [attr.data-sectionvalue]="item"
-    [class.selected]="pointAt?._uid == item.source?._uid"
+    [class.selected]="pointAt?.id == item.id"
     (click)="item.select()"
     (mouseover)="pointAtItem(item)"
     [innerText]="item.label"

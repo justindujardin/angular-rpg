@@ -95,7 +95,7 @@ export class DebugMenuComponent implements AfterViewInit {
     this.store.select(getGameParty);
   gameMap$: Observable<string> = this.store.select(getGameMap);
   displayedColumns: string[] = [];
-  dataSource: MatTableDataSource<DataSourceTypes> | null = null;
+  dataSource: MatTableDataSource<DataSourceTypes> = new MatTableDataSource([]);
 
   @ViewChild(MatSort) sort: MatSort;
 

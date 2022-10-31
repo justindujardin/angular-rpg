@@ -10,7 +10,9 @@ import { CombatAttackBehaviorComponent } from './behaviors/actions/combat-attack
 @Component({
   selector: 'combat-enemy',
   template: `
-    <sprite-render-behavior [icon]="(model$ | async)?.icon"></sprite-render-behavior>
+    <sprite-render-behavior
+      [icon]="(model$ | async)?.icon || null"
+    ></sprite-render-behavior>
     <combat-attack-behavior [combat]="combat"></combat-attack-behavior>
     <ng-content></ng-content>
   `,

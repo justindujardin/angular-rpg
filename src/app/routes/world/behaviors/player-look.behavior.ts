@@ -18,6 +18,7 @@ import { CollisionBehaviorComponent } from '../../../behaviors/collision.behavio
 import { TickedBehavior } from '../../../behaviors/ticked-behavior';
 import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
 import { TileObject } from '../../../scene/tile-object';
+import { MapFeatureComponent } from '../map-feature.component';
 import { PlayerBehaviorComponent } from './player-behavior';
 
 /**
@@ -33,17 +34,17 @@ export class PlayerTriggerBehaviorComponent extends TickedBehavior {
   collider: CollisionBehaviorComponent | null = null;
   player: PlayerBehaviorComponent | null = null;
 
-  private featureObject: GameFeatureObject | null = null;
+  private featureObject: MapFeatureComponent | null = null;
 
   /**
    * The player has touched a game feature.
    */
-  @Output() onLook: EventEmitter<GameFeatureObject> = new EventEmitter();
+  @Output() onLook: EventEmitter<MapFeatureComponent> = new EventEmitter();
 
   /**
    * The player was touching a game feature, and is now leaving.
    */
-  @Output() onLookAway: EventEmitter<GameFeatureObject> = new EventEmitter();
+  @Output() onLookAway: EventEmitter<MapFeatureComponent> = new EventEmitter();
 
   syncBehavior(): boolean {
     super.syncBehavior();
@@ -61,7 +62,7 @@ export class PlayerTriggerBehaviorComponent extends TickedBehavior {
     if (!this.player || !this.collider) {
       return;
     }
-    const results: GameFeatureObject[] = [];
+    const results: MapFeatureComponent[] = [];
     const headingX: number = this.host.point.x + this.player.heading.x;
     const headingY: number = this.host.point.y + this.player.heading.y;
     const isTouching: boolean = this.collider.collide(
@@ -70,7 +71,7 @@ export class PlayerTriggerBehaviorComponent extends TickedBehavior {
       GameFeatureObject,
       results
     );
-    const touched: GameFeatureObject = results[0];
+    const touched = results[0];
     const currentTouchId: string | null = this.featureObject?._uid || null;
     const touchChanged: boolean = !!(touched && touched._uid !== currentTouchId);
     // No collisions for this tick

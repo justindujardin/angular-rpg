@@ -8,6 +8,7 @@ import { DialogFeatureComponent } from './dialog-feature.component';
 import { DoorFeatureComponent } from './door-feature.component';
 import { PortalFeatureComponent } from './portal-feature.component';
 import { ShipFeatureComponent } from './ship-feature.component';
+import { StoreFeatureComponent } from './store-feature.component';
 import { ArmorsStoreFeatureComponent } from './stores/armors-store-feature.component';
 import { ItemsStoreFeatureComponent } from './stores/items-store-feature.component';
 import { MagicsStoreFeatureComponent } from './stores/magics-store-feature.component';
@@ -40,6 +41,7 @@ export const WORLD_MAP_FEATURES = [
   ItemsStoreFeatureComponent,
   MagicsStoreFeatureComponent,
   WeaponsStoreFeatureComponent,
+  StoreFeatureComponent,
 ];
 
 export const WORLD_MAP_FEATURES_IMPORTS = [
