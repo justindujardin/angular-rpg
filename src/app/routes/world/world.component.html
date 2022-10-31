@@ -2,19 +2,108 @@
 <party-menu></party-menu>
 
 <map-feature-input-behavior [scene]="scene" #input></map-feature-input-behavior>
-<map-feature
-  [class]="feature.class"
-  *ngFor="let feature of activeFeatures$ | async"
-  [tiledMap]="resource$ | async"
-  [tileMap]="self.map"
-  [scene]="scene"
-  (onClose)="player.escapeFeature()"
-  [feature]="feature"
-></map-feature>
+<section
+  [class]="feat.class"
+  *ngFor="let feat of activeFeatures$ | async"
+  [ngSwitch]="feat.class"
+>
+  <portal-feature
+    [feature]="feat"
+    [tileMap]="map"
+    [scene]="scene"
+    #feature
+    *ngSwitchCase="'PortalFeatureComponent'"
+  ></portal-feature>
+  <block-feature
+    [feature]="feat"
+    [tileMap]="map"
+    [scene]="scene"
+    #feature
+    *ngSwitchCase="'BlockFeatureComponent'"
+  ></block-feature>
+  <dialog-feature
+    [feature]="feat"
+    [tileMap]="map"
+    [scene]="scene"
+    (onClose)="player.escapeFeature()"
+    #feature
+    *ngSwitchCase="'DialogFeatureComponent'"
+  ></dialog-feature>
+  <door-feature
+    [feature]="feat"
+    [tileMap]="map"
+    [scene]="scene"
+    (onClose)="player.escapeFeature()"
+    #feature
+    *ngSwitchCase="'DoorFeatureComponent'"
+  ></door-feature>
+  <temple-feature
+    [feature]="feat"
+    [tileMap]="map"
+    [scene]="scene"
+    (onClose)="player.escapeFeature()"
+    #feature
+    *ngSwitchCase="'TempleFeatureComponent'"
+  ></temple-feature>
+  <ship-feature
+    [feature]="feat"
+    [tileMap]="map"
+    [scene]="scene"
+    #feature
+    *ngSwitchCase="'ShipFeatureComponent'"
+  ></ship-feature>
+  <treasure-feature
+    [feature]="feat"
+    [tileMap]="map"
+    [scene]="scene"
+    #feature
+    *ngSwitchCase="'TreasureFeatureComponent'"
+  ></treasure-feature>
+  <combat-feature
+    [feature]="feat"
+    [tileMap]="map"
+    [scene]="scene"
+    #feature
+    *ngSwitchCase="'CombatFeatureComponent'"
+  ></combat-feature>
+  <!-- Stores -->
+  <armors-store-feature
+    [feature]="feat"
+    [tileMap]="map"
+    [scene]="scene"
+    (onClose)="player.escapeFeature()"
+    #feature
+    *ngSwitchCase="'ArmorsStoreFeatureComponent'"
+  ></armors-store-feature>
+  <items-store-feature
+    [feature]="feat"
+    [tileMap]="map"
+    [scene]="scene"
+    (onClose)="player.escapeFeature()"
+    #feature
+    *ngSwitchCase="'ItemsStoreFeatureComponent'"
+  ></items-store-feature>
+  <magics-store-feature
+    [feature]="feat"
+    [tileMap]="map"
+    [scene]="scene"
+    (onClose)="player.escapeFeature()"
+    #feature
+    *ngSwitchCase="'MagicsStoreFeatureComponent'"
+  ></magics-store-feature>
+  <weapons-store-feature
+    [feature]="feat"
+    [tileMap]="map"
+    [scene]="scene"
+    (onClose)="player.escapeFeature()"
+    #feature
+    *ngSwitchCase="'WeaponsStoreFeatureComponent'"
+  ></weapons-store-feature>
+</section>
 <world-player
   #player
   *ngIf="notTraveling$ | async"
-  [map]="self.map"
+  [map]="map"
   [scene]="scene"
   [point]="(renderPoint$ | async) || zeroPoint"
   [model]="partyLeader$ | async"

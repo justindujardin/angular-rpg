@@ -2,12 +2,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input,
   Output,
   ViewEncapsulation,
 } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { Store } from '@ngrx/store';
 import { ARMOR_DATA } from 'app/models/game-data/armors';
 import { ITEMS_DATA } from 'app/models/game-data/items';
 import { MAGIC_DATA } from 'app/models/game-data/magic';
@@ -15,8 +13,6 @@ import { WEAPONS_DATA } from 'app/models/game-data/weapons';
 import * as Immutable from 'immutable';
 import { BehaviorSubject, from, Observable } from 'rxjs';
 import { combineLatest, first, map, withLatestFrom } from 'rxjs/operators';
-import { AppState } from '../../../app.model';
-import { NotificationService } from '../../../components/notification/notification.service';
 import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
 import { IEntityObject, IPartyMember } from '../../../models/base-entity';
 import {
@@ -49,9 +45,7 @@ import {
   sliceGameState,
 } from '../../../models/selectors';
 import { assertTrue } from '../../../models/util';
-import { IScene } from '../../../scene/scene.model';
-import { RPGGame } from '../../../services/rpg-game';
-import { TiledFeatureComponent } from '../map-feature.component';
+import { MapFeatureComponent } from '../map-feature.component';
 
 /**
  * Given a list of potential items to sell, filter to only ones that can be bartered in this store.
@@ -107,25 +101,12 @@ interface IEquipmentDifference {
   styleUrls: ['./store-feature.component.scss'],
   templateUrl: './store-feature.component.html',
 })
-export abstract class StoreFeatureComponent extends TiledFeatureComponent {
+export abstract class StoreFeatureComponent extends MapFeatureComponent {
   /** The store items category must be set in a subclass */
   abstract category: StoreInventoryCategories;
 
-  // @ts-ignore
-  @Input() feature: ITiledObject | null;
-  @Input() scene: IScene;
-  // @ts-ignore
-  @Input() active: boolean;
   @Output() onClose = new EventEmitter();
   active$: Observable<boolean>;
-
-  constructor(
-    public game: RPGGame,
-    public notify: NotificationService,
-    public store: Store<AppState>
-  ) {
-    super();
-  }
 
   /** @internal */
   private _weapons$: Observable<ITemplateWeapon[]> = from([WEAPONS_DATA]);
@@ -141,7 +122,7 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
   /**
    * The name of this (fine) establishment.
    */
-  name$: Observable<string> = this.feature$.pipe(map((f: ITiledObject) => f.name));
+  name$: Observable<string> = this.feature$.pipe(map((f: ITiledObject<any>) => f.name));
 
   /**
    * The amount of gold the party has to spend
@@ -174,14 +155,17 @@ export abstract class StoreFeatureComponent extends TiledFeatureComponent {
         this.partyInventory$,
       ],
       (
-        weapons: ITemplateWeapon[],
-        armors: ITemplateArmor[],
-        items: ITemplateBaseItem[],
-        magics: ITemplateMagic[],
-        feature: ITiledObject,
+        weapons: ITemplateWeapon[] | null,
+        armors: ITemplateArmor[] | null,
+        items: ITemplateBaseItem[] | null,
+        magics: ITemplateMagic[] | null,
+        feature: ITiledObject<any> | null,
         selling: boolean,
-        partyInventory: Immutable.List<Item>
+        partyInventory: Immutable.List<Item> | null
       ): ITemplateBaseItem[] => {
+        if (!weapons || !armors || !items || !magics || !feature || !partyInventory) {
+          return [];
+        }
         if (selling) {
           return partyInventory.toJS() as ITemplateBaseItem[];
         }

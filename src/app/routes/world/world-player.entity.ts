@@ -13,7 +13,6 @@ import { SceneObjectBehavior } from '../../behaviors/scene-object-behavior';
 import { Point, Rect } from '../../core';
 import { Entity } from '../../models/entity/entity.model';
 import { GameEntityObject } from '../../scene/objects/game-entity-object';
-import { GameFeatureObject } from '../../scene/objects/game-feature-object';
 import { TileObjectRenderer } from '../../scene/render/tile-object-renderer';
 import { Scene } from '../../scene/scene';
 import { SceneView } from '../../scene/scene-view';
@@ -25,7 +24,7 @@ import { PlayerCameraBehaviorComponent } from './behaviors/player-camera.behavio
 import { PlayerTriggerBehaviorComponent } from './behaviors/player-look.behavior';
 import { PlayerMapPathBehaviorComponent } from './behaviors/player-map-path.behavior';
 import { PlayerRenderBehaviorComponent } from './behaviors/player-render.behavior';
-import { TiledFeatureComponent } from './map-feature.component';
+import { MapFeatureComponent } from './map-feature.component';
 
 @Component({
   selector: 'world-player',
@@ -36,6 +35,7 @@ import { TiledFeatureComponent } from './map-feature.component';
     <player-map-path-behavior [tileMap]="map" #path></player-map-path-behavior>
     <player-behavior
       (onCompleteMove)="encounter.completeMove($event)"
+      [map]="map"
       #player
     ></player-behavior>
     <combat-encounter-behavior
@@ -76,6 +76,10 @@ export class WorldPlayerComponent
 
   @ViewChild(PlayerBehaviorComponent) movable: PlayerBehaviorComponent;
 
+  constructor() {
+    super();
+  }
+
   ngAfterViewInit(): void {
     this.setSprite(this.model?.icon);
     this.scene.addObject(this);
@@ -93,9 +97,7 @@ export class WorldPlayerComponent
   }
 
   /** The player has touched a game feature. */
-  onFeatureLook(event: GameFeatureObject) {
-    const feature: TiledFeatureComponent | null =
-      event.findBehavior<TiledFeatureComponent>(TiledFeatureComponent);
+  onFeatureLook(feature: MapFeatureComponent) {
     if (feature) {
       feature.enter(this);
       this.feature = feature;
@@ -103,30 +105,28 @@ export class WorldPlayerComponent
   }
 
   /** The player was touching a game feature, and is now leaving. */
-  onFeatureLookAway(event: GameFeatureObject) {
-    const feature: TiledFeatureComponent | null =
-      event.findBehavior(TiledFeatureComponent);
+  onFeatureLookAway(feature: MapFeatureComponent) {
     if (feature) {
       feature.exit(this);
     }
     this.feature = null;
   }
 
-  private _featureComponent$ = new BehaviorSubject<TiledFeatureComponent | null>(null);
+  private _featureComponent$ = new BehaviorSubject<MapFeatureComponent | null>(null);
 
-  featureComponent$: Observable<TiledFeatureComponent | null> = this._featureComponent$;
+  featureComponent$: Observable<MapFeatureComponent | null> = this._featureComponent$;
 
-  get feature(): TiledFeatureComponent | null {
+  get feature(): MapFeatureComponent | null {
     return this._featureComponent$.value;
   }
 
-  set feature(value: TiledFeatureComponent | null) {
+  set feature(value: MapFeatureComponent | null) {
     this._featureComponent$.next(value);
   }
 
   escapeFeature() {
     if (this.feature) {
-      this.onFeatureLookAway(this.feature.host);
+      this.onFeatureLookAway(this.feature);
     }
   }
 

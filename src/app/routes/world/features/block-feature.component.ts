@@ -13,23 +13,15 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { Component, Input } from '@angular/core';
-import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
+import { Component } from '@angular/core';
 import { TileObject } from '../../../scene/tile-object';
-import { TiledFeatureComponent } from '../map-feature.component';
+import { MapFeatureComponent } from '../map-feature.component';
 
 @Component({
   selector: 'block-feature',
   template: ` <ng-content></ng-content>`,
 })
-export class BlockFeatureComponent extends TiledFeatureComponent {
-  // @ts-ignore
-  @Input() feature: ITiledObject | null;
-
-  constructor() {
-    super();
-  }
-
+export class BlockFeatureComponent extends MapFeatureComponent {
   entered(object: TileObject): boolean {
     this.assertFeature();
     return false;

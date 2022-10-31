@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BasePlayerComponent } from '../../../behaviors/base-player.behavior';
 import { IMoveDescription } from '../../../behaviors/movable-behavior';
 import { ITiledLayer } from '../../../core/resources/tiled/tiled.model';
@@ -28,6 +28,7 @@ import { TileMap } from '../../../scene/tile-map';
 })
 export class PlayerBehaviorComponent extends BasePlayerComponent {
   host: GameEntityObject;
+  @Input()
   map: TileMap | null = null;
 
   static COLLIDE_TYPES: string[] = [

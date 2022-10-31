@@ -61,7 +61,7 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
   @ViewChild(DebugMenuComponent) debugMenu: DebugMenuComponent;
   @ViewChild(WorldPlayerComponent) player: WorldPlayerComponent;
   @ViewChildren('input') behaviors: QueryList<Behavior>;
-  @ViewChildren(MapFeatureComponent) mapFeatures: QueryList<MapFeatureComponent>;
+  @ViewChildren('feature') mapFeatures: QueryList<MapFeatureComponent>;
   /**
    * Whether to render debug view information
    */
@@ -271,8 +271,8 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
     // Map renders features
     if (this.map) {
       this.mapFeatures.forEach((mapFeatureComponent: MapFeatureComponent) => {
-        if (mapFeatureComponent.host) {
-          const data = mapFeatureComponent.host;
+        if (mapFeatureComponent) {
+          const data = mapFeatureComponent;
           this.objectRenderer.render(
             data,
             data.renderPoint || data.point,

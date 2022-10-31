@@ -14,12 +14,9 @@
  limitations under the License.
  */
 import { AfterViewInit, Component, Input } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { getArmorById } from 'app/models/game-data/armors';
 import { getItemById } from 'app/models/game-data/items';
 import { getWeaponById } from 'app/models/game-data/weapons';
-import { AppState } from '../../../app.model';
-import { NotificationService } from '../../../components/notification/notification.service';
 import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
 import { EntityAddItemAction } from '../../../models/entity/entity.actions';
 import {
@@ -32,27 +29,24 @@ import {
   GameStateSetKeyDataAction,
 } from '../../../models/game-state/game-state.actions';
 import { Item } from '../../../models/item';
+import { assertTrue } from '../../../models/util';
 import { TileObject } from '../../../scene/tile-object';
-import { TiledFeatureComponent } from '../map-feature.component';
+import { MapFeatureComponent } from '../map-feature.component';
 @Component({
   selector: 'treasure-feature',
   template: ` <ng-content></ng-content>`,
 })
 export class TreasureFeatureComponent
-  extends TiledFeatureComponent
+  extends MapFeatureComponent
   implements AfterViewInit
 {
   // Used as a recursion guard while the async treasure claiming process happens
   private taken = false;
-  // @ts-ignore
   @Input() feature: ITiledObject | null;
 
-  constructor(public store: Store<AppState>, public notify: NotificationService) {
-    super();
-  }
-
   ngAfterViewInit() {
-    if (!this.properties.id) {
+    super.ngAfterViewInit();
+    if (!this.feature?.properties.id) {
       throw new Error('treasure must always have a unique lower-snake-case id');
     }
   }
@@ -62,11 +56,13 @@ export class TreasureFeatureComponent
       return true;
     }
     this.taken = true;
-    if (typeof this.properties.gold !== 'undefined') {
-      this.store.dispatch(new GameStateAddGoldAction(this.properties.gold));
-      this.notify.show(`You found ${this.properties.gold} gold!`, undefined, 0);
-    } else if (typeof this.properties.item === 'string') {
-      const templateId = this.properties.item;
+    const properties = this.feature?.properties;
+    assertTrue(properties, 'treasure has no properties');
+    if (typeof properties.gold !== 'undefined') {
+      this.store.dispatch(new GameStateAddGoldAction(properties.gold));
+      this.notify.show(`You found ${properties.gold} gold!`, undefined, 0);
+    } else if (typeof properties.item === 'string') {
+      const templateId = properties.item;
       let template: ITemplateBaseItem | null = getItemById(templateId);
       if (!template) {
         template = getWeaponById(templateId);
@@ -75,16 +71,16 @@ export class TreasureFeatureComponent
         template = getArmorById(templateId);
       }
       if (!template) {
-        throw new Error('could not find item template for id: ' + this.properties.item);
+        throw new Error('could not find item template for id: ' + properties.item);
       }
       const itemInstance = instantiateEntity<Item>(template);
       this.store.dispatch(new EntityAddItemAction(itemInstance));
       this.store.dispatch(new GameStateAddInventoryAction(itemInstance));
       this.notify.show(`You found ${template.name}!`, undefined, 0);
-    } else if (typeof this.properties.text === 'string') {
-      this.notify.show(`You found ${this.properties.text}!`, undefined, 0);
+    } else if (typeof properties.text === 'string') {
+      this.notify.show(`You found ${properties.text}!`, undefined, 0);
     }
-    this.store.dispatch(new GameStateSetKeyDataAction(this.properties.id, true));
+    this.store.dispatch(new GameStateSetKeyDataAction(properties.id, true));
     return true;
   }
 }

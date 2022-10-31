@@ -6,8 +6,8 @@
 
     <section fxLayout="row" fxFlex fxLayoutAlign="space-around center">
       <div flex fxLayout="column" fxLayoutAlign="center center">
-        <rpg-sprite class="image" [name]="current.icon" frame="7"></rpg-sprite>
-        <span>{{ current.name }}</span>
+        <rpg-sprite class="image" [name]="current?.icon || null" frame="7"></rpg-sprite>
+        <span>{{ current?.name }}</span>
       </div>
       <div>
         <player-stats

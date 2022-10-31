@@ -8,21 +8,16 @@ import {
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { Store } from '@ngrx/store';
 import * as Immutable from 'immutable';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
 import * as _ from 'underscore';
-import { AppState } from '../../../app.model';
-import { NotificationService } from '../../../components/notification/notification.service';
 import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
 import { Entity } from '../../../models/entity/entity.model';
 import { GameStateHealPartyAction } from '../../../models/game-state/game-state.actions';
 import { getGameParty, getGamePartyGold } from '../../../models/selectors';
 import { assertTrue } from '../../../models/util';
-import { IScene } from '../../../scene/scene.model';
-import { RPGGame } from '../../../services/rpg-game';
-import { TiledFeatureComponent } from '../map-feature.component';
+import { MapFeatureComponent } from '../map-feature.component';
 
 @Component({
   selector: 'temple-feature',
@@ -32,47 +27,34 @@ import { TiledFeatureComponent } from '../map-feature.component';
   templateUrl: './temple-feature.component.html',
 })
 export class TempleFeatureComponent
-  extends TiledFeatureComponent
+  extends MapFeatureComponent
   implements OnInit, OnDestroy
 {
+  @Input() feature: ITiledObject | null = null;
   @Output() onClose = new EventEmitter();
-  @Input() scene: IScene;
-  // @ts-ignore
-  @Input() active: boolean;
   @Input() party: Entity[];
-  // @ts-ignore
-  @Input() feature: ITiledObject | null;
-  active$: Observable<boolean>;
 
   partyGold$: Observable<number> = this.store.select(getGamePartyGold);
   party$: Observable<Immutable.List<Entity | undefined>> =
     this.store.select(getGameParty);
 
   name$: Observable<string> = this.feature$.pipe(
-    map((data: ITiledObject) => {
-      return data.properties.name;
+    map((data: ITiledObject | null) => {
+      return data?.name || 'temple';
     })
   );
 
   icon$: Observable<string> = this.feature$.pipe(
-    map((data: ITiledObject) => {
-      return data.properties.icon;
+    map((data: ITiledObject | null) => {
+      return data?.properties?.icon;
     })
   );
 
   cost$: Observable<number> = this.feature$.pipe(
-    map((data: ITiledObject) => {
-      return parseInt(data.properties.cost, 10);
+    map((data: ITiledObject | null) => {
+      return parseInt(data?.properties?.cost, 10);
     })
   );
-
-  constructor(
-    public game: RPGGame,
-    public store: Store<AppState>,
-    public notify: NotificationService
-  ) {
-    super();
-  }
 
   public _onRest$ = new Subject<void>();
   private _onRestSubscription$: Subscription;

@@ -53,7 +53,7 @@ export class PlayerStatsComponent {
   /**
    * Set the source entity to render stats for
    */
-  @Input() set model(value: Entity) {
+  @Input() set model(value: Entity | null) {
     this._model$.next(value);
   }
 

@@ -14,6 +14,7 @@
  limitations under the License.
  */
 
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ITiledObject } from '../../core/resources/tiled/tiled.model';
 import { GameWorld } from '../../services/game-world';
 import { SceneView } from '../scene-view';
@@ -22,18 +23,33 @@ import { TileObject } from '../tile-object';
 
 export class GameFeatureObject extends TileObject {
   world: GameWorld;
-  feature: ITiledObject;
 
-  constructor(options: ITiledObject, public tileMap: TileMap) {
+  feature: ITiledObject | null;
+
+  setFeature(value: ITiledObject | null) {
+    if (value?.gid) {
+      this.gid = value.gid;
+    }
+    if (value?.properties?.icon) {
+      this.icon = value.properties.icon;
+    }
+    if (value?.x) {
+      this.point.x = Math.round(value.x / SceneView.UNIT);
+    }
+    if (value?.y) {
+      this.point.y = Math.round(value.y / SceneView.UNIT);
+    }
+    this._feature$.next(value);
+  }
+
+  protected _feature$ = new BehaviorSubject<ITiledObject | null>(null);
+  feature$: Observable<ITiledObject | null> = this._feature$;
+
+  constructor(
+    feature: ITiledObject | null = null,
+    public tileMap: TileMap | null = null
+  ) {
     super();
-    this.feature = options;
-    if (options.gid) {
-      this.gid = options.gid;
-    }
-    if (options.properties?.icon) {
-      this.icon = options.properties.icon;
-    }
-    this.point.x = Math.round(options.x / SceneView.UNIT);
-    this.point.y = Math.round(options.y / SceneView.UNIT);
+    this.feature = feature;
   }
 }

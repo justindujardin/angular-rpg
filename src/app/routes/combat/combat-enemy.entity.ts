@@ -42,6 +42,10 @@ export class CombatEnemyComponent
     return this._model$.value;
   }
 
+  constructor() {
+    super();
+  }
+
   private _spriteSubscription: Subscription;
 
   ngAfterViewInit(): void {

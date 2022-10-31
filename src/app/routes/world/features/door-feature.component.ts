@@ -2,20 +2,16 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input,
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { filter, first, map, switchMap } from 'rxjs/operators';
-import { AppState } from '../../../app.model';
 import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
 import { GameStateSetKeyDataAction } from '../../../models/game-state/game-state.actions';
 import { getGameKey } from '../../../models/selectors';
-import { IScene } from '../../../scene/scene.model';
 import { TileObject } from '../../../scene/tile-object';
-import { TiledFeatureComponent } from '../map-feature.component';
+import { MapFeatureComponent } from '../map-feature.component';
 
 export interface IDoorFeatureTiledProperties {
   id: string;
@@ -33,12 +29,7 @@ export interface IDoorFeatureTiledProperties {
   styleUrls: ['./door-feature.component.scss'],
   templateUrl: './door-feature.component.html',
 })
-export class DoorFeatureComponent extends TiledFeatureComponent {
-  // @ts-ignore
-  @Input() feature: ITiledObject | null;
-  @Input() scene: IScene | null;
-  // @ts-ignore
-  @Input() active: boolean;
+export class DoorFeatureComponent extends MapFeatureComponent {
   @Output() onClose = new EventEmitter();
   active$: Observable<boolean>;
   requiredKey$: Observable<string> = this.feature$.pipe(
@@ -82,10 +73,6 @@ export class DoorFeatureComponent extends TiledFeatureComponent {
     })
   );
 
-  constructor(public store: Store<AppState>) {
-    super();
-  }
-
   enter(object: TileObject): boolean {
     if (!super.enter(object)) {
       return false;
@@ -103,7 +90,9 @@ export class DoorFeatureComponent extends TiledFeatureComponent {
           if (!canUnlock) {
             return;
           }
-          this.store.dispatch(new GameStateSetKeyDataAction(this.properties.id, true));
+          this.store.dispatch(
+            new GameStateSetKeyDataAction(this.feature?.properties?.id, true)
+          );
         })
       )
       .subscribe();
