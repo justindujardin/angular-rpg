@@ -37,6 +37,7 @@ export class ShipFeatureComponent
     super.ngOnDestroy();
     this._subscription?.unsubscribe();
     this._subscription = null;
+    clearInterval(this._tickInterval);
   }
 
   ngAfterViewInit(): void {
@@ -75,9 +76,7 @@ export class ShipFeatureComponent
 
   enter(object: GameFeatureObject): boolean {
     // Only a player can board a ship
-    this.party = object.findBehavior(
-      PlayerBehaviorComponent
-    ) as PlayerBehaviorComponent;
+    this.party = object.findBehavior<PlayerBehaviorComponent>(PlayerBehaviorComponent);
     if (!this.party) {
       return false;
     }
@@ -103,6 +102,7 @@ export class ShipFeatureComponent
     this.visible = false;
     this.enabled = false;
     object.setSprite(this.icon, 0);
+    clearInterval(this._tickInterval);
     this._tickInterval = setInterval(() => {
       if (!this.party || !this.partyObject) {
         return;
