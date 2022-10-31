@@ -394,14 +394,18 @@ export abstract class StoreFeatureComponent extends MapFeatureComponent {
               if (toEquip) {
                 // Unequip anything that's already there
                 if (toEquip.hasOwnProperty(toEquipItem?.type)) {
-                  const oldItem: IEntityObject = (toEquip as any)[toEquipItem?.type];
-                  this.store.dispatch(
-                    new GameStateUnequipItemAction({
-                      entityId: toEquip.eid,
-                      slot: toEquipItem.type as keyof EntitySlots,
-                      itemId: oldItem.eid,
-                    })
-                  );
+                  const oldItem: IEntityObject | null = (toEquip as any)[
+                    toEquipItem?.type
+                  ];
+                  if (oldItem) {
+                    this.store.dispatch(
+                      new GameStateUnequipItemAction({
+                        entityId: toEquip.eid,
+                        slot: toEquipItem.type as keyof EntitySlots,
+                        itemId: oldItem.eid,
+                      })
+                    );
+                  }
                 }
                 this.store.dispatch(
                   new GameStateEquipItemAction({
