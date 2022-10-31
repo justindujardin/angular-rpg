@@ -41,8 +41,9 @@
     <property name="targetY" value="24"/>
    </properties>
   </object>
-  <object id="2" class="block" x="320" y="48" width="16" height="16" visible="0">
+  <object id="2" class="BlockFeatureComponent" x="320" y="48" width="16" height="16" visible="0">
    <properties>
+    <property name="passable" type="bool" value="false"/>
     <property name="type" value="block"/>
    </properties>
   </object>

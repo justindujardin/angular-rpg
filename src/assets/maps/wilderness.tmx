@@ -323,7 +323,7 @@
     <property name="targetY" value="10"/>
    </properties>
   </object>
-  <object id="14" name="Blocked" class="barrier" gid="7" x="832" y="176" width="16" height="16">
+  <object id="14" name="Blocked" class="BlockFeatureComponent" gid="7" x="832" y="176" width="16" height="16">
    <properties>
     <property name="icon" value="iceGateCenter.png"/>
     <property name="text" value="An enormous blockade prevents your passage!"/>

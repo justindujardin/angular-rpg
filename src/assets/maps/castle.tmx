@@ -38,9 +38,9 @@
     <property name="targetY" value="61"/>
    </properties>
   </object>
-  <object id="2" class="block" x="256" y="192" width="16" height="16" visible="0">
+  <object id="2" class="BlockFeatureComponent" x="256" y="192" width="16" height="16" visible="0">
    <properties>
-    <property name="type" value="block"/>
+    <property name="passable" type="bool" value="false"/>
    </properties>
   </object>
   <object id="3" name="Guard" class="DialogFeatureComponent" gid="142" x="240" y="80" width="16" height="16">

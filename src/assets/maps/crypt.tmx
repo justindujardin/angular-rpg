@@ -59,21 +59,19 @@
     <property name="targetY" value="57"/>
    </properties>
   </object>
-  <object id="2" class="block" x="48" y="448" width="16" height="16">
+  <object id="2" class="BlockFeatureComponent" x="48" y="448" width="16" height="16">
    <properties>
-    <property name="type" value="block"/>
+    <property name="passable" type="bool" value="false"/>
    </properties>
   </object>
-  <object id="3" name="column.png" class="sign" gid="29" x="48" y="432" width="16" height="16">
+  <object id="3" name="column.png" class="BlockFeatureComponent" gid="29" x="48" y="432" width="16" height="16">
    <properties>
-    <property name="icon" value="column.png"/>
-    <property name="type" value="sign"/>
+    <property name="passable" type="bool" value="false"/>
    </properties>
   </object>
-  <object id="4" name="column.png" class="sign" gid="29" x="48" y="464" width="16" height="16">
+  <object id="4" name="column.png" class="BlockFeatureComponent" gid="29" x="48" y="464" width="16" height="16">
    <properties>
-    <property name="icon" value="column.png"/>
-    <property name="type" value="sign"/>
+    <property name="passable" type="bool" value="false"/>
    </properties>
   </object>
   <object id="5" name="skeletonGuard.png" class="CombatFeatureComponent" gid="160" x="128" y="528" width="16" height="16">
