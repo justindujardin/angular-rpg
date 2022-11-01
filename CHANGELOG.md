@@ -1,3 +1,10 @@
+## [0.2.3](https://github.com/justindujardin/angular-rpg/compare/v0.2.2...v0.2.3) (2022-11-01)
+
+
+### Performance Improvements
+
+* **ng:** only write tiled data when source file hashes change ([5560c2d](https://github.com/justindujardin/angular-rpg/commit/5560c2d3772c6449866e22f3c73cea554b453ab7))
+
 ## [0.2.2](https://github.com/justindujardin/angular-rpg/compare/v0.2.1...v0.2.2) (2022-10-31)
 
 
