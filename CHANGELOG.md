@@ -1,3 +1,10 @@
+## [0.2.4](https://github.com/justindujardin/angular-rpg/compare/v0.2.3...v0.2.4) (2022-11-01)
+
+
+### Bug Fixes
+
+* **tilemap:** issue where dark overlay was offset when the map loads ([1625743](https://github.com/justindujardin/angular-rpg/commit/16257434f66ac8182a95e76e93f842d12c5ae517))
+
 ## [0.2.3](https://github.com/justindujardin/angular-rpg/compare/v0.2.2...v0.2.3) (2022-11-01)
 
 
