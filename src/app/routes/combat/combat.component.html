@@ -1,10 +1,11 @@
 <canvas #combatCanvas> Your browser doesn't support this. </canvas>
 
 <combat-damage
-  *ngFor="let d of damages"
+  *ngFor="let d of damages; trackBy: damageTrackBy"
   [value]="d.value"
   [position]="d.position"
   [classes]="d.classes"
+  (onHide)="removeDamage(d)"
 ></combat-damage>
 
 <combat-player

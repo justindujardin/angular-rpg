@@ -12,6 +12,7 @@ import {
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
+import _ from 'underscore';
 import { IPoint, Point } from '../../../app/core/point';
 import { IProcessObject } from '../../../app/core/time';
 import { AppState } from '../../app.model';
@@ -285,16 +286,6 @@ export class CombatComponent
   objectRenderer: TileObjectRenderer = new TileObjectRenderer();
 
   /**
-   * Custom track by function for combatants. We need to keep them around by their
-   * entity instance id so that the components are not created/destroyed as their
-   * underlying model changes. This is important because these components instances
-   * are passed through the combat state machine and their references must remain valid.
-   */
-  combatTrackBy(index: number, item: CombatantTypes): any {
-    return item.eid;
-  }
-
-  /**
    * Update the camera for this frame.
    */
   processCamera() {
@@ -383,6 +374,7 @@ export class CombatComponent
       this.canvasElementRef.nativeElement.offsetTop
     );
     this.damages.push({
+      id: _.uniqueId('dmg'),
       timeout: new Date().getTime() + 5 * 1000,
       value: Math.abs(value),
       classes: {
@@ -391,6 +383,10 @@ export class CombatComponent
       },
       position: screenPos,
     });
+  }
+
+  removeDamage(damage: ICombatDamageSummary) {
+    this.damages = this.damages.filter((d) => d.id !== damage.id);
   }
 
   /**
@@ -425,5 +421,22 @@ export class CombatComponent
         return false;
       }
     }
+  }
+
+  /**
+   * Custom track by function for damage elements
+   */
+  damageTrackBy(index: number, item: ICombatDamageSummary): any {
+    return item.id;
+  }
+
+  /**
+   * Custom track by function for combatants. We need to keep them around by their
+   * entity instance id so that the components are not created/destroyed as their
+   * underlying model changes. This is important because these components instances
+   * are passed through the combat state machine and their references must remain valid.
+   */
+  combatTrackBy(index: number, item: CombatantTypes): any {
+    return item.eid;
   }
 }
