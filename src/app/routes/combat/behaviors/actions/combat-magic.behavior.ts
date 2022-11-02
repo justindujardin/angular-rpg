@@ -4,7 +4,6 @@ import * as Immutable from 'immutable';
 import { combineLatest } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import * as _ from 'underscore';
-import { CombatPlayerRenderBehaviorComponent } from '..';
 import { CombatComponent } from '../..';
 import { AppState } from '../../../../../app/app.model';
 import { EntityType, IPartyMember } from '../../../../../app/models/base-entity';
@@ -34,6 +33,7 @@ import {
 } from '../../../../models/game-data/game-data.model';
 import { IMagicTargetDelta } from '../../../../models/mechanics';
 import { assertTrue } from '../../../../models/util';
+import { CombatPlayerComponent } from '../../combat-player.component';
 import { CombatAttackSummary, IPlayerActionCallback } from '../../combat.types';
 import { CombatEndTurnStateComponent } from '../../states';
 import { CombatActionBehavior } from '../combat-action.behavior';
@@ -103,10 +103,7 @@ export class CombatMagicBehavior extends CombatActionBehavior {
     assertTrue(casterModel, 'CombatMagicBehavior: invalid caster source model');
     assertTrue(targetModel, 'CombatMagicBehavior: invalid caster target model');
 
-    const attackerPlayer = caster.findBehavior(
-      CombatPlayerRenderBehaviorComponent
-    ) as CombatPlayerRenderBehaviorComponent;
-
+    const attackerPlayer = caster as CombatPlayerComponent;
     attackerPlayer.magic(() => {
       var healAmount: number = -spell.value;
       const healData: CombatAttack = {
@@ -161,9 +158,7 @@ export class CombatMagicBehavior extends CombatActionBehavior {
     const targetModel: any = target.model;
     assertTrue(casterModel, 'CombatMagicBehavior: invalid caster source model');
     assertTrue(targetModel, 'CombatMagicBehavior: invalid caster target model');
-    const attackerPlayer = caster.findBehavior<CombatPlayerRenderBehaviorComponent>(
-      CombatPlayerRenderBehaviorComponent
-    );
+    const attackerPlayer = caster as CombatPlayerComponent;
     const castSpell = () => {
       combineLatest([
         this.store.select(getCombatEntityEquipment(casterModel.eid)),

@@ -19,10 +19,6 @@ import { BehaviorsModule } from '../../behaviors/index';
 import { AppComponentsModule } from '../../components/index';
 import { ServicesModule } from '../../services';
 import {
-  CombatCameraBehaviorComponent,
-  CombatPlayerRenderBehaviorComponent,
-} from './behaviors';
-import {
   CombatAttackBehaviorComponent,
   CombatGuardBehavior,
   CombatItemBehavior,
@@ -30,10 +26,9 @@ import {
   CombatRunBehaviorComponent,
 } from './behaviors/actions';
 import { CombatDamageComponent } from './combat-damage.component';
-import { CombatEnemyComponent } from './combat-enemy.entity';
+import { CombatEnemyComponent } from './combat-enemy.component';
 import { CombatHUDComponent } from './combat-hud.component';
-import { CombatMapComponent } from './combat-map.entity';
-import { CombatPlayerComponent } from './combat-player.entity';
+import { CombatPlayerComponent } from './combat-player.component';
 import { CombatComponent } from './combat.component';
 import { CanActivateCombat } from './combat.guards';
 import { COMBAT_STATE_COMPONENTS } from './states/index';
@@ -42,15 +37,10 @@ export * from './combat-damage.component';
 export * from './combat.component';
 
 /** Components associated with combat map */
-export const COMBAT_MAP_COMPONENTS = [
-  CombatMapComponent,
-  CombatHUDComponent,
-  CombatCameraBehaviorComponent,
-];
+export const COMBAT_MAP_COMPONENTS = [CombatHUDComponent];
 
 /** Components associated with combat player */
 export const COMBAT_PLAYER_COMPONENTS = [
-  CombatPlayerRenderBehaviorComponent,
   CombatAttackBehaviorComponent,
   CombatMagicBehavior,
   CombatItemBehavior,

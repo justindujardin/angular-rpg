@@ -7,12 +7,26 @@
   [classes]="d.classes"
 ></combat-damage>
 
-<combat-map #map [scene]="scene" [combat]="this">
-  <combat-state-machine
-    [scene]="scene"
-    [party]="map.party"
-    [enemies]="map.enemies"
-    [encounter]="map.encounter$ | async"
-  ></combat-state-machine>
-</combat-map>
+<combat-player
+  *ngFor="let p of party$ | async; trackBy: combatTrackBy"
+  [icon]="p.icon"
+  [model]="p"
+  [scene]="scene"
+  [combat]="combat"
+  #partyMember
+></combat-player>
+<combat-enemy
+  *ngFor="let e of enemies$ | async; trackBy: combatTrackBy"
+  [icon]="e.icon"
+  [model]="e"
+  [scene]="scene"
+  [combat]="combat"
+  #enemy
+></combat-enemy>
+<combat-state-machine
+  [scene]="scene"
+  [party]="party"
+  [enemies]="enemies"
+  [encounter]="encounter$ | async"
+></combat-state-machine>
 <combat-hud [scene]="scene" [combat]="machine"></combat-hud>
