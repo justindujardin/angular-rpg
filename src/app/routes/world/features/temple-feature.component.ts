@@ -8,7 +8,6 @@ import {
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import * as Immutable from 'immutable';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
 import * as _ from 'underscore';
@@ -67,8 +66,8 @@ export class TempleFeatureComponent
           this.party$,
           this.partyGold$,
           this.cost$,
-          (evt, party: Immutable.List<Entity>, partyGold: number, cost: number) => {
-            const alreadyHealed: boolean = !party.find((p: Entity) => {
+          (evt, party: EntityWithEquipment[], partyGold: number, cost: number) => {
+            const alreadyHealed: boolean = !party.find((p: EntityWithEquipment) => {
               return p.hp !== p.maxhp;
             });
             if (cost > partyGold) {
@@ -76,22 +75,18 @@ export class TempleFeatureComponent
             } else if (alreadyHealed) {
               this.notify.show('Keep your money.\nYour party is already fully healed.');
             } else {
-              const partyIds: string[] = party
-                .map((p) => {
-                  assertTrue(p, 'invalid player entity in party');
-                  return p.eid;
-                })
-                .toArray();
+              const partyIds: string[] = party.map((p) => {
+                assertTrue(p, 'invalid player entity in party');
+                return p.eid;
+              });
               this.store.dispatch(
                 new GameStateHealPartyAction({
                   cost,
                   partyIds,
                 })
               );
-              const msg =
-                'Your party has been healed! \nYou have (' +
-                (partyGold - cost) +
-                ') monies.';
+              const left = partyGold - cost;
+              const msg = `Your party has been healed! \nYou have (${left}) monies.`;
               this.notify.show(msg, undefined, 5000);
             }
             _.defer(() => {
