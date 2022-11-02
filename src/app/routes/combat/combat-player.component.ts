@@ -45,7 +45,6 @@ export class CombatPlayerComponent
   @Input() combat: any; // CombatComponent - flirts with circular imports
 
   _elapsed: number = 0;
-  private _renderFrame: number = 3;
   state: string = '';
   animating: boolean = false;
   attackDirection: Headings = Headings.WEST;
@@ -254,7 +253,7 @@ export class CombatPlayerComponent
         default:
         // Do nothing
       }
-      this.frame = this._renderFrame = frame;
+      this.frame = frame;
     }
   }
 
