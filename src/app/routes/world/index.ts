@@ -7,7 +7,7 @@ import { AppComponentsModule } from '../../components/index';
 import { MapFeatureInputBehaviorComponent } from './behaviors/map-feature-input.behavior';
 import { WORLD_MAP_FEATURES, WORLD_MAP_FEATURES_IMPORTS } from './features/index';
 import { MapFeatureComponent } from './map-feature.component';
-import { WORLD_PLAYER_COMPONENTS } from './world-player.entity';
+import { WORLD_PLAYER_COMPONENTS } from './world-player.component';
 import { WorldComponent } from './world.component';
 import { CanActivateWorld } from './world.guards';
 
