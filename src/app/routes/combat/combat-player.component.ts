@@ -1,14 +1,22 @@
-import { Component } from '@angular/core';
-import * as _ from 'underscore';
-import { Point } from '../../../../app/core/point';
 import {
-  AnimatedBehaviorComponent,
-  IAnimationConfig,
-} from '../../../behaviors/animated.behavior';
-import { TickedBehavior } from '../../../behaviors/ticked-behavior';
-import { CombatService } from '../../../models/combat/combat.service';
-import { GameEntityObject } from '../../../scene/objects/game-entity-object';
-import { Headings } from '../../world/behaviors/player-render.behavior';
+  AfterViewInit,
+  Component,
+  Input,
+  OnDestroy,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
+import _ from 'underscore';
+import { AnimatedBehaviorComponent, IAnimationConfig } from '../../behaviors';
+import { SceneObjectBehavior } from '../../behaviors/scene-object-behavior';
+import { Point } from '../../core';
+import { IPartyMember } from '../../models/base-entity';
+import { CombatService } from '../../models/combat/combat.service';
+import { GameEntityObject } from '../../scene/objects/game-entity-object';
+import { Scene } from '../../scene/scene';
+import { Headings } from '../world/behaviors/player-render.behavior';
+
 export enum StateFrames {
   DEFAULT = 10,
   SWING = 1,
@@ -20,27 +28,30 @@ export enum StateFrames {
 }
 
 @Component({
-  selector: 'combat-player-render-behavior',
-  template: `<ng-content></ng-content>`,
+  selector: 'combat-player',
+  templateUrl: 'combat-player.component.html',
 })
-export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
+export class CombatPlayerComponent
+  extends GameEntityObject
+  implements AfterViewInit, OnDestroy
+{
+  @ViewChildren('animation,attack,magic,guard,item,run')
+  behaviors: QueryList<SceneObjectBehavior>;
+  @ViewChild(AnimatedBehaviorComponent) animation: AnimatedBehaviorComponent;
+  @Input() model: IPartyMember;
+  // @ts-ignore
+  @Input() icon: string;
+  @Input() scene: Scene;
+  @Input() combat: any; // CombatComponent - flirts with circular imports
+
   _elapsed: number = 0;
-  private _renderFrame: number = 3;
   state: string = '';
   animating: boolean = false;
-  animator: AnimatedBehaviorComponent | null = null;
   attackDirection: Headings = Headings.WEST;
-  host: GameEntityObject;
+  tickRateMS: number = 300;
 
   constructor(private combatService: CombatService) {
     super();
-  }
-
-  syncBehavior(): boolean {
-    this.animator = this.host.findBehavior<AnimatedBehaviorComponent>(
-      AnimatedBehaviorComponent
-    );
-    return super.syncBehavior();
   }
 
   setState(name: string = 'Default') {
@@ -82,7 +93,7 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
       {
         name: 'Prep Animation',
         callback: () => {
-          this.host.setSprite(this.host.icon?.replace('.png', '-magic.png'), 19);
+          this.setSprite(this.icon?.replace('.png', '-magic.png'), 19);
         },
       },
       {
@@ -102,7 +113,7 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
         duration: 1000,
         frames: [15, 16, 17, 18, 19],
         callback: () => {
-          this.host.setSprite(this.host.icon?.replace('-magic.png', '.png'), 10);
+          this.setSprite(this.icon?.replace('-magic.png', '.png'), 10);
         },
       },
     ];
@@ -117,9 +128,9 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
         frames: this.getForwardFrames(),
         move: new Point(this.getForwardDirection(), 0),
         callback: () => {
-          const attackAnimationsSource = this.host.icon?.replace('.png', '-attack.png');
-          if (this.host.world.sprites.getSpriteMeta(attackAnimationsSource)) {
-            this.host.setSprite(attackAnimationsSource, 12);
+          const attackAnimationsSource = this.icon?.replace('.png', '-attack.png');
+          if (this.world.sprites.getSpriteMeta(attackAnimationsSource)) {
+            this.setSprite(attackAnimationsSource, 12);
           }
         },
       },
@@ -129,7 +140,7 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
         duration: 100,
         frames: this.getAttackFrames(),
         callback: () => {
-          this.host.setSprite(this.host.icon?.replace('-attack.png', '.png'), 10);
+          this.setSprite(this.icon?.replace('-attack.png', '.png'), 10);
           if (strikeCb) {
             strikeCb();
           }
@@ -176,7 +187,7 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
   }
 
   _playAnimation(animation: IAnimationConfig[], then?: () => any) {
-    if (!this.animator || this.animating) {
+    if (!this.animation || this.animating) {
       return;
     }
     const animations: IAnimationConfig[] = _.map(
@@ -190,7 +201,7 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
       }
     );
     this.animating = true;
-    this.animator.playChain(animations, () => {
+    this.animation.playChain(animations, () => {
       this.animating = false;
       if (then) {
         then();
@@ -199,7 +210,7 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
   }
 
   _attack(cb: (() => void) | undefined, attackAnimation: any) {
-    if (!this.animator || this.animating) {
+    if (!this.animation || this.animating) {
       return;
     }
     const animations: IAnimationConfig[] = _.map(
@@ -213,7 +224,7 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
       }
     );
     this.animating = true;
-    this.animator.playChain(animations, () => {
+    this.animation.playChain(animations, () => {
       this.animating = false;
       if (cb) {
         cb();
@@ -242,7 +253,22 @@ export class CombatPlayerRenderBehaviorComponent extends TickedBehavior {
         default:
         // Do nothing
       }
-      this.host.frame = this._renderFrame = frame;
+      this.frame = frame;
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.scene.addObject(this);
+    this.behaviors.forEach((c: SceneObjectBehavior) => {
+      this.addBehavior(c);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.scene.removeObject(this);
+    this.behaviors.forEach((c: SceneObjectBehavior) => {
+      this.removeBehavior(c);
+    });
+    this.destroy();
   }
 }

@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { CombatPlayerRenderBehaviorComponent } from '..';
 import { AppState } from '../../../../app.model';
 import { AnimatedSpriteBehavior } from '../../../../behaviors/animated-sprite.behavior';
 import { SoundBehavior } from '../../../../behaviors/sound-behavior';
@@ -10,6 +9,7 @@ import { CombatAttack } from '../../../../models/combat/combat.model';
 import { GameStateRemoveInventoryAction } from '../../../../models/game-state/game-state.actions';
 import { assertTrue } from '../../../../models/util';
 import { GameEntityObject } from '../../../../scene/objects/game-entity-object';
+import { CombatPlayerComponent } from '../../combat-player.component';
 import { CombatComponent } from '../../combat.component';
 import { IPlayerActionCallback } from '../../combat.types';
 import { CombatEndTurnStateComponent } from '../../states/combat-end-turn.state';
@@ -62,9 +62,7 @@ export class CombatItemBehavior extends CombatActionBehavior {
     assertTrue(userModel, 'invalid item user model');
     assertTrue(targetModel, 'invalid item target model');
     assertTrue(item, 'invalid item target model');
-    const userRender = user.findBehavior<CombatPlayerRenderBehaviorComponent>(
-      CombatPlayerRenderBehaviorComponent
-    );
+    const userRender = user as CombatPlayerComponent;
     assertTrue(userRender, 'item user has no render behavior');
     userRender.magic(() => {
       // TODO: We need some kind of effects registry and a way to specify which

@@ -26,7 +26,6 @@ export interface AnimatedSpriteComponentOptions {
 export class AnimatedSpriteBehavior extends TickedBehavior {
   host: TileObject;
   _elapsed: number = 0;
-  private _renderFrame: number = 3;
   lengthMS: number = 500;
   spriteComponent: SpriteComponent;
   spriteName: string;
@@ -47,7 +46,6 @@ export class AnimatedSpriteBehavior extends TickedBehavior {
   }
 
   connectBehavior(): boolean {
-    this._renderFrame = 0;
     this._elapsed = 0;
     return super.connectBehavior();
   }

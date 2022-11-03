@@ -40,7 +40,7 @@ import { GameWorld } from '../../services/game-world';
 import { RPGGame } from '../../services/rpg-game';
 import { PlayerBehaviorComponent } from './behaviors/player-behavior';
 import { MapFeatureComponent } from './map-feature.component';
-import { WorldPlayerComponent } from './world-player.entity';
+import { WorldPlayerComponent } from './world-player.component';
 
 @Component({
   selector: 'world',

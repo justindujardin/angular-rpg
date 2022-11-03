@@ -42,8 +42,6 @@ export class BasePlayerComponent extends MovableBehavior {
 
   host: TileObject;
   passableKeys: string[] = ['passable'];
-  private _lastFrame: number = 3;
-  private _renderFrame: number = 3;
   heading: Point = new Point(0, -1);
   sprite: PlayerRenderBehaviorComponent | null = null;
   collideComponentType: any = TileObjectBehavior;
@@ -56,9 +54,6 @@ export class BasePlayerComponent extends MovableBehavior {
   }
 
   tick(elapsed: number): void {
-    // There are four states and two rows.  The second row is all alt states, so mod it out
-    // when a move ends.
-    this._lastFrame = this._renderFrame > 3 ? this._renderFrame - 4 : this._renderFrame;
     super.tick(elapsed);
   }
 

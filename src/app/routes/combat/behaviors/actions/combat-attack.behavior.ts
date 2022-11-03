@@ -19,10 +19,11 @@ import { getCombatEntityEquipment } from '../../../../models/selectors';
 import { assertTrue } from '../../../../models/util';
 import { GameEntityObject } from '../../../../scene/objects/game-entity-object';
 import { GameWorld } from '../../../../services/game-world';
+import { CombatPlayerComponent } from '../../combat-player.component';
 import { CombatComponent } from '../../combat.component';
 import { CombatAttackSummary, IPlayerActionCallback } from '../../combat.types';
 import { CombatActionBehavior } from '../combat-action.behavior';
-import { CombatPlayerRenderBehaviorComponent } from '../combat-player-render.behavior';
+
 /**
  * Attack another entity in combat.
  */
@@ -77,9 +78,11 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
       attackerModel && defenderModel,
       'invalid attacker/defender model attack behavior'
     );
-    const playerRender = attacker.findBehavior<CombatPlayerRenderBehaviorComponent>(
-      CombatPlayerRenderBehaviorComponent
-    );
+    const playerRender =
+      attacker instanceof CombatPlayerComponent
+        ? (attacker as CombatPlayerComponent)
+        : null;
+
     const attack = () => {
       const attEquip = this.store.select(getCombatEntityEquipment(attackerModel.eid));
       const defEquip = this.store.select(getCombatEntityEquipment(defenderModel.eid));

@@ -5,25 +5,46 @@ import {
   ElementRef,
   Input,
   OnDestroy,
+  QueryList,
   ViewChild,
+  ViewChildren,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
-import { Point } from '../../../app/core/point';
+import { Observable, Subscription } from 'rxjs';
+import { distinctUntilChanged, map } from 'rxjs/operators';
+import _ from 'underscore';
+import { IPoint, Point } from '../../../app/core/point';
 import { IProcessObject } from '../../../app/core/time';
 import { AppState } from '../../app.model';
+import { SpriteComponent } from '../../behaviors/sprite.behavior';
 import { LoadingService } from '../../components/loading/loading.service';
 import { NotificationService } from '../../components/notification/notification.service';
+import { Rect, ResourceManager, TiledTMXResource } from '../../core';
 import { NamedMouseElement, PowInput } from '../../core/input';
+import { ITiledObject } from '../../core/resources/tiled/tiled.model';
+import { CombatantTypes, IEnemy, IPartyMember } from '../../models/base-entity';
+import { CombatState } from '../../models/combat/combat.model';
+import { CombatService } from '../../models/combat/combat.service';
+import {
+  getCombatEncounterEnemies,
+  getCombatEncounterParty,
+  sliceCombatState,
+} from '../../models/selectors';
 import { GameEntityObject } from '../../scene/objects/game-entity-object';
+import { TileMapRenderer } from '../../scene/render/tile-map-renderer';
+import {
+  TileObjectRenderer,
+  TileRenderable,
+} from '../../scene/render/tile-object-renderer';
 import { Scene } from '../../scene/scene';
 import { SceneObject } from '../../scene/scene-object';
 import { SceneView } from '../../scene/scene-view';
+import { TileMap } from '../../scene/tile-map';
 import { Animate } from '../../services/animate';
 import { GameWorld } from '../../services/game-world';
 import { RPGGame } from '../../services/rpg-game';
-import { CombatMapComponent } from './combat-map.entity';
-import { CombatPlayerComponent } from './combat-player.entity';
+import { CombatEnemyComponent } from './combat-enemy.component';
+import { CombatPlayerComponent } from './combat-player.component';
 import {
   CombatAttackSummary,
   ICombatDamageSummary,
@@ -80,8 +101,44 @@ export class CombatComponent
   mouse: NamedMouseElement | null = null;
 
   @ViewChild('combatCanvas') canvasElementRef: ElementRef;
-  @ViewChild(CombatMapComponent) map: CombatMapComponent;
+  map: TileMap = new TileMap();
 
+  private _tileRenderer: TileMapRenderer = new TileMapRenderer();
+
+  enemies$: Observable<IEnemy[]> = this.store
+    .select(getCombatEncounterEnemies)
+    .pipe(map((f) => f.toJS()));
+
+  party$: Observable<IPartyMember[]> = this.store
+    .select(getCombatEncounterParty)
+    .pipe(map((f) => f.toJS()));
+
+  encounter$: Observable<CombatState> = this.store.select(sliceCombatState);
+
+  @ViewChildren('partyMember') party: QueryList<CombatPlayerComponent>;
+  @ViewChildren('enemy') enemies: QueryList<CombatEnemyComponent>;
+
+  /** The {@see TiledTMXResource} map at the input url */
+  resource$: Observable<TiledTMXResource> = this.combatService.combatMap$.pipe(
+    distinctUntilChanged(),
+    map((result: TiledTMXResource) => {
+      this.map.setMap(result);
+      return result;
+    })
+  );
+
+  /** Features can be derived after a new map resource has been loaded */
+  features$: Observable<ITiledObject[]> = this.resource$.pipe(
+    map(() => {
+      return this.map.features?.objects || [];
+    })
+  );
+
+  /**
+   * @internal used to make `resource$` observable hot. Can be removed if the template references an
+   * async binding for this at any point.
+   */
+  private _resourceSubscription: Subscription | null;
   private _subscriptions: Subscription[] = [];
 
   constructor(
@@ -89,6 +146,8 @@ export class CombatComponent
     public notify: NotificationService,
     public animate: Animate,
     public loadingService: LoadingService,
+    public loader: ResourceManager,
+    public combatService: CombatService,
     public store: Store<AppState>,
     public world: GameWorld,
     private cd: ChangeDetectorRef
@@ -108,6 +167,10 @@ export class CombatComponent
       s?.unsubscribe();
     });
     this._subscriptions = [];
+
+    this._resourceSubscription?.unsubscribe();
+    // this.scene?.removeObject(this);
+    this.destroy();
   }
 
   ngAfterViewInit(): void {
@@ -159,6 +222,26 @@ export class CombatComponent
         0
       );
     });
+    this.scene?.addObject(this);
+    // Whenever the underlying map resource changes, update party/enemy state from latest values.
+    this._resourceSubscription = this.resource$
+      .pipe(
+        map(() => {
+          this.party.forEach((p: CombatPlayerComponent, index: number) => {
+            p.setSprite(p.model.icon);
+            const battleSpawn = this.map.getFeature('p' + (index + 1)) as IPoint;
+            p.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
+          });
+          this.enemies.forEach((e: CombatEnemyComponent, index: number) => {
+            const battleSpawn = this.map.getFeature('e' + (index + 1)) as IPoint;
+            if (battleSpawn) {
+              e.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
+            }
+          });
+        })
+      )
+      .subscribe();
+
     this._subscriptions = [attackSub, runSub, defeatSub];
 
     this.cd.detectChanges();
@@ -197,21 +280,79 @@ export class CombatComponent
     el.style.top = `${screenPos.y}px`;
   }
 
+  //
+  // ISceneViewRenderer
+  //
+  objectRenderer: TileObjectRenderer = new TileObjectRenderer();
+
   /**
    * Update the camera for this frame.
    */
   processCamera() {
-    this.cameraComponent = this.map.camera;
+    if (this.context) {
+      const w: number = this.context.canvas.width;
+      const screenRect = new Rect(
+        0,
+        0,
+        this.context.canvas.width,
+        this.context.canvas.height
+      );
+      this.cameraScale = w > 1024 ? 6 : w > 768 ? 4 : w > 480 ? 3 : 2;
+      this.camera = this.screenToWorld(screenRect, this.cameraScale);
+      this.camera.point.x = this.map.bounds.extent.x / 2 - this.camera.extent.x / 2;
+    }
+
     super.processCamera();
+  }
+  beforeFrame(view: SceneView, elapsed: number) {
+    // Nope
   }
 
   /**
-   * Render the tile map, and any features it has.
+   * Render all of the map feature components
    */
   renderFrame(elapsed: number) {
     this.clearRect();
-    this.map.renderFrame(this, elapsed);
+    this._tileRenderer.render(this.map, this);
+    this.party.forEach((component: CombatPlayerComponent) => {
+      this.objectRenderer.render(
+        component,
+        component.renderPoint || component.point,
+        this,
+        component.meta
+      );
+      const sprites = component.findBehaviors(SpriteComponent) as SpriteComponent[];
+      sprites.forEach((sprite: SpriteComponent) => {
+        this.objectRenderer.render(
+          sprite as TileRenderable,
+          sprite.host.point,
+          this,
+          sprite.meta
+        );
+      });
+    });
+    this.enemies.forEach((component: CombatEnemyComponent) => {
+      this.objectRenderer.render(
+        component,
+        component.renderPoint || component.point,
+        this,
+        component.meta
+      );
+      const sprites: SpriteComponent[] = component.findBehaviors(SpriteComponent);
+      sprites.forEach((sprite: SpriteComponent) => {
+        this.objectRenderer.render(
+          sprite as TileRenderable,
+          sprite.host.point,
+          this,
+          sprite.meta
+        );
+      });
+    });
     return this;
+  }
+
+  afterFrame(view: SceneView, elapsed: number) {
+    // Nope
   }
 
   //
@@ -233,6 +374,7 @@ export class CombatComponent
       this.canvasElementRef.nativeElement.offsetTop
     );
     this.damages.push({
+      id: _.uniqueId('dmg'),
       timeout: new Date().getTime() + 5 * 1000,
       value: Math.abs(value),
       classes: {
@@ -241,6 +383,10 @@ export class CombatComponent
       },
       position: screenPos,
     });
+  }
+
+  removeDamage(damage: ICombatDamageSummary) {
+    this.damages = this.damages.filter((d) => d.id !== damage.id);
   }
 
   /**
@@ -275,5 +421,22 @@ export class CombatComponent
         return false;
       }
     }
+  }
+
+  /**
+   * Custom track by function for damage elements
+   */
+  damageTrackBy(index: number, item: ICombatDamageSummary): any {
+    return item.id;
+  }
+
+  /**
+   * Custom track by function for combatants. We need to keep them around by their
+   * entity instance id so that the components are not created/destroyed as their
+   * underlying model changes. This is important because these components instances
+   * are passed through the combat state machine and their references must remain valid.
+   */
+  combatTrackBy(index: number, item: CombatantTypes): any {
+    return item.eid;
   }
 }

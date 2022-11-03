@@ -11,8 +11,7 @@ import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { Scene } from '../../../scene/scene';
 import { GameWorld } from '../../../services/game-world';
 import { CombatActionBehavior } from '../behaviors/combat-action.behavior';
-import { CombatPlayerRenderBehaviorComponent } from '../behaviors/combat-player-render.behavior';
-import { CombatPlayerComponent } from '../combat-player.entity';
+import { CombatPlayerComponent } from '../combat-player.component';
 import { CombatSceneClick, ICombatMenuItem, IPlayerAction } from '../combat.types';
 import {
   CombatChooseActionStateComponent,
@@ -49,7 +48,7 @@ export type CombatChooseActionStateNames =
 export class ChooseActionStateMachine extends StateMachine<CombatChooseActionStateNames> {
   current: GameEntityObject | null = null;
   target: GameEntityObject | null = null;
-  player: CombatPlayerRenderBehaviorComponent | null = null;
+  player: CombatPlayerComponent | null = null;
   action: CombatActionBehavior | null = null;
   spell: ITemplateMagic | null = null;
   item: Item | null = null;
@@ -94,7 +93,7 @@ export class ChooseActionType extends State<CombatChooseActionStateNames> {
       throw new Error('Requires Current Player');
     }
     const p: CombatPlayerComponent = machine.current as CombatPlayerComponent;
-    machine.player = p.render;
+    machine.player = p;
     if (!machine.player) {
       throw new Error('Requires player render component for combat animations.');
     }

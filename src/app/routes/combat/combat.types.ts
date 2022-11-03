@@ -14,6 +14,7 @@ export interface ICombatMenuItem {
 }
 
 export interface ICombatDamageSummary {
+  id: string;
   timeout: number;
   value: number;
   classes: {
