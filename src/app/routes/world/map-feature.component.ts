@@ -38,6 +38,11 @@ export type TiledMapFeatureTypes =
   | 'WeaponsStoreFeatureComponent'
   | 'TempleFeatureComponent';
 
+export interface IMapFeatureProperties {
+  until?: string;
+  after?: string;
+}
+
 /**
  * A component that defines the functionality of a map feature.
  */
@@ -57,11 +62,11 @@ export class MapFeatureComponent
   /**
    * Write-only feature input.
    */
-  @Input() feature: ITiledObject | null = null;
+  @Input() feature: ITiledObject<IMapFeatureProperties> | null = null;
   /**
    * Observable of feature data.
    */
-  feature$: Observable<ITiledObject | null> = this._feature$;
+  feature$: Observable<ITiledObject<IMapFeatureProperties> | null> = this._feature$;
 
   protected assertFeature() {
     if (!this.feature?.properties) {
