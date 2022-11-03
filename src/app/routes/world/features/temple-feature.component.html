@@ -13,8 +13,8 @@
     <p>Would you like to heal your party members?</p>
   </div>
   <div layout="row" layout-padding>
-    <button flex="50" (click)="_onRest$.next()">Yes</button>
-    <button flex="50" (click)="onClose.next($event)">No</button>
+    <button flex="50" class="rest" (click)="_onRest$.next()">Yes</button>
+    <button flex="50" class="close" (click)="onClose.next($event)">No</button>
   </div>
 
   <ul class="party">
