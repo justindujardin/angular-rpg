@@ -96,7 +96,7 @@ function getStoreSelection(obs: Observable<any>): Item[] {
   return [...result];
 }
 
-fdescribe('StoreFeatureComponent', () => {
+describe('StoreFeatureComponent', () => {
   let world: GameWorld;
   const tileObject: any = {};
   beforeEach(async () => {
