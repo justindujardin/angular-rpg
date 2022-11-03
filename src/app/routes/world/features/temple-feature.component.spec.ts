@@ -22,7 +22,7 @@ import {
   TempleFeatureComponent,
 } from './temple-feature.component';
 
-const TEMPLE_FEATURE: ITiledObject<ITempleFeatureProperties> = {
+const FEATURE: ITiledObject<ITempleFeatureProperties> = {
   name: 'test temple',
   class: 'TempleFeatureComponent',
   x: 0,
@@ -115,7 +115,7 @@ describe('TempleFeatureComponent', () => {
   it('should heal party when resting', async () => {
     const fixture = TestBed.createComponent(TempleFeatureComponent);
     const comp: TempleFeatureComponent = fixture.componentInstance;
-    comp.feature = TEMPLE_FEATURE;
+    comp.feature = FEATURE;
     fixture.detectChanges();
     comp.enter(tileObject);
     fixture.detectChanges();
@@ -139,7 +139,7 @@ describe('TempleFeatureComponent', () => {
   it('should fail to heal when party does not have enough money', async () => {
     const fixture = TestBed.createComponent(TempleFeatureComponent);
     const comp: TempleFeatureComponent = fixture.componentInstance;
-    comp.feature = { ...TEMPLE_FEATURE, properties: { cost: 200 } };
+    comp.feature = { ...FEATURE, properties: { cost: 200 } };
     fixture.detectChanges();
     comp.enter(tileObject);
     fixture.detectChanges();
@@ -160,7 +160,7 @@ describe('TempleFeatureComponent', () => {
   it('should not take money when party is already healed', async () => {
     const fixture = TestBed.createComponent(TempleFeatureComponent);
     const comp: TempleFeatureComponent = fixture.componentInstance;
-    comp.feature = TEMPLE_FEATURE;
+    comp.feature = FEATURE;
     fixture.detectChanges();
     comp.enter(tileObject);
     fixture.detectChanges();
@@ -177,7 +177,7 @@ describe('TempleFeatureComponent', () => {
   it('should output onClose when choosing not to heal', async () => {
     const fixture = TestBed.createComponent(TempleFeatureComponent);
     const comp: TempleFeatureComponent = fixture.componentInstance;
-    comp.feature = TEMPLE_FEATURE;
+    comp.feature = FEATURE;
     fixture.detectChanges();
     comp.enter(tileObject);
     fixture.detectChanges();

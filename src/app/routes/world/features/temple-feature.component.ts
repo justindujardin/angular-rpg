@@ -15,9 +15,9 @@ import { Entity, EntityWithEquipment } from '../../../models/entity/entity.model
 import { GameStateHealPartyAction } from '../../../models/game-state/game-state.actions';
 import { getGamePartyGold, getGamePartyWithEquipment } from '../../../models/selectors';
 import { assertTrue } from '../../../models/util';
-import { MapFeatureComponent } from '../map-feature.component';
+import { IMapFeatureProperties, MapFeatureComponent } from '../map-feature.component';
 
-export interface ITempleFeatureProperties {
+export interface ITempleFeatureProperties extends IMapFeatureProperties {
   cost: number;
 }
 
