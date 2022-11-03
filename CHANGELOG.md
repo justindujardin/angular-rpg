@@ -1,3 +1,11 @@
+## [0.2.5](https://github.com/justindujardin/angular-rpg/compare/v0.2.4...v0.2.5) (2022-11-03)
+
+
+### Bug Fixes
+
+* **combat-damage:** remove elements when hidden ([22a5e85](https://github.com/justindujardin/angular-rpg/commit/22a5e858a800cfb7accb2052408976de349d9804))
+* **temple:** opting to pay for healing did not work ([320034f](https://github.com/justindujardin/angular-rpg/commit/320034f9327909f2a53d35ab77afc9afe837cc7f))
+
 ## [0.2.4](https://github.com/justindujardin/angular-rpg/compare/v0.2.3...v0.2.4) (2022-11-01)
 
 
