@@ -1,0 +1,638 @@
+{
+  "healer-female-magic.png": {
+    "width": 90,
+    "height": 80,
+    "frames": 18,
+    "source": "magic",
+    "index": null,
+    "x": 0,
+    "y": 0,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      }
+    }
+  },
+  "healer-male-magic.png": {
+    "width": 90,
+    "height": 80,
+    "frames": 18,
+    "source": "magic",
+    "index": null,
+    "x": 90,
+    "y": 0,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      }
+    }
+  },
+  "magician-female-magic.png": {
+    "width": 90,
+    "height": 80,
+    "frames": 18,
+    "source": "magic",
+    "index": null,
+    "x": 0,
+    "y": 80,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      }
+    }
+  },
+  "magician-male-magic.png": {
+    "width": 90,
+    "height": 80,
+    "frames": 18,
+    "source": "magic",
+    "index": null,
+    "x": 90,
+    "y": 80,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      }
+    }
+  },
+  "ninja-female-magic.png": {
+    "width": 90,
+    "height": 80,
+    "frames": 18,
+    "source": "magic",
+    "index": null,
+    "x": 180,
+    "y": 0,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      }
+    }
+  },
+  "ninja-male-magic.png": {
+    "width": 90,
+    "height": 80,
+    "frames": 18,
+    "source": "magic",
+    "index": null,
+    "x": 180,
+    "y": 80,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      }
+    }
+  },
+  "ranger-female-magic.png": {
+    "width": 90,
+    "height": 80,
+    "frames": 18,
+    "source": "magic",
+    "index": null,
+    "x": 0,
+    "y": 160,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      }
+    }
+  },
+  "ranger-male-magic.png": {
+    "width": 90,
+    "height": 80,
+    "frames": 18,
+    "source": "magic",
+    "index": null,
+    "x": 90,
+    "y": 160,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      }
+    }
+  },
+  "townfolk-female-magic.png": {
+    "width": 90,
+    "height": 80,
+    "frames": 18,
+    "source": "magic",
+    "index": null,
+    "x": 180,
+    "y": 160,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      }
+    }
+  },
+  "townfolk-male-magic.png": {
+    "width": 90,
+    "height": 80,
+    "frames": 18,
+    "source": "magic",
+    "index": null,
+    "x": 270,
+    "y": 0,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      }
+    }
+  },
+  "warrior-female-magic.png": {
+    "width": 90,
+    "height": 80,
+    "frames": 18,
+    "source": "magic",
+    "index": null,
+    "x": 270,
+    "y": 80,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      }
+    }
+  },
+  "warrior-male-magic.png": {
+    "width": 90,
+    "height": 80,
+    "frames": 18,
+    "source": "magic",
+    "index": null,
+    "x": 270,
+    "y": 160,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      }
+    }
+  }
+}

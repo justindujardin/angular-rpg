@@ -1,0 +1,590 @@
+{
+  "healer-female-attack.png": {
+    "width": 72,
+    "height": 80,
+    "frames": 14.4,
+    "source": "punch",
+    "index": null,
+    "x": 0,
+    "y": 0,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          8,
+          9,
+          10,
+          11
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          12,
+          13,
+          14,
+          15
+        ]
+      }
+    }
+  },
+  "healer-male-attack.png": {
+    "width": 72,
+    "height": 80,
+    "frames": 14.4,
+    "source": "punch",
+    "index": null,
+    "x": 72,
+    "y": 0,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          8,
+          9,
+          10,
+          11
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          12,
+          13,
+          14,
+          15
+        ]
+      }
+    }
+  },
+  "magician-female-attack.png": {
+    "width": 72,
+    "height": 80,
+    "frames": 14.4,
+    "source": "punch",
+    "index": null,
+    "x": 144,
+    "y": 0,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          8,
+          9,
+          10,
+          11
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          12,
+          13,
+          14,
+          15
+        ]
+      }
+    }
+  },
+  "magician-male-attack.png": {
+    "width": 72,
+    "height": 80,
+    "frames": 14.4,
+    "source": "punch",
+    "index": null,
+    "x": 0,
+    "y": 80,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          8,
+          9,
+          10,
+          11
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          12,
+          13,
+          14,
+          15
+        ]
+      }
+    }
+  },
+  "ninja-female-attack.png": {
+    "width": 72,
+    "height": 80,
+    "frames": 14.4,
+    "source": "punch",
+    "index": null,
+    "x": 72,
+    "y": 80,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          8,
+          9,
+          10,
+          11
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          12,
+          13,
+          14,
+          15
+        ]
+      }
+    }
+  },
+  "ninja-male-attack.png": {
+    "width": 72,
+    "height": 80,
+    "frames": 14.4,
+    "source": "punch",
+    "index": null,
+    "x": 144,
+    "y": 80,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          8,
+          9,
+          10,
+          11
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          12,
+          13,
+          14,
+          15
+        ]
+      }
+    }
+  },
+  "ranger-female-attack.png": {
+    "width": 72,
+    "height": 80,
+    "frames": 14.4,
+    "source": "punch",
+    "index": null,
+    "x": 216,
+    "y": 0,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          8,
+          9,
+          10,
+          11
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          12,
+          13,
+          14,
+          15
+        ]
+      }
+    }
+  },
+  "ranger-male-attack.png": {
+    "width": 72,
+    "height": 80,
+    "frames": 14.4,
+    "source": "punch",
+    "index": null,
+    "x": 216,
+    "y": 80,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          8,
+          9,
+          10,
+          11
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          12,
+          13,
+          14,
+          15
+        ]
+      }
+    }
+  },
+  "townfolk-female-attack.png": {
+    "width": 72,
+    "height": 80,
+    "frames": 14.4,
+    "source": "punch",
+    "index": null,
+    "x": 0,
+    "y": 160,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          8,
+          9,
+          10,
+          11
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          12,
+          13,
+          14,
+          15
+        ]
+      }
+    }
+  },
+  "townfolk-male-attack.png": {
+    "width": 72,
+    "height": 80,
+    "frames": 14.4,
+    "source": "punch",
+    "index": null,
+    "x": 72,
+    "y": 160,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          8,
+          9,
+          10,
+          11
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          12,
+          13,
+          14,
+          15
+        ]
+      }
+    }
+  },
+  "warrior-female-attack.png": {
+    "width": 72,
+    "height": 80,
+    "frames": 14.4,
+    "source": "punch",
+    "index": null,
+    "x": 144,
+    "y": 160,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          8,
+          9,
+          10,
+          11
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          12,
+          13,
+          14,
+          15
+        ]
+      }
+    }
+  },
+  "warrior-male-attack.png": {
+    "width": 72,
+    "height": 80,
+    "frames": 14.4,
+    "source": "punch",
+    "index": null,
+    "x": 216,
+    "y": 160,
+    "cellWidth": 18,
+    "cellHeight": 20,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          8,
+          9,
+          10,
+          11
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          12,
+          13,
+          14,
+          15
+        ]
+      }
+    }
+  }
+}
