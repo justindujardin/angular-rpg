@@ -13,6 +13,7 @@ import {
 import {
   GameStateEquipItemAction,
   GameStateHealPartyAction,
+  GameStateHurtPartyAction,
   GameStateUnequipItemAction,
 } from '../game-state/game-state.actions';
 import { Armor, Item, Magic, Weapon } from '../item';
@@ -101,6 +102,7 @@ type EntityReducerTypes =
   | GameStateEquipItemAction
   | GameStateUnequipItemAction
   | GameStateHealPartyAction
+  | GameStateHurtPartyAction
   | CombatVictoryAction;
 
 export function entityReducer(
@@ -146,6 +148,23 @@ export function entityReducer(
               hp: newHp,
               mp: newMp,
             },
+            partyMemberId
+          );
+        });
+        return updateBeingsResult;
+      });
+    }
+    case GameStateHurtPartyAction.typeId: {
+      const result: EntityStateRecord = state;
+      const partyAction: GameStateHurtPartyAction = action;
+      return result.updateIn(['beings'], (beings: EntityCollectionRecord) => {
+        let updateBeingsResult = beings;
+        const damage = action.payload.damage;
+        partyAction.payload.partyIds.forEach((partyMemberId: string) => {
+          const newHp = state.beings.byId.get(partyMemberId).hp - damage;
+          updateBeingsResult = mergeEntityInCollection(
+            updateBeingsResult,
+            { hp: newHp },
             partyMemberId
           );
         });

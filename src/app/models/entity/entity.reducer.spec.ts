@@ -4,6 +4,7 @@ import { addEntityToCollection, EntityCollectionRecord } from '../entity-collect
 import {
   GameStateEquipItemAction,
   GameStateHealPartyAction,
+  GameStateHurtPartyAction,
   GameStateUnequipItemAction,
 } from '../game-state/game-state.actions';
 import { Item } from '../item';
@@ -271,6 +272,39 @@ describe('Entity', () => {
         const secondHealed: IPartyMember = actual.beings.byId.get(secondId);
         expect(secondHealed.hp).toBe(secondHealed.maxhp);
         expect(secondHealed.mp).toBe(secondHealed.maxmp);
+      });
+    });
+    describe('GameStateHurtPartyAction', () => {
+      it('should restore all entities in partyIds hp and mp to their maximum', () => {
+        const secondId: string = 'MotTon';
+        const first = entityFactory({
+          eid: testId,
+          hp: 25,
+          maxhp: 25,
+          mp: 0,
+          maxmp: 25,
+        });
+        const second = entityFactory({
+          eid: secondId,
+          hp: 20,
+          maxhp: 20,
+          mp: 0,
+          maxmp: 25,
+        });
+        const initial: EntityStateRecord = defaultState('beings', [first, second]);
+        const damage = 10;
+        const actual = entityReducer(
+          initial,
+          new GameStateHurtPartyAction({
+            damage,
+            partyIds: [testId, secondId],
+          })
+        );
+        const firstHurt: IPartyMember = actual.beings.byId.get(testId);
+        expect(firstHurt.hp).toBe(first.hp - damage);
+
+        const secondHurt: IPartyMember = actual.beings.byId.get(secondId);
+        expect(secondHurt.hp).toBe(second.hp - damage);
       });
     });
 
