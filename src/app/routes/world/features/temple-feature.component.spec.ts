@@ -22,18 +22,25 @@ import {
   TempleFeatureComponent,
 } from './temple-feature.component';
 
-const FEATURE: ITiledObject<ITempleFeatureProperties> = {
-  name: 'test temple',
-  class: 'TempleFeatureComponent',
-  x: 0,
-  y: 0,
-  width: 1,
-  height: 1,
-  visible: true,
-  properties: {
-    cost: 10,
-  },
-};
+function getFeature(
+  values: Partial<ITiledObject<ITempleFeatureProperties>> = {},
+  properties: Partial<ITempleFeatureProperties> = {}
+): ITiledObject<ITempleFeatureProperties> {
+  return {
+    name: 'feature',
+    class: 'TempleFeatureComponent',
+    x: 0,
+    y: 0,
+    width: 1,
+    height: 1,
+    visible: true,
+    properties: {
+      cost: 10,
+      ...properties,
+    },
+    ...values,
+  };
+}
 
 function getPartyWithEquipment(store: Store<AppState>): EntityWithEquipment[] {
   let newParty: EntityWithEquipment[] = [];
@@ -115,7 +122,7 @@ describe('TempleFeatureComponent', () => {
   it('should heal party when resting', async () => {
     const fixture = TestBed.createComponent(TempleFeatureComponent);
     const comp: TempleFeatureComponent = fixture.componentInstance;
-    comp.feature = FEATURE;
+    comp.feature = getFeature();
     fixture.detectChanges();
     comp.enter(tileObject);
     fixture.detectChanges();
@@ -139,7 +146,7 @@ describe('TempleFeatureComponent', () => {
   it('should fail to heal when party does not have enough money', async () => {
     const fixture = TestBed.createComponent(TempleFeatureComponent);
     const comp: TempleFeatureComponent = fixture.componentInstance;
-    comp.feature = { ...FEATURE, properties: { cost: 200 } };
+    comp.feature = getFeature({}, { cost: 200 });
     fixture.detectChanges();
     comp.enter(tileObject);
     fixture.detectChanges();
@@ -160,7 +167,7 @@ describe('TempleFeatureComponent', () => {
   it('should not take money when party is already healed', async () => {
     const fixture = TestBed.createComponent(TempleFeatureComponent);
     const comp: TempleFeatureComponent = fixture.componentInstance;
-    comp.feature = FEATURE;
+    comp.feature = getFeature();
     fixture.detectChanges();
     comp.enter(tileObject);
     fixture.detectChanges();
@@ -177,7 +184,7 @@ describe('TempleFeatureComponent', () => {
   it('should output onClose when choosing not to heal', async () => {
     const fixture = TestBed.createComponent(TempleFeatureComponent);
     const comp: TempleFeatureComponent = fixture.componentInstance;
-    comp.feature = FEATURE;
+    comp.feature = getFeature();
     fixture.detectChanges();
     comp.enter(tileObject);
     fixture.detectChanges();

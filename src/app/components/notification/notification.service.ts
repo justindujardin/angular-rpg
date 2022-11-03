@@ -94,6 +94,10 @@ export class NotificationService implements IWorldObject, IProcessObject {
     };
   }
 
+  getFirst(): INotifyItem | null {
+    return this._current || this._queue[0] || null;
+  }
+
   show(message: string, done?: () => void, duration?: number): INotifyItem {
     const obj: INotifyItem = {
       message,

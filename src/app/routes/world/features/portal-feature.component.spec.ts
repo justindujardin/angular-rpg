@@ -56,7 +56,7 @@ function getFeature(
   };
 }
 
-fdescribe('PortalFeatureComponent', () => {
+describe('PortalFeatureComponent', () => {
   let world: GameWorld;
   const tileObject: any = {};
   beforeEach(async () => {
@@ -100,7 +100,7 @@ fdescribe('PortalFeatureComponent', () => {
     expect(info.targetX).toBe(10);
     expect(info.targetY).toBe(10);
   });
-  it('location stays the same if not target is specified', async () => {
+  it('location stays the same if no target is specified', async () => {
     const fixture = TestBed.createComponent(PortalFeatureComponent);
     const comp: PortalFeatureComponent = fixture.componentInstance;
 
