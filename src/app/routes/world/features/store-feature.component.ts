@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  Input,
   Output,
   ViewEncapsulation,
 } from '@angular/core';
@@ -12,8 +13,8 @@ import { ITEMS_DATA } from 'app/models/game-data/items';
 import { MAGIC_DATA } from 'app/models/game-data/magic';
 import { WEAPONS_DATA } from 'app/models/game-data/weapons';
 import * as Immutable from 'immutable';
-import { BehaviorSubject, from, Observable } from 'rxjs';
-import { combineLatest, first, map, withLatestFrom } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, from, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
 import { IEntityObject, IPartyMember } from '../../../models/base-entity';
 import {
@@ -46,43 +47,7 @@ import {
   sliceGameState,
 } from '../../../models/selectors';
 import { assertTrue } from '../../../models/util';
-import { MapFeatureComponent } from '../map-feature.component';
-
-/**
- * Given a list of potential items to sell, filter to only ones that can be bartered in this store.
- * @param items The list of items to filter
- * @param groups The item groups that are supported by this store
- * @returns {ITemplateBaseItem[]} The filtered item list
- */
-export function sellItemsFilter(
-  items: Immutable.List<Item>,
-  groups: string[]
-): Immutable.List<Item> {
-  return items
-    .filter((i?: Item) => {
-      return itemInGroups(i, groups);
-    })
-    .toList();
-}
-
-/**
- * return true if the given item belongs to at least one of the given groups
- */
-export function itemInGroups(
-  item: ITemplateBaseItem | undefined,
-  groups: string[]
-): boolean {
-  if (!item) {
-    return false;
-  }
-  // If there are no groups, the item is OK
-  let groupsMatch: boolean = !item.groups || groups.length === 0;
-  // If there are groups, make sure it matches at least one of them
-  (item.groups || []).forEach((group: string) => {
-    groupsMatch = groupsMatch || groups.indexOf(group) !== -1;
-  });
-  return groupsMatch;
-}
+import { IMapFeatureProperties, MapFeatureComponent } from '../map-feature.component';
 
 /**
  * The categories of store (tied to definition of feature in TMX map
@@ -95,6 +60,10 @@ interface IEquipmentDifference {
   diff: string;
 }
 
+export interface IStoreFeatureProperties extends IMapFeatureProperties {
+  inventory: string;
+}
+
 @Component({
   selector: 'store-feature',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -103,6 +72,7 @@ interface IEquipmentDifference {
   templateUrl: './store-feature.component.html',
 })
 export class StoreFeatureComponent extends MapFeatureComponent {
+  @Input() feature: ITiledObject<IStoreFeatureProperties> | null = null;
   /** The store items category must be set in a subclass */
   category: StoreInventoryCategories;
 
@@ -123,7 +93,9 @@ export class StoreFeatureComponent extends MapFeatureComponent {
   /**
    * The name of this (fine) establishment.
    */
-  name$: Observable<string> = this.feature$.pipe(map((f: ITiledObject<any>) => f.name));
+  name$: Observable<string> = this.feature$.pipe(
+    map((f: ITiledObject<any> | null) => f?.name || '')
+  );
 
   /**
    * The amount of gold the party has to spend
@@ -145,25 +117,34 @@ export class StoreFeatureComponent extends MapFeatureComponent {
   /**
    * Calculate the inventory for the store. Filter by category, item grouping, and player level.
    */
-  inventory$: Observable<ITemplateBaseItem[]> = this._weapons$.pipe(
-    combineLatest(
-      [
-        this._armors$,
-        this._items$,
-        this._magics$,
-        this._feature$,
-        this._selling$,
-        this.partyInventory$,
-      ],
+  inventory$: Observable<ITemplateBaseItem[]> = combineLatest([
+    this._weapons$,
+    this._armors$,
+    this._items$,
+    this._magics$,
+    this._feature$,
+    this._selling$,
+    this.partyInventory$,
+  ]).pipe(
+    map(
       (
-        weapons: ITemplateWeapon[] | null,
-        armors: ITemplateArmor[] | null,
-        items: ITemplateBaseItem[] | null,
-        magics: ITemplateMagic[] | null,
-        feature: ITiledObject<any> | null,
-        selling: boolean,
-        partyInventory: Immutable.List<Item> | null
+        params: [
+          ITemplateWeapon[] | null,
+          ITemplateArmor[] | null,
+          ITemplateBaseItem[] | null,
+          ITemplateMagic[] | null,
+          ITiledObject<any> | null,
+          boolean,
+          Immutable.List<Item> | null
+        ]
       ): ITemplateBaseItem[] => {
+        const weapons: ITemplateWeapon[] | null = params[0];
+        const armors: ITemplateArmor[] | null = params[1];
+        const items: ITemplateBaseItem[] | null = params[2];
+        const magics: ITemplateMagic[] | null = params[3];
+        const feature: ITiledObject<any> | null = params[4];
+        const selling: boolean = params[5];
+        const partyInventory: Immutable.List<Item> | null = params[6];
         if (!weapons || !armors || !items || !magics || !feature || !partyInventory) {
           return [];
         }
@@ -210,13 +191,17 @@ export class StoreFeatureComponent extends MapFeatureComponent {
   partyWithEquipment$: Observable<Immutable.List<EntityWithEquipment>> =
     this.store.select(getGamePartyWithEquipment);
 
-  differences$: Observable<IEquipmentDifference[]> = this.selected$.pipe(
-    combineLatest(
-      [this.partyWithEquipment$],
+  differences$: Observable<IEquipmentDifference[]> = combineLatest([
+    this.selected$,
+    this.partyWithEquipment$,
+  ]).pipe(
+    map(
       (
-        selected: Set<Item>,
-        party: Immutable.List<EntityWithEquipment>
+        params: [Set<Item>, Immutable.List<EntityWithEquipment>]
       ): IEquipmentDifference[] => {
+        const selected: Set<Item> = params[0];
+        const party: Immutable.List<EntityWithEquipment> = params[1];
+
         let results: IEquipmentDifference[] = [];
         if (selected.size != 1) {
           results = party
@@ -283,22 +268,37 @@ export class StoreFeatureComponent extends MapFeatureComponent {
     )
   );
 
-  isBuying$: Observable<boolean> = this.selected$.pipe(
-    combineLatest([this.selling$], (selected: Set<Item>, selling: boolean) => {
-      return !selected.size && !selling;
-    })
-  );
-
-  isSelling$: Observable<boolean> = this.selected$.pipe(
-    combineLatest([this.selling$], (selected: Set<Item>, selling: boolean) => {
-      return !selected.size && selling;
-    })
-  );
-
   /** Verb for the current buy/sell state for an action button */
   actionVerb$: Observable<string> = this.selling$.pipe(
     map((selling: boolean) => {
       return selling ? 'Sell' : 'Buy';
+    })
+  );
+
+  /** The GameState, but only valid when buying */
+  buyingState$: Observable<[GameState, Immutable.List<EntityWithEquipment>] | null> =
+    combineLatest([
+      this.store.select(sliceGameState),
+      this.selling$,
+      this.partyWithEquipment$,
+    ]).pipe(
+      map((params: [GameState, boolean, Immutable.List<EntityWithEquipment>]) => {
+        const state: GameState = params[0];
+        const isSelling: boolean = params[1];
+        const party: Immutable.List<EntityWithEquipment> = params[2];
+        return !isSelling ? [state, party] : null;
+      })
+    );
+
+  /** The Selection, but only valid when selling */
+  sellingState$: Observable<Item[] | null> = combineLatest([
+    this.selling$,
+    this.partyInventory$,
+  ]).pipe(
+    map((params: [boolean, Immutable.List<Item>]) => {
+      const isSelling: boolean = params[0];
+      const inventory: Immutable.List<Item> = params[1];
+      return isSelling ? inventory.toJS() : null;
     })
   );
 
@@ -329,8 +329,7 @@ export class StoreFeatureComponent extends MapFeatureComponent {
     }
   }
 
-  sellItems() {
-    const items: Item[] = [...this._selected$.value];
+  sellItems(items: Item[]) {
     const totalCost: number = items.reduce(
       (prev: number, current: Item) => prev + current.value,
       0
@@ -347,96 +346,85 @@ export class StoreFeatureComponent extends MapFeatureComponent {
       1500
     );
   }
-  buyItems() {
-    this.store
-      .select(sliceGameState)
-      .pipe(
-        first(),
-        withLatestFrom(
-          this.partyWithEquipment$,
-          (state: GameState, party: Immutable.List<EntityWithEquipment>) => {
-            const items: Item[] = [...this._selected$.value];
-            const totalCost: number = items.reduce(
-              (prev: number, current: Item) => prev + current.value,
-              0
-            );
-            if (totalCost > state.gold) {
-              this.notify.show("You don't have enough money");
-              return;
-            }
+  buyItems(state: GameState, party: Immutable.List<EntityWithEquipment>) {
+    const items: Item[] = [...this._selected$.value];
+    const totalCost: number = items.reduce(
+      (prev: number, current: Item) => prev + current.value,
+      0
+    );
+    if (totalCost > state.gold) {
+      this.notify.show("You don't have enough money");
+      return;
+    }
 
-            let toEquipItem: Item | null = null;
-            for (let i = 0; i < items.length; i++) {
-              const item = items[i];
-              const itemInstance = instantiateEntity<Item>(item);
-              this.store.dispatch(new EntityAddItemAction(itemInstance));
-              this.store.dispatch(new GameStateAddInventoryAction(itemInstance));
-              if (items.length === 1) {
-                toEquipItem = itemInstance;
-              }
-            }
-            this.store.dispatch(new GameStateAddGoldAction(-totalCost));
+    let toEquipItem: Item | null = null;
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      const itemInstance = instantiateEntity<Item>(item);
+      this.store.dispatch(new EntityAddItemAction(itemInstance));
+      this.store.dispatch(new GameStateAddInventoryAction(itemInstance));
+      if (items.length === 1) {
+        toEquipItem = itemInstance;
+      }
+    }
+    this.store.dispatch(new GameStateAddGoldAction(-totalCost));
 
-            // Equip newly purchased items if there's only one and it can only be
-            // wielded by one class.
-            const types: EquipmentSlotTypes[] = [...EQUIPMENT_SLOTS];
-            if (
-              items.length === 1 &&
-              toEquipItem &&
-              types.indexOf(toEquipItem?.type as EquipmentSlotTypes)
-            ) {
-              const toEquip = party.find((p) => {
-                assertTrue(p, 'invalid player entity in party');
-                // If anyone can equip it, the first player always gets it (sad)
-                if (toEquipItem?.usedby?.length === 0) {
-                  return true;
-                }
-                return toEquipItem?.usedby?.indexOf(p.type) !== -1;
-              });
-              // Found equip target
-              if (toEquip) {
-                // Unequip anything that's already there
-                if (toEquip.hasOwnProperty(toEquipItem?.type)) {
-                  const oldItem: IEntityObject | null = (toEquip as any)[
-                    toEquipItem?.type
-                  ];
-                  if (oldItem) {
-                    this.store.dispatch(
-                      new GameStateUnequipItemAction({
-                        entityId: toEquip.eid,
-                        slot: toEquipItem.type as keyof EntitySlots,
-                        itemId: oldItem.eid,
-                      })
-                    );
-                  }
-                }
-                this.store.dispatch(
-                  new GameStateEquipItemAction({
-                    entityId: toEquip.eid,
-                    slot: toEquipItem.type as keyof EntitySlots,
-                    itemId: toEquipItem.eid,
-                  })
-                );
-              }
-              this.notify.show(
-                `Purchased ${toEquipItem.name} for ${totalCost} gold and equipped it on ${toEquip?.name}.`,
-                undefined,
-                5000
-              );
-              return;
-            }
-
-            const itemText =
-              items.length === 1 ? `${items[0].name}` : `${items.length} items`;
-            this.notify.show(
-              `Purchased ${itemText} items for ${totalCost} gold.`,
-              undefined,
-              1500
+    // Equip newly purchased items if there's only one and it can only be
+    // wielded by one class.
+    const types: EquipmentSlotTypes[] = [...EQUIPMENT_SLOTS];
+    if (
+      items.length === 1 &&
+      toEquipItem &&
+      types.indexOf(toEquipItem?.type as EquipmentSlotTypes)
+    ) {
+      const toEquip = party.find((p) => {
+        assertTrue(p, 'invalid player entity in party');
+        if (toEquipItem?.type === 'item') {
+          return false;
+        }
+        // If anyone can equip it, the first player always gets it (sad)
+        if (toEquipItem?.usedby?.length === 0) {
+          return true;
+        }
+        return toEquipItem?.usedby?.indexOf(p.type) !== -1;
+      });
+      // Found equip target
+      if (toEquip) {
+        // Unequip anything that's already there
+        if (toEquip.hasOwnProperty(toEquipItem?.type)) {
+          const oldItem: IEntityObject | null = (toEquip as any)[toEquipItem?.type];
+          if (oldItem) {
+            this.store.dispatch(
+              new GameStateUnequipItemAction({
+                entityId: toEquip.eid,
+                slot: toEquipItem.type as keyof EntitySlots,
+                itemId: oldItem.eid,
+              })
             );
           }
-        )
-      )
-      .subscribe();
+        }
+        this.store.dispatch(
+          new GameStateEquipItemAction({
+            entityId: toEquip.eid,
+            slot: toEquipItem.type as keyof EntitySlots,
+            itemId: toEquipItem.eid,
+          })
+        );
+      }
+      this.notify.show(
+        `Purchased ${toEquipItem.name} for ${totalCost} gold and equipped it on ${toEquip?.name}.`,
+        undefined,
+        5000
+      );
+      return;
+    }
+
+    const itemText = items.length === 1 ? `${items[0].name}` : `${items.length} items`;
+    this.notify.show(
+      `Purchased ${itemText} items for ${totalCost} gold.`,
+      undefined,
+      1500
+    );
   }
 
   tabChange(event: MatTabChangeEvent) {
