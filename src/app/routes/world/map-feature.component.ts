@@ -75,6 +75,9 @@ export class MapFeatureComponent
   set active(value: boolean) {
     this._active$.next(value);
   }
+  get active(): boolean {
+    return this._active$.value;
+  }
 
   enter(object: TileObject): boolean {
     this.assertFeature();
