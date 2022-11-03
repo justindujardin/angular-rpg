@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  Input,
   Output,
   ViewEncapsulation,
 } from '@angular/core';
@@ -10,7 +11,15 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
 import { TileObject } from '../../../scene/tile-object';
-import { MapFeatureComponent } from '../map-feature.component';
+import { IMapFeatureProperties, MapFeatureComponent } from '../map-feature.component';
+
+export interface IDialogFeatureProperties extends IMapFeatureProperties {
+  text: string;
+  title: string;
+  icon: string;
+  altIcon?: string;
+  sets?: string;
+}
 
 @Component({
   selector: 'dialog-feature',
@@ -21,6 +30,7 @@ import { MapFeatureComponent } from '../map-feature.component';
 })
 export class DialogFeatureComponent extends MapFeatureComponent {
   @Output() onClose = new EventEmitter();
+  @Input() feature: ITiledObject<IDialogFeatureProperties> | null = null;
 
   /** The dialog text */
   text$: Observable<string> = this.feature$.pipe(
