@@ -31,6 +31,7 @@ import {
   getGamePartyWithEquipment,
 } from '../../../models/selectors';
 import { SpritesService } from '../../../models/sprites/sprites.service';
+import { assertTrue } from '../../../models/util';
 import { GameWorld } from '../../../services/game-world';
 import {
   IStoreFeatureProperties,
@@ -239,8 +240,7 @@ describe('StoreFeatureComponent', () => {
       fixture.detectChanges();
       let selection = getStoreSelection(comp.selected$);
       expect(selection.length).toBe(1);
-      const downgrade = fixture.debugElement.query(By.css('.downgrade'));
-      expect(downgrade).not.toBeNull();
+      expect(fixture.debugElement.query(By.css('.downgrade'))).not.toBeNull();
 
       // Selecting short-sword shows neither upgrade or downgrade
       shortSwordItem.triggerEventHandler('click', {});
@@ -258,6 +258,35 @@ describe('StoreFeatureComponent', () => {
   });
 
   describe('buying', () => {
+    it('should fail to buy selected item without enough money', () => {
+      const fixture = TestBed.createComponent(StoreFeatureComponent);
+      const comp: StoreFeatureComponent = fixture.componentInstance;
+
+      comp.feature = getFeature({}, { inventory: 'potion-large' });
+      comp.category = 'misc';
+      fixture.detectChanges();
+
+      comp.enter(tileObject);
+      fixture.detectChanges();
+      expect(comp.active).toBe(true);
+
+      const goldBefore = getPartyGold(world.store);
+
+      const price = fixture.debugElement.query(By.css('.item-value'));
+      price.triggerEventHandler('click', {});
+      fixture.detectChanges();
+
+      const buyBtn = fixture.debugElement.query(By.css('.btn-buy'));
+      buyBtn.triggerEventHandler('click', {});
+      fixture.detectChanges();
+
+      // Gold is not decremented
+      expect(getPartyGold(world.store)).toBe(goldBefore);
+
+      // Item is not in inventory
+      const inventory = getInventory(world.store);
+      expect(inventory.length).toBe(0);
+    });
     it('should buy selected item with enough money', () => {
       const fixture = TestBed.createComponent(StoreFeatureComponent);
       const comp: StoreFeatureComponent = fixture.componentInstance;
@@ -270,6 +299,10 @@ describe('StoreFeatureComponent', () => {
       fixture.detectChanges();
       expect(comp.active).toBe(true);
 
+      const itemTemplate = ITEMS_DATA.find((f) => f.id === 'potion');
+      assertTrue(itemTemplate, 'failed to find item template');
+      const goldBefore = getPartyGold(world.store);
+
       const price = fixture.debugElement.query(By.css('.item-value'));
       price.triggerEventHandler('click', {});
       fixture.detectChanges();
@@ -281,6 +314,10 @@ describe('StoreFeatureComponent', () => {
       // Does not clear selection when items are purchased
       let selection = getStoreSelection(comp.selected$);
       expect(selection.length).toBe(1);
+
+      // Paid for the item
+      const goldAfter = getPartyGold(world.store);
+      expect(goldAfter).toBe(goldBefore - itemTemplate.value);
 
       const inventory = getInventory(world.store);
       expect(inventory[0].id).toBe('potion');
