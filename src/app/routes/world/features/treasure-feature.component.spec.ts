@@ -60,7 +60,7 @@ function getPartyGold(store: Store<AppState>): number {
   return result;
 }
 
-fdescribe('TreasureFeatureComponent', () => {
+describe('TreasureFeatureComponent', () => {
   let world: GameWorld;
   const tileObject: any = {};
   beforeEach(async () => {
