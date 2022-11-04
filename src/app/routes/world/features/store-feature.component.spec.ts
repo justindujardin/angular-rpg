@@ -2,17 +2,12 @@ import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
-import * as Immutable from 'immutable';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { APP_IMPORTS } from '../../../app.imports';
 import { AppState } from '../../../app.model';
 import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
-import { IPartyMember } from '../../../models/base-entity';
-import {
-  EntityAddBeingAction,
-  EntityAddItemAction,
-} from '../../../models/entity/entity.actions';
+import { EntityAddItemAction } from '../../../models/entity/entity.actions';
 import { EntityWithEquipment } from '../../../models/entity/entity.model';
 import { EntityItemTypes } from '../../../models/entity/entity.reducer';
 import { instantiateEntity } from '../../../models/game-data/game-data.model';
@@ -21,9 +16,8 @@ import { WEAPONS_DATA } from '../../../models/game-data/weapons';
 import {
   GameStateAddInventoryAction,
   GameStateEquipItemAction,
-  GameStateNewAction,
+  GameStateUnequipItemAction,
 } from '../../../models/game-state/game-state.actions';
-import { GameState } from '../../../models/game-state/game-state.model';
 import { Item, Weapon } from '../../../models/item';
 import {
   getGameInventory,
@@ -33,6 +27,7 @@ import {
 import { SpritesService } from '../../../models/sprites/sprites.service';
 import { assertTrue } from '../../../models/util';
 import { GameWorld } from '../../../services/game-world';
+import { RPGGame } from '../../../services/rpg-game';
 import {
   IStoreFeatureProperties,
   StoreFeatureComponent,
@@ -108,41 +103,8 @@ describe('StoreFeatureComponent', () => {
     world = TestBed.inject(GameWorld);
     const sprites = TestBed.inject(SpritesService);
     await sprites.loadSprites('assets/images/index.json').toPromise();
-    const warrior: IPartyMember = {
-      id: 'warrior-class-id',
-      eid: 'invalid-hero',
-      status: [],
-      type: 'warrior',
-      name: 'warrior',
-      level: 1,
-      exp: 0,
-      icon: '',
-      hp: 20,
-      maxhp: 20,
-      mp: 20,
-      maxmp: 20,
-      strength: [10],
-      agility: [10],
-      vitality: [10],
-      luck: [10],
-      hitpercent: [10],
-      intelligence: [10],
-      magicdefense: [10],
-    };
-    const initialState: GameState = {
-      party: Immutable.List<string>([warrior.eid]),
-      inventory: Immutable.List<string>(),
-      battleCounter: 0,
-      keyData: Immutable.Map<string, any>(),
-      gold: 100,
-      combatZone: '',
-      location: 'example',
-      position: { x: 12, y: 8 },
-      boardedShip: false,
-      shipPosition: { x: 7, y: 23 },
-    };
-    world.store.dispatch(new GameStateNewAction(initialState));
-    world.store.dispatch(new EntityAddBeingAction(warrior));
+    const game = TestBed.inject(RPGGame);
+    await game.initGame(false);
   });
 
   describe('selection', () => {
@@ -213,14 +175,24 @@ describe('StoreFeatureComponent', () => {
       fixture.detectChanges();
 
       // Equip a short-sword
+      const warrior = getParty(world.store).find((p) => p.type === 'warrior');
+      assertTrue(warrior, 'no warrior class in default party');
       const itemInstance = instantiateEntity<Weapon>(
         WEAPONS_DATA.find((f) => f.id === 'short-sword')
       );
       world.store.dispatch(new EntityAddItemAction(itemInstance));
       world.store.dispatch(new GameStateAddInventoryAction(itemInstance));
+      // Unequip club first
+      world.store.dispatch(
+        new GameStateUnequipItemAction({
+          entityId: warrior.eid,
+          slot: 'weapon',
+          itemId: warrior.weapon?.eid || '',
+        })
+      );
       world.store.dispatch(
         new GameStateEquipItemAction({
-          entityId: 'invalid-hero',
+          entityId: warrior.eid,
           slot: 'weapon',
           itemId: itemInstance.eid,
         })
@@ -240,20 +212,22 @@ describe('StoreFeatureComponent', () => {
       fixture.detectChanges();
       let selection = getStoreSelection(comp.selected$);
       expect(selection.length).toBe(1);
-      expect(fixture.debugElement.query(By.css('.downgrade'))).not.toBeNull();
+      expect(
+        fixture.debugElement.query(By.css('.warrior > .downgrade'))
+      ).not.toBeNull();
 
       // Selecting short-sword shows neither upgrade or downgrade
       shortSwordItem.triggerEventHandler('click', {});
       fixture.detectChanges();
-      expect(fixture.debugElement.query(By.css('.downgrade'))).toBeNull();
-      expect(fixture.debugElement.query(By.css('.upgrade'))).toBeNull();
+      expect(fixture.debugElement.query(By.css('.warrior > .downgrade'))).toBeNull();
+      expect(fixture.debugElement.query(By.css('.warrior > .upgrade'))).toBeNull();
 
       // Selecting broadsword shows upgrade
       broadswordItem.triggerEventHandler('click', {});
       fixture.detectChanges();
       selection = getStoreSelection(comp.selected$);
       expect(selection.length).toBe(1);
-      expect(fixture.debugElement.query(By.css('.upgrade'))).not.toBeNull();
+      expect(fixture.debugElement.query(By.css('.warrior > .upgrade'))).not.toBeNull();
     });
   });
 
@@ -335,7 +309,7 @@ describe('StoreFeatureComponent', () => {
       expect(comp.active).toBe(true);
 
       let party = getParty(world.store);
-      expect(party[0].weapon).toBeUndefined();
+      const oldEid = party[0].weapon?.eid || '';
 
       const price = fixture.debugElement.query(By.css('.item-value'));
       price.triggerEventHandler('click', {});
@@ -346,7 +320,7 @@ describe('StoreFeatureComponent', () => {
 
       // Weapon is now equipped
       party = getParty(world.store);
-      expect(party[0].weapon).toBeDefined();
+      expect(party[0].weapon?.eid || '').not.toBe(oldEid);
 
       // Does not clear selection when items are purchased
       let selection = getStoreSelection(comp.selected$);

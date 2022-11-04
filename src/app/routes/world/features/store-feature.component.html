@@ -48,7 +48,10 @@
   </div>
 
   <section class="differences">
-    <div *ngFor="let diff of differences$ | async; trackBy: trackByEid">
+    <div
+      *ngFor="let diff of differences$ | async; trackBy: trackByEid"
+      [class]="diff.member.type"
+    >
       <rpg-sprite
         [class.disabled]="
           diff.diff == '' && !(selling$ | async) && (selected$ | async)?.size
