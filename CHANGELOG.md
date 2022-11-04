@@ -1,3 +1,10 @@
+## [0.2.6](https://github.com/justindujardin/angular-rpg/compare/v0.2.5...v0.2.6) (2022-11-04)
+
+
+### Features
+
+* **game-state:** add GameStateHurtPartyAction ([9cc2ed5](https://github.com/justindujardin/angular-rpg/commit/9cc2ed5cb50193c44fa05541cab52a39917f791d))
+
 ## [0.2.5](https://github.com/justindujardin/angular-rpg/compare/v0.2.4...v0.2.5) (2022-11-03)
 
 
