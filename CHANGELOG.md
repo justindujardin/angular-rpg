@@ -1,3 +1,10 @@
+## [0.2.8](https://github.com/justindujardin/angular-rpg/compare/v0.2.7...v0.2.8) (2022-11-04)
+
+
+### Bug Fixes
+
+* **ship:** A* pathfinding works on water again ([bc0b2fd](https://github.com/justindujardin/angular-rpg/commit/bc0b2fda93c9a36e7950dc7be8f74d68c4613669))
+
 ## [0.2.7](https://github.com/justindujardin/angular-rpg/compare/v0.2.6...v0.2.7) (2022-11-04)
 
 
