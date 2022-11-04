@@ -1,3 +1,10 @@
+## [0.2.7](https://github.com/justindujardin/angular-rpg/compare/v0.2.6...v0.2.7) (2022-11-04)
+
+
+### Bug Fixes
+
+* **ship:** ship animations did not work ([77969bf](https://github.com/justindujardin/angular-rpg/commit/77969bf15f49bd79360ad8da482da157ce96a149))
+
 ## [0.2.6](https://github.com/justindujardin/angular-rpg/compare/v0.2.5...v0.2.6) (2022-11-04)
 
 
