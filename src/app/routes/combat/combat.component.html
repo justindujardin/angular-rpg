@@ -13,7 +13,7 @@
   [icon]="p.icon"
   [model]="p"
   [scene]="scene"
-  [combat]="combat"
+  [combat]="this"
   #partyMember
 ></combat-player>
 <combat-enemy
@@ -21,12 +21,13 @@
   [icon]="e.icon"
   [model]="e"
   [scene]="scene"
-  [combat]="combat"
+  [combat]="this"
   #enemy
 ></combat-enemy>
 <combat-state-machine
   [scene]="scene"
   [party]="party"
+  [combat]="this"
   [enemies]="enemies"
   [encounter]="encounter$ | async"
 ></combat-state-machine>

@@ -45,6 +45,7 @@ import { SceneView } from '../../../scene/scene-view';
 import { GameWorld } from '../../../services/game-world';
 import { CombatEnemyComponent } from '../combat-enemy.component';
 import { CombatPlayerComponent } from '../combat-player.component';
+import { CombatComponent } from '../combat.component';
 import { CombatAttackSummary, CombatSceneClick, IPlayerAction } from '../combat.types';
 import { CombatMachineState } from './combat-base.state';
 import { CombatDefeatSummary } from './combat-defeat.state';
@@ -121,9 +122,9 @@ export class CombatStateMachineComponent
 
   @Input() scene: Scene;
   @Input() encounter: CombatEncounter | null;
-  @Input() party: QueryList<CombatPlayerComponent>;
-  @Input() enemies: QueryList<CombatEnemyComponent>;
-
+  @Input() party: QueryList<CombatPlayerComponent> | null = null;
+  @Input() enemies: QueryList<CombatEnemyComponent> | null = null;
+  @Input() combat: CombatComponent | null = null;
   @Input() view: SceneView;
 
   @ViewChildren('start,beginTurn,chooseAction,endTurn,defeat,victory,escape')
@@ -160,24 +161,34 @@ export class CombatStateMachineComponent
   }
 
   isFriendlyTurn(): boolean {
-    return !!(
-      this.current && this.party.find((member) => member._uid === this.current?._uid)
-    );
+    if (!this.current || !this.party) {
+      return false;
+    }
+    return !!this.party.find((member) => member._uid === this.current?._uid);
   }
 
   getLiveParty(): CombatPlayerComponent[] {
+    if (!this.party) {
+      return [];
+    }
     return this.party.filter((obj: CombatPlayerComponent) => {
       return !this.combatService.isDefeated(obj.model);
     });
   }
 
   getLiveEnemies(): CombatEnemyComponent[] {
+    if (!this.enemies) {
+      return [];
+    }
     return this.enemies.filter((obj: CombatEnemyComponent) => {
       return !this.combatService.isDefeated(obj.model);
     });
   }
 
   getRandomPartyMember(): GameEntityObject | null {
+    if (!this.party) {
+      return null;
+    }
     const players = _.shuffle(this.party.toArray()) as CombatPlayerComponent[];
     while (players.length > 0) {
       const p = players.shift();
@@ -192,6 +203,9 @@ export class CombatStateMachineComponent
   }
 
   getRandomEnemy(): GameEntityObject | null {
+    if (!this.enemies) {
+      return null;
+    }
     const players = _.shuffle(this.enemies.toArray()) as CombatEnemyComponent[];
     while (players.length > 0) {
       const p = players.shift();

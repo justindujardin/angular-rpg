@@ -14,6 +14,7 @@
  limitations under the License.
  */
 import { Component } from '@angular/core';
+import { assertTrue } from '../../../models/util';
 import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { CombatMachineState } from './combat-base.state';
 import { CombatStateMachineComponent } from './combat.machine';
@@ -32,6 +33,8 @@ export class CombatDefeatStateComponent extends CombatMachineState {
   name: CombatStateNames = CombatDefeatStateComponent.NAME;
 
   enter(machine: CombatStateMachineComponent) {
+    assertTrue(machine.party, 'invalid party in defeat state');
+    assertTrue(machine.enemies, 'invalid enemies in defeat state');
     super.enter(machine);
     const data: CombatDefeatSummary = {
       enemies: machine.enemies.toArray(),

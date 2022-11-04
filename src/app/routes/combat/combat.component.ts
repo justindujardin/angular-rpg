@@ -71,8 +71,6 @@ export class CombatComponent
   extends SceneView
   implements IProcessObject, OnDestroy, AfterViewInit
 {
-  combat: CombatComponent = this;
-
   @Input() scene: Scene = new Scene();
   /**
    * A pointing UI element that can be attached to `SceneObject`s to attract attention

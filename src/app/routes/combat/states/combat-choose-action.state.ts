@@ -17,8 +17,6 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  forwardRef,
-  Inject,
   Input,
   OnDestroy,
   Renderer2,
@@ -67,8 +65,8 @@ export class CombatChooseActionStateComponent
    */
   @Input() items: ICombatMenuItem[] = [];
 
-  @Input()
-  pointAt: GameEntityObject | null = null;
+  @Input() pointAt: GameEntityObject | null = null;
+  @Input() combat: CombatComponent | null = null;
 
   pointOffset: Point = new Point();
   private _pointerPosition$ = new BehaviorSubject(new Point());
@@ -82,10 +80,7 @@ export class CombatChooseActionStateComponent
 
   private _timerSubscription?: Subscription;
 
-  constructor(
-    private renderer: Renderer2,
-    @Inject(forwardRef(() => CombatComponent)) private combat: CombatComponent
-  ) {
+  constructor(private renderer: Renderer2) {
     super();
   }
 
