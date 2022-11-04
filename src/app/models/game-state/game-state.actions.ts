@@ -194,6 +194,18 @@ export class GameStateHealPartyAction implements Action {
   ) {}
 }
 
+export class GameStateHurtPartyAction implements Action {
+  static typeId: 'GAME_HURT_PARTY' = type('GAME_HURT_PARTY');
+  type = GameStateHurtPartyAction.typeId;
+
+  constructor(
+    public payload: {
+      damage: number;
+      partyIds: string[];
+    }
+  ) {}
+}
+
 export class GameStateSetBattleCounterAction implements Action {
   static typeId: 'GAME_SET_BATTLE_COUNTER' = type('GAME_SET_BATTLE_COUNTER');
   type = GameStateSetBattleCounterAction.typeId;
@@ -265,6 +277,7 @@ export type GameStateActions =
   | GameStateBoardShipAction
   | GameStateAddGoldAction
   | GameStateHealPartyAction
+  | GameStateHurtPartyAction
   | GameStateEquipItemAction
   | GameStateUnequipItemAction
   | GameStateAddInventoryAction

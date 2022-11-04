@@ -89,7 +89,7 @@ export class Scene implements IScene, IProcessObject, IWorldObject, IScene {
     let l: number = this._objects.length;
     for (i = 0; i < l; i++) {
       const o: any = this._objects[i];
-      if (o.interpolateTick) {
+      if (o.enabled && o.interpolateTick) {
         o.interpolateTick(elapsed);
       }
     }

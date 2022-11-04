@@ -1,0 +1,494 @@
+{
+  "healer-female.png": {
+    "width": 48,
+    "height": 72,
+    "frames": 10.666666666666666,
+    "source": "characters",
+    "index": null,
+    "x": 0,
+    "y": 0,
+    "cellWidth": 16,
+    "cellHeight": 18,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          2
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          3,
+          5
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          6,
+          8
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          9,
+          11
+        ]
+      }
+    }
+  },
+  "healer-male.png": {
+    "width": 48,
+    "height": 72,
+    "frames": 10.666666666666666,
+    "source": "characters",
+    "index": null,
+    "x": 48,
+    "y": 0,
+    "cellWidth": 16,
+    "cellHeight": 18,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          2
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          3,
+          5
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          6,
+          8
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          9,
+          11
+        ]
+      }
+    }
+  },
+  "magician-female.png": {
+    "width": 48,
+    "height": 72,
+    "frames": 10.666666666666666,
+    "source": "characters",
+    "index": null,
+    "x": 96,
+    "y": 0,
+    "cellWidth": 16,
+    "cellHeight": 18,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          2
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          3,
+          5
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          6,
+          8
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          9,
+          11
+        ]
+      }
+    }
+  },
+  "magician-male.png": {
+    "width": 48,
+    "height": 72,
+    "frames": 10.666666666666666,
+    "source": "characters",
+    "index": null,
+    "x": 0,
+    "y": 72,
+    "cellWidth": 16,
+    "cellHeight": 18,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          2
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          3,
+          5
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          6,
+          8
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          9,
+          11
+        ]
+      }
+    }
+  },
+  "ninja-female.png": {
+    "width": 48,
+    "height": 72,
+    "frames": 10.666666666666666,
+    "source": "characters",
+    "index": null,
+    "x": 48,
+    "y": 72,
+    "cellWidth": 16,
+    "cellHeight": 18,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          2
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          3,
+          5
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          6,
+          8
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          9,
+          11
+        ]
+      }
+    }
+  },
+  "ninja-male.png": {
+    "width": 48,
+    "height": 72,
+    "frames": 10.666666666666666,
+    "source": "characters",
+    "index": null,
+    "x": 96,
+    "y": 72,
+    "cellWidth": 16,
+    "cellHeight": 18,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          2
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          3,
+          5
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          6,
+          8
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          9,
+          11
+        ]
+      }
+    }
+  },
+  "ranger-female.png": {
+    "width": 48,
+    "height": 72,
+    "frames": 10.666666666666666,
+    "source": "characters",
+    "index": null,
+    "x": 144,
+    "y": 0,
+    "cellWidth": 16,
+    "cellHeight": 18,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          2
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          3,
+          5
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          6,
+          8
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          9,
+          11
+        ]
+      }
+    }
+  },
+  "ranger-male.png": {
+    "width": 48,
+    "height": 72,
+    "frames": 10.666666666666666,
+    "source": "characters",
+    "index": null,
+    "x": 144,
+    "y": 72,
+    "cellWidth": 16,
+    "cellHeight": 18,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          2
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          3,
+          5
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          6,
+          8
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          9,
+          11
+        ]
+      }
+    }
+  },
+  "townfolk-female.png": {
+    "width": 48,
+    "height": 72,
+    "frames": 10.666666666666666,
+    "source": "characters",
+    "index": null,
+    "x": 192,
+    "y": 0,
+    "cellWidth": 16,
+    "cellHeight": 18,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          2
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          3,
+          5
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          6,
+          8
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          9,
+          11
+        ]
+      }
+    }
+  },
+  "townfolk-male.png": {
+    "width": 48,
+    "height": 72,
+    "frames": 10.666666666666666,
+    "source": "characters",
+    "index": null,
+    "x": 192,
+    "y": 72,
+    "cellWidth": 16,
+    "cellHeight": 18,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          2
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          3,
+          5
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          6,
+          8
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          9,
+          11
+        ]
+      }
+    }
+  },
+  "warrior-female.png": {
+    "width": 48,
+    "height": 72,
+    "frames": 10.666666666666666,
+    "source": "characters",
+    "index": null,
+    "x": 0,
+    "y": 144,
+    "cellWidth": 16,
+    "cellHeight": 18,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          2
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          3,
+          5
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          6,
+          8
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          9,
+          11
+        ]
+      }
+    }
+  },
+  "warrior-male.png": {
+    "width": 48,
+    "height": 72,
+    "frames": 10.666666666666666,
+    "source": "characters",
+    "index": null,
+    "x": 48,
+    "y": 144,
+    "cellWidth": 16,
+    "cellHeight": 18,
+    "animations": {
+      "up": {
+        "duration": 500,
+        "frames": [
+          0,
+          2
+        ]
+      },
+      "right": {
+        "duration": 500,
+        "frames": [
+          3,
+          5
+        ]
+      },
+      "down": {
+        "duration": 500,
+        "frames": [
+          6,
+          8
+        ]
+      },
+      "left": {
+        "duration": 500,
+        "frames": [
+          9,
+          11
+        ]
+      }
+    }
+  }
+}

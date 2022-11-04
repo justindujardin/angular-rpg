@@ -18,7 +18,13 @@ import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
 import { GameStateTravelAction } from '../../../models/game-state/game-state.actions';
 import { assertTrue } from '../../../models/util';
 import { TileObject } from '../../../scene/tile-object';
-import { MapFeatureComponent } from '../map-feature.component';
+import { IMapFeatureProperties, MapFeatureComponent } from '../map-feature.component';
+
+export interface IPortalFeatureProperties extends IMapFeatureProperties {
+  target: string;
+  targetX: number;
+  targetY: number;
+}
 
 @Component({
   selector: 'portal-feature',
@@ -31,7 +37,7 @@ export class PortalFeatureComponent extends MapFeatureComponent {
     this.assertFeature();
 
     assertTrue(this.feature, 'invalid feature');
-    const props = this.feature.properties || {};
+    const props: IPortalFeatureProperties = this.feature.properties || {};
     if (!props.target) {
       return false;
     }

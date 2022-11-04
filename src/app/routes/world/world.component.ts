@@ -32,7 +32,10 @@ import {
 } from '../../models/selectors';
 import { assertTrue } from '../../models/util';
 import { GameFeatureObject } from '../../scene/objects/game-feature-object';
-import { TileObjectRenderer } from '../../scene/render/tile-object-renderer';
+import {
+  TileObjectRenderer,
+  TileRenderable,
+} from '../../scene/render/tile-object-renderer';
 import { Scene } from '../../scene/scene';
 import { SceneView } from '../../scene/scene-view';
 import { TileMap } from '../../scene/tile-map';
@@ -276,10 +279,9 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
         if (mapFeatureComponent) {
           const data = mapFeatureComponent;
           this.objectRenderer.render(
-            data,
+            data as TileRenderable,
             data.renderPoint || data.point,
-            this,
-            data.meta
+            this
           );
         }
       });

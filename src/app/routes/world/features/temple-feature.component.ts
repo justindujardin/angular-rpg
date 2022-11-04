@@ -10,13 +10,16 @@ import {
 } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
-import * as _ from 'underscore';
 import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
 import { Entity, EntityWithEquipment } from '../../../models/entity/entity.model';
 import { GameStateHealPartyAction } from '../../../models/game-state/game-state.actions';
 import { getGamePartyGold, getGamePartyWithEquipment } from '../../../models/selectors';
 import { assertTrue } from '../../../models/util';
-import { MapFeatureComponent } from '../map-feature.component';
+import { IMapFeatureProperties, MapFeatureComponent } from '../map-feature.component';
+
+export interface ITempleFeatureProperties extends IMapFeatureProperties {
+  cost: number;
+}
 
 @Component({
   selector: 'temple-feature',
@@ -29,7 +32,7 @@ export class TempleFeatureComponent
   extends MapFeatureComponent
   implements OnInit, OnDestroy
 {
-  @Input() feature: ITiledObject | null = null;
+  @Input() feature: ITiledObject<ITempleFeatureProperties> | null = null;
   @Output() onClose = new EventEmitter();
   @Input() party: Entity[];
 
@@ -85,13 +88,13 @@ export class TempleFeatureComponent
                   partyIds,
                 })
               );
-              const left = partyGold - cost;
-              const msg = `Your party has been healed! \nYou have (${left}) monies.`;
+              const msg =
+                'Your party has been healed! \nYou have (' +
+                (partyGold - cost) +
+                ') monies.';
               this.notify.show(msg, undefined, 5000);
             }
-            _.defer(() => {
-              this.onClose.next({});
-            });
+            this.onClose.next({});
           }
         )
       )

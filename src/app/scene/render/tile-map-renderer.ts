@@ -46,7 +46,7 @@ export class TileMapRenderer {
       !this.bufferComplete ||
       this.buffer === null ||
       this.bufferMapName === null ||
-      this.bufferMapName !== object.map.url
+      this.bufferMapName !== object.map?.url
     ) {
       const tileUnitSize = squareSize / view.unitSize;
       // Unit size is 16px, so rows/columns should be 16*16 for 256px each.
@@ -123,7 +123,7 @@ export class TileMapRenderer {
           );
         }
       }
-      this.bufferMapName = object.map.url;
+      this.bufferMapName = object.map?.url || '';
     }
     const squareScreen = view.fastWorldToScreenNumber(squareUnits);
 

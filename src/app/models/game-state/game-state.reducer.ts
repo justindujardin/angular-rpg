@@ -13,6 +13,7 @@ import {
   GameStateDeleteSuccessAction,
   GameStateEquipItemAction,
   GameStateHealPartyAction,
+  GameStateHurtPartyAction,
   GameStateLoadAction,
   GameStateLoadFailAction,
   GameStateLoadSuccessAction,
@@ -127,6 +128,7 @@ export function gameStateReducer(
     case GameStateSaveAction.typeId:
     case GameStateSaveSuccessAction.typeId:
     case GameStateSaveFailAction.typeId:
+    case GameStateHurtPartyAction.typeId:
       return state;
     case GameStateMoveAction.typeId: {
       if (state.boardedShip) {

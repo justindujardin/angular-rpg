@@ -33,7 +33,7 @@ import { Scene } from './scene';
 import { SceneObject } from './scene-object';
 
 export class TileMap extends SceneObject {
-  map: TiledTMXResource;
+  map: TiledTMXResource | null;
   tiles: (TilesetTile | null)[] = [];
   scene: Scene | null;
   features?: ITiledLayer;
@@ -116,7 +116,7 @@ export class TileMap extends SceneObject {
   }
 
   getLayer(name: string): ITiledLayer {
-    return _.where(this.map.layers, { name })[0] as ITiledLayer;
+    return _.where(this.map?.layers || [], { name })[0] as ITiledLayer;
   }
 
   getTerrain(layer: string, x: number, y: number) {
@@ -180,7 +180,7 @@ export class TileMap extends SceneObject {
       }
     }
     // Determine which zone and combat type
-    const invTileSize = 1 / this.map.tilewidth;
+    const invTileSize = 1 / (this.map?.tilewidth || 1);
     const zones: IZoneTarget[] = _.map(this.zones?.objects || [], (z: ITiledObject) => {
       const x = z.x * invTileSize;
       const y = z.y * invTileSize;
@@ -205,7 +205,7 @@ export class TileMap extends SceneObject {
     if (this.tiles.length <= gid) {
       return null;
     }
-    const source = _.find(this.map.tilesets, (t: TiledTSXResource) => {
+    const source = _.find(this.map?.tilesets || [], (t: TiledTSXResource) => {
       const hasGid = t.hasGid(gid);
       return hasGid;
     });

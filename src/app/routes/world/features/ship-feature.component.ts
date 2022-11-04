@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
 import { Point } from '../../../core';
@@ -23,7 +23,9 @@ import { getGameBoardedShip, getGameShipPosition } from '../../../models/selecto
 import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
 import { TileObject } from '../../../scene/tile-object';
 import { PlayerBehaviorComponent } from '../behaviors/player-behavior';
-import { MapFeatureComponent } from '../map-feature.component';
+import { IMapFeatureProperties, MapFeatureComponent } from '../map-feature.component';
+
+export interface IShipFeatureProperties extends IMapFeatureProperties {}
 
 @Component({
   selector: 'ship-feature',
@@ -37,12 +39,12 @@ export class ShipFeatureComponent
     super.ngOnDestroy();
     this._subscription?.unsubscribe();
     this._subscription = null;
-    clearInterval(this._tickInterval);
+    this.destroy();
   }
 
   ngAfterViewInit(): void {
     super.ngAfterViewInit();
-    // Check for boarded state when the feature is initialized.
+    // Update this object when the ship position changes
     this._subscription = this.store
       .select(getGameShipPosition)
       .pipe(distinctUntilChanged())
@@ -50,28 +52,27 @@ export class ShipFeatureComponent
         this.setPoint({ x: p.x, y: p.y });
       });
 
+    // Check for boarded state when the feature is initialized.
     this.store
       .select(getGameBoardedShip)
-      .pipe(debounceTime(100), first())
+      .pipe(debounceTime(10), first())
       .subscribe((boarded: boolean) => {
         if (boarded && this.scene) {
-          const playerHost = this.scene.objectByComponent(
+          const playerObj = this.scene.objectByComponent<GameFeatureObject>(
             PlayerBehaviorComponent
-          ) as GameFeatureObject;
-          if (playerHost) {
-            this.enter(playerHost);
-            this.entered(playerHost);
+          );
+          if (playerObj) {
+            this.enter(playerObj);
+            this.entered(playerObj);
           }
         }
       });
   }
   party: PlayerBehaviorComponent | null;
   partyObject: TileObject | null;
-  partySprite: string;
-  private _tickInterval: any = -1;
-  // @ts-ignore
-  @Input() feature: ITiledObject | null;
+  boarded: boolean = false;
 
+  private _moveSubscription: Subscription | null = null;
   private _subscription: Subscription | null = null;
 
   enter(object: GameFeatureObject): boolean {
@@ -80,7 +81,6 @@ export class ShipFeatureComponent
     if (!this.party) {
       return false;
     }
-    this.partySprite = object.icon || '';
     this.party.passableKeys = ['shipPassable'];
     return true;
   }
@@ -89,56 +89,59 @@ export class ShipFeatureComponent
     return this.board(object);
   }
 
+  tick(elapsed: number) {
+    if (!this.party || !this.partyObject) {
+      return;
+    }
+    let shouldDisembark = false;
+    const partyTarget = Point.equal(this.partyObject.point, this.party.targetPoint);
+    if (partyTarget && !this.party.heading.isZero()) {
+      const from: Point = new Point(this.partyObject.point);
+      const to: Point = from.clone().add(this.party.heading);
+      if (
+        !this.party.collideWithMap(from, 'shipPassable') &&
+        !this.party.collideWithMap(to, 'passable')
+      ) {
+        shouldDisembark = true;
+      }
+    }
+    if (shouldDisembark) {
+      const to = this.partyObject.point.clone().add(this.party.heading);
+      this.disembark(to, this.party.heading);
+      return;
+    }
+  }
+
   /**
-   * Board an object onto the ship component.  This will modify the
-   * @param object
+   * Board an object onto the ship component.
    */
   board(object: GameFeatureObject): boolean {
     if (this.partyObject || !this.party) {
       return false;
     }
     this.store.dispatch(new GameStateBoardShipAction(true));
-    this.partyObject = object;
     this.visible = false;
     this.enabled = false;
-    object.setSprite(this.icon, 0);
-    clearInterval(this._tickInterval);
-    this._tickInterval = setInterval(() => {
-      if (!this.party || !this.partyObject) {
-        return;
-      }
-      const partyTarget = Point.equal(this.partyObject.point, this.party.targetPoint);
-      if (partyTarget && !this.party.heading.isZero()) {
-        const from: Point = new Point(this.partyObject.point);
-        const to: Point = from.clone().add(this.party.heading);
-        if (
-          !this.party.collideWithMap(from, 'shipPassable') &&
-          !this.party.collideWithMap(to, 'passable')
-        ) {
-          this.disembark(from, to, this.party.heading.clone());
-        }
-      }
-    }, 32);
+    this.partyObject = object;
+    this.boarded = true;
+    this.partyObject.useAltSprite(this.icon);
     return true;
   }
 
-  disembark(from: Point, to: Point, heading: Point) {
-    clearInterval(this._tickInterval);
-    if (this.partyObject) {
-      this.partyObject.setSprite(this.partySprite);
-    }
+  disembark(to: Point, heading: Point) {
     if (this.party) {
       this.party.targetPoint.set(to);
       this.party.velocity.set(heading);
       this.party.passableKeys = ['passable'];
     }
-    this.point.x = from.x;
-    this.point.y = from.y;
+    if (this.partyObject) {
+      this.partyObject.useAltSprite();
+    }
+    this.boarded = false;
     this.visible = true;
     this.enabled = true;
     this.partyObject = null;
     this.party = null;
     this.store.dispatch(new GameStateBoardShipAction(false));
-    // this.store.dispatch(new GameStateMoveAction(to));
   }
 }

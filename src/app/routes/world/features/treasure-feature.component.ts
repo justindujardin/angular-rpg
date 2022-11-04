@@ -31,7 +31,15 @@ import {
 import { Item } from '../../../models/item';
 import { assertTrue } from '../../../models/util';
 import { TileObject } from '../../../scene/tile-object';
-import { MapFeatureComponent } from '../map-feature.component';
+import { IMapFeatureProperties, MapFeatureComponent } from '../map-feature.component';
+
+export interface ITreasureFeatureProperties extends IMapFeatureProperties {
+  id: string;
+  gold?: number;
+  item?: string;
+  text?: string;
+}
+
 @Component({
   selector: 'treasure-feature',
   template: ` <ng-content></ng-content>`,
@@ -42,11 +50,11 @@ export class TreasureFeatureComponent
 {
   // Used as a recursion guard while the async treasure claiming process happens
   private taken = false;
-  @Input() feature: ITiledObject | null;
+  @Input() feature: ITiledObject<ITreasureFeatureProperties> | null = null;
 
   ngAfterViewInit() {
     super.ngAfterViewInit();
-    if (!this.feature?.properties.id) {
+    if (!this.feature?.properties?.id) {
       throw new Error('treasure must always have a unique lower-snake-case id');
     }
   }
@@ -79,6 +87,8 @@ export class TreasureFeatureComponent
       this.notify.show(`You found ${template.name}!`, undefined, 0);
     } else if (typeof properties.text === 'string') {
       this.notify.show(`You found ${properties.text}!`, undefined, 0);
+    } else {
+      this.notify.show(`It's empty.`, undefined, 0);
     }
     this.store.dispatch(new GameStateSetKeyDataAction(properties.id, true));
     return true;

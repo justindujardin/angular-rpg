@@ -1,0 +1,614 @@
+{
+  "bigCastleCenter.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 0,
+    "y": 0
+  },
+  "bigCastleLeft.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 16,
+    "y": 0
+  },
+  "bigCastleRight.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 0,
+    "y": 16
+  },
+  "blueBannerDoor.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 16,
+    "y": 16
+  },
+  "bridgeHorizontal.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 32,
+    "y": 0
+  },
+  "bridgeVertical.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 32,
+    "y": 16
+  },
+  "carpetN.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 0,
+    "y": 32
+  },
+  "carpetNS.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 16,
+    "y": 32
+  },
+  "carpetS.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 32,
+    "y": 32
+  },
+  "caveFloor.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 48,
+    "y": 0
+  },
+  "caveWall.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 48,
+    "y": 16
+  },
+  "city.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 48,
+    "y": 32
+  },
+  "column.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 0,
+    "y": 48
+  },
+  "columnTile.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 16,
+    "y": 48
+  },
+  "darkBridgeHorizontal.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 32,
+    "y": 48
+  },
+  "darkBridgeVertical.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 48,
+    "y": 48
+  },
+  "darkDoor.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 64,
+    "y": 0
+  },
+  "darkFloor.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 64,
+    "y": 16
+  },
+  "darkWall.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 64,
+    "y": 32
+  },
+  "deadTree.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 64,
+    "y": 48
+  },
+  "deck.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 0,
+    "y": 64
+  },
+  "desert.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 16,
+    "y": 64
+  },
+  "desertMountain.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 32,
+    "y": 64
+  },
+  "dome.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 48,
+    "y": 64
+  },
+  "doorInWall.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 64,
+    "y": 64
+  },
+  "doorway.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 80,
+    "y": 0
+  },
+  "dungeonGate.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 80,
+    "y": 16
+  },
+  "floor.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 80,
+    "y": 32
+  },
+  "gold.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 80,
+    "y": 48
+  },
+  "grass.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 80,
+    "y": 64
+  },
+  "gunnelLeft.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 0,
+    "y": 80
+  },
+  "gunnelRight.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 16,
+    "y": 80
+  },
+  "ice.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 32,
+    "y": 80
+  },
+  "iceberg.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 48,
+    "y": 80
+  },
+  "iceFloor.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 64,
+    "y": 80
+  },
+  "iceGateCenter.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 80,
+    "y": 80
+  },
+  "iceGateLeft.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 96,
+    "y": 0
+  },
+  "iceGateRight.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 96,
+    "y": 16
+  },
+  "iceMountain.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 96,
+    "y": 32
+  },
+  "iceWall.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 96,
+    "y": 48
+  },
+  "keep.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 96,
+    "y": 64
+  },
+  "lava.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 96,
+    "y": 80
+  },
+  "lockedDoor.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 0,
+    "y": 96
+  },
+  "mountain.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 16,
+    "y": 96
+  },
+  "palaceCenter.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 32,
+    "y": 96
+  },
+  "palaceLeft.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 48,
+    "y": 96
+  },
+  "palaceRight.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 64,
+    "y": 96
+  },
+  "palmTree.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 80,
+    "y": 96
+  },
+  "plaque.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 96,
+    "y": 96
+  },
+  "pool.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 112,
+    "y": 0
+  },
+  "prism.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 112,
+    "y": 16
+  },
+  "river.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 112,
+    "y": 32
+  },
+  "rubble.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 112,
+    "y": 48
+  },
+  "shipStatic.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 112,
+    "y": 64
+  },
+  "shop.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 112,
+    "y": 80
+  },
+  "sigil.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 112,
+    "y": 96
+  },
+  "skull.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 0,
+    "y": 112
+  },
+  "stump.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 16,
+    "y": 112
+  },
+  "temple.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 32,
+    "y": 112
+  },
+  "tower.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 48,
+    "y": 112
+  },
+  "treeAlt.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 64,
+    "y": 112
+  },
+  "tundra.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 80,
+    "y": 112
+  },
+  "volcano.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 96,
+    "y": 112
+  },
+  "wall.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 112,
+    "y": 112
+  },
+  "water2.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 128,
+    "y": 0
+  },
+  "waterMountain.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 128,
+    "y": 16
+  },
+  "well.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 128,
+    "y": 32
+  },
+  "zTransparentMountain.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "environment",
+    "index": null,
+    "x": 128,
+    "y": 48
+  }
+}

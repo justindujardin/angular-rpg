@@ -17,6 +17,7 @@ import { EventEmitter } from '@angular/core';
 import { MovableBehavior } from '../behaviors/movable-behavior';
 import { ImageResource, IPoint, Point } from '../core';
 import { ISpriteMeta } from '../core/api';
+import { assertTrue } from '../models/util';
 import { GameWorld } from '../services/game-world';
 import { Scene } from './scene';
 import { SceneObject } from './scene-object';
@@ -55,7 +56,6 @@ export const DEFAULTS: TileObjectOptions = {
 export class TileObject extends SceneObject implements TileObjectOptions {
   point: Point;
   renderPoint: Point;
-  image: HTMLImageElement | null;
   visible: boolean;
   enabled: boolean;
   tileMap: TileMap | null;
@@ -63,6 +63,19 @@ export class TileObject extends SceneObject implements TileObjectOptions {
   scale: number;
   isEntered: boolean;
 
+  /** The HTML img element for rendering the current icon/gid */
+  image: HTMLImageElement | null;
+  /** The sprite metadata for rendering the current icon/gid */
+  meta: ISpriteMeta | null;
+  /** The frame to use when rendering the sprite (if an animation) */
+  frame: number = 0;
+
+  /** An alternate sprite image to use when rendering this object. Overrides .meta when non-null */
+  altMeta: ISpriteMeta | null;
+  /** An alternate sprite image to use when rendering this object. Overrides .image when non-null */
+  altImage: HTMLImageElement | null;
+  /** An alternate icon to use when rendering this object. Overrides .icon when non-null. */
+  altIcon: string | null;
   /** Emitted when a player has entered this tile */
   onEntered$ = new EventEmitter();
   /** Emitted when a player has exited this tile */
@@ -95,9 +108,6 @@ export class TileObject extends SceneObject implements TileObjectOptions {
   get gid(): number | undefined {
     return this._gid;
   }
-
-  meta: ISpriteMeta | null;
-  frame: number = 0;
 
   enter(object: TileObject): boolean {
     return true;
@@ -153,6 +163,32 @@ export class TileObject extends SceneObject implements TileObjectOptions {
   }
 
   /**
+   * Specify and overriding sprite to use when rendering this object.
+   * This is useful when you want to conditionally change the sprite's
+   * appearance in the world.
+   *
+   * @param spriteName The sprite name to use
+   * @returns
+   */
+  async useAltSprite(spriteName?: string) {
+    const world = GameWorld.get();
+    if (!spriteName || !world) {
+      this.altImage = null;
+      this.altMeta = null;
+      this.altIcon = null;
+      return;
+    }
+    const meta = world.sprites.getSpriteMeta(spriteName);
+    assertTrue(meta, `useAltSprite: ${spriteName} has no valid metadata`);
+    const images: ImageResource[] = await world.sprites.getSpriteSheet(meta.source);
+    assertTrue(images.length === 1, `useAltSprite: no sheet meta '${meta.source}'`);
+    const image = images[0];
+    this.altMeta = meta;
+    this.altIcon = spriteName;
+    this.altImage = image.data;
+  }
+
+  /**
    * Set the current sprite name.  Returns the previous sprite name.
    * TODO: Refactor to async friendly method (promise?)
    */
@@ -167,7 +203,7 @@ export class TileObject extends SceneObject implements TileObjectOptions {
     return oldSprite;
   }
 
-  _updateIcon(icon?: string) {
+  async _updateIcon(icon?: string) {
     const world = GameWorld.get();
     if (!world || !icon) {
       this.image = null;
@@ -175,12 +211,11 @@ export class TileObject extends SceneObject implements TileObjectOptions {
     }
     const meta = world.sprites.getSpriteMeta(icon);
     if (meta) {
-      world.sprites.getSpriteSheet(meta.source).then((images: ImageResource[]) => {
-        const image = images[0];
-        this.meta = meta;
-        this.image = image.data;
-        this.onChangeIcon.next(icon);
-      });
+      const images: ImageResource[] = await world.sprites.getSpriteSheet(meta.source);
+      const image = images[0];
+      this.meta = meta;
+      this.image = image.data;
+      this.onChangeIcon.next(icon);
     }
   }
 }

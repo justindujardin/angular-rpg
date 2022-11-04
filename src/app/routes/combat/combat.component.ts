@@ -316,36 +316,24 @@ export class CombatComponent
     this._tileRenderer.render(this.map, this);
     this.party.forEach((component: CombatPlayerComponent) => {
       this.objectRenderer.render(
-        component,
+        component as TileRenderable,
         component.renderPoint || component.point,
-        this,
-        component.meta
+        this
       );
       const sprites = component.findBehaviors(SpriteComponent) as SpriteComponent[];
       sprites.forEach((sprite: SpriteComponent) => {
-        this.objectRenderer.render(
-          sprite as TileRenderable,
-          sprite.host.point,
-          this,
-          sprite.meta
-        );
+        this.objectRenderer.render(sprite as TileRenderable, sprite.host.point, this);
       });
     });
     this.enemies.forEach((component: CombatEnemyComponent) => {
       this.objectRenderer.render(
-        component,
+        component as TileRenderable,
         component.renderPoint || component.point,
-        this,
-        component.meta
+        this
       );
       const sprites: SpriteComponent[] = component.findBehaviors(SpriteComponent);
       sprites.forEach((sprite: SpriteComponent) => {
-        this.objectRenderer.render(
-          sprite as TileRenderable,
-          sprite.host.point,
-          this,
-          sprite.meta
-        );
+        this.objectRenderer.render(sprite as TileRenderable, sprite.host.point, this);
       });
     });
     return this;

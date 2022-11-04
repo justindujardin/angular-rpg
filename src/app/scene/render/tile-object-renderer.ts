@@ -24,17 +24,13 @@ export interface TileRenderable {
   visible: boolean;
   scale?: number;
   frame: number;
+  meta: ISpriteMeta | null;
 }
 
 export class TileObjectRenderer {
   private _renderPoint: Point = new Point();
 
-  render(
-    object: TileRenderable,
-    at: IPoint,
-    view: SceneView,
-    spriteMeta: ISpriteMeta | null
-  ) {
+  render(object: TileRenderable, at: IPoint, view: SceneView) {
     if (!object || object.visible === false || !object.image || !view.context) {
       return;
     }
@@ -45,12 +41,12 @@ export class TileObjectRenderer {
     let sourceWidth: number = view.unitSize;
     let sourceHeight: number = view.unitSize;
     if (
-      spriteMeta &&
-      typeof spriteMeta.cellWidth !== 'undefined' &&
-      typeof spriteMeta.cellHeight !== 'undefined'
+      object.meta &&
+      typeof object.meta.cellWidth !== 'undefined' &&
+      typeof object.meta.cellHeight !== 'undefined'
     ) {
-      sourceWidth = spriteMeta.cellWidth;
-      sourceHeight = spriteMeta.cellHeight;
+      sourceWidth = object.meta.cellWidth;
+      sourceHeight = object.meta.cellHeight;
     }
     const objWidth = view.fastScreenToWorldNumber(sourceWidth);
     const objHeight = view.fastScreenToWorldNumber(sourceHeight);
@@ -59,11 +55,11 @@ export class TileObjectRenderer {
     point.y -= (objHeight * scale) / 2;
     view.fastWorldToScreenPoint(point, point);
 
-    if (object.icon && spriteMeta) {
-      let cx = spriteMeta.x;
-      let cy = spriteMeta.y;
-      if (spriteMeta.frames > 1) {
-        const cwidth = spriteMeta.width / sourceWidth;
+    if (object.icon && object.meta) {
+      let cx = object.meta.x;
+      let cy = object.meta.y;
+      if (object.meta.frames > 1) {
+        const cwidth = object.meta.width / sourceWidth;
         const fx = object.frame % cwidth;
         const fy = Math.floor((object.frame - fx) / cwidth);
         cx += fx * sourceWidth;

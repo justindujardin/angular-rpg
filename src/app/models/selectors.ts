@@ -6,6 +6,7 @@ import {
   sliceCombatEncounterEnemies,
   sliceCombatEncounterParty,
   sliceCombatLoading,
+  sliceCombatType,
 } from './combat/combat.reducer';
 import { Entity, EntityWithEquipment } from './entity/entity.model';
 import {
@@ -54,6 +55,7 @@ import { assertTrue } from './util';
  */
 export const sliceCombatState = (state: AppState) => state.combat;
 
+export const getCombatType = createSelector(sliceCombatState, sliceCombatType);
 export const getCombatLoading = createSelector(sliceCombatState, sliceCombatLoading);
 export const getCombatEncounterParty = createSelector(
   sliceCombatState,

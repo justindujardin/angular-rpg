@@ -2,20 +2,21 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  Input,
   Output,
   ViewEncapsulation,
 } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { filter, first, map, switchMap } from 'rxjs/operators';
+import { first, map, switchMap } from 'rxjs/operators';
 import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
 import { GameStateSetKeyDataAction } from '../../../models/game-state/game-state.actions';
 import { getGameKey } from '../../../models/selectors';
 import { TileObject } from '../../../scene/tile-object';
-import { MapFeatureComponent } from '../map-feature.component';
+import { IMapFeatureProperties, MapFeatureComponent } from '../map-feature.component';
 
-export interface IDoorFeatureTiledProperties {
+export interface IDoorFeatureProperties extends IMapFeatureProperties {
   id: string;
-  requiredKey: string;
+  requiredKey?: string;
   icon: string;
   title: string;
   lockedText: string;
@@ -31,6 +32,7 @@ export interface IDoorFeatureTiledProperties {
 })
 export class DoorFeatureComponent extends MapFeatureComponent {
   @Output() onClose = new EventEmitter();
+  @Input() feature: ITiledObject<IDoorFeatureProperties> | null = null;
   active$: Observable<boolean>;
   requiredKey$: Observable<string> = this.feature$.pipe(
     map((f: ITiledObject) => {
@@ -73,25 +75,21 @@ export class DoorFeatureComponent extends MapFeatureComponent {
     })
   );
 
-  enter(object: TileObject): boolean {
-    if (!super.enter(object)) {
+  exit(object: TileObject): boolean {
+    if (!super.exit(object)) {
       return false;
     }
-    this.active$
+    this.canUnlock$
       .pipe(
-        // Wait for active to change
-        filter((v) => v === false),
         // Only once
         first(),
-        // Gather the args we want
-        switchMap(() => this.canUnlock$),
         // Determine if we should set the game data key
         map((canUnlock: boolean) => {
-          if (!canUnlock) {
+          if (!canUnlock || !this.feature?.properties?.id) {
             return;
           }
           this.store.dispatch(
-            new GameStateSetKeyDataAction(this.feature?.properties?.id, true)
+            new GameStateSetKeyDataAction(this.feature.properties.id, true)
           );
         })
       )

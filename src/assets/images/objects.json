@@ -1,0 +1,209 @@
+{
+  "armors.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 0,
+    "y": 0
+  },
+  "bigCastleCenter.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 16,
+    "y": 0
+  },
+  "bigCastleLeft.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 0,
+    "y": 16
+  },
+  "bigCastleRight.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 16,
+    "y": 16
+  },
+  "chest.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 32,
+    "y": 0
+  },
+  "city.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 32,
+    "y": 16
+  },
+  "doorInWall.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 0,
+    "y": 32
+  },
+  "doorway.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 16,
+    "y": 32
+  },
+  "dungeonGate.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 32,
+    "y": 32
+  },
+  "invalid.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 48,
+    "y": 0
+  },
+  "items.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 48,
+    "y": 16
+  },
+  "keep.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 48,
+    "y": 32
+  },
+  "magics.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 0,
+    "y": 48
+  },
+  "palaceCenter.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 16,
+    "y": 48
+  },
+  "palaceLeft.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 32,
+    "y": 48
+  },
+  "palaceRight.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 48,
+    "y": 48
+  },
+  "ship.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 64,
+    "y": 0
+  },
+  "shop.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 64,
+    "y": 16
+  },
+  "temple.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 64,
+    "y": 32
+  },
+  "tower.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 64,
+    "y": 48
+  },
+  "transparent.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 0,
+    "y": 64
+  },
+  "weapons.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 16,
+    "y": 64
+  },
+  "woodenDoor.png": {
+    "width": 16,
+    "height": 16,
+    "frames": 1,
+    "source": "objects",
+    "index": null,
+    "x": 32,
+    "y": 64
+  }
+}
