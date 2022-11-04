@@ -180,4 +180,6 @@ export const sliceCombatLoading = (state: CombatStateRecord) => state.loading;
 /** @internal {@see sliceCombatState} */
 export const sliceCombatEncounterEnemies = (state: CombatStateRecord) => state.enemies;
 /** @internal {@see sliceCombatState} */
+export const sliceCombatType = (state: CombatStateRecord) => state.type;
+/** @internal {@see sliceCombatState} */
 export const sliceCombatEncounterParty = (state: CombatStateRecord) => state.party;

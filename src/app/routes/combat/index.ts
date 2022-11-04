@@ -67,6 +67,7 @@ export const COMBAT_PROVIDERS = [CanActivateCombat];
 @NgModule({
   declarations: COMBAT_EXPORTS,
   exports: COMBAT_EXPORTS,
+  providers: COMBAT_PROVIDERS,
   imports: [CommonModule, BehaviorsModule, AppComponentsModule, ServicesModule],
 })
 export class CombatModule {

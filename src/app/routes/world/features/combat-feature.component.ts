@@ -30,9 +30,16 @@ import {
   ITemplateFixedEncounter,
 } from '../../../models/game-data/game-data.model';
 import { getGameParty } from '../../../models/selectors';
-import { GameEntityObject } from '../../../scene/objects/game-entity-object';
+import { assertTrue } from '../../../models/util';
+import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
 import { PlayerBehaviorComponent } from '../behaviors/player-behavior';
-import { MapFeatureComponent } from '../map-feature.component';
+import { IMapFeatureProperties, MapFeatureComponent } from '../map-feature.component';
+
+export interface ICombatFeatureProperties extends IMapFeatureProperties {
+  /** The unique encounter id as defined in fixed-counters.ts */
+  id: string;
+}
+
 /**
  * A map feature that represents a fixed combat encounter.
  *
@@ -48,11 +55,12 @@ export class CombatFeatureComponent extends MapFeatureComponent {
   party: PlayerBehaviorComponent | null = null;
 
   // @ts-ignore
-  @Input() feature: ITiledObject | null;
+  @Input() feature: ITiledObject<ICombatFeatureProperties> | null;
 
-  enter(object: GameEntityObject): boolean {
-    if (!this.feature?.properties?.id) {
-      console.error('Fixed encounters must have a given id so they may be hidden');
+  enter(object: GameFeatureObject): boolean {
+    const properties = this.feature?.properties;
+    assertTrue(properties, 'combat-feature-component: invalid properties');
+    if (!properties.id) {
       return false;
     }
     this.party = object.findBehavior<PlayerBehaviorComponent>(PlayerBehaviorComponent);
@@ -67,7 +75,7 @@ export class CombatFeatureComponent extends MapFeatureComponent {
     // Find the combat zone and launch a fixed encounter.
     const zone: IZoneMatch | null =
       this.party.map?.getCombatZones(new Point(this.party.host.point)) || null;
-    if (!zone) {
+    if (!zone?.targets.length) {
       return false;
     }
 
@@ -76,12 +84,12 @@ export class CombatFeatureComponent extends MapFeatureComponent {
       .pipe(
         map((party: Immutable.List<Entity>) => {
           const encounter: ITemplateFixedEncounter | null = getFixedEncounterById(
-            this.feature?.properties.id
+            properties.id
           );
 
           if (!encounter) {
             this.notify.show(
-              `There is no encounter named: ${this.feature?.properties.id}.`,
+              `There is no encounter named: ${properties.id}.`,
               undefined,
               0
             );
