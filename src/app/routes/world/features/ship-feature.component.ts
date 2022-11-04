@@ -55,7 +55,7 @@ export class ShipFeatureComponent
     // Check for boarded state when the feature is initialized.
     this.store
       .select(getGameBoardedShip)
-      .pipe(debounceTime(10), first())
+      .pipe(debounceTime(50), first())
       .subscribe((boarded: boolean) => {
         if (boarded && this.scene) {
           const playerObj = this.scene.objectByComponent<GameFeatureObject>(

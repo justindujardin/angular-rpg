@@ -59,6 +59,10 @@ export class PlayerRenderBehaviorComponent extends TickedBehavior {
 
     // When the host icon changes, invalidate source animation data
     this._changeSubscription = this.host.onChangeIcon.subscribe(() => {
+      const icon = this.host.altIcon || this.host.icon || '';
+      if (!this._animator.sourceAnims || this._sourceAnimsFor !== icon) {
+        this._animator.setAnimationSource(icon);
+      }
       this.setHeading(this.heading, false);
     });
     return true;
@@ -73,11 +77,6 @@ export class PlayerRenderBehaviorComponent extends TickedBehavior {
   }
 
   setHeading(direction: Headings, animating: boolean) {
-    const icon = this.host.altIcon || this.host.icon || '';
-    if (!this._animator.sourceAnims || this._sourceAnimsFor !== icon) {
-      this._animator.setAnimationSource(icon);
-      this._sourceAnimsFor = icon;
-    }
     this.heading = direction;
     switch (this.heading) {
       case Headings.SOUTH:
@@ -106,6 +105,12 @@ export class PlayerRenderBehaviorComponent extends TickedBehavior {
 
   interpolateTick(elapsed: number) {
     super.interpolateTick(elapsed);
+    const icon = this.host.altIcon || this.host.icon || '';
+    if (!this._animator.sourceAnims || this._sourceAnimsFor !== icon) {
+      this._animator.setAnimationSource(icon);
+      this._sourceAnimsFor = icon;
+      this._animator.updateTime(elapsed);
+    }
     if (this.animating) {
       this._animator.updateTime(elapsed);
     }

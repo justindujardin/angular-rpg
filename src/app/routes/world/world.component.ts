@@ -250,11 +250,9 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
     if (e.srcElement !== this.canvas) {
       return;
     }
-
-    // TODO: Skip this scene lookup and use the player component and its path behavior.
     const pathComponent =
-      this.scene.componentByType<TileMapPathBehavior>(TileMapPathBehavior);
-    const playerComponent = this.scene.componentByType<PlayerBehaviorComponent>(
+      this.player.findBehavior<TileMapPathBehavior>(TileMapPathBehavior);
+    const playerComponent = this.player.findBehavior<PlayerBehaviorComponent>(
       PlayerBehaviorComponent
     );
     if (pathComponent && playerComponent && this.mouse) {
@@ -301,10 +299,16 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
    */
   debugRender() {
     const debugStrings = [`Camera: (${this.camera.point.x},${this.camera.point.y})`];
-    const player = this.scene.objectByComponent(PlayerBehaviorComponent);
-    if (player) {
-      debugStrings.push(`Player: (${player.point.x},${player.point.y})`);
+    const player = this.scene.objectByComponent<WorldPlayerComponent>(
+      PlayerBehaviorComponent
+    );
+    if (!player) {
+      return;
     }
+    debugStrings.push(`Player: (${player.point.x},${player.point.y})`);
+    const playerBehavior = player.findBehavior<PlayerBehaviorComponent>(
+      PlayerBehaviorComponent
+    );
     const clipRect = this.getCameraClip();
     debugStrings.push(
       `Clip: (${clipRect.point.x},${clipRect.point.y}) (${clipRect.extent.x},${clipRect.extent.y})`
@@ -330,20 +334,27 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
     const clipXMax = clipRect.getRight();
     const clipYMin = clipRect.point.y;
     const clipYMax = clipRect.getBottom();
+
     for (let x = clipXMin; x <= clipXMax; x++) {
       for (let y = clipYMin; y <= clipYMax; y++) {
         this.map.getLayers().forEach((layer) => {
           const tile = this.map.getTerrain(layer.name, x, y);
-          if (tile && tile.properties?.passable === false) {
-            const screenTile: Rect = this.worldToScreen(
-              new Rect(new Point(x - 0.5, y - 0.5), new Point(1, 1))
-            );
-            this.context?.strokeRect(
-              screenTile.point.x,
-              screenTile.point.y,
-              screenTile.extent.x,
-              screenTile.extent.y
-            );
+          if (!tile || !playerBehavior) {
+            return;
+          }
+          for (let j = 0; j < playerBehavior.passableKeys.length; j++) {
+            const key = playerBehavior.passableKeys[j];
+            if (tile.properties && tile.properties[key] === false) {
+              const screenTile: Rect = this.worldToScreen(
+                new Rect(new Point(x - 0.5, y - 0.5), new Point(1, 1))
+              );
+              this.context?.strokeRect(
+                screenTile.point.x,
+                screenTile.point.y,
+                screenTile.extent.x,
+                screenTile.extent.y
+              );
+            }
           }
         });
       }
