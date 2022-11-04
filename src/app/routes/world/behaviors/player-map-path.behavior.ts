@@ -13,10 +13,16 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import * as _ from 'underscore';
+import { AppState } from '../../../app.model';
 import { TileMapPathBehavior } from '../../../behaviors/tile-map-path.behavior';
 import { ITiledLayer, ITiledObject } from '../../../core/resources/tiled/tiled.model';
+import { getGameBoardedShip } from '../../../models/selectors';
+import { assertTrue } from '../../../models/util';
 import { TileMap } from '../../../scene/tile-map';
 import { PlayerBehaviorComponent } from './player-behavior';
 
@@ -27,13 +33,48 @@ import { PlayerBehaviorComponent } from './player-behavior';
   selector: 'player-map-path-behavior',
   template: ` <ng-content></ng-content>`,
 })
-export class PlayerMapPathBehaviorComponent extends TileMapPathBehavior {
+export class PlayerMapPathBehaviorComponent
+  extends TileMapPathBehavior
+  implements AfterViewInit, OnDestroy
+{
   @Input() tileMap: TileMap;
+
+  private _boardedSub: Subscription | null = null;
+
+  constructor(public store: Store<AppState>) {
+    super();
+  }
+
+  ngOnDestroy(): void {
+    this._boardedSub?.unsubscribe();
+    this._boardedSub = null;
+  }
+  ngAfterViewInit(): void {
+    this._boardedSub = this.store
+      .select(getGameBoardedShip)
+      .pipe(debounceTime(50), distinctUntilChanged())
+      .subscribe((boarded) => {
+        assertTrue(this.host, 'invalid host object');
+        const player = this.host.findBehavior<PlayerBehaviorComponent>(
+          PlayerBehaviorComponent
+        );
+        if (player) {
+          player.passableKeys = boarded ? ['shipPassable'] : ['passable'];
+          this._updateGraph();
+        }
+      });
+  }
 
   buildWeightedGraph(): number[][] {
     let x: number;
     const layers: ITiledLayer[] = this.tileMap.getLayers();
     const l: number = layers.length;
+
+    assertTrue(this.host, 'cannot build weighted graph without host object');
+    const player = this.host.findBehavior<PlayerBehaviorComponent>(
+      PlayerBehaviorComponent
+    );
+    assertTrue(player, 'cannot build weighted graph without player object');
 
     const grid = new Array(this.tileMap.bounds.extent.x);
     for (x = 0; x < this.tileMap.bounds.extent.x; x++) {
@@ -59,10 +100,16 @@ export class PlayerMapPathBehaviorComponent extends TileMapPathBehavior {
 
           // Check to see if any layer has a passable attribute set to false,
           // if so block the path.
-          if (terrain.properties?.passable === false) {
-            weight = 1000;
-            blocked = true;
-          } else if (terrain.properties?.isPath === true) {
+          for (let j = 0; j < player.passableKeys.length; j++) {
+            if (
+              terrain.properties &&
+              terrain.properties[player.passableKeys[j]] === false
+            ) {
+              weight = 1000;
+              blocked = true;
+            }
+          }
+          if (terrain.properties?.isPath === true) {
             weight = 1;
           }
         }
@@ -70,13 +117,18 @@ export class PlayerMapPathBehaviorComponent extends TileMapPathBehavior {
       }
     }
 
-    // TOOD: Tiled Editor format is KILLIN' me.
-    _.each(this.tileMap?.features?.objects || [], (obj: ITiledObject) => {
-      if (!obj) {
+    const features = this.tileMap?.features?.objects || [];
+    features.forEach((obj: ITiledObject | null) => {
+      if (!obj?.class || !player) {
         return;
       }
       const collideTypes: string[] = PlayerBehaviorComponent.COLLIDE_TYPES;
-      if (obj.properties?.passable === true || !obj.class) {
+      for (let j = 0; j < player.passableKeys.length; j++) {
+        if (obj.properties && obj.properties[player.passableKeys[j]] === true) {
+          return;
+        }
+      }
+      if (!obj.class) {
         return;
       }
       if (_.indexOf(collideTypes, obj.class) !== -1) {
