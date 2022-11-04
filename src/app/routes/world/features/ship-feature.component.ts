@@ -72,7 +72,6 @@ export class ShipFeatureComponent
   partyObject: TileObject | null;
   boarded: boolean = false;
 
-  private _moveSubscription: Subscription | null = null;
   private _subscription: Subscription | null = null;
 
   enter(object: GameFeatureObject): boolean {
@@ -95,7 +94,7 @@ export class ShipFeatureComponent
     }
     let shouldDisembark = false;
     const partyTarget = Point.equal(this.partyObject.point, this.party.targetPoint);
-    if (partyTarget && !this.party.heading.isZero()) {
+    if (partyTarget && !this.party.heading.isZero() && !this.party.velocity.isZero()) {
       const from: Point = new Point(this.partyObject.point);
       const to: Point = from.clone().add(this.party.heading);
       if (

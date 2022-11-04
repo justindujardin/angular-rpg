@@ -73,8 +73,8 @@ export class PlayerRenderBehaviorComponent extends TickedBehavior {
   }
 
   setHeading(direction: Headings, animating: boolean) {
-    if (!this._animator.sourceAnims || this._sourceAnimsFor !== this.host.icon) {
-      const icon = this.host.icon || '';
+    const icon = this.host.altIcon || this.host.icon || '';
+    if (!this._animator.sourceAnims || this._sourceAnimsFor !== icon) {
       this._animator.setAnimationSource(icon);
       this._sourceAnimsFor = icon;
     }
