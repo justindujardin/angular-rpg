@@ -123,6 +123,7 @@ export class ShipFeatureComponent
     this.visible = false;
     this.enabled = false;
     this.partyObject = object;
+    this.boarded = true;
     this.partyObject.useAltSprite(this.icon);
     return true;
   }

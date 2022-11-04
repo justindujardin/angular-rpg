@@ -41,7 +41,7 @@ export class CombatPlayerComponent
   @Input() model: IPartyMember;
   // @ts-ignore
   @Input() icon: string;
-  @Input() scene: Scene;
+  @Input() scene: Scene | null;
   @Input() combat: any; // CombatComponent - flirts with circular imports
 
   _elapsed: number = 0;
@@ -258,14 +258,14 @@ export class CombatPlayerComponent
   }
 
   ngAfterViewInit(): void {
-    this.scene.addObject(this);
+    this.scene?.addObject(this);
     this.behaviors.forEach((c: SceneObjectBehavior) => {
       this.addBehavior(c);
     });
   }
 
   ngOnDestroy(): void {
-    this.scene.removeObject(this);
+    this.scene?.removeObject(this);
     this.behaviors.forEach((c: SceneObjectBehavior) => {
       this.removeBehavior(c);
     });
