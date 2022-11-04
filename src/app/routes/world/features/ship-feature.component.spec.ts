@@ -149,6 +149,7 @@ describe('ShipFeatureComponent', () => {
     // Add a party
     comp.feature = getFeature();
     fixture.detectChanges();
+    await fixture.whenStable();
     expect(comp.boarded).toBe(true);
 
     assertTrue(comp.party, 'invalid party object');
