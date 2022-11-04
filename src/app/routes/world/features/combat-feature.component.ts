@@ -66,7 +66,7 @@ export class CombatFeatureComponent extends MapFeatureComponent {
 
     // Find the combat zone and launch a fixed encounter.
     const zone: IZoneMatch | null =
-      this.party?.map?.getCombatZones(new Point(this.party.host.point)) || null;
+      this.party.map?.getCombatZones(new Point(this.party.host.point)) || null;
     if (!zone) {
       return false;
     }

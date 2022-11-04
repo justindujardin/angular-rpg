@@ -13,7 +13,10 @@ import { SceneObjectBehavior } from '../../behaviors/scene-object-behavior';
 import { Point, Rect } from '../../core';
 import { Entity } from '../../models/entity/entity.model';
 import { GameEntityObject } from '../../scene/objects/game-entity-object';
-import { TileObjectRenderer } from '../../scene/render/tile-object-renderer';
+import {
+  TileObjectRenderer,
+  TileRenderable,
+} from '../../scene/render/tile-object-renderer';
 import { Scene } from '../../scene/scene';
 import { SceneView } from '../../scene/scene-view';
 import { ISceneViewRenderer } from '../../scene/scene.model';
@@ -122,7 +125,20 @@ export class WorldPlayerComponent
    */
   renderFrame(view: SceneView, elapsed: number) {
     // Render self
-    this.objectRenderer.render(this, this.renderPoint || this.point, view, this.meta);
+    const renderData: TileRenderable = {
+      frame: this.frame,
+      icon: this.icon,
+      image: this.image,
+      scale: this.scale,
+      visible: this.visible,
+      meta: this.meta,
+    };
+    if (this.altImage && this.altMeta && this.altIcon) {
+      renderData.image = this.altImage;
+      renderData.icon = this.altIcon;
+      renderData.meta = this.altMeta;
+    }
+    this.objectRenderer.render(renderData, this.renderPoint || this.point, view);
 
     // Any path target
     if (this.movable && view.context) {
