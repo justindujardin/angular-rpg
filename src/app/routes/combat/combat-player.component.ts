@@ -11,9 +11,9 @@ import { SceneObjectBehavior } from '../../behaviors/scene-object-behavior';
 import { AnimatedComponent, IAnimationConfig } from '../../components';
 import { Point } from '../../core';
 import { IPartyMember } from '../../models/base-entity';
-import { CombatService } from '../../models/combat/combat.service';
 import { GameEntityObject } from '../../scene/objects/game-entity-object';
 import { Scene } from '../../scene/scene';
+import { GameWorld } from '../../services/game-world';
 import { Headings } from '../world/behaviors/player-render.behavior';
 
 export enum StateFrames {
@@ -49,7 +49,7 @@ export class CombatPlayerComponent
   attackDirection: Headings = Headings.WEST;
   tickRateMS: number = 300;
 
-  constructor(private combatService: CombatService) {
+  constructor(public world: GameWorld) {
     super();
   }
 
@@ -88,13 +88,20 @@ export class CombatPlayerComponent
   }
 
   getMagicAnimation(strikeCb: () => any): IAnimationConfig[] {
+    const icon = this.icon?.replace('.png', '-magic.png') || '';
+    const moveIcon = this.icon?.replace('.png', '-magic.png') || '';
+
     return [
       {
         name: 'Prep Animation',
         duration: 50,
         host: this,
+        preload: async () => {
+          await this.world.preloadSprite(this.icon);
+          await this.world.preloadSprite(moveIcon);
+        },
         callback: () => {
-          this.setSprite(this.icon?.replace('.png', '-magic.png'), 19);
+          this.setSprite(moveIcon, 19);
         },
       },
       {
@@ -116,13 +123,15 @@ export class CombatPlayerComponent
         duration: 1000,
         frames: [15, 16, 17, 18, 19],
         callback: () => {
-          this.setSprite(this.icon?.replace('-magic.png', '.png'), 10);
+          this.setSprite(icon, 10);
         },
       },
     ];
   }
 
   getAttackAnimation(strikeCb: () => any): IAnimationConfig[] {
+    const icon = this.icon || '';
+    const moveIcon = this.icon.replace('.png', '-attack.png');
     return [
       {
         name: 'Move Forward for Attack',
@@ -131,11 +140,13 @@ export class CombatPlayerComponent
         duration: 250,
         frames: this.getForwardFrames(),
         move: new Point(this.getForwardDirection(), 0),
+        preload: async () => {
+          await this.world.preloadSprite(icon);
+          await this.world.preloadSprite(moveIcon);
+        },
+
         callback: () => {
-          const attackAnimationsSource = this.icon?.replace('.png', '-attack.png');
-          if (this.world.sprites.getSpriteMeta(attackAnimationsSource)) {
-            this.setSprite(attackAnimationsSource, 12);
-          }
+          this.setSprite(moveIcon, 12);
         },
       },
       {
@@ -145,7 +156,7 @@ export class CombatPlayerComponent
         duration: 100,
         frames: this.getAttackFrames(),
         callback: () => {
-          this.setSprite(this.icon?.replace('-attack.png', '.png'), 10);
+          this.setSprite(icon, 10);
           if (strikeCb) {
             strikeCb();
           }
