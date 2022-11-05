@@ -10,7 +10,10 @@ import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
 import { EntityAddItemAction } from '../../../models/entity/entity.actions';
 import { EntityWithEquipment } from '../../../models/entity/entity.model';
 import { EntityItemTypes } from '../../../models/entity/entity.reducer';
-import { instantiateEntity } from '../../../models/game-data/game-data.model';
+import {
+  instantiateEntity,
+  ITemplateBaseItem,
+} from '../../../models/game-data/game-data.model';
 import { ITEMS_DATA } from '../../../models/game-data/items';
 import { WEAPONS_DATA } from '../../../models/game-data/weapons';
 import {
@@ -63,6 +66,21 @@ function getInventory(store: Store<AppState>): EntityItemTypes[] {
     )
     .subscribe((s) => (result = s));
   return result as EntityItemTypes[];
+}
+
+function addToInventory<T extends Item>(
+  store: Store<AppState>,
+  itemId: string,
+  from: ITemplateBaseItem[],
+  values?: Partial<T>
+): T {
+  const itemInstance = instantiateEntity<T>(
+    from.find((f) => f.id === itemId),
+    values
+  );
+  store.dispatch(new EntityAddItemAction(itemInstance));
+  store.dispatch(new GameStateAddInventoryAction(itemInstance));
+  return itemInstance;
 }
 
 function getPartyGold(store: Store<AppState>): number {
@@ -327,7 +345,7 @@ describe('StoreFeatureComponent', () => {
       expect(selection.length).toBe(1);
     });
   });
-  describe('selling', () => {
+  fdescribe('selling', () => {
     it('should sell items and receive gold', async () => {
       const fixture = TestBed.createComponent(StoreFeatureComponent);
       const comp: StoreFeatureComponent = fixture.componentInstance;
@@ -335,22 +353,25 @@ describe('StoreFeatureComponent', () => {
       comp.feature = getFeature();
       comp.category = 'weapons';
 
-      const itemInstance = instantiateEntity<Item>(
-        ITEMS_DATA.find((f) => f.id === 'potion')
-      );
-      world.store.dispatch(new EntityAddItemAction(itemInstance));
-      world.store.dispatch(new GameStateAddInventoryAction(itemInstance));
+      addToInventory(world.store, 'potion', ITEMS_DATA);
+      addToInventory(world.store, 'potion', ITEMS_DATA);
 
       let inventory = getInventory(world.store);
       expect(inventory[0].id).toBe('potion');
+      expect(inventory[1].id).toBe('potion');
 
       fixture.detectChanges();
 
       comp.enter(tileObject);
       fixture.detectChanges();
       expect(comp.active).toBe(true);
+      await fixture.whenStable();
 
+      // TODO: Why do I have to detect changes and click multiple times to get the tab to update?
       const sellTab = fixture.debugElement.queryAll(By.css('.mat-tab-label'))[1];
+      sellTab.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      await fixture.whenStable();
       sellTab.triggerEventHandler('click', {});
       fixture.detectChanges();
       await fixture.whenStable();
@@ -358,6 +379,7 @@ describe('StoreFeatureComponent', () => {
       const price = fixture.debugElement.query(By.css('.item-value'));
       price.triggerEventHandler('click', {});
       fixture.detectChanges();
+      await fixture.whenStable();
 
       const buyBtn = fixture.debugElement.query(By.css('.btn-sell'));
       buyBtn.triggerEventHandler('click', {});
@@ -367,9 +389,9 @@ describe('StoreFeatureComponent', () => {
       let selection = getStoreSelection(comp.selected$);
       expect(selection.length).toBe(0);
 
-      // The inventory is now empty
+      // The inventory is now smaller
       inventory = getInventory(world.store);
-      expect(inventory.length).toBe(0);
+      expect(inventory.length).toBe(1);
     });
   });
 });

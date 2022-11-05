@@ -78,9 +78,9 @@
     <button
       mat-raised-button
       class="btn-buy"
-      (click)="buyItems(data[0], data[1])"
+      (click)="buyItems(buyData[0], buyData[1])"
       [disabled]="!(selected$ | async)?.size"
-      *ngIf="buyingState$ | async as data"
+      *ngIf="buyingState$ | async as buyData"
       color="accent"
     >
       Buy
@@ -88,9 +88,9 @@
     <button
       mat-raised-button
       class="btn-sell"
-      (click)="sellItems(data)"
+      (click)="sellItems()"
       [disabled]="!(selected$ | async)?.size"
-      *ngIf="sellingState$ | async as data"
+      *ngIf="selling$ | async"
       color="accent"
     >
       Sell
