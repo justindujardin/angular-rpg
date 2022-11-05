@@ -7,7 +7,6 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import _ from 'underscore';
 import { SceneObjectBehavior } from '../../behaviors/scene-object-behavior';
 import { AnimatedComponent, IAnimationConfig } from '../../components';
 import { Point } from '../../core';
@@ -163,58 +162,46 @@ export class CombatPlayerComponent
     ];
   }
 
-  moveForward(then?: () => any) {
-    this._playAnimation(
-      [
-        {
-          name: 'Move Forward',
-          repeats: 0,
-          duration: 250,
-          frames: this.getForwardFrames(),
-          move: new Point(this.getForwardDirection(), 0),
-          host: this,
-        },
-      ],
-      then
-    );
+  async moveForward() {
+    return this._playAnimation([
+      {
+        name: 'Move Forward',
+        repeats: 0,
+        duration: 250,
+        frames: this.getForwardFrames(),
+        move: new Point(this.getForwardDirection(), 0),
+        host: this,
+      },
+    ]);
   }
 
-  moveBackward(then?: () => any) {
-    this._playAnimation(
-      [
-        {
-          name: 'Move Backward',
-          repeats: 0,
-          duration: 250,
-          frames: this.getBackwardFrames(),
-          move: new Point(this.getBackwardDirection(), 0),
-          host: this,
-        },
-      ],
-      then
-    );
+  async moveBackward() {
+    return this._playAnimation([
+      {
+        name: 'Move Backward',
+        repeats: 0,
+        duration: 250,
+        frames: this.getBackwardFrames(),
+        move: new Point(this.getBackwardDirection(), 0),
+        host: this,
+      },
+    ]);
   }
 
-  _playAnimation(animation: IAnimationConfig[], then?: () => any) {
+  private async _playAnimation(animation: IAnimationConfig[]) {
     if (!this.animation || this.animating) {
       return;
     }
-    const animations: IAnimationConfig[] = _.map(
-      animation,
-      (anim: IAnimationConfig) => {
-        const result = { ...anim };
-        if (typeof result.move !== 'undefined') {
-          result.move = result.move.clone();
-        }
-        return result;
+    const animations: IAnimationConfig[] = animation.map((anim: IAnimationConfig) => {
+      const result = { ...anim };
+      if (typeof result.move !== 'undefined') {
+        result.move = result.move.clone();
       }
-    );
+      return result;
+    });
     this.animating = true;
-    this.animation.playChain(animations).then(() => {
+    return this.animation.playChain(animations).then(() => {
       this.animating = false;
-      if (then) {
-        then();
-      }
     });
   }
 
@@ -222,8 +209,7 @@ export class CombatPlayerComponent
     if (!this.animation || this.animating) {
       return;
     }
-    const animations: IAnimationConfig[] = _.map(
-      attackAnimation,
+    const animations: IAnimationConfig[] = attackAnimation.map(
       (anim: IAnimationConfig) => {
         const result = { ...anim };
         if (typeof result.move !== 'undefined') {

@@ -1,6 +1,5 @@
 import * as Immutable from 'immutable';
 import { Subscription } from 'rxjs';
-import * as _ from 'underscore';
 import { Point } from '../../../../app/core/point';
 import { State } from '../../../core/state';
 import { StateMachine } from '../../../core/state-machine';
@@ -116,11 +115,10 @@ export class ChooseActionType extends State<CombatChooseActionStateNames> {
       }
     };
 
-    const items = _.filter(
-      p.findBehaviors(CombatActionBehavior),
-      (c: CombatActionBehavior) => c.canBeUsedBy(p)
-    );
-    machine.parent.items = _.map(items, (a: CombatActionBehavior) => {
+    const items = p
+      .findBehaviors(CombatActionBehavior)
+      .filter((c: CombatActionBehavior) => c.canBeUsedBy(p));
+    machine.parent.items = items.map((a: CombatActionBehavior) => {
       return {
         select: selectAction.bind(this, a),
         label: a.getActionName(),
@@ -134,7 +132,7 @@ export class ChooseActionType extends State<CombatChooseActionStateNames> {
       return;
     }
 
-    machine.player.moveForward(() => {
+    machine.player.moveForward().then(() => {
       machine.parent.setPointerTarget(p, 'right');
       machine.parent.showPointer();
       sub = combat.onClick$.subscribe(clickSelect);
@@ -275,7 +273,7 @@ export class ChooseActionTarget extends State<CombatChooseActionStateNames> {
     const targets: GameEntityObject[] = beneficial
       ? machine.data.players
       : machine.data.enemies;
-    machine.parent.items = _.map(targets, (a: GameEntityObject) => {
+    machine.parent.items = targets.map((a: GameEntityObject) => {
       return {
         select: selectTarget.bind(this, a),
         label: a.model?.name || '',
@@ -313,7 +311,8 @@ export class ChooseActionSubmit extends State<CombatChooseActionStateNames> {
     if (machine.action.canTarget() && !machine.target) {
       throw new Error('Invalid target');
     }
-    machine.player?.moveBackward(() => {
+    assertTrue(machine.player, 'invalid player');
+    machine.player.moveBackward().then(() => {
       machine.parent.hidePointer();
       assertTrue(machine.action, 'invalid choose action!');
       machine.action.from = machine.current;
