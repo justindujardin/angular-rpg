@@ -44,7 +44,7 @@ export class SpriteRenderBehaviorComponent
     return this._icon$.value;
   }
 
-  private _subscription: Subscription;
+  private _subscription: Subscription | null = null;
 
   meta: ISpriteMeta | null = null;
   image: HTMLImageElement | null = null;
@@ -73,6 +73,6 @@ export class SpriteRenderBehaviorComponent
   }
 
   ngOnDestroy(): void {
-    this._subscription.unsubscribe();
+    this._subscription?.unsubscribe();
   }
 }
