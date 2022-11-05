@@ -375,7 +375,7 @@ export class StoreFeatureComponent extends MapFeatureComponent {
     if (
       items.length === 1 &&
       toEquipItem &&
-      types.indexOf(toEquipItem?.type as EquipmentSlotTypes)
+      types.includes(toEquipItem?.type as EquipmentSlotTypes)
     ) {
       const toEquip = party.find((p) => {
         assertTrue(p, 'invalid player entity in party');

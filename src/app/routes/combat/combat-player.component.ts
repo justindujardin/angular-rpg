@@ -88,8 +88,8 @@ export class CombatPlayerComponent
   }
 
   getMagicAnimation(strikeCb: () => any): IAnimationConfig[] {
-    const icon = this.icon?.replace('.png', '-magic.png') || '';
-    const moveIcon = this.icon?.replace('.png', '-magic.png') || '';
+    const icon = this.icon || '';
+    const moveIcon = icon.replace('.png', '-magic.png');
 
     return [
       {
