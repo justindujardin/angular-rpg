@@ -345,7 +345,7 @@ describe('StoreFeatureComponent', () => {
       expect(selection.length).toBe(1);
     });
   });
-  fdescribe('selling', () => {
+  describe('selling', () => {
     it('should sell items and receive gold', async () => {
       const fixture = TestBed.createComponent(StoreFeatureComponent);
       const comp: StoreFeatureComponent = fixture.componentInstance;
