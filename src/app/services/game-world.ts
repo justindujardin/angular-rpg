@@ -51,6 +51,17 @@ export class GameWorld extends World {
 
   private _music: AudioResource | null = null;
 
+  /** Preload a sprite given its name */
+  async preloadSprite(icon: string) {
+    if (!icon) {
+      return;
+    }
+    const meta = this.sprites.getSpriteMeta(icon);
+    if (meta) {
+      await this.sprites.getSpriteSheet(meta.source);
+    }
+  }
+
   /** Set the background music URL for the game */
   setMusic(musicUrl: string, loop: boolean = true, volume: number = 0.5) {
     // Setting to the same track, let it keep playing from where it is

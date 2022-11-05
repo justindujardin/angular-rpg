@@ -1,5 +1,6 @@
 import { Component, EventEmitter } from '@angular/core';
 import { Point } from '../../core/point';
+import { assertTrue } from '../../models/util';
 import { TileObject } from '../../scene/tile-object';
 
 export interface IAnimationConfig {
@@ -18,9 +19,10 @@ export interface IAnimationConfig {
   move?: Point;
   /** The object that's animating */
   host: TileObject;
-
-  /** callback */
+  /** callback that happens after this animation task is complete */
   callback?: (config: IAnimationConfig) => void;
+  /** async function that returns once all data needed for the animation is loaded */
+  preload?: (config: IAnimationConfig) => Promise<void>;
 }
 
 export interface IAnimationTask extends IAnimationConfig {
@@ -146,6 +148,7 @@ export class AnimatedComponent extends TileObject {
   }
 
   async playChain(animations: IAnimationConfig[]) {
+    await this.preload(animations);
     await new Promise<void>((resolve) => {
       // TODO: Need a map of these for multiple animations on the same component.
       this._animationKeys = [...animations];
@@ -159,6 +162,18 @@ export class AnimatedComponent extends TileObject {
       });
       this._animateNext();
     });
+  }
+
+  /** Preload any animation data needed for rendering ahead of time */
+  async preload(animations: IAnimationConfig[]) {
+    return Promise.all(
+      animations
+        .filter((cfg) => cfg.preload)
+        .map((cfg) => {
+          assertTrue(cfg.preload, 'invalid preload function not filtered out');
+          return cfg.preload(cfg);
+        })
+    );
   }
 
   private async _animateNext() {
