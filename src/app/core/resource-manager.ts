@@ -84,7 +84,7 @@ export class ResourceManager {
    *
    * @returns An array of IResource objects.
    */
-  load<T extends IResource | IResource[]>(sources: string | string[]): Promise<T[]> {
+  load<T extends IResource>(sources: string | string[]): Promise<T[]> {
     return new Promise<T[]>((resolve, reject) => {
       const results: T[] = [];
       let loadQueue = 0;

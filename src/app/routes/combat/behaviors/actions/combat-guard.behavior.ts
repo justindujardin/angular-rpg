@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { AppState } from '../../../../app.model';
+import { ResourceManager } from '../../../../core';
 import { IStateChange } from '../../../../core/state-machine';
 import { CombatantTypes } from '../../../../models/base-entity';
 import {
@@ -9,8 +10,8 @@ import {
   CombatSetStatusAction,
 } from '../../../../models/combat/combat.actions';
 import { assertTrue } from '../../../../models/util';
+import { GameWorld } from '../../../../services/game-world';
 import { CombatComponent } from '../../combat.component';
-import { IPlayerActionCallback } from '../../combat.types';
 import { CombatStateNames } from '../../states/states';
 import { CombatActionBehavior } from '../combat-action.behavior';
 
@@ -26,17 +27,21 @@ export class CombatGuardBehavior extends CombatActionBehavior {
   private _subscription: Subscription | null = null;
   private _changedModel: CombatantTypes | null = null;
 
-  constructor(public store: Store<AppState>) {
-    super();
+  constructor(
+    public store: Store<AppState>,
+    protected loader: ResourceManager,
+    protected gameWorld: GameWorld
+  ) {
+    super(loader, gameWorld);
   }
 
   canTarget(): boolean {
     return false;
   }
 
-  act(then?: IPlayerActionCallback): boolean {
+  async act(): Promise<boolean> {
     this.combat.machine.setCurrentState('end-turn');
-    return super.act(then);
+    return true;
   }
 
   /**

@@ -57,12 +57,12 @@ export class CombatPlayerComponent
     this.state = name;
   }
 
-  attack(attackCb: () => any, cb?: () => void) {
-    this._attack(cb, this.getAttackAnimation(attackCb));
+  async attack(attackCb: () => any) {
+    return this._attack(this.getAttackAnimation(attackCb));
   }
 
-  magic(attackCb: () => any, cb?: () => void) {
-    this._attack(cb, this.getMagicAnimation(attackCb));
+  async magic(attackCb: () => any) {
+    return this._attack(this.getMagicAnimation(attackCb));
   }
 
   getForwardDirection(): number {
@@ -216,7 +216,7 @@ export class CombatPlayerComponent
     });
   }
 
-  _attack(cb: (() => void) | undefined, attackAnimation: any) {
+  async _attack(attackAnimation: IAnimationConfig[]) {
     if (!this.animation || this.animating) {
       return;
     }
@@ -230,11 +230,8 @@ export class CombatPlayerComponent
       }
     );
     this.animating = true;
-    this.animation.playChain(animations).then(() => {
+    return this.animation.playChain(animations).then(() => {
       this.animating = false;
-      if (cb) {
-        cb();
-      }
     });
   }
 

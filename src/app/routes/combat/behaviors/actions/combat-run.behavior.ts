@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
 import * as _ from 'underscore';
+import { ResourceManager } from '../../../../core';
 import { assertTrue } from '../../../../models/util';
+import { GameWorld } from '../../../../services/game-world';
 import { CombatComponent } from '../../combat.component';
-import { IPlayerActionCallback } from '../../combat.types';
 import { CombatRunSummary } from '../../states/combat-escape.state';
 import { CombatActionBehavior } from '../combat-action.behavior';
 
@@ -14,11 +15,15 @@ export class CombatRunBehaviorComponent extends CombatActionBehavior {
   name: string = 'run';
   @Input() combat: CombatComponent;
 
+  constructor(protected loader: ResourceManager, protected gameWorld: GameWorld) {
+    super(loader, gameWorld);
+  }
+
   canTarget(): boolean {
     return false;
   }
 
-  act(then?: IPlayerActionCallback): boolean {
+  async act(): Promise<boolean> {
     if (!this.isCurrentTurn()) {
       return false;
     }
@@ -31,16 +36,12 @@ export class CombatRunBehaviorComponent extends CombatActionBehavior {
       success,
       player: this.combat.machine.current,
     };
-    this.combat.machine.onRun$.emit(data).then(() => {
-      if (success) {
-        this.combat.machine.setCurrentState('escape');
-      } else {
-        this.combat.machine.setCurrentState('end-turn');
-      }
-      if (then) {
-        then(this);
-      }
-    });
+    await this.combat.machine.onRun$.emit(data);
+    if (success) {
+      this.combat.machine.setCurrentState('escape');
+    } else {
+      this.combat.machine.setCurrentState('end-turn');
+    }
     return true;
   }
 

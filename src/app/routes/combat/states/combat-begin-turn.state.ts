@@ -75,11 +75,7 @@ export class CombatBeginTurnStateComponent extends CombatMachineState {
     }
     _.defer(() => {
       if (choice) {
-        choice.act((act: IPlayerAction, error?: any) => {
-          if (error) {
-            console.error(error);
-          }
-        });
+        choice.act();
       }
     });
   }
