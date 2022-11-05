@@ -105,20 +105,8 @@ export class StateMachine<StateNames extends string>
       console.error(`STATE NOT FOUND: ${state}`);
       return false;
     }
-    if (this._pendingState !== null && this._pendingState.name !== state.name) {
-      console.log(
-        `Overwriting pending state (${this._pendingState.name}) with (${state.name})`
-      );
-      this._pendingState = state;
-    } else if (!this._pendingState) {
-      this._pendingState = state;
-      _.defer(() => {
-        state = this._pendingState;
-        this._pendingState = null;
-        if (!this._setCurrentState(state)) {
-          console.error(`Failed to set state: ${state?.name}`);
-        }
-      });
+    if (!this._setCurrentState(state)) {
+      console.error(`Failed to set state: ${state?.name}`);
     }
     return true;
   }
@@ -166,11 +154,10 @@ export class StateMachine<StateNames extends string>
   }
 
   getState(name: StateNames | null): IState<StateNames> | null {
-    return (
-      _.find(this.states, (s: IState<StateNames>) => {
-        return s.name === name;
-      }) || null
-    );
+    const state = this.states.find((s: IState<StateNames>) => {
+      return s.name === name;
+    });
+    return state || null;
   }
 
   notifyWait(): IResumeCallback {

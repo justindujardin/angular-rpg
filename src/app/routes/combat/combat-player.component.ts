@@ -266,7 +266,7 @@ export class CombatPlayerComponent
 
   ngOnDestroy(): void {
     this.scene?.removeObject(this);
-    this.behaviors.forEach((c: SceneObjectBehavior) => {
+    this.behaviors?.forEach((c: SceneObjectBehavior) => {
       this.removeBehavior(c);
     });
     this.destroy();

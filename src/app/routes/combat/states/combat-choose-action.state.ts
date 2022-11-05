@@ -29,6 +29,8 @@ import { Point } from '../../../../app/core/point';
 import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { ChooseActionStateMachine } from '../behaviors/choose-action.machine';
 import { CombatActionBehavior } from '../behaviors/combat-action.behavior';
+import { CombatEnemyComponent } from '../combat-enemy.component';
+import { CombatPlayerComponent } from '../combat-player.component';
 import { CombatComponent } from '../combat.component';
 import { ICombatMenuItem } from '../combat.types';
 import { CombatMachineState } from './combat-base.state';
@@ -116,7 +118,9 @@ export class CombatChooseActionStateComponent
       ...machine.getLiveParty(),
       ...machine.getLiveEnemies(),
     ];
-    machine.turnList = _.shuffle<GameEntityObject>(combatants);
+    machine.turnList = _.shuffle<CombatPlayerComponent | CombatEnemyComponent>(
+      combatants
+    );
     machine.current = machine.turnList.shift() || null;
     machine.currentDone = true;
 

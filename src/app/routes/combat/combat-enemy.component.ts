@@ -42,7 +42,7 @@ export class CombatEnemyComponent
     super();
   }
 
-  private _spriteSubscription: Subscription;
+  private _spriteSubscription: Subscription | null;
 
   ngAfterViewInit(): void {
     this.scene.addObject(this);
@@ -64,7 +64,8 @@ export class CombatEnemyComponent
     if (this.scene) {
       this.scene.removeObject(this);
     }
-    this._spriteSubscription.unsubscribe();
+    this._spriteSubscription?.unsubscribe();
+    this._spriteSubscription = null;
     this.destroy();
   }
 }
