@@ -1,8 +1,6 @@
 import { Component, EventEmitter } from '@angular/core';
-import * as _ from 'underscore';
-import { Point } from '../../app/core/point';
-import { TileObject } from '../scene/tile-object';
-import { TickedBehavior } from './ticked-behavior';
+import { Point } from '../../core/point';
+import { TileObject } from '../../scene/tile-object';
 
 export interface IAnimationConfig {
   /**
@@ -18,6 +16,8 @@ export interface IAnimationConfig {
   frames?: any[];
   /** Move translation */
   move?: Point;
+  /** The object that's animating */
+  host: TileObject;
 
   /** callback */
   callback?: (config: IAnimationConfig) => void;
@@ -35,46 +35,46 @@ export interface IAnimationTask extends IAnimationConfig {
 
 export interface IAnimatedBehaviorStopped {
   task: IAnimationTask;
-  component: AnimatedBehaviorComponent;
+  component: AnimatedComponent;
 }
 
 // Implementation
 // -------------------------------------------------------------------------
 @Component({
-  selector: 'animated-behavior',
+  selector: 'animated',
   template: '<ng-content></ng-content>',
 })
-export class AnimatedBehaviorComponent extends TickedBehavior {
-  host: TileObject;
-
+export class AnimatedComponent extends TileObject {
   onStop$ = new EventEmitter<IAnimatedBehaviorStopped>();
 
   private _tasks: IAnimationTask[] = [];
-  private _animationKeys: any[] = [];
-  private _currentAnimation: any = null;
+  private _animationKeys: IAnimationConfig[] = [];
+  private _currentAnimation: IAnimationTask | null = null;
 
-  play(config: IAnimationConfig) {
+  constructor() {
+    super();
+  }
+
+  async play(config: IAnimationConfig) {
     const task: IAnimationTask = config as any;
     task.elapsed = 0;
     if (task.move) {
-      task.startFrame = this.host.frame;
-      task.start = new Point(this.host.point);
-      task.target = new Point(this.host.point).clone().add(task.move);
-      task.value = new Point(this.host.point);
+      task.startFrame = task.host.frame;
+      task.start = new Point(task.host.point);
+      task.target = new Point(task.host.point).add(task.move);
+      task.value = new Point(task.host.point);
     }
-    if (typeof task.duration === 'undefined') {
-      task.duration = 0;
-    }
-    this._tasks.push(task);
-  }
 
-  stop(config: IAnimationConfig) {
-    for (let i = 0; i < this._tasks.length; i++) {
-      const task: IAnimationTask = this._tasks[i];
-      if (task.name === config.name) {
-        task.complete = true;
-      }
-    }
+    return new Promise<void>((resolve) => {
+      const realCallback = task.callback;
+      task.callback = (config: IAnimationConfig) => {
+        if (realCallback) {
+          realCallback(config);
+        }
+        resolve();
+      };
+      this._tasks.push(task);
+    });
   }
 
   removeCompleteTasks() {
@@ -88,7 +88,6 @@ export class AnimatedBehaviorComponent extends TickedBehavior {
         if (task.callback) {
           task.callback(task);
         }
-        // this.host.frame = task.startFrame;
         this.onStop$.emit({
           task,
           component: this,
@@ -109,8 +108,9 @@ export class AnimatedBehaviorComponent extends TickedBehavior {
       return;
     }
     // Interp each task and fire events where necessary.
-    _.each(this._tasks, (task: IAnimationTask) => {
-      if (task.elapsed > task.duration) {
+    for (let i = 0; i < this._tasks.length; i++) {
+      const task: IAnimationTask = this._tasks[i];
+      if (task.elapsed >= task.duration) {
         task.complete = true;
         task.elapsed = task.duration;
       }
@@ -124,20 +124,20 @@ export class AnimatedBehaviorComponent extends TickedBehavior {
             task.target,
             factor
           );
-          this.host.point.x = interpolated.x;
-          this.host.point.y = interpolated.y;
+          task.host.point.x = interpolated.x;
+          task.host.point.y = interpolated.y;
         }
         if (task.frames && task.frames.length) {
           const index = Math.round(this.interpolate(0, task.frames.length - 1, factor));
           const frame = task.frames[index];
           // console.log("Interp frame = " + frame);
-          this.host.frame = frame;
+          task.host.frame = frame;
         }
       }
       if (!task.complete) {
         task.elapsed += elapsed;
       }
-    });
+    }
   }
 
   interpolate(from: number, to: number, factor: number): number {
@@ -145,34 +145,31 @@ export class AnimatedBehaviorComponent extends TickedBehavior {
     return from * (1.0 - factor) + to * factor;
   }
 
-  playChain(animations: IAnimationConfig[], cb: () => void) {
-    // Inject a 0 duration animation on the end of the list
-    // if a callback is desired.  This is a convenience for
-    // certain coding styles, and you could easily add your
-    // own animation as a callback before invoking this.
-    if (typeof cb !== 'undefined') {
-      animations.push({
-        name: 'Chain Callback',
+  async playChain(animations: IAnimationConfig[]) {
+    await new Promise<void>((resolve) => {
+      // TODO: Need a map of these for multiple animations on the same component.
+      this._animationKeys = [...animations];
+      this._animationKeys.push({
+        name: 'Finish Animation',
         duration: 0,
-        callback: cb,
+        host: this,
+        callback: () => {
+          resolve();
+        },
       });
-    }
-    // TODO: Need a list of these for multiple animations on
-    // the same component. !!!!!!!!!!!!!!!!!!!!
-    this._animationKeys = animations;
-    this._animateNext();
+      this._animateNext();
+    });
   }
 
-  private _animateNext() {
-    if (this._animationKeys.length === 0) {
+  private async _animateNext() {
+    const nextAnim = this._animationKeys.shift();
+    if (!nextAnim) {
       return;
     }
-    this._currentAnimation = this._animationKeys.shift();
+    this._currentAnimation = nextAnim as IAnimationTask;
     this._currentAnimation.done = () => {
-      _.defer(() => {
-        this._animateNext();
-      });
+      this._animateNext();
     };
-    this.play(this._currentAnimation);
+    await this.play(this._currentAnimation);
   }
 }

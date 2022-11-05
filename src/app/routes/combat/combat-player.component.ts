@@ -8,8 +8,8 @@ import {
   ViewChildren,
 } from '@angular/core';
 import _ from 'underscore';
-import { AnimatedBehaviorComponent, IAnimationConfig } from '../../behaviors';
 import { SceneObjectBehavior } from '../../behaviors/scene-object-behavior';
+import { AnimatedComponent, IAnimationConfig } from '../../components';
 import { Point } from '../../core';
 import { IPartyMember } from '../../models/base-entity';
 import { CombatService } from '../../models/combat/combat.service';
@@ -35,9 +35,9 @@ export class CombatPlayerComponent
   extends GameEntityObject
   implements AfterViewInit, OnDestroy
 {
-  @ViewChildren('animation,attack,magic,guard,item,run')
+  @ViewChildren('attack,magic,guard,item,run')
   behaviors: QueryList<SceneObjectBehavior>;
-  @ViewChild(AnimatedBehaviorComponent) animation: AnimatedBehaviorComponent;
+  @ViewChild(AnimatedComponent) animation: AnimatedComponent;
   @Input() model: IPartyMember;
   // @ts-ignore
   @Input() icon: string;
@@ -88,16 +88,19 @@ export class CombatPlayerComponent
       : [4, 5, 6, 7, 6, 5, 4];
   }
 
-  getMagicAnimation(strikeCb: () => any) {
+  getMagicAnimation(strikeCb: () => any): IAnimationConfig[] {
     return [
       {
         name: 'Prep Animation',
+        duration: 50,
+        host: this,
         callback: () => {
           this.setSprite(this.icon?.replace('.png', '-magic.png'), 19);
         },
       },
       {
         name: 'Magic cast',
+        host: this,
         repeats: 0,
         duration: 1000,
         frames: [19, 18, 17, 16, 15],
@@ -109,6 +112,7 @@ export class CombatPlayerComponent
       },
       {
         name: 'Back to rest',
+        host: this,
         repeats: 0,
         duration: 1000,
         frames: [15, 16, 17, 18, 19],
@@ -119,10 +123,11 @@ export class CombatPlayerComponent
     ];
   }
 
-  getAttackAnimation(strikeCb: () => any): any[] {
+  getAttackAnimation(strikeCb: () => any): IAnimationConfig[] {
     return [
       {
         name: 'Move Forward for Attack',
+        host: this,
         repeats: 0,
         duration: 250,
         frames: this.getForwardFrames(),
@@ -136,6 +141,7 @@ export class CombatPlayerComponent
       },
       {
         name: 'Strike at Opponent',
+        host: this,
         repeats: 1,
         duration: 100,
         frames: this.getAttackFrames(),
@@ -148,6 +154,7 @@ export class CombatPlayerComponent
       },
       {
         name: 'Return to Party',
+        host: this,
         duration: 250,
         repeats: 0,
         frames: this.getBackwardFrames(),
@@ -165,6 +172,7 @@ export class CombatPlayerComponent
           duration: 250,
           frames: this.getForwardFrames(),
           move: new Point(this.getForwardDirection(), 0),
+          host: this,
         },
       ],
       then
@@ -180,6 +188,7 @@ export class CombatPlayerComponent
           duration: 250,
           frames: this.getBackwardFrames(),
           move: new Point(this.getBackwardDirection(), 0),
+          host: this,
         },
       ],
       then
@@ -201,7 +210,7 @@ export class CombatPlayerComponent
       }
     );
     this.animating = true;
-    this.animation.playChain(animations, () => {
+    this.animation.playChain(animations).then(() => {
       this.animating = false;
       if (then) {
         then();
@@ -224,7 +233,7 @@ export class CombatPlayerComponent
       }
     );
     this.animating = true;
-    this.animation.playChain(animations, () => {
+    this.animation.playChain(animations).then(() => {
       this.animating = false;
       if (cb) {
         cb();
@@ -259,6 +268,7 @@ export class CombatPlayerComponent
 
   ngAfterViewInit(): void {
     this.scene?.addObject(this);
+    this.scene?.addObject(this.animation);
     this.behaviors.forEach((c: SceneObjectBehavior) => {
       this.addBehavior(c);
     });
@@ -266,6 +276,7 @@ export class CombatPlayerComponent
 
   ngOnDestroy(): void {
     this.scene?.removeObject(this);
+    this.scene?.removeObject(this.animation);
     this.behaviors?.forEach((c: SceneObjectBehavior) => {
       this.removeBehavior(c);
     });
