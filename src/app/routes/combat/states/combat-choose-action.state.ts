@@ -42,6 +42,11 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
   pending: GameEntityObject[] = [];
   machine: CombatStateMachineComponent | null = null;
 
+  /** Pointer offset when pointing left */
+  static LEFT_OFFSET = new Point(0.5, -0.25);
+  /** Pointer offset when pointing right */
+  static RIGHT_OFFSET = new Point(-1, -0.25);
+
   /** Available menu items for selection. */
   @Input() items: ICombatMenuItem[] = [];
   /** Game entity to point at with the pointer */
@@ -64,11 +69,19 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
       if (!this.pointAt || !this.view) {
         return new Point(0, 0);
       }
-      const pointLeft = this.pointAtDir === 'left';
-      const offset = pointLeft ? new Point(0.5, -0.25) : new Point(-1, -0.25);
+
+      // World offset from object origin (0.5,0.5) is bottom right (-0.5,-0.5) top left
+      const offset =
+        this.pointAtDir === 'left'
+          ? CombatChooseActionStateComponent.LEFT_OFFSET
+          : CombatChooseActionStateComponent.RIGHT_OFFSET;
+      // World player point
       const targetPos: Point = new Point(this.pointAt.point);
-      targetPos.y = targetPos.y - this.view.camera.point.y + offset.y;
-      targetPos.x = targetPos.x - this.view.camera.point.x + offset.x;
+      // Subtract camera point to make world relative to upper-left of the camera
+      targetPos.subtract(this.view.camera.point);
+      // Add the offset (so we don't point at object center)
+      targetPos.add(offset);
+      // Convert to screen coordinates
       const screenPos: Point = this.view.worldToScreen(
         targetPos,
         this.view.cameraScale
