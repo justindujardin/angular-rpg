@@ -288,7 +288,7 @@
     <property name="icon" value="palaceCenter.png"/>
     <property name="target" type="file" value="castle.tmx"/>
     <property name="targetX" value="16"/>
-    <property name="targetY" value="11"/>
+    <property name="targetY" value="10"/>
    </properties>
   </object>
   <object id="9" name="crypt" class="PortalFeatureComponent" gid="41" x="1168" y="912" width="16" height="16">
