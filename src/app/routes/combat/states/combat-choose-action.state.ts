@@ -13,35 +13,20 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Input,
-  OnDestroy,
-  Renderer2,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
 import { BehaviorSubject, interval, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import * as _ from 'underscore';
 import { Point } from '../../../../app/core/point';
+import { assertTrue } from '../../../models/util';
 import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { ChooseActionStateMachine } from '../behaviors/choose-action.machine';
 import { CombatActionBehavior } from '../behaviors/combat-action.behavior';
-import { CombatEnemyComponent } from '../combat-enemy.component';
-import { CombatPlayerComponent } from '../combat-player.component';
 import { CombatComponent } from '../combat.component';
 import { ICombatMenuItem } from '../combat.types';
 import { CombatMachineState } from './combat-base.state';
 import { CombatStateMachineComponent } from './combat.machine';
 import { CombatStateNames } from './states';
-
-export interface IChooseActionEvent {
-  players: GameEntityObject[];
-  enemies: GameEntityObject[];
-  choose: (action: CombatActionBehavior) => any;
-}
 
 /**
  * Choose actions for all characters in the player-card.
@@ -60,31 +45,28 @@ export class CombatChooseActionStateComponent
   pending: GameEntityObject[] = [];
   machine: CombatStateMachineComponent | null = null;
   pointerOffset: Point = new Point(0, 0);
-
-  @ViewChild('combatPointer') pointerElementRef: ElementRef;
   /**
    * Available menu items for selection.
    */
   @Input() items: ICombatMenuItem[] = [];
 
   @Input() pointAt: GameEntityObject | null = null;
+  @Input() pointAtDir: 'left' | 'right' = 'left';
+  @Input() pointer: boolean = false;
+  @Input() pointerClass: string = '';
   @Input() combat: CombatComponent | null = null;
 
   pointOffset: Point = new Point();
   private _pointerPosition$ = new BehaviorSubject(new Point());
-
   private _currentMachine: ChooseActionStateMachine | null = null;
+  private toChoose: GameEntityObject[] = [];
 
   /** The screen translated pointer position */
   pointerPosition$: Observable<Point> = this._pointerPosition$.pipe(
     distinctUntilChanged()
   );
 
-  private _timerSubscription?: Subscription;
-
-  constructor(private renderer: Renderer2) {
-    super();
-  }
+  private _timerSubscription: Subscription | null = null;
 
   ngAfterViewInit(): void {
     // Every n milliseconds, update the pointer to track the current target
@@ -109,69 +91,28 @@ export class CombatChooseActionStateComponent
 
   enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
-    if (!machine.scene) {
-      throw new Error('Invalid Combat Scene');
-    }
+    assertTrue(machine.scene, 'Invalid Combat Scene');
     this.machine = machine;
 
-    const combatants: GameEntityObject[] = [
+    this.pending = machine.getLiveParty();
+    this.toChoose = this.pending.slice();
+
+    machine.turnList = _.shuffle([
       ...machine.getLiveParty(),
       ...machine.getLiveEnemies(),
-    ];
-    machine.turnList = _.shuffle<CombatPlayerComponent | CombatEnemyComponent>(
-      combatants
-    );
+    ]);
     machine.current = machine.turnList.shift() || null;
     machine.currentDone = true;
-
-    this.pending = machine.getLiveParty();
     machine.playerChoices = {};
 
-    // Trigger an event with a list of GameEntityObject player-card members to
-    // choose an action for.   Provide a callback function that may be
-    // invoked while handling the event to trigger status on the choosing
-    // of moves.  Once data.choose(g,a) has been called for all player-card members
-    // the state will transition to begin execution of player and enemy turns.
-    const chooseData: IChooseActionEvent = {
-      choose: (action: CombatActionBehavior) => {
-        const id = action.from?._uid || -1;
-        machine.playerChoices[id] = action;
-        this.pending = _.filter(this.pending, (p: GameEntityObject) => {
-          return id !== p._uid;
-        });
-        console.log(`${action.from?.model?.name} chose ${action.getActionName()}`);
-        if (this.pending.length === 0) {
-          machine.setCurrentState('begin-turn');
-        }
-      },
-      players: this.pending,
-      enemies: machine.getLiveEnemies(),
-    };
-
-    const choices: GameEntityObject[] = chooseData.players.slice();
-
-    const next = () => {
-      const p: GameEntityObject | null = choices.shift() || null;
-      if (!p || !this._currentMachine) {
-        this._currentMachine = null;
-        return;
-      }
-      this._currentMachine.current = p;
-      this._currentMachine.setCurrentState('choose-action');
-    };
-    const chooseSubmit = (action: CombatActionBehavior) => {
-      if (this._currentMachine) {
-        this._currentMachine.data.choose(action);
-      }
-      next();
-    };
     this._currentMachine = new ChooseActionStateMachine(
       this,
       machine.scene,
-      chooseData,
-      chooseSubmit
+      this.pending,
+      machine.getLiveEnemies(),
+      this.submitChoice.bind(this)
     );
-    next();
+    this._next();
   }
 
   exit(machine: CombatStateMachineComponent) {
@@ -179,14 +120,37 @@ export class CombatChooseActionStateComponent
     return super.exit(machine);
   }
 
+  submitChoice(action: CombatActionBehavior) {
+    if (this._currentMachine && this.machine) {
+      const id = action.from?._uid || -1;
+      this.machine.playerChoices[id] = action;
+      this.pending = this.pending.filter((p: GameEntityObject) => {
+        return id !== p._uid;
+      });
+      console.log(`${action.from?.model?.name} chose ${action.getActionName()}`);
+      if (this.pending.length === 0) {
+        this.machine.setCurrentState('begin-turn');
+      }
+    }
+    this._next();
+  }
+
+  private _next() {
+    const p: GameEntityObject | null = this.toChoose.shift() || null;
+    if (!p || !this._currentMachine) {
+      this._currentMachine = null;
+      return;
+    }
+    this._currentMachine.current = p;
+    this._currentMachine.setCurrentState('choose-action');
+  }
+
+  /** Show the pointer element next to the given object, aligned to left/right side */
   setPointerTarget(
     object: GameEntityObject,
     directionClass: 'left' | 'right' = 'right'
   ) {
-    const pointer: HTMLElement = this.pointerElementRef.nativeElement;
-    this.renderer.removeClass(pointer, 'left');
-    this.renderer.removeClass(pointer, 'right');
-    this.renderer.addClass(pointer, directionClass);
+    this.pointAtDir = directionClass;
     this.pointAt = object;
     this.pointOffset = this.pointerOffset;
   }
@@ -201,21 +165,5 @@ export class CombatChooseActionStateComponent
         this._currentMachine.target = item.source;
       }
     }
-  }
-
-  addPointerClass(clazz: string) {
-    this.renderer.addClass(this.pointerElementRef.nativeElement, clazz);
-  }
-
-  removePointerClass(clazz: string) {
-    this.renderer.removeClass(this.pointerElementRef.nativeElement, clazz);
-  }
-
-  hidePointer() {
-    this.renderer.addClass(this.pointerElementRef.nativeElement, 'hidden');
-  }
-
-  showPointer() {
-    this.renderer.removeClass(this.pointerElementRef.nativeElement, 'hidden');
   }
 }

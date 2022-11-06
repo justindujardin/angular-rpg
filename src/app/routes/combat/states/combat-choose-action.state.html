@@ -11,7 +11,8 @@
 <span
   #combatPointer
   class="point-to-player"
-  [class.hidden]="!pointAt"
+  [class.hidden]="!pointAt || !pointer"
+  [class]="pointerClass + ' ' + pointAtDir"
   [style.left]="(pointerPosition$ | async)?.x + 'px'"
   [style.top]="(pointerPosition$ | async)?.y + 'px'"
 ></span>

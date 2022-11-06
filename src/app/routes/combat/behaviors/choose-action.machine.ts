@@ -12,10 +12,7 @@ import { GameWorld } from '../../../services/game-world';
 import { CombatActionBehavior } from '../behaviors/combat-action.behavior';
 import { CombatPlayerComponent } from '../combat-player.component';
 import { CombatSceneClick, ICombatMenuItem, IPlayerAction } from '../combat.types';
-import {
-  CombatChooseActionStateComponent,
-  IChooseActionEvent,
-} from '../states/combat-choose-action.state';
+import { CombatChooseActionStateComponent } from '../states/combat-choose-action.state';
 
 /**
  * The enumeration of states used in the Combat choose action state machine.
@@ -56,7 +53,8 @@ export class ChooseActionStateMachine extends StateMachine<CombatChooseActionSta
   constructor(
     public parent: CombatChooseActionStateComponent,
     public scene: Scene,
-    public data: IChooseActionEvent,
+    public players: GameEntityObject[],
+    public enemies: GameEntityObject[],
     submit: (action: CombatActionBehavior) => any
   ) {
     super();
@@ -128,13 +126,13 @@ export class ChooseActionType extends State<CombatChooseActionStateNames> {
 
     // No pointer target
     if (!p) {
-      machine.parent.hidePointer();
+      machine.parent.pointer = false;
       return;
     }
 
     machine.player.moveForward().then(() => {
       machine.parent.setPointerTarget(p, 'right');
-      machine.parent.showPointer();
+      machine.parent.pointer = true;
       sub = combat.onClick$.subscribe(clickSelect);
     });
   }
@@ -241,11 +239,11 @@ export class ChooseActionTarget extends State<CombatChooseActionStateNames> {
   name: CombatChooseActionStateNames = ChooseActionTarget.NAME;
 
   enter(machine: ChooseActionStateMachine) {
-    const enemies: GameEntityObject[] = machine.data.enemies;
+    const enemies: GameEntityObject[] = machine.enemies;
     const p: GameEntityObject = machine.target || enemies[0];
-    machine.parent.addPointerClass(machine.action?.getActionName() || '');
+    machine.parent.pointerClass = machine.action?.getActionName() || '';
     if (!p) {
-      machine.parent.hidePointer();
+      machine.parent.pointer = false;
       return;
     }
     const combat = machine.parent.machine;
@@ -270,9 +268,7 @@ export class ChooseActionTarget extends State<CombatChooseActionStateNames> {
       machine &&
       ((machine.spell && machine.spell.benefit) || machine.item)
     );
-    const targets: GameEntityObject[] = beneficial
-      ? machine.data.players
-      : machine.data.enemies;
+    const targets: GameEntityObject[] = beneficial ? machine.players : machine.enemies;
     machine.parent.items = targets.map((a: GameEntityObject) => {
       return {
         select: selectTarget.bind(this, a),
@@ -313,14 +309,14 @@ export class ChooseActionSubmit extends State<CombatChooseActionStateNames> {
     }
     assertTrue(machine.player, 'invalid player');
     machine.player.moveBackward().then(() => {
-      machine.parent.hidePointer();
+      machine.parent.pointer = false;
       assertTrue(machine.action, 'invalid choose action!');
       machine.action.from = machine.current;
       machine.action.to = machine.target;
       machine.action.spell = machine.spell;
       machine.action.item = machine.item;
       machine.action.select();
-      machine.parent.removePointerClass(machine.action.getActionName());
+      machine.parent.pointerClass = '';
       this.submit(machine.action);
     });
   }
