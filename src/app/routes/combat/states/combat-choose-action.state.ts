@@ -13,9 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
-import { BehaviorSubject, interval, Observable, Subscription } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { Component, Input } from '@angular/core';
+import { interval, Observable } from 'rxjs';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 import * as _ from 'underscore';
 import { Point } from '../../../../app/core/point';
 import { assertTrue } from '../../../models/util';
@@ -36,15 +36,12 @@ import { CombatStateNames } from './states';
   styleUrls: ['./combat-choose-action.state.scss'],
   templateUrl: './combat-choose-action.state.html',
 })
-export class CombatChooseActionStateComponent
-  extends CombatMachineState
-  implements AfterViewInit, OnDestroy
-{
+export class CombatChooseActionStateComponent extends CombatMachineState {
   static NAME: CombatStateNames = 'choose-action';
   name: CombatStateNames = CombatChooseActionStateComponent.NAME;
   pending: GameEntityObject[] = [];
   machine: CombatStateMachineComponent | null = null;
-  pointerOffset: Point = new Point(0, 0);
+
   /**
    * Available menu items for selection.
    */
@@ -56,38 +53,28 @@ export class CombatChooseActionStateComponent
   @Input() pointerClass: string = '';
   @Input() combat: CombatComponent | null = null;
 
-  pointOffset: Point = new Point();
-  private _pointerPosition$ = new BehaviorSubject(new Point());
   private _currentMachine: ChooseActionStateMachine | null = null;
   private toChoose: GameEntityObject[] = [];
 
   /** The screen translated pointer position */
-  pointerPosition$: Observable<Point> = this._pointerPosition$.pipe(
-    distinctUntilChanged()
-  );
-
-  private _timerSubscription: Subscription | null = null;
-
-  ngAfterViewInit(): void {
-    // Every n milliseconds, update the pointer to track the current target
-    this._timerSubscription = interval(50).subscribe(() => {
+  pointerPosition$: Observable<Point> = interval(50).pipe(
+    map(() => {
       if (!this.pointAt || !this.combat) {
-        return;
+        return new Point(0, 0);
       }
+      const pointLeft = this.pointAtDir === 'left';
+      const offset = pointLeft ? new Point(0.5, -0.25) : new Point(-1, -0.25);
       const targetPos: Point = new Point(this.pointAt.point);
-      targetPos.y = targetPos.y - this.combat.camera.point.y + this.pointOffset.y;
-      targetPos.x = targetPos.x - this.combat.camera.point.x + this.pointOffset.x;
+      targetPos.y = targetPos.y - this.combat.camera.point.y + offset.y;
+      targetPos.x = targetPos.x - this.combat.camera.point.x + offset.x;
       const screenPos: Point = this.combat.worldToScreen(
         targetPos,
         this.combat.cameraScale
       );
-      this._pointerPosition$.next(screenPos);
-    });
-  }
-
-  ngOnDestroy(): void {
-    this._timerSubscription?.unsubscribe();
-  }
+      return screenPos;
+    }),
+    distinctUntilChanged()
+  );
 
   enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
@@ -147,12 +134,11 @@ export class CombatChooseActionStateComponent
 
   /** Show the pointer element next to the given object, aligned to left/right side */
   setPointerTarget(
-    object: GameEntityObject,
+    object: GameEntityObject | null,
     directionClass: 'left' | 'right' = 'right'
   ) {
     this.pointAtDir = directionClass;
     this.pointAt = object;
-    this.pointOffset = this.pointerOffset;
   }
 
   /** Point at the object represented by the given menu item */

@@ -1,6 +1,5 @@
 import * as Immutable from 'immutable';
 import { Subscription } from 'rxjs';
-import { Point } from '../../../../app/core/point';
 import { State } from '../../../core/state';
 import { StateMachine } from '../../../core/state-machine';
 import { ITemplateMagic } from '../../../models/game-data/game-data.model';
@@ -94,7 +93,7 @@ export class ChooseActionType extends State<CombatChooseActionStateNames> {
     if (!machine.player) {
       throw new Error('Requires player render component for combat animations.');
     }
-    machine.parent.pointerOffset = new Point(-1, -0.25);
+    machine.parent.setPointerTarget(null, 'right');
     machine.action = machine.target = machine.spell = machine.item = null;
 
     // Enable menu selection of action type.
@@ -278,7 +277,6 @@ export class ChooseActionTarget extends State<CombatChooseActionStateNames> {
       };
     });
 
-    machine.parent.pointerOffset = new Point(0.5, -0.25);
     machine.parent.setPointerTarget(p, 'left');
     sub = combat.onClick$.subscribe((c) => clickTarget(c));
   }
