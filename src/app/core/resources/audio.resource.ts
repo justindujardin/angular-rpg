@@ -48,7 +48,7 @@ export interface IAudioSource {
  */
 export class AudioResource extends Resource implements IAudioSource {
   data: HTMLAudioElement;
-  private static FORMATS: any[] = [
+  private static FORMATS: [string, string[]][] = [
     ['wav', ['audio/wav;']],
     ['mp3', ['audio/mpeg;']],
     ['m4a', ['audio/x-m4a;']],
