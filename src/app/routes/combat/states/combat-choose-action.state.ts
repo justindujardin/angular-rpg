@@ -20,9 +20,9 @@ import * as _ from 'underscore';
 import { Point } from '../../../../app/core/point';
 import { assertTrue } from '../../../models/util';
 import { GameEntityObject } from '../../../scene/objects/game-entity-object';
+import { SceneView } from '../../../scene/scene-view';
 import { ChooseActionStateMachine } from '../behaviors/choose-action.machine';
 import { CombatActionBehavior } from '../behaviors/combat-action.behavior';
-import { CombatComponent } from '../combat.component';
 import { ICombatMenuItem } from '../combat.types';
 import { CombatMachineState } from './combat-base.state';
 import { CombatStateMachineComponent } from './combat.machine';
@@ -42,16 +42,18 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
   pending: GameEntityObject[] = [];
   machine: CombatStateMachineComponent | null = null;
 
-  /**
-   * Available menu items for selection.
-   */
+  /** Available menu items for selection. */
   @Input() items: ICombatMenuItem[] = [];
-
+  /** Game entity to point at with the pointer */
   @Input() pointAt: GameEntityObject | null = null;
+  /** Which way is the pointer pointing? */
   @Input() pointAtDir: 'left' | 'right' = 'left';
+  /** Show the pointer? */
   @Input() pointer: boolean = false;
+  /** CSS class to add to the pointer */
   @Input() pointerClass: string = '';
-  @Input() combat: CombatComponent | null = null;
+  /** The scene view container. Used to calculating screen space pointer coordinates */
+  @Input() view: SceneView | null = null;
 
   private _currentMachine: ChooseActionStateMachine | null = null;
   private toChoose: GameEntityObject[] = [];
@@ -59,17 +61,17 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
   /** The screen translated pointer position */
   pointerPosition$: Observable<Point> = interval(50).pipe(
     map(() => {
-      if (!this.pointAt || !this.combat) {
+      if (!this.pointAt || !this.view) {
         return new Point(0, 0);
       }
       const pointLeft = this.pointAtDir === 'left';
       const offset = pointLeft ? new Point(0.5, -0.25) : new Point(-1, -0.25);
       const targetPos: Point = new Point(this.pointAt.point);
-      targetPos.y = targetPos.y - this.combat.camera.point.y + offset.y;
-      targetPos.x = targetPos.x - this.combat.camera.point.x + offset.x;
-      const screenPos: Point = this.combat.worldToScreen(
+      targetPos.y = targetPos.y - this.view.camera.point.y + offset.y;
+      targetPos.x = targetPos.x - this.view.camera.point.x + offset.x;
+      const screenPos: Point = this.view.worldToScreen(
         targetPos,
-        this.combat.cameraScale
+        this.view.cameraScale
       );
       return screenPos;
     }),
