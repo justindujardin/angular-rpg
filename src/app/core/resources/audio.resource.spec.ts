@@ -5,12 +5,6 @@ describe('AudioResource', () => {
     expect(AudioResource).toBeDefined();
   });
   it('should succeed with good url', (done) => {
-    new AudioResource().fetch('assets/test/tele').then((data) => {
-      expect(data).toBeDefined();
-      done();
-    });
-  });
-  it('should accept explicit filename extension', (done) => {
     new AudioResource().fetch('assets/test/tele.wav').then((err) => {
       expect(err).toBeDefined();
       done();

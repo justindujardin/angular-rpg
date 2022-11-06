@@ -49,7 +49,7 @@ export interface IAudioSource {
 export class AudioResource extends Resource implements IAudioSource {
   data: HTMLAudioElement;
   private static FORMATS: any[] = [
-    ['wav', ['audio/wav; codecs="1"']],
+    ['wav', ['audio/wav;']],
     ['mp3', ['audio/mpeg;']],
     ['m4a', ['audio/x-m4a;']],
     ['aac', ['audio/mp4a;', 'audio/mp4;']],
@@ -107,22 +107,12 @@ export class AudioResource extends Resource implements IAudioSource {
     this.url = url || this.url;
     let formats: IAudioFormat[] = AudioResource.supportedFormats();
     assertTrue(this.url, `AudioResource.load - invalid url :${url}`);
-    // If the url specifies a format, sort it to the front of the formats
-    // list so it will be tried first.
-    const dotIndex = this.url.lastIndexOf('.');
-    if (dotIndex !== -1) {
-      const urlExtension = this.url.substr(dotIndex + 1);
-      formats = formats.sort((a: IAudioFormat, b: IAudioFormat) => {
-        if (b.extension === urlExtension) {
-          return 1;
-        }
-        return 0;
-      });
-    }
-    if (formats.length === 0) {
+    const extension = this.url.substring(this.url.lastIndexOf('.') + 1);
+    const validFormat = formats.find((f) => f.extension === extension);
+    if (!validFormat) {
       return Promise.reject(errors.UNSUPPORTED_OPERATION);
     }
-    return this._loadAudioElement(formats);
+    return this._loadAudioElement(validFormat);
   }
 
   play(when: number = 0): IAudioSource {
@@ -149,21 +139,11 @@ export class AudioResource extends Resource implements IAudioSource {
     return this._volume;
   }
 
-  private _getUrlForFormat(format: IAudioFormat): string {
-    let url = this.url;
-    assertTrue(url, `AudioResource.load - invalid url :${url}`);
-    const index = url.lastIndexOf('.');
-    if (index !== -1) {
-      url = url.substr(0, index);
-    }
-    return `${url}.${format.extension}`;
-  }
-
-  private _loadAudioElement(formats: IAudioFormat[]): Promise<AudioResource> {
+  private _loadAudioElement(format: IAudioFormat): Promise<AudioResource> {
     return new Promise<AudioResource>((resolve, reject) => {
-      let sources: number = formats.length;
+      const src = this.url;
+      assertTrue(src, 'invalid url');
       let completed: () => void = () => {};
-      const invalid: string[] = [];
       const reference: HTMLAudioElement = document.createElement('audio');
       let timer = new Time().start().addObject({
         tick: () => (reference.readyState > 3 ? completed() : null),
@@ -174,31 +154,16 @@ export class AudioResource extends Resource implements IAudioSource {
         timer.stop();
         resolve(this);
       };
-      const incrementFailure: Function = (path: string) => {
-        sources--;
-        invalid.push(path);
-        if (sources <= 0) {
-          reject('No valid sources at the following URLs\n' + invalid.join('\n   '));
-        }
-      };
-
-      if (sources === 0) {
-        return reject('no supported media types');
-      }
-
       reference.addEventListener('canplaythrough', completed);
-      // Try all supported types, and accept the first valid one.
-      _.each(formats, (format: IAudioFormat) => {
-        let source = document.createElement('source') as HTMLSourceElement;
-        source.addEventListener('error', () => {
-          console.log(`source failed: ${source.src}`);
-          incrementFailure(source.src);
-        });
-
-        source.type = format.type.substr(0, format.type.indexOf(';'));
-        source.src = this._getUrlForFormat(format);
-        reference.appendChild(source);
+      const source = document.createElement('source') as HTMLSourceElement;
+      source.addEventListener('error', () => {
+        console.log(`source failed: ${source.src}`);
+        reject(source.src);
       });
+
+      source.type = format.type.substr(0, format.type.indexOf(';'));
+      source.src = src;
+      reference.appendChild(source);
 
       reference.load();
     });
