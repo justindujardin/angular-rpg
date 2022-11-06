@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-import * as _ from 'underscore';
 import { CameraBehavior } from '../behaviors/camera-behavior';
 import { Point, Rect } from '../core';
 import { TileMapRenderer } from './render/tile-map-renderer';
@@ -34,12 +33,11 @@ import { TileMap } from './tile-map';
 export class SceneView extends SceneObject implements ISceneView {
   static UNIT: number = 16;
 
-  animations: any[] = [];
   context: CanvasRenderingContext2D | null = null;
-  camera: Rect;
+  camera: Rect = new Rect(0, 0, 1, 1);
   cameraComponent: any = null; // TODO: ICameraComponent
-  cameraScale: number;
-  unitSize: number;
+  cameraScale: number = 1;
+  unitSize: number = SceneView.UNIT;
   scene: Scene | null = null;
   mapRenderer: TileMapRenderer = new TileMapRenderer();
   map: TileMap;
@@ -206,7 +204,6 @@ export class SceneView extends SceneObject implements ISceneView {
     this.processCamera();
     this.setRenderState();
     this.renderFrame(elapsed);
-    this.renderAnimations();
     this.renderPost();
     this.restoreRenderState();
   }
@@ -324,27 +321,5 @@ export class SceneView extends SceneObject implements ISceneView {
 
   fastScreenToWorldNumber(value: number, scale = 1): number {
     return value * (1 / (this.unitSize * scale));
-  }
-
-  // Animations
-  // -----------------------------------------------------------------------------
-  renderAnimations() {
-    if (!this.scene) {
-      return;
-    }
-    // TODO: is this code used? I can't find any references to animations being set
-    const len: number = this.animations.length;
-    for (let i = 0; i < len; i++) {
-      let animation = this.animations[i];
-      console.log('Running animation');
-      animation.done = animation.fn(animation.frame);
-      if (this.scene.time >= animation.time) {
-        animation.frame += 1;
-        animation.time = this.scene.time + animation.rate;
-      }
-    }
-    return (this.animations = _.filter(this.animations, (a: any) => {
-      return a.done !== true;
-    }));
   }
 }
