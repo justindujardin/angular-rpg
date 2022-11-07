@@ -48,12 +48,10 @@ export class TileObjectRenderer {
       sourceWidth = object.meta.cellWidth;
       sourceHeight = object.meta.cellHeight;
     }
-    const objWidth = view.fastScreenToWorldNumber(sourceWidth);
-    const objHeight = view.fastScreenToWorldNumber(sourceHeight);
     const scale = typeof object.scale !== 'undefined' ? object.scale : 1;
-    point.x -= (objWidth * scale) / 2;
-    point.y -= (objHeight * scale) / 2;
     view.fastWorldToScreenPoint(point, point);
+    // Offset position and floor to align on pixel boundaries
+    point.subtract((sourceWidth * scale) / 2, (sourceHeight * scale) / 2).floor();
 
     if (object.icon && object.meta) {
       let cx = object.meta.x;
