@@ -1,97 +1,22 @@
 import { QueryList } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store } from '@ngrx/store';
-import { map, take } from 'rxjs/operators';
 import { APP_IMPORTS } from '../../../app.imports';
-import { AppState } from '../../../app.model';
-import { IEnemy, IPartyMember } from '../../../models/base-entity';
-import { EntityAddItemAction } from '../../../models/entity/entity.actions';
+import { testAppAddToInventory } from '../../../app.testing';
+import { IEnemy } from '../../../models/base-entity';
 import { ARMOR_DATA } from '../../../models/game-data/armors';
-import { getEnemyById } from '../../../models/game-data/enemies';
-import {
-  instantiateEntity,
-  ITemplateBaseItem,
-} from '../../../models/game-data/game-data.model';
 import { ITEMS_DATA } from '../../../models/game-data/items';
 import { MAGIC_DATA } from '../../../models/game-data/magic';
 import { WEAPONS_DATA } from '../../../models/game-data/weapons';
-import { GameStateAddInventoryAction } from '../../../models/game-state/game-state.actions';
-import { Item } from '../../../models/item';
-import { getGameParty } from '../../../models/selectors';
 import { Scene } from '../../../scene/scene';
 import { GameWorld } from '../../../services/game-world';
 import { RPGGame } from '../../../services/rpg-game';
 import { CombatEnemyComponent } from '../combat-enemy.component';
-import { CombatPlayerComponent } from '../combat-player.component';
+import {
+  testCombatAddEnemyCombatants,
+  testCombatAddPartyCombatants,
+} from '../combat.testing';
 import { CombatStateMachineComponent } from './combat.machine';
-
-function getParty(store: Store<AppState>): IPartyMember[] {
-  let result: IPartyMember[] = [];
-  store
-    .select(getGameParty)
-    .pipe(
-      map((f) => f.toJS()),
-      take(1)
-    )
-    .subscribe((s) => (result = s));
-  return result;
-}
-
-function addToInventory<T extends Item>(
-  store: Store<AppState>,
-  itemId: string,
-  from: ITemplateBaseItem[],
-  values?: Partial<T>
-): T {
-  const itemInstance = instantiateEntity<T>(
-    from.find((f) => f.id === itemId),
-    values
-  );
-  store.dispatch(new EntityAddItemAction(itemInstance));
-  store.dispatch(new GameStateAddInventoryAction(itemInstance));
-  return itemInstance;
-}
-
-function addPartyCombatants(
-  store: Store<AppState>,
-  comp: CombatStateMachineComponent
-): CombatPlayerComponent[] {
-  const party = getParty(store);
-  const players = [];
-  for (let pm = 0; pm < party.length; pm++) {
-    const member = party[pm] as IPartyMember;
-    const player = TestBed.createComponent(CombatPlayerComponent);
-    player.componentInstance.model = member;
-    player.componentInstance.icon = member.icon;
-    comp.scene.addObject(player.componentInstance);
-    players.push(player.componentInstance);
-  }
-  comp.party = new QueryList<CombatPlayerComponent>();
-  comp.party.reset(players);
-  return players;
-}
-
-function addEnemyCombatants(comp: CombatStateMachineComponent): CombatEnemyComponent[] {
-  const items = ['imp', 'imp', 'imp'].map((id) => {
-    const itemTemplate: IEnemy = getEnemyById(id) as any;
-    return instantiateEntity<IEnemy>(itemTemplate, {
-      maxhp: itemTemplate.hp,
-    });
-  });
-  const enemies = [];
-  for (let i = 0; i < items.length; i++) {
-    const obj = items[i] as IEnemy;
-    const fixture = TestBed.createComponent(CombatEnemyComponent);
-    fixture.componentInstance.model = obj;
-    fixture.componentInstance.icon = obj.icon;
-    comp.scene.addObject(fixture.componentInstance);
-    enemies.push(fixture.componentInstance);
-  }
-  comp.enemies = new QueryList<CombatEnemyComponent>();
-  comp.enemies.reset(enemies);
-  return enemies;
-}
 
 function getFixture() {
   const fixture = TestBed.createComponent(CombatStateMachineComponent);
@@ -121,13 +46,13 @@ describe('CombatStateMachineComponent', () => {
   });
   it('exposes weapons/armor/items/spells from inventory', async () => {
     const { fixture, comp } = getFixture();
-    addToInventory(world.store, 'short-sword', WEAPONS_DATA);
-    addToInventory(world.store, 'leather-armor', ARMOR_DATA);
-    addToInventory(world.store, 'push', MAGIC_DATA);
-    addToInventory(world.store, 'heal', MAGIC_DATA);
-    addToInventory(world.store, 'potion', ITEMS_DATA);
-    addToInventory(world.store, 'potion', ITEMS_DATA);
-    addToInventory(world.store, 'potion', ITEMS_DATA);
+    testAppAddToInventory(world.store, 'short-sword', WEAPONS_DATA);
+    testAppAddToInventory(world.store, 'leather-armor', ARMOR_DATA);
+    testAppAddToInventory(world.store, 'push', MAGIC_DATA);
+    testAppAddToInventory(world.store, 'heal', MAGIC_DATA);
+    testAppAddToInventory(world.store, 'potion', ITEMS_DATA);
+    testAppAddToInventory(world.store, 'potion', ITEMS_DATA);
+    testAppAddToInventory(world.store, 'potion', ITEMS_DATA);
     fixture.detectChanges();
     expect(comp.weapons.size).toBe(1);
     expect(comp.spells.size).toBe(2);
@@ -146,7 +71,7 @@ describe('CombatStateMachineComponent', () => {
     it('returns true if the current player is in the party', async () => {
       const { fixture, comp } = getFixture();
 
-      const players = addPartyCombatants(world.store, comp);
+      const players = testCombatAddPartyCombatants(world.store, comp);
       comp.current = players[0];
       fixture.detectChanges();
       expect(comp.isFriendlyTurn()).toBe(true);
@@ -163,7 +88,7 @@ describe('CombatStateMachineComponent', () => {
     it('returns array of party members with hp > 0', async () => {
       const { fixture, comp } = getFixture();
 
-      const players = addPartyCombatants(world.store, comp);
+      const players = testCombatAddPartyCombatants(world.store, comp);
       fixture.detectChanges();
       expect(comp.getLiveParty().length).toEqual(3);
 
@@ -183,7 +108,7 @@ describe('CombatStateMachineComponent', () => {
     it('returns array of party members with hp > 0', async () => {
       const { fixture, comp } = getFixture();
 
-      const objects = addEnemyCombatants(comp);
+      const objects = testCombatAddEnemyCombatants(comp);
       fixture.detectChanges();
       expect(comp.getLiveEnemies().length).toEqual(3);
 
@@ -204,7 +129,7 @@ describe('CombatStateMachineComponent', () => {
     it('returns true if the current player is in the party', async () => {
       const { fixture, comp } = getFixture();
 
-      const players = addPartyCombatants(world.store, comp);
+      const players = testCombatAddPartyCombatants(world.store, comp);
       fixture.detectChanges();
       expect(comp.getRandomPartyMember()).not.toBeNull();
       // Excludes null/undefined items in party
@@ -230,7 +155,7 @@ describe('CombatStateMachineComponent', () => {
     it('returns true if the current player is in the party', async () => {
       const { fixture, comp } = getFixture();
 
-      const enemies = addEnemyCombatants(comp);
+      const enemies = testCombatAddEnemyCombatants(comp);
       fixture.detectChanges();
       expect(comp.getRandomEnemy()).not.toBeNull();
       // Excludes null/undefined items in party
