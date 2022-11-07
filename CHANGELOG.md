@@ -1,3 +1,10 @@
+## [0.3.1](https://github.com/justindujardin/angular-rpg/compare/v0.3.0...v0.3.1) (2022-11-07)
+
+
+### Bug Fixes
+
+* **sprites:** floor sprite render coords to avoid bleeding ([57adc64](https://github.com/justindujardin/angular-rpg/commit/57adc643ac0c53de375560fd77811ca0d5b4a4ed))
+
 # [0.3.0](https://github.com/justindujardin/angular-rpg/compare/v0.2.8...v0.3.0) (2022-11-07)
 
 
