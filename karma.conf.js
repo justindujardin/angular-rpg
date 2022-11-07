@@ -34,11 +34,18 @@ module.exports = function (config) {
     customLaunchers: {
       ChromeDebug: {
         base: "Chrome",
-        flags: ["--remote-debugging-port=9333"],
+        flags: [
+          "--remote-debugging-port=9333",
+          "--autoplay-policy=no-user-gesture-required",
+        ],
       },
       ChromeHeadlessCustom: {
         base: "ChromeHeadless",
-        flags: ["--no-sandbox", "--disable-gpu"],
+        flags: [
+          "--no-sandbox",
+          "--disable-gpu",
+          "--autoplay-policy=no-user-gesture-required",
+        ],
       },
     },
     restartOnFileChange: true,
