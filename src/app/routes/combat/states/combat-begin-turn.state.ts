@@ -14,7 +14,6 @@
  limitations under the License.
  */
 import { Component } from '@angular/core';
-import * as _ from 'underscore';
 import { CombatService } from '../../../models/combat/combat.service';
 import { assertTrue } from '../../../models/util';
 import { GameEntityObject } from '../../../scene/objects/game-entity-object';
@@ -67,17 +66,13 @@ export class CombatBeginTurnStateComponent extends CombatMachineState {
         choice.from = machine.current;
       }
     }
-    if (!choice) {
-      throw new Error('Invalid Combat Action Choice. This should not happen.');
-    }
+    assertTrue(choice, 'Invalid Combat Action Choice. This should not happen.');
     if (choice.to && this.combatService.isDefeated(choice.to.model)) {
       choice.to = machine.getRandomEnemy();
     }
-    _.defer(() => {
-      if (choice) {
-        choice.act();
-      }
-    });
+    if (choice) {
+      choice.act();
+    }
   }
 
   exit(machine: CombatStateMachineComponent) {
