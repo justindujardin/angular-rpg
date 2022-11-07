@@ -1,3 +1,30 @@
+# [0.3.0](https://github.com/justindujardin/angular-rpg/compare/v0.2.8...v0.3.0) (2022-11-07)
+
+
+### Bug Fixes
+
+* **combat:** combat specific drop items were not awarded ([91fdad8](https://github.com/justindujardin/angular-rpg/commit/91fdad86fda0247a7c632a6506f5c1d5fde8b099))
+* **combat:** CombatEnemyComponent null error on unload ([1c11a60](https://github.com/justindujardin/angular-rpg/commit/1c11a60366811ea8f5581c256eeb079407136ed7))
+* **crypt:** remove unpassable tile from exit ([75c89e2](https://github.com/justindujardin/angular-rpg/commit/75c89e242c153d8e76c3980367c1dba95519694d))
+* **store:** issue where selling would sell all you inventory ([ff6458e](https://github.com/justindujardin/angular-rpg/commit/ff6458e097589becee65caea62d4e695b7891316))
+* **testing:** allow autoplay without interaction for karma ([9b2b078](https://github.com/justindujardin/angular-rpg/commit/9b2b078aaf294f5de1daeee6f0b46802997e82bb))
+* **tile:** issue where setSprite ignored frame parameter ([c904cae](https://github.com/justindujardin/angular-rpg/commit/c904caeb6aebc4c9d92c519b7073da5316e5f1ac))
+
+
+### Features
+
+* **audio:** require using explicit file extension ([c7c6e67](https://github.com/justindujardin/angular-rpg/commit/c7c6e67f7f9cc910f39bb8209af926afd354ceef))
+* **combat:** async act and preloading for actions ([7982793](https://github.com/justindujardin/angular-rpg/commit/79827933391524d3095c59e9b3526cc8cabd43ad))
+* **components:** async data preloading for animated ([174870e](https://github.com/justindujardin/angular-rpg/commit/174870ed4c90c0ec0ff0cff86b495a2024f90510))
+* **testing:** add app.testing.ts helpers ([53cbfa2](https://github.com/justindujardin/angular-rpg/commit/53cbfa23e81dcf1768b8f82d2691085cfa7a9f47))
+* **testing:** add combat.testing.ts helpers ([4593a12](https://github.com/justindujardin/angular-rpg/commit/4593a12a3f593f989fc016bd2bc47cf0adc7122e))
+* **testing:** random/fixed combat encounter mocks ([0f4252e](https://github.com/justindujardin/angular-rpg/commit/0f4252e5556074c9a3bb6ae7856392c1638abbde))
+
+
+### BREAKING CHANGES
+
+* **audio:** You used to be able to specify sound files without an extension, and the audio loader would try all the supported extensions to find the right one. This made more network requests, and left 404 errors in the console for the invalid extensions.
+
 ## [0.2.8](https://github.com/justindujardin/angular-rpg/compare/v0.2.7...v0.2.8) (2022-11-04)
 
 
