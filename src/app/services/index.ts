@@ -25,6 +25,7 @@ import { Animate } from './animate';
 import { GameWorld } from './game-world';
 import { RPGGame } from './rpg-game';
 import { SpriteRender } from './sprite-render';
+import { WindowService } from './window';
 
 export const SERVICE_PROVIDERS = [
   Animate,
@@ -35,6 +36,7 @@ export const SERVICE_PROVIDERS = [
   CombatService,
   SpritesService,
   GameStateService,
+  WindowService,
 ];
 
 @NgModule({
