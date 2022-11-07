@@ -1,19 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
-import * as Immutable from 'immutable';
 import { take } from 'rxjs/operators';
 import { APP_IMPORTS } from '../../../app.imports';
 import { AppState } from '../../../app.model';
 import { Point, Rect } from '../../../core';
 import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
 import { IZoneMatch } from '../../../models/combat/combat.model';
-import { GameStateNewAction } from '../../../models/game-state/game-state.actions';
-import { GameState } from '../../../models/game-state/game-state.model';
 import { getCombatType } from '../../../models/selectors';
 import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
 import { Scene } from '../../../scene/scene';
 import { TileMap } from '../../../scene/tile-map';
 import { GameWorld } from '../../../services/game-world';
+import { RPGGame } from '../../../services/rpg-game';
 import { PlayerBehaviorComponent } from '../behaviors/player-behavior';
 import {
   CombatFeatureComponent,
@@ -95,19 +93,8 @@ describe('CombatFeatureComponent', () => {
       declarations: [CombatFeatureComponent],
     }).compileComponents();
     world = TestBed.inject(GameWorld);
-    const initialState: GameState = {
-      party: Immutable.List<string>([]),
-      inventory: Immutable.List<string>(),
-      battleCounter: 0,
-      keyData: Immutable.Map<string, any>(),
-      gold: 100,
-      combatZone: '',
-      location: '',
-      position: { x: 12, y: 8 },
-      boardedShip: false,
-      shipPosition: { x: 7, y: 23 },
-    };
-    world.store.dispatch(new GameStateNewAction(initialState));
+    const game = TestBed.inject(RPGGame);
+    await game.initGame(false);
   });
 
   it('triggers a fixed-encounter when entered', async () => {

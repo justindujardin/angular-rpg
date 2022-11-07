@@ -54,7 +54,7 @@ export interface CombatEncounter {
   /** The experience to divide amongst the party after a victory */
   readonly experience?: number;
   /** Any items (by template id) to award the party after a victory */
-  readonly items?: string[];
+  readonly items?: Immutable.List<string>;
   /** The combat zone name, e.g. 'world-plains', 'sewer', ... */
   readonly zone: string | null;
   /** unique id in spreadsheet https://goo.gl/JUPn00 */

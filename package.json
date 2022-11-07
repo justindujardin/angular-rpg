@@ -145,6 +145,14 @@
               "release": "patch"
             },
             {
+              "type": "refactor",
+              "release": "patch"
+            },
+            {
+              "type": "test",
+              "release": "patch"
+            },
+            {
               "type": "fix",
               "release": "patch"
             },

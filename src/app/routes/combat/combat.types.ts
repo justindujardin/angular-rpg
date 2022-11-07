@@ -41,7 +41,7 @@ export interface IPlayerAction {
   name: string;
   from: GameEntityObject | null;
   to: GameEntityObject | null;
-  act(then?: IPlayerActionCallback): boolean;
+  act(): Promise<boolean>;
 }
 
 /**

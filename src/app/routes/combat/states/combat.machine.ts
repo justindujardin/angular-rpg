@@ -32,12 +32,7 @@ import { CombatVictorySummary } from '../../../models/combat/combat.actions';
 import { CombatEncounter } from '../../../models/combat/combat.model';
 import { CombatService } from '../../../models/combat/combat.service';
 import { EntityItemTypes } from '../../../models/entity/entity.reducer';
-import {
-  ITemplateArmor,
-  ITemplateMagic,
-  ITemplateWeapon,
-} from '../../../models/game-data/game-data.model';
-import { Item } from '../../../models/item';
+import { Armor, Item, Magic, Weapon } from '../../../models/item';
 import { getGameInventory } from '../../../models/selectors';
 import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { Scene } from '../../../scene/scene';
@@ -45,6 +40,7 @@ import { SceneView } from '../../../scene/scene-view';
 import { GameWorld } from '../../../services/game-world';
 import { CombatEnemyComponent } from '../combat-enemy.component';
 import { CombatPlayerComponent } from '../combat-player.component';
+import { CombatComponent } from '../combat.component';
 import { CombatAttackSummary, CombatSceneClick, IPlayerAction } from '../combat.types';
 import { CombatMachineState } from './combat-base.state';
 import { CombatDefeatSummary } from './combat-defeat.state';
@@ -79,15 +75,15 @@ export class CombatStateMachineComponent
     return this._items$.value;
   }
   /** The items available to the party */
-  public get armors(): Immutable.List<ITemplateArmor> {
+  public get armors(): Immutable.List<Armor> {
     return this._armors$.value;
   }
   /** The items available to the party */
-  public get weapons(): Immutable.List<ITemplateWeapon> {
+  public get weapons(): Immutable.List<Weapon> {
     return this._weapons$.value;
   }
   /** The items available to the party */
-  public get spells(): Immutable.List<ITemplateMagic> {
+  public get spells(): Immutable.List<Magic> {
     return this._spells$.value;
   }
 
@@ -97,33 +93,27 @@ export class CombatStateMachineComponent
   defaultState: CombatStateNames = 'start';
   world: GameWorld;
   states: IState<CombatStateNames>[] = [];
-  turnList: GameEntityObject[] = [];
+  turnList: (CombatPlayerComponent | CombatEnemyComponent)[] = [];
   playerChoices: {
     [id: string]: IPlayerAction;
   } = {};
-  focus: GameEntityObject | null;
-  current: GameEntityObject | null;
+  focus: CombatPlayerComponent | CombatEnemyComponent | null;
+  current: CombatPlayerComponent | CombatEnemyComponent | null;
   currentDone: boolean = false;
 
   // Use this private behavior subject to make the value sync accessible for canBeUsedBy (x_X)
   private _items$ = new BehaviorSubject<Immutable.List<Item>>(Immutable.List([]));
-  private _armors$ = new BehaviorSubject<Immutable.List<ITemplateArmor>>(
-    Immutable.List([])
-  );
-  private _weapons$ = new BehaviorSubject<Immutable.List<ITemplateWeapon>>(
-    Immutable.List([])
-  );
-  private _spells$ = new BehaviorSubject<Immutable.List<ITemplateMagic>>(
-    Immutable.List([])
-  );
+  private _armors$ = new BehaviorSubject<Immutable.List<Armor>>(Immutable.List([]));
+  private _weapons$ = new BehaviorSubject<Immutable.List<Weapon>>(Immutable.List([]));
+  private _spells$ = new BehaviorSubject<Immutable.List<Magic>>(Immutable.List([]));
 
   private _subscription?: Subscription;
 
   @Input() scene: Scene;
   @Input() encounter: CombatEncounter | null;
-  @Input() party: QueryList<CombatPlayerComponent>;
-  @Input() enemies: QueryList<CombatEnemyComponent>;
-
+  @Input() party: QueryList<CombatPlayerComponent> | null = null;
+  @Input() enemies: QueryList<CombatEnemyComponent> | null = null;
+  @Input() combat: CombatComponent | null = null;
   @Input() view: SceneView;
 
   @ViewChildren('start,beginTurn,chooseAction,endTurn,defeat,victory,escape')
@@ -151,33 +141,43 @@ export class CombatStateMachineComponent
       .subscribe((values) => {
         const { items, weapons, armors, spells } = values;
         this._items$.next(items as Immutable.List<Item>);
-        this._weapons$.next(weapons as Immutable.List<ITemplateWeapon>);
-        this._armors$.next(armors as Immutable.List<ITemplateArmor>);
-        this._spells$.next(spells as Immutable.List<ITemplateMagic>);
+        this._weapons$.next(weapons as Immutable.List<Weapon>);
+        this._armors$.next(armors as Immutable.List<Armor>);
+        this._spells$.next(spells as Immutable.List<Magic>);
       });
     this.addStates(this.childStates.toArray());
     this.setCurrentStateObject(this.getState(this.defaultState));
   }
 
   isFriendlyTurn(): boolean {
-    return !!(
-      this.current && this.party.find((member) => member._uid === this.current?._uid)
-    );
+    if (!this.current || !this.party) {
+      return false;
+    }
+    return !!this.party.find((member) => member._uid === this.current?._uid);
   }
 
   getLiveParty(): CombatPlayerComponent[] {
+    if (!this.party) {
+      return [];
+    }
     return this.party.filter((obj: CombatPlayerComponent) => {
       return !this.combatService.isDefeated(obj.model);
     });
   }
 
   getLiveEnemies(): CombatEnemyComponent[] {
+    if (!this.enemies) {
+      return [];
+    }
     return this.enemies.filter((obj: CombatEnemyComponent) => {
       return !this.combatService.isDefeated(obj.model);
     });
   }
 
-  getRandomPartyMember(): GameEntityObject | null {
+  getRandomPartyMember(): CombatPlayerComponent | null {
+    if (!this.party) {
+      return null;
+    }
     const players = _.shuffle(this.party.toArray()) as CombatPlayerComponent[];
     while (players.length > 0) {
       const p = players.shift();
@@ -191,7 +191,10 @@ export class CombatStateMachineComponent
     return null;
   }
 
-  getRandomEnemy(): GameEntityObject | null {
+  getRandomEnemy(): CombatEnemyComponent | null {
+    if (!this.enemies) {
+      return null;
+    }
     const players = _.shuffle(this.enemies.toArray()) as CombatEnemyComponent[];
     while (players.length > 0) {
       const p = players.shift();
@@ -203,13 +206,5 @@ export class CombatStateMachineComponent
       }
     }
     return null;
-  }
-
-  partyDefeated(): boolean {
-    return this.getLiveParty().length === 0;
-  }
-
-  enemiesDefeated(): boolean {
-    return this.getLiveEnemies().length === 0;
   }
 }

@@ -190,15 +190,18 @@ export class TileObject extends SceneObject implements TileObjectOptions {
 
   /**
    * Set the current sprite name.  Returns the previous sprite name.
-   * TODO: Refactor to async friendly method (promise?)
    */
-  setSprite(name?: string, frame: number = 0): string | undefined {
+  async setSprite(name?: string, frame?: number): Promise<string | undefined> {
     const oldSprite: string | undefined = this.icon;
     if (!name) {
       this.meta = null;
     }
+    if (typeof frame !== 'undefined') {
+      this.frame = frame;
+    }
     if (this._icon !== name) {
-      this.icon = name;
+      this._icon = name;
+      await this._updateIcon(name);
     }
     return oldSprite;
   }

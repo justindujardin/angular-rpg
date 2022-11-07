@@ -120,12 +120,10 @@ describe('ResourceManager', () => {
 
     it('should load an array of resources', (done) => {
       loader.registerType('mock', MockResource);
-      loader
-        .load<MockResource[]>(['made-up.mock', 'two.mock'])
-        .then((resources: any) => {
-          expect(resources.length).toBe(2);
-          done();
-        });
+      loader.load<MockResource>(['made-up.mock', 'two.mock']).then((resources: any) => {
+        expect(resources.length).toBe(2);
+        done();
+      });
     });
   });
 

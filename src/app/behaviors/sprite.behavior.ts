@@ -64,26 +64,24 @@ export class SpriteComponent extends SceneObjectBehavior {
   /**
    * Set the current sprite name.  Returns the previous sprite name.
    */
-  setSprite(name: string | null = null, frame: number = 0): Promise<string | null> {
-    return new Promise<string | null>((resolve, reject) => {
-      if (name && name === this.icon && this.image && this.meta) {
-        return resolve(this.icon);
-      }
-      this.icon = name;
-      if (!name) {
-        this.meta = null;
-        return resolve(null);
-      }
-      this.meta = this.host.world.sprites.getSpriteMeta(name);
-      assertTrue(this.meta?.source, `invalid sprite source: ${name}`);
-      this.host.world.sprites
-        .getSpriteSheet(this.meta.source)
-        .then((images: ImageResource[]) => {
-          this.image = images[0].data;
-          this.frame = frame;
-          resolve(this.icon);
-        })
-        .catch(reject);
-    });
+  async setSprite(name: string | null = null, frame?: number): Promise<string | null> {
+    if (name && name === this.icon && this.image && this.meta) {
+      return this.icon;
+    }
+    if (typeof frame !== 'undefined') {
+      this.frame = frame;
+    }
+    this.icon = name;
+    if (!name) {
+      this.meta = null;
+      return null;
+    }
+    this.meta = this.host.world.sprites.getSpriteMeta(name);
+    assertTrue(this.meta?.source, `invalid sprite source: ${name}`);
+    const images: ImageResource[] = await this.host.world.sprites.getSpriteSheet(
+      this.meta.source
+    );
+    this.image = images[0].data;
+    return this.icon;
   }
 }

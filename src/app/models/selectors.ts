@@ -3,6 +3,7 @@ import * as Immutable from 'immutable';
 import { AppState } from '../app.model';
 import { IEntityObject, IPartyMember } from './base-entity';
 import {
+  sliceCombatEncounter,
   sliceCombatEncounterEnemies,
   sliceCombatEncounterParty,
   sliceCombatLoading,
@@ -64,6 +65,10 @@ export const getCombatEncounterParty = createSelector(
 export const getCombatEncounterEnemies = createSelector(
   sliceCombatState,
   sliceCombatEncounterEnemies
+);
+export const getCombatEncounter = createSelector(
+  sliceCombatState,
+  sliceCombatEncounter
 );
 
 //

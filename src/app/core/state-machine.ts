@@ -61,11 +61,6 @@ export class StateMachine<StateNames extends string>
   private _newState: boolean = false;
   private _pendingState: IState<StateNames> | null = null;
 
-  /** @internal used to assert that multiple async listeners aren't running */
-  _asyncProcessing: number = 0;
-  /** @internal user callback to invoke when async event is done */
-  _asyncCurrentCallback: IResumeCallback | null = null;
-
   update(data?: any) {
     this._newState = false;
     if (this._currentState === null) {
@@ -105,20 +100,8 @@ export class StateMachine<StateNames extends string>
       console.error(`STATE NOT FOUND: ${state}`);
       return false;
     }
-    if (this._pendingState !== null && this._pendingState.name !== state.name) {
-      console.log(
-        `Overwriting pending state (${this._pendingState.name}) with (${state.name})`
-      );
-      this._pendingState = state;
-    } else if (!this._pendingState) {
-      this._pendingState = state;
-      _.defer(() => {
-        state = this._pendingState;
-        this._pendingState = null;
-        if (!this._setCurrentState(state)) {
-          console.error(`Failed to set state: ${state?.name}`);
-        }
-      });
+    if (!this._setCurrentState(state)) {
+      console.error(`Failed to set state: ${state?.name}`);
     }
     return true;
   }
@@ -166,21 +149,10 @@ export class StateMachine<StateNames extends string>
   }
 
   getState(name: StateNames | null): IState<StateNames> | null {
-    return (
-      _.find(this.states, (s: IState<StateNames>) => {
-        return s.name === name;
-      }) || null
-    );
-  }
-
-  notifyWait(): IResumeCallback {
-    if (!this._asyncCurrentCallback) {
-      throw new Error(
-        'No valid async callback set!  Perhaps you called this outside of a notify event handler?'
-      );
-    }
-    this._asyncProcessing++;
-    return this._asyncCurrentCallback;
+    const state = this.states.find((s: IState<StateNames>) => {
+      return s.name === name;
+    });
+    return state || null;
   }
 }
 
@@ -192,22 +164,35 @@ export class StateAsyncEmitter<T> extends EventEmitter<T> {
   constructor(private machine: StateMachine<any>) {
     super(false);
   }
+  /** @internal used to assert that multiple async listeners aren't running */
+  _asyncProcessing: number = 0;
+  /** @internal user callback to invoke when async event is done */
+  _asyncCurrentCallback: IResumeCallback | null = null;
 
+  notifyWait(): IResumeCallback {
+    if (!this._asyncCurrentCallback) {
+      throw new Error(
+        'No valid async callback set!  Perhaps you called this outside of a notify event handler?'
+      );
+    }
+    this._asyncProcessing++;
+    return this._asyncCurrentCallback;
+  }
   emit(value: T): Promise<void> {
     return new Promise((resolve, reject) => {
-      if (this.machine._asyncProcessing > 0) {
+      if (this._asyncProcessing > 0) {
         throw new Error('TODO: StateMachine cannot handle multiple async UI waits');
       }
-      this.machine._asyncCurrentCallback = () => {
-        this.machine._asyncProcessing--;
-        if (this.machine._asyncProcessing <= 0) {
+      this._asyncCurrentCallback = () => {
+        this._asyncProcessing--;
+        if (this._asyncProcessing <= 0) {
           resolve();
-          this.machine._asyncProcessing = 0;
+          this._asyncProcessing = 0;
         }
       };
-      this.machine._asyncProcessing = 0;
+      this._asyncProcessing = 0;
       super.emit(value);
-      if (this.machine._asyncProcessing === 0) {
+      if (this._asyncProcessing === 0) {
         resolve();
       }
     });

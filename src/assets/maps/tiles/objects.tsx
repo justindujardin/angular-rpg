@@ -47,7 +47,7 @@
   <image width="16" height="16" source="../../../art/sprites/objects/tower.png"/>
  </tile>
  <tile id="15">
-  <image width="16" height="16" source="../../../art/sprites/objects/ship.png"/>
+  <image width="16" height="16" source="../../../art/sprites/objects/staticShip.png"/>
  </tile>
  <tile id="16">
   <image width="16" height="16" source="../../../art/sprites/environment/gold.png"/>

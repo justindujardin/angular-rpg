@@ -132,7 +132,7 @@ export class SpriteRender {
   }
 
   getSpriteMeta(name?: string): ISpriteMeta | null {
-    if (!name) {
+    if (!name || !data.sprites[name]) {
       return null;
     }
     const desc = data.sprites[name];

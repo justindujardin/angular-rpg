@@ -87,7 +87,6 @@ export class TiledTSXResource extends XMLResource {
         this.relativeTo ? this.relativeTo : relativePath,
         source
       );
-      console.log(`Tileset source: ${this.imageUrl}`);
 
       new ImageResource(this.imageUrl)
         .fetch()

@@ -46,9 +46,9 @@ export class CombatEndTurnStateComponent extends CombatMachineState {
     let targetState: CombatStateNames = machine.current
       ? 'begin-turn'
       : 'choose-action';
-    if (machine.partyDefeated()) {
+    if (machine.getLiveParty().length === 0) {
       targetState = 'defeat';
-    } else if (machine.enemiesDefeated()) {
+    } else if (machine.getLiveEnemies().length === 0) {
       targetState = 'victory';
     }
     if (!targetState) {

@@ -268,13 +268,6 @@ export class StoreFeatureComponent extends MapFeatureComponent {
     )
   );
 
-  /** Verb for the current buy/sell state for an action button */
-  actionVerb$: Observable<string> = this.selling$.pipe(
-    map((selling: boolean) => {
-      return selling ? 'Sell' : 'Buy';
-    })
-  );
-
   /** The GameState, but only valid when buying */
   buyingState$: Observable<[GameState, Immutable.List<EntityWithEquipment>] | null> =
     combineLatest([
@@ -289,18 +282,6 @@ export class StoreFeatureComponent extends MapFeatureComponent {
         return !isSelling ? [state, party] : null;
       })
     );
-
-  /** The Selection, but only valid when selling */
-  sellingState$: Observable<Item[] | null> = combineLatest([
-    this.selling$,
-    this.partyInventory$,
-  ]).pipe(
-    map((params: [boolean, Immutable.List<Item>]) => {
-      const isSelling: boolean = params[0];
-      const inventory: Immutable.List<Item> = params[1];
-      return isSelling ? inventory.toJS() : null;
-    })
-  );
 
   close() {
     this.onClose.next();
@@ -329,7 +310,9 @@ export class StoreFeatureComponent extends MapFeatureComponent {
     }
   }
 
-  sellItems(items: Item[]) {
+  sellItems() {
+    const items: Item[] = [...this._selected$.value];
+    console.log('selling', items);
     const totalCost: number = items.reduce(
       (prev: number, current: Item) => prev + current.value,
       0
@@ -375,7 +358,7 @@ export class StoreFeatureComponent extends MapFeatureComponent {
     if (
       items.length === 1 &&
       toEquipItem &&
-      types.indexOf(toEquipItem?.type as EquipmentSlotTypes)
+      types.includes(toEquipItem?.type as EquipmentSlotTypes)
     ) {
       const toEquip = party.find((p) => {
         assertTrue(p, 'invalid player entity in party');

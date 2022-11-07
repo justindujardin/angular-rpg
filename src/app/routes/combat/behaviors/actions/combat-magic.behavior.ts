@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as Immutable from 'immutable';
-import { combineLatest } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { filter, first, take } from 'rxjs/operators';
 import * as _ from 'underscore';
 import { CombatComponent } from '../..';
 import { AppState } from '../../../../../app/app.model';
@@ -25,7 +25,7 @@ import { AnimatedSpriteBehavior } from '../../../../behaviors/animated-sprite.be
 import { DamageComponent } from '../../../../behaviors/damage.behavior';
 import { SoundBehavior } from '../../../../behaviors/sound-behavior';
 import { SpriteComponent } from '../../../../behaviors/sprite.behavior';
-import { ImageResource } from '../../../../core';
+import { ImageResource, ResourceManager } from '../../../../core';
 import { getSoundEffectUrl, ISpriteMeta } from '../../../../core/api';
 import {
   ITemplateBaseItem,
@@ -34,7 +34,7 @@ import {
 import { IMagicTargetDelta } from '../../../../models/mechanics';
 import { assertTrue } from '../../../../models/util';
 import { CombatPlayerComponent } from '../../combat-player.component';
-import { CombatAttackSummary, IPlayerActionCallback } from '../../combat.types';
+import { CombatAttackSummary } from '../../combat.types';
 import { CombatEndTurnStateComponent } from '../../states';
 import { CombatActionBehavior } from '../combat-action.behavior';
 
@@ -52,9 +52,10 @@ export class CombatMagicBehavior extends CombatActionBehavior {
   constructor(
     public store: Store<AppState>,
     public combatService: CombatService,
-    public gameWorld: GameWorld
+    public gameWorld: GameWorld,
+    protected loader: ResourceManager
   ) {
-    super();
+    super(loader, gameWorld);
   }
 
   canBeUsedBy(entity: GameEntityObject) {
@@ -69,28 +70,26 @@ export class CombatMagicBehavior extends CombatActionBehavior {
     return super.canBeUsedBy(entity) && canClassUse && hasSpells;
   }
 
-  act(then?: IPlayerActionCallback): boolean {
+  async act(): Promise<boolean> {
     if (!this.isCurrentTurn()) {
       return false;
     }
-    const done = (error?: any) => {
-      then && then(this, error);
-      this.combat.machine.setCurrentState(CombatEndTurnStateComponent.NAME);
-    };
     if (!this.spell) {
       console.error('null spell to cast');
       return false;
     }
     switch (this.spell.id) {
       case 'heal':
-        return this.healSpell(done);
+        await this.healSpell();
+        break;
       case 'push':
-        return this.hurtSpell(done);
+        await this.hurtSpell();
     }
+    this.combat.machine.setCurrentState(CombatEndTurnStateComponent.NAME);
     return true;
   }
 
-  healSpell(done?: (error?: any) => any) {
+  async healSpell() {
     //
     const caster: GameEntityObject | null = this.from;
     const target: GameEntityObject | null = this.to;
@@ -104,7 +103,14 @@ export class CombatMagicBehavior extends CombatActionBehavior {
     assertTrue(targetModel, 'CombatMagicBehavior: invalid caster target model');
 
     const attackerPlayer = caster as CombatPlayerComponent;
-    attackerPlayer.magic(() => {
+    const done$ = new BehaviorSubject<boolean>(false);
+    const attackEffectsPromise = done$
+      .pipe(
+        filter((d) => d === true),
+        take(1)
+      )
+      .toPromise();
+    const attackAnimPromise = attackerPlayer.magic(async () => {
       var healAmount: number = -spell.value;
       const healData: CombatAttack = {
         attacker: casterModel,
@@ -128,26 +134,21 @@ export class CombatMagicBehavior extends CombatActionBehavior {
         }),
       };
       target.addComponentDictionary(behaviors);
-      const sub = behaviors.animation.onDone$.subscribe(() => {
-        sub?.unsubscribe();
-        target.removeComponentDictionary(behaviors);
-        const data: CombatAttackSummary = {
-          damage: healAmount,
-          attacker: casterModel,
-          defender: targetModel,
-        };
-        this.combat.machine.onAttack$.emit(data).then(() => {
-          if (done) {
-            done();
-          }
-        });
-      });
+      await behaviors.animation.onDone$.pipe(take(1)).toPromise();
+      target.removeComponentDictionary(behaviors);
+      const data: CombatAttackSummary = {
+        damage: healAmount,
+        attacker: casterModel,
+        defender: targetModel,
+      };
+      await this.combat.machine.onAttack$.emit(data);
+      done$.next(true);
     });
-
+    await Promise.all([attackAnimPromise, attackEffectsPromise]);
     return true;
   }
 
-  hurtSpell(done?: (error?: any) => any) {
+  async hurtSpell() {
     const caster: GameEntityObject | null = this.from;
     const target: GameEntityObject | null = this.to;
     const spell: ITemplateMagic | null = this.spell;
@@ -159,115 +160,128 @@ export class CombatMagicBehavior extends CombatActionBehavior {
     assertTrue(casterModel, 'CombatMagicBehavior: invalid caster source model');
     assertTrue(targetModel, 'CombatMagicBehavior: invalid caster target model');
     const attackerPlayer = caster as CombatPlayerComponent;
-    const castSpell = () => {
+    if (!attackerPlayer) {
+      return;
+    }
+    const done$ = new BehaviorSubject<boolean>(false);
+    const actionCompletePromise = done$
+      .pipe(
+        filter((d) => d === true),
+        take(1)
+      )
+      .toPromise();
+
+    const castSpell = async () => {
       combineLatest([
         this.store.select(getCombatEntityEquipment(casterModel.eid)),
         this.store.select(getCombatEntityEquipment(targetModel.eid)),
         this.store.select(getGameInventory),
       ])
-        .pipe(
-          first(),
-          map((args) => {
-            const equippedAttacker: EntityWithEquipment | null = args[0];
-            const equippedDefender: EntityWithEquipment | null = args[1];
-            const inventory: Immutable.List<Item> = args[2];
-            const magicCastConfig: ICombatCastSpellConfig = {
-              caster: equippedAttacker || casterModel,
-              spell: spell,
-              targets: [equippedDefender || targetModel],
-              inventory: inventory.toJS() as ITemplateBaseItem[],
-            };
-            const magicEffects = this.combatService.castSpell(magicCastConfig);
-            if (magicEffects.targets.length > 1) {
-              // TODO: the Damage effects are kind of hardcoded here. We need to
-              //       loop over the targets and apply many damage effects. Perhaps
-              //       we need a damageService similar to notifyService that handles
-              //       the async nature of applying damage and cleaning up. Then we
-              //       could do a simple for loop here and this would be cleaned up
-              //       immensely.
-              throw new Error('No support for multiple magic targets yet.');
-            }
-            const targ: IMagicTargetDelta | undefined = magicEffects.targets[0];
-            // NOTE: This is negative because the Attack action assumes positive values
-            //       are damage. We should probably have a separate action for magic effects.
-            assertTrue(targ, 'no magic effect');
-            const damage = -(targ.healthDelta || 0);
-            const didKill: boolean = targetModel.hp - damage <= 0;
-            const hit: boolean = damage > 0;
-            const defending: boolean = targetModel.status.includes('guarding');
-            const hitSound: string = getSoundEffectUrl(
-              didKill ? 'killed' : hit ? (defending ? 'miss' : 'hit') : 'miss'
-            );
-            const attackData: CombatAttack = {
-              attacker: casterModel,
-              defender: targetModel,
-              damage,
-            };
-            this.store.dispatch(new CombatAttackAction(attackData));
-            const damageAnimation: string = 'animHitSpell.png';
-            const meta: ISpriteMeta | null =
-              this.gameWorld.sprites.getSpriteMeta(damageAnimation);
-            if (!meta) {
-              console.warn(
-                'could not find damage animation in sprites metadata: ' +
-                  damageAnimation
-              );
-              if (done) {
-                return done();
-              }
-              return;
-            }
-
-            this.gameWorld.sprites
-              .getSpriteSheet(meta.source)
-              .then((damageImages: ImageResource[]) => {
-                const damageImage: HTMLImageElement = damageImages[0].data;
-                var hitSound: string = getSoundEffectUrl('spell');
-                var behaviors = {
-                  animation: new AnimatedSpriteBehavior({
-                    spriteName: 'heal',
-                    lengthMS: 550,
-                  }),
-                  damage: new DamageComponent(),
-                  sprite: new SpriteComponent({
-                    name: 'heal',
-                    icon: 'animSpellCast.png',
-                    image: damageImage,
-                  }),
-                  sound: new SoundBehavior({
-                    url: hitSound,
-                    volume: 0.3,
-                  }),
-                };
-                target.addComponentDictionary(behaviors);
-                const sub = behaviors.damage.onDone$.subscribe(() => {
-                  sub?.unsubscribe();
-                  if (attackerPlayer) {
-                    attackerPlayer.setState();
-                  }
-                  if (didKill) {
-                    _.defer(() => {
-                      target.destroy();
-                    });
-                  }
-                  target.removeComponentDictionary(behaviors);
-                });
-                const data: CombatAttackSummary = {
-                  damage,
-                  attacker: caster,
-                  defender: target,
-                };
-                this.combat.machine.onAttack$.emit(data).then(() => {
-                  if (done) {
-                    done();
-                  }
-                });
-              });
-          })
-        )
-        .subscribe();
+        .pipe(first())
+        .subscribe(async (args) => {
+          const equippedAttacker: EntityWithEquipment | null = args[0];
+          const equippedDefender: EntityWithEquipment | null = args[1];
+          const inventory: Immutable.List<Item> = args[2];
+          await this.doHurtSpellAction(equippedAttacker, equippedDefender, inventory);
+          done$.next(true);
+        });
     };
-    attackerPlayer?.magic(castSpell);
+    const spellCastPromise = attackerPlayer.magic(castSpell);
+    await Promise.all([actionCompletePromise, spellCastPromise]);
+    return true;
+  }
+
+  private async doHurtSpellAction(
+    equippedAttacker: EntityWithEquipment | null,
+    equippedDefender: EntityWithEquipment | null,
+    inventory: Immutable.List<Item>
+  ) {
+    const caster: GameEntityObject | null = this.from;
+    const target: GameEntityObject | null = this.to;
+    const spell: ITemplateMagic | null = this.spell;
+    assertTrue(caster, 'CombatMagicBehavior: invalid caster source');
+    assertTrue(target, 'CombatMagicBehavior: invalid caster target');
+    assertTrue(spell, 'CombatMagicBehavior: invalid spell');
+    const attackerPlayer = caster as CombatPlayerComponent;
+    const casterModel: any = caster.model;
+    const targetModel: any = target.model;
+    assertTrue(casterModel, 'CombatMagicBehavior: invalid caster source model');
+    assertTrue(targetModel, 'CombatMagicBehavior: invalid caster target model');
+
+    const magicCastConfig: ICombatCastSpellConfig = {
+      caster: equippedAttacker || casterModel,
+      spell: spell,
+      targets: [equippedDefender || targetModel],
+      inventory: inventory.toJS() as ITemplateBaseItem[],
+    };
+    const magicEffects = this.combatService.castSpell(magicCastConfig);
+    if (magicEffects.targets.length > 1) {
+      // TODO: the Damage effects are kind of hardcoded here. We need to
+      //       loop over the targets and apply many damage effects. Perhaps
+      //       we need a damageService similar to notifyService that handles
+      //       the async nature of applying damage and cleaning up. Then we
+      //       could do a simple for loop here and this would be cleaned up
+      //       immensely.
+      throw new Error('No support for multiple magic targets yet.');
+    }
+    const targ: IMagicTargetDelta | undefined = magicEffects.targets[0];
+    // NOTE: This is negative because the Attack action assumes positive values
+    //       are damage. We should probably have a separate action for magic effects.
+    assertTrue(targ, 'no magic effect');
+    const damage = -(targ.healthDelta || 0);
+    const didKill: boolean = targetModel.hp - damage <= 0;
+    const attackData: CombatAttack = {
+      attacker: casterModel,
+      defender: targetModel,
+      damage,
+    };
+    this.store.dispatch(new CombatAttackAction(attackData));
+    const damageAnimation: string = 'animHitSpell.png';
+    const meta: ISpriteMeta | null =
+      this.gameWorld.sprites.getSpriteMeta(damageAnimation);
+    if (!meta) {
+      console.warn(
+        'could not find damage animation in sprites metadata: ' + damageAnimation
+      );
+      return;
+    }
+
+    const damageImages: ImageResource[] = await this.gameWorld.sprites.getSpriteSheet(
+      meta.source
+    );
+    const damageImage: HTMLImageElement = damageImages[0].data;
+    var hitSound: string = getSoundEffectUrl('spell');
+    var behaviors = {
+      animation: new AnimatedSpriteBehavior({
+        spriteName: 'heal',
+        lengthMS: 550,
+      }),
+      damage: new DamageComponent(),
+      sprite: new SpriteComponent({
+        name: 'heal',
+        icon: 'animSpellCast.png',
+        image: damageImage,
+      }),
+      sound: new SoundBehavior({
+        url: hitSound,
+        volume: 0.3,
+      }),
+    };
+    target.addComponentDictionary(behaviors);
+    await behaviors.damage.onDone$.pipe(take(1)).toPromise();
+    if (attackerPlayer) {
+      attackerPlayer.setState();
+    }
+    if (didKill) {
+      target.destroy();
+    }
+    target.removeComponentDictionary(behaviors);
+    const data: CombatAttackSummary = {
+      damage,
+      attacker: caster,
+      defender: target,
+    };
+    await this.combat.machine.onAttack$.emit(data);
     return true;
   }
 }

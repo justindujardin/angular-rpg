@@ -26,7 +26,7 @@ export class CombatEnemyComponent
 
   // @ts-ignore
   @Input() icon: string;
-  @Input() scene: Scene;
+  @Input() scene: Scene | null = null;
   @Input() combat: any; // CombatComponent - flirts with circular imports
 
   // @ts-ignore
@@ -42,10 +42,10 @@ export class CombatEnemyComponent
     super();
   }
 
-  private _spriteSubscription: Subscription;
+  private _spriteSubscription: Subscription | null;
 
   ngAfterViewInit(): void {
-    this.scene.addObject(this);
+    this.scene?.addObject(this);
     this.addBehavior(this.render);
     this.addBehavior(this.attack);
     this._spriteSubscription = this.model$
@@ -64,7 +64,8 @@ export class CombatEnemyComponent
     if (this.scene) {
       this.scene.removeObject(this);
     }
-    this._spriteSubscription.unsubscribe();
+    this._spriteSubscription?.unsubscribe();
+    this._spriteSubscription = null;
     this.destroy();
   }
 }

@@ -1,38 +1,30 @@
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store } from '@ngrx/store';
-import * as Immutable from 'immutable';
 import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { APP_IMPORTS } from '../../../app.imports';
-import { AppState } from '../../../app.model';
-import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
-import { IPartyMember } from '../../../models/base-entity';
 import {
-  EntityAddBeingAction,
-  EntityAddItemAction,
-} from '../../../models/entity/entity.actions';
-import { EntityWithEquipment } from '../../../models/entity/entity.model';
-import { EntityItemTypes } from '../../../models/entity/entity.reducer';
+  testAppAddToInventory,
+  testAppGetInventory,
+  testAppGetPartyGold,
+  testAppGetPartyWithEquipment,
+} from '../../../app.testing';
+import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
+import { EntityAddItemAction } from '../../../models/entity/entity.actions';
 import { instantiateEntity } from '../../../models/game-data/game-data.model';
 import { ITEMS_DATA } from '../../../models/game-data/items';
 import { WEAPONS_DATA } from '../../../models/game-data/weapons';
 import {
   GameStateAddInventoryAction,
   GameStateEquipItemAction,
-  GameStateNewAction,
+  GameStateUnequipItemAction,
 } from '../../../models/game-state/game-state.actions';
-import { GameState } from '../../../models/game-state/game-state.model';
 import { Item, Weapon } from '../../../models/item';
-import {
-  getGameInventory,
-  getGamePartyGold,
-  getGamePartyWithEquipment,
-} from '../../../models/selectors';
 import { SpritesService } from '../../../models/sprites/sprites.service';
 import { assertTrue } from '../../../models/util';
 import { GameWorld } from '../../../services/game-world';
+import { RPGGame } from '../../../services/rpg-game';
 import {
   IStoreFeatureProperties,
   StoreFeatureComponent,
@@ -58,39 +50,6 @@ function getFeature(
   };
 }
 
-function getInventory(store: Store<AppState>): EntityItemTypes[] {
-  let result: EntityItemTypes[] | undefined;
-  store
-    .select(getGameInventory)
-    .pipe(
-      take(1),
-      map((f) => f.toJS())
-    )
-    .subscribe((s) => (result = s));
-  return result as EntityItemTypes[];
-}
-
-function getPartyGold(store: Store<AppState>): number {
-  let result = 0;
-  store
-    .select(getGamePartyGold)
-    .pipe(take(1))
-    .subscribe((s) => (result = s));
-  return result;
-}
-
-function getParty(store: Store<AppState>): EntityWithEquipment[] {
-  let result: EntityWithEquipment[] = [];
-  store
-    .select(getGamePartyWithEquipment)
-    .pipe(
-      map((f) => f.toJS()),
-      take(1)
-    )
-    .subscribe((s) => (result = s));
-  return result;
-}
-
 function getStoreSelection(obs: Observable<any>): Item[] {
   let result = new Set<Item>();
   obs.pipe(take(1)).subscribe((s) => (result = s));
@@ -108,41 +67,8 @@ describe('StoreFeatureComponent', () => {
     world = TestBed.inject(GameWorld);
     const sprites = TestBed.inject(SpritesService);
     await sprites.loadSprites('assets/images/index.json').toPromise();
-    const warrior: IPartyMember = {
-      id: 'warrior-class-id',
-      eid: 'invalid-hero',
-      status: [],
-      type: 'warrior',
-      name: 'warrior',
-      level: 1,
-      exp: 0,
-      icon: '',
-      hp: 20,
-      maxhp: 20,
-      mp: 20,
-      maxmp: 20,
-      strength: [10],
-      agility: [10],
-      vitality: [10],
-      luck: [10],
-      hitpercent: [10],
-      intelligence: [10],
-      magicdefense: [10],
-    };
-    const initialState: GameState = {
-      party: Immutable.List<string>([warrior.eid]),
-      inventory: Immutable.List<string>(),
-      battleCounter: 0,
-      keyData: Immutable.Map<string, any>(),
-      gold: 100,
-      combatZone: '',
-      location: 'example',
-      position: { x: 12, y: 8 },
-      boardedShip: false,
-      shipPosition: { x: 7, y: 23 },
-    };
-    world.store.dispatch(new GameStateNewAction(initialState));
-    world.store.dispatch(new EntityAddBeingAction(warrior));
+    const game = TestBed.inject(RPGGame);
+    await game.initGame(false);
   });
 
   describe('selection', () => {
@@ -213,14 +139,26 @@ describe('StoreFeatureComponent', () => {
       fixture.detectChanges();
 
       // Equip a short-sword
+      const warrior = testAppGetPartyWithEquipment(world.store).find(
+        (p) => p.type === 'warrior'
+      );
+      assertTrue(warrior, 'no warrior class in default party');
       const itemInstance = instantiateEntity<Weapon>(
         WEAPONS_DATA.find((f) => f.id === 'short-sword')
       );
       world.store.dispatch(new EntityAddItemAction(itemInstance));
       world.store.dispatch(new GameStateAddInventoryAction(itemInstance));
+      // Unequip club first
+      world.store.dispatch(
+        new GameStateUnequipItemAction({
+          entityId: warrior.eid,
+          slot: 'weapon',
+          itemId: warrior.weapon?.eid || '',
+        })
+      );
       world.store.dispatch(
         new GameStateEquipItemAction({
-          entityId: 'invalid-hero',
+          entityId: warrior.eid,
           slot: 'weapon',
           itemId: itemInstance.eid,
         })
@@ -240,20 +178,22 @@ describe('StoreFeatureComponent', () => {
       fixture.detectChanges();
       let selection = getStoreSelection(comp.selected$);
       expect(selection.length).toBe(1);
-      expect(fixture.debugElement.query(By.css('.downgrade'))).not.toBeNull();
+      expect(
+        fixture.debugElement.query(By.css('.warrior > .downgrade'))
+      ).not.toBeNull();
 
       // Selecting short-sword shows neither upgrade or downgrade
       shortSwordItem.triggerEventHandler('click', {});
       fixture.detectChanges();
-      expect(fixture.debugElement.query(By.css('.downgrade'))).toBeNull();
-      expect(fixture.debugElement.query(By.css('.upgrade'))).toBeNull();
+      expect(fixture.debugElement.query(By.css('.warrior > .downgrade'))).toBeNull();
+      expect(fixture.debugElement.query(By.css('.warrior > .upgrade'))).toBeNull();
 
       // Selecting broadsword shows upgrade
       broadswordItem.triggerEventHandler('click', {});
       fixture.detectChanges();
       selection = getStoreSelection(comp.selected$);
       expect(selection.length).toBe(1);
-      expect(fixture.debugElement.query(By.css('.upgrade'))).not.toBeNull();
+      expect(fixture.debugElement.query(By.css('.warrior > .upgrade'))).not.toBeNull();
     });
   });
 
@@ -270,7 +210,7 @@ describe('StoreFeatureComponent', () => {
       fixture.detectChanges();
       expect(comp.active).toBe(true);
 
-      const goldBefore = getPartyGold(world.store);
+      const goldBefore = testAppGetPartyGold(world.store);
 
       const price = fixture.debugElement.query(By.css('.item-value'));
       price.triggerEventHandler('click', {});
@@ -281,10 +221,10 @@ describe('StoreFeatureComponent', () => {
       fixture.detectChanges();
 
       // Gold is not decremented
-      expect(getPartyGold(world.store)).toBe(goldBefore);
+      expect(testAppGetPartyGold(world.store)).toBe(goldBefore);
 
       // Item is not in inventory
-      const inventory = getInventory(world.store);
+      const inventory = testAppGetInventory(world.store);
       expect(inventory.length).toBe(0);
     });
     it('should buy selected item with enough money', () => {
@@ -301,7 +241,7 @@ describe('StoreFeatureComponent', () => {
 
       const itemTemplate = ITEMS_DATA.find((f) => f.id === 'potion');
       assertTrue(itemTemplate, 'failed to find item template');
-      const goldBefore = getPartyGold(world.store);
+      const goldBefore = testAppGetPartyGold(world.store);
 
       const price = fixture.debugElement.query(By.css('.item-value'));
       price.triggerEventHandler('click', {});
@@ -316,10 +256,10 @@ describe('StoreFeatureComponent', () => {
       expect(selection.length).toBe(1);
 
       // Paid for the item
-      const goldAfter = getPartyGold(world.store);
+      const goldAfter = testAppGetPartyGold(world.store);
       expect(goldAfter).toBe(goldBefore - itemTemplate.value);
 
-      const inventory = getInventory(world.store);
+      const inventory = testAppGetInventory(world.store);
       expect(inventory[0].id).toBe('potion');
     });
     it('should equip new gear on compatible party member when purchased', () => {
@@ -334,8 +274,8 @@ describe('StoreFeatureComponent', () => {
       fixture.detectChanges();
       expect(comp.active).toBe(true);
 
-      let party = getParty(world.store);
-      expect(party[0].weapon).toBeUndefined();
+      let party = testAppGetPartyWithEquipment(world.store);
+      const oldEid = party[0].weapon?.eid || '';
 
       const price = fixture.debugElement.query(By.css('.item-value'));
       price.triggerEventHandler('click', {});
@@ -345,8 +285,8 @@ describe('StoreFeatureComponent', () => {
       fixture.detectChanges();
 
       // Weapon is now equipped
-      party = getParty(world.store);
-      expect(party[0].weapon).toBeDefined();
+      party = testAppGetPartyWithEquipment(world.store);
+      expect(party[0].weapon?.eid || '').not.toBe(oldEid);
 
       // Does not clear selection when items are purchased
       let selection = getStoreSelection(comp.selected$);
@@ -361,22 +301,25 @@ describe('StoreFeatureComponent', () => {
       comp.feature = getFeature();
       comp.category = 'weapons';
 
-      const itemInstance = instantiateEntity<Item>(
-        ITEMS_DATA.find((f) => f.id === 'potion')
-      );
-      world.store.dispatch(new EntityAddItemAction(itemInstance));
-      world.store.dispatch(new GameStateAddInventoryAction(itemInstance));
+      testAppAddToInventory(world.store, 'potion', ITEMS_DATA);
+      testAppAddToInventory(world.store, 'potion', ITEMS_DATA);
 
-      let inventory = getInventory(world.store);
+      let inventory = testAppGetInventory(world.store);
       expect(inventory[0].id).toBe('potion');
+      expect(inventory[1].id).toBe('potion');
 
       fixture.detectChanges();
 
       comp.enter(tileObject);
       fixture.detectChanges();
       expect(comp.active).toBe(true);
+      await fixture.whenStable();
 
+      // TODO: Why do I have to detect changes and click multiple times to get the tab to update?
       const sellTab = fixture.debugElement.queryAll(By.css('.mat-tab-label'))[1];
+      sellTab.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      await fixture.whenStable();
       sellTab.triggerEventHandler('click', {});
       fixture.detectChanges();
       await fixture.whenStable();
@@ -384,6 +327,7 @@ describe('StoreFeatureComponent', () => {
       const price = fixture.debugElement.query(By.css('.item-value'));
       price.triggerEventHandler('click', {});
       fixture.detectChanges();
+      await fixture.whenStable();
 
       const buyBtn = fixture.debugElement.query(By.css('.btn-sell'));
       buyBtn.triggerEventHandler('click', {});
@@ -393,9 +337,9 @@ describe('StoreFeatureComponent', () => {
       let selection = getStoreSelection(comp.selected$);
       expect(selection.length).toBe(0);
 
-      // The inventory is now empty
-      inventory = getInventory(world.store);
-      expect(inventory.length).toBe(0);
+      // The inventory is now smaller
+      inventory = testAppGetInventory(world.store);
+      expect(inventory.length).toBe(1);
     });
   });
 });

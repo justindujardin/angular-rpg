@@ -1,21 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store } from '@ngrx/store';
-import * as Immutable from 'immutable';
-import { take } from 'rxjs/operators';
 import { APP_IMPORTS } from '../../../app.imports';
-import { AppState } from '../../../app.model';
+import { testAppGetBoarded } from '../../../app.testing';
 import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
-import {
-  GameStateBoardShipAction,
-  GameStateNewAction,
-} from '../../../models/game-state/game-state.actions';
-import { GameState } from '../../../models/game-state/game-state.model';
-import { getGameBoardedShip } from '../../../models/selectors';
+import { GameStateBoardShipAction } from '../../../models/game-state/game-state.actions';
 import { assertTrue } from '../../../models/util';
 import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
 import { Scene } from '../../../scene/scene';
 import { GameWorld } from '../../../services/game-world';
+import { RPGGame } from '../../../services/rpg-game';
 import { PlayerBehaviorComponent } from '../behaviors/player-behavior';
 import { IShipFeatureProperties, ShipFeatureComponent } from './ship-feature.component';
 
@@ -36,15 +29,6 @@ function getFeature(
     },
     ...values,
   };
-}
-
-function getBoarded(store: Store<AppState>): boolean {
-  let result: boolean = false;
-  store
-    .select(getGameBoardedShip)
-    .pipe(take(1))
-    .subscribe((s) => (result = s));
-  return result;
 }
 
 function getScene(comp: ShipFeatureComponent): {
@@ -70,19 +54,8 @@ describe('ShipFeatureComponent', () => {
       declarations: [ShipFeatureComponent],
     }).compileComponents();
     world = TestBed.inject(GameWorld);
-    const initialState: GameState = {
-      party: Immutable.List<string>([]),
-      inventory: Immutable.List<string>(),
-      battleCounter: 0,
-      keyData: Immutable.Map<string, any>(),
-      gold: 100,
-      combatZone: '',
-      location: '',
-      position: { x: 12, y: 8 },
-      boardedShip: false,
-      shipPosition: { x: 7, y: 23 },
-    };
-    world.store.dispatch(new GameStateNewAction(initialState));
+    const game = TestBed.inject(RPGGame);
+    await game.initGame(false);
   });
   describe('enter', () => {
     it('fails without PlayerBehaviorComponent', async () => {
@@ -121,10 +94,10 @@ describe('ShipFeatureComponent', () => {
     comp.feature = getFeature();
     fixture.detectChanges();
 
-    expect(getBoarded(world.store)).toBe(false);
+    expect(testAppGetBoarded(world.store)).toBe(false);
     expect(comp.enter(object)).toBe(true);
     expect(comp.entered(object)).toBe(true);
-    expect(getBoarded(world.store)).toBe(true);
+    expect(testAppGetBoarded(world.store)).toBe(true);
   });
 
   it('boards when initialized while already on a ship', async () => {
@@ -161,6 +134,6 @@ describe('ShipFeatureComponent', () => {
 
     // We've disembarked
     expect(comp.boarded).toBe(false);
-    expect(getBoarded(world.store)).toBe(false);
+    expect(testAppGetBoarded(world.store)).toBe(false);
   });
 });

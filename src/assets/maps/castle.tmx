@@ -35,7 +35,7 @@
     <property name="icon" value="dungeonGate.png"/>
     <property name="target" type="file" value="wilderness.tmx"/>
     <property name="targetX" value="76"/>
-    <property name="targetY" value="61"/>
+    <property name="targetY" value="62"/>
    </properties>
   </object>
   <object id="2" class="BlockFeatureComponent" x="256" y="192" width="16" height="16" visible="0">

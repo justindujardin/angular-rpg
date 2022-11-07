@@ -71,8 +71,6 @@ export class CombatComponent
   extends SceneView
   implements IProcessObject, OnDestroy, AfterViewInit
 {
-  combat: CombatComponent = this;
-
   @Input() scene: Scene = new Scene();
   /**
    * A pointing UI element that can be attached to `SceneObject`s to attract attention
@@ -184,7 +182,7 @@ export class CombatComponent
     this.world.time.addObject(this);
 
     const attackSub = this.machine.onAttack$.subscribe((data: CombatAttackSummary) => {
-      const _done = this.machine.notifyWait();
+      const _done = this.machine.onAttack$.notifyWait();
       let msg: string = '';
       const a = data.attacker.model?.name || '';
       const b = data.defender.model?.name || '';
@@ -203,7 +201,7 @@ export class CombatComponent
       this.notify.show(msg, _done);
     });
     const runSub = this.machine.onRun$.subscribe((data: CombatRunSummary) => {
-      const _done = this.machine.notifyWait();
+      const _done = this.machine.onRun$.notifyWait();
       let msg: string = data.player?.model?.name || '';
       if (data.success) {
         msg += ' bravely ran away!';
@@ -213,7 +211,7 @@ export class CombatComponent
       this.notify.show(msg, _done);
     });
     const defeatSub = this.machine.onDefeat$.subscribe((data: CombatDefeatSummary) => {
-      const done = this.machine.notifyWait();
+      const done = this.machine.onDefeat$.notifyWait();
       this.notify.show(
         'Your party was defeated...',
         () => {

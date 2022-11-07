@@ -107,6 +107,8 @@ export class CombatFeatureComponent extends MapFeatureComponent {
             enemies: List<IEnemy>(encounter.enemies.map(toCombatant)),
             zone: zone.targets[0].zone || zone.map,
             message: List<string>(encounter.message || []),
+            gold: encounter.gold,
+            items: List<string>(encounter.items || []),
             party: List<Entity>(party),
           };
           this.store.dispatch(new CombatEncounterAction(payload));

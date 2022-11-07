@@ -14,7 +14,6 @@
  limitations under the License.
  */
 import { Component } from '@angular/core';
-import * as _ from 'underscore';
 import { CombatService } from '../../../models/combat/combat.service';
 import { assertTrue } from '../../../models/util';
 import { GameEntityObject } from '../../../scene/objects/game-entity-object';
@@ -58,30 +57,22 @@ export class CombatBeginTurnStateComponent extends CombatMachineState {
       console.log(`TURN: ${machine.current?.model?.name}`);
       choice = machine.playerChoices[machine.current._uid];
     } else {
-      choice = machine.current.findBehavior(
+      choice = machine.current.findBehavior<CombatAttackBehaviorComponent>(
         CombatAttackBehaviorComponent
-      ) as CombatAttackBehaviorComponent;
+      );
       // TODO: This config should not be here.   Just pick a random person to attack.
       if (choice) {
         choice.to = machine.getRandomPartyMember();
         choice.from = machine.current;
       }
     }
-    if (!choice) {
-      throw new Error('Invalid Combat Action Choice. This should not happen.');
-    }
+    assertTrue(choice, 'Invalid Combat Action Choice. This should not happen.');
     if (choice.to && this.combatService.isDefeated(choice.to.model)) {
       choice.to = machine.getRandomEnemy();
     }
-    _.defer(() => {
-      if (choice) {
-        choice.act((act: IPlayerAction, error?: any) => {
-          if (error) {
-            console.error(error);
-          }
-        });
-      }
-    });
+    if (choice) {
+      choice.act();
+    }
   }
 
   exit(machine: CombatStateMachineComponent) {

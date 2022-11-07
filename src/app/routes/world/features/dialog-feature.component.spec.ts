@@ -1,29 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store } from '@ngrx/store';
-import * as Immutable from 'immutable';
 import { take } from 'rxjs/operators';
 import { APP_IMPORTS } from '../../../app.imports';
-import { AppState } from '../../../app.model';
+import { testAppGetKeyData } from '../../../app.testing';
 import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
-import { GameStateNewAction } from '../../../models/game-state/game-state.actions';
-import { GameState } from '../../../models/game-state/game-state.model';
-import { getGameKey } from '../../../models/selectors';
 import { GameWorld } from '../../../services/game-world';
+import { RPGGame } from '../../../services/rpg-game';
 import {
   DialogFeatureComponent,
   IDialogFeatureProperties,
 } from './dialog-feature.component';
-
-function getKeyData(store: Store<AppState>, keyName: string): boolean | undefined {
-  let result: boolean | undefined = undefined;
-  store
-    .select(getGameKey(keyName))
-    .pipe(take(1))
-    .subscribe((s) => (result = s));
-  return result;
-}
 
 function getFeature(
   values: Partial<ITiledObject<IDialogFeatureProperties>> = {},
@@ -56,19 +43,8 @@ describe('DialogFeatureComponent', () => {
       declarations: [DialogFeatureComponent],
     }).compileComponents();
     world = TestBed.inject(GameWorld);
-    const initialState: GameState = {
-      party: Immutable.List<string>([]),
-      inventory: Immutable.List<string>(),
-      battleCounter: 0,
-      keyData: Immutable.Map<string, any>(),
-      gold: 100,
-      combatZone: '',
-      location: 'example',
-      position: { x: 12, y: 8 },
-      boardedShip: false,
-      shipPosition: { x: 7, y: 23 },
-    };
-    world.store.dispatch(new GameStateNewAction(initialState));
+    const game = TestBed.inject(RPGGame);
+    await game.initGame(false);
   });
 
   it('should optionally set game key data when dialog is exited', async () => {
@@ -76,13 +52,13 @@ describe('DialogFeatureComponent', () => {
     const comp: DialogFeatureComponent = fixture.componentInstance;
     const keyName = 'my-key-data';
     comp.feature = getFeature({}, { sets: 'my-key-data' });
-    expect(getKeyData(world.store, keyName)).toBeUndefined();
+    expect(testAppGetKeyData(world.store, keyName)).toBeUndefined();
     fixture.detectChanges();
     comp.enter(tileObject);
     fixture.detectChanges();
     comp.exit(tileObject);
     fixture.detectChanges();
-    expect(getKeyData(world.store, keyName)).toBe(true);
+    expect(testAppGetKeyData(world.store, keyName)).toBe(true);
   });
 
   it('should output onClose when clicking the x button', async () => {

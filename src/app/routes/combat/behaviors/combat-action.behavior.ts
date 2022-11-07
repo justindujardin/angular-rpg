@@ -15,10 +15,13 @@
  */
 import _ from 'underscore';
 import { SceneObjectBehavior } from '../../../behaviors/scene-object-behavior';
+import { ResourceManager } from '../../../core';
 import { ITemplateMagic } from '../../../models/game-data/game-data.model';
 import { Item } from '../../../models/item';
+import { assertTrue } from '../../../models/util';
 import { GameEntityObject } from '../../../scene/objects/game-entity-object';
-import { IPlayerAction, IPlayerActionCallback } from '../combat.types';
+import { GameWorld } from '../../../services/game-world';
+import { IPlayerAction } from '../combat.types';
 
 export class CombatActionBehavior extends SceneObjectBehavior implements IPlayerAction {
   name: string = 'default';
@@ -27,6 +30,15 @@ export class CombatActionBehavior extends SceneObjectBehavior implements IPlayer
   spell: ITemplateMagic | null = null;
   item: Item | null = null;
   _uid: string = _.uniqueId('ca');
+
+  /** A map of key/url for sound resources this action uses. Calling preload() will load these */
+  sounds: { [key: string]: string } | null = null;
+  /** A map of key/icon for sprites this action uses. Calling preload() will load these */
+  sprites: { [key: string]: string } | null = null;
+
+  constructor(protected loader: ResourceManager, protected gameWorld: GameWorld) {
+    super();
+  }
 
   getActionName(): string {
     return this.name;
@@ -53,7 +65,7 @@ export class CombatActionBehavior extends SceneObjectBehavior implements IPlayer
    * @param entity The object that would use the action.
    * @returns {boolean} True if the entity may use this action.
    */
-  canBeUsedBy(entity: GameEntityObject) {
+  canBeUsedBy(entity: GameEntityObject): boolean {
     // return entity.model && entity.model instanceof EntityModel;
     return true;
   }
@@ -62,11 +74,8 @@ export class CombatActionBehavior extends SceneObjectBehavior implements IPlayer
    * Base class invokes the then callback and returns true.
    * @returns {boolean} Whether the act was successful or not.
    */
-  act(then?: IPlayerActionCallback): boolean {
-    if (then) {
-      then(this, null);
-    }
-    return true;
+  async act(): Promise<boolean> {
+    return Promise.reject('do not call super on .act()');
   }
 
   /**
@@ -74,5 +83,21 @@ export class CombatActionBehavior extends SceneObjectBehavior implements IPlayer
    */
   select() {
     // nothing
+  }
+
+  /** Preload any sprites/sounds that the action requires */
+  async preload() {
+    const spriteSheets = _.uniq(
+      Object.values(this.sprites || []).map((spriteName: string) => {
+        const meta = this.gameWorld.sprites.getSpriteMeta(spriteName);
+        assertTrue(meta, `no metadata for sprite: ${spriteName}`);
+        return meta.source;
+      })
+    );
+    const sounds = _.uniq(Object.values(this.sounds || []));
+    return Promise.all([
+      ...spriteSheets.map((s) => this.gameWorld.sprites.getSpriteSheet(s)),
+      ...sounds.map((s) => this.loader.load(s)),
+    ]);
   }
 }
