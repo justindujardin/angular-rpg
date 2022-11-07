@@ -58,9 +58,9 @@ export class CombatBeginTurnStateComponent extends CombatMachineState {
       console.log(`TURN: ${machine.current?.model?.name}`);
       choice = machine.playerChoices[machine.current._uid];
     } else {
-      choice = machine.current.findBehavior(
+      choice = machine.current.findBehavior<CombatAttackBehaviorComponent>(
         CombatAttackBehaviorComponent
-      ) as CombatAttackBehaviorComponent;
+      );
       // TODO: This config should not be here.   Just pick a random person to attack.
       if (choice) {
         choice.to = machine.getRandomPartyMember();
