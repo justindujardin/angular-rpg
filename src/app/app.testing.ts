@@ -1,3 +1,4 @@
+import { TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { map, take } from 'rxjs/operators';
 import { AppState } from './app.model';
@@ -22,6 +23,21 @@ import {
   getGamePartyGold,
   getGamePartyWithEquipment,
 } from './models/selectors';
+import { SpritesService } from './models/sprites/sprites.service';
+import { WindowService } from './services/window';
+
+/**
+ * Testing providers for the app.
+ */
+export const APP_TESTING_PROVIDERS = [
+  {
+    // Mock reload() so it doesn't actually reload the page
+    provide: WindowService,
+    useValue: {
+      reload: jasmine.createSpy('reload'),
+    },
+  },
+];
 
 export function testAppGetBoarded(store: Store<AppState>): boolean {
   let result: boolean = false;
@@ -117,4 +133,9 @@ export function testAppDamageParty(
   store.dispatch(
     new GameStateHurtPartyAction({ partyIds: party.map((p) => p.eid), damage })
   );
+}
+
+export async function testAppLoadSprites() {
+  const spritesService = TestBed.inject(SpritesService);
+  await spritesService.loadSprites('assets/images/index.json').toPromise();
 }
