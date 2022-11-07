@@ -108,7 +108,7 @@ describe('CombatStateMachineComponent', () => {
     it('returns array of party members with hp > 0', async () => {
       const { fixture, comp } = getFixture();
 
-      const objects = testCombatAddEnemyCombatants(comp);
+      const objects = await testCombatAddEnemyCombatants(comp);
       fixture.detectChanges();
       expect(comp.getLiveEnemies().length).toEqual(3);
 
@@ -155,7 +155,7 @@ describe('CombatStateMachineComponent', () => {
     it('returns true if the current player is in the party', async () => {
       const { fixture, comp } = getFixture();
 
-      const enemies = testCombatAddEnemyCombatants(comp);
+      const enemies = await testCombatAddEnemyCombatants(comp);
       fixture.detectChanges();
       expect(comp.getRandomEnemy()).not.toBeNull();
       // Excludes null/undefined items in party
