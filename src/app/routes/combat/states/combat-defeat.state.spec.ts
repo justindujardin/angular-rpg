@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { take } from 'rxjs/operators';
 import { APP_IMPORTS } from '../../../app.imports';
-import { WindowService } from '../../../services/window';
+import { APP_TESTING_PROVIDERS } from '../../../app.testing';
 import { testCombatGetStateMachine } from '../combat.testing';
 import { CombatDefeatStateComponent } from './combat-defeat.state';
 
@@ -11,14 +11,7 @@ describe('CombatDefeatStateComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, ...APP_IMPORTS],
       declarations: [CombatDefeatStateComponent],
-      providers: [
-        {
-          provide: WindowService,
-          useValue: {
-            reload: jasmine.createSpy('reload'),
-          },
-        },
-      ],
+      providers: APP_TESTING_PROVIDERS,
     }).compileComponents();
   });
 
