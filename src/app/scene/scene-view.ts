@@ -139,8 +139,8 @@ export class SceneView extends SceneObject implements ISceneView {
     worldCameraPos.x = parseFloat(worldCameraPos.x.toFixed(2));
     worldCameraPos.y = parseFloat(worldCameraPos.y.toFixed(2));
     this.context.translate(
-      worldTilePos.x - worldCameraPos.x,
-      worldTilePos.y - worldCameraPos.y
+      Math.floor(worldTilePos.x - worldCameraPos.x),
+      Math.floor(worldTilePos.y - worldCameraPos.y)
     );
   }
 
