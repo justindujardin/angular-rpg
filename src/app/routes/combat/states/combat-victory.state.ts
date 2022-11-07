@@ -3,7 +3,6 @@ import { Store } from '@ngrx/store';
 import { getArmorById } from 'app/models/game-data/armors';
 import { getItemById } from 'app/models/game-data/items';
 import { getWeaponById } from 'app/models/game-data/weapons';
-import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { IEnemy, IPartyMember } from '../../../../app/models/base-entity';
 import { CombatService } from '../../../../app/models/combat/combat.service';
@@ -48,11 +47,12 @@ export class CombatVictoryStateComponent extends CombatMachineState {
   enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
 
-    combineLatest(
-      [this.store.select(sliceCombatState).pipe(take(1))],
-      (state: CombatState) => {
+    this.store
+      .select(sliceCombatState)
+      .pipe(take(1))
+      .subscribe((state: CombatState) => {
         let players: IPartyMember[] = state.party.toArray();
-        let enemies: IEnemy[] = state.enemies.toArray();
+        const enemies: IEnemy[] = state.enemies.toArray();
         assertTrue(players.length > 0, 'no living players during combat victory state');
         let gold: number = 0;
         let exp: number = 0;
@@ -123,7 +123,6 @@ export class CombatVictoryStateComponent extends CombatMachineState {
           exp,
         };
         this.store.dispatch(new CombatVictoryAction(summary));
-      }
-    ).subscribe();
+      });
   }
 }
