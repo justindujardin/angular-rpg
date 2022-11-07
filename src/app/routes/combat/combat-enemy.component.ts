@@ -26,7 +26,7 @@ export class CombatEnemyComponent
 
   // @ts-ignore
   @Input() icon: string;
-  @Input() scene: Scene;
+  @Input() scene: Scene | null = null;
   @Input() combat: any; // CombatComponent - flirts with circular imports
 
   // @ts-ignore
@@ -45,7 +45,7 @@ export class CombatEnemyComponent
   private _spriteSubscription: Subscription | null;
 
   ngAfterViewInit(): void {
-    this.scene.addObject(this);
+    this.scene?.addObject(this);
     this.addBehavior(this.render);
     this.addBehavior(this.attack);
     this._spriteSubscription = this.model$
