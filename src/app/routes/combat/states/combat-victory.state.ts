@@ -17,6 +17,7 @@ import {
   CombatVictorySummary,
 } from '../../../models/combat/combat.actions';
 import { CombatState } from '../../../models/combat/combat.model';
+import { EntityAddItemAction } from '../../../models/entity/entity.actions';
 import {
   instantiateEntity,
   ITemplateBaseItem,
@@ -73,8 +74,8 @@ export class CombatVictoryStateComponent extends CombatMachineState {
           if (state.experience && state.experience > 0) {
             exp += state.experience;
           }
-          if (state.items && state.items.length > 0) {
-            itemTemplateIds = itemTemplateIds.concat(state.items);
+          if (state.items && state.items.size > 0) {
+            itemTemplateIds = itemTemplateIds.concat(state.items.toJS());
           }
         }
 
@@ -95,6 +96,7 @@ export class CombatVictoryStateComponent extends CombatMachineState {
           }
           assertTrue(!!item, 'cannot award unknown item ' + itemId);
           const model = instantiateEntity<Item>(item);
+          this.store.dispatch(new EntityAddItemAction(model));
           this.store.dispatch(new GameStateAddInventoryAction(model));
         });
 

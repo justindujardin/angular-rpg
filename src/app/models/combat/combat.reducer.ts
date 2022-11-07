@@ -40,7 +40,7 @@ export const combatStateFactory = makeRecordFactory<CombatState, CombatStateReco
   message: Immutable.List<string>(),
   gold: 0,
   experience: 0,
-  items: [],
+  items: List<string>([]),
   zone: '',
   id: '',
 });
@@ -179,6 +179,8 @@ export function combatReducer(
 export const sliceCombatLoading = (state: CombatStateRecord) => state.loading;
 /** @internal {@see sliceCombatState} */
 export const sliceCombatEncounterEnemies = (state: CombatStateRecord) => state.enemies;
+/** @internal {@see sliceCombatState} */
+export const sliceCombatEncounter = (state: CombatStateRecord) => state;
 /** @internal {@see sliceCombatState} */
 export const sliceCombatType = (state: CombatStateRecord) => state.type;
 /** @internal {@see sliceCombatState} */
