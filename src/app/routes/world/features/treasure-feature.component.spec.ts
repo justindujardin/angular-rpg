@@ -1,12 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store } from '@ngrx/store';
-import { map, take } from 'rxjs/operators';
 import { APP_IMPORTS } from '../../../app.imports';
-import { AppState } from '../../../app.model';
+import { testAppGetInventory, testAppGetPartyGold } from '../../../app.testing';
 import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
-import { EntityItemTypes } from '../../../models/entity/entity.reducer';
-import { getGameInventory, getGamePartyGold } from '../../../models/selectors';
 import { assertTrue } from '../../../models/util';
 import { GameWorld } from '../../../services/game-world';
 import { RPGGame } from '../../../services/rpg-game';
@@ -33,27 +29,6 @@ function getFeature(
     },
     ...values,
   };
-}
-
-function getInventory(store: Store<AppState>): EntityItemTypes[] {
-  let result: EntityItemTypes[] = [];
-  store
-    .select(getGameInventory)
-    .pipe(
-      map((f) => f.toJS()),
-      take(1)
-    )
-    .subscribe((s) => (result = s));
-  return result;
-}
-
-function getPartyGold(store: Store<AppState>): number {
-  let result = 0;
-  store
-    .select(getGamePartyGold)
-    .pipe(take(1))
-    .subscribe((s) => (result = s));
-  return result;
 }
 
 describe('TreasureFeatureComponent', () => {
@@ -88,7 +63,7 @@ describe('TreasureFeatureComponent', () => {
     const fixture = TestBed.createComponent(TreasureFeatureComponent);
     const comp: TreasureFeatureComponent = fixture.componentInstance;
 
-    const beforeInv = getInventory(world.store);
+    const beforeInv = testAppGetInventory(world.store);
 
     comp.feature = getFeature({}, { item: 'club' });
     fixture.detectChanges();
@@ -97,7 +72,7 @@ describe('TreasureFeatureComponent', () => {
     fixture.detectChanges();
 
     // Added item to party inventory
-    const afterInv = getInventory(world.store);
+    const afterInv = testAppGetInventory(world.store);
     expect(afterInv.length).toBe(beforeInv.length + 1);
     expect(afterInv.find((i) => i.id === 'club')).toBeDefined();
 
@@ -125,7 +100,7 @@ describe('TreasureFeatureComponent', () => {
     const fixture = TestBed.createComponent(TreasureFeatureComponent);
     const comp: TreasureFeatureComponent = fixture.componentInstance;
 
-    const beforeGold = getPartyGold(world.store);
+    const beforeGold = testAppGetPartyGold(world.store);
 
     comp.feature = getFeature({}, { gold: 25 });
     fixture.detectChanges();
@@ -133,7 +108,7 @@ describe('TreasureFeatureComponent', () => {
     comp.enter(tileObject);
     fixture.detectChanges();
 
-    const afterGold = getPartyGold(world.store);
+    const afterGold = testAppGetPartyGold(world.store);
     expect(afterGold).toBe(beforeGold + 25);
 
     const notification = comp.notify.getFirst();

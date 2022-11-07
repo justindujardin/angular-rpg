@@ -1,19 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { APP_IMPORTS } from '../../../app.imports';
-import { AppState } from '../../../app.model';
+import {
+  testAppAddToInventory,
+  testAppGetInventory,
+  testAppGetPartyGold,
+  testAppGetPartyWithEquipment,
+} from '../../../app.testing';
 import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
 import { EntityAddItemAction } from '../../../models/entity/entity.actions';
-import { EntityWithEquipment } from '../../../models/entity/entity.model';
-import { EntityItemTypes } from '../../../models/entity/entity.reducer';
-import {
-  instantiateEntity,
-  ITemplateBaseItem,
-} from '../../../models/game-data/game-data.model';
+import { instantiateEntity } from '../../../models/game-data/game-data.model';
 import { ITEMS_DATA } from '../../../models/game-data/items';
 import { WEAPONS_DATA } from '../../../models/game-data/weapons';
 import {
@@ -22,11 +21,6 @@ import {
   GameStateUnequipItemAction,
 } from '../../../models/game-state/game-state.actions';
 import { Item, Weapon } from '../../../models/item';
-import {
-  getGameInventory,
-  getGamePartyGold,
-  getGamePartyWithEquipment,
-} from '../../../models/selectors';
 import { SpritesService } from '../../../models/sprites/sprites.service';
 import { assertTrue } from '../../../models/util';
 import { GameWorld } from '../../../services/game-world';
@@ -54,54 +48,6 @@ function getFeature(
     },
     ...values,
   };
-}
-
-function getInventory(store: Store<AppState>): EntityItemTypes[] {
-  let result: EntityItemTypes[] | undefined;
-  store
-    .select(getGameInventory)
-    .pipe(
-      take(1),
-      map((f) => f.toJS())
-    )
-    .subscribe((s) => (result = s));
-  return result as EntityItemTypes[];
-}
-
-function addToInventory<T extends Item>(
-  store: Store<AppState>,
-  itemId: string,
-  from: ITemplateBaseItem[],
-  values?: Partial<T>
-): T {
-  const itemInstance = instantiateEntity<T>(
-    from.find((f) => f.id === itemId),
-    values
-  );
-  store.dispatch(new EntityAddItemAction(itemInstance));
-  store.dispatch(new GameStateAddInventoryAction(itemInstance));
-  return itemInstance;
-}
-
-function getPartyGold(store: Store<AppState>): number {
-  let result = 0;
-  store
-    .select(getGamePartyGold)
-    .pipe(take(1))
-    .subscribe((s) => (result = s));
-  return result;
-}
-
-function getParty(store: Store<AppState>): EntityWithEquipment[] {
-  let result: EntityWithEquipment[] = [];
-  store
-    .select(getGamePartyWithEquipment)
-    .pipe(
-      map((f) => f.toJS()),
-      take(1)
-    )
-    .subscribe((s) => (result = s));
-  return result;
 }
 
 function getStoreSelection(obs: Observable<any>): Item[] {
@@ -193,7 +139,9 @@ describe('StoreFeatureComponent', () => {
       fixture.detectChanges();
 
       // Equip a short-sword
-      const warrior = getParty(world.store).find((p) => p.type === 'warrior');
+      const warrior = testAppGetPartyWithEquipment(world.store).find(
+        (p) => p.type === 'warrior'
+      );
       assertTrue(warrior, 'no warrior class in default party');
       const itemInstance = instantiateEntity<Weapon>(
         WEAPONS_DATA.find((f) => f.id === 'short-sword')
@@ -262,7 +210,7 @@ describe('StoreFeatureComponent', () => {
       fixture.detectChanges();
       expect(comp.active).toBe(true);
 
-      const goldBefore = getPartyGold(world.store);
+      const goldBefore = testAppGetPartyGold(world.store);
 
       const price = fixture.debugElement.query(By.css('.item-value'));
       price.triggerEventHandler('click', {});
@@ -273,10 +221,10 @@ describe('StoreFeatureComponent', () => {
       fixture.detectChanges();
 
       // Gold is not decremented
-      expect(getPartyGold(world.store)).toBe(goldBefore);
+      expect(testAppGetPartyGold(world.store)).toBe(goldBefore);
 
       // Item is not in inventory
-      const inventory = getInventory(world.store);
+      const inventory = testAppGetInventory(world.store);
       expect(inventory.length).toBe(0);
     });
     it('should buy selected item with enough money', () => {
@@ -293,7 +241,7 @@ describe('StoreFeatureComponent', () => {
 
       const itemTemplate = ITEMS_DATA.find((f) => f.id === 'potion');
       assertTrue(itemTemplate, 'failed to find item template');
-      const goldBefore = getPartyGold(world.store);
+      const goldBefore = testAppGetPartyGold(world.store);
 
       const price = fixture.debugElement.query(By.css('.item-value'));
       price.triggerEventHandler('click', {});
@@ -308,10 +256,10 @@ describe('StoreFeatureComponent', () => {
       expect(selection.length).toBe(1);
 
       // Paid for the item
-      const goldAfter = getPartyGold(world.store);
+      const goldAfter = testAppGetPartyGold(world.store);
       expect(goldAfter).toBe(goldBefore - itemTemplate.value);
 
-      const inventory = getInventory(world.store);
+      const inventory = testAppGetInventory(world.store);
       expect(inventory[0].id).toBe('potion');
     });
     it('should equip new gear on compatible party member when purchased', () => {
@@ -326,7 +274,7 @@ describe('StoreFeatureComponent', () => {
       fixture.detectChanges();
       expect(comp.active).toBe(true);
 
-      let party = getParty(world.store);
+      let party = testAppGetPartyWithEquipment(world.store);
       const oldEid = party[0].weapon?.eid || '';
 
       const price = fixture.debugElement.query(By.css('.item-value'));
@@ -337,7 +285,7 @@ describe('StoreFeatureComponent', () => {
       fixture.detectChanges();
 
       // Weapon is now equipped
-      party = getParty(world.store);
+      party = testAppGetPartyWithEquipment(world.store);
       expect(party[0].weapon?.eid || '').not.toBe(oldEid);
 
       // Does not clear selection when items are purchased
@@ -353,10 +301,10 @@ describe('StoreFeatureComponent', () => {
       comp.feature = getFeature();
       comp.category = 'weapons';
 
-      addToInventory(world.store, 'potion', ITEMS_DATA);
-      addToInventory(world.store, 'potion', ITEMS_DATA);
+      testAppAddToInventory(world.store, 'potion', ITEMS_DATA);
+      testAppAddToInventory(world.store, 'potion', ITEMS_DATA);
 
-      let inventory = getInventory(world.store);
+      let inventory = testAppGetInventory(world.store);
       expect(inventory[0].id).toBe('potion');
       expect(inventory[1].id).toBe('potion');
 
@@ -390,7 +338,7 @@ describe('StoreFeatureComponent', () => {
       expect(selection.length).toBe(0);
 
       // The inventory is now smaller
-      inventory = getInventory(world.store);
+      inventory = testAppGetInventory(world.store);
       expect(inventory.length).toBe(1);
     });
   });

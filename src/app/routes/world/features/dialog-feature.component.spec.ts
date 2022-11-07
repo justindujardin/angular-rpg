@@ -1,27 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
 import { APP_IMPORTS } from '../../../app.imports';
-import { AppState } from '../../../app.model';
+import { testAppGetKeyData } from '../../../app.testing';
 import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
-import { getGameKey } from '../../../models/selectors';
 import { GameWorld } from '../../../services/game-world';
 import { RPGGame } from '../../../services/rpg-game';
 import {
   DialogFeatureComponent,
   IDialogFeatureProperties,
 } from './dialog-feature.component';
-
-function getKeyData(store: Store<AppState>, keyName: string): boolean | undefined {
-  let result: boolean | undefined = undefined;
-  store
-    .select(getGameKey(keyName))
-    .pipe(take(1))
-    .subscribe((s) => (result = s));
-  return result;
-}
 
 function getFeature(
   values: Partial<ITiledObject<IDialogFeatureProperties>> = {},
@@ -63,13 +52,13 @@ describe('DialogFeatureComponent', () => {
     const comp: DialogFeatureComponent = fixture.componentInstance;
     const keyName = 'my-key-data';
     comp.feature = getFeature({}, { sets: 'my-key-data' });
-    expect(getKeyData(world.store, keyName)).toBeUndefined();
+    expect(testAppGetKeyData(world.store, keyName)).toBeUndefined();
     fixture.detectChanges();
     comp.enter(tileObject);
     fixture.detectChanges();
     comp.exit(tileObject);
     fixture.detectChanges();
-    expect(getKeyData(world.store, keyName)).toBe(true);
+    expect(testAppGetKeyData(world.store, keyName)).toBe(true);
   });
 
   it('should output onClose when clicking the x button', async () => {

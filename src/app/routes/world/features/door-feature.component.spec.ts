@@ -1,25 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
 import { APP_IMPORTS } from '../../../app.imports';
-import { AppState } from '../../../app.model';
+import { testAppGetKeyData } from '../../../app.testing';
 import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
 import { GameStateSetKeyDataAction } from '../../../models/game-state/game-state.actions';
-import { getGameKey } from '../../../models/selectors';
 import { GameWorld } from '../../../services/game-world';
 import { RPGGame } from '../../../services/rpg-game';
 import { DoorFeatureComponent, IDoorFeatureProperties } from './door-feature.component';
-
-function getKeyData(store: Store<AppState>, keyName?: string): boolean | undefined {
-  let result: boolean | undefined = undefined;
-  store
-    .select(getGameKey(keyName || ''))
-    .pipe(take(1))
-    .subscribe((s) => (result = s));
-  return result;
-}
 
 function getFeature(
   values: Partial<ITiledObject<IDoorFeatureProperties>> = {},
@@ -106,7 +95,7 @@ describe('DoorFeatureComponent', () => {
 
     comp.exit(tileObject);
     fixture.detectChanges();
-    expect(getKeyData(world.store, comp.feature.properties?.id)).toBe(true);
+    expect(testAppGetKeyData(world.store, comp.feature.properties?.id)).toBe(true);
   });
 
   it('should output onClose when clicking the x button', async () => {

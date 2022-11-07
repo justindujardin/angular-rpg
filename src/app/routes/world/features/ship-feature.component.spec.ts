@@ -1,12 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store } from '@ngrx/store';
-import { take } from 'rxjs/operators';
 import { APP_IMPORTS } from '../../../app.imports';
-import { AppState } from '../../../app.model';
+import { testAppGetBoarded } from '../../../app.testing';
 import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
 import { GameStateBoardShipAction } from '../../../models/game-state/game-state.actions';
-import { getGameBoardedShip } from '../../../models/selectors';
 import { assertTrue } from '../../../models/util';
 import { GameFeatureObject } from '../../../scene/objects/game-feature-object';
 import { Scene } from '../../../scene/scene';
@@ -32,15 +29,6 @@ function getFeature(
     },
     ...values,
   };
-}
-
-function getBoarded(store: Store<AppState>): boolean {
-  let result: boolean = false;
-  store
-    .select(getGameBoardedShip)
-    .pipe(take(1))
-    .subscribe((s) => (result = s));
-  return result;
 }
 
 function getScene(comp: ShipFeatureComponent): {
@@ -106,10 +94,10 @@ describe('ShipFeatureComponent', () => {
     comp.feature = getFeature();
     fixture.detectChanges();
 
-    expect(getBoarded(world.store)).toBe(false);
+    expect(testAppGetBoarded(world.store)).toBe(false);
     expect(comp.enter(object)).toBe(true);
     expect(comp.entered(object)).toBe(true);
-    expect(getBoarded(world.store)).toBe(true);
+    expect(testAppGetBoarded(world.store)).toBe(true);
   });
 
   it('boards when initialized while already on a ship', async () => {
@@ -146,6 +134,6 @@ describe('ShipFeatureComponent', () => {
 
     // We've disembarked
     expect(comp.boarded).toBe(false);
-    expect(getBoarded(world.store)).toBe(false);
+    expect(testAppGetBoarded(world.store)).toBe(false);
   });
 });
