@@ -26,7 +26,6 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as _ from 'underscore';
 import { AppState } from '../../../app.model';
-import { IState } from '../../../core/state';
 import { StateAsyncEmitter, StateMachine } from '../../../core/state-machine';
 import { CombatVictorySummary } from '../../../models/combat/combat.actions';
 import { CombatEncounter } from '../../../models/combat/combat.model';
@@ -92,7 +91,6 @@ export class CombatStateMachineComponent
   }
   defaultState: CombatStateNames = 'start';
   world: GameWorld;
-  states: IState<CombatStateNames>[] = [];
   turnList: (CombatPlayerComponent | CombatEnemyComponent)[] = [];
   playerChoices: {
     [id: string]: IPlayerAction;

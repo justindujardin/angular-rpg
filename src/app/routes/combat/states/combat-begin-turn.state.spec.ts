@@ -46,7 +46,7 @@ describe('CombatBeginTurnStateComponent', () => {
       },
     };
     machine.encounter = testCombatGetEncounter(machine.store);
-    comp.enter(machine);
+    await comp.enter(machine);
     fixture.detectChanges();
     expect(called).toBe(true);
   });
@@ -77,7 +77,7 @@ describe('CombatBeginTurnStateComponent', () => {
       },
     });
     machine.encounter = testCombatGetEncounter(machine.store);
-    comp.enter(machine);
+    await comp.enter(machine);
     fixture.detectChanges();
     expect(called).toBe(true);
   });
@@ -96,7 +96,7 @@ describe('CombatBeginTurnStateComponent', () => {
     };
     machine.current = players[0];
     machine.encounter = testCombatGetEncounter(machine.store);
-    comp.enter(machine);
+    await comp.enter(machine);
     expect(players[0].scale).toBe(1.25);
     fixture.detectChanges();
     comp.exit(machine);
@@ -126,7 +126,7 @@ describe('CombatBeginTurnStateComponent', () => {
     };
     machine.current = enemy;
 
-    comp.enter(machine);
+    await comp.enter(machine);
     fixture.detectChanges();
 
     expect(called).toBe(true);

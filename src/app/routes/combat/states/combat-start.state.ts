@@ -34,7 +34,7 @@ export class CombatStartStateComponent extends CombatMachineState {
     super();
   }
 
-  enter(machine: CombatStateMachineComponent) {
+  async enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
     _.defer(() => {
       const encounter = machine.encounter;

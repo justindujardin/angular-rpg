@@ -24,9 +24,6 @@ export class CombatRunBehaviorComponent extends CombatActionBehavior {
   }
 
   async act(): Promise<boolean> {
-    if (!this.isCurrentTurn()) {
-      return false;
-    }
     const success: boolean = this._rollEscape();
     assertTrue(
       this.combat.machine.current,

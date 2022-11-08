@@ -15,7 +15,7 @@
  */
 import _ from 'underscore';
 import { SceneObjectBehavior } from '../../../behaviors/scene-object-behavior';
-import { ResourceManager } from '../../../core';
+import { AudioResource, ImageResource, ResourceManager } from '../../../core';
 import { ITemplateMagic } from '../../../models/game-data/game-data.model';
 import { Item } from '../../../models/item';
 import { assertTrue } from '../../../models/util';
@@ -40,22 +40,12 @@ export class CombatActionBehavior extends SceneObjectBehavior implements IPlayer
     super();
   }
 
-  getActionName(): string {
-    return this.name;
-  }
-
-  isCurrentTurn(): boolean {
-    console.warn('combat: current turn update needed');
-    // return this.combat.machine.current === this.from;
-    return true;
-  }
-
+  /**
+   * Determine if this action can target specific combatants or not. For example
+   * a Guard action does not have a target, so it would return false.
+   */
   canTarget(): boolean {
     return true;
-  }
-
-  canTargetMultiple(): boolean {
-    return this.canTarget();
   }
 
   /**
@@ -86,7 +76,7 @@ export class CombatActionBehavior extends SceneObjectBehavior implements IPlayer
   }
 
   /** Preload any sprites/sounds that the action requires */
-  async preload() {
+  async preload(): Promise<(AudioResource | ImageResource)[]> {
     const spriteSheets = _.uniq(
       Object.values(this.sprites || []).map((spriteName: string) => {
         const meta = this.gameWorld.sprites.getSpriteMeta(spriteName);
@@ -97,7 +87,14 @@ export class CombatActionBehavior extends SceneObjectBehavior implements IPlayer
     const sounds = _.uniq(Object.values(this.sounds || []));
     return Promise.all([
       ...spriteSheets.map((s) => this.gameWorld.sprites.getSpriteSheet(s)),
-      ...sounds.map((s) => this.loader.load(s)),
-    ]);
+      ...sounds.map((s) => this.loader.load<AudioResource>(s)),
+    ]).then((arrays) => {
+      // Flatten
+      let result: (ImageResource | AudioResource)[] = [];
+      for (let i = 0; i < arrays.length; i++) {
+        result = result.concat(arrays[i]);
+      }
+      return result;
+    });
   }
 }

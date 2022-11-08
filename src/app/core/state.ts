@@ -15,35 +15,29 @@
  */
 // State Interfaces
 // -------------------------------------------------------------------------
-import { IStateMachine } from './state-machine';
 
-export interface IState<TStateNames extends string> {
-  name: TStateNames;
-  enter(machine: IStateMachine<TStateNames>): void;
-  exit(machine: IStateMachine<TStateNames>): void;
-  update(machine: IStateMachine<TStateNames>): void;
-}
+import { StateMachine } from './state-machine';
 
 export interface IStateTransition<TStateTransitionNames extends string> {
   targetState: TStateTransitionNames;
-  evaluate(machine: IStateMachine<TStateTransitionNames>): boolean;
+  evaluate(machine: StateMachine<TStateTransitionNames>): boolean;
 }
 
 // Implementation
 // -------------------------------------------------------------------------
-export class State<T extends string> implements IState<T> {
+export class State<T extends string> {
   name: T;
   transitions: IStateTransition<T>[] = [];
 
-  enter(machine: IStateMachine<T>) {
+  async enter(machine: StateMachine<T>) {
     // nothing
   }
 
-  exit(machine: IStateMachine<T>) {
+  async exit(machine: StateMachine<T>) {
     // nothing
   }
 
-  update(machine: IStateMachine<T>) {
+  async update(machine: StateMachine<T>) {
     const l: number = this.transitions.length;
     for (let i: number = 0; i < l; i++) {
       const t: IStateTransition<T> = this.transitions[i];
@@ -63,7 +57,7 @@ export class StateTransition<TTransitionNames extends string>
 {
   targetState: TTransitionNames;
 
-  evaluate(machine: IStateMachine<TTransitionNames>): boolean {
+  evaluate(machine: StateMachine<TTransitionNames>): boolean {
     return true;
   }
 }

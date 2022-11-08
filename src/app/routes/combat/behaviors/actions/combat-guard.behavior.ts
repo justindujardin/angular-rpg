@@ -48,7 +48,7 @@ export class CombatGuardBehavior extends CombatActionBehavior {
    * Until the end of the next turn, or combat end, increase the
    * current players defense.
    */
-  select() {
+  select(): void {
     const model: CombatantTypes = this.from?.model as CombatantTypes;
     assertTrue(model, 'invalid guard behavior model');
     assertTrue(this._subscription === null, 'subscription leak in guard behavior');

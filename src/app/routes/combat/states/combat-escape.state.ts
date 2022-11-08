@@ -40,7 +40,7 @@ export class CombatEscapeStateComponent extends CombatMachineState {
   constructor(public store: Store<AppState>) {
     super();
   }
-  enter(machine: CombatStateMachineComponent) {
+  async enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
     this.store.dispatch(new CombatEscapeAction());
   }

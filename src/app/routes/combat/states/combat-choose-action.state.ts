@@ -92,7 +92,7 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
     distinctUntilChanged()
   );
 
-  enter(machine: CombatStateMachineComponent) {
+  async enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
     assertTrue(machine.scene, 'Invalid Combat Scene');
     this.machine = machine;
@@ -118,7 +118,7 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
     this._next();
   }
 
-  exit(machine: CombatStateMachineComponent) {
+  async exit(machine: CombatStateMachineComponent) {
     this.machine = null;
     return super.exit(machine);
   }
@@ -130,7 +130,7 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
       this.pending = this.pending.filter((p: GameEntityObject) => {
         return id !== p._uid;
       });
-      console.log(`${action.from?.model?.name} chose ${action.getActionName()}`);
+      console.log(`${action.from?.model?.name} chose ${action.name}`);
       if (this.pending.length === 0) {
         this.machine.setCurrentState('begin-turn');
       }

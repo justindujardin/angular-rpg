@@ -45,86 +45,86 @@ export class CombatVictoryStateComponent extends CombatMachineState {
     super();
   }
 
-  enter(machine: CombatStateMachineComponent) {
-    super.enter(machine);
+  async enter(machine: CombatStateMachineComponent) {
+    await super.enter(machine);
 
-    this.store
+    const state: CombatState = await this.store
       .select(sliceCombatState)
       .pipe(take(1))
-      .subscribe((state: CombatState) => {
-        let players: IPartyMember[] = state.party.toArray();
-        const enemies: IEnemy[] = state.enemies.toArray();
-        assertTrue(players.length > 0, 'no living players during combat victory state');
-        let gold: number = 0;
-        let exp: number = 0;
-        let itemTemplateIds: string[] = [];
+      .toPromise();
 
-        // Sum experience and gold for each enemy that was defeated
-        state.enemies.forEach((combatant: IEnemy) => {
-          gold += combatant.gold || 0;
-          exp += combatant.exp || 0;
-        });
+    let players: IPartyMember[] = state.party.toArray();
+    const enemies: IEnemy[] = state.enemies.toArray();
+    assertTrue(players.length > 0, 'no living players during combat victory state');
+    let gold: number = 0;
+    let exp: number = 0;
+    let itemTemplateIds: string[] = [];
 
-        // Apply Fixed encounter bonus awards
-        //
-        if (state.type === 'fixed') {
-          if (state.gold && state.gold > 0) {
-            gold += state.gold;
-          }
-          if (state.experience && state.experience > 0) {
-            exp += state.experience;
-          }
-          if (state.items && state.items.size > 0) {
-            itemTemplateIds = itemTemplateIds.concat(state.items.toJS());
-          }
-        }
+    // Sum experience and gold for each enemy that was defeated
+    state.enemies.forEach((combatant: IEnemy) => {
+      gold += combatant.gold || 0;
+      exp += combatant.exp || 0;
+    });
 
-        // Award gold
-        //
-        this.store.dispatch(new GameStateAddGoldAction(gold));
+    // Apply Fixed encounter bonus awards
+    //
+    if (state.type === 'fixed') {
+      if (state.gold && state.gold > 0) {
+        gold += state.gold;
+      }
+      if (state.experience && state.experience > 0) {
+        exp += state.experience;
+      }
+      if (state.items && state.items.size > 0) {
+        itemTemplateIds = itemTemplateIds.concat(state.items.toJS());
+      }
+    }
 
-        // Award items
-        //
-        const itemInstances: Item[] = [];
-        itemTemplateIds.forEach((itemId: string) => {
-          let item: ITemplateBaseItem | null = getWeaponById(itemId);
-          if (!item) {
-            item = getArmorById(itemId);
-          }
-          if (!item) {
-            item = getItemById(itemId);
-          }
-          assertTrue(!!item, 'cannot award unknown item ' + itemId);
-          const model = instantiateEntity<Item>(item);
-          this.store.dispatch(new EntityAddItemAction(model));
-          this.store.dispatch(new GameStateAddInventoryAction(model));
-        });
+    // Award gold
+    //
+    this.store.dispatch(new GameStateAddGoldAction(gold));
 
-        // Award experience
-        //
-        const expPerParty: number = Math.round(exp / players.length);
-        const levelUps: IPartyStatsDiff[] = [];
-        players = players.map((player: IPartyMember) => {
-          let result = awardExperience(expPerParty, player);
-          if (result.level > player.level) {
-            levelUps.push(diffPartyMember(player, result));
-          }
-          return result;
-        });
+    // Award items
+    //
+    const itemInstances: Item[] = [];
+    itemTemplateIds.forEach((itemId: string) => {
+      let item: ITemplateBaseItem | null = getWeaponById(itemId);
+      if (!item) {
+        item = getArmorById(itemId);
+      }
+      if (!item) {
+        item = getItemById(itemId);
+      }
+      assertTrue(!!item, 'cannot award unknown item ' + itemId);
+      const model = instantiateEntity<Item>(item);
+      this.store.dispatch(new EntityAddItemAction(model));
+      this.store.dispatch(new GameStateAddInventoryAction(model));
+    });
 
-        // Dispatch victory action
-        assertTrue(machine.encounter, 'invalid combat encounter');
-        const summary: CombatVictorySummary = {
-          type: machine.encounter.type,
-          id: machine.encounter.id || '',
-          party: players,
-          enemies,
-          levels: levelUps,
-          items: itemInstances,
-          gold,
-          exp,
-        };
-        this.store.dispatch(new CombatVictoryAction(summary));
-      });
+    // Award experience
+    //
+    const expPerParty: number = Math.round(exp / players.length);
+    const levelUps: IPartyStatsDiff[] = [];
+    players = players.map((player: IPartyMember) => {
+      let result = awardExperience(expPerParty, player);
+      if (result.level > player.level) {
+        levelUps.push(diffPartyMember(player, result));
+      }
+      return result;
+    });
+
+    // Dispatch victory action
+    assertTrue(machine.encounter, 'invalid combat encounter');
+    const summary: CombatVictorySummary = {
+      type: machine.encounter.type,
+      id: machine.encounter.id || '',
+      party: players,
+      enemies,
+      levels: levelUps,
+      items: itemInstances,
+      gold,
+      exp,
+    };
+    this.store.dispatch(new CombatVictoryAction(summary));
   }
 }

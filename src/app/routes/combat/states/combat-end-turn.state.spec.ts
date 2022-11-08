@@ -36,7 +36,7 @@ describe('CombatEndTurnStateComponent', () => {
     const comp = fixture.componentInstance;
     const machine = testCombatGetStateMachine();
     spyOn(machine, 'setCurrentState');
-    comp.enter(machine);
+    await comp.enter(machine);
     fixture.detectChanges();
     expect(machine.setCurrentState).toHaveBeenCalledOnceWith('defeat');
   });
@@ -46,7 +46,7 @@ describe('CombatEndTurnStateComponent', () => {
     const machine = testCombatGetStateMachine();
     testCombatAddPartyCombatants(machine.store, machine);
     spyOn(machine, 'setCurrentState');
-    comp.enter(machine);
+    await comp.enter(machine);
     fixture.detectChanges();
     expect(machine.setCurrentState).toHaveBeenCalledOnceWith('victory');
   });
@@ -57,7 +57,7 @@ describe('CombatEndTurnStateComponent', () => {
     testCombatAddPartyCombatants(machine.store, machine);
     testCombatAddEnemyCombatants(machine);
     spyOn(machine, 'setCurrentState');
-    comp.enter(machine);
+    await comp.enter(machine);
     fixture.detectChanges();
     expect(machine.setCurrentState).toHaveBeenCalledOnceWith('choose-action');
   });
@@ -69,7 +69,7 @@ describe('CombatEndTurnStateComponent', () => {
     testCombatAddEnemyCombatants(machine);
     machine.turnList.push(players[0]);
     spyOn(machine, 'setCurrentState');
-    comp.enter(machine);
+    await comp.enter(machine);
     fixture.detectChanges();
     expect(machine.setCurrentState).toHaveBeenCalledOnceWith('begin-turn');
   });

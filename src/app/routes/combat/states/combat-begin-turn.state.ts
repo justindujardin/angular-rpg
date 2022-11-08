@@ -38,7 +38,7 @@ export class CombatBeginTurnStateComponent extends CombatMachineState {
     super();
   }
 
-  enter(machine: CombatStateMachineComponent) {
+  async enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
     this.machine = machine;
     machine.currentDone = false;
@@ -75,7 +75,7 @@ export class CombatBeginTurnStateComponent extends CombatMachineState {
     }
   }
 
-  exit(machine: CombatStateMachineComponent) {
+  async exit(machine: CombatStateMachineComponent) {
     this.current.scale = 1;
     super.exit(machine);
   }
