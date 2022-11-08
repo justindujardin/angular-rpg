@@ -15,7 +15,7 @@
  */
 import { Component, Input } from '@angular/core';
 import { interval, Observable } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 import * as _ from 'underscore';
 import { Point } from '../../../../app/core/point';
 import { assertTrue } from '../../../models/util';
@@ -65,9 +65,9 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
 
   /** The screen translated pointer position */
   pointerPosition$: Observable<Point> = interval(50).pipe(
-    map(() => {
+    map((): Point | boolean => {
       if (!this.pointAt || !this.view) {
-        return new Point(0, 0);
+        return false;
       }
 
       // World offset from object origin (0.5,0.5) is bottom right (-0.5,-0.5) top left
@@ -88,6 +88,7 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
       );
       return screenPos;
     }),
+    filter<Point>(Boolean),
     distinctUntilChanged()
   );
 
