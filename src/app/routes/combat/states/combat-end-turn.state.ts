@@ -32,7 +32,7 @@ export class CombatEndTurnStateComponent extends CombatMachineState {
   }
 
   async enter(machine: CombatStateMachineComponent) {
-    super.enter(machine);
+    await super.enter(machine);
     machine.current = null;
     // Find the next turn.
     while (machine.turnList.length > 0 && !machine.current) {
@@ -54,6 +54,7 @@ export class CombatEndTurnStateComponent extends CombatMachineState {
     if (!targetState) {
       throw new Error('Invalid transition from end turn');
     }
-    await machine.setCurrentState(targetState);
+    // NOTE: don't await state changes in enter, or you'll deadlock
+    machine.setCurrentState(targetState);
   }
 }

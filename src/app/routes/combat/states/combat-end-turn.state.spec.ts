@@ -1,12 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { APP_IMPORTS } from '../../../app.imports';
+import { APP_TESTING_PROVIDERS } from '../../../app.testing';
+import { ITemplateRandomEncounter } from '../../../models/game-data/game-data.model';
+import { RANDOM_ENCOUNTERS_DATA } from '../../../models/game-data/random-encounters';
 import { GameWorld } from '../../../services/game-world';
 import { RPGGame } from '../../../services/rpg-game';
-import { WindowService } from '../../../services/window';
+import { CombatPlayerComponent } from '../combat-player.component';
 import {
-  testCombatAddEnemyCombatants,
-  testCombatAddPartyCombatants,
+  testCombatCreateComponent,
   testCombatGetStateMachine,
 } from '../combat.testing';
 import { CombatEndTurnStateComponent } from './combat-end-turn.state';
@@ -17,14 +19,7 @@ describe('CombatEndTurnStateComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, ...APP_IMPORTS],
       declarations: [CombatEndTurnStateComponent],
-      providers: [
-        {
-          provide: WindowService,
-          useValue: {
-            reload: jasmine.createSpy('reload'),
-          },
-        },
-      ],
+      providers: [...APP_TESTING_PROVIDERS],
     }).compileComponents();
     world = TestBed.inject(GameWorld);
     const game = TestBed.inject(RPGGame);
@@ -43,8 +38,12 @@ describe('CombatEndTurnStateComponent', () => {
   it('transitions to victory if no live enemies', async () => {
     const fixture = TestBed.createComponent(CombatEndTurnStateComponent);
     const comp = fixture.componentInstance;
-    const machine = testCombatGetStateMachine();
-    testCombatAddPartyCombatants(machine.store, machine);
+    const encounter: ITemplateRandomEncounter = {
+      ...RANDOM_ENCOUNTERS_DATA[0],
+      enemies: [],
+    };
+    const combat = testCombatCreateComponent('start', encounter);
+    const machine = combat.machine;
     spyOn(machine, 'setCurrentState');
     await comp.enter(machine);
     fixture.detectChanges();
@@ -53,9 +52,8 @@ describe('CombatEndTurnStateComponent', () => {
   it('transitions to choose-action if living enemies and party', async () => {
     const fixture = TestBed.createComponent(CombatEndTurnStateComponent);
     const comp = fixture.componentInstance;
-    const machine = testCombatGetStateMachine();
-    testCombatAddPartyCombatants(machine.store, machine);
-    testCombatAddEnemyCombatants(machine);
+    const combat = testCombatCreateComponent();
+    const machine = combat.machine;
     spyOn(machine, 'setCurrentState');
     await comp.enter(machine);
     fixture.detectChanges();
@@ -64,10 +62,10 @@ describe('CombatEndTurnStateComponent', () => {
   it('transitions to begin-turn if there are more players waiting to execute turns', async () => {
     const fixture = TestBed.createComponent(CombatEndTurnStateComponent);
     const comp = fixture.componentInstance;
-    const machine = testCombatGetStateMachine();
-    const players = testCombatAddPartyCombatants(machine.store, machine);
-    testCombatAddEnemyCombatants(machine);
-    machine.turnList.push(players[0]);
+    const combat = testCombatCreateComponent();
+    const machine = combat.machine;
+    const player = combat.party.get(0) as CombatPlayerComponent;
+    machine.turnList.push(player);
     spyOn(machine, 'setCurrentState');
     await comp.enter(machine);
     fixture.detectChanges();
