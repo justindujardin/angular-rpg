@@ -15,11 +15,14 @@ import {
   ITemplateFixedEncounter,
   ITemplateRandomEncounter,
 } from '../../models/game-data/game-data.model';
+import { RANDOM_ENCOUNTERS_DATA } from '../../models/game-data/random-encounters';
 import { getCombatEncounter } from '../../models/selectors';
 import { Scene } from '../../scene/scene';
 import { CombatEnemyComponent } from './combat-enemy.component';
 import { CombatPlayerComponent } from './combat-player.component';
+import { CombatComponent } from './combat.component';
 import { CombatStateMachineComponent } from './states';
+import { CombatStateNames } from './states/states';
 
 export function testCombatGetStateMachine(): CombatStateMachineComponent {
   const fixture = TestBed.createComponent(CombatStateMachineComponent);
@@ -33,11 +36,12 @@ export function testCombatGetStateMachine(): CombatStateMachineComponent {
 
 export function testCombatAddPartyCombatants(
   store: Store<AppState>,
-  comp: CombatStateMachineComponent,
+  comp: CombatComponent,
   onlyFirst: boolean = false
 ): CombatPlayerComponent[] {
   const party = testAppGetParty(store);
   const players = [];
+
   for (let pm = 0; pm < party.length; pm++) {
     if (onlyFirst && pm > 0) {
       break;
@@ -48,6 +52,7 @@ export function testCombatAddPartyCombatants(
     player.componentInstance.icon = member.icon;
     player.componentInstance.combat = comp;
     comp.scene.addObject(player.componentInstance);
+    player.detectChanges();
     players.push(player.componentInstance);
   }
   comp.party = new QueryList<CombatPlayerComponent>();
@@ -55,9 +60,9 @@ export function testCombatAddPartyCombatants(
   return players;
 }
 
-export async function testCombatAddEnemyCombatants(
-  comp: CombatStateMachineComponent
-): Promise<CombatEnemyComponent[]> {
+export function testCombatAddEnemyCombatants(
+  comp: CombatComponent
+): CombatEnemyComponent[] {
   const items = ['imp', 'imp', 'imp'].map((id) => {
     const itemTemplate: IEnemy = getEnemyById(id) as any;
     return instantiateEntity<IEnemy>(itemTemplate, {
@@ -80,6 +85,26 @@ export async function testCombatAddEnemyCombatants(
   return enemies;
 }
 
+export function testCombatSetEnemyCombatants(
+  comp: CombatStateMachineComponent,
+  enemies: IEnemy[]
+): CombatEnemyComponent[] {
+  const results = [];
+  for (let i = 0; i < enemies.length; i++) {
+    const obj = enemies[i] as IEnemy;
+    const fixture = TestBed.createComponent(CombatEnemyComponent);
+    fixture.componentInstance.model = obj;
+    fixture.componentInstance.icon = obj.icon;
+    fixture.componentInstance.combat = comp;
+    comp.scene.addObject(fixture.componentInstance);
+    results.push(fixture.componentInstance);
+    fixture.detectChanges();
+  }
+  comp.enemies = new QueryList<CombatEnemyComponent>();
+  comp.enemies.reset(results);
+  return results;
+}
+
 export function testCombatSetRandomEncounter(
   store: Store<AppState>,
   party: Entity[],
@@ -93,11 +118,12 @@ export function testCombatSetRandomEncounter(
   };
 
   const zone = encounter.zones.length ? encounter.zones[0] : 'none';
+  const enemies = List<IEnemy>(encounter.enemies.map(toCombatant));
 
   const payload: CombatEncounter = {
     type: 'random',
     id: encounter.id,
-    enemies: List<IEnemy>(encounter.enemies.map(toCombatant)),
+    enemies,
     zone,
     gold: 0,
     items: List<string>([]),
@@ -105,6 +131,7 @@ export function testCombatSetRandomEncounter(
     party: List<Entity>(party),
   };
   store.dispatch(new CombatEncounterAction(payload));
+  return enemies.toJS();
 }
 
 export function testCombatSetFixedEncounter(
@@ -140,4 +167,31 @@ export function testCombatGetEncounter(store: Store<AppState>): CombatEncounter 
     .pipe(take(1))
     .subscribe((s) => (result = s));
   return result as CombatEncounter;
+}
+
+export function testCombatCreateComponent(
+  defaultState?: CombatStateNames | null,
+  encounter = RANDOM_ENCOUNTERS_DATA[0]
+): CombatComponent {
+  const { combat } = testCombatCreateComponentFixture(defaultState, encounter);
+  return combat;
+}
+
+export function testCombatCreateComponentFixture(
+  defaultState: CombatStateNames | null = null,
+  encounter = RANDOM_ENCOUNTERS_DATA[0]
+) {
+  const combatFixture = TestBed.createComponent(CombatComponent);
+  const store = combatFixture.componentInstance.store;
+  const combatComp = combatFixture.componentInstance;
+  combatComp.defaultState = null;
+  if (defaultState) {
+    combatComp.defaultState = defaultState;
+  }
+  if (encounter) {
+    const party = testAppGetParty(store);
+    testCombatSetRandomEncounter(store, party, encounter);
+  }
+  combatFixture.detectChanges();
+  return { fixture: combatFixture, combat: combatComp, machine: combatComp.machine };
 }

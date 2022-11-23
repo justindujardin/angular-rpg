@@ -23,7 +23,7 @@ describe('CombatDefeatStateComponent', () => {
       let called = false;
       comp.resetGame = () => (called = true);
       const defeatPromise = machine.onDefeat$.pipe(take(1)).toPromise();
-      comp.enter(machine);
+      await comp.enter(machine);
       await defeatPromise;
       expect(called).toBe(true);
     });

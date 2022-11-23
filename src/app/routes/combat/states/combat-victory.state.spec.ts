@@ -47,7 +47,7 @@ describe('CombatVictoryStateComponent', () => {
     testCombatSetRandomEncounter(comp.store, party, RANDOM_ENCOUNTERS_DATA[0]);
     machine.encounter = testCombatGetEncounter(comp.store);
     spyOn(machine.store, 'dispatch');
-    comp.enter(machine);
+    await comp.enter(machine);
     fixture.detectChanges();
     expect(machine.store.dispatch).toHaveBeenCalledWith(
       jasmine.objectContaining({
@@ -70,7 +70,7 @@ describe('CombatVictoryStateComponent', () => {
     testCombatSetRandomEncounter(comp.store, party, encounter);
     machine.encounter = testCombatGetEncounter(comp.store);
     spyOn(machine.store, 'dispatch');
-    comp.enter(machine);
+    await comp.enter(machine);
     fixture.detectChanges();
     expect(machine.store.dispatch).toHaveBeenCalledWith(
       jasmine.objectContaining({
@@ -95,7 +95,7 @@ describe('CombatVictoryStateComponent', () => {
     };
     testCombatSetFixedEncounter(comp.store, party, encounter);
     machine.encounter = testCombatGetEncounter(comp.store);
-    comp.enter(machine);
+    await comp.enter(machine);
     fixture.detectChanges();
     const gold = testAppGetPartyGold(comp.store);
     expect(gold).toBe(beforeGold + enemy.gold * 2 + encounter.gold);

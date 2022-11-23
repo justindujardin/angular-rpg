@@ -37,7 +37,7 @@ export class CombatDefeatStateComponent extends CombatMachineState {
     super();
   }
 
-  enter(machine: CombatStateMachineComponent) {
+  async enter(machine: CombatStateMachineComponent) {
     assertTrue(machine.party, 'invalid party in defeat state');
     assertTrue(machine.enemies, 'invalid enemies in defeat state');
     super.enter(machine);

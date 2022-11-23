@@ -15,7 +15,7 @@
  */
 import { Component, Input } from '@angular/core';
 import { interval, Observable } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 import * as _ from 'underscore';
 import { Point } from '../../../../app/core/point';
 import { assertTrue } from '../../../models/util';
@@ -65,9 +65,9 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
 
   /** The screen translated pointer position */
   pointerPosition$: Observable<Point> = interval(50).pipe(
-    map(() => {
+    map((): Point | boolean => {
       if (!this.pointAt || !this.view) {
-        return new Point(0, 0);
+        return false;
       }
 
       // World offset from object origin (0.5,0.5) is bottom right (-0.5,-0.5) top left
@@ -88,10 +88,11 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
       );
       return screenPos;
     }),
+    filter<Point>(Boolean),
     distinctUntilChanged()
   );
 
-  enter(machine: CombatStateMachineComponent) {
+  async enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
     assertTrue(machine.scene, 'Invalid Combat Scene');
     this.machine = machine;
@@ -117,7 +118,7 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
     this._next();
   }
 
-  exit(machine: CombatStateMachineComponent) {
+  async exit(machine: CombatStateMachineComponent) {
     this.machine = null;
     return super.exit(machine);
   }
@@ -129,7 +130,7 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
       this.pending = this.pending.filter((p: GameEntityObject) => {
         return id !== p._uid;
       });
-      console.log(`${action.from?.model?.name} chose ${action.getActionName()}`);
+      console.log(`${action.from?.model?.name} chose ${action.name}`);
       if (this.pending.length === 0) {
         this.machine.setCurrentState('begin-turn');
       }

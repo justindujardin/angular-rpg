@@ -26,7 +26,6 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as _ from 'underscore';
 import { AppState } from '../../../app.model';
-import { IState } from '../../../core/state';
 import { StateAsyncEmitter, StateMachine } from '../../../core/state-machine';
 import { CombatVictorySummary } from '../../../models/combat/combat.actions';
 import { CombatEncounter } from '../../../models/combat/combat.model';
@@ -90,9 +89,7 @@ export class CombatStateMachineComponent
   constructor(private combatService: CombatService, public store: Store<AppState>) {
     super();
   }
-  defaultState: CombatStateNames = 'start';
   world: GameWorld;
-  states: IState<CombatStateNames>[] = [];
   turnList: (CombatPlayerComponent | CombatEnemyComponent)[] = [];
   playerChoices: {
     [id: string]: IPlayerAction;
@@ -115,6 +112,7 @@ export class CombatStateMachineComponent
   @Input() enemies: QueryList<CombatEnemyComponent> | null = null;
   @Input() combat: CombatComponent | null = null;
   @Input() view: SceneView;
+  @Input() defaultState: CombatStateNames | null = 'start';
 
   @ViewChildren('start,beginTurn,chooseAction,endTurn,defeat,victory,escape')
   childStates: QueryList<CombatMachineState>;
@@ -146,7 +144,9 @@ export class CombatStateMachineComponent
         this._spells$.next(spells as Immutable.List<Magic>);
       });
     this.addStates(this.childStates.toArray());
-    this.setCurrentStateObject(this.getState(this.defaultState));
+    if (this.defaultState) {
+      this.setCurrentStateObject(this.getState(this.defaultState));
+    }
   }
 
   isFriendlyTurn(): boolean {

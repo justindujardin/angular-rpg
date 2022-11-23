@@ -211,9 +211,8 @@ export class CombatPlayerComponent
       return result;
     });
     this.animating = true;
-    return this.animation.playChain(animations).then(() => {
-      this.animating = false;
-    });
+    await this.animation.playChain(animations);
+    this.animating = false;
   }
 
   async _attack(attackAnimation: IAnimationConfig[]) {
@@ -230,9 +229,8 @@ export class CombatPlayerComponent
       }
     );
     this.animating = true;
-    return this.animation.playChain(animations).then(() => {
-      this.animating = false;
-    });
+    await this.animation.playChain(animations);
+    this.animating = false;
   }
 
   interpolateTick(elapsed: number) {

@@ -43,9 +43,6 @@ export class CombatItemBehavior extends CombatActionBehavior {
   }
 
   async act(): Promise<boolean> {
-    if (!this.isCurrentTurn()) {
-      return false;
-    }
     if (this.item) {
       await this.useItem();
     }

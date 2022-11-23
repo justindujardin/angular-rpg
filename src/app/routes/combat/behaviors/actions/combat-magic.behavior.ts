@@ -71,9 +71,6 @@ export class CombatMagicBehavior extends CombatActionBehavior {
   }
 
   async act(): Promise<boolean> {
-    if (!this.isCurrentTurn()) {
-      return false;
-    }
     if (!this.spell) {
       console.error('null spell to cast');
       return false;

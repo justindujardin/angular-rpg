@@ -17,19 +17,7 @@
 // -------------------------------------------------------------------------
 import { EventEmitter } from '@angular/core';
 import * as _ from 'underscore';
-import { IState } from './state';
-
-export interface IStateMachine<TStateMachineStateNames extends string> {
-  update(data: any): void;
-  addState(state: IState<TStateMachineStateNames>): void;
-  addStates(states: IState<TStateMachineStateNames>[]): void;
-  getCurrentState(): IState<TStateMachineStateNames> | null;
-  getCurrentName(): TStateMachineStateNames | null;
-  setCurrentStateObject(newState: IState<TStateMachineStateNames> | null): boolean;
-  setCurrentState(name: TStateMachineStateNames): boolean;
-  getPreviousState(): IState<TStateMachineStateNames> | null;
-  getState(name: TStateMachineStateNames): IState<TStateMachineStateNames> | null;
-}
+import { State } from './state';
 
 export interface IResumeCallback {
   (): void;
@@ -37,53 +25,38 @@ export interface IResumeCallback {
 
 /** A state change description */
 export interface IStateChange<T extends string> {
-  from: IState<T> | null;
-  to: IState<T>;
+  from: State<T> | null;
+  to: State<T>;
 }
 
 // Implementation
 // -------------------------------------------------------------------------
-export class StateMachine<StateNames extends string>
-  implements IStateMachine<StateNames>
-{
+export class StateMachine<StateNames extends string> {
   static DEBUG_STATES: boolean = true;
 
   defaultState: StateNames | null = null;
-  states: IState<StateNames>[] = [];
+  states: State<StateNames>[] = [];
 
   /** Emits when a new state has been entered */
   onEnterState$ = new EventEmitter<IStateChange<StateNames>>();
   /** Emits when an existing state is about to be exited */
   onExitState$ = new EventEmitter<IStateChange<StateNames>>();
 
-  private _currentState: IState<StateNames> | null = null;
-  private _previousState: IState<StateNames> | null = null;
-  private _newState: boolean = false;
-  private _pendingState: IState<StateNames> | null = null;
+  /** Processing an async transition */
+  private _transitioning: boolean = false;
+  private _currentState: State<StateNames> | null = null;
+  private _previousState: State<StateNames> | null = null;
+  private _pendingStates: [State<StateNames>, (result: boolean) => void][] = [];
 
-  update(data?: any) {
-    this._newState = false;
-    if (this._currentState === null) {
-      this.setCurrentState(this.defaultState);
-    }
-    if (this._currentState !== null) {
-      this._currentState.update(this);
-    }
-    // Didn't transition, make sure previous === current for next tick.
-    if (this._newState === false && this._currentState !== null) {
-      this._previousState = this._currentState;
-    }
-  }
-
-  addState(state: IState<StateNames>): void {
+  addState(state: State<StateNames>): void {
     this.states.push(state);
   }
 
-  addStates(states: IState<StateNames>[]): void {
+  addStates(states: State<StateNames>[]): void {
     this.states = _.unique(this.states.concat(states));
   }
 
-  getCurrentState(): IState<StateNames> | null {
+  getCurrentState(): State<StateNames> | null {
     return this._currentState;
   }
 
@@ -95,30 +68,27 @@ export class StateMachine<StateNames extends string>
    * Set the current state after the callstack unwinds.
    * @param newState A state object
    */
-  setCurrentStateObject(state: IState<StateNames> | null): boolean {
+  async setCurrentStateObject(state: State<StateNames> | null): Promise<boolean> {
     if (!state) {
       console.error(`STATE NOT FOUND: ${state}`);
       return false;
     }
-    if (!this._setCurrentState(state)) {
-      console.error(`Failed to set state: ${state?.name}`);
-    }
-    return true;
+    return await this._setCurrentState(state);
   }
   /**
    * Set the current state by name after the callstack unwinds.
    * @param name A known state name
    */
-  setCurrentState(name: StateNames | null): boolean {
+  async setCurrentState(name: StateNames | null): Promise<boolean> {
     let state = this.getState(name);
-    return this.setCurrentStateObject(state);
+    return await this.setCurrentStateObject(state);
   }
 
-  private _setCurrentState(state: IState<StateNames> | null): boolean {
+  private async _setCurrentState(state: State<StateNames> | null): Promise<boolean> {
     if (!state) {
       return false;
     }
-    const oldState: IState<StateNames> | null = this._currentState;
+    const oldState: State<StateNames> | null = this._currentState;
     // Already in the desired state.
     if (this._currentState && state.name === this._currentState.name) {
       console.warn(
@@ -126,7 +96,13 @@ export class StateMachine<StateNames extends string>
       );
       return true;
     }
-    this._newState = true;
+    // Already processing an async transition. Add to the queue
+    if (this._transitioning) {
+      return new Promise((resolve) => {
+        this._pendingStates.push([state, resolve]);
+      });
+    }
+    this._transitioning = true;
     this._previousState = this._currentState;
     this._currentState = state;
     // DEBUG:
@@ -137,19 +113,36 @@ export class StateMachine<StateNames extends string>
     }
     if (oldState) {
       this.onExitState$.emit({ from: oldState, to: state });
-      oldState.exit(this);
+      await oldState.exit(this);
     }
-    state.enter(this);
+    await state.enter(this);
     this.onEnterState$.emit({ from: oldState, to: state });
+
+    if (this._pendingStates.length === 0) {
+      this._transitioning = false;
+    } else {
+      // Fire off the next promise
+      Promise.resolve().then(async () => {
+        const target = this._pendingStates.shift();
+        if (target) {
+          const [nextState, completionPromise] = target;
+          // Set transitioning flag immediately before next call, so it doesn't end up
+          // getting queued again.
+          this._transitioning = false;
+          const okay = await this._setCurrentState(nextState);
+          completionPromise(okay);
+        }
+      });
+    }
     return true;
   }
 
-  getPreviousState(): IState<StateNames> | null {
+  getPreviousState(): State<StateNames> | null {
     return this._previousState;
   }
 
-  getState(name: StateNames | null): IState<StateNames> | null {
-    const state = this.states.find((s: IState<StateNames>) => {
+  getState(name: StateNames | null): State<StateNames> | null {
+    const state = this.states.find((s: State<StateNames>) => {
       return s.name === name;
     });
     return state || null;

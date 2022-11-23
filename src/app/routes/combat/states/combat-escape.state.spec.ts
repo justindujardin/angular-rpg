@@ -26,7 +26,7 @@ describe('CombatEscapeStateComponent', () => {
     const comp = fixture.componentInstance;
     const machine = testCombatGetStateMachine();
     spyOn(machine.store, 'dispatch');
-    comp.enter(machine);
+    await comp.enter(machine);
     fixture.detectChanges();
     expect(machine.store.dispatch).toHaveBeenCalledOnceWith(new CombatEscapeAction());
   });

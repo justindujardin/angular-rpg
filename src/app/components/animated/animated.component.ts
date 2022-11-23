@@ -57,8 +57,23 @@ export class AnimatedComponent extends TileObject {
     super();
   }
 
-  async play(config: IAnimationConfig) {
-    const task: IAnimationTask = config as any;
+  async playChain(animations: IAnimationConfig[]) {
+    await this.preload(animations);
+    return new Promise<void>(async (resolve) => {
+      // TODO: Need a map of these for multiple animations on the same component.
+      this._animationKeys = [...animations];
+      await this._animateNext();
+      resolve();
+    });
+  }
+
+  private async _animateNext() {
+    const nextAnim = this._animationKeys.shift();
+    if (!nextAnim) {
+      return;
+    }
+    this._currentAnimation = nextAnim as IAnimationTask;
+    const task: IAnimationTask = { ...this._currentAnimation };
     task.elapsed = 0;
     if (task.move) {
       task.startFrame = task.host.frame;
@@ -68,17 +83,17 @@ export class AnimatedComponent extends TileObject {
     }
 
     return new Promise<void>((resolve) => {
-      const realCallback = task.callback;
-      task.callback = (config: IAnimationConfig) => {
-        if (realCallback) {
-          realCallback(config);
+      const realDone = task.done;
+      task.done = async () => {
+        if (realDone) {
+          realDone(task);
         }
+        await this._animateNext();
         resolve();
       };
       this._tasks.push(task);
     });
   }
-
   removeCompleteTasks() {
     for (let i = 0; i < this._tasks.length; i++) {
       const task: IAnimationTask = this._tasks[i];
@@ -147,23 +162,6 @@ export class AnimatedComponent extends TileObject {
     return from * (1.0 - factor) + to * factor;
   }
 
-  async playChain(animations: IAnimationConfig[]) {
-    await this.preload(animations);
-    await new Promise<void>((resolve) => {
-      // TODO: Need a map of these for multiple animations on the same component.
-      this._animationKeys = [...animations];
-      this._animationKeys.push({
-        name: 'Finish Animation',
-        duration: 0,
-        host: this,
-        callback: () => {
-          resolve();
-        },
-      });
-      this._animateNext();
-    });
-  }
-
   /** Preload any animation data needed for rendering ahead of time */
   async preload(animations: IAnimationConfig[]) {
     return Promise.all(
@@ -174,17 +172,5 @@ export class AnimatedComponent extends TileObject {
           return cfg.preload(cfg);
         })
     );
-  }
-
-  private async _animateNext() {
-    const nextAnim = this._animationKeys.shift();
-    if (!nextAnim) {
-      return;
-    }
-    this._currentAnimation = nextAnim as IAnimationTask;
-    this._currentAnimation.done = () => {
-      this._animateNext();
-    };
-    await this.play(this._currentAnimation);
   }
 }

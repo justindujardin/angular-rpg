@@ -54,6 +54,7 @@ import {
 import { CombatDefeatSummary } from './states/combat-defeat.state';
 import { CombatRunSummary } from './states/combat-escape.state';
 import { CombatStateMachineComponent } from './states/combat.machine';
+import { CombatStateNames } from './states/states';
 
 @Component({
   selector: 'rpg-combat',
@@ -92,6 +93,8 @@ export class CombatComponent
    * @type {Array}
    */
   @Input() damages: ICombatDamageSummary[] = [];
+
+  @Input() defaultState: CombatStateNames | null = 'start';
 
   /**
    * Mouse hook for capturing input with world and screen coordinates.

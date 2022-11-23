@@ -74,7 +74,7 @@ export class ChooseActionType extends State<CombatChooseActionStateNames> {
   static NAME: CombatChooseActionStateNames = 'choose-action';
   name: CombatChooseActionStateNames = ChooseActionType.NAME;
 
-  enter(machine: ChooseActionStateMachine) {
+  async enter(machine: ChooseActionStateMachine) {
     const combat = machine.parent.machine;
     assertTrue(combat, 'invalid link to combat state machine');
     let sub: Subscription | null = null;
@@ -118,7 +118,7 @@ export class ChooseActionType extends State<CombatChooseActionStateNames> {
     machine.parent.items = items.map((a: CombatActionBehavior) => {
       return {
         select: selectAction.bind(this, a),
-        label: a.getActionName(),
+        label: a.name,
         id: a._uid,
       };
     });
@@ -136,7 +136,7 @@ export class ChooseActionType extends State<CombatChooseActionStateNames> {
     });
   }
 
-  exit(machine: ChooseActionStateMachine) {
+  async exit(machine: ChooseActionStateMachine) {
     machine.parent.items = [];
   }
 }
@@ -147,7 +147,7 @@ export class ChooseMagicSpell extends State<CombatChooseActionStateNames> {
   static NAME: CombatChooseActionStateNames = 'choose-spell';
   name: CombatChooseActionStateNames = ChooseMagicSpell.NAME;
 
-  enter(machine: ChooseActionStateMachine) {
+  async enter(machine: ChooseActionStateMachine) {
     if (!machine.current) {
       throw new Error('Requires Current Player');
     }
@@ -193,7 +193,7 @@ export class ChooseMagicSpell extends State<CombatChooseActionStateNames> {
     sub = combat.onClick$.subscribe(clickSelect);
   }
 
-  exit(machine: ChooseActionStateMachine) {
+  async exit(machine: ChooseActionStateMachine) {
     machine.parent.items = [];
   }
 }
@@ -204,7 +204,7 @@ export class ChooseUsableItem extends State<CombatChooseActionStateNames> {
   static NAME: CombatChooseActionStateNames = 'choose-item';
   name: CombatChooseActionStateNames = ChooseUsableItem.NAME;
 
-  enter(machine: ChooseActionStateMachine) {
+  async enter(machine: ChooseActionStateMachine) {
     if (!machine.current || !machine.parent?.machine) {
       throw new Error('Requires Current Player and parent machine');
     }
@@ -225,7 +225,7 @@ export class ChooseUsableItem extends State<CombatChooseActionStateNames> {
       .toJS() as ICombatMenuItem[];
   }
 
-  exit(machine: ChooseActionStateMachine) {
+  async exit(machine: ChooseActionStateMachine) {
     machine.parent.items = [];
   }
 }
@@ -237,10 +237,10 @@ export class ChooseActionTarget extends State<CombatChooseActionStateNames> {
   static NAME: CombatChooseActionStateNames = 'choose-target';
   name: CombatChooseActionStateNames = ChooseActionTarget.NAME;
 
-  enter(machine: ChooseActionStateMachine) {
+  async enter(machine: ChooseActionStateMachine) {
     const enemies: GameEntityObject[] = machine.enemies;
     const p: GameEntityObject = machine.target || enemies[0];
-    machine.parent.pointerClass = machine.action?.getActionName() || '';
+    machine.parent.pointerClass = machine.action?.name || '';
     if (!p) {
       machine.parent.pointer = false;
       return;
@@ -281,7 +281,7 @@ export class ChooseActionTarget extends State<CombatChooseActionStateNames> {
     sub = combat.onClick$.subscribe((c) => clickTarget(c));
   }
 
-  exit(machine: ChooseActionStateMachine) {
+  async exit(machine: ChooseActionStateMachine) {
     machine.parent.items = [];
   }
 }
@@ -298,7 +298,7 @@ export class ChooseActionSubmit extends State<CombatChooseActionStateNames> {
     super();
   }
 
-  enter(machine: ChooseActionStateMachine) {
+  async enter(machine: ChooseActionStateMachine) {
     if (!machine.current || !machine.action || !this.submit) {
       throw new Error('Invalid state');
     }

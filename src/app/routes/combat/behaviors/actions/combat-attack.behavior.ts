@@ -8,7 +8,7 @@ import { AnimatedSpriteBehavior } from '../../../../behaviors/animated-sprite.be
 import { DamageComponent } from '../../../../behaviors/damage.behavior';
 import { SoundBehavior } from '../../../../behaviors/sound-behavior';
 import { SpriteComponent } from '../../../../behaviors/sprite.behavior';
-import { ImageResource, ResourceManager } from '../../../../core';
+import { ResourceManager } from '../../../../core';
 import { getSoundEffectUrl } from '../../../../core/api';
 import { CombatantTypes } from '../../../../models/base-entity';
 import { CombatAttackAction } from '../../../../models/combat/combat.actions';
@@ -71,9 +71,6 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
   }
 
   async act(): Promise<boolean> {
-    if (!this.isCurrentTurn()) {
-      return Promise.reject('it is not the current users turn');
-    }
     await this.preload();
 
     //
@@ -180,11 +177,6 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
       );
       return;
     }
-
-    const damageImages: ImageResource[] = await this.gameWorld.sprites.getSpriteSheet(
-      meta.source
-    );
-    const damageImage: HTMLImageElement = damageImages[0].data;
     const components = {
       animation: new AnimatedSpriteBehavior({
         spriteName: 'attack',
@@ -194,7 +186,6 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
         name: 'attack',
         icon: damageAnimation,
         meta,
-        image: damageImage,
       }),
       damage: new DamageComponent(),
       sound: new SoundBehavior({

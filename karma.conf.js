@@ -32,6 +32,10 @@ module.exports = function (config) {
     browsers: ["Chrome"],
     singleRun: false,
     customLaunchers: {
+      ChromeCustom: {
+        base: "Chrome",
+        flags: ["--autoplay-policy=no-user-gesture-required"],
+      },
       ChromeDebug: {
         base: "Chrome",
         flags: [

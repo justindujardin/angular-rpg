@@ -6,23 +6,17 @@ import { assertTrue } from '../../../models/util';
 import { GameWorld } from '../../../services/game-world';
 import { RPGGame } from '../../../services/rpg-game';
 import { CombatAttackBehaviorComponent } from '../behaviors/actions';
-import {
-  testCombatAddEnemyCombatants,
-  testCombatAddPartyCombatants,
-  testCombatGetEncounter,
-  testCombatGetStateMachine,
-} from '../combat.testing';
+import { testCombatCreateComponent, testCombatGetEncounter } from '../combat.testing';
 import { CombatBeginTurnStateComponent } from './combat-begin-turn.state';
 
 describe('CombatBeginTurnStateComponent', () => {
-  let world: GameWorld;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, ...APP_IMPORTS],
       declarations: [CombatBeginTurnStateComponent],
       providers: APP_TESTING_PROVIDERS,
     }).compileComponents();
-    world = TestBed.inject(GameWorld);
+    TestBed.inject(GameWorld);
     const game = TestBed.inject(RPGGame);
     await game.initGame(false);
     await testAppLoadSprites();
@@ -31,9 +25,10 @@ describe('CombatBeginTurnStateComponent', () => {
   it('calls act() on current party member action choice', async () => {
     const fixture = TestBed.createComponent(CombatBeginTurnStateComponent);
     const comp = fixture.componentInstance;
-    const machine = testCombatGetStateMachine();
-    const players = testCombatAddPartyCombatants(machine.store, machine);
-    const enemies = await testCombatAddEnemyCombatants(machine);
+    const combat = testCombatCreateComponent(null);
+    const machine = combat.machine;
+    const players = combat.party.toArray();
+    const enemies = combat.enemies.toArray();
     machine.current = players[0];
     let called = false;
     machine.playerChoices[machine.current._uid] = {
@@ -46,7 +41,7 @@ describe('CombatBeginTurnStateComponent', () => {
       },
     };
     machine.encounter = testCombatGetEncounter(machine.store);
-    comp.enter(machine);
+    await comp.enter(machine);
     fixture.detectChanges();
     expect(called).toBe(true);
   });
@@ -54,9 +49,10 @@ describe('CombatBeginTurnStateComponent', () => {
   it('selects a new target is player target dies before their turn', async () => {
     const fixture = TestBed.createComponent(CombatBeginTurnStateComponent);
     const comp = fixture.componentInstance;
-    const machine = testCombatGetStateMachine();
-    const players = testCombatAddPartyCombatants(machine.store, machine);
-    const enemies = await testCombatAddEnemyCombatants(machine);
+    const combat = testCombatCreateComponent(null);
+    const machine = combat.machine;
+    const players = combat.party.toArray();
+    const enemies = combat.enemies.toArray();
     const deadEnemy = enemies[1];
     assertTrue(deadEnemy.model, 'missing second enemy');
     deadEnemy.model = { ...deadEnemy.model, hp: 0 };
@@ -77,7 +73,7 @@ describe('CombatBeginTurnStateComponent', () => {
       },
     });
     machine.encounter = testCombatGetEncounter(machine.store);
-    comp.enter(machine);
+    await comp.enter(machine);
     fixture.detectChanges();
     expect(called).toBe(true);
   });
@@ -85,9 +81,10 @@ describe('CombatBeginTurnStateComponent', () => {
   it('scales current player up on enter and back down on exit', async () => {
     const fixture = TestBed.createComponent(CombatBeginTurnStateComponent);
     const comp = fixture.componentInstance;
-    const machine = testCombatGetStateMachine();
-    const players = testCombatAddPartyCombatants(machine.store, machine);
-    const enemies = await testCombatAddEnemyCombatants(machine);
+    const combat = testCombatCreateComponent(null);
+    const machine = combat.machine;
+    const players = combat.party.toArray();
+    const enemies = combat.enemies.toArray();
     machine.playerChoices[players[0]._uid] = {
       from: players[0],
       to: enemies[0],
@@ -96,7 +93,7 @@ describe('CombatBeginTurnStateComponent', () => {
     };
     machine.current = players[0];
     machine.encounter = testCombatGetEncounter(machine.store);
-    comp.enter(machine);
+    await comp.enter(machine);
     expect(players[0].scale).toBe(1.25);
     fixture.detectChanges();
     comp.exit(machine);
@@ -107,9 +104,10 @@ describe('CombatBeginTurnStateComponent', () => {
     const fixture = TestBed.createComponent(CombatBeginTurnStateComponent);
     const comp = fixture.componentInstance;
     await testAppLoadSprites();
-    const machine = testCombatGetStateMachine();
-    const player = testCombatAddPartyCombatants(machine.store, machine, true)[0];
-    const enemies = await testCombatAddEnemyCombatants(machine);
+    const combat = testCombatCreateComponent(null);
+    const machine = combat.machine;
+    const party = combat.party.toArray();
+    const enemies = combat.enemies.toArray();
     const enemy = enemies[0];
     const attackComponent = enemy.findBehavior<CombatAttackBehaviorComponent>(
       CombatAttackBehaviorComponent
@@ -118,15 +116,15 @@ describe('CombatBeginTurnStateComponent', () => {
     let called = false;
     attackComponent.act = async function () {
       // Enemy is the attcker
-      expect(attackComponent.from).toEqual(enemy);
+      expect(attackComponent.from?._uid).toEqual(enemy._uid);
       // Player is the defender
-      expect(attackComponent.to).toEqual(player);
+      expect(party.find((p) => p._uid === attackComponent.to?._uid)).toBeDefined();
       called = true;
       return true;
     };
     machine.current = enemy;
 
-    comp.enter(machine);
+    await comp.enter(machine);
     fixture.detectChanges();
 
     expect(called).toBe(true);
