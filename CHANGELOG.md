@@ -1,3 +1,15 @@
+## [0.3.2](https://github.com/justindujardin/angular-rpg/compare/v0.3.1...v0.3.2) (2022-11-23)
+
+
+### Bug Fixes
+
+* **animated:** fix async playChain ([94bd29c](https://github.com/justindujardin/angular-rpg/commit/94bd29c567c3bd0189799057f1ec194507b6cbb1))
+
+
+### Features
+
+* **testing:** add testCombatCreateComponent for building testable combat components ([b813191](https://github.com/justindujardin/angular-rpg/commit/b8131911e7ed6cd7fc6bd59cc4f58df3ad7fabb8))
+
 ## [0.3.1](https://github.com/justindujardin/angular-rpg/compare/v0.3.0...v0.3.1) (2022-11-07)
 
 
