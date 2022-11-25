@@ -263,10 +263,7 @@ export class ChooseActionTarget extends State<CombatChooseActionStateNames> {
       selectTarget(click.hits[0]);
     };
 
-    const beneficial: boolean = !!(
-      machine &&
-      ((machine.spell && machine.spell.benefit) || machine.item)
-    );
+    const beneficial: boolean = !!(machine.spell?.benefit || machine.item);
     const targets: GameEntityObject[] = beneficial ? machine.players : machine.enemies;
     machine.parent.items = targets.map((a: GameEntityObject) => {
       return {
@@ -313,7 +310,6 @@ export class ChooseActionSubmit extends State<CombatChooseActionStateNames> {
       machine.action.to = machine.target;
       machine.action.spell = machine.spell;
       machine.action.item = machine.item;
-      machine.action.select();
       machine.parent.pointerClass = '';
       this.submit(machine.action);
     });

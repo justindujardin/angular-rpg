@@ -39,16 +39,11 @@ export class CombatGuardBehavior extends CombatActionBehavior {
     return false;
   }
 
-  async act(): Promise<boolean> {
-    this.combat.machine.setCurrentState('end-turn');
-    return true;
-  }
-
   /**
    * Until the end of the next turn, or combat end, increase the
    * current players defense.
    */
-  select(): void {
+  async act(): Promise<boolean> {
     const model: CombatantTypes = this.from?.model as CombatantTypes;
     assertTrue(model, 'invalid guard behavior model');
     assertTrue(this._subscription === null, 'subscription leak in guard behavior');
@@ -59,6 +54,8 @@ export class CombatGuardBehavior extends CombatActionBehavior {
     this.store.dispatch(
       new CombatSetStatusAction({ target: model, classes: ['guarding'] })
     );
+    this.combat.machine.setCurrentState('end-turn');
+    return true;
   }
 
   enterStateHandler(change: IStateChange<CombatStateNames>) {

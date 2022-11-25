@@ -68,13 +68,6 @@ export class CombatActionBehavior extends SceneObjectBehavior implements IPlayer
     return Promise.reject('do not call super on .act()');
   }
 
-  /**
-   * The action has been selected for the current turn.
-   */
-  select() {
-    // nothing
-  }
-
   /** Preload any sprites/sounds that the action requires */
   async preload(): Promise<(AudioResource | ImageResource)[]> {
     const spriteSheets = _.uniq(
