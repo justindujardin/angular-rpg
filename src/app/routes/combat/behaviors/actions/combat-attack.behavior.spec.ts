@@ -1,65 +1,20 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { APP_IMPORTS } from '../../../../app.imports';
-import { APP_TESTING_PROVIDERS, testAppLoadSprites } from '../../../../app.testing';
 import {
-  INotifyItem,
-  NotificationService,
-} from '../../../../components/notification/notification.service';
+  APP_TESTING_PROVIDERS,
+  testAppLoadSprites,
+  testAppMockNotificationService,
+} from '../../../../app.testing';
 import { GameEntityObject } from '../../../../scene/objects/game-entity-object';
 import { GameWorld } from '../../../../services/game-world';
 import { RPGGame } from '../../../../services/rpg-game';
 import { testCombatCreateComponent } from '../../combat.testing';
 import { CombatAttackBehaviorComponent } from './combat-attack.behavior';
 
-/**
- * Returns a provider that mocks out the show() calls in the notification
- * service so that there is no wait while messages are shown.
- * @returns
- */
-function testAppMockNotificationService() {
-  const spy: jasmine.SpyObj<NotificationService> = jasmine.createSpyObj(
-    'NotificationService',
-    ['show', 'dismiss']
-  );
-  spy.show.and.callFake(
-    (message: string, done: () => void, duration?: number): INotifyItem => {
-      if (done) {
-        done();
-      }
-      const obj: INotifyItem = {
-        message,
-        done,
-        elapsed: 0,
-        duration: 0,
-      };
-      return obj;
-    }
-  );
-  return { provide: NotificationService, useValue: spy };
-}
-
 describe('CombatAttackBehaviorComponent', () => {
   let world: GameWorld;
   beforeEach(async () => {
-    const spy: jasmine.SpyObj<NotificationService> = jasmine.createSpyObj(
-      'NotificationService',
-      ['show', 'dismiss']
-    );
-    spy.show.and.callFake(
-      (message: string, done: () => void, duration?: number): INotifyItem => {
-        if (done) {
-          done();
-        }
-        const obj: INotifyItem = {
-          message,
-          done,
-          elapsed: 0,
-          duration: 0,
-        };
-        return obj;
-      }
-    );
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, ...APP_IMPORTS],
       providers: [...APP_TESTING_PROVIDERS, testAppMockNotificationService()],
