@@ -24,7 +24,7 @@ export class CombatRunBehaviorComponent extends CombatActionBehavior {
   }
 
   async act(): Promise<boolean> {
-    const success: boolean = this._rollEscape();
+    const success: boolean = this.rollEscape();
     assertTrue(
       this.combat.machine.current,
       'CombatRunBehaviorComponent: invalid escape player'
@@ -48,18 +48,11 @@ export class CombatRunBehaviorComponent extends CombatActionBehavior {
    *
    * TODO: This should really consider character attributes.
    *
-   * @returns {boolean} If the escape will succeed.
-   * @private
+   * @returns If the escape will succeed.
    */
-  private _rollEscape(): boolean {
+  rollEscape(): boolean {
     let roll: number = _.random(0, 200);
-    let chance: number = 100;
-    if (roll === 200) {
-      return false;
-    }
-    if (roll === 0) {
-      return true;
-    }
+    let chance: number = 120;
     return roll <= chance;
   }
 }
