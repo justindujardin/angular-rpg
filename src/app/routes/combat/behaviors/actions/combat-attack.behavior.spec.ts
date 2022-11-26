@@ -28,6 +28,51 @@ describe('CombatAttackBehaviorComponent', () => {
   afterEach(() => {
     world.time.stop();
   });
+
+  describe('getHitSound', async () => {
+    it('returns kill sound when damage reduces target HP to 0', async () => {
+      const fixture = TestBed.createComponent(CombatAttackBehaviorComponent);
+      const comp = fixture.componentInstance;
+      expect(comp.getHitSound(10, 12)).toBe(comp.sounds.killSound);
+    });
+    it('returns miss sound when damage is 0', async () => {
+      const fixture = TestBed.createComponent(CombatAttackBehaviorComponent);
+      const comp = fixture.componentInstance;
+      expect(comp.getHitSound(10, 0)).toBe(comp.sounds.missSound);
+    });
+    it('returns hit sound when damage is > 0 and target is not guarding', async () => {
+      const fixture = TestBed.createComponent(CombatAttackBehaviorComponent);
+      const comp = fixture.componentInstance;
+      expect(comp.getHitSound(10, 2, false)).toBe(comp.sounds.hitSound);
+    });
+    it('returns miss sound when damage is > 0 and target is guarding', async () => {
+      const fixture = TestBed.createComponent(CombatAttackBehaviorComponent);
+      const comp = fixture.componentInstance;
+      expect(comp.getHitSound(10, 2, true)).toBe(comp.sounds.missSound);
+    });
+  });
+  describe('getDamageAnimation', async () => {
+    it('returns hit animation when damage > 0 for a single attack', async () => {
+      const fixture = TestBed.createComponent(CombatAttackBehaviorComponent);
+      const comp = fixture.componentInstance;
+      expect(comp.getDamageAnimation(10, 1)).toBe(comp.sprites.hit);
+    });
+    it('returns doubleHit animation when damage > 0 for multiple attacks', async () => {
+      const fixture = TestBed.createComponent(CombatAttackBehaviorComponent);
+      const comp = fixture.componentInstance;
+      expect(comp.getDamageAnimation(10, 2)).toBe(comp.sprites.doubleHit);
+    });
+    it('returns guardHit animation when damage > 0 and target is guarding', async () => {
+      const fixture = TestBed.createComponent(CombatAttackBehaviorComponent);
+      const comp = fixture.componentInstance;
+      expect(comp.getDamageAnimation(10, 1, true)).toBe(comp.sprites.guardHit);
+    });
+    it('returns missHit animation when damage = 0', async () => {
+      const fixture = TestBed.createComponent(CombatAttackBehaviorComponent);
+      const comp = fixture.componentInstance;
+      expect(comp.getDamageAnimation(0)).toBe(comp.sprites.missHit);
+    });
+  });
   describe('act', () => {
     it('rejects with invalid to/from', async () => {
       const fixture = TestBed.createComponent(CombatAttackBehaviorComponent);
@@ -43,7 +88,7 @@ describe('CombatAttackBehaviorComponent', () => {
       comp.from = new GameEntityObject();
       await expectAsync(comp.act()).toBeRejected();
     });
-    it('resolves with valid to/from', async () => {
+    it('resolves with valid to/from (party)', async () => {
       const combat = testCombatCreateComponent(null);
       const party = combat.party.toArray();
       const enemies = combat.enemies.toArray();
@@ -52,6 +97,20 @@ describe('CombatAttackBehaviorComponent', () => {
       comp.combat = combat;
       comp.from = party[0];
       comp.to = enemies[0];
+      fixture.detectChanges();
+
+      const result = await comp.act();
+      expect(result).toBe(true);
+    });
+    it('resolves with valid to/from (enemy)', async () => {
+      const combat = testCombatCreateComponent(null);
+      const party = combat.party.toArray();
+      const enemies = combat.enemies.toArray();
+      const fixture = TestBed.createComponent(CombatAttackBehaviorComponent);
+      const comp = fixture.componentInstance;
+      comp.combat = combat;
+      comp.from = enemies[0];
+      comp.to = party[0];
       fixture.detectChanges();
 
       const result = await comp.act();
