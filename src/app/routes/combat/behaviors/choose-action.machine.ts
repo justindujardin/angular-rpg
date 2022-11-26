@@ -203,6 +203,8 @@ export class ChooseMagicSpell extends State<CombatChooseActionStateNames> {
 export class ChooseUsableItem extends State<CombatChooseActionStateNames> {
   static NAME: CombatChooseActionStateNames = 'choose-item';
   name: CombatChooseActionStateNames = ChooseUsableItem.NAME;
+  /** Already selected items are excluded from item list */
+  selectedItems: Item[] = [];
 
   async enter(machine: ChooseActionStateMachine) {
     if (!machine.current || !machine.parent?.machine) {
@@ -213,8 +215,12 @@ export class ChooseUsableItem extends State<CombatChooseActionStateNames> {
       machine.item = item;
       machine.target = machine.current;
       machine.setCurrentState(ChooseActionTarget.NAME);
+      // Note item as selected (to avoid 2 players choosing the same item)
+      this.selectedItems.push(item);
     };
     machine.parent.items = parent.items
+      // Exclude already selected items for use
+      .filter((a: Item) => !this.selectedItems.find((b) => a.eid === b.eid))
       .map((a: Item) => {
         return {
           select: selectItem.bind(this, a),
