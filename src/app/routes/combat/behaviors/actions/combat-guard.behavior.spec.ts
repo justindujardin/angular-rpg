@@ -68,14 +68,14 @@ describe('CombatGuardBehavior', () => {
       await expectAsync(comp.act()).toBeResolved();
 
       // "guarding" status is added to player
-      const guardingPlayer = testCombatGetParty(comp.store).get(0);
+      const guardingPlayer = testCombatGetParty(comp.store)[0];
       expect(guardingPlayer.status).toEqual(['guarding']);
 
       // Clears guarding when choosing new actions next turn
       await comp.combat.machine.setCurrentState('choose-action');
       fixture.detectChanges();
 
-      const finalPlayer = testCombatGetParty(comp.store).get(0);
+      const finalPlayer = testCombatGetParty(comp.store)[0];
       expect(finalPlayer.status).toEqual([]);
     });
   });
