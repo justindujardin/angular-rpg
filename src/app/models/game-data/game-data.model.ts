@@ -67,7 +67,7 @@ export interface ITemplateBaseItem extends ITemplateId {
   /**
    * The effects to apply
    */
-  readonly effects?: string[];
+  readonly effects?: [string, number];
 }
 
 export interface ITemplateItem extends ITemplateBaseItem {

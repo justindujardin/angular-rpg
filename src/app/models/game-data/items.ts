@@ -7,7 +7,7 @@ export const ITEMS_DATA: ITemplateItem[] = [
     name: 'Potion',
     level: 1,
     icon: 'redSalve.png',
-    effects: ['heal(50)'],
+    effects: ['heal', 50],
     value: 50,
   },
   {
@@ -16,7 +16,7 @@ export const ITEMS_DATA: ITemplateItem[] = [
     name: 'Large Potion',
     level: 1,
     icon: 'redPotion.png',
-    effects: ['heal(200)'],
+    effects: ['heal', 200],
     value: 200,
   },
   {
@@ -25,7 +25,7 @@ export const ITEMS_DATA: ITemplateItem[] = [
     name: 'Ether',
     level: 10,
     icon: 'bluePotion2.png',
-    effects: ['magic(100)'],
+    effects: ['magic', 100],
     value: 1500,
     usedby: [],
   },
