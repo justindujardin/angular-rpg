@@ -25,8 +25,8 @@ import { AnimatedSpriteBehavior } from '../../../../behaviors/animated-sprite.be
 import { DamageComponent } from '../../../../behaviors/damage.behavior';
 import { SoundBehavior } from '../../../../behaviors/sound-behavior';
 import { SpriteComponent } from '../../../../behaviors/sprite.behavior';
-import { ImageResource, ResourceManager } from '../../../../core';
-import { getSoundEffectUrl, ISpriteMeta } from '../../../../core/api';
+import { ResourceManager } from '../../../../core';
+import { getSoundEffectUrl } from '../../../../core/api';
 import {
   ITemplateBaseItem,
   ITemplateMagic,
@@ -48,6 +48,15 @@ import { CombatActionBehavior } from '../combat-action.behavior';
 export class CombatMagicBehavior extends CombatActionBehavior {
   name: string = 'magic';
   @Input() combat: CombatComponent;
+
+  sounds = {
+    healSound: getSoundEffectUrl('heal'),
+    hurtSound: getSoundEffectUrl('spell'),
+  };
+  sprites = {
+    heal: 'animSpellCast.png',
+    hurt: 'animHitSpell.png',
+  };
 
   constructor(
     public store: Store<AppState>,
@@ -71,10 +80,7 @@ export class CombatMagicBehavior extends CombatActionBehavior {
   }
 
   async act(): Promise<boolean> {
-    if (!this.spell) {
-      console.error('null spell to cast');
-      return false;
-    }
+    assertTrue(this.spell, '.spell is invalid for magic behavior');
     switch (this.spell.id) {
       case 'heal':
         await this.healSpell();
@@ -115,7 +121,6 @@ export class CombatMagicBehavior extends CombatActionBehavior {
         damage: healAmount,
       };
       this.store.dispatch(new CombatAttackAction(healData));
-      var hitSound: string = getSoundEffectUrl('heal');
       var behaviors = {
         animation: new AnimatedSpriteBehavior({
           spriteName: 'heal',
@@ -123,10 +128,10 @@ export class CombatMagicBehavior extends CombatActionBehavior {
         }),
         sprite: new SpriteComponent({
           name: 'heal',
-          icon: 'animSpellCast.png',
+          icon: this.sprites.heal,
         }),
         sound: new SoundBehavior({
-          url: hitSound,
+          url: this.sounds.healSound,
           volume: 0.3,
         }),
       };
@@ -157,9 +162,6 @@ export class CombatMagicBehavior extends CombatActionBehavior {
     assertTrue(casterModel, 'CombatMagicBehavior: invalid caster source model');
     assertTrue(targetModel, 'CombatMagicBehavior: invalid caster target model');
     const attackerPlayer = caster as CombatPlayerComponent;
-    if (!attackerPlayer) {
-      return;
-    }
     const done$ = new BehaviorSubject<boolean>(false);
     const actionCompletePromise = done$
       .pipe(
@@ -178,6 +180,7 @@ export class CombatMagicBehavior extends CombatActionBehavior {
         .subscribe(async (args) => {
           const equippedAttacker: EntityWithEquipment | null = args[0];
           const equippedDefender: EntityWithEquipment | null = args[1];
+          assertTrue(equippedAttacker, 'invalid spell entity');
           const inventory: Immutable.List<Item> = args[2];
           await this.doHurtSpellAction(equippedAttacker, equippedDefender, inventory);
           done$.next(true);
@@ -189,7 +192,7 @@ export class CombatMagicBehavior extends CombatActionBehavior {
   }
 
   private async doHurtSpellAction(
-    equippedAttacker: EntityWithEquipment | null,
+    equippedAttacker: EntityWithEquipment,
     equippedDefender: EntityWithEquipment | null,
     inventory: Immutable.List<Item>
   ) {
@@ -204,28 +207,19 @@ export class CombatMagicBehavior extends CombatActionBehavior {
     const targetModel: any = target.model;
     assertTrue(casterModel, 'CombatMagicBehavior: invalid caster source model');
     assertTrue(targetModel, 'CombatMagicBehavior: invalid caster target model');
-
     const magicCastConfig: ICombatCastSpellConfig = {
-      caster: equippedAttacker || casterModel,
+      caster: equippedAttacker,
       spell: spell,
       targets: [equippedDefender || targetModel],
       inventory: inventory.toJS() as ITemplateBaseItem[],
     };
     const magicEffects = this.combatService.castSpell(magicCastConfig);
-    if (magicEffects.targets.length > 1) {
-      // TODO: the Damage effects are kind of hardcoded here. We need to
-      //       loop over the targets and apply many damage effects. Perhaps
-      //       we need a damageService similar to notifyService that handles
-      //       the async nature of applying damage and cleaning up. Then we
-      //       could do a simple for loop here and this would be cleaned up
-      //       immensely.
-      throw new Error('No support for multiple magic targets yet.');
-    }
+    assertTrue(magicEffects.targets.length === 1, 'No support for multiple targets.');
     const targ: IMagicTargetDelta | undefined = magicEffects.targets[0];
-    // NOTE: This is negative because the Attack action assumes positive values
-    //       are damage. We should probably have a separate action for magic effects.
     assertTrue(targ, 'no magic effect');
-    const damage = -(targ.healthDelta || 0);
+    // NOTE: negative because the value is a health delta (i.e. negative) so
+    //       we need to flip the sign to use it as a damage value
+    const damage = -(targ.healthDelta as number);
     const didKill: boolean = targetModel.hp - damage <= 0;
     const attackData: CombatAttack = {
       attacker: casterModel,
@@ -233,21 +227,6 @@ export class CombatMagicBehavior extends CombatActionBehavior {
       damage,
     };
     this.store.dispatch(new CombatAttackAction(attackData));
-    const damageAnimation: string = 'animHitSpell.png';
-    const meta: ISpriteMeta | null =
-      this.gameWorld.sprites.getSpriteMeta(damageAnimation);
-    if (!meta) {
-      console.warn(
-        'could not find damage animation in sprites metadata: ' + damageAnimation
-      );
-      return;
-    }
-
-    const damageImages: ImageResource[] = await this.gameWorld.sprites.getSpriteSheet(
-      meta.source
-    );
-    const damageImage: HTMLImageElement = damageImages[0].data;
-    var hitSound: string = getSoundEffectUrl('spell');
     var behaviors = {
       animation: new AnimatedSpriteBehavior({
         spriteName: 'heal',
@@ -256,11 +235,10 @@ export class CombatMagicBehavior extends CombatActionBehavior {
       damage: new DamageComponent(),
       sprite: new SpriteComponent({
         name: 'heal',
-        icon: 'animSpellCast.png',
-        image: damageImage,
+        icon: this.sprites.hurt,
       }),
       sound: new SoundBehavior({
-        url: hitSound,
+        url: this.sounds.hurtSound,
         volume: 0.3,
       }),
     };
