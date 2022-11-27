@@ -52,6 +52,12 @@ export class Point implements IPoint {
     return new Point(this.x, this.y);
   }
 
+  ceil(): Point {
+    this.x = Math.ceil(this.x);
+    this.y = Math.ceil(this.y);
+    return this;
+  }
+
   floor(): Point {
     this.x = Math.floor(this.x);
     this.y = Math.floor(this.y);
