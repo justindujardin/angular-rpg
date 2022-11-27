@@ -201,7 +201,12 @@ export class CombatComponent
       if (data.damage > 0 && data.defender instanceof CombatPlayerComponent) {
         this.shake(this.canvasElementRef.nativeElement);
       }
-      this.notify.show(msg, _done);
+      if (this.machine.autoCombat) {
+        // Wait a moment between turns
+        _.delay(() => _done(), 750);
+      } else {
+        this.notify.show(msg, _done);
+      }
     });
     const runSub = this.machine.onRun$.subscribe((data: CombatRunSummary) => {
       const _done = this.machine.onRun$.notifyWait();
@@ -251,6 +256,11 @@ export class CombatComponent
   //
   // Events
   //
+
+  toggleAutoCombat() {
+    this.machine.autoCombat = !this.machine.autoCombat;
+    localStorage.setItem('rpgAutoCombat', `${this.machine.autoCombat}`);
+  }
 
   onAddToScene(scene: Scene) {
     super.onAddToScene(scene);

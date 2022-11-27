@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
-import { interval, Observable } from 'rxjs';
+import { BehaviorSubject, interval, Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 import * as _ from 'underscore';
 import { Point } from '../../../../app/core/point';
 import { assertTrue } from '../../../models/util';
 import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { SceneView } from '../../../scene/scene-view';
+import { CombatAttackBehaviorComponent } from '../behaviors/actions';
 import { ChooseActionStateMachine } from '../behaviors/choose-action.machine';
 import { CombatActionBehavior } from '../behaviors/combat-action.behavior';
 import { ICombatMenuItem } from '../combat.types';
@@ -44,6 +45,18 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
   @Input() pointerClass: string = '';
   /** The scene view container. Used to calculating screen space pointer coordinates */
   @Input() view: SceneView | null = null;
+
+  private _autoCombat$ = new BehaviorSubject<boolean>(false);
+  /** Automatically select moves for players for interactionless combat */
+  @Input() set autoCombat(value: boolean) {
+    this._autoCombat$.next(value);
+    if (value && this.machine) {
+      this._doAutoSelection();
+    }
+  }
+  get autoCombat(): boolean {
+    return this._autoCombat$.value;
+  }
 
   private _currentMachine: ChooseActionStateMachine | null = null;
   private toChoose: GameEntityObject[] = [];
@@ -93,6 +106,10 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
     machine.currentDone = true;
     machine.playerChoices = {};
 
+    if (this.autoCombat) {
+      return this._doAutoSelection();
+    }
+
     this._currentMachine = new ChooseActionStateMachine(
       this,
       machine.scene,
@@ -121,6 +138,41 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
       }
     }
     this._next();
+  }
+
+  private _doAutoSelection() {
+    const remainder = [...this.toChoose];
+    if (this._currentMachine?.current) {
+      remainder.unshift(this._currentMachine.current);
+    }
+    if (this._currentMachine) {
+      this._currentMachine.destroy();
+      this._currentMachine = null;
+    }
+    this.toChoose.length = 0;
+    this.pointer = false;
+    this.pointerClass = '';
+
+    assertTrue(this.machine, 'invalid state machine');
+
+    for (let i = 0; i < remainder.length; i++) {
+      const player = remainder[i];
+      // TODO: Support more than attack actions
+      const action = player.findBehavior<CombatAttackBehaviorComponent>(
+        CombatAttackBehaviorComponent
+      );
+
+      assertTrue(this.machine.enemies, 'no enemies');
+      const enemy = this.machine.enemies.toArray()[0];
+
+      assertTrue(action, `attack action not found on: ${player.name}`);
+      const id = player._uid;
+      action.from = player;
+      action.to = enemy;
+      this.machine.playerChoices[id] = action;
+      console.log(`[autoCombat] ${player.model?.name} chose ${action.name}`);
+    }
+    this.machine.setCurrentState('begin-turn');
   }
 
   private _next() {

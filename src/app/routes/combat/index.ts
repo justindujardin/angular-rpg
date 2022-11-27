@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { BehaviorsModule } from '../../behaviors/index';
 import { AppComponentsModule } from '../../components/index';
 import { ServicesModule } from '../../services';
@@ -53,7 +55,14 @@ export const COMBAT_PROVIDERS = [CanActivateCombat];
   declarations: COMBAT_EXPORTS,
   exports: COMBAT_EXPORTS,
   providers: COMBAT_PROVIDERS,
-  imports: [CommonModule, BehaviorsModule, AppComponentsModule, ServicesModule],
+  imports: [
+    CommonModule,
+    BehaviorsModule,
+    AppComponentsModule,
+    ServicesModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
 })
 export class CombatModule {
   static forRoot(): ModuleWithProviders<CombatModule> {
