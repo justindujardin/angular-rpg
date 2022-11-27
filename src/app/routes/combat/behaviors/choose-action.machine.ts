@@ -228,7 +228,10 @@ export class ChooseActionTarget extends State<CombatChooseActionStateNames> {
       selectTarget(click.hits[0]);
     };
 
-    const beneficial: boolean = !!(machine.spell?.benefit || machine.item);
+    const beneficial: boolean = !!(
+      machine &&
+      ((machine.spell && machine.spell.benefit) || machine.item)
+    );
     const targets: GameEntityObject[] = beneficial ? machine.players : machine.enemies;
     machine.parent.items = targets.map((a: GameEntityObject) => {
       return {

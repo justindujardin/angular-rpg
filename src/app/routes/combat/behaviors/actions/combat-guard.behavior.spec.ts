@@ -38,14 +38,6 @@ describe('CombatGuardBehavior', () => {
     expect(comp.canTarget()).toBe(false);
   });
   describe('act', () => {
-    it('rejects with invalid from player', async () => {
-      const { combat, machine } = testCombatCreateComponentFixture();
-      const fixture = TestBed.createComponent(CombatGuardBehavior);
-      const comp = fixture.componentInstance;
-      comp.combat = combat;
-      comp.from = null;
-      await expectAsync(comp.act()).toBeRejected();
-    });
     it('transitions to end-turn state', async () => {
       const { combat, machine } = testCombatCreateComponentFixture();
       const fixture = TestBed.createComponent(CombatGuardBehavior);
@@ -57,6 +49,16 @@ describe('CombatGuardBehavior', () => {
       await expectAsync(comp.act()).toBeResolved();
       expect(machine.setCurrentState).toHaveBeenCalledOnceWith('end-turn');
     });
+  });
+  describe('select', () => {
+    it('rejects with invalid from player', async () => {
+      const { combat, machine } = testCombatCreateComponentFixture();
+      const fixture = TestBed.createComponent(CombatGuardBehavior);
+      const comp = fixture.componentInstance;
+      comp.combat = combat;
+      comp.from = null;
+      await expect(() => comp.select()).toThrow();
+    });
     it('sets "guarding" status on player until a target state is entered', async () => {
       const { combat, machine } = testCombatCreateComponentFixture();
       const fixture = TestBed.createComponent(CombatGuardBehavior);
@@ -65,7 +67,7 @@ describe('CombatGuardBehavior', () => {
       spyOn(machine, 'setCurrentState').and.callThrough();
       comp.combat = combat;
       comp.from = players[0];
-      await expectAsync(comp.act()).toBeResolved();
+      await expect(() => comp.select()).not.toThrow();
 
       // "guarding" status is added to player
       const guardingPlayer = testCombatGetParty(comp.store)[0];
