@@ -1,3 +1,22 @@
+## [0.3.3](https://github.com/justindujardin/angular-rpg/compare/v0.3.2...v0.3.3) (2022-11-27)
+
+
+### Bug Fixes
+
+* **ci:** disable chrome background throttle for tests ([e70f2b2](https://github.com/justindujardin/angular-rpg/commit/e70f2b25dc5ccacd2b15d28a6dc65165364e7073))
+* **combat:** only one player can use the same item ([0d866df](https://github.com/justindujardin/angular-rpg/commit/0d866df74d51797a7a1b423ada329e0990babdc2))
+* **items:** apply item effects in combat instead of static heal(30) ([08062c7](https://github.com/justindujardin/angular-rpg/commit/08062c7bb2920ce06b055cf4b0ba4de9ead5aabf))
+
+
+### Features
+
+* **license:** add attribution for OpenGameArt sprites ([d7e416a](https://github.com/justindujardin/angular-rpg/commit/d7e416a5ad9b5897e12c2315186c57b0b82a928f))
+
+
+### Reverts
+
+* Revert "refactor(combat): remove CombatActionBehavior.select" ([23b4510](https://github.com/justindujardin/angular-rpg/commit/23b4510fdac9012ea89be0962486e4204b69c7dc))
+
 ## [0.3.2](https://github.com/justindujardin/angular-rpg/compare/v0.3.1...v0.3.2) (2022-11-23)
 
 
