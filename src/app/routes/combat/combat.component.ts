@@ -305,9 +305,6 @@ export class CombatComponent
 
     super.processCamera();
   }
-  beforeFrame(view: SceneView, elapsed: number) {
-    // Nope
-  }
 
   /**
    * Render all of the map feature components
@@ -338,10 +335,6 @@ export class CombatComponent
       });
     });
     return this;
-  }
-
-  afterFrame(view: SceneView, elapsed: number) {
-    // Nope
   }
 
   //
