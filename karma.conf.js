@@ -34,7 +34,13 @@ module.exports = function (config) {
     customLaunchers: {
       ChromeCustom: {
         base: "Chrome",
-        flags: ["--autoplay-policy=no-user-gesture-required"],
+        flags: [
+          // Don't require interaction to play sounds
+          "--autoplay-policy=no-user-gesture-required",
+          // Don't hang rAF/timers when in background
+          "--disable-background-timer-throttling",
+          "--disable-backgrounding-occluded-windows",
+        ],
       },
       ChromeDebug: {
         base: "Chrome",
