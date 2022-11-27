@@ -100,8 +100,13 @@ export class SceneView extends SceneObject implements ISceneView {
       return this.camera;
     }
     const clipGrow = this.camera.clone();
-    clipGrow.point.round();
-    clipGrow.extent.round();
+    // Add remainder of x/y from point to extent and ceil the result
+    //
+    // If you don't add the remainder you can still fail to cover the entire
+    // view if point is close to the next integer and gets floored.
+    clipGrow.extent.add(clipGrow.point.x % 1, clipGrow.point.y % 1).ceil();
+    // Floor the point
+    clipGrow.point.floor();
     return clipGrow;
   }
 
