@@ -100,7 +100,7 @@ export class RPGSpriteComponent {
     context.webkitImageSmoothingEnabled = false;
     context.mozImageSmoothingEnabled = false;
     context.msImageSmoothingEnabled = false;
-    (<any>context).imageSmoothingEnabled = false;
+    context.imageSmoothingEnabled = false;
     return context;
   }
 
