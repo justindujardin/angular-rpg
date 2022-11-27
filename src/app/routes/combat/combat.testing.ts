@@ -16,7 +16,11 @@ import {
   ITemplateRandomEncounter,
 } from '../../models/game-data/game-data.model';
 import { RANDOM_ENCOUNTERS_DATA } from '../../models/game-data/random-encounters';
-import { getCombatEncounter } from '../../models/selectors';
+import {
+  getCombatEncounter,
+  getCombatEncounterEnemies,
+  getCombatEncounterParty,
+} from '../../models/selectors';
 import { Scene } from '../../scene/scene';
 import { CombatEnemyComponent } from './combat-enemy.component';
 import { CombatPlayerComponent } from './combat-player.component';
@@ -167,6 +171,24 @@ export function testCombatGetEncounter(store: Store<AppState>): CombatEncounter 
     .pipe(take(1))
     .subscribe((s) => (result = s));
   return result as CombatEncounter;
+}
+
+export function testCombatGetEnemies(store: Store<AppState>): IEnemy[] {
+  let result: IEnemy[] | undefined;
+  store
+    .select(getCombatEncounterEnemies)
+    .pipe(take(1))
+    .subscribe((s) => (result = s.toJS()));
+  return result as IEnemy[];
+}
+
+export function testCombatGetParty(store: Store<AppState>): IPartyMember[] {
+  let result: IPartyMember[] | undefined;
+  store
+    .select(getCombatEncounterParty)
+    .pipe(take(1))
+    .subscribe((s) => (result = s.toJS()));
+  return result as IPartyMember[];
 }
 
 export function testCombatCreateComponent(

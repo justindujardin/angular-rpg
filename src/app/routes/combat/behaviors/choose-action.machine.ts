@@ -43,7 +43,6 @@ export type CombatChooseActionStateNames =
 export class ChooseActionStateMachine extends StateMachine<CombatChooseActionStateNames> {
   current: GameEntityObject | null = null;
   target: GameEntityObject | null = null;
-  player: CombatPlayerComponent | null = null;
   action: CombatActionBehavior | null = null;
   spell: ITemplateMagic | null = null;
   item: Item | null = null;
@@ -85,17 +84,10 @@ export class ChooseActionType extends State<CombatChooseActionStateNames> {
       machine.target = click.hits[0];
       machine.parent.items[0].select();
     };
-    if (!machine.current) {
-      throw new Error('Requires Current Player');
-    }
-    const p: CombatPlayerComponent = machine.current as CombatPlayerComponent;
-    machine.player = p;
-    if (!machine.player) {
-      throw new Error('Requires player render component for combat animations.');
-    }
+    assertTrue(machine.current, 'Requires Current Player');
+    const player = machine.current as CombatPlayerComponent;
     machine.parent.setPointerTarget(null, 'right');
     machine.action = machine.target = machine.spell = machine.item = null;
-
     // Enable menu selection of action type.
     const selectAction = (action: IPlayerAction) => {
       machine.action = action as CombatActionBehavior;
@@ -112,9 +104,9 @@ export class ChooseActionType extends State<CombatChooseActionStateNames> {
       }
     };
 
-    const items = p
+    const items = player
       .findBehaviors(CombatActionBehavior)
-      .filter((c: CombatActionBehavior) => c.canBeUsedBy(p));
+      .filter((c: CombatActionBehavior) => c.canBeUsedBy(player));
     machine.parent.items = items.map((a: CombatActionBehavior) => {
       return {
         select: selectAction.bind(this, a),
@@ -123,17 +115,10 @@ export class ChooseActionType extends State<CombatChooseActionStateNames> {
       };
     });
 
-    // No pointer target
-    if (!p) {
-      machine.parent.pointer = false;
-      return;
-    }
-
-    machine.player.moveForward().then(() => {
-      machine.parent.setPointerTarget(p, 'right');
-      machine.parent.pointer = true;
-      sub = combat.onClick$.subscribe(clickSelect);
-    });
+    await player.moveForward();
+    machine.parent.setPointerTarget(player, 'right');
+    machine.parent.pointer = true;
+    sub = combat.onClick$.subscribe(clickSelect);
   }
 
   async exit(machine: ChooseActionStateMachine) {
@@ -148,49 +133,28 @@ export class ChooseMagicSpell extends State<CombatChooseActionStateNames> {
   name: CombatChooseActionStateNames = ChooseMagicSpell.NAME;
 
   async enter(machine: ChooseActionStateMachine) {
-    if (!machine.current) {
-      throw new Error('Requires Current Player');
-    }
-
+    assertTrue(machine.current, 'Requires Current Player');
     const combat = machine.parent.machine;
     assertTrue(combat, 'invalid link to combat state machine');
-    let sub: Subscription | null = null;
+    const spells = machine.parent.machine?.spells as Immutable.List<ITemplateMagic>;
+    assertTrue(spells, 'no known spells');
 
-    const clickSelect = (click: CombatSceneClick) => {
-      sub?.unsubscribe();
-      sub = null;
-      machine.target = click.hits[0];
-      machine.parent.items[0].select();
-    };
     const selectSpell = (spell: ITemplateMagic) => {
-      sub?.unsubscribe();
-      sub = null;
       machine.spell = spell;
       if (spell.benefit) {
         machine.target = machine.current;
       }
-      switch (spell.target) {
-        case 'target':
-          machine.setCurrentState(ChooseActionTarget.NAME);
-          break;
-        default:
-          console.info(`Unknown spell type, submitting without target: ${spell.type}`);
-          machine.setCurrentState(ChooseActionSubmit.NAME);
-      }
+      assertTrue(spell.target === 'target', 'Multiple target spells not implemented');
+      machine.setCurrentState(ChooseActionTarget.NAME);
     };
-    const spells: Immutable.List<ITemplateMagic> =
-      machine.parent.machine?.spells || Immutable.List<ITemplateMagic>();
-    machine.parent.items = spells
-      .map((a: Magic): ICombatMenuItem => {
-        return {
-          select: selectSpell.bind(this, a),
-          label: a.magicname,
-          id: a.eid,
-        };
-      })
-      .toList()
-      .toJS() as ICombatMenuItem[];
-    sub = combat.onClick$.subscribe(clickSelect);
+
+    machine.parent.items = spells.toJS().map((a: Magic): ICombatMenuItem => {
+      return {
+        select: selectSpell.bind(this, a),
+        label: a.magicname,
+        id: a.eid,
+      };
+    });
   }
 
   async exit(machine: ChooseActionStateMachine) {
@@ -203,26 +167,30 @@ export class ChooseMagicSpell extends State<CombatChooseActionStateNames> {
 export class ChooseUsableItem extends State<CombatChooseActionStateNames> {
   static NAME: CombatChooseActionStateNames = 'choose-item';
   name: CombatChooseActionStateNames = ChooseUsableItem.NAME;
+  /** Already selected items are excluded from item list */
+  selectedItems: Item[] = [];
 
   async enter(machine: ChooseActionStateMachine) {
-    if (!machine.current || !machine.parent?.machine) {
-      throw new Error('Requires Current Player and parent machine');
-    }
+    assertTrue(machine.current, 'invalid player');
+    assertTrue(machine.parent.machine, 'invalid combat state machine');
     const parent = machine.parent.machine;
     const selectItem = (item: Item) => {
       machine.item = item;
       machine.target = machine.current;
       machine.setCurrentState(ChooseActionTarget.NAME);
+      // Note item as selected (to avoid 2 players choosing the same item)
+      this.selectedItems.push(item);
     };
     machine.parent.items = parent.items
+      // Exclude already selected items for use
+      .filter((a: Item) => !this.selectedItems.find((b) => a.eid === b.eid))
+      .toJS()
       .map((a: Item) => {
         return {
           select: selectItem.bind(this, a),
           label: a.name,
         };
-      })
-      .toList()
-      .toJS() as ICombatMenuItem[];
+      });
   }
 
   async exit(machine: ChooseActionStateMachine) {
@@ -240,11 +208,8 @@ export class ChooseActionTarget extends State<CombatChooseActionStateNames> {
   async enter(machine: ChooseActionStateMachine) {
     const enemies: GameEntityObject[] = machine.enemies;
     const p: GameEntityObject = machine.target || enemies[0];
+    assertTrue(p, 'no enemies for targetting');
     machine.parent.pointerClass = machine.action?.name || '';
-    if (!p) {
-      machine.parent.pointer = false;
-      return;
-    }
     const combat = machine.parent.machine;
     assertTrue(combat, 'invalid link to combat state machine');
     let sub: Subscription | null = null;
@@ -271,9 +236,9 @@ export class ChooseActionTarget extends State<CombatChooseActionStateNames> {
     machine.parent.items = targets.map((a: GameEntityObject) => {
       return {
         select: selectTarget.bind(this, a),
-        label: a.model?.name || '',
+        label: `${a.model?.name}`,
         source: a,
-        id: a.model?.eid || '',
+        id: `${a.model?.eid}`,
       };
     });
 
@@ -299,23 +264,17 @@ export class ChooseActionSubmit extends State<CombatChooseActionStateNames> {
   }
 
   async enter(machine: ChooseActionStateMachine) {
-    if (!machine.current || !machine.action || !this.submit) {
-      throw new Error('Invalid state');
-    }
-    if (machine.action.canTarget() && !machine.target) {
-      throw new Error('Invalid target');
-    }
-    assertTrue(machine.player, 'invalid player');
-    machine.player.moveBackward().then(() => {
-      machine.parent.pointer = false;
-      assertTrue(machine.action, 'invalid choose action!');
-      machine.action.from = machine.current;
-      machine.action.to = machine.target;
-      machine.action.spell = machine.spell;
-      machine.action.item = machine.item;
-      machine.action.select();
-      machine.parent.pointerClass = '';
-      this.submit(machine.action);
-    });
+    const player = machine.current as CombatPlayerComponent;
+    assertTrue(player, 'invalid player');
+    assertTrue(machine.action, 'invalid action');
+    assertTrue(!machine.action.canTarget() || machine.target, 'invalid target');
+    await player.moveBackward();
+    machine.parent.pointer = false;
+    machine.action.from = machine.current;
+    machine.action.to = machine.target;
+    machine.action.spell = machine.spell;
+    machine.action.item = machine.item;
+    machine.parent.pointerClass = '';
+    this.submit(machine.action);
   }
 }

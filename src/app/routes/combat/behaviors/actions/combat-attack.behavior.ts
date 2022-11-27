@@ -14,7 +14,7 @@ import { CombatantTypes } from '../../../../models/base-entity';
 import { CombatAttackAction } from '../../../../models/combat/combat.actions';
 import { CombatAttack } from '../../../../models/combat/combat.model';
 import { CombatService } from '../../../../models/combat/combat.service';
-import { Entity, EntityWithEquipment } from '../../../../models/entity/entity.model';
+import { EntityWithEquipment } from '../../../../models/entity/entity.model';
 import { getCombatEntityEquipment } from '../../../../models/selectors';
 import { assertTrue } from '../../../../models/util';
 import { GameEntityObject } from '../../../../scene/objects/game-entity-object';
@@ -57,17 +57,40 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
     super(loader, gameWorld);
   }
 
-  canBeUsedBy(entity: GameEntityObject) {
-    // Exclude magic casters from physical attacks
-    const excludedTypes = ['lifemage', 'deathmage'];
-    const partyMember = entity.model as Entity;
-    if (
-      partyMember.type !== undefined &&
-      _.indexOf(excludedTypes, partyMember.type) !== -1
-    ) {
-      return false;
+  /**
+   * Determine the sound effect to play for attacks when they land.
+   * @param currentHP The current HP of the entity being attacked
+   * @param damage The amount of damage being done
+   * @param guarding Whether the entity being attacked is guarding
+   * @returns The sound effect URL to play
+   */
+  getHitSound(currentHP: number, damage: number, guarding: boolean = false) {
+    const didKill: boolean = currentHP - damage <= 0;
+    const hit: boolean = damage > 0;
+    let hitSound = this.sounds.hitSound;
+    if (didKill) {
+      hitSound = this.sounds.killSound;
+    } else if (hit) {
+      if (guarding) {
+        hitSound = this.sounds.missSound;
+      } else {
+        hitSound = this.sounds.hitSound;
+      }
+    } else {
+      hitSound = this.sounds.missSound;
     }
-    return super.canBeUsedBy(entity);
+    return hitSound;
+  }
+
+  /**
+   * Get the sprite animation name to use for damage being applied to a target
+   * @param damage The damage being applied
+   * @param guarding Whether the target of the damage is guarding
+   */
+  getDamageAnimation(damage: number, numHits: number = 1, guarding: boolean = false) {
+    const hit: boolean = damage > 0;
+    const hitAnim = numHits > 1 ? this.sprites.doubleHit : this.sprites.hit;
+    return hit ? (guarding ? this.sprites.guardHit : hitAnim) : this.sprites.missHit;
   }
 
   async act(): Promise<boolean> {
@@ -114,7 +137,7 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
       attackPromise = playerRender.attack(attack);
     } else {
       // TODO: Shouldn't be here.  This mess is currently to delay NPC attacks.
-      await new Promise<void>((next) => _.delay(() => next(), 300));
+      await new Promise<void>((next) => _.delay(() => next(), 200));
       attackPromise = attack();
     }
     await Promise.all([attackPromise, actionCompletePromise]);
@@ -139,22 +162,19 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
       equippedAttacker || attacker.model,
       equippedDefender || defender.model
     );
+    const defending: boolean = defenderModel.status.includes('guarding');
+    const hitSound = this.getHitSound(
+      defenderModel.hp,
+      damageOutput.totalDamage,
+      defending
+    );
+    const damageAnimation = this.getDamageAnimation(
+      damageOutput.totalDamage,
+      damageOutput.damages.length,
+      defending
+    );
     const damage = damageOutput.totalDamage;
     const didKill: boolean = defenderModel.hp - damage <= 0;
-    const hit: boolean = damage > 0;
-    const defending: boolean = defenderModel.status.includes('guarding');
-    let hitSound = this.sounds.hitSound;
-    if (didKill) {
-      hitSound = this.sounds.killSound;
-    } else if (hit) {
-      if (defending) {
-        hitSound = this.sounds.missSound;
-      } else {
-        hitSound = this.sounds.hitSound;
-      }
-    } else {
-      hitSound = this.sounds.missSound;
-    }
 
     const attackData: CombatAttack = {
       attacker: attackerModel,
@@ -163,20 +183,6 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
     };
     this.store.dispatch(new CombatAttackAction(attackData));
 
-    const hitAnim =
-      damageOutput.damages.length > 1 ? this.sprites.doubleHit : this.sprites.hit;
-    const damageAnimation: string = hit
-      ? defending
-        ? this.sprites.guardHit
-        : hitAnim
-      : this.sprites.missHit;
-    const meta = this.gameWorld.sprites.getSpriteMeta(damageAnimation);
-    if (!meta) {
-      console.warn(
-        'could not find damage animation in sprites metadata: ' + damageAnimation
-      );
-      return;
-    }
     const components = {
       animation: new AnimatedSpriteBehavior({
         spriteName: 'attack',
@@ -185,7 +191,6 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
       sprite: new SpriteComponent({
         name: 'attack',
         icon: damageAnimation,
-        meta,
       }),
       damage: new DamageComponent(),
       sound: new SoundBehavior({

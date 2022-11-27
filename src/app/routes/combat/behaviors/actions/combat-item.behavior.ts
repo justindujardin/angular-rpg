@@ -6,6 +6,7 @@ import { AnimatedSpriteBehavior } from '../../../../behaviors/animated-sprite.be
 import { SoundBehavior } from '../../../../behaviors/sound-behavior';
 import { SpriteComponent } from '../../../../behaviors/sprite.behavior';
 import { ResourceManager } from '../../../../core';
+import { getSoundEffectUrl } from '../../../../core/api';
 import { CombatAttackAction } from '../../../../models/combat/combat.actions';
 import { CombatAttack } from '../../../../models/combat/combat.model';
 import { GameStateRemoveInventoryAction } from '../../../../models/game-state/game-state.actions';
@@ -28,6 +29,13 @@ export class CombatItemBehavior extends CombatActionBehavior {
   name: string = 'item';
   @Input() combat: CombatComponent;
 
+  sounds = {
+    healSound: getSoundEffectUrl('heal'),
+  };
+  sprites = {
+    useItem: 'animSpellCast.png',
+  };
+
   constructor(
     public store: Store<AppState>,
     protected loader: ResourceManager,
@@ -36,28 +44,14 @@ export class CombatItemBehavior extends CombatActionBehavior {
     super(loader, gameWorld);
   }
   canBeUsedBy(entity: GameEntityObject): boolean {
-    if (!super.canBeUsedBy(entity)) {
-      return false;
-    }
     return this.combat.machine.items.size > 0;
   }
 
   async act(): Promise<boolean> {
-    if (this.item) {
-      await this.useItem();
-    }
+    const user: CombatPlayerComponent = this.from as CombatPlayerComponent;
+    assertTrue(user instanceof CombatPlayerComponent, 'invalid item user');
+    await user.magic(() => this._useItem());
     this.combat.machine.setCurrentState(CombatEndTurnStateComponent.NAME);
-    return true;
-  }
-
-  async useItem() {
-    //
-    const user: GameEntityObject = this.from as GameEntityObject;
-    assertTrue(user, 'invalid item user');
-    const userRender = user as CombatPlayerComponent;
-    assertTrue(userRender, 'item user has no render behavior');
-    // TODO: We need some kind of effects registry and a way to specify which
-    await userRender.magic(() => this._useItem());
     return true;
   }
 
@@ -74,18 +68,19 @@ export class CombatItemBehavior extends CombatActionBehavior {
     assertTrue(item, 'invalid item target model');
     const userRender = user as CombatPlayerComponent;
     assertTrue(userRender, 'item user has no render behavior');
-    //       effects and their parameters each item should impart. For now this
-    //       treats every item like a health potion that restores 30 hp. {^_^}
-    console.warn('Item effects need love! <3 Search this string for more info.');
-    var healAmount: number = -30;
-    const healData: CombatAttack = {
-      attacker: userModel,
-      defender: targetModel,
-      damage: healAmount,
-    };
-    this.store.dispatch(new CombatAttackAction(healData));
+    assertTrue(item.effects, 'item with no valid effects');
+    const [effectName, effectValue] = item.effects;
+    switch (effectName) {
+      case 'heal':
+        const healData: CombatAttack = {
+          attacker: userModel,
+          defender: targetModel,
+          damage: -effectValue,
+        };
+        this.store.dispatch(new CombatAttackAction(healData));
+        break;
+    }
     this.store.dispatch(new GameStateRemoveInventoryAction(item));
-    var hitSound: string = 'sounds/heal';
     var behaviors = {
       animation: new AnimatedSpriteBehavior({
         spriteName: 'heal',
@@ -93,10 +88,10 @@ export class CombatItemBehavior extends CombatActionBehavior {
       }),
       sprite: new SpriteComponent({
         name: 'heal',
-        icon: 'animSpellCast.png',
+        icon: this.sprites.useItem,
       }),
       sound: new SoundBehavior({
-        url: hitSound,
+        url: this.sounds.healSound,
         volume: 0.3,
       }),
     };

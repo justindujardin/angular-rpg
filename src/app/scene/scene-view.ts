@@ -132,15 +132,11 @@ export class SceneView extends SceneObject implements ISceneView {
     if (!this.camera || !this.context || !this.map) {
       return;
     }
-    let worldCameraPos = this.worldToScreen(this.camera.point);
-    let worldTilePos = this.worldToScreen(this.map.bounds.point);
-    worldTilePos.x = parseFloat(worldTilePos.x.toFixed(2));
-    worldTilePos.y = parseFloat(worldTilePos.y.toFixed(2));
-    worldCameraPos.x = parseFloat(worldCameraPos.x.toFixed(2));
-    worldCameraPos.y = parseFloat(worldCameraPos.y.toFixed(2));
+    let worldCameraPos = this.worldToScreen(this.camera.point).floor();
+    let worldTilePos = this.worldToScreen(this.map.bounds.point).floor();
     this.context.translate(
-      Math.floor(worldTilePos.x - worldCameraPos.x),
-      Math.floor(worldTilePos.y - worldCameraPos.y)
+      worldTilePos.x - worldCameraPos.x,
+      worldTilePos.y - worldCameraPos.y
     );
   }
 

@@ -2,6 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { map, take } from 'rxjs/operators';
 import { AppState } from './app.model';
+import {
+  INotifyItem,
+  NotificationService,
+} from './components/notification/notification.service';
 import { IPartyMember } from './models/base-entity';
 import { EntityAddItemAction } from './models/entity/entity.actions';
 import { EntityWithEquipment } from './models/entity/entity.model';
@@ -138,4 +142,31 @@ export function testAppDamageParty(
 export async function testAppLoadSprites() {
   const spritesService = TestBed.inject(SpritesService);
   await spritesService.loadSprites('assets/images/index.json').toPromise();
+}
+
+/**
+ * Returns a provider that mocks out the show() calls in the notification
+ * service so that there is no wait while messages are shown.
+ * @returns
+ */
+export function testAppMockNotificationService() {
+  const spy: jasmine.SpyObj<NotificationService> = jasmine.createSpyObj(
+    'NotificationService',
+    ['show', 'dismiss']
+  );
+  spy.show.and.callFake(
+    (message: string, done: () => void, duration?: number): INotifyItem => {
+      if (done) {
+        done();
+      }
+      const obj: INotifyItem = {
+        message,
+        done,
+        elapsed: 0,
+        duration: 0,
+      };
+      return obj;
+    }
+  );
+  return { provide: NotificationService, useValue: spy };
 }
