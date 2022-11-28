@@ -21,9 +21,10 @@ export class CombatStartStateComponent extends CombatMachineState {
 
   async enter(machine: CombatStateMachineComponent) {
     super.enter(machine);
-    _.defer(() => {
+    await new Promise<void>(async (resolve) => {
       const encounter = machine.encounter;
       const _done = () => {
+        resolve();
         machine.setCurrentState(CombatChooseActionStateComponent.NAME);
       };
       if (encounter && encounter.message) {
@@ -35,12 +36,12 @@ export class CombatStartStateComponent extends CombatMachineState {
         others.forEach((m) => this.notify.show(m || '', undefined, 0));
         if (last) {
           this.notify.show(last, _done, 0);
-        } else {
-          _done();
+          return;
         }
-      } else {
-        _done();
       }
+      // Wait a short period before starting combat
+      await new Promise<void>((next) => _.delay(() => next(), 750));
+      _done();
     });
   }
 }
