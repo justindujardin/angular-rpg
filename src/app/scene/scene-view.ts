@@ -99,14 +99,13 @@ export class SceneView extends SceneObject implements ISceneView {
     if (!this.map) {
       return this.camera;
     }
-    const clipGrow = this.camera.clone();
-    // Add remainder of x/y from point to extent and ceil the result
-    //
-    // If you don't add the remainder you can still fail to cover the entire
-    // view if point is close to the next integer and gets floored.
-    clipGrow.extent.add(clipGrow.point.x % 1, clipGrow.point.y % 1).ceil();
-    // Floor the point
+    // Inflate the camera by 1 unit on the x/y axes to make sure
+    // the floating point camera covers the whole screen.
+    const clipGrow = this.camera.clone().inflate();
+    // Round the camera to avoid tile bleeding during rendering from
+    // floating point precision issues.
     clipGrow.point.floor();
+    clipGrow.extent.ceil();
     return clipGrow;
   }
 
@@ -222,7 +221,7 @@ export class SceneView extends SceneObject implements ISceneView {
     let x = 0;
     let y = 0;
     if (this.camera) {
-      renderPos = this.worldToScreen(this.camera.point);
+      renderPos = this.worldToScreen(this.getCameraClip().point);
       x = renderPos.x;
       y = renderPos.y;
     }
