@@ -135,8 +135,9 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
   /** Observable of Entity representing the player-card leader to be rendered in the world */
   partyLeader$: Observable<Entity | null> = this.store.select(getGameParty).pipe(
     map((party: Immutable.List<Entity>) => {
-      return party.get(0) || null;
-    }),
+      const partyAlive = party.filter((p) => Number(p?.hp) > 0);
+      return partyAlive.get(0) || null;
+    })
   );
   private _renderPoint$: BehaviorSubject<IPoint> = new BehaviorSubject(
     this.renderPoint,
