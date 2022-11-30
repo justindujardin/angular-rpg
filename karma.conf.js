@@ -40,6 +40,8 @@ module.exports = function (config) {
           // Don't hang rAF/timers when in background
           "--disable-background-timer-throttling",
           "--disable-backgrounding-occluded-windows",
+          // Don't play audio effects
+          "--mute-audio",
         ],
       },
       ChromeDebug: {
