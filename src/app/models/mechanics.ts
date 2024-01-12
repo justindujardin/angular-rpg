@@ -218,9 +218,11 @@ export function spellElementalDamage(
   target: ICalculateMagicTarget,
 ): IMagicTargetDelta {
   // TODO: Check equipment for element-specific bonuses
+  const randomness = 1 + Math.random();
+  const damage = Math.floor(spell.magnitude * (caster.intelligence[0] / randomness));
   return {
     target: target.entity,
-    healthDelta: -((spell.magnitude * caster.intelligence[0]) / 4),
+    healthDelta: -damage,
   };
 }
 
@@ -231,7 +233,7 @@ export function spellModifyHP(
 ): IMagicTargetDelta {
   // If the spell benefits a user, it restores health, otherwise it drains health.
   const directionMultiplier = spell.benefit ? 1 : -1;
-  const delta = (spell.magnitude * caster.intelligence[0]) / 4;
+  const delta = Math.floor(spell.magnitude * caster.intelligence[0]);
   return {
     target: target.entity,
     healthDelta: delta * directionMultiplier,
@@ -321,6 +323,7 @@ export function calculateDamage(config: ICalculateDamageConfig): ICombatDamage {
     if (defender.status.indexOf('guarding') !== -1) {
       buffDefense = Math.max(3, Math.round(defense * 1.3));
     }
+    // Minimum of 1 damage
     const damage: number = Math.max(1, adjustedAttack - (defense + buffDefense));
     tableData.push({
       attacker: attacker,
@@ -477,7 +480,7 @@ export function diffPartyMember(
     luck: after.luck[0] - before.luck[0],
     hitpercent: after.hitpercent[0] - before.hitpercent[0],
     magicdefense: after.magicdefense[0] - before.magicdefense[0],
-    hp: after.hp - before.hp,
-    mp: after.mp - before.mp,
+    hp: after.maxhp - before.maxhp,
+    mp: after.maxmp - before.maxmp,
   };
 }

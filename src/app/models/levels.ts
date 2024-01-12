@@ -88,7 +88,7 @@ const CLASS_STAT_LEVEL_MAP: IClassStatLevelMap = {
     luckValue: 1,
   },
   ranger: {
-    strength: 0.4,
+    strength: 0.7,
     strengthValue: 1,
     agility: 0.9,
     agilityValue: 1,
@@ -113,7 +113,7 @@ const CLASS_STAT_LEVEL_MAP: IClassStatLevelMap = {
   },
   healer: {
     strength: 0.25,
-    strengthValue: 2,
+    strengthValue: 1,
     agility: 0.45,
     agilityValue: 2,
     intelligence: 1.0,

@@ -31,6 +31,7 @@ import {
   sliceCombatState,
 } from '../../models/selectors';
 import { GameEntityObject } from '../../scene/objects/game-entity-object';
+import { GameFeatureObject } from '../../scene/objects/game-feature-object';
 import { TileMapRenderer } from '../../scene/render/tile-map-renderer';
 import {
   TileObjectRenderer,
@@ -344,6 +345,19 @@ export class CombatComponent
         this.objectRenderer.render(sprite as TileRenderable, sprite.host.point, this);
       });
     });
+
+    this.scene.objectsByType(GameFeatureObject).forEach((object: GameFeatureObject) => {
+      const renderData: TileRenderable = {
+        frame: object.frame,
+        icon: object.icon,
+        image: object.image,
+        scale: object.scale,
+        visible: object.visible,
+        meta: object.meta,
+      };
+      this.objectRenderer.render(renderData, object.point, this);
+    });
+
     return this;
   }
 

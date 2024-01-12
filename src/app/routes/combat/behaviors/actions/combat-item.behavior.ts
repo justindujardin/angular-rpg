@@ -1,20 +1,22 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { take } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
+import { filter, take } from 'rxjs/operators';
 import { AppState } from '../../../../app.model';
-import { AnimatedSpriteBehavior } from '../../../../behaviors/animated-sprite.behavior';
 import { SoundBehavior } from '../../../../behaviors/sound-behavior';
-import { SpriteComponent } from '../../../../behaviors/sprite.behavior';
-import { ResourceManager } from '../../../../core';
+import { AnimatedComponent } from '../../../../components';
+import { Point, ResourceManager } from '../../../../core';
 import { getSoundEffectUrl } from '../../../../core/api';
 import { CombatAttackAction } from '../../../../models/combat/combat.actions';
 import { CombatAttack } from '../../../../models/combat/combat.model';
 import { GameStateRemoveInventoryAction } from '../../../../models/game-state/game-state.actions';
 import { assertTrue } from '../../../../models/util';
 import { GameEntityObject } from '../../../../scene/objects/game-entity-object';
+import { GameFeatureObject } from '../../../../scene/objects/game-feature-object';
 import { GameWorld } from '../../../../services/game-world';
 import { CombatPlayerComponent } from '../../combat-player.component';
 import { CombatComponent } from '../../combat.component';
+import { CombatAttackSummary } from '../../combat.types';
 import { CombatEndTurnStateComponent } from '../../states/combat-end-turn.state';
 import { CombatActionBehavior } from '../combat-action.behavior';
 
@@ -23,11 +25,13 @@ import { CombatActionBehavior } from '../combat-action.behavior';
  */
 @Component({
   selector: 'combat-item-behavior',
-  template: '<ng-content></ng-content>',
+  template: '<animated></animated><ng-content></ng-content>',
 })
 export class CombatItemBehavior extends CombatActionBehavior {
   name: string = 'item';
   @Input() combat: CombatComponent;
+
+  @ViewChild(AnimatedComponent) animation: AnimatedComponent;
 
   sounds = {
     healSound: getSoundEffectUrl('heal'),
@@ -43,6 +47,15 @@ export class CombatItemBehavior extends CombatActionBehavior {
   ) {
     super(loader, gameWorld);
   }
+
+  ngAfterViewInit(): void {
+    this.combat.scene.addObject(this.animation);
+  }
+
+  ngOnDestroy(): void {
+    this.combat?.scene?.removeObject(this.animation);
+  }
+
   canBeUsedBy(entity: GameEntityObject): boolean {
     return this.combat.machine.items.size > 0;
   }
@@ -50,7 +63,19 @@ export class CombatItemBehavior extends CombatActionBehavior {
   async act(): Promise<boolean> {
     const user: CombatPlayerComponent = this.from as CombatPlayerComponent;
     assertTrue(user instanceof CombatPlayerComponent, 'invalid item user');
-    await user.magic(() => this._useItem());
+    const done$ = new BehaviorSubject<boolean>(false);
+    const actionCompletePromise = done$
+      .pipe(
+        filter((d) => d === true),
+        take(1)
+      )
+      .toPromise();
+
+    await user.magic(async () => {
+      await this._useItem();
+      done$.next(true);
+    });
+    await actionCompletePromise;
     this.combat.machine.setCurrentState(CombatEndTurnStateComponent.NAME);
     return true;
   }
@@ -70,6 +95,11 @@ export class CombatItemBehavior extends CombatActionBehavior {
     assertTrue(userRender, 'item user has no render behavior');
     assertTrue(item.effects, 'item with no valid effects');
     const [effectName, effectValue] = item.effects;
+    const data: CombatAttackSummary = {
+      damage: -effectValue,
+      attacker: user,
+      defender: target,
+    };
     switch (effectName) {
       case 'heal':
         const healData: CombatAttack = {
@@ -78,25 +108,34 @@ export class CombatItemBehavior extends CombatActionBehavior {
           damage: -effectValue,
         };
         this.store.dispatch(new CombatAttackAction(healData));
-        break;
     }
     this.store.dispatch(new GameStateRemoveInventoryAction(item));
     var behaviors = {
-      animation: new AnimatedSpriteBehavior({
-        spriteName: 'heal',
-        lengthMS: 550,
-      }),
-      sprite: new SpriteComponent({
-        name: 'heal',
-        icon: this.sprites.useItem,
-      }),
       sound: new SoundBehavior({
         url: this.sounds.healSound,
         volume: 0.3,
       }),
     };
     target.addComponentDictionary(behaviors);
-    await behaviors.animation.onDone$.pipe(take(1)).toPromise();
+    const itemObject = new GameFeatureObject();
+    await itemObject.setSprite(item.icon);
+    itemObject.point = user.point.clone().add(0, -0.5);
+    this.combat.scene.addObject(itemObject);
+    const emitDone = this.combat.machine.onAttack$.emit(data);
+    if (this.animation) {
+      await this.animation.playChain([
+        {
+          name: 'Use Item',
+          repeats: 0,
+          duration: 1000,
+          move: new Point(0, -0.5),
+          host: itemObject,
+        },
+      ]);
+    }
+    this.combat.scene.removeObject(itemObject);
+    await behaviors.sound.onDone$.pipe(take(1)).toPromise();
     target.removeComponentDictionary(behaviors);
+    await emitDone;
   }
 }
