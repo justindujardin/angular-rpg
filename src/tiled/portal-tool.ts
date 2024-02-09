@@ -46,7 +46,7 @@ var tool = tiled.registerTool('CreateDialog', {
   getMaps: function (): string[] {
     const mapsPath = tiled.activeAsset.fileName.substr(
       0,
-      tiled.activeAsset.fileName.indexOf('maps/') + 5
+      tiled.activeAsset.fileName.indexOf('maps/') + 5,
     );
     const files: string[] = File.directoryEntries(mapsPath);
     return files.filter((val) => val.endsWith('.tmx'));

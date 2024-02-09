@@ -110,7 +110,7 @@ describe('CombatBeginTurnStateComponent', () => {
     const enemies = combat.enemies.toArray();
     const enemy = enemies[0];
     const attackComponent = enemy.findBehavior<CombatAttackBehaviorComponent>(
-      CombatAttackBehaviorComponent
+      CombatAttackBehaviorComponent,
     );
     assertTrue(attackComponent, 'enemy has no attack component');
     let called = false;

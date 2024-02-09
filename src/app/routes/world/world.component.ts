@@ -78,14 +78,14 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
     map((result: TiledTMXResource) => {
       this.map.setMap(result);
       return result;
-    })
+    }),
   );
 
   /** Features can be derived after a new map resource has been loaded */
   features$: Observable<ITiledObject[]> = this.resource$.pipe(
     map(() => {
       return this.map.features?.objects || [];
-    })
+    }),
   );
 
   /**
@@ -116,11 +116,11 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
         return true;
       });
       return out;
-    }
+    },
   );
 
   notTraveling$: Observable<boolean> = this.loadingService.loading$.pipe(
-    map((loading: boolean) => !loading)
+    map((loading: boolean) => !loading),
   );
 
   /** Observable of the current player position in the world. Keeps renderPoint in sync after each move. */
@@ -129,17 +129,17 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
     map((position: IPoint) => {
       this.renderPoint = new Point(position);
       return this.renderPoint;
-    })
+    }),
   );
 
   /** Observable of Entity representing the player-card leader to be rendered in the world */
   partyLeader$: Observable<Entity | null> = this.store.select(getGameParty).pipe(
     map((party: Immutable.List<Entity>) => {
       return party.get(0) || null;
-    })
+    }),
   );
   private _renderPoint$: BehaviorSubject<IPoint> = new BehaviorSubject(
-    this.renderPoint
+    this.renderPoint,
   );
 
   /** Observable of the current player position in the world */
@@ -148,7 +148,7 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
     (point: IPoint, renderPoint: IPoint) => {
       this.renderPoint.set(point || renderPoint);
       return this.renderPoint;
-    }
+    },
   );
 
   /**
@@ -195,7 +195,7 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
     public gameStateService: GameStateService,
     public loadingService: LoadingService,
     public store: Store<AppState>,
-    public world: GameWorld
+    public world: GameWorld,
   ) {
     super();
     this.world.mark(this.scene);
@@ -253,13 +253,13 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
     const pathComponent =
       this.player.findBehavior<TileMapPathBehavior>(TileMapPathBehavior);
     const playerComponent = this.player.findBehavior<PlayerBehaviorComponent>(
-      PlayerBehaviorComponent
+      PlayerBehaviorComponent,
     );
     if (pathComponent && playerComponent && this.mouse) {
       PowInput.mouseOnView(e, this.mouse.view, this.mouse);
       playerComponent.path = pathComponent.calculatePath(
         playerComponent.targetPoint,
-        this.mouse.world
+        this.mouse.world,
       );
       e.preventDefault();
       return false;
@@ -279,7 +279,7 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
           this.objectRenderer.render(
             data as TileRenderable,
             data.renderPoint || data.point,
-            this
+            this,
           );
         }
       });
@@ -300,18 +300,18 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
   debugRender() {
     const debugStrings = [`Camera: (${this.camera.point.x},${this.camera.point.y})`];
     const player = this.scene.objectByComponent<WorldPlayerComponent>(
-      PlayerBehaviorComponent
+      PlayerBehaviorComponent,
     );
     if (!player) {
       return;
     }
     debugStrings.push(`Player: (${player.point.x},${player.point.y})`);
     const playerBehavior = player.findBehavior<PlayerBehaviorComponent>(
-      PlayerBehaviorComponent
+      PlayerBehaviorComponent,
     );
     const clipRect = this.getCameraClip();
     debugStrings.push(
-      `Clip: (${clipRect.point.x},${clipRect.point.y}) (${clipRect.extent.x},${clipRect.extent.y})`
+      `Clip: (${clipRect.point.x},${clipRect.point.y}) (${clipRect.extent.x},${clipRect.extent.y})`,
     );
 
     if (!this.context) {
@@ -325,7 +325,7 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
       screenClip.point.x,
       screenClip.point.y,
       screenClip.extent.x,
-      screenClip.extent.y
+      screenClip.extent.y,
     );
 
     // Render impassable tiles on the map in the clip rect
@@ -346,13 +346,13 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
             const key = playerBehavior.passableKeys[j];
             if (tile.properties && tile.properties[key] === false) {
               const screenTile: Rect = this.worldToScreen(
-                new Rect(new Point(x - 0.5, y - 0.5), new Point(1, 1))
+                new Rect(new Point(x - 0.5, y - 0.5), new Point(1, 1)),
               );
               this.context?.strokeRect(
                 screenTile.point.x,
                 screenTile.point.y,
                 screenTile.extent.x,
-                screenTile.extent.y
+                screenTile.extent.y,
               );
             }
           }
@@ -366,13 +366,13 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
     tiles.forEach((object: any) => {
       const point = object.renderPoint || object.point;
       const screenTile: Rect = this.worldToScreen(
-        new Rect(new Point(point.x - 0.5, point.y - 0.5), new Point(1, 1))
+        new Rect(new Point(point.x - 0.5, point.y - 0.5), new Point(1, 1)),
       );
       this.context?.strokeRect(
         screenTile.point.x,
         screenTile.point.y,
         screenTile.extent.x,
-        screenTile.extent.y
+        screenTile.extent.y,
       );
     });
 

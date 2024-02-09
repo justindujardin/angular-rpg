@@ -23,7 +23,7 @@ describe('Entity', () => {
 
   function defaultState(
     collection?: 'items' | 'beings',
-    entities?: any[]
+    entities?: any[],
   ): EntityStateRecord {
     let resultState: EntityStateRecord = entityStateFactory();
     if (collection && entities) {
@@ -120,7 +120,7 @@ describe('Entity', () => {
           const item: Item = fakeItem();
           const state = entityReducer(
             defaultState(),
-            new EntityAddItemAction(item)
+            new EntityAddItemAction(item),
           ) as EntityStateRecord;
           entityReducer(
             state,
@@ -128,7 +128,7 @@ describe('Entity', () => {
               entityId: 'invalid',
               itemId: item.eid,
               slot: 'armor',
-            })
+            }),
           );
         }).toThrow();
       });
@@ -140,7 +140,7 @@ describe('Entity', () => {
           });
           const state = entityReducer(
             defaultState(),
-            new EntityAddBeingAction(entity)
+            new EntityAddBeingAction(entity),
           ) as EntityStateRecord;
           entityReducer(
             state,
@@ -148,7 +148,7 @@ describe('Entity', () => {
               entityId: 'foo',
               itemId: 'invalid',
               slot: 'armor',
-            })
+            }),
           );
         }).toThrow();
       });
@@ -159,11 +159,11 @@ describe('Entity', () => {
         const item = fakeItem();
         let state = entityReducer(
           defaultState(),
-          new EntityAddItemAction(item)
+          new EntityAddItemAction(item),
         ) as EntityStateRecord;
         state = entityReducer(
           state,
-          new EntityAddBeingAction(entity)
+          new EntityAddBeingAction(entity),
         ) as EntityStateRecord;
         state = entityReducer(
           state,
@@ -171,7 +171,7 @@ describe('Entity', () => {
             entityId: entity.eid,
             itemId: item.eid,
             slot: 'armor',
-          })
+          }),
         ) as EntityStateRecord;
         expect(state.beings.byId.get(entity.eid).armor).toBe(item.eid);
       });
@@ -183,7 +183,7 @@ describe('Entity', () => {
           const item: Item = fakeItem();
           const state = entityReducer(
             defaultState(),
-            new EntityAddItemAction(item)
+            new EntityAddItemAction(item),
           ) as EntityStateRecord;
           entityReducer(
             state,
@@ -191,7 +191,7 @@ describe('Entity', () => {
               entityId: 'invalid',
               itemId: item.eid,
               slot: 'armor',
-            })
+            }),
           );
         }).toThrow();
       });
@@ -202,7 +202,7 @@ describe('Entity', () => {
           });
           const state = entityReducer(
             defaultState(),
-            new EntityAddBeingAction(entity)
+            new EntityAddBeingAction(entity),
           ) as EntityStateRecord;
           entityReducer(
             state,
@@ -210,7 +210,7 @@ describe('Entity', () => {
               entityId: 'foo',
               itemId: 'invalid',
               slot: 'armor',
-            })
+            }),
           );
         }).toThrow();
       });
@@ -222,11 +222,11 @@ describe('Entity', () => {
         });
         let state = entityReducer(
           defaultState(),
-          new EntityAddItemAction(item)
+          new EntityAddItemAction(item),
         ) as EntityStateRecord;
         state = entityReducer(
           state,
-          new EntityAddBeingAction(entity)
+          new EntityAddBeingAction(entity),
         ) as EntityStateRecord;
         state = entityReducer(
           state,
@@ -234,7 +234,7 @@ describe('Entity', () => {
             entityId: entity.eid,
             itemId: item.eid,
             slot: 'armor',
-          })
+          }),
         ) as EntityStateRecord;
         expect(state.beings.byId.get(entity.eid).armor).toBe(null);
       });
@@ -263,7 +263,7 @@ describe('Entity', () => {
           new GameStateHealPartyAction({
             cost: 0,
             partyIds: [testId, secondId],
-          })
+          }),
         );
         const firstHealed: IPartyMember = actual.beings.byId.get(testId);
         expect(firstHealed.hp).toBe(firstHealed.maxhp);
@@ -298,7 +298,7 @@ describe('Entity', () => {
           new GameStateHurtPartyAction({
             damage,
             partyIds: [testId, secondId],
-          })
+          }),
         );
         const firstHurt: IPartyMember = actual.beings.byId.get(testId);
         expect(firstHurt.hp).toBe(first.hp - damage);
@@ -310,7 +310,7 @@ describe('Entity', () => {
 
     describe('CombatVictoryAction', () => {
       function summaryData(
-        values?: Partial<CombatVictorySummary>
+        values?: Partial<CombatVictorySummary>,
       ): CombatVictorySummary {
         return Object.assign(
           {
@@ -323,7 +323,7 @@ describe('Entity', () => {
             gold: 0,
             exp: 0,
           },
-          values || {}
+          values || {},
         );
       }
 
@@ -363,8 +363,8 @@ describe('Entity', () => {
           new CombatVictoryAction(
             summaryData({
               party: [victoryMemberAfter, victorySecondAfter],
-            })
-          )
+            }),
+          ),
         );
         const entity: Entity = actual.beings.byId.get(victoryMemberId);
         expect(entity.hp).toBe(victoryMemberAfter.hp);

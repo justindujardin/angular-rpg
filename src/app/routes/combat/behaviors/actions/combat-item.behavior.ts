@@ -39,7 +39,7 @@ export class CombatItemBehavior extends CombatActionBehavior {
   constructor(
     public store: Store<AppState>,
     protected loader: ResourceManager,
-    protected gameWorld: GameWorld
+    protected gameWorld: GameWorld,
   ) {
     super(loader, gameWorld);
   }

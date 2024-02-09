@@ -41,6 +41,7 @@ if (environment.useDevTools) {
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode
       autoPause: true, // Pauses recording actions and state changes when the extension window is not open
+      connectInZone: true,
     }),
   ]);
 }
@@ -65,7 +66,7 @@ export const APP_IMPORTS = [
   WorldModule.forRoot(),
   PowCoreModule.forRoot(),
   ReactiveFormsModule,
-  RouterModule.forRoot(ROUTES, { useHash: true, relativeLinkResolution: 'legacy' }),
+  RouterModule.forRoot(ROUTES, { useHash: true }),
   StoreRouterConnectingModule.forRoot(),
   ...storeDevtools,
   EffectsModule.forRoot([GameStateEffects, CombatEffects, SpritesEffects, AppEffects]),

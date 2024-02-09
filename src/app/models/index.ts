@@ -41,7 +41,7 @@ export const metaReducers: MetaReducer<State>[] = !environment.production
 
 // Generate a reducer to set the root state in dev mode for HMR
 function stateSetter(
-  reducer: ActionReducer<any, PowAction>
+  reducer: ActionReducer<any, PowAction>,
 ): ActionReducer<any, PowAction> {
   return (state, action) => {
     switch (action.type) {

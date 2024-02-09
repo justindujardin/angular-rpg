@@ -53,7 +53,7 @@ export class ChooseActionStateMachine extends StateMachine<CombatChooseActionSta
     public scene: Scene,
     public players: GameEntityObject[],
     public enemies: GameEntityObject[],
-    submit: (action: CombatActionBehavior) => any
+    submit: (action: CombatActionBehavior) => any,
   ) {
     super();
     this.states = [

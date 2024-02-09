@@ -3,16 +3,9 @@
     "target": "es5",
     "module": "commonjs",
     "sourceMap": false,
-    "types": [
-      "node"
-    ],
-    "lib": [],
+    "types": ["node"],
+    "lib": []
   },
-  "include": [
-    "*.ts",
-    "**/*.ts",
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["*.ts", "**/*.ts"],
+  "exclude": ["node_modules"]
 }

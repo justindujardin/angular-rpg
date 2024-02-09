@@ -52,7 +52,7 @@ function shouldWriteData() {
         SEEN_HASHES[filename] = hash;
       });
       return should;
-    }
+    },
   );
 }
 
@@ -117,7 +117,7 @@ module.exports = class GameDataPlugin {
               callback();
             });
           });
-        }
+        },
       );
     });
   }

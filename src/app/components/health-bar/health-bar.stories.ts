@@ -1,5 +1,5 @@
 // also exported from '@storybook/angular' if you can deal with breaking changes in 6.1
-import { Meta, Story } from '@storybook/angular/types-6-0';
+import { Meta, StoryFn } from '@storybook/angular';
 import { CombatantTypes } from '../../models/base-entity';
 import { Warrior } from '../../models/mechanics.mock';
 import { RPGHealthBarComponent } from './health-bar.component';
@@ -9,7 +9,7 @@ export default {
   component: RPGHealthBarComponent,
 } as Meta;
 
-const Template: Story<CombatantTypes> = (args: Partial<CombatantTypes>) => ({
+const Template: StoryFn<CombatantTypes> = (args: Partial<CombatantTypes>) => ({
   component: RPGHealthBarComponent,
   props: {
     model: {

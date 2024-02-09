@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/angular/types-6-0';
+import { Meta, StoryFn } from '@storybook/angular';
 import { CombatHUDComponent } from './combat-hud.component';
 
 export default {
@@ -6,7 +6,7 @@ export default {
   component: CombatHUDComponent,
 } as Meta;
 
-const Template: Story<any> = (args: Partial<any>) => ({
+const Template: StoryFn<any> = (args: Partial<any>) => ({
   component: CombatHUDComponent,
   props: args,
 });

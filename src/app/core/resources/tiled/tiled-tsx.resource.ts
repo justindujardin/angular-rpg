@@ -1,18 +1,3 @@
-/*
- Copyright (C) 2013-2020 by Justin DuJardin and Contributors
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
 import * as _ from 'underscore';
 import { assertTrue } from '../../../models/util';
 import { ImageResource } from '../image.resource';
@@ -26,7 +11,7 @@ export class TilesetTile {
     public id: number,
     public image: string,
     public width: number,
-    public height: number
+    public height: number,
   ) {}
 }
 /**
@@ -68,7 +53,7 @@ export class TiledTSXResource extends XMLResource {
         const sourceImage = this.getChild(ts, 'image');
         if (!sourceImage) {
           throw new Error(
-            'tileset tiles must be image collections that reference the soruce sprite image'
+            'tileset tiles must be image collections that reference the soruce sprite image',
           );
         }
         // extract only the filename from the source image path
@@ -85,7 +70,7 @@ export class TiledTSXResource extends XMLResource {
       assertTrue(source, `invalid source name in tileset: ${source}`);
       this.imageUrl = compactUrl(
         this.relativeTo ? this.relativeTo : relativePath,
-        source
+        source,
       );
 
       new ImageResource(this.imageUrl)

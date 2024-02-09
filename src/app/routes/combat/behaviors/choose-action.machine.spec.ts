@@ -37,7 +37,7 @@ function getMachine() {
     combat.enemies.toArray(),
     (a) => {
       actionCalled = a;
-    }
+    },
   );
   return { machine, combat, fixture, selectedAction };
 }

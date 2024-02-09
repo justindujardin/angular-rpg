@@ -2,8 +2,8 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import { MatTableDataSource as MatTableDataSource } from '@angular/material/table';
+import { MatTabChangeEvent as MatTabChangeEvent } from '@angular/material/tabs';
 import { Store } from '@ngrx/store';
 import {
   awardExperience,
@@ -175,7 +175,7 @@ export class DebugMenuComponent implements AfterViewInit {
             exp: gainedXp,
           };
           this.store.dispatch(new CombatVictoryAction(summary));
-        })
+        }),
       )
       .subscribe();
   }
@@ -188,7 +188,7 @@ export class DebugMenuComponent implements AfterViewInit {
       new GameStateTravelAction({
         location: map,
         position: { x, y },
-      })
+      }),
     );
   }
 
@@ -197,6 +197,6 @@ export class DebugMenuComponent implements AfterViewInit {
     public store: Store<AppState>,
     public gameStateService: GameStateService,
     public notify: NotificationService,
-    private _liveAnnouncer: LiveAnnouncer
+    private _liveAnnouncer: LiveAnnouncer,
   ) {}
 }

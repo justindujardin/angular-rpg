@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { moduleMetadata } from '@storybook/angular';
-import { Meta, Story } from '@storybook/angular/types-6-0';
+import { Meta, StoryFn } from '@storybook/angular';
 import { GameComponent } from './game.component';
 
 @Component({
@@ -14,7 +14,7 @@ export default {
   decorators: [moduleMetadata({ declarations: [GameStoryWrapper, GameComponent] })],
 } as Meta;
 
-const Template: Story<any> = (args: Partial<any>) => ({
+const Template: StoryFn<any> = (args: Partial<any>) => ({
   component: GameStoryWrapper,
   props: args,
 });

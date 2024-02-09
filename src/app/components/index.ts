@@ -1,31 +1,14 @@
-/*
- Copyright (C) 2013-2020 by Justin DuJardin and Contributors
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule as MatButtonModule } from '@angular/material/button';
+import { MatCardModule as MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelectModule as MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSlideToggleModule as MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RPG_ANIMATED_EXPORTS } from './animated/index';
 import { RPG_DEBUG_MENU_EXPORTS, RPG_DEBUG_MENU_IMPORTS } from './debug-menu/index';
 import { RPG_HEALTH_BAR_EXPORTS } from './health-bar/index';
@@ -75,9 +58,7 @@ export const APP_COMPONENTS_PROVIDERS = [
   exports: APP_COMPONENTS_EXPORTS,
   providers: APP_COMPONENTS_PROVIDERS,
   imports: [
-    BrowserAnimationsModule,
     CommonModule,
-    FlexLayoutModule,
     MatSelectModule,
     MatSidenavModule,
     MatSlideToggleModule,

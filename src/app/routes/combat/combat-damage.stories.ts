@@ -1,6 +1,6 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { moduleMetadata } from '@storybook/angular';
-import { Meta, Story } from '@storybook/angular/types-6-0';
+import { Meta, StoryFn } from '@storybook/angular';
 import { Point } from '../../core';
 import { CombatDamageComponent } from './combat-damage.component';
 /**
@@ -64,7 +64,7 @@ export default {
   decorators: [moduleMetadata({ declarations: [DamageStoryWrapper] })],
 } as Meta;
 
-const Template: Story<DamageStoryWrapper> = (args: Partial<DamageStoryWrapper>) => ({
+const Template: StoryFn<DamageStoryWrapper> = (args: Partial<DamageStoryWrapper>) => ({
   component: DamageStoryWrapper,
   props: args,
 });

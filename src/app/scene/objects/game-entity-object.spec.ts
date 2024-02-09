@@ -12,7 +12,7 @@ describe('GameEntityObject', () => {
         hp: 0,
         maxhp: 0,
       },
-      values || {}
+      values || {},
     ) as any;
   }
 

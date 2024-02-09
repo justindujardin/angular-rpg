@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
@@ -12,12 +7,15 @@ import { AppState } from '../../app.model';
 import { getGameMap } from '../../models/selectors';
 
 @Injectable()
-export class CanActivateWorld implements CanActivate {
-  constructor(private store: Store<AppState>, private router: Router) {}
+export class CanActivateWorld {
+  constructor(
+    private store: Store<AppState>,
+    private router: Router,
+  ) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    state: RouterStateSnapshot,
   ): Observable<boolean> {
     // TODO: This check is hosed if a reasonable default value is set for the initial state for
     // map. Investigate whether this is sane.
@@ -34,7 +32,7 @@ export class CanActivateWorld implements CanActivate {
           return false;
         }
         return true;
-      })
+      }),
     );
   }
 }

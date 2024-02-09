@@ -150,14 +150,14 @@ export class WorldPlayerComponent
         destination.y -= 0.5;
 
         const screenTile: Rect = view.worldToScreen(
-          new Rect(destination, new Point(1, 1))
+          new Rect(destination, new Point(1, 1)),
         );
         view.context.fillStyle = this.targetFill;
         view.context.fillRect(
           screenTile.point.x,
           screenTile.point.y,
           screenTile.extent.x,
-          screenTile.extent.y
+          screenTile.extent.y,
         );
         view.context.strokeStyle = this.targetStroke;
         view.context.lineWidth = this.targetStrokeWidth;
@@ -165,7 +165,7 @@ export class WorldPlayerComponent
           screenTile.point.x,
           screenTile.point.y,
           screenTile.extent.x,
-          screenTile.extent.y
+          screenTile.extent.y,
         );
 
         view.context.restore();

@@ -86,6 +86,6 @@ export class PartyMenuComponent {
     public game: RPGGame,
     public store: Store<AppState>,
     public gameStateService: GameStateService,
-    public notify: NotificationService
+    public notify: NotificationService,
   ) {}
 }

@@ -42,7 +42,7 @@ describe('GameState', () => {
         },
         provideMockActions(() => actions$),
       ],
-    })
+    }),
   );
 
   function setup() {
@@ -87,7 +87,7 @@ describe('GameState', () => {
           new GameStateTravelAction({
             location: 'map',
             position: { x: 0, y: 0 },
-          })
+          }),
         );
         effects.travel$.subscribe((result) => {
           expect(mockStateService.loadMapCalls).toBe(1);

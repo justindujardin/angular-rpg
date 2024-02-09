@@ -6,8 +6,8 @@ import {
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import { MatTableDataSource as MatTableDataSource } from '@angular/material/table';
+import { MatTabChangeEvent as MatTabChangeEvent } from '@angular/material/tabs';
 import { ARMOR_DATA } from 'app/models/game-data/armors';
 import { ITEMS_DATA } from 'app/models/game-data/items';
 import { MAGIC_DATA } from 'app/models/game-data/magic';
@@ -94,7 +94,7 @@ export class StoreFeatureComponent extends MapFeatureComponent {
    * The name of this (fine) establishment.
    */
   name$: Observable<string> = this.feature$.pipe(
-    map((f: ITiledObject<any> | null) => f?.name || '')
+    map((f: ITiledObject<any> | null) => f?.name || ''),
   );
 
   /**
@@ -111,7 +111,7 @@ export class StoreFeatureComponent extends MapFeatureComponent {
       map((inventory: Immutable.List<Item>) => {
         const result = inventory.toList();
         return result;
-      })
+      }),
     );
 
   /**
@@ -135,8 +135,8 @@ export class StoreFeatureComponent extends MapFeatureComponent {
           ITemplateMagic[] | null,
           ITiledObject<any> | null,
           boolean,
-          Immutable.List<Item> | null
-        ]
+          Immutable.List<Item> | null,
+        ],
       ): ITemplateBaseItem[] => {
         const weapons: ITemplateWeapon[] | null = params[0];
         const armors: ITemplateArmor[] | null = params[1];
@@ -174,8 +174,8 @@ export class StoreFeatureComponent extends MapFeatureComponent {
             data = items.concat(weapons).concat(armors);
         }
         return data;
-      }
-    )
+      },
+    ),
   );
 
   dataSource$ = this.inventory$.pipe(map((data) => new MatTableDataSource(data)));
@@ -197,7 +197,7 @@ export class StoreFeatureComponent extends MapFeatureComponent {
   ]).pipe(
     map(
       (
-        params: [Set<Item>, Immutable.List<EntityWithEquipment>]
+        params: [Set<Item>, Immutable.List<EntityWithEquipment>],
       ): IEquipmentDifference[] => {
         const selected: Set<Item> = params[0];
         const party: Immutable.List<EntityWithEquipment> = params[1];
@@ -264,8 +264,8 @@ export class StoreFeatureComponent extends MapFeatureComponent {
           }
           return r;
         });
-      }
-    )
+      },
+    ),
   );
 
   /** The GameState, but only valid when buying */
@@ -280,7 +280,7 @@ export class StoreFeatureComponent extends MapFeatureComponent {
         const isSelling: boolean = params[1];
         const party: Immutable.List<EntityWithEquipment> = params[2];
         return !isSelling ? [state, party] : null;
-      })
+      }),
     );
 
   close() {
@@ -315,7 +315,7 @@ export class StoreFeatureComponent extends MapFeatureComponent {
     console.log('selling', items);
     const totalCost: number = items.reduce(
       (prev: number, current: Item) => prev + current.value,
-      0
+      0,
     );
     this._selected$.next(new Set());
     items.forEach((item) => {
@@ -326,14 +326,14 @@ export class StoreFeatureComponent extends MapFeatureComponent {
     this.notify.show(
       `Sold ${items.length} items for ${totalCost} gold.`,
       undefined,
-      1500
+      1500,
     );
   }
   buyItems(state: GameState, party: Immutable.List<EntityWithEquipment>) {
     const items: Item[] = [...this._selected$.value];
     const totalCost: number = items.reduce(
       (prev: number, current: Item) => prev + current.value,
-      0
+      0,
     );
     if (totalCost > state.gold) {
       this.notify.show("You don't have enough money");
@@ -382,7 +382,7 @@ export class StoreFeatureComponent extends MapFeatureComponent {
                 entityId: toEquip.eid,
                 slot: toEquipItem.type as keyof EntitySlots,
                 itemId: oldItem.eid,
-              })
+              }),
             );
           }
         }
@@ -391,13 +391,13 @@ export class StoreFeatureComponent extends MapFeatureComponent {
             entityId: toEquip.eid,
             slot: toEquipItem.type as keyof EntitySlots,
             itemId: toEquipItem.eid,
-          })
+          }),
         );
       }
       this.notify.show(
         `Purchased ${toEquipItem.name} for ${totalCost} gold and equipped it on ${toEquip?.name}.`,
         undefined,
-        5000
+        5000,
       );
       return;
     }
@@ -406,7 +406,7 @@ export class StoreFeatureComponent extends MapFeatureComponent {
     this.notify.show(
       `Purchased ${itemText} items for ${totalCost} gold.`,
       undefined,
-      1500
+      1500,
     );
   }
 

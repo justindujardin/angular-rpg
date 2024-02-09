@@ -95,7 +95,7 @@ describe('CombatStateMachineComponent', () => {
           damage: 1000,
           attacker: enemy.model,
           defender: player.model,
-        })
+        }),
       );
       fixture.detectChanges();
       expect(machine.getLiveParty().length).toEqual(combat.party.length - 1);
@@ -123,7 +123,7 @@ describe('CombatStateMachineComponent', () => {
           damage: 1000,
           attacker: player.model,
           defender: enemy.model,
-        })
+        }),
       );
       fixture.detectChanges();
       expect(machine.getLiveEnemies().length).toEqual(encounter.enemies.length - 1);

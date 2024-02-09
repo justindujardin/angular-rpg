@@ -2,11 +2,10 @@ const { merge } = require("webpack-merge");
 const SpriteSheetPlugin = require("../src/webpack/sprite-sheet-plugin");
 
 module.exports = {
+  framework: "@storybook/angular",
   stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.ts"],
   addons: ["@storybook/addon-links", "@storybook/addon-essentials"],
-  core: {
-    builder: "webpack5",
-  },
+
   webpackFinal: async (config, { configType }) => {
     // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
     // You can change the configuration based on that.
@@ -21,4 +20,8 @@ module.exports = {
       ],
     });
   },
+
+  docs: {
+    autodocs: true
+  }
 };

@@ -38,15 +38,21 @@
   .hero-container > h1 a {
     text-decoration: none;
     color: inherit;
-    text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1), -8px 0 rgba(255, 255, 255, 0.2),
-      0px 0 rgba(0, 0, 0, 0.1), -4px 4px 0 rgba(255, 255, 255, 0.2);
+    text-shadow:
+      4px 4px 0 rgba(0, 0, 0, 0.1),
+      -8px 0 rgba(255, 255, 255, 0.2),
+      0px 0 rgba(0, 0, 0, 0.1),
+      -4px 4px 0 rgba(255, 255, 255, 0.2);
   }
 
   .hero-container p {
     padding: 15px;
     font-size: 1.2em;
-    text-shadow: -2px 0 rgba(255, 255, 255, 0.2), 1px 1px 0 rgba(0, 0, 0, 0.1),
-      -1px 1px 0 rgba(255, 255, 255, 0.2), 0px 0 rgba(0, 0, 0, 0.1);
+    text-shadow:
+      -2px 0 rgba(255, 255, 255, 0.2),
+      1px 1px 0 rgba(0, 0, 0, 0.1),
+      -1px 1px 0 rgba(255, 255, 255, 0.2),
+      0px 0 rgba(0, 0, 0, 0.1);
     color: #eeaa13;
   }
 }

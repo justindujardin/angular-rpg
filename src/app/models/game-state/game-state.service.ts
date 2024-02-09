@@ -9,7 +9,10 @@ import { getMapUrl } from '../../core/api';
 
 @Injectable()
 export class GameStateService {
-  constructor(private loader: ResourceManager, private store: Store<AppState>) {}
+  constructor(
+    private loader: ResourceManager,
+    private store: Store<AppState>,
+  ) {}
 
   private _worldMap$ = new ReplaySubject<TiledTMXResource>(1);
   worldMap$: Observable<TiledTMXResource> = this._worldMap$;
@@ -23,7 +26,7 @@ export class GameStateService {
       this.loader.load(mapUrl).then((maps: TiledTMXResource[]) => {
         this._worldMap$.next(maps[0]);
         return maps[0];
-      })
+      }),
     );
   }
 
@@ -34,7 +37,7 @@ export class GameStateService {
       first(),
       map(() => {
         localStorage.removeItem(GameStateService.STATE_KEY);
-      })
+      }),
     );
   }
 
@@ -47,10 +50,10 @@ export class GameStateService {
       first(),
       map(() => {
         const data = JSON.parse(
-          localStorage.getItem(GameStateService.STATE_KEY) || '{}'
+          localStorage.getItem(GameStateService.STATE_KEY) || '{}',
         ) as AppState;
         return data;
-      })
+      }),
     );
   }
 
@@ -69,7 +72,7 @@ export class GameStateService {
 
         localStorage.setItem(GameStateService.STATE_KEY, jsonData);
         return state;
-      })
+      }),
     );
   }
 }

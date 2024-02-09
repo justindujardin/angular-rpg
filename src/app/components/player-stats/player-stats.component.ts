@@ -64,7 +64,7 @@ export class PlayerStatsComponent {
   entityWithEquipment$ = this.model$.pipe(
     switchMap((entity: EntityWithEquipment) => {
       return entity?.eid ? this.store.select(getEntityEquipment(entity.eid)) : EMPTY;
-    })
+    }),
   );
 
   /**
@@ -87,7 +87,7 @@ export class PlayerStatsComponent {
         equipment,
         state: equipped,
       });
-    })
+    }),
   );
   /**
    * Total defense including armor and accessories
@@ -96,7 +96,7 @@ export class PlayerStatsComponent {
     map((equipped: EntityWithEquipment) => {
       const equipment = this.combatService.getArmors(equipped);
       return this.combatService.party.getDefense({ equipment, state: equipped });
-    })
+    }),
   );
   /**
    * Total evasion including armor and accessories
@@ -105,7 +105,7 @@ export class PlayerStatsComponent {
     map((equipped: EntityWithEquipment) => {
       const equipment = this.combatService.getArmors(equipped);
       return this.combatService.party.getEvasion({ equipment, state: equipped });
-    })
+    }),
   );
 
   /**
@@ -114,7 +114,7 @@ export class PlayerStatsComponent {
   nextLevelExp$: Observable<number> = this.model$.pipe(
     map((entity: EntityWithEquipment) => {
       return entity ? getXPForLevel(entity.level + 1) : 0;
-    })
+    }),
   );
 
   /**
@@ -133,7 +133,7 @@ export class PlayerStatsComponent {
           ((entity.exp - currentLevelExp) / (nextLevelExp - currentLevelExp)) * 100;
       }
       return Math.round(width);
-    })
+    }),
   );
 
   /**
@@ -142,13 +142,13 @@ export class PlayerStatsComponent {
   healthPercentage$: Observable<number> = this.model$.pipe(
     map((entity: EntityWithEquipment) => {
       return entity ? Math.round((entity.hp / entity.maxhp) * 100) : 0;
-    })
+    }),
   );
 
   constructor(
     public game: RPGGame,
     public world: GameWorld,
     public combatService: CombatService,
-    public store: Store<AppState>
+    public store: Store<AppState>,
   ) {}
 }

@@ -1,18 +1,3 @@
-/*
- Copyright (C) 2013-2020 by Justin DuJardin and Contributors
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
 import { Component, Input, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as Immutable from 'immutable';
@@ -92,7 +77,7 @@ export class PartyInventoryComponent implements OnDestroy {
         return party.count() - 1;
       }
       return index;
-    })
+    }),
   );
 
   /** The currently selected player entity with its equipment resolved to items rather than item ids */
@@ -102,7 +87,7 @@ export class PartyInventoryComponent implements OnDestroy {
     }),
     switchMap((entity: Entity) => {
       return entity?.eid ? this.store.select(getEntityEquipment(entity.eid)) : EMPTY;
-    })
+    }),
   );
   /** Stream of inventory that the currentEntity$ can equip */
   inventory$: Observable<EntityItemTypes[]> = this.store.select(getGameInventory).pipe(
@@ -129,8 +114,8 @@ export class PartyInventoryComponent implements OnDestroy {
           })
           .toList()
           .toJS();
-      }
-    )
+      },
+    ),
   );
   /** Action generator from equip stream */
   private _equipSubscription: Subscription = this.doEquip$
@@ -149,7 +134,7 @@ export class PartyInventoryComponent implements OnDestroy {
                 entityId: entity.eid,
                 slot: slot,
                 itemId: oldItem.eid,
-              })
+              }),
             );
           }
           this.store.dispatch(
@@ -157,10 +142,10 @@ export class PartyInventoryComponent implements OnDestroy {
               entityId: entity.eid,
               slot: slot,
               itemId: event.item.eid,
-            })
+            }),
           );
-        }
-      )
+        },
+      ),
     )
     .subscribe();
 
@@ -176,10 +161,10 @@ export class PartyInventoryComponent implements OnDestroy {
               entityId: entity.eid,
               slot: slot,
               itemId: event.item.eid,
-            })
+            }),
           );
-        }
-      )
+        },
+      ),
     )
     .subscribe();
 
@@ -187,7 +172,7 @@ export class PartyInventoryComponent implements OnDestroy {
     public game: RPGGame,
     public store: Store<AppState>,
     public combatService: CombatService,
-    public notify: NotificationService
+    public notify: NotificationService,
   ) {}
 
   ngOnDestroy(): void {

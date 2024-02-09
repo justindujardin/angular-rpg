@@ -1,6 +1,6 @@
 import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatTableModule as MatTableModule } from '@angular/material/table';
+import { MatTabsModule as MatTabsModule } from '@angular/material/tabs';
 import { MapFeatureComponent } from '../map-feature.component';
 import { BlockFeatureComponent } from './block-feature.component';
 import { CombatFeatureComponent } from './combat-feature.component';

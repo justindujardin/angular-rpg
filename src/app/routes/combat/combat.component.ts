@@ -125,14 +125,14 @@ export class CombatComponent
     map((result: TiledTMXResource) => {
       this.map.setMap(result);
       return result;
-    })
+    }),
   );
 
   /** Features can be derived after a new map resource has been loaded */
   features$: Observable<ITiledObject[]> = this.resource$.pipe(
     map(() => {
       return this.map.features?.objects || [];
-    })
+    }),
   );
 
   /**
@@ -151,7 +151,7 @@ export class CombatComponent
     public combatService: CombatService,
     public store: Store<AppState>,
     public world: GameWorld,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
   ) {
     super();
     this.world.mark(this.scene);
@@ -220,7 +220,7 @@ export class CombatComponent
         () => {
           this.game.initGame().then(done);
         },
-        0
+        0,
       );
     });
     this.scene?.addObject(this);
@@ -239,7 +239,7 @@ export class CombatComponent
               e.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
             }
           });
-        })
+        }),
       )
       .subscribe();
 
@@ -296,7 +296,7 @@ export class CombatComponent
         0,
         0,
         this.context.canvas.width,
-        this.context.canvas.height
+        this.context.canvas.height,
       );
       this.cameraScale = w > 1024 ? 6 : w > 768 ? 4 : w > 480 ? 3 : 2;
       this.camera = this.screenToWorld(screenRect, this.cameraScale);
@@ -319,7 +319,7 @@ export class CombatComponent
       this.objectRenderer.render(
         component as TileRenderable,
         component.renderPoint || component.point,
-        this
+        this,
       );
       const sprites = component.findBehaviors(SpriteComponent) as SpriteComponent[];
       sprites.forEach((sprite: SpriteComponent) => {
@@ -330,7 +330,7 @@ export class CombatComponent
       this.objectRenderer.render(
         component as TileRenderable,
         component.renderPoint || component.point,
-        this
+        this,
       );
       const sprites: SpriteComponent[] = component.findBehaviors(SpriteComponent);
       sprites.forEach((sprite: SpriteComponent) => {
@@ -360,7 +360,7 @@ export class CombatComponent
     const screenPos: Point = this.worldToScreen(targetPos, this.cameraScale);
     screenPos.add(
       this.canvasElementRef.nativeElement.offsetLeft,
-      this.canvasElementRef.nativeElement.offsetTop
+      this.canvasElementRef.nativeElement.offsetTop,
     );
     this.damages.push({
       id: _.uniqueId('dmg'),

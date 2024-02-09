@@ -24,7 +24,7 @@
     text-align: right;
     color: #fff;
     position: relative;
-    min-height: $app-bar-height / 2;
+    min-height: calc($app-bar-height / 2);
     @media (min-width: $layout-breakpoint-sm) {
       min-height: $app-bar-height;
     }

@@ -41,7 +41,7 @@ export function testCombatGetStateMachine(): CombatStateMachineComponent {
 export function testCombatAddPartyCombatants(
   store: Store<AppState>,
   comp: CombatComponent,
-  onlyFirst: boolean = false
+  onlyFirst: boolean = false,
 ): CombatPlayerComponent[] {
   const party = testAppGetParty(store);
   const players = [];
@@ -65,7 +65,7 @@ export function testCombatAddPartyCombatants(
 }
 
 export function testCombatAddEnemyCombatants(
-  comp: CombatComponent
+  comp: CombatComponent,
 ): CombatEnemyComponent[] {
   const items = ['imp', 'imp', 'imp'].map((id) => {
     const itemTemplate: IEnemy = getEnemyById(id) as any;
@@ -91,7 +91,7 @@ export function testCombatAddEnemyCombatants(
 
 export function testCombatSetEnemyCombatants(
   comp: CombatStateMachineComponent,
-  enemies: IEnemy[]
+  enemies: IEnemy[],
 ): CombatEnemyComponent[] {
   const results = [];
   for (let i = 0; i < enemies.length; i++) {
@@ -112,7 +112,7 @@ export function testCombatSetEnemyCombatants(
 export function testCombatSetRandomEncounter(
   store: Store<AppState>,
   party: Entity[],
-  encounter: ITemplateRandomEncounter
+  encounter: ITemplateRandomEncounter,
 ) {
   const toCombatant = (id: string): IEnemy => {
     const itemTemplate: IEnemy = getEnemyById(id) as any;
@@ -141,7 +141,7 @@ export function testCombatSetRandomEncounter(
 export function testCombatSetFixedEncounter(
   store: Store<AppState>,
   party: Entity[],
-  encounter: ITemplateFixedEncounter
+  encounter: ITemplateFixedEncounter,
 ) {
   const toCombatant = (id: string): IEnemy => {
     const itemTemplate: IEnemy = getEnemyById(id) as any;
@@ -193,7 +193,7 @@ export function testCombatGetParty(store: Store<AppState>): IPartyMember[] {
 
 export function testCombatCreateComponent(
   defaultState?: CombatStateNames | null,
-  encounter = RANDOM_ENCOUNTERS_DATA[0]
+  encounter = RANDOM_ENCOUNTERS_DATA[0],
 ): CombatComponent {
   const { combat } = testCombatCreateComponentFixture(defaultState, encounter);
   return combat;
@@ -201,7 +201,7 @@ export function testCombatCreateComponent(
 
 export function testCombatCreateComponentFixture(
   defaultState: CombatStateNames | null = null,
-  encounter = RANDOM_ENCOUNTERS_DATA[0]
+  encounter = RANDOM_ENCOUNTERS_DATA[0],
 ) {
   const combatFixture = TestBed.createComponent(CombatComponent);
   const store = combatFixture.componentInstance.store;

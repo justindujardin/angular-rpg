@@ -99,7 +99,7 @@ export class MapFeatureComponent
   constructor(
     public store: Store<AppState>,
     public notify: NotificationService,
-    public game: RPGGame
+    public game: RPGGame,
   ) {
     super(null, null);
   }

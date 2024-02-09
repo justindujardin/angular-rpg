@@ -14,7 +14,7 @@ import {
 
 function getFeature(
   values: Partial<ITiledObject<IDialogFeatureProperties>> = {},
-  properties: Partial<IDialogFeatureProperties> = {}
+  properties: Partial<IDialogFeatureProperties> = {},
 ): ITiledObject<IDialogFeatureProperties> {
   return {
     name: 'feature',

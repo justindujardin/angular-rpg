@@ -28,7 +28,7 @@ export interface EntityCollectionRecord
 export function addEntityToCollection(
   collection: EntityCollectionRecord,
   entity: EntityCollectionItem,
-  entityId: string
+  entityId: string,
 ): EntityCollectionRecord {
   const index = collection.allIds.indexOf(entityId);
   assertTrue(index === -1, `item (${entityId}) already exists in collection`);
@@ -39,7 +39,7 @@ export function addEntityToCollection(
     ['byId'],
     (byId: Immutable.Map<string, EntityCollectionItem>) => {
       return byId.set(entityId, entity);
-    }
+    },
   );
 }
 
@@ -50,14 +50,14 @@ export function addEntityToCollection(
 export function mergeEntityInCollection(
   collection: EntityCollectionRecord,
   entity: Partial<CombatantTypes | ITemplateId>,
-  entityId: string
+  entityId: string,
 ): EntityCollectionRecord {
   const index = collection.allIds.indexOf(entityId);
   assertTrue(index !== -1, `item (${entityId}) does not exist in collection`);
   return collection.updateIn(['byId'], (byId: Immutable.Map<string, IEntityObject>) => {
     return byId.set(
       entityId,
-      Immutable.Map<string, any>(byId.get(entityId)).merge(entity).toJS()
+      Immutable.Map<string, any>(byId.get(entityId)).merge(entity).toJS(),
     );
   });
 }
@@ -68,15 +68,15 @@ export function mergeEntityInCollection(
  */
 export function removeEntityFromCollection(
   collection: EntityCollectionRecord,
-  entityId: string
+  entityId: string,
 ): EntityCollectionRecord {
   const index = collection.allIds.indexOf(entityId);
   assertTrue(index !== -1, `item (${entityId}) does not exist in collection`);
   collection = collection.updateIn(['allIds'], (allIds) =>
-    allIds.filter((id: string) => id !== entityId)
+    allIds.filter((id: string) => id !== entityId),
   );
   return collection.updateIn(['byId'], (byId: Immutable.Map<string, IEntityObject>) =>
-    byId.remove(entityId)
+    byId.remove(entityId),
   );
 }
 
@@ -85,7 +85,7 @@ export function removeEntityFromCollection(
  * @param object The input values.
  */
 export function entityCollectionFromJSON(
-  object: EntityCollection<any>
+  object: EntityCollection<any>,
 ): EntityCollection<any> {
   return {
     byId: Immutable.Map<string, any>(object.byId),

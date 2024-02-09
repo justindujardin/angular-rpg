@@ -12,7 +12,7 @@ describe('Game Mechanics', () => {
         // The weapon is additive
         const weapon = new Club();
         expect(PartyMechanics.getAttack({ state: w, equipment: [weapon] })).toBe(
-          halfStrength + weapon.attack
+          halfStrength + weapon.attack,
         );
       });
     });

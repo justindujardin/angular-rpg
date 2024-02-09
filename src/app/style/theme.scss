@@ -1,12 +1,7 @@
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 // Plus imports for other components in your app.
 
 $mat-font-family: "Roboto", sans-serif;
-
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
-@include mat.core();
 
 $mat-rpg-blue: (
   50: #ccf4ff,
@@ -86,7 +81,12 @@ $rpg-app-warn: mat.define-palette(mat.$red-palette);
 // Create the theme object (a Sass map containing all of the palettes).
 $rpg-app-theme: mat.define-dark-theme($rpg-app-primary, $rpg-app-accent, $rpg-app-warn);
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include mat.all-component-themes($rpg-app-theme);
+@include mat.core-theme($rpg-app-theme);
+// @include mat.button-theme($rpg-app-theme);
+@include mat.toolbar-theme($rpg-app-theme);
+@include mat.select-theme($rpg-app-theme);
+@include mat.sidenav-theme($rpg-app-theme);
+@include mat.list-theme($rpg-app-theme);
+@include mat.slide-toggle-theme($rpg-app-theme);
+// @include mat.card-theme($rpg-app-theme);
+@include mat.progress-bar-theme($rpg-app-theme);

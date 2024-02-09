@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { LoadingService } from '../../components/loading/loading.service';
 import { GameWorld } from '../../services/game-world';
 
 @Injectable()
-export class GameResolver implements Resolve<any> {
-  constructor(private world: GameWorld, private loadingService: LoadingService) {}
+export class GameResolver {
+  constructor(
+    private world: GameWorld,
+    private loadingService: LoadingService,
+  ) {}
 
   /** Resolve when the world ready$ observable emits */
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {

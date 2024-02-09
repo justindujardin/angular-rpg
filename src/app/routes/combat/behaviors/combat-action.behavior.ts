@@ -1,18 +1,3 @@
-/*
- Copyright (C) 2013-2020 by Justin DuJardin and Contributors
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
 import _ from 'underscore';
 import { SceneObjectBehavior } from '../../../behaviors/scene-object-behavior';
 import { AudioResource, ImageResource, ResourceManager } from '../../../core';
@@ -36,7 +21,10 @@ export class CombatActionBehavior extends SceneObjectBehavior implements IPlayer
   /** A map of key/icon for sprites this action uses. Calling preload() will load these */
   sprites: { [key: string]: string } | null = null;
 
-  constructor(protected loader: ResourceManager, protected gameWorld: GameWorld) {
+  constructor(
+    protected loader: ResourceManager,
+    protected gameWorld: GameWorld,
+  ) {
     super();
   }
 
@@ -82,7 +70,7 @@ export class CombatActionBehavior extends SceneObjectBehavior implements IPlayer
         const meta = this.gameWorld.sprites.getSpriteMeta(spriteName);
         assertTrue(meta, `no metadata for sprite: ${spriteName}`);
         return meta.source;
-      })
+      }),
     );
     const sounds = _.uniq(Object.values(this.sounds || []));
     return Promise.all([

@@ -168,7 +168,7 @@ export function getChildren(el: any, tag: string): any[] {
     _.map(list, (c: any) => {
       const child: any = $(c);
       return child.parent()[0] !== el[0] ? null : child;
-    })
+    }),
   );
 }
 

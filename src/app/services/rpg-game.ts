@@ -1,18 +1,3 @@
-/*
- Copyright (C) 2013-2020 by Justin DuJardin and Contributors
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { getArmorById } from 'app/models/game-data/armors';
@@ -44,7 +29,10 @@ import { Item } from '../models/item';
 
 @Injectable()
 export class RPGGame {
-  constructor(public loader: ResourceManager, private store: Store<AppState>) {}
+  constructor(
+    public loader: ResourceManager,
+    private store: Store<AppState>,
+  ) {}
 
   public create(type: EntityType, name: string): IPartyMember {
     const HERO_DEFAULTS: Partial<IPartyMember> = {
@@ -110,7 +98,7 @@ export class RPGGame {
   giveItemToPlayer(
     player: IPartyMember,
     templateItem: ITemplateBaseItem | null,
-    equipSlot: keyof EntitySlots
+    equipSlot: keyof EntitySlots,
   ) {
     if (!templateItem) {
       return;
@@ -123,7 +111,7 @@ export class RPGGame {
         entityId: player.eid,
         slot: equipSlot,
         itemId: itemInstance.eid,
-      })
+      }),
     );
   }
 
@@ -132,7 +120,7 @@ export class RPGGame {
    * is new or was loaded from save data.  Resolves with true if the game is new.
    */
   initGame(
-    load: boolean = !!localStorage.getItem(GameStateService.STATE_KEY)
+    load: boolean = !!localStorage.getItem(GameStateService.STATE_KEY),
   ): Promise<boolean> {
     return new Promise<boolean>(async (resolve, reject) => {
       if (load) {

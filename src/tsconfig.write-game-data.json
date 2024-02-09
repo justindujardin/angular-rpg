@@ -3,7 +3,5 @@
     "module": "commonjs",
     "target": "ES2017"
   },
-  "files": [
-    "write-game-data.ts"
-  ]
+  "files": ["write-game-data.ts"]
 }

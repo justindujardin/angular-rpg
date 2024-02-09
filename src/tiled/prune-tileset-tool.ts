@@ -53,7 +53,7 @@ var tool = tiled.registerTool('PruneTileset', {
         const tileIcon = tilePath.substring(tilePath.lastIndexOf('/') + 1);
         if (tileIcon === icon) {
           tiled.log(
-            `-- found gid ${tile.id} for icon ${icon} in tileset ${tileSet.name}`
+            `-- found gid ${tile.id} for icon ${icon} in tileset ${tileSet.name}`,
           );
           return tile;
         }
@@ -136,18 +136,18 @@ var tool = tiled.registerTool('PruneTileset', {
       .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
     tiled.log(`Tiles: [${sorted.join(', ')}]`);
     const images = Object.keys(allImages).map((image) =>
-      image.substring(image.lastIndexOf('/') + 1)
+      image.substring(image.lastIndexOf('/') + 1),
     );
     tiled.log(`Images: [${images.join(', ')}]`);
     const tilesets = Object.keys(allTilesets).map((tileset) =>
-      tileset.substring(tileset.lastIndexOf('/') + 1)
+      tileset.substring(tileset.lastIndexOf('/') + 1),
     );
     tiled.log(`Tilesets: [${tilesets.join(', ')}]`);
   },
   getMaps: function (): string[] {
     const mapsPath = tiled.activeAsset.fileName.substr(
       0,
-      tiled.activeAsset.fileName.indexOf('maps/') + 5
+      tiled.activeAsset.fileName.indexOf('maps/') + 5,
     );
     const files: string[] = File.directoryEntries(mapsPath);
     return files
@@ -157,7 +157,7 @@ var tool = tiled.registerTool('PruneTileset', {
   getTilesetPaths: function (): string[] {
     const mapsPath = tiled.activeAsset.fileName.substr(
       0,
-      tiled.activeAsset.fileName.indexOf('maps/') + 5
+      tiled.activeAsset.fileName.indexOf('maps/') + 5,
     );
     const tileSetsPath = `${mapsPath}tiles/`;
     const files: string[] = File.directoryEntries(tileSetsPath);

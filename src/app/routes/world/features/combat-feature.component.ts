@@ -1,18 +1,3 @@
-/*
- Copyright (C) 2013-2020 by Justin DuJardin and Contributors
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
 import { Component, Input } from '@angular/core';
 import { getEnemyById } from 'app/models/game-data/enemies';
 import { getFixedEncounterById } from 'app/models/game-data/fixed-encounters';
@@ -84,14 +69,14 @@ export class CombatFeatureComponent extends MapFeatureComponent {
       .pipe(
         map((party: Immutable.List<Entity>) => {
           const encounter: ITemplateFixedEncounter | null = getFixedEncounterById(
-            properties.id
+            properties.id,
           );
 
           if (!encounter) {
             this.notify.show(
               `There is no encounter named: ${properties.id}.`,
               undefined,
-              0
+              0,
             );
             return;
           }
@@ -113,7 +98,7 @@ export class CombatFeatureComponent extends MapFeatureComponent {
           };
           this.store.dispatch(new CombatEncounterAction(payload));
         }),
-        take(1)
+        take(1),
       )
       .subscribe();
     return true;

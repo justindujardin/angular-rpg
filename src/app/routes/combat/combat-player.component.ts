@@ -226,7 +226,7 @@ export class CombatPlayerComponent
           result.move = result.move.clone();
         }
         return result;
-      }
+      },
     );
     this.animating = true;
     await this.animation.playChain(animations);

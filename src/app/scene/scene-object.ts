@@ -1,18 +1,3 @@
-/*
- Copyright (C) 2013-2020 by Justin DuJardin and Contributors
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
 import * as _ from 'underscore';
 import { SceneObjectBehavior } from '../behaviors/scene-object-behavior';
 import { BehaviorHost, IPoint, Point } from '../core';
@@ -51,7 +36,7 @@ export class SceneObject extends BehaviorHost implements ISceneObject {
     for (let i = 0; i < l; i++) {
       if (!values[i]) {
         throw new Error(
-          'Component deleted during tick, use _.defer to delay removal until the callstack unwinds'
+          'Component deleted during tick, use _.defer to delay removal until the callstack unwinds',
         );
       }
       if (values[i].tick) {
@@ -70,7 +55,7 @@ export class SceneObject extends BehaviorHost implements ISceneObject {
     for (let i = 0; i < l; i++) {
       if (!values[i]) {
         throw new Error(
-          'Component deleted during interpolateTick, delay removal until the callstack unwinds'
+          'Component deleted during interpolateTick, delay removal until the callstack unwinds',
         );
       }
       if (values[i].interpolateTick) {
@@ -108,7 +93,7 @@ export class SceneObject extends BehaviorHost implements ISceneObject {
     }
     if (failed) {
       console.log(
-        `Failed to add component set to host. Component ${failed.toString()} failed to connect to host.`
+        `Failed to add component set to host. Component ${failed.toString()} failed to connect to host.`,
       );
     } else {
       this.syncBehaviors();
@@ -132,7 +117,7 @@ export class SceneObject extends BehaviorHost implements ISceneObject {
           return false;
         }
         return true;
-      }
+      },
     );
     const change: boolean = this._connectedBehaviors.length === previousCount;
     if (change && silent !== true) {

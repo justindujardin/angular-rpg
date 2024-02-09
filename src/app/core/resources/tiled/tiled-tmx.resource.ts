@@ -1,18 +1,3 @@
-/*
- Copyright (C) 2013-2020 by Justin DuJardin and Contributors
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
 import 'jquery';
 import * as $ from 'jquery';
 import * as _ from 'underscore';
@@ -127,7 +112,7 @@ export class TiledTMXResource extends XMLResource {
         const source: string = this.getElAttribute(ts, 'source');
         const firstGid: number = parseInt(
           this.getElAttribute(ts, 'firstgid') || '-1',
-          10
+          10,
         );
         if (source) {
           tileSetDeps.push({
@@ -161,7 +146,7 @@ export class TiledTMXResource extends XMLResource {
           if (!encoding || encoding.toLowerCase() !== 'csv') {
             failed = true;
             return reject(
-              `pow-core only supports CSV maps. Edit the Map Properties (for:${this.url}) to use the CSV`
+              `pow-core only supports CSV maps. Edit the Map Properties (for:${this.url}) to use the CSV`,
             );
           }
           tileLayer.data = JSON.parse('[' + $.trim(layerData.text()) + ']');

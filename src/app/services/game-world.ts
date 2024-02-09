@@ -27,7 +27,7 @@ export class GameWorld extends World {
       return spritesLoaded;
     }),
     filter((b) => b),
-    map(() => undefined)
+    map(() => undefined),
   );
 
   constructor(
@@ -35,7 +35,7 @@ export class GameWorld extends World {
     public store: Store<AppState>,
     public sprites: SpriteRender,
     public gameStateService: GameStateService,
-    public notify: NotificationService
+    public notify: NotificationService,
   ) {
     super();
     _sharedGameWorld = this;

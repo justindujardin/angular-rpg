@@ -107,31 +107,31 @@ type EntityReducerTypes =
 
 export function entityReducer(
   state: EntityStateRecord = entityStateFactory(),
-  action: EntityReducerTypes
+  action: EntityReducerTypes,
 ): EntityState {
   switch (action.type) {
     case EntityAddBeingAction.typeId: {
       const entity: IEntityObject = action.payload;
       return state.updateIn(['beings'], (items) =>
-        addEntityToCollection(items, entity, entity.eid)
+        addEntityToCollection(items, entity, entity.eid),
       );
     }
     case EntityRemoveBeingAction.typeId: {
       const entityId: string = action.payload;
       return state.updateIn(['beings'], (items) =>
-        removeEntityFromCollection(items, entityId)
+        removeEntityFromCollection(items, entityId),
       );
     }
     case EntityAddItemAction.typeId: {
       const entity: Item = action.payload;
       return state.updateIn(['items'], (items) =>
-        addEntityToCollection(items, entity, entity.eid)
+        addEntityToCollection(items, entity, entity.eid),
       );
     }
     case EntityRemoveItemAction.typeId: {
       const entityId: string = action.payload;
       return state.updateIn(['items'], (items) =>
-        removeEntityFromCollection(items, entityId)
+        removeEntityFromCollection(items, entityId),
       );
     }
     case GameStateHealPartyAction.typeId: {
@@ -148,7 +148,7 @@ export function entityReducer(
               hp: newHp,
               mp: newMp,
             },
-            partyMemberId
+            partyMemberId,
           );
         });
         return updateBeingsResult;
@@ -165,7 +165,7 @@ export function entityReducer(
           updateBeingsResult = mergeEntityInCollection(
             updateBeingsResult,
             { hp: newHp },
-            partyMemberId
+            partyMemberId,
           );
         });
         return updateBeingsResult;
@@ -179,7 +179,7 @@ export function entityReducer(
         !current[action.payload.slot],
         `entity already has item ${current[action.payload.slot]} in ${
           action.payload.slot
-        }`
+        }`,
       );
       return result.updateIn(
         ['beings', 'byId', action.payload.entityId],
@@ -188,7 +188,7 @@ export function entityReducer(
             ...entity,
             [action.payload.slot]: action.payload.itemId,
           };
-        }
+        },
       );
     }
     case GameStateUnequipItemAction.typeId: {
@@ -199,7 +199,7 @@ export function entityReducer(
         current[action.payload.slot] === action.payload.itemId,
         `entity does not have item ${current[action.payload.slot]} equipped ${
           action.payload.slot
-        }`
+        }`,
       );
       return result.updateIn(
         ['beings', 'byId', action.payload.entityId],
@@ -208,7 +208,7 @@ export function entityReducer(
             ...entity,
             [action.payload.slot]: null,
           };
-        }
+        },
       );
     }
     case CombatVictoryAction.typeId: {
@@ -219,12 +219,12 @@ export function entityReducer(
         victoryAction.payload.party.forEach((partyEntity: Entity) => {
           assertTrue(
             !!(partyEntity && partyEntity.eid),
-            'invalid party entity in combat victory action'
+            'invalid party entity in combat victory action',
           );
           updateBeingsResult = mergeEntityInCollection(
             updateBeingsResult,
             partyEntity,
-            partyEntity.eid
+            partyEntity.eid,
           );
         });
         return updateBeingsResult;

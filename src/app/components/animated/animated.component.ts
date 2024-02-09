@@ -139,7 +139,7 @@ export class AnimatedComponent extends TileObject {
           const interpolated: Point = task.value.interpolate(
             task.start,
             task.target,
-            factor
+            factor,
           );
           task.host.point.x = interpolated.x;
           task.host.point.y = interpolated.y;
@@ -170,7 +170,7 @@ export class AnimatedComponent extends TileObject {
         .map((cfg) => {
           assertTrue(cfg.preload, 'invalid preload function not filtered out');
           return cfg.preload(cfg);
-        })
+        }),
     );
   }
 }

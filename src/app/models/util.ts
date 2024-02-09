@@ -40,7 +40,7 @@ export function exhaustiveCheck(input: never) {
  */
 export function makeRecordFactory<E, T extends TypedRecord<T> & E>(
   obj: E,
-  name?: string
+  name?: string,
 ): (val?: Partial<E>) => T {
   return makeTypedFactory<E, T>(obj, name);
 }
@@ -50,7 +50,7 @@ export function makeRecordFactory<E, T extends TypedRecord<T> & E>(
  */
 export function assertTrue<T>(
   expression: T,
-  message: string
+  message: string,
 ): asserts expression is NonNullable<T> {
   if (!expression) {
     throw new Error(`Assertion Failed: ${message}`);

@@ -54,7 +54,7 @@ export function testAppGetBoarded(store: Store<AppState>): boolean {
 
 export function testAppGetKeyData(
   store: Store<AppState>,
-  keyName?: string
+  keyName?: string,
 ): boolean | undefined {
   if (!keyName) {
     return false;
@@ -73,21 +73,21 @@ export function testAppGetParty(store: Store<AppState>): IPartyMember[] {
     .select(getGameParty)
     .pipe(
       map((f) => f.toJS()),
-      take(1)
+      take(1),
     )
     .subscribe((s) => (result = s));
   return result;
 }
 
 export function testAppGetPartyWithEquipment(
-  store: Store<AppState>
+  store: Store<AppState>,
 ): EntityWithEquipment[] {
   let result: EntityWithEquipment[] = [];
   store
     .select(getGamePartyWithEquipment)
     .pipe(
       map((f) => f.toJS()),
-      take(1)
+      take(1),
     )
     .subscribe((s) => (result = s));
   return result;
@@ -99,7 +99,7 @@ export function testAppGetInventory(store: Store<AppState>): EntityItemTypes[] {
     .select(getGameInventory)
     .pipe(
       take(1),
-      map((f) => f.toJS())
+      map((f) => f.toJS()),
     )
     .subscribe((s) => (result = s));
   return result as EntityItemTypes[];
@@ -118,11 +118,11 @@ export function testAppAddToInventory<T extends Item>(
   store: Store<AppState>,
   itemId: string,
   from: ITemplateBaseItem[],
-  values?: Partial<T>
+  values?: Partial<T>,
 ): T {
   const itemInstance = instantiateEntity<T>(
     from.find((f) => f.id === itemId),
-    values
+    values,
   );
   store.dispatch(new EntityAddItemAction(itemInstance));
   store.dispatch(new GameStateAddInventoryAction(itemInstance));
@@ -132,10 +132,10 @@ export function testAppAddToInventory<T extends Item>(
 export function testAppDamageParty(
   store: Store<AppState>,
   party: EntityWithEquipment[],
-  damage: number
+  damage: number,
 ) {
   store.dispatch(
-    new GameStateHurtPartyAction({ partyIds: party.map((p) => p.eid), damage })
+    new GameStateHurtPartyAction({ partyIds: party.map((p) => p.eid), damage }),
   );
 }
 
@@ -152,7 +152,7 @@ export async function testAppLoadSprites() {
 export function testAppMockNotificationService() {
   const spy: jasmine.SpyObj<NotificationService> = jasmine.createSpyObj(
     'NotificationService',
-    ['show', 'dismiss']
+    ['show', 'dismiss'],
   );
   spy.show.and.callFake(
     (message: string, done: () => void, duration?: number): INotifyItem => {
@@ -166,7 +166,7 @@ export function testAppMockNotificationService() {
         duration: 0,
       };
       return obj;
-    }
+    },
   );
   return { provide: NotificationService, useValue: spy };
 }

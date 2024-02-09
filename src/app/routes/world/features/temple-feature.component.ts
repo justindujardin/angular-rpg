@@ -44,19 +44,19 @@ export class TempleFeatureComponent
   name$: Observable<string> = this.feature$.pipe(
     map((data: ITiledObject | null) => {
       return data?.name || 'temple';
-    })
+    }),
   );
 
   icon$: Observable<string> = this.feature$.pipe(
     map((data: ITiledObject | null) => {
       return data?.properties?.icon;
-    })
+    }),
   );
 
   cost$: Observable<number> = this.feature$.pipe(
     map((data: ITiledObject | null) => {
       return parseInt(data?.properties?.cost, 10);
-    })
+    }),
   );
 
   public _onRest$ = new Subject<void>();
@@ -86,7 +86,7 @@ export class TempleFeatureComponent
                 new GameStateHealPartyAction({
                   cost,
                   partyIds,
-                })
+                }),
               );
               const msg =
                 'Your party has been healed! \nYou have (' +
@@ -95,8 +95,8 @@ export class TempleFeatureComponent
               this.notify.show(msg, undefined, 5000);
             }
             this.onClose.next({});
-          }
-        )
+          },
+        ),
       )
       .subscribe();
   }

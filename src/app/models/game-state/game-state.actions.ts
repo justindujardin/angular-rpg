@@ -127,7 +127,7 @@ export class GameStateTravelAction implements Action {
     public payload: {
       location: string;
       position: IPoint;
-    }
+    },
   ) {}
 }
 
@@ -190,7 +190,7 @@ export class GameStateHealPartyAction implements Action {
     public payload: {
       cost: number;
       partyIds: string[];
-    }
+    },
   ) {}
 }
 
@@ -202,7 +202,7 @@ export class GameStateHurtPartyAction implements Action {
     public payload: {
       damage: number;
       partyIds: string[];
-    }
+    },
   ) {}
 }
 
@@ -222,7 +222,7 @@ export class GameStateEquipItemAction implements Action {
       entityId: string;
       itemId: string;
       slot: keyof EntitySlots;
-    }
+    },
   ) {}
 }
 
@@ -235,7 +235,7 @@ export class GameStateUnequipItemAction implements Action {
       entityId: string;
       itemId: string;
       slot: keyof EntitySlots;
-    }
+    },
   ) {}
 }
 
