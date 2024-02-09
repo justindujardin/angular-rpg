@@ -1,3 +1,10 @@
+## [0.3.4](https://github.com/justindujardin/angular-rpg/compare/v0.3.3...v0.3.4) (2024-02-09)
+
+
+### Features
+
+* update to Angular 17 ([d3c2dc2](https://github.com/justindujardin/angular-rpg/commit/d3c2dc2563535fa32d1daf5e2ce74bd2565c45a4))
+
 ## [0.3.3](https://github.com/justindujardin/angular-rpg/compare/v0.3.2...v0.3.3) (2022-11-27)
 
 
