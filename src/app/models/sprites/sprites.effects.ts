@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import {
@@ -13,7 +13,7 @@ import { SpritesService } from './sprites.service';
 export class SpritesEffects {
   constructor(private actions$: Actions, private spritesService: SpritesService) {}
 
-  @Effect() loadSprites$ = this.actions$.pipe(
+  loadSprites$ = createEffect(() => this.actions$.pipe(
     ofType(SpritesLoadAction.typeId),
     switchMap((action: SpritesLoadAction) => {
       return this.spritesService
@@ -26,5 +26,5 @@ export class SpritesEffects {
     catchError((e) => {
       return of(new SpritesLoadFailAction(e.toString()));
     })
-  );
+  ))
 }

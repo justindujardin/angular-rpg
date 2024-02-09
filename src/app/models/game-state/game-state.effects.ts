@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, debounceTime, map, switchMap, tap } from 'rxjs/operators';
 import { AppState } from '../../app.model';
@@ -34,53 +34,53 @@ export class GameStateEffects {
    * When a load action is dispatched, async load the state and then dispatch
    * a Success action.
    */
-  @Effect() initLoadedGame$ = this.actions$.pipe(
+  initLoadedGame$ = createEffect(() => this.actions$.pipe(
     ofType(GameStateLoadAction.typeId),
     switchMap((action: GameStateLoadAction) => this.gameStateService.load()),
     map((state: AppState) => new GameStateLoadSuccessAction(state)),
     catchError((e) => {
       return of(new GameStateLoadFailAction(e.toString()));
     })
-  );
+  ))
 
   /**
    * When a save action is dispatched, serialize the app state to local storage.
    */
-  @Effect() saveGameState$ = this.actions$.pipe(
+  saveGameState$ = createEffect(() => this.actions$.pipe(
     ofType(GameStateSaveAction.typeId),
     switchMap(() => this.gameStateService.save()),
     map(() => new GameStateSaveSuccessAction()),
     catchError((e) => {
       return of(new GameStateSaveFailAction(e.toString()));
     })
-  );
+  ))
 
   /**
    * When a delete action is dispatched, remove the saved state in localstorage.
    */
-  @Effect() clearGameState$ = this.actions$.pipe(
+  clearGameState$ = createEffect(() => this.actions$.pipe(
     ofType(GameStateDeleteAction.typeId),
     switchMap(() => this.gameStateService.resetGame()),
     map(() => new GameStateDeleteSuccessAction()),
     catchError((e) => {
       return of(new GameStateDeleteFailAction(e.toString()));
     })
-  );
+  ))
 
   /** When game data is deleted, notify the user. */
-  @Effect({ dispatch: false }) clearGameSuccess$ = this.actions$.pipe(
+  clearGameSuccess$ = createEffect(() => this.actions$.pipe(
     ofType(GameStateDeleteSuccessAction.typeId),
     tap(() => {
       this.notify.show(
         'Game data deleted.  Next time you refresh you will begin a new game.'
       );
     })
-  );
+  ), { dispatch: false });
 
   /**
    * After a successful game create/load, travel to the initial location
    */
-  @Effect() afterLoadTravelToCurrentLocation$ = this.actions$.pipe(
+  afterLoadTravelToCurrentLocation$ = createEffect(() => this.actions$.pipe(
     ofType(GameStateNewSuccessAction.typeId, GameStateLoadSuccessAction.typeId),
     debounceTime(10),
     map((action: GameStateNewSuccessAction | GameStateLoadSuccessAction) => {
@@ -92,14 +92,12 @@ export class GameStateEffects {
         case GameStateLoadSuccessAction.typeId:
           gameState = action.payload.gameState;
           break;
-        default:
-          return;
       }
       return new GameStateTravelAction(gameState);
     })
-  );
+  ))
 
-  @Effect() travel$ = this.actions$.pipe(
+  travel$ = createEffect(() => this.actions$.pipe(
     ofType(GameStateTravelAction.typeId),
     switchMap((action: GameStateTravelAction) => {
       return this.gameStateService
@@ -115,5 +113,5 @@ export class GameStateEffects {
     catchError((e) => {
       return of(new GameStateTravelFailAction(e.toString()));
     })
-  );
+  ))
 }

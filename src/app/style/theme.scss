@@ -84,4 +84,4 @@ $rpg-app-theme: mat.define-dark-theme($rpg-app-primary, $rpg-app-accent, $rpg-ap
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.all-legacy-component-themes($rpg-app-theme);
+// @include mat.all-legacy-component-themes($rpg-app-theme);

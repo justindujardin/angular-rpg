@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, of, Subscriber } from 'rxjs';
 import {
@@ -43,7 +43,7 @@ export class CombatEffects {
     private router: Router
   ) {}
 
-  @Effect() beginCombat$ = this.actions$.pipe(
+  beginCombat$ = createEffect(() => this.actions$.pipe(
     ofType(CombatEncounterAction.typeId),
     switchMap((action: CombatEncounterAction) => {
       return this.combatService.loadEncounter(action.payload);
@@ -54,10 +54,10 @@ export class CombatEffects {
     catchError((e) => {
       return of(new CombatEncounterErrorAction(e.toString()));
     })
-  );
+  ))
 
   /** route update to combat encounter */
-  @Effect({ dispatch: false }) navigateToCombatRoute$ = this.actions$.pipe(
+  navigateToCombatRoute$ = createEffect(() => this.actions$.pipe(
     ofType(CombatEncounterReadyAction.typeId),
     debounceTime(100),
     distinctUntilChanged(),
@@ -69,23 +69,23 @@ export class CombatEffects {
       );
       return this.router.navigate(['combat', encounter.id || encounter.zone]);
     })
-  );
+  ), { dispatch: false });
 
   /**
    * When a combat escape action is dispatched
    */
-  @Effect() combatEscape$ = this.actions$.pipe(
+  combatEscape$ = createEffect(() => this.actions$.pipe(
     ofType(CombatEscapeAction.typeId),
     map((action: CombatEscapeAction) => {
       // TODO: add a switcMap before this and notify something?
       return new CombatEscapeCompleteAction();
     })
-  );
+  ))
 
   /**
    * When a combat victory action is dispatched, notify the user about what they've won.
    */
-  @Effect() combatVictory$ = this.actions$.pipe(
+  combatVictory$ = createEffect(() => this.actions$.pipe(
     ofType(CombatVictoryAction.typeId),
     switchMap((action: CombatVictoryAction) => {
       const data: CombatVictorySummary = action.payload;
@@ -150,10 +150,10 @@ export class CombatEffects {
     map((action: CombatVictoryAction) => {
       return new CombatVictoryCompleteAction(action.payload);
     })
-  );
+  ))
 
   /** route update back to map after a combat encounter */
-  @Effect({ dispatch: false }) navigateToMapRoute$ = this.actions$.pipe(
+  navigateToMapRoute$ = createEffect(() => this.actions$.pipe(
     ofType(CombatVictoryCompleteAction.typeId, CombatEscapeCompleteAction.typeId),
     debounceTime(100),
     switchMap(() => this.store.select(getGameMap)),
@@ -165,5 +165,5 @@ export class CombatEffects {
       }
       return this.router.navigate(['world', targetMap]);
     })
-  );
+  ), { dispatch: false });
 }
