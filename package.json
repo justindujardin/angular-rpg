@@ -39,7 +39,7 @@
     "semantic-release": "semantic-release",
     "docs:json": "compodoc src/app -p ./tsconfig.json -e json -d src",
     "storybook": " ng run angular-rpg:storybook",
-    "build-storybook": " ng run angular-rpg:build-storybook",
+    "build-storybook": "npm run docs:json && ng run angular-rpg:build-storybook",
     "build:prod": "ng build --configuration production",
     "test:watch": "ng test",
     "coverage:ci": "sh .data/codecov.sh",
