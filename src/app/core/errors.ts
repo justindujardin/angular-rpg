@@ -1,5 +1,3 @@
-
-
 /**
  * Constant strings for use in throwing Error with messages.  Used to
  * make checking thrown errors doable without an explosion of Error subclasses.

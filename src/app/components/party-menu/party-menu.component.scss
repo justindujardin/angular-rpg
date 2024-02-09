@@ -98,7 +98,9 @@
     max-width: 600px;
     max-height: 500px;
     overflow-y: auto;
-    transition: max-width 0.2s ease-out 0.2s, max-height 0.2s ease-out 0.2s,
+    transition:
+      max-width 0.2s ease-out 0.2s,
+      max-height 0.2s ease-out 0.2s,
       font-size 0.2s ease-in 0.1s;
     @media (min-width: 961px) {
       /* tablet, landscape iPad, lo-res laptops ands desktops */

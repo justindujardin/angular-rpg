@@ -37,12 +37,12 @@ export class DoorFeatureComponent extends MapFeatureComponent {
   requiredKey$: Observable<string> = this.feature$.pipe(
     map((f: ITiledObject) => {
       return f.properties?.requiredKey || '';
-    })
+    }),
   );
   id$: Observable<string> = this.feature$.pipe(
     map((f: ITiledObject) => {
       return f.properties?.id || '';
-    })
+    }),
   );
   canUnlock$: Observable<boolean> = this.feature$.pipe(
     switchMap((f: ITiledObject) => {
@@ -51,28 +51,28 @@ export class DoorFeatureComponent extends MapFeatureComponent {
       }
       return this.store.select(getGameKey(f.properties.requiredKey));
     }),
-    map((value) => !!value)
+    map((value) => !!value),
   );
   cantUnlock$: Observable<boolean> = this.canUnlock$.pipe(map((value) => !value));
   icon$: Observable<string> = this.feature$.pipe(
     map((f: ITiledObject) => {
       return f.properties?.icon || '';
-    })
+    }),
   );
   title$: Observable<string> = this.feature$.pipe(
     map((f: ITiledObject) => {
       return f.properties?.title || '';
-    })
+    }),
   );
   lockedText$: Observable<string> = this.feature$.pipe(
     map((f: ITiledObject) => {
       return f.properties?.lockedText || '';
-    })
+    }),
   );
   unlockText$: Observable<string> = this.feature$.pipe(
     map((f: ITiledObject) => {
       return f.properties?.unlockText || '';
-    })
+    }),
   );
 
   exit(object: TileObject): boolean {
@@ -89,9 +89,9 @@ export class DoorFeatureComponent extends MapFeatureComponent {
             return;
           }
           this.store.dispatch(
-            new GameStateSetKeyDataAction(this.feature.properties.id, true)
+            new GameStateSetKeyDataAction(this.feature.properties.id, true),
           );
-        })
+        }),
       )
       .subscribe();
     return true;

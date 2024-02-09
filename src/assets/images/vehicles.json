@@ -12,31 +12,19 @@
     "animations": {
       "up": {
         "duration": 500,
-        "frames": [
-          3,
-          7
-        ]
+        "frames": [3, 7]
       },
       "right": {
         "duration": 500,
-        "frames": [
-          1,
-          5
-        ]
+        "frames": [1, 5]
       },
       "down": {
         "duration": 500,
-        "frames": [
-          2,
-          6
-        ]
+        "frames": [2, 6]
       },
       "left": {
         "duration": 500,
-        "frames": [
-          0,
-          4
-        ]
+        "frames": [0, 4]
       }
     }
   }

@@ -7,12 +7,15 @@ import { AppState } from '../../app.model';
 import { getGameMap } from '../../models/selectors';
 
 @Injectable()
-export class CanActivateWorld  {
-  constructor(private store: Store<AppState>, private router: Router) {}
+export class CanActivateWorld {
+  constructor(
+    private store: Store<AppState>,
+    private router: Router,
+  ) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    state: RouterStateSnapshot,
   ): Observable<boolean> {
     // TODO: This check is hosed if a reasonable default value is set for the initial state for
     // map. Investigate whether this is sane.
@@ -29,7 +32,7 @@ export class CanActivateWorld  {
           return false;
         }
         return true;
-      })
+      }),
     );
   }
 }

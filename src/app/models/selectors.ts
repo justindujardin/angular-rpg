@@ -60,15 +60,15 @@ export const getCombatType = createSelector(sliceCombatState, sliceCombatType);
 export const getCombatLoading = createSelector(sliceCombatState, sliceCombatLoading);
 export const getCombatEncounterParty = createSelector(
   sliceCombatState,
-  sliceCombatEncounterParty
+  sliceCombatEncounterParty,
 );
 export const getCombatEncounterEnemies = createSelector(
   sliceCombatState,
-  sliceCombatEncounterEnemies
+  sliceCombatEncounterEnemies,
 );
 export const getCombatEncounter = createSelector(
   sliceCombatState,
-  sliceCombatEncounter
+  sliceCombatEncounter,
 );
 
 //
@@ -99,7 +99,7 @@ export const sliceEntitiesState = (state: AppState) => state.entities;
  */
 export const entitiesToArray = (
   object: Immutable.Map<string, IEntityObject>,
-  ids: Immutable.List<string>
+  ids: Immutable.List<string>,
 ) => {
   return ids.map((id?: string) => object.get(id || '')).toArray();
 };
@@ -108,7 +108,7 @@ export const entitiesToArray = (
 export const getEntityBeingById = createSelector(sliceEntitiesState, sliceEntityBeings);
 export const getEntityBeingIds = createSelector(
   sliceEntitiesState,
-  sliceEntityBeingIds
+  sliceEntityBeingIds,
 );
 
 /** Select just one entity by its ID */
@@ -117,7 +117,7 @@ export const getEntityById = (id: string) => {
     getEntityBeingById,
     (entities: Immutable.Map<string, Entity>) => {
       return entities.get(id);
-    }
+    },
   );
 };
 
@@ -127,7 +127,7 @@ export const getEntityItemIds = createSelector(sliceEntitiesState, sliceEntityIt
 
 /** Resolve equipment slots to their item entity objects for representation in the UI */
 export const getEntityEquipment = (
-  entityId: string
+  entityId: string,
 ): Selector<AppState, EntityWithEquipment> => {
   return createSelector(getEntityById(entityId), getEntityItemById, (entity, items) => {
     if (!entity) {
@@ -147,11 +147,11 @@ export const getEntityEquipment = (
 
 /** Resolve equipment slots to their item entity objects for representation in the UI */
 export const getCombatEntityEquipment = (
-  entityId: string
+  entityId: string,
 ): Selector<AppState, EntityWithEquipment | null> => {
   return createSelector(getCombatEncounterParty, getEntityItemById, (party, items) => {
     const entity: Entity | undefined = party.find(
-      (p?: IPartyMember) => !!(p && p.eid === entityId)
+      (p?: IPartyMember) => !!(p && p.eid === entityId),
     );
     if (!entity) {
       return null;
@@ -192,7 +192,7 @@ export const getGameParty = createSelector(
   getGamePartyIds,
   (entities, ids): Immutable.List<Entity | undefined> => {
     return ids.map((id) => entities.get(id || '')).toList();
-  }
+  },
 );
 /** Select just one data key from the gamesate keyData object. */
 export const getGameKey = (key: string) => {
@@ -206,7 +206,7 @@ export const getGameInventory = createSelector(
   getGameInventoryIds,
   (
     entities: Immutable.Map<string, EntityItemTypes>,
-    ids: Immutable.List<string>
+    ids: Immutable.List<string>,
   ): Immutable.List<EntityItemTypes> => {
     return ids
       .map((id) => {
@@ -215,12 +215,12 @@ export const getGameInventory = createSelector(
         // instead of crashing hard in an obscure place.
         assertTrue(
           result,
-          `${id} is present in inventory but not in entity collection. Did you forget to dispatch EntityAddItemAction?`
+          `${id} is present in inventory but not in entity collection. Did you forget to dispatch EntityAddItemAction?`,
         );
         return result;
       })
       .toList();
-  }
+  },
 );
 
 /** Get game Party with equipment objects resolved */
@@ -229,7 +229,7 @@ export const getGamePartyWithEquipment = createSelector(
   getEntityItemById,
   (
     party: Immutable.List<Entity>,
-    items: Immutable.Map<string, EntityItemTypes>
+    items: Immutable.Map<string, EntityItemTypes>,
   ): Immutable.List<EntityWithEquipment> => {
     return party
       .filter((r) => !!r)
@@ -246,5 +246,5 @@ export const getGamePartyWithEquipment = createSelector(
         return Object.assign({}, entity, result) as EntityWithEquipment;
       })
       .toList();
-  }
+  },
 );

@@ -13,7 +13,7 @@ import {
 
 function getFeature(
   values: Partial<ITiledObject<ITreasureFeatureProperties>> = {},
-  properties: Partial<ITreasureFeatureProperties> = {}
+  properties: Partial<ITreasureFeatureProperties> = {},
 ): ITiledObject<ITreasureFeatureProperties> {
   return {
     name: 'feature',

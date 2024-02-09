@@ -1,4 +1,3 @@
-
 import { Component, Input } from '@angular/core';
 import { getEnemyById } from 'app/models/game-data/enemies';
 import { getFixedEncounterById } from 'app/models/game-data/fixed-encounters';
@@ -70,14 +69,14 @@ export class CombatFeatureComponent extends MapFeatureComponent {
       .pipe(
         map((party: Immutable.List<Entity>) => {
           const encounter: ITemplateFixedEncounter | null = getFixedEncounterById(
-            properties.id
+            properties.id,
           );
 
           if (!encounter) {
             this.notify.show(
               `There is no encounter named: ${properties.id}.`,
               undefined,
-              0
+              0,
             );
             return;
           }
@@ -99,7 +98,7 @@ export class CombatFeatureComponent extends MapFeatureComponent {
           };
           this.store.dispatch(new CombatEncounterAction(payload));
         }),
-        take(1)
+        take(1),
       )
       .subscribe();
     return true;

@@ -60,7 +60,7 @@ export function combatFromJSON(object: CombatState): CombatState {
 
 export function combatReducer(
   state: CombatStateRecord = combatStateFactory(),
-  action: CombatActions
+  action: CombatActions,
 ): CombatStateRecord {
   switch (action.type) {
     case CombatEncounterAction.typeId: {
@@ -138,7 +138,7 @@ export function combatReducer(
           assertTrue(current, 'invalid target for attack action');
           const newHp: number = Math.min(
             current.maxhp || 10000,
-            Math.max(current.hp - data.damage, 0)
+            Math.max(current.hp - data.damage, 0),
           );
           return items.set(index, {
             ...current,
@@ -155,7 +155,7 @@ export function combatReducer(
           assertTrue(current, 'invalid target for attack action');
           const newHp: number = Math.min(
             current.maxhp || 10000,
-            Math.max(current.hp - data.damage, 0)
+            Math.max(current.hp - data.damage, 0),
           );
           return items.set(index, {
             ...current,
@@ -165,7 +165,7 @@ export function combatReducer(
       }
       assertTrue(
         index !== -1,
-        'attack target found in neither enemies nor party lists'
+        'attack target found in neither enemies nor party lists',
       );
       return state;
     }

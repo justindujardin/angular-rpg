@@ -1,4 +1,3 @@
-
 import { Component, ElementRef } from '@angular/core';
 import { LoadingService } from '../loading/loading.service';
 import { NotificationService } from './notification.service';
@@ -17,7 +16,7 @@ export class RPGNotificationComponent {
   constructor(
     public notify: NotificationService,
     public loadingService: LoadingService,
-    private element: ElementRef
+    private element: ElementRef,
   ) {
     notify.container = element.nativeElement;
   }

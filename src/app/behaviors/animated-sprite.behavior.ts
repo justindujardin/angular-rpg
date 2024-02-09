@@ -1,4 +1,3 @@
-
 import { EventEmitter } from '@angular/core';
 import * as _ from 'underscore';
 import { TileObject } from '../scene/tile-object';
@@ -23,7 +22,7 @@ export class AnimatedSpriteBehavior extends TickedBehavior {
     options: AnimatedSpriteComponentOptions = {
       lengthMS: 500,
       spriteName: null,
-    }
+    },
   ) {
     super();
     if (typeof options !== 'undefined') {

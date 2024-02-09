@@ -12,39 +12,19 @@
     "animations": {
       "up": {
         "duration": 500,
-        "frames": [
-          0,
-          1,
-          2,
-          3
-        ]
+        "frames": [0, 1, 2, 3]
       },
       "right": {
         "duration": 500,
-        "frames": [
-          4,
-          5,
-          6,
-          7
-        ]
+        "frames": [4, 5, 6, 7]
       },
       "down": {
         "duration": 500,
-        "frames": [
-          8,
-          9,
-          10,
-          11
-        ]
+        "frames": [8, 9, 10, 11]
       },
       "left": {
         "duration": 500,
-        "frames": [
-          12,
-          13,
-          14,
-          15
-        ]
+        "frames": [12, 13, 14, 15]
       }
     }
   },
@@ -61,39 +41,19 @@
     "animations": {
       "up": {
         "duration": 500,
-        "frames": [
-          0,
-          1,
-          2,
-          3
-        ]
+        "frames": [0, 1, 2, 3]
       },
       "right": {
         "duration": 500,
-        "frames": [
-          4,
-          5,
-          6,
-          7
-        ]
+        "frames": [4, 5, 6, 7]
       },
       "down": {
         "duration": 500,
-        "frames": [
-          8,
-          9,
-          10,
-          11
-        ]
+        "frames": [8, 9, 10, 11]
       },
       "left": {
         "duration": 500,
-        "frames": [
-          12,
-          13,
-          14,
-          15
-        ]
+        "frames": [12, 13, 14, 15]
       }
     }
   },
@@ -110,39 +70,19 @@
     "animations": {
       "up": {
         "duration": 500,
-        "frames": [
-          0,
-          1,
-          2,
-          3
-        ]
+        "frames": [0, 1, 2, 3]
       },
       "right": {
         "duration": 500,
-        "frames": [
-          4,
-          5,
-          6,
-          7
-        ]
+        "frames": [4, 5, 6, 7]
       },
       "down": {
         "duration": 500,
-        "frames": [
-          8,
-          9,
-          10,
-          11
-        ]
+        "frames": [8, 9, 10, 11]
       },
       "left": {
         "duration": 500,
-        "frames": [
-          12,
-          13,
-          14,
-          15
-        ]
+        "frames": [12, 13, 14, 15]
       }
     }
   },
@@ -159,39 +99,19 @@
     "animations": {
       "up": {
         "duration": 500,
-        "frames": [
-          0,
-          1,
-          2,
-          3
-        ]
+        "frames": [0, 1, 2, 3]
       },
       "right": {
         "duration": 500,
-        "frames": [
-          4,
-          5,
-          6,
-          7
-        ]
+        "frames": [4, 5, 6, 7]
       },
       "down": {
         "duration": 500,
-        "frames": [
-          8,
-          9,
-          10,
-          11
-        ]
+        "frames": [8, 9, 10, 11]
       },
       "left": {
         "duration": 500,
-        "frames": [
-          12,
-          13,
-          14,
-          15
-        ]
+        "frames": [12, 13, 14, 15]
       }
     }
   },
@@ -208,39 +128,19 @@
     "animations": {
       "up": {
         "duration": 500,
-        "frames": [
-          0,
-          1,
-          2,
-          3
-        ]
+        "frames": [0, 1, 2, 3]
       },
       "right": {
         "duration": 500,
-        "frames": [
-          4,
-          5,
-          6,
-          7
-        ]
+        "frames": [4, 5, 6, 7]
       },
       "down": {
         "duration": 500,
-        "frames": [
-          8,
-          9,
-          10,
-          11
-        ]
+        "frames": [8, 9, 10, 11]
       },
       "left": {
         "duration": 500,
-        "frames": [
-          12,
-          13,
-          14,
-          15
-        ]
+        "frames": [12, 13, 14, 15]
       }
     }
   },
@@ -257,39 +157,19 @@
     "animations": {
       "up": {
         "duration": 500,
-        "frames": [
-          0,
-          1,
-          2,
-          3
-        ]
+        "frames": [0, 1, 2, 3]
       },
       "right": {
         "duration": 500,
-        "frames": [
-          4,
-          5,
-          6,
-          7
-        ]
+        "frames": [4, 5, 6, 7]
       },
       "down": {
         "duration": 500,
-        "frames": [
-          8,
-          9,
-          10,
-          11
-        ]
+        "frames": [8, 9, 10, 11]
       },
       "left": {
         "duration": 500,
-        "frames": [
-          12,
-          13,
-          14,
-          15
-        ]
+        "frames": [12, 13, 14, 15]
       }
     }
   },
@@ -306,39 +186,19 @@
     "animations": {
       "up": {
         "duration": 500,
-        "frames": [
-          0,
-          1,
-          2,
-          3
-        ]
+        "frames": [0, 1, 2, 3]
       },
       "right": {
         "duration": 500,
-        "frames": [
-          4,
-          5,
-          6,
-          7
-        ]
+        "frames": [4, 5, 6, 7]
       },
       "down": {
         "duration": 500,
-        "frames": [
-          8,
-          9,
-          10,
-          11
-        ]
+        "frames": [8, 9, 10, 11]
       },
       "left": {
         "duration": 500,
-        "frames": [
-          12,
-          13,
-          14,
-          15
-        ]
+        "frames": [12, 13, 14, 15]
       }
     }
   },
@@ -355,39 +215,19 @@
     "animations": {
       "up": {
         "duration": 500,
-        "frames": [
-          0,
-          1,
-          2,
-          3
-        ]
+        "frames": [0, 1, 2, 3]
       },
       "right": {
         "duration": 500,
-        "frames": [
-          4,
-          5,
-          6,
-          7
-        ]
+        "frames": [4, 5, 6, 7]
       },
       "down": {
         "duration": 500,
-        "frames": [
-          8,
-          9,
-          10,
-          11
-        ]
+        "frames": [8, 9, 10, 11]
       },
       "left": {
         "duration": 500,
-        "frames": [
-          12,
-          13,
-          14,
-          15
-        ]
+        "frames": [12, 13, 14, 15]
       }
     }
   },
@@ -404,39 +244,19 @@
     "animations": {
       "up": {
         "duration": 500,
-        "frames": [
-          0,
-          1,
-          2,
-          3
-        ]
+        "frames": [0, 1, 2, 3]
       },
       "right": {
         "duration": 500,
-        "frames": [
-          4,
-          5,
-          6,
-          7
-        ]
+        "frames": [4, 5, 6, 7]
       },
       "down": {
         "duration": 500,
-        "frames": [
-          8,
-          9,
-          10,
-          11
-        ]
+        "frames": [8, 9, 10, 11]
       },
       "left": {
         "duration": 500,
-        "frames": [
-          12,
-          13,
-          14,
-          15
-        ]
+        "frames": [12, 13, 14, 15]
       }
     }
   },
@@ -453,39 +273,19 @@
     "animations": {
       "up": {
         "duration": 500,
-        "frames": [
-          0,
-          1,
-          2,
-          3
-        ]
+        "frames": [0, 1, 2, 3]
       },
       "right": {
         "duration": 500,
-        "frames": [
-          4,
-          5,
-          6,
-          7
-        ]
+        "frames": [4, 5, 6, 7]
       },
       "down": {
         "duration": 500,
-        "frames": [
-          8,
-          9,
-          10,
-          11
-        ]
+        "frames": [8, 9, 10, 11]
       },
       "left": {
         "duration": 500,
-        "frames": [
-          12,
-          13,
-          14,
-          15
-        ]
+        "frames": [12, 13, 14, 15]
       }
     }
   },
@@ -502,39 +302,19 @@
     "animations": {
       "up": {
         "duration": 500,
-        "frames": [
-          0,
-          1,
-          2,
-          3
-        ]
+        "frames": [0, 1, 2, 3]
       },
       "right": {
         "duration": 500,
-        "frames": [
-          4,
-          5,
-          6,
-          7
-        ]
+        "frames": [4, 5, 6, 7]
       },
       "down": {
         "duration": 500,
-        "frames": [
-          8,
-          9,
-          10,
-          11
-        ]
+        "frames": [8, 9, 10, 11]
       },
       "left": {
         "duration": 500,
-        "frames": [
-          12,
-          13,
-          14,
-          15
-        ]
+        "frames": [12, 13, 14, 15]
       }
     }
   },
@@ -551,39 +331,19 @@
     "animations": {
       "up": {
         "duration": 500,
-        "frames": [
-          0,
-          1,
-          2,
-          3
-        ]
+        "frames": [0, 1, 2, 3]
       },
       "right": {
         "duration": 500,
-        "frames": [
-          4,
-          5,
-          6,
-          7
-        ]
+        "frames": [4, 5, 6, 7]
       },
       "down": {
         "duration": 500,
-        "frames": [
-          8,
-          9,
-          10,
-          11
-        ]
+        "frames": [8, 9, 10, 11]
       },
       "left": {
         "duration": 500,
-        "frames": [
-          12,
-          13,
-          14,
-          15
-        ]
+        "frames": [12, 13, 14, 15]
       }
     }
   }

@@ -1,4 +1,3 @@
-
 import { Component, Input } from '@angular/core';
 import * as _ from 'underscore';
 import { Rect } from '../../../../app/core/rect';

@@ -1,5 +1,3 @@
-
-
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ITiledObject } from '../../core/resources/tiled/tiled.model';
 import { GameWorld } from '../../services/game-world';
@@ -33,7 +31,7 @@ export class GameFeatureObject extends TileObject {
 
   constructor(
     feature: ITiledObject | null = null,
-    public tileMap: TileMap | null = null
+    public tileMap: TileMap | null = null,
   ) {
     super();
     this.feature = feature;

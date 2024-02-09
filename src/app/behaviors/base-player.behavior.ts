@@ -1,4 +1,3 @@
-
 import { EventEmitter } from '@angular/core';
 import * as _ from 'underscore';
 import { Point } from '../../app/core/point';
@@ -34,7 +33,7 @@ export class BasePlayerComponent extends MovableBehavior {
 
   syncBehavior(): boolean {
     this.sprite = this.host.findBehavior<PlayerRenderBehaviorComponent>(
-      PlayerRenderBehaviorComponent
+      PlayerRenderBehaviorComponent,
     );
     return super.syncBehavior();
   }

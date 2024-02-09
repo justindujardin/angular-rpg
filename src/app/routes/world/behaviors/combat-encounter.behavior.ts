@@ -92,7 +92,7 @@ export class CombatEncounterBehaviorComponent extends SceneObjectBehavior {
 
     // Stop the moving entity until it has defeated the combat encounter.
     const mover = this.player.findBehavior(
-      PlayerBehaviorComponent
+      PlayerBehaviorComponent,
     ) as PlayerBehaviorComponent;
     if (mover) {
       mover.velocity.zero();
@@ -111,7 +111,7 @@ export class CombatEncounterBehaviorComponent extends SceneObjectBehavior {
                 } else {
                   return !target.water;
                 }
-              }
+              },
             );
 
             const viableEncounters = RANDOM_ENCOUNTERS_DATA.filter((enc: any) => {
@@ -143,9 +143,9 @@ export class CombatEncounterBehaviorComponent extends SceneObjectBehavior {
               party: List<Entity>(party),
             };
             this.store.dispatch(new CombatEncounterAction(payload));
-          }
+          },
         ),
-        take(1)
+        take(1),
       )
       .subscribe();
   }

@@ -12,7 +12,7 @@ import { DoorFeatureComponent, IDoorFeatureProperties } from './door-feature.com
 
 function getFeature(
   values: Partial<ITiledObject<IDoorFeatureProperties>> = {},
-  properties: Partial<IDoorFeatureProperties> = {}
+  properties: Partial<IDoorFeatureProperties> = {},
 ): ITiledObject<IDoorFeatureProperties> {
   return {
     name: 'feature',
@@ -85,7 +85,7 @@ describe('DoorFeatureComponent', () => {
 
     // Acquire the key
     world.store.dispatch(
-      new GameStateSetKeyDataAction(comp.feature.properties?.requiredKey || '', true)
+      new GameStateSetKeyDataAction(comp.feature.properties?.requiredKey || '', true),
     );
 
     comp.enter(tileObject);

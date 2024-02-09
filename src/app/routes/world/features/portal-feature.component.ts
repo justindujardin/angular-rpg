@@ -1,4 +1,3 @@
-
 import { Component, Input } from '@angular/core';
 import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
 import { GameStateTravelAction } from '../../../models/game-state/game-state.actions';
@@ -34,7 +33,7 @@ export class PortalFeatureComponent extends MapFeatureComponent {
           x: props.targetX,
           y: props.targetY,
         },
-      })
+      }),
     );
     return true;
   }

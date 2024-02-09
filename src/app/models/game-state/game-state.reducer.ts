@@ -78,7 +78,7 @@ export function gameStateFromJSON(object: GameState): GameState {
 
 export function gameStateReducer(
   state: GameStateRecord = gameStateFactory(),
-  action: GameStateActions
+  action: GameStateActions,
 ): GameState {
   switch (action.type) {
     case GameStateNewAction.typeId: {
@@ -96,11 +96,11 @@ export function gameStateReducer(
     case GameStateEquipItemAction.typeId:
       assertTrue(
         state.party.find((i) => i === action.payload.entityId),
-        'cannot equip item on entity that is not in the party'
+        'cannot equip item on entity that is not in the party',
       );
       assertTrue(
         state.inventory.find((i) => i === action.payload.itemId),
-        'item does not exist in inventory'
+        'item does not exist in inventory',
       );
       return state.merge({
         inventory: state.inventory.filter((i: string) => i !== action.payload.itemId),
@@ -108,11 +108,11 @@ export function gameStateReducer(
     case GameStateUnequipItemAction.typeId:
       assertTrue(
         state.party.find((i) => i === action.payload.entityId),
-        'cannot remove item from entity that is not in the party'
+        'cannot remove item from entity that is not in the party',
       );
       assertTrue(
         !state.inventory.find((i) => i === action.payload.itemId),
-        'item already exists in inventory'
+        'item already exists in inventory',
       );
       return state.merge({
         inventory: state.inventory.push(action.payload.itemId),
@@ -172,11 +172,11 @@ export function gameStateReducer(
       assertTrue(item, 'cannot add invalid item to inventory');
       assertTrue(
         item.eid,
-        'item must have an eid. consider using "entityId" or "instantiateEntity" during creation'
+        'item must have an eid. consider using "entityId" or "instantiateEntity" during creation',
       );
       assertTrue(
         item.id,
-        'item must have a template id. see game-data models for more information'
+        'item must have a template id. see game-data models for more information',
       );
       const exists: boolean = !!state.inventory.find((i: string) => i === item.eid);
       assertTrue(!exists, 'item already exists in inventory');
@@ -189,7 +189,7 @@ export function gameStateReducer(
       const inventory = state.inventory.filter((i: string) => i !== item.eid);
       assertTrue(
         inventory.count() === state.inventory.count() - 1,
-        'item does not exist in party inventory to remove'
+        'item does not exist in party inventory to remove',
       );
       return state.merge({
         inventory,

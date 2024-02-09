@@ -32,7 +32,7 @@ import {
 
 function getFeature(
   values: Partial<ITiledObject<IStoreFeatureProperties>> = {},
-  properties: Partial<IStoreFeatureProperties> = {}
+  properties: Partial<IStoreFeatureProperties> = {},
 ): ITiledObject<IStoreFeatureProperties> {
   return {
     name: 'feature',
@@ -140,11 +140,11 @@ describe('StoreFeatureComponent', () => {
 
       // Equip a short-sword
       const warrior = testAppGetPartyWithEquipment(world.store).find(
-        (p) => p.type === 'warrior'
+        (p) => p.type === 'warrior',
       );
       assertTrue(warrior, 'no warrior class in default party');
       const itemInstance = instantiateEntity<Weapon>(
-        WEAPONS_DATA.find((f) => f.id === 'short-sword')
+        WEAPONS_DATA.find((f) => f.id === 'short-sword'),
       );
       world.store.dispatch(new EntityAddItemAction(itemInstance));
       world.store.dispatch(new GameStateAddInventoryAction(itemInstance));
@@ -154,14 +154,14 @@ describe('StoreFeatureComponent', () => {
           entityId: warrior.eid,
           slot: 'weapon',
           itemId: warrior.weapon?.eid || '',
-        })
+        }),
       );
       world.store.dispatch(
         new GameStateEquipItemAction({
           entityId: warrior.eid,
           slot: 'weapon',
           itemId: itemInstance.eid,
-        })
+        }),
       );
 
       comp.enter(tileObject);
@@ -179,7 +179,7 @@ describe('StoreFeatureComponent', () => {
       let selection = getStoreSelection(comp.selected$);
       expect(selection.length).toBe(1);
       expect(
-        fixture.debugElement.query(By.css('.warrior > .downgrade'))
+        fixture.debugElement.query(By.css('.warrior > .downgrade')),
       ).not.toBeNull();
 
       // Selecting short-sword shows neither upgrade or downgrade

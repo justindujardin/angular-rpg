@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 /**
  * Provide an API for animating elements with CSS transitions

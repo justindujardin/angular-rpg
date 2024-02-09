@@ -1,4 +1,3 @@
-
 import * as _ from 'underscore';
 import { assertTrue } from '../../../models/util';
 import { ImageResource } from '../image.resource';
@@ -12,7 +11,7 @@ export class TilesetTile {
     public id: number,
     public image: string,
     public width: number,
-    public height: number
+    public height: number,
   ) {}
 }
 /**
@@ -54,7 +53,7 @@ export class TiledTSXResource extends XMLResource {
         const sourceImage = this.getChild(ts, 'image');
         if (!sourceImage) {
           throw new Error(
-            'tileset tiles must be image collections that reference the soruce sprite image'
+            'tileset tiles must be image collections that reference the soruce sprite image',
           );
         }
         // extract only the filename from the source image path
@@ -71,7 +70,7 @@ export class TiledTSXResource extends XMLResource {
       assertTrue(source, `invalid source name in tileset: ${source}`);
       this.imageUrl = compactUrl(
         this.relativeTo ? this.relativeTo : relativePath,
-        source
+        source,
       );
 
       new ImageResource(this.imageUrl)

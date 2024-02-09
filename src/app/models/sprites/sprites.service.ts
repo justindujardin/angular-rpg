@@ -15,7 +15,7 @@ import { SpriteDataMap } from './sprites.model';
 export class SpritesService {
   constructor(
     private resourceLoader: ResourceManager,
-    private store: Store<AppState>
+    private store: Store<AppState>,
   ) {}
 
   /** Preload sprite sheet metadata */
@@ -43,12 +43,12 @@ export class SpritesService {
                       this.store.dispatch(new SpritesRegisterAction(meta));
                       registerSprites(fileName, meta);
                     });
-                })
+                }),
               );
             })
-            .then(() => Promise.resolve<void>(undefined))
+            .then(() => Promise.resolve<void>(undefined)),
         );
-      })
+      }),
     );
   }
 }

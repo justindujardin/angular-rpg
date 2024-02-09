@@ -52,7 +52,7 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
     private store: Store<AppState>,
     private combatService: CombatService,
     protected gameWorld: GameWorld,
-    protected loader: ResourceManager
+    protected loader: ResourceManager,
   ) {
     super(loader, gameWorld);
   }
@@ -104,7 +104,7 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
     const defenderModel: CombatantTypes = defender.model as CombatantTypes;
     assertTrue(
       attackerModel && defenderModel,
-      'invalid attacker/defender model attack behavior'
+      'invalid attacker/defender model attack behavior',
     );
     const playerRender =
       attacker instanceof CombatPlayerComponent
@@ -115,7 +115,7 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
     const actionCompletePromise = done$
       .pipe(
         filter((d) => d === true),
-        take(1)
+        take(1),
       )
       .toPromise();
 
@@ -148,7 +148,7 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
     attacker: GameEntityObject,
     defender: GameEntityObject,
     equippedAttacker: EntityWithEquipment,
-    equippedDefender: EntityWithEquipment
+    equippedDefender: EntityWithEquipment,
   ) {
     const playerRender =
       attacker instanceof CombatPlayerComponent
@@ -160,18 +160,18 @@ export class CombatAttackBehaviorComponent extends CombatActionBehavior {
     const defenderModel: CombatantTypes = defender.model as CombatantTypes;
     const damageOutput = this.combatService.attackCombatant(
       equippedAttacker || attacker.model,
-      equippedDefender || defender.model
+      equippedDefender || defender.model,
     );
     const defending: boolean = defenderModel.status.includes('guarding');
     const hitSound = this.getHitSound(
       defenderModel.hp,
       damageOutput.totalDamage,
-      defending
+      defending,
     );
     const damageAnimation = this.getDamageAnimation(
       damageOutput.totalDamage,
       damageOutput.damages.length,
-      defending
+      defending,
     );
     const damage = damageOutput.totalDamage;
     const didKill: boolean = defenderModel.hp - damage <= 0;

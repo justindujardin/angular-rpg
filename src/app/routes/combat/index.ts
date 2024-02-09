@@ -1,4 +1,3 @@
-
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { BehaviorsModule } from '../../behaviors/index';

@@ -1,4 +1,3 @@
-
 import { Component, Input } from '@angular/core';
 import { ITiledObject } from '../../../core/resources/tiled/tiled.model';
 import { TileObject } from '../../../scene/tile-object';

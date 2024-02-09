@@ -14,7 +14,7 @@ import { IShipFeatureProperties, ShipFeatureComponent } from './ship-feature.com
 
 function getFeature(
   values: Partial<ITiledObject<IShipFeatureProperties>> = {},
-  properties: Partial<IShipFeatureProperties> = {}
+  properties: Partial<IShipFeatureProperties> = {},
 ): ITiledObject<IShipFeatureProperties> {
   return {
     name: 'feature',
@@ -38,7 +38,7 @@ function getScene(comp: ShipFeatureComponent): {
   const scene = new Scene();
   const object = new GameFeatureObject();
   object.addBehavior(
-    TestBed.createComponent(PlayerBehaviorComponent).componentInstance
+    TestBed.createComponent(PlayerBehaviorComponent).componentInstance,
   );
   scene.addObject(object);
   scene.addObject(comp);
@@ -75,7 +75,7 @@ describe('ShipFeatureComponent', () => {
       // Add a party
       const tileObject = new GameFeatureObject();
       tileObject.addBehavior(
-        TestBed.createComponent(PlayerBehaviorComponent).componentInstance
+        TestBed.createComponent(PlayerBehaviorComponent).componentInstance,
       );
 
       comp.feature = getFeature();

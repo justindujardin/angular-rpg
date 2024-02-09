@@ -1,4 +1,3 @@
-
 import 'jquery';
 import * as $ from 'jquery';
 import * as _ from 'underscore';
@@ -113,7 +112,7 @@ export class TiledTMXResource extends XMLResource {
         const source: string = this.getElAttribute(ts, 'source');
         const firstGid: number = parseInt(
           this.getElAttribute(ts, 'firstgid') || '-1',
-          10
+          10,
         );
         if (source) {
           tileSetDeps.push({
@@ -147,7 +146,7 @@ export class TiledTMXResource extends XMLResource {
           if (!encoding || encoding.toLowerCase() !== 'csv') {
             failed = true;
             return reject(
-              `pow-core only supports CSV maps. Edit the Map Properties (for:${this.url}) to use the CSV`
+              `pow-core only supports CSV maps. Edit the Map Properties (for:${this.url}) to use the CSV`,
             );
           }
           tileLayer.data = JSON.parse('[' + $.trim(layerData.text()) + ']');

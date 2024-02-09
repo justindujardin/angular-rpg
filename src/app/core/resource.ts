@@ -1,4 +1,3 @@
-
 import { errors } from './errors';
 
 export interface IResource {
@@ -15,7 +14,10 @@ export interface IResource {
 export class Resource implements IResource {
   extension: string;
 
-  constructor(public url: string | null = null, public data: any = null) {}
+  constructor(
+    public url: string | null = null,
+    public data: any = null,
+  ) {}
 
   load(data?: any): Promise<Resource> {
     return Promise.reject(errors.CLASS_NOT_IMPLEMENTED);

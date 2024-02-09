@@ -90,7 +90,7 @@ export class BehaviorHost implements IBehaviorHost {
 
   removeBehaviorByType<T extends IBehavior>(
     componentType: any,
-    silent: boolean = false
+    silent: boolean = false,
   ): boolean {
     const component = this.findBehavior<T>(componentType);
     if (!component) {

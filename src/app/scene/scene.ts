@@ -1,4 +1,3 @@
-
 import * as _ from 'underscore';
 import { IBehavior, IProcessObject, IWorld, IWorldObject } from '../core';
 import { GameWorld } from '../services/game-world';

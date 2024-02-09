@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import { Rect } from '../../app/core/rect';
 import { ResourceManager } from '../../app/core/resource-manager';
@@ -73,7 +72,7 @@ export class SpriteRender {
           0,
           // target width,height
           this.canvas.width,
-          this.canvas.height
+          this.canvas.height,
         );
 
         // Serialize the canvas and return as an HTMLImageElement

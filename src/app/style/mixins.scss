@@ -5,8 +5,11 @@
   $lightColor: rgba(255, 255, 255, 0.2),
   $shadowColor: rgba(0, 0, 0, 0.1)
 ) {
-  text-shadow: $width $width 0 $shadowColor, (-$width) (-$width) 0 $lightColor,
-    $width (-$width) 0 $shadowColor, (-$width) $width 0 $lightColor;
+  text-shadow:
+    $width $width 0 $shadowColor,
+    (-$width) (-$width) 0 $lightColor,
+    $width (-$width) 0 $shadowColor,
+    (-$width) $width 0 $lightColor;
 }
 
 @mixin inset-stroke-text(
@@ -14,8 +17,11 @@
   $lightColor: rgba(255, 255, 255, 0.2),
   $shadowColor: rgba(0, 0, 0, 0.1)
 ) {
-  text-shadow: (-$width) (-$width) 0 $lightColor, $width $width 0 $shadowColor,
-    (-$width) $width 0 $lightColor, $width (-$width) 0 $shadowColor;
+  text-shadow:
+    (-$width) (-$width) 0 $lightColor,
+    $width $width 0 $shadowColor,
+    (-$width) $width 0 $lightColor,
+    $width (-$width) 0 $shadowColor;
 }
 
 @mixin stroke-text($width: 2px, $color: rgba(255, 255, 255, 0.2)) {

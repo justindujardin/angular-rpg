@@ -69,10 +69,13 @@ export class RPGSpriteComponent {
   private static _renderCanvas: HTMLCanvasElement;
   private _canvasAcquired: boolean = false;
 
-  constructor(private sanitizer: DomSanitizer, private renderer: SpriteRender) {
+  constructor(
+    private sanitizer: DomSanitizer,
+    private renderer: SpriteRender,
+  ) {
     if (!RPGSpriteComponent._renderCanvas) {
       RPGSpriteComponent._renderCanvas = document.createElement(
-        'canvas'
+        'canvas',
       ) as HTMLCanvasElement;
       RPGSpriteComponent._renderCanvas.width =
         RPGSpriteComponent._renderCanvas.height = 64;
@@ -90,7 +93,7 @@ export class RPGSpriteComponent {
     if (this._canvasAcquired) {
       throw new Error(
         'Only one rendering canvas is available at a time.' +
-          ' Check for calls to this function without corresponding releaseCanvas() calls.'
+          ' Check for calls to this function without corresponding releaseCanvas() calls.',
       );
     }
     this._canvasAcquired = true;
@@ -129,7 +132,7 @@ export class RPGSpriteComponent {
         renderContext.clearRect(0, 0, width, height);
         renderContext.drawImage(sprite, 0, 0, width, height);
         const imageDataUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-          this.releaseRenderContext()
+          this.releaseRenderContext(),
         );
         this._dataUrl$.next(imageDataUrl);
       });

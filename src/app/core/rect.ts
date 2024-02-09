@@ -1,4 +1,3 @@
-
 import { errors } from './errors';
 import { IPoint, Point } from './point';
 export interface IRect {

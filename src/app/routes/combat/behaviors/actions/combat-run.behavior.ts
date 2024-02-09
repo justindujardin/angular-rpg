@@ -15,7 +15,10 @@ export class CombatRunBehaviorComponent extends CombatActionBehavior {
   name: string = 'run';
   @Input() combat: CombatComponent;
 
-  constructor(protected loader: ResourceManager, protected gameWorld: GameWorld) {
+  constructor(
+    protected loader: ResourceManager,
+    protected gameWorld: GameWorld,
+  ) {
     super(loader, gameWorld);
   }
 
@@ -27,7 +30,7 @@ export class CombatRunBehaviorComponent extends CombatActionBehavior {
     const success: boolean = this.rollEscape();
     assertTrue(
       this.combat.machine.current,
-      'CombatRunBehaviorComponent: invalid escape player'
+      'CombatRunBehaviorComponent: invalid escape player',
     );
     const data: CombatRunSummary = {
       success,

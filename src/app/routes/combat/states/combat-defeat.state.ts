@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { assertTrue } from '../../../models/util';
 import { GameEntityObject } from '../../../scene/objects/game-entity-object';

@@ -14,7 +14,7 @@ export class AppComponent {
   constructor(
     public store: Store<AppState>,
     public world: GameWorld,
-    public notifications: NotificationService
+    public notifications: NotificationService,
   ) {
     // TODO: Game "creation" here, or state update from stored file.
     //  - "create" will setup the ngrx/store for a new game file. It will download the latest game data from

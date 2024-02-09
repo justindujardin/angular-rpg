@@ -13,7 +13,7 @@ export class GameComponent implements OnInit {
   constructor(
     public game: RPGGame,
     public notify: NotificationService,
-    public world: GameWorld
+    public world: GameWorld,
   ) {}
 
   ngOnInit() {

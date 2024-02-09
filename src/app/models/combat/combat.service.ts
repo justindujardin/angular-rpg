@@ -54,7 +54,7 @@ export class CombatService {
         });
         this._combatMap$.next(result);
         return result;
-      })
+      }),
     );
   }
 
@@ -74,7 +74,7 @@ export class CombatService {
    */
   attackCombatant(
     attacker: CombatantTypes | EntityWithEquipment,
-    defender: CombatantTypes | EntityWithEquipment
+    defender: CombatantTypes | EntityWithEquipment,
   ): ICombatDamage {
     const attackerEntity = attacker as EntityWithEquipment;
     const defenderEntity = defender as EntityWithEquipment;
@@ -103,7 +103,7 @@ export class CombatService {
           inventory: config.inventory.slice() as EntityItemTypes[],
           weapons: this.getWeapons(entity),
         };
-      }
+      },
     );
 
     const casterEntity = config.caster as EntityWithEquipment;

@@ -1,4 +1,3 @@
-
 import { EventEmitter } from '@angular/core';
 import { GameEntityObject } from '../scene/objects/game-entity-object';
 import { AnimatedSpriteBehavior } from './animated-sprite.behavior';

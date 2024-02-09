@@ -1,4 +1,3 @@
-
 import * as astar from 'javascript-astar';
 import { Subscription } from 'rxjs';
 import * as _ from 'underscore';

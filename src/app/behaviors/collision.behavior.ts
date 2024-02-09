@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { Rect } from '../../app/core/rect';
 import { SceneObject } from '../scene/scene-object';
@@ -17,7 +16,7 @@ export class CollisionBehaviorComponent extends SceneObjectBehavior {
     x: number,
     y: number,
     type: Function = SceneObject,
-    results: T[] = []
+    results: T[] = [],
   ): boolean {
     if (!this.host || !this.host.scene) {
       return false;
@@ -37,7 +36,7 @@ export class CollisionBehaviorComponent extends SceneObjectBehavior {
     const hit: boolean = this.host.scene.db.queryRect(
       this.collideBox,
       type,
-      this.resultsArray
+      this.resultsArray,
     );
     return hit ? this.resultsArray[0] : null;
   }

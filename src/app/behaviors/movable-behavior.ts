@@ -1,5 +1,3 @@
-
-
 import { Point } from '../core';
 import { KeyCode } from '../core/input';
 import { SceneObject } from '../scene/scene-object';
@@ -37,7 +35,7 @@ export class MovableBehavior extends TickedBehavior {
 
   syncBehavior(): boolean {
     this.collider = this.host.findBehavior(
-      CollisionBehaviorComponent
+      CollisionBehaviorComponent,
     ) as CollisionBehaviorComponent;
     return super.syncBehavior();
   }

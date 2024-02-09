@@ -27,12 +27,12 @@ export class CombatHUDComponent {
   constructor(
     public store: Store<AppState>,
     public loadingService: LoadingService,
-    public loader: ResourceManager
+    public loader: ResourceManager,
   ) {}
 
   getMemberClass(
     member: CombatantTypes,
-    focused?: CombatantTypes | null
+    focused?: CombatantTypes | null,
   ): { [key: string]: boolean } {
     return {
       focused: !!(focused && member && member.name === focused.name),

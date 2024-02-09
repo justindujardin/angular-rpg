@@ -7,8 +7,11 @@ import { CombatState } from '../../models/combat/combat.model';
 import { sliceCombatState } from '../../models/selectors';
 
 @Injectable()
-export class CanActivateCombat  {
-  constructor(private store: Store<AppState>, private router: Router) {}
+export class CanActivateCombat {
+  constructor(
+    private store: Store<AppState>,
+    private router: Router,
+  ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return this.store.select(sliceCombatState).pipe(
@@ -19,7 +22,7 @@ export class CanActivateCombat  {
           return false;
         }
         return combatState.id === route.params['id'];
-      })
+      }),
     );
   }
 }

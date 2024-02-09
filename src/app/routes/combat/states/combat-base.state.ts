@@ -1,5 +1,3 @@
-
-
 import { State } from '../../../core/state';
 import { CombatStateNames } from './states';
 

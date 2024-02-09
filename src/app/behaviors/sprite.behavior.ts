@@ -1,4 +1,3 @@
-
 import * as _ from 'underscore';
 import { ImageResource } from '../core';
 import { ISpriteMeta } from '../core/api';
@@ -65,7 +64,7 @@ export class SpriteComponent extends SceneObjectBehavior {
     this.meta = this.host.world.sprites.getSpriteMeta(name);
     assertTrue(this.meta?.source, `invalid sprite source: ${name}`);
     const images: ImageResource[] = await this.host.world.sprites.getSpriteSheet(
-      this.meta.source
+      this.meta.source,
     );
     this.image = images[0].data;
     return this.icon;

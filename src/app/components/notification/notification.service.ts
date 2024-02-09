@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import { IProcessObject } from '../../../app/core/time';
 import { IWorldObject } from '../../../app/core/world';

@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import * as _ from 'underscore';
 import { NotificationService } from '../../../components/notification/notification.service';

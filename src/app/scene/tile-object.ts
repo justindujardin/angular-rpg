@@ -1,4 +1,3 @@
-
 import { EventEmitter } from '@angular/core';
 import { MovableBehavior } from '../behaviors/movable-behavior';
 import { ImageResource, IPoint, Point } from '../core';

@@ -1,4 +1,3 @@
-
 import { SceneObjectBehavior } from './scene-object-behavior';
 /**
  * A behavior that receives tick and interpolateTick callbacks

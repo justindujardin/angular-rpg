@@ -62,7 +62,7 @@ export class CombatMagicBehavior extends CombatActionBehavior {
     public store: Store<AppState>,
     public combatService: CombatService,
     public gameWorld: GameWorld,
-    protected loader: ResourceManager
+    protected loader: ResourceManager,
   ) {
     super(loader, gameWorld);
   }
@@ -110,7 +110,7 @@ export class CombatMagicBehavior extends CombatActionBehavior {
     const attackEffectsPromise = done$
       .pipe(
         filter((d) => d === true),
-        take(1)
+        take(1),
       )
       .toPromise();
     const attackAnimPromise = attackerPlayer.magic(async () => {
@@ -166,7 +166,7 @@ export class CombatMagicBehavior extends CombatActionBehavior {
     const actionCompletePromise = done$
       .pipe(
         filter((d) => d === true),
-        take(1)
+        take(1),
       )
       .toPromise();
 
@@ -194,7 +194,7 @@ export class CombatMagicBehavior extends CombatActionBehavior {
   private async doHurtSpellAction(
     equippedAttacker: EntityWithEquipment,
     equippedDefender: EntityWithEquipment | null,
-    inventory: Immutable.List<Item>
+    inventory: Immutable.List<Item>,
   ) {
     const caster: GameEntityObject | null = this.from;
     const target: GameEntityObject | null = this.to;

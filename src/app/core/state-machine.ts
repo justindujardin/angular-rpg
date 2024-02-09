@@ -1,4 +1,3 @@
-
 // State Machine Interfaces
 // -------------------------------------------------------------------------
 import { EventEmitter } from '@angular/core';
@@ -78,7 +77,7 @@ export class StateMachine<StateNames extends string> {
     // Already in the desired state.
     if (this._currentState && state.name === this._currentState.name) {
       console.warn(
-        `${this._currentState.name}: Attempting to set current state to already active state`
+        `${this._currentState.name}: Attempting to set current state to already active state`,
       );
       return true;
     }
@@ -94,7 +93,7 @@ export class StateMachine<StateNames extends string> {
     // DEBUG:
     if (StateMachine.DEBUG_STATES) {
       console.log(
-        `STATE: ${oldState ? oldState.name : 'NULL'} -> ${this._currentState.name}`
+        `STATE: ${oldState ? oldState.name : 'NULL'} -> ${this._currentState.name}`,
       );
     }
     if (oldState) {
@@ -151,7 +150,7 @@ export class StateAsyncEmitter<T> extends EventEmitter<T> {
   notifyWait(): IResumeCallback {
     if (!this._asyncCurrentCallback) {
       throw new Error(
-        'No valid async callback set!  Perhaps you called this outside of a notify event handler?'
+        'No valid async callback set!  Perhaps you called this outside of a notify event handler?',
       );
     }
     this._asyncProcessing++;

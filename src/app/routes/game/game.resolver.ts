@@ -5,8 +5,11 @@ import { LoadingService } from '../../components/loading/loading.service';
 import { GameWorld } from '../../services/game-world';
 
 @Injectable()
-export class GameResolver  {
-  constructor(private world: GameWorld, private loadingService: LoadingService) {}
+export class GameResolver {
+  constructor(
+    private world: GameWorld,
+    private loadingService: LoadingService,
+  ) {}
 
   /** Resolve when the world ready$ observable emits */
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {

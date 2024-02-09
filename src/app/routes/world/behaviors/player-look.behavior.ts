@@ -1,4 +1,3 @@
-
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CollisionBehaviorComponent } from '../../../behaviors/collision.behavior';
 import { TickedBehavior } from '../../../behaviors/ticked-behavior';
@@ -35,10 +34,10 @@ export class PlayerTriggerBehaviorComponent extends TickedBehavior {
   syncBehavior(): boolean {
     super.syncBehavior();
     this.player = this.host.findBehavior(
-      PlayerBehaviorComponent
+      PlayerBehaviorComponent,
     ) as PlayerBehaviorComponent;
     this.collider = this.host.findBehavior(
-      CollisionBehaviorComponent
+      CollisionBehaviorComponent,
     ) as CollisionBehaviorComponent;
     return !!(this.player && this.collider);
   }
@@ -55,7 +54,7 @@ export class PlayerTriggerBehaviorComponent extends TickedBehavior {
       headingX,
       headingY,
       GameFeatureObject,
-      results
+      results,
     );
     const touched = results[0];
     const currentTouchId: string | null = this.featureObject?._uid || null;

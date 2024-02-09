@@ -36,14 +36,14 @@ export class DialogFeatureComponent extends MapFeatureComponent {
   text$: Observable<string> = this.feature$.pipe(
     map((f: ITiledObject) => {
       return f.properties.text;
-    })
+    }),
   );
 
   /** The dialog title */
   title$: Observable<string> = this.feature$.pipe(
     map((f: ITiledObject) => {
       return f.properties.title;
-    })
+    }),
   );
 
   /** The icon to display for the dialog speaker */
@@ -58,14 +58,14 @@ export class DialogFeatureComponent extends MapFeatureComponent {
       }
       // Fallback to using the "icon" custom property
       return f.properties.icon;
-    })
+    }),
   );
 
   /** An optional additional icon to display for the dialog */
   altIcon$: Observable<string> = this.feature$.pipe(
     map((f: ITiledObject) => {
       return f.properties.altIcon;
-    })
+    }),
   );
 
   exit(object: TileObject): boolean {

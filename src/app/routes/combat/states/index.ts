@@ -1,4 +1,3 @@
-
 import { CombatBeginTurnStateComponent } from './combat-begin-turn.state';
 import { CombatChooseActionStateComponent } from './combat-choose-action.state';
 import { CombatDefeatStateComponent } from './combat-defeat.state';

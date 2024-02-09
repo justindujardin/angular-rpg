@@ -1,4 +1,3 @@
-
 import * as $ from 'jquery';
 import * as _ from 'underscore';
 import { Resource } from '../resource';
@@ -53,7 +52,7 @@ export class XMLResource extends Resource {
       _.map(list, (c: any) => {
         const child: any = $(c);
         return (child.parent()[0] !== el[0] ? null : child) as T;
-      })
+      }),
     );
   }
 

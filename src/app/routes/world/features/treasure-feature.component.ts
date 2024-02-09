@@ -1,4 +1,3 @@
-
 import { AfterViewInit, Component, Input } from '@angular/core';
 import { getArmorById } from 'app/models/game-data/armors';
 import { getItemById } from 'app/models/game-data/items';

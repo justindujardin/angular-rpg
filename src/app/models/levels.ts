@@ -127,7 +127,7 @@ const CLASS_STAT_LEVEL_MAP: IClassStatLevelMap = {
 
 export function getStatIncreaseForLevelUp(
   model: IPartyMember,
-  name: PartyMemberStatNames
+  name: PartyMemberStatNames,
 ): number {
   if (!CLASS_STAT_LEVEL_MAP.hasOwnProperty(model.type)) {
     throw new Error(`Unknown class: ${model.type}`);

@@ -1,4 +1,3 @@
-
 import { CameraBehavior } from '../behaviors/camera-behavior';
 import { Point, Rect } from '../core';
 import { TileMapRenderer } from './render/tile-map-renderer';
@@ -60,7 +59,7 @@ export class SceneView extends SceneObject implements ISceneView {
   renderToCanvas(
     width: number,
     height: number,
-    renderFunction: (ctx: CanvasRenderingContext2D) => void
+    renderFunction: (ctx: CanvasRenderingContext2D) => void,
   ) {
     const buffer = document.createElement('canvas');
     buffer.width = width;
@@ -122,7 +121,7 @@ export class SceneView extends SceneObject implements ISceneView {
     let worldTilePos = this.worldToScreen(this.map.bounds.point).floor();
     this.context.translate(
       worldTilePos.x - worldCameraPos.x,
-      worldTilePos.y - worldCameraPos.y
+      worldTilePos.y - worldCameraPos.y,
     );
   }
 
@@ -157,7 +156,7 @@ export class SceneView extends SceneObject implements ISceneView {
         innerRadius,
         center.x,
         center.y,
-        outerRadius
+        outerRadius,
       );
       gradient.addColorStop(0, 'rgba(0,0,0,0)');
       gradient.addColorStop(1, 'rgba(0,0,0,1)');
@@ -226,7 +225,7 @@ export class SceneView extends SceneObject implements ISceneView {
       x,
       y,
       this.context.canvas.width,
-      this.context.canvas.height
+      this.context.canvas.height,
     );
   }
 

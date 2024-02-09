@@ -1,4 +1,3 @@
-
 import { Component, Input } from '@angular/core';
 import { interval, Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
@@ -70,12 +69,12 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
       // Convert to screen coordinates
       const screenPos: Point = this.view.worldToScreen(
         targetPos,
-        this.view.cameraScale
+        this.view.cameraScale,
       );
       return screenPos;
     }),
     filter<Point>(Boolean),
-    distinctUntilChanged()
+    distinctUntilChanged(),
   );
 
   async enter(machine: CombatStateMachineComponent) {
@@ -99,7 +98,7 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
       machine.scene,
       this.pending,
       machine.getLiveEnemies(),
-      this.submitChoice.bind(this)
+      this.submitChoice.bind(this),
     );
     this._next();
   }
@@ -137,7 +136,7 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
   /** Show the pointer element next to the given object, aligned to left/right side */
   setPointerTarget(
     object: GameEntityObject | null,
-    directionClass: 'left' | 'right' = 'right'
+    directionClass: 'left' | 'right' = 'right',
   ) {
     this.pointAtDir = directionClass;
     this.pointAt = object;

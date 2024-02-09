@@ -1,4 +1,3 @@
-
 import * as _ from 'underscore';
 
 export const NAME: string = 'core';

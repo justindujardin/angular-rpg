@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { CombatService } from '../../../models/combat/combat.service';
 import { assertTrue } from '../../../models/util';
@@ -44,7 +43,7 @@ export class CombatBeginTurnStateComponent extends CombatMachineState {
       choice = machine.playerChoices[machine.current._uid];
     } else {
       choice = machine.current.findBehavior<CombatAttackBehaviorComponent>(
-        CombatAttackBehaviorComponent
+        CombatAttackBehaviorComponent,
       );
       // TODO: This config should not be here.   Just pick a random person to attack.
       if (choice) {

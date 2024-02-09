@@ -23,7 +23,7 @@ describe('Sprites', () => {
         { provide: SpritesService, useValue: mockSpritesService },
         provideMockActions(() => actions$),
       ],
-    })
+    }),
   );
 
   function setup() {

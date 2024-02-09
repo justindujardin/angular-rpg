@@ -51,7 +51,7 @@ describe('GameState', () => {
           new GameStateHealPartyAction({
             cost: 50,
             partyIds: [],
-          })
+          }),
         );
         expect(actual.gold).toEqual(50);
       });
@@ -69,7 +69,7 @@ describe('GameState', () => {
               slot: 'weapon',
               itemId: 'foo',
               entityId: 'fooUser',
-            })
+            }),
           );
         }).toThrow();
       });
@@ -82,7 +82,7 @@ describe('GameState', () => {
               slot: 'weapon',
               itemId: 'foo',
               entityId: 'asd',
-            })
+            }),
           );
         }).toThrow();
       });
@@ -98,7 +98,7 @@ describe('GameState', () => {
             slot: 'weapon',
             itemId: 'foo',
             entityId: 'fooUser',
-          })
+          }),
         );
         expect(actual.inventory.count()).toBe(0);
       });
@@ -116,7 +116,7 @@ describe('GameState', () => {
               slot: 'weapon',
               itemId: 'foo',
               entityId: '',
-            })
+            }),
           );
         }).toThrow();
       });
@@ -129,7 +129,7 @@ describe('GameState', () => {
               slot: 'weapon',
               itemId: 'foo',
               entityId: 'asd',
-            })
+            }),
           );
         }).toThrow();
       });
@@ -144,7 +144,7 @@ describe('GameState', () => {
             slot: 'weapon',
             itemId: 'foo',
             entityId: 'fooUser',
-          })
+          }),
         );
         expect(actual.inventory.count()).toBe(1);
       });
@@ -158,7 +158,7 @@ describe('GameState', () => {
         expect(state.keyData.get(newKey)).toBeUndefined();
         const newState = gameStateReducer(
           state,
-          new GameStateSetKeyDataAction(newKey, newValue)
+          new GameStateSetKeyDataAction(newKey, newValue),
         );
         expect(newState.keyData.get(newKey)).toBe(newValue);
       });
@@ -172,7 +172,7 @@ describe('GameState', () => {
         expect(state.keyData.get(keyName)).toBe(true);
         const newState = gameStateReducer(
           state,
-          new GameStateSetKeyDataAction(keyName, false)
+          new GameStateSetKeyDataAction(keyName, false),
         );
         expect(newState.keyData.get(keyName)).toBe(false);
       });
@@ -189,7 +189,7 @@ describe('GameState', () => {
           new GameStateTravelAction({
             location: newMap,
             position: state.position,
-          })
+          }),
         );
         expect(actual.location).toBe(newMap);
       });
@@ -203,7 +203,7 @@ describe('GameState', () => {
           new GameStateTravelAction({
             location: '',
             position: expected,
-          })
+          }),
         );
         expect(actual.position).toEqual(expected);
       });
@@ -251,7 +251,7 @@ describe('GameState', () => {
           const expected = !value;
           const actual = gameStateReducer(
             state,
-            new GameStateBoardShipAction(expected)
+            new GameStateBoardShipAction(expected),
           );
           expect(actual.boardedShip).toEqual(expected);
         });
@@ -304,7 +304,7 @@ describe('GameState', () => {
         });
         const actual = gameStateReducer(
           state,
-          new GameStateRemoveInventoryAction(item)
+          new GameStateRemoveInventoryAction(item),
         );
         expect(actual.inventory.count()).toBe(0);
       });

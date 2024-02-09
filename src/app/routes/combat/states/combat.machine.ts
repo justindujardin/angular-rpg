@@ -1,4 +1,3 @@
-
 import {
   AfterViewInit,
   Component,
@@ -72,7 +71,10 @@ export class CombatStateMachineComponent
     return this._spells$.value;
   }
 
-  constructor(private combatService: CombatService, public store: Store<AppState>) {
+  constructor(
+    private combatService: CombatService,
+    public store: Store<AppState>,
+  ) {
     super();
   }
   world: GameWorld;
@@ -115,12 +117,12 @@ export class CombatStateMachineComponent
           const weapons = inventory.filter((i) => i?.type === 'weapon').toList();
           const armors = inventory
             .filter((i?) =>
-              ['helm', 'boots', 'shield', 'armor'].includes(i?.type || '')
+              ['helm', 'boots', 'shield', 'armor'].includes(i?.type || ''),
             )
             .toList();
           const spells = inventory.filter((i) => i?.type === 'spell').toList();
           return { items, weapons, armors, spells };
-        })
+        }),
       )
       .subscribe((values) => {
         const { items, weapons, armors, spells } = values;

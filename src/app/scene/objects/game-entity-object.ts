@@ -1,4 +1,3 @@
-
 import { CombatantTypes } from '../../models/base-entity';
 import { GameWorld } from '../../services/game-world';
 import { TileObject } from '../tile-object';

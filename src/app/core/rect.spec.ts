@@ -201,7 +201,7 @@ describe('Rect', () => {
     it('should return half of the extent of the rectangle', () => {
       expect(new Rect(5, 5, 10, 10).getHalfSize().equal(new Point(5, 5))).toBeTruthy();
       expect(
-        new Rect(0, 0, 9, 9).getHalfSize().equal(new Point(4.5, 4.5))
+        new Rect(0, 0, 9, 9).getHalfSize().equal(new Point(4.5, 4.5)),
       ).toBeTruthy();
     });
   });

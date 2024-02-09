@@ -1,4 +1,3 @@
-
 // TODO: TileMap isn't getting added to Spatial DB properly.  Can't query for it!
 // Scene assuming something about the spatial properties on objects?
 import { EventEmitter } from '@angular/core';
@@ -76,7 +75,7 @@ export class TileMap extends SceneObject {
       Object.values(this.map.tilesets),
       (o: TiledTSXResource) => {
         return o.firstgid;
-      }
+      },
     );
     this.tiles.length = 0;
     idSortedSets.forEach((tiles: TiledTSXResource) => {

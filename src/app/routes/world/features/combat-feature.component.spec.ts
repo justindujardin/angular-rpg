@@ -30,7 +30,7 @@ class CombatFeatureTestMap extends TileMap {
 
 function getFeature(
   values: Partial<ITiledObject<ICombatFeatureProperties>> = {},
-  properties: Partial<ICombatFeatureProperties> = {}
+  properties: Partial<ICombatFeatureProperties> = {},
 ): ITiledObject<ICombatFeatureProperties> {
   return {
     name: 'feature',
@@ -60,7 +60,7 @@ function getEncounterType(store: Store<AppState>): string {
 function getScene(
   comp: CombatFeatureComponent,
   map: TileMap | null = null,
-  addPlayer: boolean = true
+  addPlayer: boolean = true,
 ): {
   scene: Scene;
   object: GameFeatureObject;

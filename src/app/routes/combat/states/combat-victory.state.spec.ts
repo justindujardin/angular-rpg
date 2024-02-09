@@ -52,7 +52,7 @@ describe('CombatVictoryStateComponent', () => {
     expect(machine.store.dispatch).toHaveBeenCalledWith(
       jasmine.objectContaining({
         type: CombatVictoryAction.typeId,
-      })
+      }),
     );
   });
 
@@ -76,7 +76,7 @@ describe('CombatVictoryStateComponent', () => {
       jasmine.objectContaining({
         type: GameStateAddGoldAction.typeId,
         payload: enemy.gold * 2,
-      })
+      }),
     );
   });
   it('awards items/gold from fixed encounters', async () => {

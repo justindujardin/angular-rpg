@@ -1,4 +1,3 @@
-
 import { errors } from './errors';
 
 export interface IPoint {

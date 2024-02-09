@@ -40,130 +40,144 @@ export class CombatEffects {
     private store: Store<AppState>,
     private notificationService: NotificationService,
     private combatService: CombatService,
-    private router: Router
+    private router: Router,
   ) {}
 
-  beginCombat$ = createEffect(() => this.actions$.pipe(
-    ofType(CombatEncounterAction.typeId),
-    switchMap((action: CombatEncounterAction) => {
-      return this.combatService.loadEncounter(action.payload);
-    }),
-    map((encounter: CombatEncounter) => {
-      return new CombatEncounterReadyAction(encounter);
-    }),
-    catchError((e) => {
-      return of(new CombatEncounterErrorAction(e.toString()));
-    })
-  ))
+  beginCombat$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CombatEncounterAction.typeId),
+      switchMap((action: CombatEncounterAction) => {
+        return this.combatService.loadEncounter(action.payload);
+      }),
+      map((encounter: CombatEncounter) => {
+        return new CombatEncounterReadyAction(encounter);
+      }),
+      catchError((e) => {
+        return of(new CombatEncounterErrorAction(e.toString()));
+      }),
+    ),
+  );
 
   /** route update to combat encounter */
-  navigateToCombatRoute$ = createEffect(() => this.actions$.pipe(
-    ofType(CombatEncounterReadyAction.typeId),
-    debounceTime(100),
-    distinctUntilChanged(),
-    map((action: CombatEncounterAction) => {
-      const encounter: CombatEncounter = action.payload;
-      assertTrue(
-        encounter.id || encounter.zone,
-        'combat must either be in a zone or have an id'
-      );
-      return this.router.navigate(['combat', encounter.id || encounter.zone]);
-    })
-  ), { dispatch: false });
+  navigateToCombatRoute$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(CombatEncounterReadyAction.typeId),
+        debounceTime(100),
+        distinctUntilChanged(),
+        map((action: CombatEncounterAction) => {
+          const encounter: CombatEncounter = action.payload;
+          assertTrue(
+            encounter.id || encounter.zone,
+            'combat must either be in a zone or have an id',
+          );
+          return this.router.navigate(['combat', encounter.id || encounter.zone]);
+        }),
+      ),
+    { dispatch: false },
+  );
 
   /**
    * When a combat escape action is dispatched
    */
-  combatEscape$ = createEffect(() => this.actions$.pipe(
-    ofType(CombatEscapeAction.typeId),
-    map((action: CombatEscapeAction) => {
-      // TODO: add a switcMap before this and notify something?
-      return new CombatEscapeCompleteAction();
-    })
-  ))
+  combatEscape$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CombatEscapeAction.typeId),
+      map((action: CombatEscapeAction) => {
+        // TODO: add a switcMap before this and notify something?
+        return new CombatEscapeCompleteAction();
+      }),
+    ),
+  );
 
   /**
    * When a combat victory action is dispatched, notify the user about what they've won.
    */
-  combatVictory$ = createEffect(() => this.actions$.pipe(
-    ofType(CombatVictoryAction.typeId),
-    switchMap((action: CombatVictoryAction) => {
-      const data: CombatVictorySummary = action.payload;
-      return new Observable((subject: Subscriber<CombatVictoryAction>) => {
-        // Gold
-        this.notificationService.show(`Found ${data.gold} gold!`, undefined, 0);
-        // Looted items
-        if (data.items) {
-          data.items.forEach((item: Item) => {
-            this.notificationService.show(`Found ${item.name}`, undefined, 0);
+  combatVictory$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CombatVictoryAction.typeId),
+      switchMap((action: CombatVictoryAction) => {
+        const data: CombatVictorySummary = action.payload;
+        return new Observable((subject: Subscriber<CombatVictoryAction>) => {
+          // Gold
+          this.notificationService.show(`Found ${data.gold} gold!`, undefined, 0);
+          // Looted items
+          if (data.items) {
+            data.items.forEach((item: Item) => {
+              this.notificationService.show(`Found ${item.name}`, undefined, 0);
+            });
+          }
+          // Experience
+          this.notificationService.show(`Gained ${data.exp} experience!`, undefined, 0);
+          // Party Level ups
+
+          data.levels.forEach((entityDiff: IPartyStatsDiff) => {
+            this.notificationService.show(
+              `${entityDiff.name} reached level ${entityDiff.level}!`,
+              undefined,
+              0,
+            );
+            let note = '\n';
+            if (entityDiff.hp > 0) {
+              note += `HP went up by ${entityDiff.hp}\n\n`;
+            }
+            if (entityDiff.mp > 0) {
+              note += `MP went up by ${entityDiff.mp}\n\n`;
+            }
+            if (entityDiff.strength > 0) {
+              note += `Strength went up by ${entityDiff.strength}\n\n`;
+            }
+            if (entityDiff.agility > 0) {
+              note += `Agility went up by ${entityDiff.agility}\n\n`;
+            }
+            if (entityDiff.intelligence > 0) {
+              note += `Intelligence went up by ${entityDiff.intelligence}\n\n`;
+            }
+            if (entityDiff.luck > 0) {
+              note += `Luck went up by ${entityDiff.luck}\n\n`;
+            }
+            if (note !== '\n') {
+              this.notificationService.show(note, undefined, 0);
+            }
           });
-        }
-        // Experience
-        this.notificationService.show(`Gained ${data.exp} experience!`, undefined, 0);
-        // Party Level ups
+          // Fin.
+          this.notificationService.show('Enemies Defeated!', () => {
+            subject.next(action);
+            subject.complete();
+          });
 
-        data.levels.forEach((entityDiff: IPartyStatsDiff) => {
-          this.notificationService.show(
-            `${entityDiff.name} reached level ${entityDiff.level}!`,
-            undefined,
-            0
-          );
-          let note = '\n';
-          if (entityDiff.hp > 0) {
-            note += `HP went up by ${entityDiff.hp}\n\n`;
+          // Also, hide the encounter if it was fixed.
+          if (data.type === 'fixed') {
+            this.store.dispatch(new GameStateSetKeyDataAction(data.id, true));
           }
-          if (entityDiff.mp > 0) {
-            note += `MP went up by ${entityDiff.mp}\n\n`;
-          }
-          if (entityDiff.strength > 0) {
-            note += `Strength went up by ${entityDiff.strength}\n\n`;
-          }
-          if (entityDiff.agility > 0) {
-            note += `Agility went up by ${entityDiff.agility}\n\n`;
-          }
-          if (entityDiff.intelligence > 0) {
-            note += `Intelligence went up by ${entityDiff.intelligence}\n\n`;
-          }
-          if (entityDiff.luck > 0) {
-            note += `Luck went up by ${entityDiff.luck}\n\n`;
-          }
-          if (note !== '\n') {
-            this.notificationService.show(note, undefined, 0);
-          }
+
+          return () => {
+            // No cleanup
+          };
         });
-        // Fin.
-        this.notificationService.show('Enemies Defeated!', () => {
-          subject.next(action);
-          subject.complete();
-        });
-
-        // Also, hide the encounter if it was fixed.
-        if (data.type === 'fixed') {
-          this.store.dispatch(new GameStateSetKeyDataAction(data.id, true));
-        }
-
-        return () => {
-          // No cleanup
-        };
-      });
-    }),
-    map((action: CombatVictoryAction) => {
-      return new CombatVictoryCompleteAction(action.payload);
-    })
-  ))
+      }),
+      map((action: CombatVictoryAction) => {
+        return new CombatVictoryCompleteAction(action.payload);
+      }),
+    ),
+  );
 
   /** route update back to map after a combat encounter */
-  navigateToMapRoute$ = createEffect(() => this.actions$.pipe(
-    ofType(CombatVictoryCompleteAction.typeId, CombatEscapeCompleteAction.typeId),
-    debounceTime(100),
-    switchMap(() => this.store.select(getGameMap)),
-    map((targetMap: string) => {
-      assertTrue(map, 'cannot return to invalid map from combat');
-      // Save game
-      if (localStorage.getItem('autoSave') === 'true') {
-        this.store.dispatch(new GameStateSaveAction());
-      }
-      return this.router.navigate(['world', targetMap]);
-    })
-  ), { dispatch: false });
+  navigateToMapRoute$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(CombatVictoryCompleteAction.typeId, CombatEscapeCompleteAction.typeId),
+        debounceTime(100),
+        switchMap(() => this.store.select(getGameMap)),
+        map((targetMap: string) => {
+          assertTrue(map, 'cannot return to invalid map from combat');
+          // Save game
+          if (localStorage.getItem('autoSave') === 'true') {
+            this.store.dispatch(new GameStateSaveAction());
+          }
+          return this.router.navigate(['world', targetMap]);
+        }),
+      ),
+    { dispatch: false },
+  );
 }

@@ -38,7 +38,7 @@ function combatant(values?: Partial<CombatantTypes>): CombatantTypes {
       hp: 0,
       maxhp: 0,
     },
-    values || {}
+    values || {},
   ) as any;
 }
 
@@ -74,7 +74,7 @@ describe('Combat', () => {
         expect(state.party.count()).toBe(1);
         const actual = combatReducer(
           state,
-          new CombatVictoryCompleteAction(victorySummary)
+          new CombatVictoryCompleteAction(victorySummary),
         );
         expect(actual.enemies.count()).toBe(0);
         expect(actual.party.count()).toBe(0);
@@ -85,7 +85,7 @@ describe('Combat', () => {
         expect(() => {
           combatReducer(
             combatStateFactory(),
-            new CombatAttackAction(attack(combatant(), combatant(), 0))
+            new CombatAttackAction(attack(combatant(), combatant(), 0)),
           );
         }).toThrow();
       });
@@ -100,7 +100,7 @@ describe('Combat', () => {
         });
         const actual = combatReducer(
           state,
-          new CombatAttackAction(attack(attacker, defender, 3))
+          new CombatAttackAction(attack(attacker, defender, 3)),
         );
         expect(actual.party.get(0).hp).toBe(2);
       });
@@ -115,7 +115,7 @@ describe('Combat', () => {
         });
         const actual = combatReducer(
           state,
-          new CombatAttackAction(attack(attacker, defender, 13))
+          new CombatAttackAction(attack(attacker, defender, 13)),
         );
         expect(actual.party.get(0).hp).toBe(0);
       });
@@ -130,7 +130,7 @@ describe('Combat', () => {
         });
         const actual = combatReducer(
           state,
-          new CombatAttackAction(attack(attacker, defender, -10))
+          new CombatAttackAction(attack(attacker, defender, -10)),
         );
         expect(actual.party.get(0).hp).toBe(5);
       });
@@ -145,7 +145,7 @@ describe('Combat', () => {
         });
         const actual = combatReducer(
           state,
-          new CombatAttackAction(attack(attacker, defender, -4))
+          new CombatAttackAction(attack(attacker, defender, -4)),
         );
         expect(actual.party.get(0).hp).toBe(5);
       });
@@ -160,7 +160,7 @@ describe('Combat', () => {
         });
         const actual = combatReducer(
           state,
-          new CombatAttackAction(attack(attacker, defender, 3))
+          new CombatAttackAction(attack(attacker, defender, 3)),
         );
         expect(actual.enemies.get(0).hp).toBe(2);
       });
@@ -183,7 +183,7 @@ describe('Combat', () => {
         });
         const actual = combatReducer(
           state,
-          new CombatAttackAction(attack(attacker, defender, 10))
+          new CombatAttackAction(attack(attacker, defender, 10)),
         );
         expect(actual.enemies.get(0).hp).toBe(0);
       });

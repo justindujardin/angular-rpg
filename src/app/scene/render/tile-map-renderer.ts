@@ -1,4 +1,3 @@
-
 import * as _ from 'underscore';
 import { Rect } from '../../core/rect';
 import { ITileInstanceMeta } from '../../core/resources/tiled/tiled';
@@ -94,7 +93,7 @@ export class TileMapRenderer {
                         dstX,
                         dstY,
                         dstW,
-                        dstH
+                        dstH,
                       );
                     }
                   });
@@ -105,7 +104,7 @@ export class TileMapRenderer {
               // var dataImage = new Image();
               // dataImage.src = ctx.canvas.toDataURL();
               // $('body').append(dataImage);
-            }
+            },
           );
         }
       }
@@ -123,7 +122,7 @@ export class TileMapRenderer {
           col * squareUnits - 0.5,
           row * squareUnits - 0.5,
           squareUnits,
-          squareUnits
+          squareUnits,
         );
         view.fastWorldToScreenRect(this._renderRect, this._renderRect);
         if (!this._renderRect.intersect(this._clipRect)) {
@@ -141,7 +140,7 @@ export class TileMapRenderer {
           this._renderRect.point.x,
           this._renderRect.point.y,
           squareScreen,
-          squareScreen
+          squareScreen,
         );
       }
     }

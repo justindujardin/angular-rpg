@@ -90,4 +90,3 @@ $rpg-app-theme: mat.define-dark-theme($rpg-app-primary, $rpg-app-accent, $rpg-ap
 @include mat.slide-toggle-theme($rpg-app-theme);
 // @include mat.card-theme($rpg-app-theme);
 @include mat.progress-bar-theme($rpg-app-theme);
-

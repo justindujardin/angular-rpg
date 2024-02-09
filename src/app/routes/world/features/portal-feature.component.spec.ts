@@ -25,7 +25,7 @@ function getPartyLocationInfo(store: Store<AppState>): IPortalFeatureProperties 
         const position = args[0];
         const target = args[1];
         return { target, targetX: position.x, targetY: position.y };
-      })
+      }),
     )
     .subscribe((r) => (result = r));
   assertTrue(result, 'invalid party data');
@@ -34,7 +34,7 @@ function getPartyLocationInfo(store: Store<AppState>): IPortalFeatureProperties 
 
 function getFeature(
   values: Partial<ITiledObject<IPortalFeatureProperties>> = {},
-  properties: Partial<IPortalFeatureProperties> = {}
+  properties: Partial<IPortalFeatureProperties> = {},
 ): ITiledObject<IPortalFeatureProperties> {
   return {
     name: 'feature',

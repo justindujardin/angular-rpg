@@ -1,4 +1,3 @@
-
 import { assertTrue } from '../../models/util';
 import { Resource } from '../resource';
 /**

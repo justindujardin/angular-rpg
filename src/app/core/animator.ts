@@ -1,4 +1,3 @@
-
 import { getSpriteMeta } from './api';
 /**
  * Really Janky class to play animations associated with a pow2 sprite.

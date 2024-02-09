@@ -1,4 +1,3 @@
-
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BasePlayerComponent } from '../../../behaviors/base-player.behavior';
 import { IMoveDescription } from '../../../behaviors/movable-behavior';
@@ -47,7 +46,7 @@ export class PlayerBehaviorComponent extends BasePlayerComponent {
       x,
       y,
       GameFeatureObject,
-      results
+      results,
     );
     if (collision) {
       for (i = 0; i < results.length; i++) {

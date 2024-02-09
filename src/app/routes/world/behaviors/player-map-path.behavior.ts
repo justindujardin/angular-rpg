@@ -1,4 +1,3 @@
-
 import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
@@ -42,7 +41,7 @@ export class PlayerMapPathBehaviorComponent
       .subscribe((boarded) => {
         assertTrue(this.host, 'invalid host object');
         const player = this.host.findBehavior<PlayerBehaviorComponent>(
-          PlayerBehaviorComponent
+          PlayerBehaviorComponent,
         );
         if (player) {
           player.passableKeys = boarded ? ['shipPassable'] : ['passable'];
@@ -58,7 +57,7 @@ export class PlayerMapPathBehaviorComponent
 
     assertTrue(this.host, 'cannot build weighted graph without host object');
     const player = this.host.findBehavior<PlayerBehaviorComponent>(
-      PlayerBehaviorComponent
+      PlayerBehaviorComponent,
     );
     assertTrue(player, 'cannot build weighted graph without player object');
 

@@ -1,4 +1,3 @@
-
 import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
@@ -45,7 +44,7 @@ export class ShipFeatureComponent
       .subscribe((boarded: boolean) => {
         if (boarded && this.scene) {
           const playerObj = this.scene.objectByComponent<GameFeatureObject>(
-            PlayerBehaviorComponent
+            PlayerBehaviorComponent,
           );
           if (playerObj) {
             this.enter(playerObj);

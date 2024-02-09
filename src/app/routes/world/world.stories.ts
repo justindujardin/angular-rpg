@@ -19,7 +19,10 @@ import { Warrior } from '../../models/mechanics.mock';
   template: `<loading></loading><world [debug]="debug"></world>`,
 })
 class Wrapper implements AfterViewInit {
-  constructor(public store: Store<AppState>, public loadingService: LoadingService) {}
+  constructor(
+    public store: Store<AppState>,
+    public loadingService: LoadingService,
+  ) {}
   @Input() debug: boolean;
   @Input() location: string = 'town';
   @Input() position: IPoint;

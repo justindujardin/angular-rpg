@@ -18,7 +18,7 @@ import {
 
 function getFeature(
   values: Partial<ITiledObject<ITempleFeatureProperties>> = {},
-  properties: Partial<ITempleFeatureProperties> = {}
+  properties: Partial<ITempleFeatureProperties> = {},
 ): ITiledObject<ITempleFeatureProperties> {
   return {
     name: 'feature',
@@ -66,7 +66,7 @@ describe('TempleFeatureComponent', () => {
 
     // Assert members are damaged by 10
     testAppGetPartyWithEquipment(world.store).forEach((p) =>
-      expect(p.hp).toBe(p.maxhp - 10)
+      expect(p.hp).toBe(p.maxhp - 10),
     );
 
     const doRest = fixture.debugElement.query(By.css('.rest'));
@@ -74,7 +74,7 @@ describe('TempleFeatureComponent', () => {
 
     // Party at max health again
     testAppGetPartyWithEquipment(world.store).forEach((p) =>
-      expect(p.maxhp).toBe(p.hp)
+      expect(p.maxhp).toBe(p.hp),
     );
   });
   it('should fail to heal when party does not have enough money', async () => {
@@ -91,7 +91,7 @@ describe('TempleFeatureComponent', () => {
 
     // Assert members are damaged by 10
     testAppGetPartyWithEquipment(world.store).forEach((p) =>
-      expect(p.hp).toBe(p.maxhp - 10)
+      expect(p.hp).toBe(p.maxhp - 10),
     );
 
     const doRest = fixture.debugElement.query(By.css('.rest'));
@@ -99,7 +99,7 @@ describe('TempleFeatureComponent', () => {
 
     // Party still at damaged health
     testAppGetPartyWithEquipment(world.store).forEach((p) =>
-      expect(p.hp).toBe(p.maxhp - 10)
+      expect(p.hp).toBe(p.maxhp - 10),
     );
   });
   it('should not take money when party is already healed', async () => {
@@ -111,7 +111,7 @@ describe('TempleFeatureComponent', () => {
     fixture.detectChanges();
     // Party at full health
     testAppGetPartyWithEquipment(world.store).forEach((p) =>
-      expect(p.hp).toBe(p.maxhp)
+      expect(p.hp).toBe(p.maxhp),
     );
     expect(testAppGetPartyGold(world.store)).toBe(100);
 

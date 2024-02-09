@@ -1,4 +1,3 @@
-
 import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
@@ -53,7 +52,7 @@ export class SpriteRenderBehaviorComponent
                 this.image = images[0].data;
               });
           }
-        })
+        }),
       )
       .subscribe();
   }

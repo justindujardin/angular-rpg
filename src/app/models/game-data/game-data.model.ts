@@ -17,7 +17,7 @@ export type ItemElements = 'holy' | 'water' | 'wind' | 'heal';
 export const EQUIPMENT_SLOTS = ['armor', 'helm', 'boots', 'shield', 'weapon'] as const;
 
 /** Valid equipment slot strings type */
-export type EquipmentSlotTypes = typeof EQUIPMENT_SLOTS[number];
+export type EquipmentSlotTypes = (typeof EQUIPMENT_SLOTS)[number];
 
 export type ItemWeaponType = 'weapon';
 
@@ -211,7 +211,7 @@ export interface ITemplateRandomEncounter extends ITemplateEncounter {
  */
 export function instantiateEntity<T extends ITemplateId>(
   from: any,
-  values?: Partial<T>
+  values?: Partial<T>,
 ): T {
   return Object.assign(
     {
@@ -219,7 +219,7 @@ export function instantiateEntity<T extends ITemplateId>(
       status: [],
     },
     from,
-    values || {}
+    values || {},
   ) as T;
 }
 

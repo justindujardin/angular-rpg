@@ -1,4 +1,3 @@
-
 import { EventEmitter } from '@angular/core';
 import * as _ from 'underscore';
 import { AudioResource } from '../core';

@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TickedBehavior } from '../../../behaviors/ticked-behavior';

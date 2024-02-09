@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { getArmorById } from 'app/models/game-data/armors';
@@ -30,7 +29,10 @@ import { Item } from '../models/item';
 
 @Injectable()
 export class RPGGame {
-  constructor(public loader: ResourceManager, private store: Store<AppState>) {}
+  constructor(
+    public loader: ResourceManager,
+    private store: Store<AppState>,
+  ) {}
 
   public create(type: EntityType, name: string): IPartyMember {
     const HERO_DEFAULTS: Partial<IPartyMember> = {
@@ -96,7 +98,7 @@ export class RPGGame {
   giveItemToPlayer(
     player: IPartyMember,
     templateItem: ITemplateBaseItem | null,
-    equipSlot: keyof EntitySlots
+    equipSlot: keyof EntitySlots,
   ) {
     if (!templateItem) {
       return;
@@ -109,7 +111,7 @@ export class RPGGame {
         entityId: player.eid,
         slot: equipSlot,
         itemId: itemInstance.eid,
-      })
+      }),
     );
   }
 
@@ -118,7 +120,7 @@ export class RPGGame {
    * is new or was loaded from save data.  Resolves with true if the game is new.
    */
   initGame(
-    load: boolean = !!localStorage.getItem(GameStateService.STATE_KEY)
+    load: boolean = !!localStorage.getItem(GameStateService.STATE_KEY),
   ): Promise<boolean> {
     return new Promise<boolean>(async (resolve, reject) => {
       if (load) {

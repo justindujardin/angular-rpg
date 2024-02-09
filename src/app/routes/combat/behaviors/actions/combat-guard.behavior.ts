@@ -30,7 +30,7 @@ export class CombatGuardBehavior extends CombatActionBehavior {
   constructor(
     public store: Store<AppState>,
     protected loader: ResourceManager,
-    protected gameWorld: GameWorld
+    protected gameWorld: GameWorld,
   ) {
     super(loader, gameWorld);
   }
@@ -54,10 +54,10 @@ export class CombatGuardBehavior extends CombatActionBehavior {
     assertTrue(this._subscription === null, 'subscription leak in guard behavior');
     assertTrue(this._changedModel === null, 'changed model leak in guard behavior');
     this._subscription = this.combat.machine.onEnterState$.subscribe((v) =>
-      this.enterStateHandler(v)
+      this.enterStateHandler(v),
     );
     this.store.dispatch(
-      new CombatSetStatusAction({ target: model, classes: ['guarding'] })
+      new CombatSetStatusAction({ target: model, classes: ['guarding'] }),
     );
   }
 
@@ -76,7 +76,7 @@ export class CombatGuardBehavior extends CombatActionBehavior {
         new CombatClearStatusAction({
           target: model,
           classes: ['guarding'],
-        })
+        }),
       );
       this._changedModel = null;
       assertTrue(this._subscription, 'unmatched subscription in guard behavior');

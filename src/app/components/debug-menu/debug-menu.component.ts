@@ -175,7 +175,7 @@ export class DebugMenuComponent implements AfterViewInit {
             exp: gainedXp,
           };
           this.store.dispatch(new CombatVictoryAction(summary));
-        })
+        }),
       )
       .subscribe();
   }
@@ -188,7 +188,7 @@ export class DebugMenuComponent implements AfterViewInit {
       new GameStateTravelAction({
         location: map,
         position: { x, y },
-      })
+      }),
     );
   }
 
@@ -197,6 +197,6 @@ export class DebugMenuComponent implements AfterViewInit {
     public store: Store<AppState>,
     public gameStateService: GameStateService,
     public notify: NotificationService,
-    private _liveAnnouncer: LiveAnnouncer
+    private _liveAnnouncer: LiveAnnouncer,
   ) {}
 }

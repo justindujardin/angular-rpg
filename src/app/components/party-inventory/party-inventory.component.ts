@@ -77,7 +77,7 @@ export class PartyInventoryComponent implements OnDestroy {
         return party.count() - 1;
       }
       return index;
-    })
+    }),
   );
 
   /** The currently selected player entity with its equipment resolved to items rather than item ids */
@@ -87,7 +87,7 @@ export class PartyInventoryComponent implements OnDestroy {
     }),
     switchMap((entity: Entity) => {
       return entity?.eid ? this.store.select(getEntityEquipment(entity.eid)) : EMPTY;
-    })
+    }),
   );
   /** Stream of inventory that the currentEntity$ can equip */
   inventory$: Observable<EntityItemTypes[]> = this.store.select(getGameInventory).pipe(
@@ -114,8 +114,8 @@ export class PartyInventoryComponent implements OnDestroy {
           })
           .toList()
           .toJS();
-      }
-    )
+      },
+    ),
   );
   /** Action generator from equip stream */
   private _equipSubscription: Subscription = this.doEquip$
@@ -134,7 +134,7 @@ export class PartyInventoryComponent implements OnDestroy {
                 entityId: entity.eid,
                 slot: slot,
                 itemId: oldItem.eid,
-              })
+              }),
             );
           }
           this.store.dispatch(
@@ -142,10 +142,10 @@ export class PartyInventoryComponent implements OnDestroy {
               entityId: entity.eid,
               slot: slot,
               itemId: event.item.eid,
-            })
+            }),
           );
-        }
-      )
+        },
+      ),
     )
     .subscribe();
 
@@ -161,10 +161,10 @@ export class PartyInventoryComponent implements OnDestroy {
               entityId: entity.eid,
               slot: slot,
               itemId: event.item.eid,
-            })
+            }),
           );
-        }
-      )
+        },
+      ),
     )
     .subscribe();
 
@@ -172,7 +172,7 @@ export class PartyInventoryComponent implements OnDestroy {
     public game: RPGGame,
     public store: Store<AppState>,
     public combatService: CombatService,
-    public notify: NotificationService
+    public notify: NotificationService,
   ) {}
 
   ngOnDestroy(): void {

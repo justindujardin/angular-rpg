@@ -53,7 +53,7 @@ export class CombatEnemyComponent
         distinctUntilChanged(),
         map((m: IEnemy) => {
           this.setSprite(m.icon);
-        })
+        }),
       )
       .subscribe();
   }

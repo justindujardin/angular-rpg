@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { CombatService } from '../../../models/combat/combat.service';
 import { CombatMachineState } from './combat-base.state';

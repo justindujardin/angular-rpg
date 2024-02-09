@@ -41,7 +41,10 @@ export class CombatVictoryStateComponent extends CombatMachineState {
   static NAME: CombatStateNames = 'victory';
   name: CombatStateNames = CombatVictoryStateComponent.NAME;
 
-  constructor(public store: Store<AppState>, public combatService: CombatService) {
+  constructor(
+    public store: Store<AppState>,
+    public combatService: CombatService,
+  ) {
     super();
   }
 

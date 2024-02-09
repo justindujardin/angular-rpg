@@ -17,7 +17,10 @@ interface ISpriteInputs {
   template: `<rpg-sprite [width]="width" [height]="height" [name]="name"></rpg-sprite>`,
 })
 class Wrapper implements AfterViewInit {
-  constructor(public store: Store<AppState>, public loadingService: LoadingService) {}
+  constructor(
+    public store: Store<AppState>,
+    public loadingService: LoadingService,
+  ) {}
   @Input() width: number;
   @Input() height: number;
   @Input() name: string;

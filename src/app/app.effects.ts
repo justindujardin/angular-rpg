@@ -17,34 +17,46 @@ export class AppEffects {
   constructor(
     private actions$: Actions,
     private router: Router,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
   ) {}
 
   /** When the game is loading or traveling, show the loading ui. */
-  loadingIndicator$ = createEffect(() => this.actions$.pipe(
-    ofType(GameStateTravelAction.typeId),
-    distinctUntilChanged(),
-    map((action: GameStateTravelAction) => {
-      this.loadingService.message = `Traveling to ${action.payload.location}...`;
-      this.loadingService.loading = true;
-    })
-  ), { dispatch: false });
+  loadingIndicator$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(GameStateTravelAction.typeId),
+        distinctUntilChanged(),
+        map((action: GameStateTravelAction) => {
+          this.loadingService.message = `Traveling to ${action.payload.location}...`;
+          this.loadingService.loading = true;
+        }),
+      ),
+    { dispatch: false },
+  );
   /** When the game is done loading or traveling, hide the loading ui. */
-  loadingDoneIndicator$ = createEffect(() => this.actions$.pipe(
-    ofType(GameStateTravelSuccessAction.typeId, GameStateTravelFailAction.typeId),
-    distinctUntilChanged(),
-    map((action: GameStateTravelSuccessAction | GameStateTravelFailAction) => {
-      this.loadingService.loading = false;
-    })
-  ), { dispatch: false });
+  loadingDoneIndicator$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(GameStateTravelSuccessAction.typeId, GameStateTravelFailAction.typeId),
+        distinctUntilChanged(),
+        map((action: GameStateTravelSuccessAction | GameStateTravelFailAction) => {
+          this.loadingService.loading = false;
+        }),
+      ),
+    { dispatch: false },
+  );
 
   /** route update to world map */
-  navigateToWorldRoute$ = createEffect(() => this.actions$.pipe(
-    ofType(GameStateTravelSuccessAction.typeId),
-    debounceTime(100),
-    distinctUntilChanged(),
-    map((action: GameStateTravelSuccessAction) => {
-      this.router.navigate(['world', action.payload]);
-    })
-  ), { dispatch: false });
+  navigateToWorldRoute$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(GameStateTravelSuccessAction.typeId),
+        debounceTime(100),
+        distinctUntilChanged(),
+        map((action: GameStateTravelSuccessAction) => {
+          this.router.navigate(['world', action.payload]);
+        }),
+      ),
+    { dispatch: false },
+  );
 }

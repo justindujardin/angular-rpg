@@ -36,7 +36,7 @@ export function spritesFromJSON(object: SpriteState): SpriteState {
 
 export function spritesReducer(
   state: SpritesStateRecord = spritesStateFactory(),
-  action: SpriteActions
+  action: SpriteActions,
 ): SpritesStateRecord {
   switch (action.type) {
     case SpritesRegisterAction.typeId: {

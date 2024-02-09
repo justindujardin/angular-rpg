@@ -1,4 +1,3 @@
-
 import * as _ from 'underscore';
 import { BehaviorHost } from './behavior-host';
 /**

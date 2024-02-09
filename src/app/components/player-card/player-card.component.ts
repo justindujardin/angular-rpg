@@ -20,5 +20,8 @@ export class PlayerCardComponent {
     this._model$.next(value);
   }
 
-  constructor(public game: RPGGame, public store: Store<AppState>) {}
+  constructor(
+    public game: RPGGame,
+    public store: Store<AppState>,
+  ) {}
 }

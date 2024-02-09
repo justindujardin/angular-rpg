@@ -1,5 +1,3 @@
-
-
 import {
   IBehavior,
   IBehaviorHost,
@@ -79,7 +77,7 @@ export interface ISceneView {
   renderToCanvas(
     width: number,
     height: number,
-    renderFunction: (ctx: CanvasRenderingContext2D) => void
+    renderFunction: (ctx: CanvasRenderingContext2D) => void,
   ): void;
 
   // Render a frame. Subclass this to do your specific rendering.

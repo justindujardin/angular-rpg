@@ -1,4 +1,3 @@
-
 import _ from 'underscore';
 import { SceneObjectBehavior } from '../../../behaviors/scene-object-behavior';
 import { AudioResource, ImageResource, ResourceManager } from '../../../core';
@@ -22,7 +21,10 @@ export class CombatActionBehavior extends SceneObjectBehavior implements IPlayer
   /** A map of key/icon for sprites this action uses. Calling preload() will load these */
   sprites: { [key: string]: string } | null = null;
 
-  constructor(protected loader: ResourceManager, protected gameWorld: GameWorld) {
+  constructor(
+    protected loader: ResourceManager,
+    protected gameWorld: GameWorld,
+  ) {
     super();
   }
 
@@ -68,7 +70,7 @@ export class CombatActionBehavior extends SceneObjectBehavior implements IPlayer
         const meta = this.gameWorld.sprites.getSpriteMeta(spriteName);
         assertTrue(meta, `no metadata for sprite: ${spriteName}`);
         return meta.source;
-      })
+      }),
     );
     const sounds = _.uniq(Object.values(this.sounds || []));
     return Promise.all([

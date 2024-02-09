@@ -1,4 +1,3 @@
-
 import * as _ from 'underscore';
 import { Point, Rect } from '../core';
 import { ISceneObject } from './scene.model';

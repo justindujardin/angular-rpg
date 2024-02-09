@@ -17,7 +17,7 @@ import { assertTrue } from './util';
 export interface IMechanicsQuery<
   StateType = CombatantTypes,
   EquipmentType = ITemplateBaseItem,
-  AgainstType = CombatantTypes
+  AgainstType = CombatantTypes,
 > {
   /** The query entity */
   state: StateType;
@@ -111,7 +111,7 @@ export class EnemyMechanics {
 export type MagicFunction = (
   caster: EntityWithEquipment,
   spell: ITemplateMagic,
-  target: ICalculateMagicTarget
+  target: ICalculateMagicTarget,
 ) => IMagicTargetDelta;
 
 export interface ICombatDamage {
@@ -183,7 +183,7 @@ export interface ICalculateMagicEffectsConfig {
 }
 
 export function calculateMagicEffects(
-  config: ICalculateMagicEffectsConfig
+  config: ICalculateMagicEffectsConfig,
 ): IMagicEffects {
   const magic = (config.spells ? config.spells[0] : null) as ITemplateMagic;
   assertTrue(magic, 'invalid spell in calculateMagicEffects');
@@ -196,7 +196,7 @@ export function calculateMagicEffects(
   const targetDeltas: IMagicTargetDelta[] = config.targets.map(
     (target: ICalculateMagicTarget) => {
       return spell(config.caster as EntityWithEquipment, magic, target);
-    }
+    },
   );
 
   return {
@@ -215,7 +215,7 @@ export type MagicFunctionNames = keyof typeof SPELLS;
 export function spellElementalDamage(
   caster: EntityWithEquipment,
   spell: ITemplateMagic,
-  target: ICalculateMagicTarget
+  target: ICalculateMagicTarget,
 ): IMagicTargetDelta {
   // TODO: Check equipment for element-specific bonuses
   return {
@@ -227,7 +227,7 @@ export function spellElementalDamage(
 export function spellModifyHP(
   caster: EntityWithEquipment,
   spell: ITemplateMagic,
-  target: ICalculateMagicTarget
+  target: ICalculateMagicTarget,
 ): IMagicTargetDelta {
   // If the spell benefits a user, it restores health, otherwise it drains health.
   const directionMultiplier = spell.benefit ? 1 : -1;
@@ -241,7 +241,7 @@ export function spellModifyHP(
 export function spellModifyMP(
   caster: EntityWithEquipment,
   spell: ITemplateMagic,
-  target: ICalculateMagicTarget
+  target: ICalculateMagicTarget,
 ): IMagicTargetDelta {
   // If the spell benefits a user, it restores mana, otherwise it drains mana.
   const directionMultiplier = spell.benefit ? 1 : -1;
@@ -298,7 +298,7 @@ export function calculateDamage(config: ICalculateDamageConfig): ICombatDamage {
   // Min of 1, Max of 2
   const numHits = Math.min(
     2,
-    Math.max(1, Math.floor((1 + hitPct / doubleHitThreshold) * hitMultiply))
+    Math.max(1, Math.floor((1 + hitPct / doubleHitThreshold) * hitMultiply)),
   );
   const damages: number[] = [];
   for (let i = 0; i < numHits; i++) {
@@ -309,7 +309,7 @@ export function calculateDamage(config: ICalculateDamageConfig): ICombatDamage {
     const attackMax = attackMin * 2;
     const adjustedAttack = Math.max(
       1,
-      Math.floor(Math.random() * (attackMax - attackMin + 1)) + attackMin
+      Math.floor(Math.random() * (attackMax - attackMin + 1)) + attackMin,
     );
     const defense: number = defenseMechanics.getDefense({
       state: defender as any,
@@ -368,22 +368,22 @@ export function awardLevelUp(model: IPartyMember): IPartyMember {
   const strength = newStatValue(
     model,
     model.strength,
-    getStatIncreaseForLevelUp(model, 'strength')
+    getStatIncreaseForLevelUp(model, 'strength'),
   );
   const agility = newStatValue(
     model,
     model.agility,
-    getStatIncreaseForLevelUp(model, 'agility')
+    getStatIncreaseForLevelUp(model, 'agility'),
   );
   const intelligence = newStatValue(
     model,
     model.intelligence,
-    getStatIncreaseForLevelUp(model, 'intelligence')
+    getStatIncreaseForLevelUp(model, 'intelligence'),
   );
   const luck = newStatValue(
     model,
     model.luck,
-    getStatIncreaseForLevelUp(model, 'luck')
+    getStatIncreaseForLevelUp(model, 'luck'),
   );
   const magicdefense = newStatValue(model, model.magicdefense);
   const hitpercent = newStatValue(model, model.hitpercent);
@@ -419,7 +419,7 @@ export function awardExperience(exp: number, model: IPartyMember): IPartyMember 
 export function newStatValue(
   model: IPartyMember,
   stat: number[],
-  add: number = 0
+  add: number = 0,
 ): number[] {
   let newValue = stat[0] + add;
   if (stat.length > 1) {
@@ -464,7 +464,7 @@ export interface IPartyStatsDiff {
  */
 export function diffPartyMember(
   before: IPartyMember,
-  after: IPartyMember
+  after: IPartyMember,
 ): IPartyStatsDiff {
   return {
     name: after.name,

@@ -1,5 +1,3 @@
-
-
 import { IPoint, Point } from '../../core';
 import { ISpriteMeta } from '../../core/api';
 import { SceneView } from '../scene-view';
@@ -58,7 +56,7 @@ export class TileObjectRenderer {
         point.x,
         point.y,
         sourceWidth * scale,
-        sourceHeight * scale
+        sourceHeight * scale,
       );
     } else {
       view.context.drawImage(
@@ -66,7 +64,7 @@ export class TileObjectRenderer {
         point.x,
         point.y,
         sourceWidth * scale,
-        sourceHeight * scale
+        sourceHeight * scale,
       );
     }
   }

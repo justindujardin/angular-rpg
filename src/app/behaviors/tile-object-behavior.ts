@@ -1,4 +1,3 @@
-
 import { EventEmitter } from '@angular/core';
 import { TileMap } from '../scene/tile-map';
 import { TileObject } from '../scene/tile-object';
