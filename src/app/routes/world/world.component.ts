@@ -137,7 +137,7 @@ export class WorldComponent extends SceneView implements AfterViewInit, OnDestro
     map((party: Immutable.List<Entity>) => {
       const partyAlive = party.filter((p) => Number(p?.hp) > 0);
       return partyAlive.get(0) || null;
-    })
+    }),
   );
   private _renderPoint$: BehaviorSubject<IPoint> = new BehaviorSubject(
     this.renderPoint,

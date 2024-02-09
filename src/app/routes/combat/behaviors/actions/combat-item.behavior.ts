@@ -67,7 +67,7 @@ export class CombatItemBehavior extends CombatActionBehavior {
     const actionCompletePromise = done$
       .pipe(
         filter((d) => d === true),
-        take(1)
+        take(1),
       )
       .toPromise();
 

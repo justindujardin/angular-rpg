@@ -25,7 +25,7 @@ export function chooseMove(
   enemies: GameEntityObject[],
   party: CombatPlayerComponent[],
   spells: Magic[],
-  items: Item[]
+  items: Item[],
 ): CombatActionBehavior {
   const magicAction = player.findBehavior<CombatMagicBehavior>(CombatMagicBehavior);
   const hurtPartyMember = party
@@ -78,7 +78,7 @@ export function chooseMove(
 
   // Default to attacking
   const action = player.findBehavior<CombatAttackBehaviorComponent>(
-    CombatAttackBehaviorComponent
+    CombatAttackBehaviorComponent,
   );
   assertTrue(action, `attack action not found on: ${player.name}`);
   action.from = player;
@@ -244,7 +244,7 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
         enemies,
         party,
         this.machine.spells.toJS(),
-        items
+        items,
       );
 
       // Filter used items from next user choices

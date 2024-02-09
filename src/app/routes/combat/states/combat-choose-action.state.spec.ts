@@ -62,7 +62,7 @@ describe('CombatChooseActionStateComponent', () => {
         enemies,
         party,
         combat.machine.spells.toJS(),
-        combat.machine.items.toJS()
+        combat.machine.items.toJS(),
       );
       expect(action instanceof CombatMagicBehavior).toBe(true);
       expect(action.spell?.id).toBe('heal');
@@ -79,7 +79,7 @@ describe('CombatChooseActionStateComponent', () => {
         enemies,
         party,
         combat.machine.spells.toJS(),
-        combat.machine.items.toJS()
+        combat.machine.items.toJS(),
       );
       expect(action instanceof CombatMagicBehavior).toBe(true);
       expect(action.spell?.id).toBe('push');
@@ -97,7 +97,7 @@ describe('CombatChooseActionStateComponent', () => {
         enemies,
         party,
         combat.machine.spells.toJS(),
-        combat.machine.items.toJS()
+        combat.machine.items.toJS(),
       );
       expect(action instanceof CombatItemBehavior).toBe(true);
       expect(action.item?.id).toBe('potion');
@@ -113,7 +113,7 @@ describe('CombatChooseActionStateComponent', () => {
         enemies,
         party,
         combat.machine.spells.toJS(),
-        combat.machine.items.toJS()
+        combat.machine.items.toJS(),
       );
       expect(action instanceof CombatAttackBehaviorComponent).toBe(true);
       expect(action.to instanceof CombatEnemyComponent).toBe(true);
