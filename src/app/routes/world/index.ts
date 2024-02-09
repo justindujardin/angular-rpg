@@ -1,7 +1,7 @@
 import { PortalModule } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule as MatButtonModule } from '@angular/material/button';
 import { BehaviorsModule } from '../../behaviors/index';
 import { AppComponentsModule } from '../../components/index';
 import { MapFeatureInputBehaviorComponent } from './behaviors/map-feature-input.behavior';

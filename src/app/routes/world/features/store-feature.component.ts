@@ -6,8 +6,8 @@ import {
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
-import { MatLegacyTabChangeEvent as MatTabChangeEvent } from '@angular/material/legacy-tabs';
+import { MatTableDataSource as MatTableDataSource } from '@angular/material/table';
+import { MatTabChangeEvent as MatTabChangeEvent } from '@angular/material/tabs';
 import { ARMOR_DATA } from 'app/models/game-data/armors';
 import { ITEMS_DATA } from 'app/models/game-data/items';
 import { MAGIC_DATA } from 'app/models/game-data/magic';
