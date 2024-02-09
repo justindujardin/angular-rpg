@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/angular/types-6-0';
+import { Meta, StoryFn } from '@storybook/angular';
 import { DebugMenuComponent } from './debug-menu.component';
 
 export default {
@@ -10,7 +10,7 @@ interface IPartyMenuInputs {
   open: boolean;
 }
 
-const Template: Story<IPartyMenuInputs> = (args: Partial<IPartyMenuInputs>) => ({
+const Template: StoryFn<IPartyMenuInputs> = (args: Partial<IPartyMenuInputs>) => ({
   component: DebugMenuComponent,
   props: args,
 });

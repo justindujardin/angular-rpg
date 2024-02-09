@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { moduleMetadata } from '@storybook/angular';
-import { Meta, Story } from '@storybook/angular/types-6-0';
+import { Meta, StoryFn } from '@storybook/angular';
 import { AppState } from 'app/app.model';
 import { LoadingService } from '../loading';
 
@@ -28,7 +28,7 @@ class Wrapper implements AfterViewInit {
   ngAfterViewInit(): void {}
 }
 
-const Template: Story<ISpriteInputs> = (args: Partial<ISpriteInputs>) => ({
+const Template: StoryFn<ISpriteInputs> = (args: Partial<ISpriteInputs>) => ({
   component: Wrapper,
   props: args,
 });

@@ -25,7 +25,7 @@ $inventoryLabelPaddingTop: 36px;
         left: 0;
         right: 0;
         font-size: 0.9em;
-        line-height: $inventoryLabelPaddingTop / 2;
+        line-height: calc($inventoryLabelPaddingTop / 2);
       }
       .icon {
         left: 0;

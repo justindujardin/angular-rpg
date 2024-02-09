@@ -1,7 +1,7 @@
 // also exported from '@storybook/angular' if you can deal with breaking changes in 6.1
 import { AfterViewInit, Component, Input } from '@angular/core';
 import { moduleMetadata } from '@storybook/angular';
-import { Meta, Story } from '@storybook/angular/types-6-0';
+import { Meta, StoryFn } from '@storybook/angular';
 import { CombatantTypes } from '../../models/base-entity';
 import { LoadingService } from './loading.service';
 
@@ -37,7 +37,7 @@ export default {
   decorators: [moduleMetadata({ declarations: [LoadingStoryWrapper] })],
 } as Meta;
 
-const Template: Story<CombatantTypes> = (args: Partial<any>) => ({
+const Template: StoryFn<CombatantTypes> = (args: Partial<any>) => ({
   component: LoadingStoryWrapper,
   props: {
     cfg: {

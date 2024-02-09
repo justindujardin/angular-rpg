@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { moduleMetadata } from '@storybook/angular';
-import { Meta, Story } from '@storybook/angular/types-6-0';
+import { Meta, StoryFn } from '@storybook/angular';
 import * as Immutable from 'immutable';
 import { AppState } from '../../app.model';
 import { LoadingService } from '../../components/loading';
@@ -56,7 +56,7 @@ export default {
   },
 } as Meta;
 
-const Template: Story<any> = (args: Partial<any>) => ({
+const Template: StoryFn<any> = (args: Partial<any>) => ({
   component: Wrapper,
   props: { ...args },
 });

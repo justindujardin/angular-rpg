@@ -107,6 +107,24 @@
               "devServerTarget": "angular-rpg:serve:production"
             }
           }
+        },
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "configDir": ".storybook",
+            "browserTarget": "angular-rpg:build",
+            "compodoc": false,
+            "port": 6006
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "configDir": ".storybook",
+            "browserTarget": "angular-rpg:build",
+            "compodoc": false,
+            "outputDir": "storybook-static"
+          }
         }
       }
     }

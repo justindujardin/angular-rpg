@@ -9,7 +9,6 @@ import { MatSelectModule as MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule as MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RPG_ANIMATED_EXPORTS } from './animated/index';
 import { RPG_DEBUG_MENU_EXPORTS, RPG_DEBUG_MENU_IMPORTS } from './debug-menu/index';
 import { RPG_HEALTH_BAR_EXPORTS } from './health-bar/index';
@@ -59,7 +58,6 @@ export const APP_COMPONENTS_PROVIDERS = [
   exports: APP_COMPONENTS_EXPORTS,
   providers: APP_COMPONENTS_PROVIDERS,
   imports: [
-    BrowserAnimationsModule,
     CommonModule,
     MatSelectModule,
     MatSidenavModule,

@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/angular/types-6-0';
+import { Meta, StoryFn } from '@storybook/angular';
 import { CombatantTypes } from '../../models/base-entity';
 import { Warrior } from '../../models/mechanics.mock';
 import { PlayerCardComponent } from './player-card.component';
@@ -8,7 +8,7 @@ export default {
   component: PlayerCardComponent,
 } as Meta;
 
-const Template: Story<CombatantTypes> = (args: Partial<CombatantTypes>) => ({
+const Template: StoryFn<CombatantTypes> = (args: Partial<CombatantTypes>) => ({
   component: PlayerCardComponent,
   props: {
     model: {
