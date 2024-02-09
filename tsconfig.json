@@ -13,7 +13,7 @@
     "strict": true,
     "strictPropertyInitialization": false,
     "strictFunctionTypes": false,
-    "target": "es2020",
+    "target": "ES2022",
     "module": "es2020",
     "lib": [
       "es2018",
@@ -37,6 +37,7 @@
         "src/.sink.d.ts"
       ]
     },
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "strictTemplates": true

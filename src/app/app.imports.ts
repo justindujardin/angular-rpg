@@ -65,7 +65,7 @@ export const APP_IMPORTS = [
   WorldModule.forRoot(),
   PowCoreModule.forRoot(),
   ReactiveFormsModule,
-  RouterModule.forRoot(ROUTES, { useHash: true, relativeLinkResolution: 'legacy' }),
+  RouterModule.forRoot(ROUTES, { useHash: true }),
   StoreRouterConnectingModule.forRoot(),
   ...storeDevtools,
   EffectsModule.forRoot([GameStateEffects, CombatEffects, SpritesEffects, AppEffects]),
