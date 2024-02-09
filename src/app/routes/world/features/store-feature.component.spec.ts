@@ -316,7 +316,7 @@ describe('StoreFeatureComponent', () => {
       await fixture.whenStable();
 
       // TODO: Why do I have to detect changes and click multiple times to get the tab to update?
-      const sellTab = fixture.debugElement.queryAll(By.css('.mat-tab-label'))[1];
+      const sellTab = fixture.debugElement.queryAll(By.css('.mat-mdc-tab'))[1];
       sellTab.triggerEventHandler('click', {});
       fixture.detectChanges();
       await fixture.whenStable();
