@@ -81,7 +81,13 @@ $rpg-app-warn: mat.define-palette(mat.$red-palette);
 // Create the theme object (a Sass map containing all of the palettes).
 $rpg-app-theme: mat.define-dark-theme($rpg-app-primary, $rpg-app-accent, $rpg-app-warn);
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-// @include mat.all-legacy-component-themes($rpg-app-theme);
+@include mat.core-theme($rpg-app-theme);
+// @include mat.button-theme($rpg-app-theme);
+@include mat.toolbar-theme($rpg-app-theme);
+@include mat.select-theme($rpg-app-theme);
+@include mat.sidenav-theme($rpg-app-theme);
+@include mat.list-theme($rpg-app-theme);
+@include mat.slide-toggle-theme($rpg-app-theme);
+// @include mat.card-theme($rpg-app-theme);
+@include mat.progress-bar-theme($rpg-app-theme);
+

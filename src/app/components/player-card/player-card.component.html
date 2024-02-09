@@ -2,8 +2,6 @@
   class="hero-card"
   *ngFor="let model of [model$ | async]"
   [class.dead]="(model?.hp || 0) <= 0"
-  fxLayout="column"
-  fxLayoutAlign="space-between center"
 >
   <h3 class="name" [innerText]="model?.name"></h3>
   <rpg-sprite

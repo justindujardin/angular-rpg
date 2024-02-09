@@ -1,11 +1,11 @@
-<div *ngIf="currentEntity$ | async as current" fxLayout="column">
-  <div fxLayout="row" fxLayoutAlign="space-between stretch">
+<div *ngIf="currentEntity$ | async as current">
+  <div>
     <button mat-icon-button (click)="previousCharacter()">
       <mat-icon>chevron_left</mat-icon>
     </button>
 
-    <section fxLayout="row" fxFlex fxLayoutAlign="space-around center">
-      <div flex fxLayout="column" fxLayoutAlign="center center">
+    <section>
+      <div flex>
         <rpg-sprite class="image" [name]="current?.icon || null" frame="7"></rpg-sprite>
         <span>{{ current?.name }}</span>
       </div>
@@ -24,7 +24,7 @@
     </button>
   </div>
 
-  <ul class="equipped" fxLayout="row" fxLayoutAlign="space-between center">
+  <ul class="equipped">
     <li
       class="weapon"
       *ngIf="current.weapon"
@@ -75,7 +75,7 @@
     </li>
   </ul>
 
-  <div class="container" fxLayout="column">
+  <div class="container">
     <strong>Inventory</strong>
     <ul class="unequipped">
       <li

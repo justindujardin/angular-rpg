@@ -8,7 +8,7 @@
     <a href="https://github.com/justindujardin/angular-rpg" target="_blank">RPG</a>
   </h1>
   <rpg-sprite height="32" width="32" name="longSword.png"></rpg-sprite>
-  <span fxFlex></span>
+  <span></span>
   <button mat-button (click)="page = 'party'" [ngClass]="{ active: page == 'party' }">
     Party
   </button>
@@ -40,13 +40,7 @@
     *ngIf="page == 'inventory'"
     class="inventory-content"
   ></party-inventory>
-  <mat-card-content
-    *ngIf="page == 'party'"
-    fxLayout="row"
-    fxLayoutWrap
-    fxLayoutAlign="space-around center"
-    class="party-content"
-  >
+  <mat-card-content *ngIf="page == 'party'" class="party-content">
     <player-card *ngFor="let member of party$ | async" [model]="member"></player-card>
   </mat-card-content>
   <mat-card-content *ngIf="page == 'settings'" class="settings-content">
