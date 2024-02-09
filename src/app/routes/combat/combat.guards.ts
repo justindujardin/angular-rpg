@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map, take } from 'rxjs/operators';
 import { AppState } from '../../app.model';
@@ -12,7 +7,7 @@ import { CombatState } from '../../models/combat/combat.model';
 import { sliceCombatState } from '../../models/selectors';
 
 @Injectable()
-export class CanActivateCombat implements CanActivate {
+export class CanActivateCombat  {
   constructor(private store: Store<AppState>, private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {

@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
@@ -12,7 +7,7 @@ import { AppState } from '../../app.model';
 import { getGameMap } from '../../models/selectors';
 
 @Injectable()
-export class CanActivateWorld implements CanActivate {
+export class CanActivateWorld  {
   constructor(private store: Store<AppState>, private router: Router) {}
 
   canActivate(
