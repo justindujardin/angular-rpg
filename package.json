@@ -88,7 +88,7 @@
     "@storybook/addon-actions": "^6.5.10",
     "@storybook/addon-essentials": "^6.5.10",
     "@storybook/addon-links": "^6.5.10",
-    "@storybook/angular": "^6.5.10",
+    "@storybook/angular": "^7.6.13",
     "@storybook/builder-webpack5": "^6.5.10",
     "@storybook/manager-webpack5": "^6.5.10",
     "@types/jasmine": "~3.6.0",
