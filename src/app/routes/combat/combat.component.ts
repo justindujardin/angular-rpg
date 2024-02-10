@@ -74,32 +74,21 @@ export class CombatComponent
   implements IProcessObject, OnDestroy, AfterViewInit
 {
   @Input() scene: Scene = new Scene();
-  /**
-   * A pointing UI element that can be attached to `SceneObject`s to attract attention
-   * @type {null}
-   */
+  /** A pointing UI element that can be attached to `SceneObject`s to attract attention */
   pointer: UIAttachment | null = null;
 
-  /**
-   * Available menu items for selection.
-   */
-  @Input()
-  items: ICombatMenuItem[] = [];
+  /** Available menu items for selection. */
+  @Input() items: ICombatMenuItem[] = [];
 
   /** The combat state machine */
   @ViewChild(CombatStateMachineComponent) machine: CombatStateMachineComponent;
 
-  /**
-   * Damages displaying on screen.
-   * @type {Array}
-   */
+  /** Damages displaying on screen. */
   @Input() damages: ICombatDamageSummary[] = [];
 
   @Input() defaultState: CombatStateNames | null = 'start';
 
-  /**
-   * Mouse hook for capturing input with world and screen coordinates.
-   */
+  /** Mouse hook for capturing input with world and screen coordinates. */
   mouse: NamedMouseElement | null = null;
 
   @ViewChild('combatCanvas') canvasElementRef: ElementRef;
@@ -318,7 +307,7 @@ export class CombatComponent
   }
 
   /**
-   * Render all of the map feature components
+   * Render all of the map features and combatants.
    */
   renderFrame(elapsed: number) {
     this.clearRect();
