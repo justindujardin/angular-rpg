@@ -8,7 +8,7 @@ export class GameEntityObject extends TileObject {
   groups: any;
   world: GameWorld;
 
-  private _visible: boolean = true;
+  protected _visible: boolean = true;
   // @ts-ignore
   get visible(): boolean {
     return Boolean(this._visible && this.model && this.model.hp > 0);

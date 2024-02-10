@@ -49,6 +49,12 @@ export class CombatPlayerComponent
   attackDirection: Headings = Headings.WEST;
   tickRateMS: number = 300;
 
+  get rotation(): number {
+    return this.model.hp > 0 ? 0 : -Math.PI / 2;
+  }
+  get visible(): boolean {
+    return Boolean(this._visible && this.model);
+  }
   constructor(public world: GameWorld) {
     super();
   }
