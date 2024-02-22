@@ -1,3 +1,22 @@
+## [0.3.5](https://github.com/justindujardin/angular-rpg/compare/v0.3.4...v0.3.5) (2024-02-22)
+
+
+### Bug Fixes
+
+* **camera:** clip rect sometimes didn't overlap the whole view ([3c6060b](https://github.com/justindujardin/angular-rpg/commit/3c6060b8d0410472b689fc5171926f083b61d769))
+* **camera:** clip rect sometimes didn't overlap the whole view ([bcce85d](https://github.com/justindujardin/angular-rpg/commit/bcce85dc4ff0a488e0c415b0795e841d4fb1bab7))
+* **party:** if warrior died the party would have no sprite ([7ae03f8](https://github.com/justindujardin/angular-rpg/commit/7ae03f82eeebc7e137ce6e2954fb11e8a294f529))
+
+
+### Features
+
+* **combat:** add auto-combat button ([15df6db](https://github.com/justindujardin/angular-rpg/commit/15df6db352b8f63156811187487127becc5ed8fd))
+* **combat:** add auto-combat button and setting ([55325a0](https://github.com/justindujardin/angular-rpg/commit/55325a04aaf50c76ecd082ba95b409ad5aa8ef7b))
+* **combat:** auto-combat can use items / spells ([a3ec235](https://github.com/justindujardin/angular-rpg/commit/a3ec2359d1c2ee0477d1c77caef7d496ba1f4465))
+* **combat:** show players face down if they die ([302417e](https://github.com/justindujardin/angular-rpg/commit/302417eaff613ab9f00dc3170f78e4d7a69da543))
+* **point:** add ceil method ([2c95042](https://github.com/justindujardin/angular-rpg/commit/2c950423f0f689dc18b1576ca0956228b3de84c1))
+* **state-machine:** add destroy method for state cleanup ([b0a262f](https://github.com/justindujardin/angular-rpg/commit/b0a262f353966ec0b4a41aae83819f9cbc1f42ba))
+
 ## [0.3.4](https://github.com/justindujardin/angular-rpg/compare/v0.3.3...v0.3.4) (2024-02-09)
 
 
