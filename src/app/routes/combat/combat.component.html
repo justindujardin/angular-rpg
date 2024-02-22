@@ -31,5 +31,10 @@
   [enemies]="enemies"
   [defaultState]="defaultState"
   [encounter]="encounter$ | async"
+  #machine
 ></combat-state-machine>
+
 <combat-hud [scene]="scene" [combat]="machine"></combat-hud>
+<button mat-fab color="accent" (click)="toggleAutoCombat()">
+  <mat-icon>{{ machine.autoCombat ? "pause" : "fast_forward" }}</mat-icon>
+</button>

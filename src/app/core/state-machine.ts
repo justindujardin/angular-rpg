@@ -11,7 +11,7 @@ export interface IResumeCallback {
 /** A state change description */
 export interface IStateChange<T extends string> {
   from: State<T> | null;
-  to: State<T>;
+  to: State<T> | null;
 }
 
 // Implementation
@@ -32,6 +32,19 @@ export class StateMachine<StateNames extends string> {
   private _currentState: State<StateNames> | null = null;
   private _previousState: State<StateNames> | null = null;
   private _pendingStates: [State<StateNames>, (result: boolean) => void][] = [];
+
+  /** Destroy the state machine, and exit any current state. */
+  async destroy() {
+    const state = this._currentState;
+    this._currentState = null;
+    this._pendingStates = [];
+    this._previousState = null;
+    this._transitioning = false;
+    if (state) {
+      this.onExitState$.emit({ from: state, to: null });
+      await state.exit(this);
+    }
+  }
 
   addState(state: State<StateNames>): void {
     this.states.push(state);

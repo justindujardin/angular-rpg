@@ -75,6 +75,13 @@ describe('Point', () => {
     });
   });
 
+  describe('ceil', () => {
+    it('should truncate floating point by rounding up', () => {
+      const p1: Point = new Point(15.1, 15.1);
+      expect(p1.ceil()).toEqual(new Point(16, 16));
+    });
+  });
+
   describe('round', () => {
     it('should round up when decimal is greater than or equal to 0.5', () => {
       const p1: Point = new Point(15.6, 15.6).round();

@@ -69,7 +69,7 @@ export class CombatGuardBehavior extends CombatActionBehavior {
       'defeat',
       'escape',
     ];
-    if (exitStates.includes(to.name)) {
+    if (to && exitStates.includes(to.name)) {
       const model: CombatantTypes = this.from?.model as CombatantTypes;
       assertTrue(model, 'invalid guard behavior model');
       this.store.dispatch(

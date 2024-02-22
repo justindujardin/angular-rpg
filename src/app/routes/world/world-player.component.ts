@@ -116,10 +116,6 @@ export class WorldPlayerComponent
   //
   objectRenderer: TileObjectRenderer = new TileObjectRenderer();
 
-  beforeFrame(view: SceneView, elapsed: number) {
-    // Nope
-  }
-
   /**
    * Render all of the map feature components
    */
@@ -171,10 +167,6 @@ export class WorldPlayerComponent
         view.context.restore();
       }
     }
-  }
-
-  afterFrame(view: SceneView, elapsed: number) {
-    // Nope
   }
 }
 

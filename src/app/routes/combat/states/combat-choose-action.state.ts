@@ -1,17 +1,90 @@
 import { Component, Input } from '@angular/core';
-import { interval, Observable } from 'rxjs';
+import { BehaviorSubject, interval, Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 import * as _ from 'underscore';
 import { Point } from '../../../../app/core/point';
+import { Item, Magic } from '../../../models/item';
 import { assertTrue } from '../../../models/util';
 import { GameEntityObject } from '../../../scene/objects/game-entity-object';
 import { SceneView } from '../../../scene/scene-view';
+import {
+  CombatAttackBehaviorComponent,
+  CombatItemBehavior,
+  CombatMagicBehavior,
+} from '../behaviors/actions';
 import { ChooseActionStateMachine } from '../behaviors/choose-action.machine';
 import { CombatActionBehavior } from '../behaviors/combat-action.behavior';
+import { CombatPlayerComponent } from '../combat-player.component';
 import { ICombatMenuItem } from '../combat.types';
 import { CombatMachineState } from './combat-base.state';
 import { CombatStateMachineComponent } from './combat.machine';
 import { CombatStateNames } from './states';
+
+export function chooseMove(
+  player: GameEntityObject,
+  enemies: GameEntityObject[],
+  party: CombatPlayerComponent[],
+  spells: Magic[],
+  items: Item[],
+): CombatActionBehavior {
+  const magicAction = player.findBehavior<CombatMagicBehavior>(CombatMagicBehavior);
+  const hurtPartyMember = party
+    // Sort the member with least HP to the front
+    .sort((a, b) => (a.model.hp < b.model.hp ? -1 : 1))
+    // Find a member with < threshold hp
+    .find((p) => p.model.hp < p.model.maxhp * 0.65);
+
+  // Choose the enemy with the least HP
+  const enemy = enemies.sort((a, b) => {
+    const aHP = a?.model?.hp as number;
+    const bHP = b?.model?.hp as number;
+    return aHP < bHP ? -1 : 1;
+  })[0];
+
+  // Magic User
+  if (magicAction && magicAction.canBeUsedBy(player)) {
+    const hasHeal = spells.find((s) => s.id === 'heal');
+    const hasPush = spells.find((s) => s.id === 'push');
+
+    // Heal hurt party members
+    if (hurtPartyMember && hasHeal) {
+      magicAction.from = player;
+      magicAction.to = hurtPartyMember;
+      magicAction.spell = hasHeal;
+      return magicAction;
+    }
+
+    // Hurt enemies
+    if (hasPush) {
+      magicAction.from = player;
+      magicAction.to = enemy;
+      magicAction.spell = hasPush;
+      return magicAction;
+    }
+  }
+
+  // Usable items
+  const itemAction = player.findBehavior<CombatItemBehavior>(CombatItemBehavior);
+  if (itemAction && itemAction.canBeUsedBy(player)) {
+    const hasPotion = items.find((i) => i.id.includes('potion'));
+    // Use potions on hurt party members
+    if (hurtPartyMember && hasPotion) {
+      itemAction.from = player;
+      itemAction.to = hurtPartyMember;
+      itemAction.item = hasPotion;
+      return itemAction;
+    }
+  }
+
+  // Default to attacking
+  const action = player.findBehavior<CombatAttackBehaviorComponent>(
+    CombatAttackBehaviorComponent,
+  );
+  assertTrue(action, `attack action not found on: ${player.name}`);
+  action.from = player;
+  action.to = enemy;
+  return action;
+}
 
 /**
  * Choose actions for all characters in the player-card.
@@ -44,6 +117,18 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
   @Input() pointerClass: string = '';
   /** The scene view container. Used to calculating screen space pointer coordinates */
   @Input() view: SceneView | null = null;
+
+  private _autoCombat$ = new BehaviorSubject<boolean>(false);
+  /** Automatically select moves for players for interactionless combat */
+  @Input() set autoCombat(value: boolean) {
+    this._autoCombat$.next(value);
+    if (value && this.machine) {
+      this._doAutoSelection();
+    }
+  }
+  get autoCombat(): boolean {
+    return this._autoCombat$.value;
+  }
 
   private _currentMachine: ChooseActionStateMachine | null = null;
   private toChoose: GameEntityObject[] = [];
@@ -93,6 +178,10 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
     machine.currentDone = true;
     machine.playerChoices = {};
 
+    if (this.autoCombat) {
+      return this._doAutoSelection();
+    }
+
     this._currentMachine = new ChooseActionStateMachine(
       this,
       machine.scene,
@@ -121,6 +210,51 @@ export class CombatChooseActionStateComponent extends CombatMachineState {
       }
     }
     this._next();
+  }
+
+  private _doAutoSelection() {
+    const remainder = [...this.toChoose];
+    if (this._currentMachine?.current) {
+      remainder.unshift(this._currentMachine.current);
+    }
+    if (this._currentMachine) {
+      this._currentMachine.destroy();
+      this._currentMachine = null;
+    }
+    this.toChoose.length = 0;
+    this.pointer = false;
+    this.pointerClass = '';
+
+    assertTrue(this.machine, 'invalid state machine');
+    let items: Item[] = this.machine.items.toJS();
+
+    for (let i = 0; i < remainder.length; i++) {
+      const player = remainder[i];
+
+      assertTrue(this.machine.party, 'no party');
+      const party = this.machine.party.toArray().filter((p) => p.model.hp > 0);
+
+      assertTrue(this.machine.enemies, 'no enemies');
+      const enemies = this.machine.enemies
+        .toArray()
+        .filter((p) => Number(p.model?.hp) > 0);
+
+      const action = chooseMove(
+        player,
+        enemies,
+        party,
+        this.machine.spells.toJS(),
+        items,
+      );
+
+      // Filter used items from next user choices
+      if (action.item) {
+        items = items.filter((i) => i.eid !== action.item?.eid);
+      }
+      this.machine.playerChoices[player._uid] = action;
+      console.log(`[autoCombat] ${player.model?.name} chose ${action.name}`);
+    }
+    this.machine.setCurrentState('begin-turn');
   }
 
   private _next() {

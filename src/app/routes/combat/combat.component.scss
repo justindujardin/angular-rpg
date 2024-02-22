@@ -21,4 +21,9 @@
       animation-iteration-count: infinite;
     }
   }
+  button[mat-fab] {
+    position: fixed;
+    top: 48px;
+    left: 12px;
+  }
 }

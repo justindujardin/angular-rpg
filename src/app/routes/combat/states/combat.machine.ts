@@ -102,6 +102,9 @@ export class CombatStateMachineComponent
   @Input() view: SceneView;
   @Input() defaultState: CombatStateNames | null = 'start';
 
+  /** Automatically select moves for players for interactionless combat */
+  @Input() autoCombat: boolean = localStorage.getItem('rpgAutoCombat') === 'true';
+
   @ViewChildren('start,beginTurn,chooseAction,endTurn,defeat,victory,escape')
   childStates: QueryList<CombatMachineState>;
   ngOnDestroy(): void {

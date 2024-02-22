@@ -21,7 +21,6 @@ export class Animator {
   sourceAnims: any = null;
 
   setAnimationSource(spriteName: string) {
-    console.log(`Sprite is ${spriteName}`);
     this.sourceMeta = getSpriteMeta(spriteName);
     if (this.sourceMeta) {
       this.sourceAnims = this.sourceMeta.animations;

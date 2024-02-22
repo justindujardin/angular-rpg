@@ -1,6 +1,7 @@
 <combat-start-state #start></combat-start-state>
 <combat-begin-turn-state #beginTurn></combat-begin-turn-state>
 <combat-choose-action-state
+  [autoCombat]="autoCombat"
   [pointAt]="current"
   [view]="combat"
   #chooseAction

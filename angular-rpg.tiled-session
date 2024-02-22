@@ -1,38 +1,258 @@
 {
-    "activeFile": "src/assets/maps/town.tmx",
+    "activeFile": "src/assets/maps/wilderness.tmx",
     "expandedProjectPaths": [
-        "src",
-        "src/assets/maps/templates",
-        "src/art/sprites/characters/punch",
-        "src/assets/maps",
-        "src/art/sprites",
-        "src/tiled/createdialogtool",
         ".",
-        "src/art",
-        "src/tiled",
-        "src/assets/maps/tiles",
+        "src/assets",
         "src/art/sprites/characters/magic",
+        "src/tiled/createdialogtool",
+        "src",
+        "src/assets/maps",
+        "src/tiled",
+        "src/art/sprites",
+        "src/art/sprites/characters/punch",
         "src/assets/test",
-        "src/assets"
+        "src/art",
+        "src/assets/maps/templates",
+        "src/assets/maps/tiles"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
-    "fileStates": {},
+    "fileStates": {
+        "src/assets/maps/castle.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 4,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 263.875,
+                "y": 135.875
+            }
+        },
+        "src/assets/maps/combat.tmx": {
+            "scale": 3.5070833333333336,
+            "selectedLayer": 9,
+            "viewCenter": {
+                "x": 239.94297255554233,
+                "y": 159.8194130925508
+            }
+        },
+        "src/assets/maps/crypt.tmx": {
+            "expandedObjectLayers": [
+                2,
+                3
+            ],
+            "scale": 1.9243589743589742,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 199.80679546968688,
+                "y": 311.53231179213856
+            }
+        },
+        "src/assets/maps/fortress1.tmx": {
+            "expandedObjectLayers": [
+                2,
+                3
+            ],
+            "scale": 2.420967741935484,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 223.6708860759494,
+                "y": 247.62824783477686
+            }
+        },
+        "src/assets/maps/fortress2.tmx": {
+            "expandedObjectLayers": [
+                4,
+                3
+            ],
+            "scale": 3.002,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 199.70019986675553,
+                "y": 199.70019986675553
+            }
+        },
+        "src/assets/maps/isle.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 3.9499999999999997,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 199.873417721519,
+                "y": 151.7721518987342
+            }
+        },
+        "src/assets/maps/keep.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 3.2630434782608697,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 183.72418387741504,
+                "y": 183.72418387741504
+            }
+        },
+        "src/assets/maps/lair.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 1.4715686274509803,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 231.38574283810794,
+                "y": 407.3884077281813
+            }
+        },
+        "src/assets/maps/port.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 3.411363636363636,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 231.7255163224517,
+                "y": 175.73617588274487
+            }
+        },
+        "src/assets/maps/ruins.tmx": {
+            "expandedObjectLayers": [
+                3
+            ],
+            "scale": 2.587931034482758,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 151.66555629580284,
+                "y": 231.6522318454364
+            }
+        },
+        "src/assets/maps/sewer.tmx": {
+            "expandedObjectLayers": [
+                2,
+                3
+            ],
+            "scale": 1.8304878048780486,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 183.83077948034645,
+                "y": 327.508327781479
+            }
+        },
+        "src/assets/maps/tiles/creatures.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "src/assets/maps/tiles/environment.tsx": {
+            "scaleInDock": 3
+        },
+        "src/assets/maps/tiles/objects.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 4,
+            "scaleInEditor": 11
+        },
+        "src/assets/maps/tower1.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 3.9499999999999997,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 183.92405063291142,
+                "y": 151.7721518987342
+            }
+        },
+        "src/assets/maps/tower2.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 3.9499999999999997,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 151.7721518987342,
+                "y": 151.7721518987342
+            }
+        },
+        "src/assets/maps/tower3.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 6.822727272727272,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 87.86808794137241,
+                "y": 87.86808794137244
+            }
+        },
+        "src/assets/maps/town.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 3.411363636363636,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 215.89606928714193,
+                "y": 175.73617588274487
+            }
+        },
+        "src/assets/maps/village.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 3.5738095238095235,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 111.7854763491006,
+                "y": 167.7481678880746
+            }
+        },
+        "src/assets/maps/wilderness.tmx": {
+            "expandedObjectLayers": [
+                6,
+                5
+            ],
+            "scale": 1.5,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 1108.6666666666665,
+                "y": 290
+            }
+        }
+    },
+    "last.imagePath": "C:/Users/justi/Source/angular-rpg/src/art/sprites/objects",
     "openFiles": [
-        "src/assets/maps/town.tmx"
+        "src/assets/maps/town.tmx",
+        "src/assets/maps/sewer.tmx",
+        "src/assets/maps/ruins.tmx",
+        "src/assets/maps/village.tmx",
+        "src/assets/maps/wilderness.tmx",
+        "src/assets/maps/castle.tmx",
+        "src/assets/maps/port.tmx",
+        "src/assets/maps/lair.tmx",
+        "src/assets/maps/fortress1.tmx",
+        "src/assets/maps/fortress2.tmx",
+        "src/assets/maps/combat.tmx",
+        "src/assets/maps/crypt.tmx",
+        "src/assets/maps/isle.tmx",
+        "src/assets/maps/keep.tmx",
+        "src/assets/maps/tower1.tmx",
+        "src/assets/maps/tower2.tmx",
+        "src/assets/maps/tower3.tmx"
     ],
     "project": "angular-rpg.tiled-project",
+    "property.type": "string",
     "recentFiles": [
         "src/assets/maps/town.tmx",
-        "src/assets/maps/castle.tmx",
-        "src/assets/maps/village.tmx",
-        "src/assets/maps/isle.tmx",
-        "src/assets/maps/combat.tmx",
-        "src/assets/maps/ruins.tmx",
-        "src/assets/maps/wilderness.tmx",
-        "src/assets/maps/lair.tmx",
-        "src/assets/maps/port.tmx",
         "src/assets/maps/sewer.tmx",
+        "src/assets/maps/ruins.tmx",
+        "src/assets/maps/village.tmx",
+        "src/assets/maps/tower3.tmx",
+        "src/assets/maps/tower2.tmx",
         "src/assets/maps/tower1.tmx",
-        "src/assets/maps/tower2.tmx"
+        "src/assets/maps/keep.tmx",
+        "src/assets/maps/isle.tmx",
+        "src/assets/maps/crypt.tmx",
+        "src/assets/maps/combat.tmx",
+        "src/assets/maps/fortress2.tmx"
     ]
 }

@@ -79,9 +79,14 @@ export class ChooseActionType extends State<CombatChooseActionStateNames> {
     let sub: Subscription | null = null;
 
     let clickSelect = (click: CombatSceneClick) => {
+      const targetClick = click.hits[0];
+      // If the target has no HP, it's not a valid target.
+      if (!targetClick?.model?.hp) {
+        return;
+      }
       sub?.unsubscribe();
       sub = null;
-      machine.target = click.hits[0];
+      machine.target = targetClick;
       machine.parent.items[0].select();
     };
     assertTrue(machine.current, 'Requires Current Player');
@@ -219,6 +224,10 @@ export class ChooseActionTarget extends State<CombatChooseActionStateNames> {
         sub?.unsubscribe();
         sub = null;
         machine.setCurrentState(ChooseActionSubmit.NAME);
+        return;
+      }
+      // If the target has no HP, it's not a valid target.
+      if (!target?.model?.hp) {
         return;
       }
       machine.target = target;

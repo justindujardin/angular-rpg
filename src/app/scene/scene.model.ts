@@ -55,9 +55,7 @@ export interface IScene {
  * will be invoked during the scene render.
  */
 export interface ISceneViewRenderer {
-  beforeFrame(view: ISceneView, elapsed: number): void;
   renderFrame(view: ISceneView, elapsed: number): void;
-  afterFrame(view: ISceneView, elapsed: number): void;
 }
 
 /**
