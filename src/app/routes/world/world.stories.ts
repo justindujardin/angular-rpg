@@ -50,7 +50,11 @@ class Wrapper implements AfterViewInit {
 export default {
   title: 'World/World Component',
   component: Wrapper,
-  decorators: [moduleMetadata({ declarations: [Wrapper] })],
+  decorators: [
+    moduleMetadata({
+      declarations: [Wrapper],
+    }),
+  ],
   argTypes: {
     debug: { type: 'boolean' },
   },

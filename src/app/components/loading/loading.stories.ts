@@ -34,7 +34,11 @@ class LoadingStoryWrapper implements AfterViewInit {
 export default {
   title: 'RPG/Loading Overlay',
   template: `<loading-story-wrapper cfg="cfg"></loading-story-wrapper>`,
-  decorators: [moduleMetadata({ declarations: [LoadingStoryWrapper] })],
+  decorators: [
+    moduleMetadata({
+      declarations: [LoadingStoryWrapper],
+    }),
+  ],
 } as Meta;
 
 const Template: StoryFn<CombatantTypes> = (args: Partial<any>) => ({

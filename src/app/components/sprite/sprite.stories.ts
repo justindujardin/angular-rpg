@@ -36,7 +36,11 @@ const Template: StoryFn<ISpriteInputs> = (args: Partial<ISpriteInputs>) => ({
 export default {
   title: 'RPG/Sprite',
   component: Wrapper,
-  decorators: [moduleMetadata({ declarations: [Wrapper] })],
+  decorators: [
+    moduleMetadata({
+      declarations: [Wrapper],
+    }),
+  ],
 } as Meta;
 
 export const Basic = Template.bind({});

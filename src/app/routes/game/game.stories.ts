@@ -11,7 +11,11 @@ class GameStoryWrapper {}
 export default {
   title: 'RPG/Game Component',
   component: GameStoryWrapper,
-  decorators: [moduleMetadata({ declarations: [GameStoryWrapper, GameComponent] })],
+  decorators: [
+    moduleMetadata({
+      declarations: [GameStoryWrapper, GameComponent],
+    }),
+  ],
 } as Meta;
 
 const Template: StoryFn<any> = (args: Partial<any>) => ({
